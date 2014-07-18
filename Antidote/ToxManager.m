@@ -8,8 +8,10 @@
 
 #import "ToxManager.h"
 #import "tox.h"
+#import "UserInfoManager.h"
 
 uint8_t *hex_string_to_bin(char *hex_string);
+
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
 void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata);
@@ -47,18 +49,34 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     self = [super init];
 
     if (self) {
+        NSLog(@"ToxManager: creating tox");
         _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
 
-        _queue = dispatch_queue_create("ToxManager queue", NULL);
+        NSData *toxData = [UserInfoManager sharedInstance].uToxData;
 
-        tox_callback_friend_request(_tox, friendRequestCallback, NULL);
-        tox_callback_friend_message(_tox, friendMessageCallback, NULL);
-        tox_callback_name_change(_tox, nameChangeCallback, NULL);
-        tox_callback_status_message(_tox, statusMessageCallback, NULL);
-        tox_callback_user_status(_tox, userStatusCallback, NULL);
-        tox_callback_typing_change(_tox, typingChangeCallback, NULL);
-        tox_callback_read_receipt(_tox, readReceiptCallback, NULL);
-        tox_callback_connection_status(_tox, connectionStatusCallback, NULL);
+        if (toxData) {
+            NSLog(@"ToxManager: old data found, loading...");
+            tox_load(_tox, (uint8_t *)toxData.bytes, toxData.length);
+        }
+        else {
+            uint32_t size = tox_size(_tox);
+            uint8_t *data = malloc(size);
+
+            tox_save(_tox, data);
+
+            [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+        }
+
+        tox_callback_friend_request    (_tox, friendRequestCallback,     NULL);
+        tox_callback_friend_message    (_tox, friendMessageCallback,     NULL);
+        tox_callback_name_change       (_tox, nameChangeCallback,        NULL);
+        tox_callback_status_message    (_tox, statusMessageCallback,     NULL);
+        tox_callback_user_status       (_tox, userStatusCallback,        NULL);
+        tox_callback_typing_change     (_tox, typingChangeCallback,      NULL);
+        tox_callback_read_receipt      (_tox, readReceiptCallback,       NULL);
+        tox_callback_connection_status (_tox, connectionStatusCallback,  NULL);
+
+        _queue = dispatch_queue_create("ToxManager queue", NULL);
     }
 
     return self;
@@ -93,6 +111,18 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     free(pub_key);
 
     [self maybeStartTimer];
+
+    uint8_t *myAddress = malloc(TOX_FRIEND_ADDRESS_SIZE);
+    tox_get_address(self.tox, myAddress);
+
+    NSMutableString *theString = [NSMutableString stringWithCapacity:TOX_FRIEND_ADDRESS_SIZE * 2];
+    for (NSInteger idx = 0; idx < TOX_FRIEND_ADDRESS_SIZE; ++idx) {
+        [theString appendFormat:@"%02X", myAddress[idx]];
+    }
+
+    NSLog(@"ToxManager: ---- %@", theString);
+
+    free(myAddress);
 }
 
 #pragma mark -  Private
@@ -116,7 +146,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
         if (isConnected != weakSelf.isConnected) {
             weakSelf.isConnected = isConnected;
-            NSLog(@"Connected changed to %d", isConnected);
+            NSLog(@"ToxManager: connected changed to %d", isConnected);
         }
 
         uint32_t newInterval = tox_do_interval(weakSelf.tox);
@@ -162,41 +192,41 @@ uint8_t *hex_string_to_bin(char *hex_string)
 
 void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * data, uint16_t length, void *userdata)
 {
-    NSLog(@"friendRequestCallback, publicKey %s", publicKey);
+    NSLog(@"ToxManager: friendRequestCallback, publicKey %s", publicKey);
 }
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
 {
-    NSLog(@"friendMessageCallback %d %s", friendnumber, message);
+    NSLog(@"ToxManager: friendMessageCallback %d %s", friendnumber, message);
 }
 
 void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata)
 {
-    NSLog(@"nameChangeCallback %d %s", friendnumber, newname);
+    NSLog(@"ToxManager: nameChangeCallback %d %s", friendnumber, newname);
 }
 
 void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata)
 {
-    NSLog(@"statusMessageCallback %d %s", friendnumber, newstatus);
+    NSLog(@"ToxManager: statusMessageCallback %d %s", friendnumber, newstatus);
 }
 
 void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
-    NSLog(@"userStatusCallback %d %d", friendnumber, status);
+    NSLog(@"ToxManager: userStatusCallback %d %d", friendnumber, status);
 }
 
 void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata)
 {
-    NSLog(@"typingChangeCallback %d %d", friendnumber, isTyping);
+    NSLog(@"ToxManager: typingChangeCallback %d %d", friendnumber, isTyping);
 }
 
 void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata)
 {
-    NSLog(@"readReceiptCallback %d %d", friendnumber, receipt);
+    NSLog(@"ToxManager: readReceiptCallback %d %d", friendnumber, receipt);
 }
 
 void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
-    NSLog(@"connectionStatusCallback %d %d", friendnumber, status);
+    NSLog(@"ToxManager: connectionStatusCallback %d %d", friendnumber, status);
 }
 

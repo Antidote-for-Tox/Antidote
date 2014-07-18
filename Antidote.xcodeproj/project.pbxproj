@@ -35,6 +35,7 @@
 		1164769F19794E7300DB20B8 /* tox.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768819794E7300DB20B8 /* tox.c */; };
 		116476A019794E7300DB20B8 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768A19794E7300DB20B8 /* util.c */; };
 		11835295197994050048CA64 /* ToxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11835294197994050048CA64 /* ToxManager.m */; };
+		118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A31979BD4C0048CA64 /* UserInfoManager.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -95,6 +96,8 @@
 		1164768B19794E7300DB20B8 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = toxcore/toxcore/util.h; sourceTree = "<group>"; };
 		11835293197994050048CA64 /* ToxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxManager.h; sourceTree = "<group>"; };
 		11835294197994050048CA64 /* ToxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManager.m; sourceTree = "<group>"; };
+		118352A21979BD4C0048CA64 /* UserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoManager.h; sourceTree = "<group>"; };
+		118352A31979BD4C0048CA64 /* UserInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoManager.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -220,10 +223,28 @@
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				118352A01979BD350048CA64 /* ToxManager */,
+				118352A11979BD3E0048CA64 /* UserInfoManager */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		118352A01979BD350048CA64 /* ToxManager */ = {
+			isa = PBXGroup;
+			children = (
 				11835293197994050048CA64 /* ToxManager.h */,
 				11835294197994050048CA64 /* ToxManager.m */,
 			);
-			name = Classes;
+			name = ToxManager;
+			sourceTree = "<group>";
+		};
+		118352A11979BD3E0048CA64 /* UserInfoManager */ = {
+			isa = PBXGroup;
+			children = (
+				118352A21979BD4C0048CA64 /* UserInfoManager.h */,
+				118352A31979BD4C0048CA64 /* UserInfoManager.m */,
+			);
+			name = UserInfoManager;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -334,6 +355,7 @@
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,
 				1164769119794E7300DB20B8 /* LAN_discovery.c in Sources */,
 				1164769319794E7300DB20B8 /* logger.c in Sources */,
+				118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */,
 				1164769219794E7300DB20B8 /* list.c in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
