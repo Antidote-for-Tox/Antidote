@@ -1,0 +1,10 @@
+PODS:
+  - libsodium-ios (0.4.5)
+
+DEPENDENCIES:
+  - libsodium-ios (~> 0.4.5)
+
+SPEC CHECKSUMS:
+  libsodium-ios: 569dedc61af104e5ba188f4cd4ab3eb607f2ce44
+
+COCOAPODS: 0.33.1
