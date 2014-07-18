@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "ToxManager.h"
 
 @implementation AppDelegate
 
@@ -15,6 +16,12 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = [UIViewController new];
+
+    [[ToxManager sharedInstance] bootstrapWithAddress:@"23.226.230.47"
+                                                 port:33445
+                                            publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"];
+
     [self.window makeKeyAndVisible];
     return YES;
 }
