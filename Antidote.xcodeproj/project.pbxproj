@@ -39,6 +39,7 @@
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
 		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
 		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
+		118352B5197A72F10048CA64 /* QRViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352B4197A72F10048CA64 /* QRViewerController.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -107,6 +108,8 @@
 		118352AB197A6C410048CA64 /* CopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyLabel.m; sourceTree = "<group>"; };
 		118352AE197A6F7F0048CA64 /* NSString+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utilities.h"; sourceTree = "<group>"; };
 		118352AF197A6F7F0048CA64 /* NSString+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utilities.m"; sourceTree = "<group>"; };
+		118352B3197A72F10048CA64 /* QRViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRViewerController.h; sourceTree = "<group>"; };
+		118352B4197A72F10048CA64 /* QRViewerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRViewerController.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -262,8 +265,8 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				118352A6197A64B70048CA64 /* SettingsViewController.h */,
-				118352A7197A64B70048CA64 /* SettingsViewController.m */,
+				118352B2197A72DE0048CA64 /* QRViewer */,
+				118352B1197A72D90048CA64 /* Settings */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -284,6 +287,24 @@
 				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		118352B1197A72D90048CA64 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				118352A6197A64B70048CA64 /* SettingsViewController.h */,
+				118352A7197A64B70048CA64 /* SettingsViewController.m */,
+			);
+			name = Settings;
+			sourceTree = "<group>";
+		};
+		118352B2197A72DE0048CA64 /* QRViewer */ = {
+			isa = PBXGroup;
+			children = (
+				118352B3197A72F10048CA64 /* QRViewerController.h */,
+				118352B4197A72F10048CA64 /* QRViewerController.m */,
+			);
+			name = QRViewer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -404,6 +425,7 @@
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
+				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,

@@ -10,12 +10,14 @@
 #import "CopyLabel.h"
 #import "NSString+Utilities.h"
 #import "ToxManager.h"
+#import "QRViewerController.h"
 
 @interface SettingsViewController ()
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 @property (strong, nonatomic) UILabel *toxIdTitleLabel;
+@property (strong, nonatomic) UIButton *toxIdQRButton;
 @property (strong, nonatomic) CopyLabel *toxIdValueLabel;
 
 @end
@@ -43,7 +45,7 @@
     self.view = [[UIView alloc] initWithFrame:frame];
 
     [self createScrollView];
-    [self createToxIdLabels];
+    [self createToxIdViews];
 }
 
 - (void)viewDidLayoutSubviews
@@ -51,6 +53,15 @@
     [super viewDidLayoutSubviews];
 
     [self adjustSubviews];
+}
+
+#pragma mark -  Actions
+
+- (void)toxIdQRButtonPressed
+{
+    QRViewerController *qrVC = [[QRViewerController alloc] initWithText:[ToxManager sharedInstance].toxId];
+
+    [self presentViewController:qrVC animated:YES completion:nil];
 }
 
 #pragma mark -  Private
@@ -61,10 +72,17 @@
     [self.view addSubview:self.scrollView];
 }
 
-- (void)createToxIdLabels
+- (void)createToxIdViews
 {
     self.toxIdTitleLabel = [self addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
     self.toxIdTitleLabel.text = NSLocalizedString(@"Tox ID", @"Settings");
+
+    self.toxIdQRButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.toxIdQRButton setTitle:NSLocalizedString(@"QR", @"Settings") forState:UIControlStateNormal];
+    [self.toxIdQRButton addTarget:self
+                           action:@selector(toxIdQRButtonPressed)
+                 forControlEvents:UIControlEventTouchUpInside];
+    [self.scrollView addSubview:self.toxIdQRButton];
 
     self.toxIdValueLabel = [CopyLabel new];
     self.toxIdValueLabel.textColor = [UIColor grayColor];
@@ -90,6 +108,17 @@
         self.toxIdTitleLabel.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
+
+    {
+        NSString *title = [self.toxIdQRButton titleForState:UIControlStateNormal];
+        UIFont *font = self.toxIdQRButton.titleLabel.font;
+
+        frame = CGRectZero;
+        frame.size = [title stringSizeWithFont:font];
+        frame.origin.x = self.view.bounds.size.width - frame.size.width - 20.0;
+        frame.origin.y = self.toxIdTitleLabel.frame.origin.y;
+        self.toxIdQRButton.frame = frame;
+    }
 
     {
         CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
