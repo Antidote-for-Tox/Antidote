@@ -37,6 +37,32 @@
     return self;
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    // fixing background colors in highlighted state
+
+    UIColor *avatar = self.avatarImageView.backgroundColor;
+    UIColor *status = self.statusView.backgroundColor;
+
+    [super setHighlighted:highlighted animated:animated];
+
+    self.avatarImageView.backgroundColor = avatar;
+    self.statusView.backgroundColor = status;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    // fixing background colors in selected state
+
+    UIColor *avatar = self.avatarImageView.backgroundColor;
+    UIColor *status = self.statusView.backgroundColor;
+
+    [super setSelected:selected animated:animated];
+
+    self.avatarImageView.backgroundColor = avatar;
+    self.statusView.backgroundColor = status;
+}
+
 #pragma mark -  Public
 
 - (void)redraw
@@ -61,7 +87,7 @@
     return NSStringFromClass([self class]);
 }
 
-#pragma mark -  Public
+#pragma mark -  Private
 
 - (void)createAvatarImageView
 {
