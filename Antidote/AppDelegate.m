@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ToxManager.h"
+#import "SettingsViewController.h"
 
 @implementation AppDelegate
 
@@ -16,7 +17,23 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
-    self.window.rootViewController = [UIViewController new];
+
+    UIViewController *first  = [UIViewController new];
+    first.title = NSLocalizedString(@"Chats", @"Chats title");
+
+    UIViewController *second = [UIViewController new];
+    second.title = NSLocalizedString(@"Friends", @"Friends title");
+
+    SettingsViewController *settings  = [SettingsViewController new];
+
+    UITabBarController *tabBar = [UITabBarController new];
+    tabBar.viewControllers = @[
+        [[UINavigationController alloc] initWithRootViewController:first],
+        [[UINavigationController alloc] initWithRootViewController:second],
+        [[UINavigationController alloc] initWithRootViewController:settings],
+    ];
+
+    self.window.rootViewController = tabBar;
 
     [[ToxManager sharedInstance] bootstrapWithAddress:@"23.226.230.47"
                                                  port:33445

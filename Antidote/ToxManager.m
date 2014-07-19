@@ -111,18 +111,21 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     free(pub_key);
 
     [self maybeStartTimer];
+}
 
-    uint8_t *myAddress = malloc(TOX_FRIEND_ADDRESS_SIZE);
-    tox_get_address(self.tox, myAddress);
+- (NSString *)toxId
+{
+    uint8_t *address = malloc(TOX_FRIEND_ADDRESS_SIZE);
+    tox_get_address(self.tox, address);
 
-    NSMutableString *theString = [NSMutableString stringWithCapacity:TOX_FRIEND_ADDRESS_SIZE * 2];
+    NSMutableString *toxId = [NSMutableString stringWithCapacity:TOX_FRIEND_ADDRESS_SIZE * 2];
     for (NSInteger idx = 0; idx < TOX_FRIEND_ADDRESS_SIZE; ++idx) {
-        [theString appendFormat:@"%02X", myAddress[idx]];
+        [toxId appendFormat:@"%02X", address[idx]];
     }
 
-    NSLog(@"ToxManager: ---- %@", theString);
+    free(address);
 
-    free(myAddress);
+    return [toxId copy];
 }
 
 #pragma mark -  Private

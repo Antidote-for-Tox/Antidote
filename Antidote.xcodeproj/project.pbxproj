@@ -36,6 +36,9 @@
 		116476A019794E7300DB20B8 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768A19794E7300DB20B8 /* util.c */; };
 		11835295197994050048CA64 /* ToxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11835294197994050048CA64 /* ToxManager.m */; };
 		118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A31979BD4C0048CA64 /* UserInfoManager.m */; };
+		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
+		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
+		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -98,6 +101,12 @@
 		11835294197994050048CA64 /* ToxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManager.m; sourceTree = "<group>"; };
 		118352A21979BD4C0048CA64 /* UserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoManager.h; sourceTree = "<group>"; };
 		118352A31979BD4C0048CA64 /* UserInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoManager.m; sourceTree = "<group>"; };
+		118352A6197A64B70048CA64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		118352A7197A64B70048CA64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		118352AA197A6C410048CA64 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
+		118352AB197A6C410048CA64 /* CopyLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CopyLabel.m; sourceTree = "<group>"; };
+		118352AE197A6F7F0048CA64 /* NSString+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utilities.h"; sourceTree = "<group>"; };
+		118352AF197A6F7F0048CA64 /* NSString+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utilities.m"; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -153,9 +162,12 @@
 			children = (
 				1164764119794D3300DB20B8 /* AppDelegate.h */,
 				1164764219794D3300DB20B8 /* AppDelegate.m */,
-				11835292197993F90048CA64 /* Classes */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
+				11835292197993F90048CA64 /* Classes */,
+				118352A5197A3DB50048CA64 /* Controllers */,
 				1164763919794D3300DB20B8 /* Supporting Files */,
+				118352AD197A6F5B0048CA64 /* Utilities */,
+				118352A9197A6C210048CA64 /* Views */,
 			);
 			path = Antidote;
 			sourceTree = "<group>";
@@ -245,6 +257,33 @@
 				118352A31979BD4C0048CA64 /* UserInfoManager.m */,
 			);
 			name = UserInfoManager;
+			sourceTree = "<group>";
+		};
+		118352A5197A3DB50048CA64 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				118352A6197A64B70048CA64 /* SettingsViewController.h */,
+				118352A7197A64B70048CA64 /* SettingsViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		118352A9197A6C210048CA64 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				118352AA197A6C410048CA64 /* CopyLabel.h */,
+				118352AB197A6C410048CA64 /* CopyLabel.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		118352AD197A6F5B0048CA64 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				118352AE197A6F7F0048CA64 /* NSString+Utilities.h */,
+				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -347,6 +386,7 @@
 			files = (
 				1164769919794E7300DB20B8 /* onion_client.c in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
+				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				1164768C19794E7300DB20B8 /* assoc.c in Sources */,
 				116476A019794E7300DB20B8 /* util.c in Sources */,
 				1164769519794E7300DB20B8 /* Messenger.c in Sources */,
@@ -364,9 +404,11 @@
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
+				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,
 				1164769B19794E7300DB20B8 /* ping_array.c in Sources */,
+				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				1164769E19794E7300DB20B8 /* TCP_server.c in Sources */,
 				1164768F19794E7300DB20B8 /* friend_requests.c in Sources */,
 			);

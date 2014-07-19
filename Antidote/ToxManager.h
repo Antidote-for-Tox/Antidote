@@ -14,4 +14,6 @@
 
 - (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey;
 
+- (NSString *)toxId;
+
 @end
