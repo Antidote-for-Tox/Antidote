@@ -1,18 +1,17 @@
 //
-//  FriendsViewController.m
+//  FriendRequestsViewController.m
 //  Antidote
 //
 //  Created by Dmitry Vorobyov on 19.07.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "FriendsViewController.h"
-#import "UIViewController+Utilities.h"
-#import "FriendsCell.h"
-#import "ToxManager.h"
 #import "FriendRequestsViewController.h"
+#import "UIViewController+Utilities.h"
+#import "ToxManager.h"
+#import "FriendRequestsCell.h"
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -20,7 +19,7 @@
 
 @end
 
-@implementation FriendsViewController
+@implementation FriendRequestsViewController
 
 #pragma mark -  Lifecycle
 
@@ -29,15 +28,9 @@
     self = [super init];
 
     if (self) {
-        self.title = NSLocalizedString(@"Friends", @"Friends");
+        self.title = NSLocalizedString(@"Friend requests", @"Friend requests");
 
         self.friendsManager = [ToxManager sharedInstance].friendsManager;
-
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-            initWithTitle:NSLocalizedString(@"Requests", @"Friends")
-                    style:UIBarButtonItemStylePlain
-                   target:self
-                   action:@selector(requestsButtonPressed)];
     }
 
     return self;
@@ -62,26 +55,18 @@
     [self adjustSubviews];
 }
 
-#pragma mark -  Actions
-
-- (void)requestsButtonPressed
-{
-    FriendRequestsViewController *frvc = [FriendRequestsViewController new];
-
-    [self.navigationController pushViewController:frvc animated:YES];
-}
-
 #pragma mark -  UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    FriendsCell *cell = [tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
+    FriendRequestsCell *cell = [tableView dequeueReusableCellWithIdentifier:[FriendRequestsCell reuseIdentifier]
                                                         forIndexPath:indexPath];
 
-    ToxFriend *friend = [self.friendsManager friendAtIndex:indexPath.row];
+    ToxFriendRequest *request = [self.friendsManager requestAtIndex:indexPath.row];
 
-//    cell.title = friend.publicKey;
-    cell.status = StatusCircleStatusFriendRequest;
+    cell.title = request.publicKey;
+    cell.subtitle = request.message;
+
     [cell redraw];
 
     return cell;
@@ -89,14 +74,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.friendsManager.friendsCount;
+    return self.friendsManager.requestsCount;
 }
 
 #pragma mark -  UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return [FriendsCell height];
+    return [FriendRequestsCell height];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -113,7 +98,8 @@
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor clearColor];
 
-    [self.tableView registerClass:[FriendsCell class] forCellReuseIdentifier:[FriendsCell reuseIdentifier]];
+    [self.tableView registerClass:[FriendRequestsCell class]
+           forCellReuseIdentifier:[FriendRequestsCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }

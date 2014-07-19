@@ -9,12 +9,13 @@
 #import "ToxFriendsManager.h"
 #import "UserInfoManager.h"
 
-NSString *const kToxFriendsManagerUpdateNotification = @"kToxFriendsManagerUpdateNotification";
+NSString *const kToxFriendsManagerUpdateRequestsNotification = @"kToxFriendsManagerUpdateRequestsNotification";
 NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpdateKeyInsertedSet";
 
 @interface ToxFriendsManager()
 
 @property (strong, nonatomic) NSMutableArray *friends;
+@property (strong, nonatomic) NSMutableArray *friendRequests;
 
 @end
 
@@ -28,11 +29,12 @@ NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpd
 
     if (self) {
         self.friends = [NSMutableArray new];
+        self.friendRequests = [NSMutableArray new];
 
-        for (NSString *publicKey in [UserInfoManager sharedInstance].uPendingFriendRequests) {
-            ToxFriend *f = [ToxFriend friendWithPublicKey:publicKey];
+        for (NSDictionary *dict in [UserInfoManager sharedInstance].uPendingFriendRequests) {
+            ToxFriendRequest *request = [ToxFriendRequest friendRequestFromDictionary:dict];
 
-            [self.friends addObject:f];
+            [self.friendRequests addObject:request];
         }
     }
 
@@ -41,7 +43,7 @@ NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpd
 
 #pragma mark -  Public
 
-- (NSUInteger)count
+- (NSUInteger)friendsCount
 {
     @synchronized(self.friends) {
         return self.friends.count;
@@ -59,38 +61,60 @@ NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpd
     }
 }
 
+- (NSUInteger)requestsCount
+{
+    @synchronized(self.friendRequests) {
+        return self.friendRequests.count;
+    }
+}
+
+- (ToxFriendRequest *)requestAtIndex:(NSUInteger)index
+{
+    @synchronized(self.friendRequests) {
+        if (index < self.friendRequests.count) {
+            return self.friendRequests[index];
+        }
+
+        return nil;
+    }
+}
+
 #pragma mark -  Private for ToxManager
 
-- (void)private_addFriendRequest:(NSString *)publicKey
+- (void)private_addFriendRequest:(NSString *)publicKey message:(NSString *)message
 {
     if (! publicKey) {
         return;
     }
 
-    ToxFriend *friend = [ToxFriend friendWithPublicKey:publicKey];
+    ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:publicKey message:message];
 
     NSArray *pendingRequests = [UserInfoManager sharedInstance].uPendingFriendRequests;
 
-    if ([pendingRequests containsObject:friend.clientId]) {
-        // already added this request
-        return;
+    for (NSDictionary *dict in pendingRequests) {
+        ToxFriendRequest *r = [ToxFriendRequest friendRequestFromDictionary:dict];
+
+        if ([r.clientId isEqual:request.clientId]) {
+            // already added this request
+            return;
+        }
     }
 
     NSMutableArray *array = [NSMutableArray arrayWithArray:pendingRequests];
-    [array addObject:friend.clientId];
+    [array addObject:[request requestToDictionary]];
     [UserInfoManager sharedInstance].uPendingFriendRequests = [array copy];
 
-    @synchronized(self.friends) {
-        [self.friends addObject:friend];
+    @synchronized(self.friendRequests) {
+        [self.friendRequests addObject:request];
 
-        NSIndexSet *inserted = [NSIndexSet indexSetWithIndex:self.friends.count-1];
-        [self sendUpdateNotificationWithInsertedSet:inserted];
+        NSIndexSet *inserted = [NSIndexSet indexSetWithIndex:self.friendRequests.count-1];
+        [self sendUpdateFriendRequestsNotificationWithInsertedSet:inserted];
     }
 }
 
 #pragma mark -  Private
 
-- (void)sendUpdateNotificationWithInsertedSet:(NSIndexSet *)inserted
+- (void)sendUpdateFriendRequestsNotificationWithInsertedSet:(NSIndexSet *)inserted
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
 
@@ -99,7 +123,7 @@ NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpd
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsManagerUpdateNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsManagerUpdateRequestsNotification
                                                             object:nil
                                                           userInfo:[userInfo copy]];
     });

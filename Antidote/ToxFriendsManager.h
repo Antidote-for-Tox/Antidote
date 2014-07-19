@@ -9,18 +9,22 @@
 #import <Foundation/Foundation.h>
 
 #import "ToxFriend.h"
+#import "ToxFriendRequest.h"
 
 /**
  * userInfo will contain dictionary with following keys:
  * kToxFriendsManagerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
  */
-extern NSString *const kToxFriendsManagerUpdateNotification;
+extern NSString *const kToxFriendsManagerUpdateRequestsNotification;
 extern NSString *const kToxFriendsManagerUpdateKeyInsertedSet;
 
 @interface ToxFriendsManager : NSObject
 
-- (NSUInteger)count;
+- (NSUInteger)friendsCount;
 - (ToxFriend *)friendAtIndex:(NSUInteger)index;
+
+- (NSUInteger)requestsCount;
+- (ToxFriendRequest *)requestAtIndex:(NSUInteger)index;
 
 @end
 
@@ -30,6 +34,6 @@ extern NSString *const kToxFriendsManagerUpdateKeyInsertedSet;
  */
 @interface ToxFriendsManager(Private)
 
-- (void)private_addFriendRequest:(NSString *)publicKey;
+- (void)private_addFriendRequest:(NSString *)publicKey message:(NSString *)message;
 
 @end

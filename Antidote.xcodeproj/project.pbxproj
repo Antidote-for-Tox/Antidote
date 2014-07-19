@@ -48,6 +48,9 @@
 		118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C8197A867A0048CA64 /* UIColor+Utilities.m */; };
 		118352CD197A8CA40048CA64 /* ToxFriendsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352CC197A8CA40048CA64 /* ToxFriendsManager.m */; };
 		118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352CF197A8D5C0048CA64 /* ToxFriend.m */; };
+		118352D6197AC1760048CA64 /* FriendRequestsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352D5197AC1760048CA64 /* FriendRequestsViewController.m */; };
+		118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */; };
+		118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352DC197AEB010048CA64 /* FriendRequestsCell.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +137,12 @@
 		118352CC197A8CA40048CA64 /* ToxFriendsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsManager.m; sourceTree = "<group>"; };
 		118352CE197A8D5C0048CA64 /* ToxFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriend.h; sourceTree = "<group>"; };
 		118352CF197A8D5C0048CA64 /* ToxFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriend.m; sourceTree = "<group>"; };
+		118352D4197AC1760048CA64 /* FriendRequestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendRequestsViewController.h; sourceTree = "<group>"; };
+		118352D5197AC1760048CA64 /* FriendRequestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsViewController.m; sourceTree = "<group>"; };
+		118352D7197AC1CC0048CA64 /* ToxFriendRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriendRequest.h; sourceTree = "<group>"; };
+		118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendRequest.m; sourceTree = "<group>"; };
+		118352DB197AEB010048CA64 /* FriendRequestsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendRequestsCell.h; sourceTree = "<group>"; };
+		118352DC197AEB010048CA64 /* FriendRequestsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsCell.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -290,6 +299,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				118352D3197AC15E0048CA64 /* FriendRequests */,
 				118352B6197A7AF60048CA64 /* Friends */,
 				118352B2197A72DE0048CA64 /* QRViewer */,
 				118352B1197A72D90048CA64 /* Settings */,
@@ -367,8 +377,29 @@
 				118352CC197A8CA40048CA64 /* ToxFriendsManager.m */,
 				118352CE197A8D5C0048CA64 /* ToxFriend.h */,
 				118352CF197A8D5C0048CA64 /* ToxFriend.m */,
+				118352D7197AC1CC0048CA64 /* ToxFriendRequest.h */,
+				118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */,
 			);
 			name = Friends;
+			sourceTree = "<group>";
+		};
+		118352D3197AC15E0048CA64 /* FriendRequests */ = {
+			isa = PBXGroup;
+			children = (
+				118352DA197AEAEF0048CA64 /* Cells */,
+				118352D4197AC1760048CA64 /* FriendRequestsViewController.h */,
+				118352D5197AC1760048CA64 /* FriendRequestsViewController.m */,
+			);
+			name = FriendRequests;
+			sourceTree = "<group>";
+		};
+		118352DA197AEAEF0048CA64 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				118352DB197AEB010048CA64 /* FriendRequestsCell.h */,
+				118352DC197AEB010048CA64 /* FriendRequestsCell.m */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -472,10 +503,12 @@
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */,
 				1164769919794E7300DB20B8 /* onion_client.c in Sources */,
+				118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				1164768C19794E7300DB20B8 /* assoc.c in Sources */,
 				116476A019794E7300DB20B8 /* util.c in Sources */,
+				118352D6197AC1760048CA64 /* FriendRequestsViewController.m in Sources */,
 				1164769519794E7300DB20B8 /* Messenger.c in Sources */,
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
@@ -493,6 +526,7 @@
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
+				118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
