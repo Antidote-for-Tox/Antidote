@@ -65,6 +65,7 @@
     } \
 }
 
-GENERATE_OBJECT(ToxData, @"tox-data", NSData *)
+GENERATE_OBJECT(ToxData,                @"tox-data",                 NSData *)
+GENERATE_OBJECT(PendingFriendRequests,  @"pending-friend-requests",  NSArray *)
 
 @end

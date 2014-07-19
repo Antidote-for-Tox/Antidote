@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import "ToxFriendsManager.h"
+
 @interface ToxManager : NSObject
+
+@property (strong, nonatomic, readonly) ToxFriendsManager *friendsManager;
 
 + (instancetype)sharedInstance;
 

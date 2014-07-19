@@ -10,7 +10,8 @@
 #import "tox.h"
 #import "UserInfoManager.h"
 
-uint8_t *hex_string_to_bin(char *hex_string);
+uint8_t *hexStringToBin(NSString *string);
+NSString *binToHexString(uint8_t *bin);
 
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
@@ -49,32 +50,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     self = [super init];
 
     if (self) {
-        NSLog(@"ToxManager: creating tox");
-        _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
-
-        NSData *toxData = [UserInfoManager sharedInstance].uToxData;
-
-        if (toxData) {
-            NSLog(@"ToxManager: old data found, loading...");
-            tox_load(_tox, (uint8_t *)toxData.bytes, toxData.length);
-        }
-        else {
-            uint32_t size = tox_size(_tox);
-            uint8_t *data = malloc(size);
-
-            tox_save(_tox, data);
-
-            [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
-        }
-
-        tox_callback_friend_request    (_tox, friendRequestCallback,     NULL);
-        tox_callback_friend_message    (_tox, friendMessageCallback,     NULL);
-        tox_callback_name_change       (_tox, nameChangeCallback,        NULL);
-        tox_callback_status_message    (_tox, statusMessageCallback,     NULL);
-        tox_callback_user_status       (_tox, userStatusCallback,        NULL);
-        tox_callback_typing_change     (_tox, typingChangeCallback,      NULL);
-        tox_callback_read_receipt      (_tox, readReceiptCallback,       NULL);
-        tox_callback_connection_status (_tox, connectionStatusCallback,  NULL);
+        [self createTox];
+        _friendsManager = [ToxFriendsManager new];
 
         _queue = dispatch_queue_create("ToxManager queue", NULL);
     }
@@ -106,7 +83,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
 {
-    uint8_t *pub_key = hex_string_to_bin((char *)publicKey.UTF8String);
+    uint8_t *pub_key = hexStringToBin(publicKey);
     tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
     free(pub_key);
 
@@ -118,10 +95,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     uint8_t *address = malloc(TOX_FRIEND_ADDRESS_SIZE);
     tox_get_address(self.tox, address);
 
-    NSMutableString *toxId = [NSMutableString stringWithCapacity:TOX_FRIEND_ADDRESS_SIZE * 2];
-    for (NSInteger idx = 0; idx < TOX_FRIEND_ADDRESS_SIZE; ++idx) {
-        [toxId appendFormat:@"%02X", address[idx]];
-    }
+    NSString *toxId = binToHexString(address);
 
     free(address);
 
@@ -129,6 +103,36 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 }
 
 #pragma mark -  Private
+
+- (void)createTox
+{
+    NSLog(@"ToxManager: creating tox");
+    _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
+
+    NSData *toxData = [UserInfoManager sharedInstance].uToxData;
+
+    if (toxData) {
+        NSLog(@"ToxManager: old data found, loading...");
+        tox_load(_tox, (uint8_t *)toxData.bytes, toxData.length);
+    }
+    else {
+        uint32_t size = tox_size(_tox);
+        uint8_t *data = malloc(size);
+
+        tox_save(_tox, data);
+
+        [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+    }
+
+    tox_callback_friend_request    (_tox, friendRequestCallback,     NULL);
+    tox_callback_friend_message    (_tox, friendMessageCallback,     NULL);
+    tox_callback_name_change       (_tox, nameChangeCallback,        NULL);
+    tox_callback_status_message    (_tox, statusMessageCallback,     NULL);
+    tox_callback_user_status       (_tox, userStatusCallback,        NULL);
+    tox_callback_typing_change     (_tox, typingChangeCallback,      NULL);
+    tox_callback_read_receipt      (_tox, readReceiptCallback,       NULL);
+    tox_callback_connection_status (_tox, connectionStatusCallback,  NULL);
+}
 
 - (void)maybeStartTimer
 {
@@ -174,15 +178,16 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 #pragma mark -  C functions
 
-// From toxcore/testing/misc_tools.c
 // You are responsible for freeing the return value!
-uint8_t *hex_string_to_bin(char *hex_string)
+uint8_t *hexStringToBin(NSString *string)
 {
     // byte is represented by exactly 2 hex digits, so lenth of binary string
     // is half of that of the hex one. only hex string with even length
     // valid. the more proper implementation would be to check if strlen(hex_string)
     // is odd and return error code if it is. we assume strlen is even. if it's not
     // then the last byte just won't be written in 'ret'.
+
+    char *hex_string = (char *)string.UTF8String;
     size_t i, len = strlen(hex_string) / 2;
     uint8_t *ret = malloc(len);
     char *pos = hex_string;
@@ -193,9 +198,24 @@ uint8_t *hex_string_to_bin(char *hex_string)
     return ret;
 }
 
+NSString *binToHexString(uint8_t *bin)
+{
+    NSMutableString *string = [NSMutableString stringWithCapacity:TOX_FRIEND_ADDRESS_SIZE * 2];
+
+    for (NSInteger idx = 0; idx < TOX_FRIEND_ADDRESS_SIZE; ++idx) {
+        [string appendFormat:@"%02X", bin[idx]];
+    }
+
+    return [string copy];
+}
+
 void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * data, uint16_t length, void *userdata)
 {
     NSLog(@"ToxManager: friendRequestCallback, publicKey %s", publicKey);
+
+    NSString *key = binToHexString((uint8_t *)publicKey);
+
+    [[ToxManager sharedInstance].friendsManager private_addFriendRequest:key];
 }
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)

@@ -46,6 +46,8 @@
 		118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C2197A7D3A0048CA64 /* StatusCircleView.m */; };
 		118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C5197A802D0048CA64 /* UIView+Utilities.m */; };
 		118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C8197A867A0048CA64 /* UIColor+Utilities.m */; };
+		118352CD197A8CA40048CA64 /* ToxFriendsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352CC197A8CA40048CA64 /* ToxFriendsManager.m */; };
+		118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352CF197A8D5C0048CA64 /* ToxFriend.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -128,6 +130,10 @@
 		118352C5197A802D0048CA64 /* UIView+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utilities.m"; sourceTree = "<group>"; };
 		118352C7197A867A0048CA64 /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
 		118352C8197A867A0048CA64 /* UIColor+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Utilities.m"; sourceTree = "<group>"; };
+		118352CB197A8CA40048CA64 /* ToxFriendsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriendsManager.h; sourceTree = "<group>"; };
+		118352CC197A8CA40048CA64 /* ToxFriendsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsManager.m; sourceTree = "<group>"; };
+		118352CE197A8D5C0048CA64 /* ToxFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriend.h; sourceTree = "<group>"; };
+		118352CF197A8D5C0048CA64 /* ToxFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriend.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -265,6 +271,7 @@
 		118352A01979BD350048CA64 /* ToxManager */ = {
 			isa = PBXGroup;
 			children = (
+				118352CA197A8C950048CA64 /* Friends */,
 				11835293197994050048CA64 /* ToxManager.h */,
 				11835294197994050048CA64 /* ToxManager.m */,
 			);
@@ -351,6 +358,17 @@
 				118352BF197A7CE80048CA64 /* FriendsCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		118352CA197A8C950048CA64 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				118352CB197A8CA40048CA64 /* ToxFriendsManager.h */,
+				118352CC197A8CA40048CA64 /* ToxFriendsManager.m */,
+				118352CE197A8D5C0048CA64 /* ToxFriend.h */,
+				118352CF197A8D5C0048CA64 /* ToxFriend.m */,
+			);
+			name = Friends;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -452,6 +470,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
+				118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */,
 				1164769919794E7300DB20B8 /* onion_client.c in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
@@ -478,6 +497,7 @@
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
+				118352CD197A8CA40048CA64 /* ToxFriendsManager.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,
 				1164769B19794E7300DB20B8 /* ping_array.c in Sources */,
