@@ -7,10 +7,11 @@
 //
 
 #import "SettingsViewController.h"
-#import "CopyLabel.h"
-#import "NSString+Utilities.h"
 #import "ToxManager.h"
 #import "QRViewerController.h"
+#import "NSString+Utilities.h"
+#import "UIViewController+Utilities.h"
+#import "UIView+Utilities.h"
 
 @interface SettingsViewController ()
 
@@ -39,10 +40,7 @@
 
 - (void)loadView
 {
-    CGRect frame = CGRectZero;
-    frame.size = [[UIScreen mainScreen] applicationFrame].size;
-
-    self.view = [[UIView alloc] initWithFrame:frame];
+    [self loadWhiteView];
 
     [self createScrollView];
     [self createToxIdViews];
@@ -74,7 +72,8 @@
 
 - (void)createToxIdViews
 {
-    self.toxIdTitleLabel = [self addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
+    self.toxIdTitleLabel = [self.scrollView addLabelWithTextColor:[UIColor blackColor]
+                                                          bgColor:[UIColor clearColor]];
     self.toxIdTitleLabel.text = NSLocalizedString(@"Tox ID", @"Settings");
 
     self.toxIdQRButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -84,12 +83,10 @@
                  forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:self.toxIdQRButton];
 
-    self.toxIdValueLabel = [CopyLabel new];
-    self.toxIdValueLabel.textColor = [UIColor grayColor];
-    self.toxIdValueLabel.backgroundColor = [UIColor clearColor];
+    self.toxIdValueLabel = [self.scrollView addCopyLabelWithTextColor:[UIColor grayColor]
+                                                              bgColor:[UIColor clearColor]];
     self.toxIdValueLabel.numberOfLines = 0;
     self.toxIdValueLabel.text = [[ToxManager sharedInstance] toxId];
-    [self.scrollView addSubview:self.toxIdValueLabel];
 }
 
 - (void)adjustSubviews
@@ -121,8 +118,8 @@
     }
 
     {
-        CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
-        CGFloat maxWidth = self.scrollView.bounds.size.width - 2 * xIndentation;
+        const CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
+        const CGFloat maxWidth = self.scrollView.bounds.size.width - 2 * xIndentation;
 
         frame = CGRectZero;
         frame.size = [self.toxIdValueLabel.text stringSizeWithFont:self.toxIdValueLabel.font
@@ -134,16 +131,6 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
-}
-
-- (UILabel *)addLabelWithTextColor:(UIColor *)textColor bgColor:(UIColor *)bgColor
-{
-    UILabel *label = [UILabel new];
-    label.textColor = textColor;
-    label.backgroundColor = bgColor;
-    [self.scrollView addSubview:label];
-
-    return label;
 }
 
 @end

@@ -10,7 +10,9 @@
 
 #import "QRViewerController.h"
 #import "CopyLabel.h"
+#import "UIViewController+Utilities.h"
 #import "NSString+Utilities.h"
+#import "UIView+Utilities.h"
 
 @interface QRViewerController ()
 
@@ -37,11 +39,8 @@
 
 - (void)loadView
 {
-    CGRect frame = CGRectZero;
-    frame.size = [[UIScreen mainScreen] applicationFrame].size;
+    [self loadWhiteView];
 
-    self.view = [[UIView alloc] initWithFrame:frame];
-    self.view.backgroundColor = [UIColor whiteColor];
 
     [self createCloseButton];
     [self createImageView];
@@ -102,12 +101,9 @@
 
 - (void)createLabel
 {
-    self.label = [CopyLabel new];
-    self.label.textColor = [UIColor grayColor];
-    self.label.backgroundColor = [UIColor clearColor];
+    self.label = [self.view addCopyLabelWithTextColor:[UIColor grayColor] bgColor:[UIColor clearColor]];
     self.label.numberOfLines = 0;
     self.label.text = self.text;
-    [self.view addSubview:self.label];
 }
 
 - (void)adjustSubviews

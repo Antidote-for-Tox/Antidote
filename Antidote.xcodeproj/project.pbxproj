@@ -40,6 +40,12 @@
 		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
 		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
 		118352B5197A72F10048CA64 /* QRViewerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352B4197A72F10048CA64 /* QRViewerController.m */; };
+		118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352B8197A7B040048CA64 /* FriendsViewController.m */; };
+		118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352BB197A7B960048CA64 /* UIViewController+Utilities.m */; };
+		118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352BF197A7CE80048CA64 /* FriendsCell.m */; };
+		118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C2197A7D3A0048CA64 /* StatusCircleView.m */; };
+		118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C5197A802D0048CA64 /* UIView+Utilities.m */; };
+		118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C8197A867A0048CA64 /* UIColor+Utilities.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -110,6 +116,18 @@
 		118352AF197A6F7F0048CA64 /* NSString+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utilities.m"; sourceTree = "<group>"; };
 		118352B3197A72F10048CA64 /* QRViewerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRViewerController.h; sourceTree = "<group>"; };
 		118352B4197A72F10048CA64 /* QRViewerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRViewerController.m; sourceTree = "<group>"; };
+		118352B7197A7B040048CA64 /* FriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsViewController.h; sourceTree = "<group>"; };
+		118352B8197A7B040048CA64 /* FriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsViewController.m; sourceTree = "<group>"; };
+		118352BA197A7B960048CA64 /* UIViewController+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Utilities.h"; sourceTree = "<group>"; };
+		118352BB197A7B960048CA64 /* UIViewController+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Utilities.m"; sourceTree = "<group>"; };
+		118352BE197A7CE80048CA64 /* FriendsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsCell.h; sourceTree = "<group>"; };
+		118352BF197A7CE80048CA64 /* FriendsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsCell.m; sourceTree = "<group>"; };
+		118352C1197A7D390048CA64 /* StatusCircleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusCircleView.h; sourceTree = "<group>"; };
+		118352C2197A7D3A0048CA64 /* StatusCircleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusCircleView.m; sourceTree = "<group>"; };
+		118352C4197A802D0048CA64 /* UIView+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utilities.h"; sourceTree = "<group>"; };
+		118352C5197A802D0048CA64 /* UIView+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utilities.m"; sourceTree = "<group>"; };
+		118352C7197A867A0048CA64 /* UIColor+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Utilities.h"; sourceTree = "<group>"; };
+		118352C8197A867A0048CA64 /* UIColor+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Utilities.m"; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -265,6 +283,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				118352B6197A7AF60048CA64 /* Friends */,
 				118352B2197A72DE0048CA64 /* QRViewer */,
 				118352B1197A72D90048CA64 /* Settings */,
 			);
@@ -276,6 +295,8 @@
 			children = (
 				118352AA197A6C410048CA64 /* CopyLabel.h */,
 				118352AB197A6C410048CA64 /* CopyLabel.m */,
+				118352C1197A7D390048CA64 /* StatusCircleView.h */,
+				118352C2197A7D3A0048CA64 /* StatusCircleView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -285,6 +306,12 @@
 			children = (
 				118352AE197A6F7F0048CA64 /* NSString+Utilities.h */,
 				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
+				118352C7197A867A0048CA64 /* UIColor+Utilities.h */,
+				118352C8197A867A0048CA64 /* UIColor+Utilities.m */,
+				118352C4197A802D0048CA64 /* UIView+Utilities.h */,
+				118352C5197A802D0048CA64 /* UIView+Utilities.m */,
+				118352BA197A7B960048CA64 /* UIViewController+Utilities.h */,
+				118352BB197A7B960048CA64 /* UIViewController+Utilities.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -305,6 +332,25 @@
 				118352B4197A72F10048CA64 /* QRViewerController.m */,
 			);
 			name = QRViewer;
+			sourceTree = "<group>";
+		};
+		118352B6197A7AF60048CA64 /* Friends */ = {
+			isa = PBXGroup;
+			children = (
+				118352BD197A7CD50048CA64 /* Cells */,
+				118352B7197A7B040048CA64 /* FriendsViewController.h */,
+				118352B8197A7B040048CA64 /* FriendsViewController.m */,
+			);
+			name = Friends;
+			sourceTree = "<group>";
+		};
+		118352BD197A7CD50048CA64 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				118352BE197A7CE80048CA64 /* FriendsCell.h */,
+				118352BF197A7CE80048CA64 /* FriendsCell.m */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -405,6 +451,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				1164769919794E7300DB20B8 /* onion_client.c in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
@@ -414,6 +461,8 @@
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,
+				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
+				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				1164769119794E7300DB20B8 /* LAN_discovery.c in Sources */,
 				1164769319794E7300DB20B8 /* logger.c in Sources */,
 				118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */,
@@ -423,9 +472,11 @@
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
 				1164769619794E7300DB20B8 /* net_crypto.c in Sources */,
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
+				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
+				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,
@@ -433,6 +484,7 @@
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				1164769E19794E7300DB20B8 /* TCP_server.c in Sources */,
 				1164768F19794E7300DB20B8 /* friend_requests.c in Sources */,
+				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

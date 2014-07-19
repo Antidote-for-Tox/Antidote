@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ToxManager.h"
+#import "FriendsViewController.h"
 #import "SettingsViewController.h"
 
 @implementation AppDelegate
@@ -21,15 +22,14 @@
     UIViewController *first  = [UIViewController new];
     first.title = NSLocalizedString(@"Chats", @"Chats title");
 
-    UIViewController *second = [UIViewController new];
-    second.title = NSLocalizedString(@"Friends", @"Friends title");
+    FriendsViewController *friends = [FriendsViewController new];
 
     SettingsViewController *settings  = [SettingsViewController new];
 
     UITabBarController *tabBar = [UITabBarController new];
     tabBar.viewControllers = @[
         [[UINavigationController alloc] initWithRootViewController:first],
-        [[UINavigationController alloc] initWithRootViewController:second],
+        [[UINavigationController alloc] initWithRootViewController:friends],
         [[UINavigationController alloc] initWithRootViewController:settings],
     ];
 
