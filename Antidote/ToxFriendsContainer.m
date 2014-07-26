@@ -9,6 +9,7 @@
 #import "ToxFriendsContainer.h"
 #import "UserInfoManager.h"
 
+NSString *const kToxFriendsContainerUpdateFriendsNotification = @"kToxFriendsContainerUpdateFriendsNotification";
 NSString *const kToxFriendsContainerUpdateRequestsNotification = @"kToxFriendsContainerUpdateRequestsNotification";
 NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContainerUpdateKeyInsertedSet";
 NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainerUpdateKeyRemovedSet";
@@ -91,7 +92,13 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
             return;
         }
 
+        NSIndexSet *inserted = [NSIndexSet indexSetWithIndex:self.friends.count];
+
         [self.friends addObject:friend];
+
+        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
+                                 insertedSet:inserted
+                                  removedSet:nil];
     }
 }
 
@@ -118,7 +125,9 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
         [self.friendRequests addObject:request];
 
         NSIndexSet *inserted = [NSIndexSet indexSetWithIndex:self.friendRequests.count-1];
-        [self sendUpdateFriendRequestsNotificationWithInsertedSet:inserted removedSet:nil];
+        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateRequestsNotification
+                                 insertedSet:inserted
+                                  removedSet:nil];
     }
 }
 
@@ -144,14 +153,17 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
         [self.friendRequests removeObjectAtIndex:index];
 
         NSIndexSet *removed = [NSIndexSet indexSetWithIndex:index];
-        [self sendUpdateFriendRequestsNotificationWithInsertedSet:nil removedSet:removed];
+        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateRequestsNotification
+                                 insertedSet:nil
+                                  removedSet:removed];
     }
 }
 
 #pragma mark -  Private
 
-- (void)sendUpdateFriendRequestsNotificationWithInsertedSet:(NSIndexSet *)inserted
-                                                 removedSet:(NSIndexSet *)removed
+- (void)sendUpdateNotificationWithType:(NSString *)type
+                           insertedSet:(NSIndexSet *)inserted
+                            removedSet:(NSIndexSet *)removed
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
 
@@ -164,7 +176,7 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsContainerUpdateRequestsNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:type
                                                             object:nil
                                                           userInfo:[userInfo copy]];
     });

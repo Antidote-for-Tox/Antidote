@@ -118,9 +118,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [self saveTox];
 
         [self.friendsContainer private_removeFriendRequest:request];
-
-        ToxFriend *friend = [ToxFriend new];
-        friend.id = friendId;
+        [self.friendsContainer private_addFriend:[self createFriendWithId:friendId]];
     }
 }
 
@@ -163,10 +161,9 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     NSMutableArray *friendsArray = [NSMutableArray new];
 
     for (NSUInteger index = 0; index < friendsCount; index++) {
-        ToxFriend *friend = [ToxFriend new];
-        friend.id = friendsList[index];
+        int32_t friendId = friendsList[index];
 
-        [friendsArray addObject:friend];
+        [friendsArray addObject:[self createFriendWithId:friendId]];
     }
 
     _friendsContainer = [[ToxFriendsContainer alloc] initWithFriendsArray:[friendsArray copy]];
@@ -224,6 +221,14 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     uint64_t actualInterval = newInterval * (NSEC_PER_SEC / 1000);
 
     dispatch_source_set_timer(self.timer, dispatch_walltime(NULL, 0), actualInterval, actualInterval / 5);
+}
+
+- (ToxFriend *)createFriendWithId:(int32_t)friendId
+{
+    ToxFriend *friend = [ToxFriend new];
+    friend.id = friendId;
+
+    return friend;
 }
 
 @end

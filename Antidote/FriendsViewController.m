@@ -11,6 +11,7 @@
 #import "FriendsCell.h"
 #import "ToxManager.h"
 #import "FriendRequestsViewController.h"
+#import "NSIndexSet+Utilities.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -38,6 +39,11 @@
                     style:UIBarButtonItemStylePlain
                    target:self
                    action:@selector(requestsButtonPressed)];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateFriendsNotification:)
+                                                     name:kToxFriendsContainerUpdateFriendsNotification
+                                                   object:nil];
     }
 
     return self;
@@ -104,6 +110,30 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
+#pragma mark -  Notifications
+
+- (void)updateFriendsNotification:(NSNotification *)notification
+{
+    NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
+    NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
+
+    @synchronized(self.tableView) {
+        [self.tableView beginUpdates];
+
+        if (inserted.count) {
+            [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        if (removed.count) {
+            [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        [self.tableView endUpdates];
+    }
+}
+
 #pragma mark -  Private
 
 - (void)createTableView
@@ -121,18 +151,6 @@
 - (void)adjustSubviews
 {
     self.tableView.frame = self.view.bounds;
-}
-
-- (NSArray *)pathsArrayFromIndexSet:(NSIndexSet *)set
-{
-    NSMutableArray *array = [NSMutableArray new];
-
-    [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
-        [array addObject:path];
-    }];
-
-    return [array copy];
 }
 
 @end

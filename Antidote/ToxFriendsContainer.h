@@ -14,7 +14,14 @@
 /**
  * userInfo will contain dictionary with following keys:
  * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
- * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were removed
+ * kToxFriendsContainerUpdateKeyRemovedSet - NSIndexSet with indexes of objects, that were removed
+ */
+extern NSString *const kToxFriendsContainerUpdateFriendsNotification;
+
+/**
+ * userInfo will contain dictionary with following keys:
+ * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
+ * kToxFriendsContainerUpdateKeyRemovedSet - NSIndexSet with indexes of objects, that were removed
  */
 extern NSString *const kToxFriendsContainerUpdateRequestsNotification;
 extern NSString *const kToxFriendsContainerUpdateKeyInsertedSet;

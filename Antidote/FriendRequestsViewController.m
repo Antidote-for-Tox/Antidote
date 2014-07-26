@@ -10,6 +10,7 @@
 #import "UIViewController+Utilities.h"
 #import "ToxManager.h"
 #import "FriendRequestsCell.h"
+#import "NSIndexSet+Utilities.h"
 
 @interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
@@ -127,12 +128,12 @@
         [self.tableView beginUpdates];
 
         if (inserted.count) {
-            [self.tableView insertRowsAtIndexPaths:[self pathsArrayFromIndexSet:inserted]
+            [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
                                   withRowAnimation:UITableViewRowAnimationAutomatic];
         }
 
         if (removed.count) {
-            [self.tableView deleteRowsAtIndexPaths:[self pathsArrayFromIndexSet:removed]
+            [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
                                   withRowAnimation:UITableViewRowAnimationAutomatic];
         }
 
@@ -158,18 +159,6 @@
 - (void)adjustSubviews
 {
     self.tableView.frame = self.view.bounds;
-}
-
-- (NSArray *)pathsArrayFromIndexSet:(NSIndexSet *)set
-{
-    NSMutableArray *array = [NSMutableArray new];
-
-    [set enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *stop) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:idx inSection:0];
-        [array addObject:path];
-    }];
-
-    return [array copy];
 }
 
 @end

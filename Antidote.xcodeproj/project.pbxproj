@@ -51,6 +51,7 @@
 		118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */; };
 		118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352DC197AEB010048CA64 /* FriendRequestsCell.m */; };
 		11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */; };
+		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -143,6 +144,8 @@
 		118352DC197AEB010048CA64 /* FriendRequestsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsCell.m; sourceTree = "<group>"; };
 		11C7C6B31983FB42001B849B /* ToxFriendsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriendsContainer.h; sourceTree = "<group>"; };
 		11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsContainer.m; sourceTree = "<group>"; };
+		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
+		11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Utilities.m"; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -321,6 +324,8 @@
 		118352AD197A6F5B0048CA64 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */,
+				11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */,
 				118352AE197A6F7F0048CA64 /* NSString+Utilities.h */,
 				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
 				118352C7197A867A0048CA64 /* UIColor+Utilities.h */,
@@ -513,6 +518,7 @@
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,
+				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				1164769119794E7300DB20B8 /* LAN_discovery.c in Sources */,
