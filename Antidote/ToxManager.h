@@ -8,13 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ToxFriendsManager.h"
+#import "ToxFriendsContainer.h"
 
 static const int32_t kToxBadFriendId = -1;
 
 @interface ToxManager : NSObject
 
-@property (strong, nonatomic, readonly) ToxFriendsManager *friendsManager;
+@property (strong, nonatomic, readonly) ToxFriendsContainer *friendsContainer;
 
 + (instancetype)sharedInstance;
 

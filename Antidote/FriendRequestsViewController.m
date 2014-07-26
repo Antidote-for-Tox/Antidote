@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) ToxFriendsManager *friendsManager;
+@property (strong, nonatomic) ToxFriendsContainer *friendsContainer;
 
 @end
 
@@ -30,7 +30,7 @@
     if (self) {
         self.title = NSLocalizedString(@"Friend requests", @"Friend requests");
 
-        self.friendsManager = [ToxManager sharedInstance].friendsManager;
+        self.friendsContainer = [ToxManager sharedInstance].friendsContainer;
     }
 
     return self;
@@ -63,7 +63,7 @@
                                                         forIndexPath:indexPath];
     cell.delegate = self;
 
-    ToxFriendRequest *request = [self.friendsManager requestAtIndex:indexPath.row];
+    ToxFriendRequest *request = [self.friendsContainer requestAtIndex:indexPath.row];
 
     cell.title = request.publicKey;
     cell.subtitle = request.message;
@@ -75,7 +75,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.friendsManager.requestsCount;
+    return self.friendsContainer.requestsCount;
 }
 
 #pragma mark -  UITableViewDelegate
@@ -96,7 +96,7 @@
 {
     NSIndexPath *path = [self.tableView indexPathForCell:cell];
 
-    ToxFriendRequest *request = [self.friendsManager requestAtIndex:path.row];
+    ToxFriendRequest *request = [self.friendsContainer requestAtIndex:path.row];
 
     int32_t friendId = [[ToxManager sharedInstance] approveFriendRequest:request];
 

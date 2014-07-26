@@ -1,5 +1,5 @@
 //
-//  ToxFriendsManager.h
+//  ToxFriendsContainer.h
 //  Antidote
 //
 //  Created by Dmitry Vorobyov on 19.07.14.
@@ -13,12 +13,12 @@
 
 /**
  * userInfo will contain dictionary with following keys:
- * kToxFriendsManagerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
+ * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
  */
-extern NSString *const kToxFriendsManagerUpdateRequestsNotification;
-extern NSString *const kToxFriendsManagerUpdateKeyInsertedSet;
+extern NSString *const kToxFriendsContainerUpdateRequestsNotification;
+extern NSString *const kToxFriendsContainerUpdateKeyInsertedSet;
 
-@interface ToxFriendsManager : NSObject
+@interface ToxFriendsContainer : NSObject
 
 - (NSUInteger)friendsCount;
 - (ToxFriend *)friendAtIndex:(NSUInteger)index;
@@ -30,9 +30,9 @@ extern NSString *const kToxFriendsManagerUpdateKeyInsertedSet;
 
 
 /**
- * Private methods for ToxFriendsManager. You want to use public API, not this methods. They are for ToxManager.
+ * Private methods for ToxFriendsContainer. You want to use public API, not this methods. They are for ToxManager.
  */
-@interface ToxFriendsManager(Private)
+@interface ToxFriendsContainer(Private)
 
 - (void)private_addFriendRequest:(NSString *)publicKey message:(NSString *)message;
 

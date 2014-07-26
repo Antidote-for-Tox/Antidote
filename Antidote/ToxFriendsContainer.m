@@ -1,25 +1,25 @@
 //
-//  ToxFriendsManager.m
+//  ToxFriendsContainer.m
 //  Antidote
 //
 //  Created by Dmitry Vorobyov on 19.07.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ToxFriendsManager.h"
+#import "ToxFriendsContainer.h"
 #import "UserInfoManager.h"
 
-NSString *const kToxFriendsManagerUpdateRequestsNotification = @"kToxFriendsManagerUpdateRequestsNotification";
-NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpdateKeyInsertedSet";
+NSString *const kToxFriendsContainerUpdateRequestsNotification = @"kToxFriendsContainerUpdateRequestsNotification";
+NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContainerUpdateKeyInsertedSet";
 
-@interface ToxFriendsManager()
+@interface ToxFriendsContainer()
 
 @property (strong, nonatomic) NSMutableArray *friends;
 @property (strong, nonatomic) NSMutableArray *friendRequests;
 
 @end
 
-@implementation ToxFriendsManager
+@implementation ToxFriendsContainer
 
 #pragma mark -  Lifecycle
 
@@ -119,11 +119,11 @@ NSString *const kToxFriendsManagerUpdateKeyInsertedSet = @"kToxFriendsManagerUpd
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
 
     if (inserted) {
-        userInfo[kToxFriendsManagerUpdateKeyInsertedSet] = inserted;
+        userInfo[kToxFriendsContainerUpdateKeyInsertedSet] = inserted;
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsManagerUpdateRequestsNotification
+        [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsContainerUpdateRequestsNotification
                                                             object:nil
                                                           userInfo:[userInfo copy]];
     });

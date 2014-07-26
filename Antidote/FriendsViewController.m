@@ -16,7 +16,7 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) ToxFriendsManager *friendsManager;
+@property (strong, nonatomic) ToxFriendsContainer *friendsContainer;
 
 @end
 
@@ -31,7 +31,7 @@
     if (self) {
         self.title = NSLocalizedString(@"Friends", @"Friends");
 
-        self.friendsManager = [ToxManager sharedInstance].friendsManager;
+        self.friendsContainer = [ToxManager sharedInstance].friendsContainer;
 
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
             initWithTitle:NSLocalizedString(@"Requests", @"Friends")
@@ -78,7 +78,7 @@
     FriendsCell *cell = [tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
                                                         forIndexPath:indexPath];
 
-    ToxFriend *friend = [self.friendsManager friendAtIndex:indexPath.row];
+    ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
 //    cell.title = friend.publicKey;
     cell.status = StatusCircleStatusFriendRequest;
@@ -89,7 +89,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.friendsManager.friendsCount;
+    return self.friendsContainer.friendsCount;
 }
 
 #pragma mark -  UITableViewDelegate
