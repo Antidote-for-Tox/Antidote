@@ -10,4 +10,20 @@
 
 @implementation ToxFriend
 
+- (BOOL)isEqual:(id)object
+{
+    if (! [object isKindOfClass:[ToxFriend class]]) {
+        return NO;
+    }
+
+    ToxFriend *friend = object;
+
+    return friend.id == self.id;
+}
+
+- (NSUInteger)hash
+{
+    return self.id;
+}
+
 @end

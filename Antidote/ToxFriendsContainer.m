@@ -24,12 +24,12 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
 
 #pragma mark -  Lifecycle
 
-- (instancetype)init
+- (instancetype)initWithFriendsArray:(NSArray *)friends
 {
     self = [super init];
 
     if (self) {
-        self.friends = [NSMutableArray new];
+        self.friends = [NSMutableArray arrayWithArray:friends];
         self.friendRequests = [NSMutableArray new];
 
         for (NSDictionary *dict in [UserInfoManager sharedInstance].uPendingFriendRequests) {
@@ -81,6 +81,19 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
 }
 
 #pragma mark -  Private for ToxManager
+
+- (void)private_addFriend:(ToxFriend *)friend
+{
+    @synchronized(self.friends) {
+        NSUInteger index = [self.friends indexOfObject:friend];
+
+        if (index != NSNotFound) {
+            return;
+        }
+
+        [self.friends addObject:friend];
+    }
+}
 
 - (void)private_addFriendRequest:(ToxFriendRequest *)request
 {

@@ -10,4 +10,9 @@
 
 @interface ToxFriend : NSObject
 
+@property (assign, nonatomic) int32_t id;
+
+- (BOOL)isEqual:(id)object;
+- (NSUInteger)hash;
+
 @end

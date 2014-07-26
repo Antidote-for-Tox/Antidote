@@ -51,7 +51,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     if (self) {
         [self createTox];
-        _friendsContainer = [ToxFriendsContainer new];
+
+        [self loadFriendsAndCreateContainer];
 
         _queue = dispatch_queue_create("ToxManager queue", NULL);
     }
@@ -114,7 +115,12 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         }
     }
     else {
+        [self saveTox];
+
         [self.friendsContainer private_removeFriendRequest:request];
+
+        ToxFriend *friend = [ToxFriend new];
+        friend.id = friendId;
     }
 }
 
@@ -132,12 +138,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         tox_load(_tox, (uint8_t *)toxData.bytes, toxData.length);
     }
     else {
-        uint32_t size = tox_size(_tox);
-        uint8_t *data = malloc(size);
-
-        tox_save(_tox, data);
-
-        [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+        [self saveTox];
     }
 
     tox_callback_friend_request    (_tox, friendRequestCallback,     NULL);
@@ -148,6 +149,41 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     tox_callback_typing_change     (_tox, typingChangeCallback,      NULL);
     tox_callback_read_receipt      (_tox, readReceiptCallback,       NULL);
     tox_callback_connection_status (_tox, connectionStatusCallback,  NULL);
+}
+
+- (void)loadFriendsAndCreateContainer
+{
+    uint32_t friendsCount = tox_count_friendlist(self.tox);
+    uint32_t listSize = friendsCount * sizeof(int32_t);
+
+    int32_t *friendsList = malloc(listSize);
+
+    tox_get_friendlist(self.tox, friendsList, listSize);
+
+    NSMutableArray *friendsArray = [NSMutableArray new];
+
+    for (NSUInteger index = 0; index < friendsCount; index++) {
+        ToxFriend *friend = [ToxFriend new];
+        friend.id = friendsList[index];
+
+        [friendsArray addObject:friend];
+    }
+
+    _friendsContainer = [[ToxFriendsContainer alloc] initWithFriendsArray:[friendsArray copy]];
+
+    free(friendsList);
+}
+
+- (void)saveTox
+{
+    uint32_t size = tox_size(_tox);
+    uint8_t *data = malloc(size);
+
+    tox_save(_tox, data);
+
+    [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+
+    free(data);
 }
 
 - (void)maybeStartTimer

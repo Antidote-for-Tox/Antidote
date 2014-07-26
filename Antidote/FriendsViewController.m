@@ -80,7 +80,7 @@
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-//    cell.title = friend.publicKey;
+    cell.title = [NSString stringWithFormat:@"%d", friend.id];
     cell.status = StatusCircleStatusFriendRequest;
     [cell redraw];
 
