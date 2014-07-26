@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSData *uToxData;
 
-// array with NSStrings - clientIds
+// array with ToxFriendRequest's NSDictionaries
 @property (strong, nonatomic) NSArray *uPendingFriendRequests;
 
 + (instancetype)sharedInstance;

@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subtitleLabel;
+@property (strong, nonatomic) UIButton *checkboxButton;
 
 @end
 
@@ -28,9 +29,17 @@
     if (self) {
         [self createTitleView];
         [self createSubtitleView];
+        [self createCheckboxButton];
     }
 
     return self;
+}
+
+#pragma mark -  Actions
+
+- (void)checkboxButtonPressed
+{
+    [self.delegate friendRequestCellAddButtonPressed:self];
 }
 
 #pragma mark -  Public
@@ -65,14 +74,32 @@
     self.subtitleLabel = [self.contentView addLabelWithTextColor:[UIColor grayColor] bgColor:[UIColor clearColor]];
 }
 
+- (void)createCheckboxButton
+{
+    self.checkboxButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.checkboxButton setTitle:NSLocalizedString(@"Add", @"Friend requests") forState:UIControlStateNormal];
+    [self.checkboxButton addTarget:self
+                           action:@selector(checkboxButtonPressed)
+                 forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.checkboxButton];
+}
+
 - (void)adjustSubviews
 {
     CGRect frame = CGRectZero;
 
     {
         frame = CGRectZero;
+        frame.size.width = frame.size.height = 40.0;
+        frame.origin.x = 5.0;
+        frame.origin.y = (self.bounds.size.height - frame.size.height) / 2;
+        self.checkboxButton.frame = frame;
+    }
+
+    {
+        frame = CGRectZero;
         frame.size = [self.titleLabel.text stringSizeWithFont:self.titleLabel.font];
-        frame.origin.x = 50.0;
+        frame.origin.x = CGRectGetMaxX(self.checkboxButton.frame) + 5.0;
         frame.origin.y = 5.0;
         frame.size.width = self.bounds.size.width - frame.origin.x;
 
@@ -88,7 +115,6 @@
 
         self.subtitleLabel.frame = frame;
     }
-
 }
 
 @end

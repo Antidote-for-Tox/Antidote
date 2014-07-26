@@ -11,7 +11,7 @@
 #import "ToxManager.h"
 #import "FriendRequestsCell.h"
 
-@interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -61,6 +61,7 @@
 {
     FriendRequestsCell *cell = [tableView dequeueReusableCellWithIdentifier:[FriendRequestsCell reuseIdentifier]
                                                         forIndexPath:indexPath];
+    cell.delegate = self;
 
     ToxFriendRequest *request = [self.friendsManager requestAtIndex:indexPath.row];
 
@@ -87,6 +88,25 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+#pragma mark -  FriendRequestsCellDelegate
+
+- (void)friendRequestCellAddButtonPressed:(FriendRequestsCell *)cell
+{
+    NSIndexPath *path = [self.tableView indexPathForCell:cell];
+
+    ToxFriendRequest *request = [self.friendsManager requestAtIndex:path.row];
+
+    int32_t friendId = [[ToxManager sharedInstance] approveFriendRequest:request];
+
+    if (friendId == kToxBadFriendId) {
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
+                                    message:NSLocalizedString(@"Something went wrong", @"Error")
+                                   delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
+                          otherButtonTitles:nil] show];
+    }
 }
 
 #pragma mark -  Private

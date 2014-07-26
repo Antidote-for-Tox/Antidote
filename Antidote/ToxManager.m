@@ -102,6 +102,15 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     return [toxId copy];
 }
 
+- (int32_t)approveFriendRequest:(ToxFriendRequest *)request
+{
+    uint8_t *clientId = hexStringToBin(request.clientId);
+    uint32_t result = tox_add_friend_norequest(self.tox, clientId);
+    free(clientId);
+
+    return result;
+}
+
 #pragma mark -  Private
 
 - (void)createTox

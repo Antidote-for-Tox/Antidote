@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+@class FriendRequestsCell;
+
+@protocol FriendRequestsCellDelegate <NSObject>
+- (void)friendRequestCellAddButtonPressed:(FriendRequestsCell *)cell;
+@end
+
 @interface FriendRequestsCell : UITableViewCell
+
+@property (weak, nonatomic) id <FriendRequestsCellDelegate> delegate;
 
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *subtitle;

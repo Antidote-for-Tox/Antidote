@@ -26,11 +26,11 @@ static NSString *const kMessageKey = @"kMessageKey";
 
 - (NSString *)clientId
 {
-    if (self.publicKey.length < TOX_CLIENT_ID_SIZE) {
+    if (self.publicKey.length < TOX_CLIENT_ID_SIZE * 2) {
         return nil;
     }
     else {
-        return [self.publicKey substringToIndex:TOX_CLIENT_ID_SIZE];
+        return [self.publicKey substringToIndex:TOX_CLIENT_ID_SIZE * 2];
     }
 }
 
