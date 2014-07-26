@@ -250,12 +250,46 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         int length = tox_get_name(self.tox, friendId, name);
 
         if (length > 0) {
-            friend.name = [NSString stringWithCString:(const char*)name encoding:NSUTF8StringEncoding];
+            friend.realName = [NSString stringWithCString:(const char*)name encoding:NSUTF8StringEncoding];
             free(name);
         }
     }
 
+    {
+        if (friend.clientId) {
+            NSDictionary *names = [UserInfoManager sharedInstance].uAssociatedNames;
+
+            friend.associatedName = names[friend.clientId];
+        }
+    }
+
+    [self maybeCreateAssociatedNameForFriend:friend];
+
     return friend;
+}
+
+- (void)maybeCreateAssociatedNameForFriend:(ToxFriend *)friend
+{
+    if (friend.associatedName.length) {
+        return;
+    }
+
+    if (! friend.realName) {
+        return;
+    }
+
+    friend.associatedName = friend.realName;
+
+    if (! friend.clientId) {
+        return;
+    }
+
+    NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
+        [UserInfoManager sharedInstance].uAssociatedNames];
+
+    names[friend.clientId] = friend.realName;
+
+    [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
 }
 
 @end
@@ -315,7 +349,9 @@ void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, 
     NSLog(@"ToxManager: nameChangeCallback %d %s", friendnumber, newname);
 
     [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.name = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
+        friend.realName = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
+
+        [[ToxManager sharedInstance] maybeCreateAssociatedNameForFriend:friend];
     }];
 }
 

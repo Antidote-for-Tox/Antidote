@@ -15,6 +15,13 @@
 // array with ToxFriendRequest's NSDictionaries
 @property (strong, nonatomic) NSArray *uPendingFriendRequests;
 
+/**
+ * Dictionary with:
+ * keys - NSString *clientId
+ * values - NSString *associatedName
+ */
+@property (strong, nonatomic) NSDictionary *uAssociatedNames;
+
 + (instancetype)sharedInstance;
 
 @end

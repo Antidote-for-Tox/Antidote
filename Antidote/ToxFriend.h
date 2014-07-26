@@ -12,7 +12,8 @@
 
 @property (assign, nonatomic) int32_t id;
 @property (strong, nonatomic) NSString *clientId;
-@property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic) NSString *realName;
+@property (strong, nonatomic) NSString *associatedName;
 
 - (BOOL)isEqual:(id)object;
 - (NSUInteger)hash;
