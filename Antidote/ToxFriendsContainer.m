@@ -82,13 +82,11 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
 
 #pragma mark -  Private for ToxManager
 
-- (void)private_addFriendRequest:(NSString *)publicKey message:(NSString *)message
+- (void)private_addFriendRequest:(ToxFriendRequest *)request
 {
-    if (! publicKey) {
+    if (! request.clientId) {
         return;
     }
-
-    ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:publicKey message:message];
 
     NSArray *pendingRequests = [UserInfoManager sharedInstance].uPendingFriendRequests;
 

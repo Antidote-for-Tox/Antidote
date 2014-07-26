@@ -36,7 +36,7 @@ extern NSString *const kToxFriendsContainerUpdateKeyRemovedSet;
  */
 @interface ToxFriendsContainer(Private)
 
-- (void)private_addFriendRequest:(NSString *)publicKey message:(NSString *)message;
+- (void)private_addFriendRequest:(ToxFriendRequest *)request;
 - (void)private_removeFriendRequest:(ToxFriendRequest *)request;
 
 @end

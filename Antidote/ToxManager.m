@@ -232,7 +232,9 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
     NSString *key = binToHexString((uint8_t *)publicKey);
     NSString *message = [[NSString alloc] initWithBytes:data length:length encoding:NSUTF8StringEncoding];
 
-    [[ToxManager sharedInstance].friendsContainer private_addFriendRequest:key message:message];
+    ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:key message:message];
+
+    [[ToxManager sharedInstance].friendsContainer private_addFriendRequest:request];
 }
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
