@@ -1,10 +1,15 @@
 PODS:
   - libsodium-ios (0.4.5)
+  - MagicalRecord (2.2):
+    - MagicalRecord/Core
+  - MagicalRecord/Core (2.2)
 
 DEPENDENCIES:
   - libsodium-ios (~> 0.4.5)
+  - MagicalRecord (~> 2.2)
 
 SPEC CHECKSUMS:
   libsodium-ios: 569dedc61af104e5ba188f4cd4ab3eb607f2ce44
+  MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
 
 COCOAPODS: 0.33.1
