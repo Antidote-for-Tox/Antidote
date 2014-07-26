@@ -86,7 +86,7 @@
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.title = friend.name;
+    cell.title = friend.name ?: friend.clientId;
     cell.status = StatusCircleStatusFriendRequest;
     [cell redraw];
 

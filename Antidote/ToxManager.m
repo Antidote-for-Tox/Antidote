@@ -235,6 +235,17 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     friend.id = friendId;
 
     {
+        uint8_t *clientId = malloc(TOX_CLIENT_ID_SIZE);
+
+        int result = tox_get_client_id(self.tox, friendId, clientId);
+
+        if (result == 0) {
+            friend.clientId = binToHexString(clientId);
+            free(clientId);
+        }
+    }
+
+    {
         uint8_t *name = malloc(TOX_MAX_NAME_LENGTH);
         int length = tox_get_name(self.tox, friendId, name);
 

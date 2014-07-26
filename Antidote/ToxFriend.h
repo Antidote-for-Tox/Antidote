@@ -11,6 +11,7 @@
 @interface ToxFriend : NSObject
 
 @property (assign, nonatomic) int32_t id;
+@property (strong, nonatomic) NSString *clientId;
 @property (strong, nonatomic) NSString *name;
 
 - (BOOL)isEqual:(id)object;
