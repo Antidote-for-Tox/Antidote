@@ -11,6 +11,7 @@
 
 NSString *const kToxFriendsContainerUpdateRequestsNotification = @"kToxFriendsContainerUpdateRequestsNotification";
 NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContainerUpdateKeyInsertedSet";
+NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainerUpdateKeyRemovedSet";
 
 @interface ToxFriendsContainer()
 
@@ -91,13 +92,11 @@ NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContaine
 
     NSArray *pendingRequests = [UserInfoManager sharedInstance].uPendingFriendRequests;
 
-    for (NSDictionary *dict in pendingRequests) {
-        ToxFriendRequest *r = [ToxFriendRequest friendRequestFromDictionary:dict];
+    NSUInteger index = [self indexOfClientId:request.clientId inPendingRequestsArray:pendingRequests];
 
-        if ([r.clientId isEqual:request.clientId]) {
-            // already added this request
-            return;
-        }
+    if (index != NSNotFound) {
+        // already added this request
+        return;
     }
 
     NSMutableArray *array = [NSMutableArray arrayWithArray:pendingRequests];
@@ -108,13 +107,40 @@ NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContaine
         [self.friendRequests addObject:request];
 
         NSIndexSet *inserted = [NSIndexSet indexSetWithIndex:self.friendRequests.count-1];
-        [self sendUpdateFriendRequestsNotificationWithInsertedSet:inserted];
+        [self sendUpdateFriendRequestsNotificationWithInsertedSet:inserted removedSet:nil];
+    }
+}
+
+- (void)private_removeFriendRequest:(ToxFriendRequest *)request
+{
+    if (! request.clientId) {
+        return;
+    }
+
+    NSArray *pendingRequests = [UserInfoManager sharedInstance].uPendingFriendRequests;
+
+    NSUInteger index = [self indexOfClientId:request.clientId inPendingRequestsArray:pendingRequests];
+
+    if (index == NSNotFound) {
+        return;
+    }
+
+    NSMutableArray *array = [NSMutableArray arrayWithArray:pendingRequests];
+    [array removeObjectAtIndex:index];
+    [UserInfoManager sharedInstance].uPendingFriendRequests = [array copy];
+
+    @synchronized(self.friendRequests) {
+        [self.friendRequests removeObjectAtIndex:index];
+
+        NSIndexSet *removed = [NSIndexSet indexSetWithIndex:index];
+        [self sendUpdateFriendRequestsNotificationWithInsertedSet:nil removedSet:removed];
     }
 }
 
 #pragma mark -  Private
 
 - (void)sendUpdateFriendRequestsNotificationWithInsertedSet:(NSIndexSet *)inserted
+                                                 removedSet:(NSIndexSet *)removed
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
 
@@ -122,11 +148,34 @@ NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContaine
         userInfo[kToxFriendsContainerUpdateKeyInsertedSet] = inserted;
     }
 
+    if (removed) {
+        userInfo[kToxFriendsContainerUpdateKeyRemovedSet] = removed;
+    }
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsContainerUpdateRequestsNotification
                                                             object:nil
                                                           userInfo:[userInfo copy]];
     });
+}
+
+- (NSUInteger)indexOfClientId:(NSString *)clientId inPendingRequestsArray:(NSArray *)pendingRequests
+{
+    if (! clientId) {
+        return NSNotFound;
+    }
+
+    for (NSUInteger i = 0; i < pendingRequests.count; i++) {
+        NSDictionary *dict = pendingRequests[i];
+
+        ToxFriendRequest *r = [ToxFriendRequest friendRequestFromDictionary:dict];
+
+        if ([r.clientId isEqual:clientId]) {
+            return i;
+        }
+    }
+
+    return NSNotFound;
 }
 
 @end

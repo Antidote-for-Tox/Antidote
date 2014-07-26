@@ -14,9 +14,11 @@
 /**
  * userInfo will contain dictionary with following keys:
  * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
+ * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were removed
  */
 extern NSString *const kToxFriendsContainerUpdateRequestsNotification;
 extern NSString *const kToxFriendsContainerUpdateKeyInsertedSet;
+extern NSString *const kToxFriendsContainerUpdateKeyRemovedSet;
 
 @interface ToxFriendsContainer : NSObject
 
@@ -35,5 +37,6 @@ extern NSString *const kToxFriendsContainerUpdateKeyInsertedSet;
 @interface ToxFriendsContainer(Private)
 
 - (void)private_addFriendRequest:(NSString *)publicKey message:(NSString *)message;
+- (void)private_removeFriendRequest:(ToxFriendRequest *)request;
 
 @end

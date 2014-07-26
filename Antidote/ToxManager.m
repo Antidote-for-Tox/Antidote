@@ -102,13 +102,20 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     return [toxId copy];
 }
 
-- (int32_t)approveFriendRequest:(ToxFriendRequest *)request
+- (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
 {
     uint8_t *clientId = hexStringToBin(request.clientId);
-    uint32_t result = tox_add_friend_norequest(self.tox, clientId);
+    uint32_t friendId = tox_add_friend_norequest(self.tox, clientId);
     free(clientId);
 
-    return result;
+    if (friendId == -1) {
+        if (wasError) {
+            *wasError = YES;
+        }
+    }
+    else {
+        [self.friendsContainer private_removeFriendRequest:request];
+    }
 }
 
 #pragma mark -  Private

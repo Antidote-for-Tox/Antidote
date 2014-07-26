@@ -10,8 +10,6 @@
 
 #import "ToxFriendsContainer.h"
 
-static const int32_t kToxBadFriendId = -1;
-
 @interface ToxManager : NSObject
 
 @property (strong, nonatomic, readonly) ToxFriendsContainer *friendsContainer;
@@ -22,9 +20,6 @@ static const int32_t kToxBadFriendId = -1;
 
 - (NSString *)toxId;
 
-/**
- * Returns friend id.
- */
-- (int32_t)approveFriendRequest:(ToxFriendRequest *)request;
+- (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
 
 @end
