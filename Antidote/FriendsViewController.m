@@ -87,6 +87,7 @@
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
     cell.title = friend.associatedName ?: friend.clientId;
+    cell.subtitle = friend.statusMessage;
 
     if (friend.status == ToxFriendStatusOffline) {
         cell.status = StatusCircleStatusOffline;

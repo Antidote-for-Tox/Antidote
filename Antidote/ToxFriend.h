@@ -21,6 +21,7 @@ typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
 @property (strong, nonatomic) NSString *clientId;
 @property (strong, nonatomic) NSString *realName;
 @property (strong, nonatomic) NSString *associatedName;
+@property (strong, nonatomic) NSString *statusMessage;
 @property (assign, nonatomic) ToxFriendStatus status;
 
 - (BOOL)isEqual:(id)object;

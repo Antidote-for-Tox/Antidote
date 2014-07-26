@@ -358,6 +358,10 @@ void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, 
 void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata)
 {
     NSLog(@"ToxManager: statusMessageCallback %d %s", friendnumber, newstatus);
+
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
+        friend.statusMessage = [NSString stringWithCString:(const char*)newstatus encoding:NSUTF8StringEncoding];
+    }];
 }
 
 void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
