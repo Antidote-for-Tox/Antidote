@@ -6,18 +6,22 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
+
 #import "AppDelegate.h"
 #import "ToxManager.h"
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
+#import "CoreData+MagicalRecord.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+
+    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
 
     UIViewController *first  = [UIViewController new];
     first.title = NSLocalizedString(@"Chats", @"Chats title");
@@ -68,6 +72,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [MagicalRecord cleanUp];
 }
 
 @end

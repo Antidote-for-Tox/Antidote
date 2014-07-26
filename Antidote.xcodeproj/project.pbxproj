@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
+		1146308C19842D360075DA16 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146308B19842D360075DA16 /* CoreDataManager.m */; };
+		1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309219842F490075DA16 /* CoreDataManager+Message.m */; };
+		114630961984332C0075DA16 /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630951984332C0075DA16 /* CDMessage.m */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -56,6 +60,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		1146308A19842D360075DA16 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
+		1146308B19842D360075DA16 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
+		1146309119842F490075DA16 /* CoreDataManager+Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CoreDataManager+Message.h"; sourceTree = "<group>"; };
+		1146309219842F490075DA16 /* CoreDataManager+Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Message.m"; sourceTree = "<group>"; };
+		114630941984332C0075DA16 /* CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessage.h; sourceTree = "<group>"; };
+		114630951984332C0075DA16 /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -165,6 +176,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1146308919842D220075DA16 /* CoreDataManager */ = {
+			isa = PBXGroup;
+			children = (
+				1146309119842F490075DA16 /* CoreDataManager+Message.h */,
+				1146309219842F490075DA16 /* CoreDataManager+Message.m */,
+				1146308A19842D360075DA16 /* CoreDataManager.h */,
+				1146308B19842D360075DA16 /* CoreDataManager.m */,
+				1146309019842F3A0075DA16 /* Objects */,
+			);
+			name = CoreDataManager;
+			sourceTree = "<group>";
+		};
+		1146309019842F3A0075DA16 /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				114630941984332C0075DA16 /* CDMessage.h */,
+				114630951984332C0075DA16 /* CDMessage.m */,
+			);
+			name = Objects;
+			sourceTree = "<group>";
+		};
 		1164762619794D3300DB20B8 = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +233,7 @@
 			children = (
 				1164764119794D3300DB20B8 /* AppDelegate.h */,
 				1164764219794D3300DB20B8 /* AppDelegate.m */,
+				1146308619842C730075DA16 /* Model.xcdatamodeld */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
 				11835292197993F90048CA64 /* Classes */,
 				118352A5197A3DB50048CA64 /* Controllers */,
@@ -274,6 +307,7 @@
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1146308919842D220075DA16 /* CoreDataManager */,
 				118352A01979BD350048CA64 /* ToxManager */,
 				118352A11979BD3E0048CA64 /* UserInfoManager */,
 			);
@@ -519,6 +553,7 @@
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
+				1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				1164769119794E7300DB20B8 /* LAN_discovery.c in Sources */,
@@ -530,6 +565,7 @@
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
 				1164769619794E7300DB20B8 /* net_crypto.c in Sources */,
+				114630961984332C0075DA16 /* CDMessage.m in Sources */,
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
@@ -539,7 +575,9 @@
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
+				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,
+				1146308C19842D360075DA16 /* CoreDataManager.m in Sources */,
 				1164769B19794E7300DB20B8 /* ping_array.c in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				1164769E19794E7300DB20B8 /* TCP_server.c in Sources */,
@@ -682,6 +720,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		1146308619842C730075DA16 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				1146308719842C730075DA16 /* Model.xcdatamodel */,
+			);
+			currentVersion = 1146308719842C730075DA16 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 1164762719794D3300DB20B8 /* Project object */;
 }
