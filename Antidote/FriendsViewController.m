@@ -86,7 +86,7 @@
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.title = [NSString stringWithFormat:@"%d", friend.id];
+    cell.title = friend.name;
     cell.status = StatusCircleStatusFriendRequest;
     [cell redraw];
 
@@ -116,6 +116,7 @@
 {
     NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
     NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
+    NSIndexSet *updated = notification.userInfo[kToxFriendsContainerUpdateKeyUpdatedSet];
 
     @synchronized(self.tableView) {
         [self.tableView beginUpdates];
@@ -127,6 +128,11 @@
 
         if (removed.count) {
             [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        if (updated.count) {
+            [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
                                   withRowAnimation:UITableViewRowAnimationAutomatic];
         }
 

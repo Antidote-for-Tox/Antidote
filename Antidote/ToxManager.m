@@ -173,14 +173,16 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)saveTox
 {
-    uint32_t size = tox_size(_tox);
-    uint8_t *data = malloc(size);
+    @synchronized(self) {
+        uint32_t size = tox_size(_tox);
+        uint8_t *data = malloc(size);
 
-    tox_save(_tox, data);
+        tox_save(_tox, data);
 
-    [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+        [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
 
-    free(data);
+        free(data);
+    }
 }
 
 - (void)maybeStartTimer
@@ -225,8 +227,22 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (ToxFriend *)createFriendWithId:(int32_t)friendId
 {
+    if (! tox_friend_exists(self.tox, friendId)) {
+        return nil;
+    }
+
     ToxFriend *friend = [ToxFriend new];
     friend.id = friendId;
+
+    {
+        uint8_t *name = malloc(TOX_MAX_NAME_LENGTH);
+        int length = tox_get_name(self.tox, friendId, name);
+
+        if (length > 0) {
+            friend.name = [NSString stringWithCString:(const char*)name encoding:NSUTF8StringEncoding];
+            free(name);
+        }
+    }
 
     return friend;
 }
@@ -286,6 +302,10 @@ void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *messag
 void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata)
 {
     NSLog(@"ToxManager: nameChangeCallback %d %s", friendnumber, newname);
+
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
+        friend.name = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
+    }];
 }
 
 void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata)

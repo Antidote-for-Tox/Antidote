@@ -13,6 +13,7 @@ NSString *const kToxFriendsContainerUpdateFriendsNotification = @"kToxFriendsCon
 NSString *const kToxFriendsContainerUpdateRequestsNotification = @"kToxFriendsContainerUpdateRequestsNotification";
 NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContainerUpdateKeyInsertedSet";
 NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainerUpdateKeyRemovedSet";
+NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainerUpdateKeyUpdatedSet";
 
 @interface ToxFriendsContainer()
 
@@ -98,7 +99,41 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
 
         [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
                                  insertedSet:inserted
-                                  removedSet:nil];
+                                  removedSet:nil
+                                  updatedSet:nil];
+    }
+}
+
+- (void)private_updateFriendWithId:(int32_t)id updateBlock:(void (^)(ToxFriend *friend))updateBlock
+{
+    if (! updateBlock) {
+        return;
+    }
+
+    @synchronized(self.friends) {
+        NSUInteger index = NSNotFound;
+        ToxFriend *friend = nil;
+
+        for (NSUInteger i = 0; i < self.friends.count; i++) {
+            ToxFriend *f = self.friends[i];
+
+            if (f.id == id) {
+                index = i;
+                friend = f;
+                break;
+            }
+        }
+
+        if (index == NSNotFound) {
+            return;
+        }
+
+        updateBlock(friend);
+
+        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
+                                 insertedSet:nil
+                                  removedSet:nil
+                                  updatedSet:[NSIndexSet indexSetWithIndex:index]];
     }
 }
 
@@ -127,7 +162,8 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
         NSIndexSet *inserted = [NSIndexSet indexSetWithIndex:self.friendRequests.count-1];
         [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateRequestsNotification
                                  insertedSet:inserted
-                                  removedSet:nil];
+                                  removedSet:nil
+                                  updatedSet:nil];
     }
 }
 
@@ -155,7 +191,8 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
         NSIndexSet *removed = [NSIndexSet indexSetWithIndex:index];
         [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateRequestsNotification
                                  insertedSet:nil
-                                  removedSet:removed];
+                                  removedSet:removed
+                                  updatedSet:nil];
     }
 }
 
@@ -164,6 +201,7 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
 - (void)sendUpdateNotificationWithType:(NSString *)type
                            insertedSet:(NSIndexSet *)inserted
                             removedSet:(NSIndexSet *)removed
+                            updatedSet:(NSIndexSet *)updated
 {
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
 
@@ -173,6 +211,10 @@ NSString *const kToxFriendsContainerUpdateKeyRemovedSet = @"kToxFriendsContainer
 
     if (removed) {
         userInfo[kToxFriendsContainerUpdateKeyRemovedSet] = removed;
+    }
+
+    if (updated) {
+        userInfo[kToxFriendsContainerUpdateKeyUpdatedSet] = updated;
     }
 
     dispatch_async(dispatch_get_main_queue(), ^{
