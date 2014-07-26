@@ -31,6 +31,11 @@
         self.title = NSLocalizedString(@"Friend requests", @"Friend requests");
 
         self.friendsContainer = [ToxManager sharedInstance].friendsContainer;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateRequestsNotification:)
+                                                     name:kToxFriendsContainerUpdateRequestsNotification
+                                                   object:nil];
     }
 
     return self;
@@ -98,14 +103,40 @@
 
     ToxFriendRequest *request = [self.friendsContainer requestAtIndex:path.row];
 
-    int32_t friendId = [[ToxManager sharedInstance] approveFriendRequest:request];
+    BOOL wasError = NO;
 
-    if (friendId == kToxBadFriendId) {
+    [[ToxManager sharedInstance] approveFriendRequest:request wasError:&wasError];
+
+    if (wasError) {
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
                                     message:NSLocalizedString(@"Something went wrong", @"Error")
                                    delegate:nil
                           cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
                           otherButtonTitles:nil] show];
+    }
+}
+
+#pragma mark -  Notifications
+
+- (void)updateRequestsNotification:(NSNotification *)notification
+{
+    NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
+    NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
+
+    @synchronized(self.tableView) {
+        [self.tableView beginUpdates];
+
+        if (inserted.count) {
+            [self.tableView insertRowsAtIndexPaths:[self pathsArrayFromIndexSet:inserted]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        if (removed.count) {
+            [self.tableView deleteRowsAtIndexPaths:[self pathsArrayFromIndexSet:removed]
+                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+
+        [self.tableView endUpdates];
     }
 }
 
