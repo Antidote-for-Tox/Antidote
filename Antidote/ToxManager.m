@@ -363,6 +363,21 @@ void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newsta
 void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
     NSLog(@"ToxManager: userStatusCallback %d %d", friendnumber, status);
+
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
+        if (status == TOX_USERSTATUS_NONE) {
+            friend.status = ToxFriendStatusOnline;
+        }
+        else if (status == TOX_USERSTATUS_AWAY) {
+            friend.status = ToxFriendStatusAway;
+        }
+        else if (status == TOX_USERSTATUS_BUSY) {
+            friend.status = ToxFriendStatusBusy;
+        }
+        else if (status == TOX_USERSTATUS_INVALID) {
+            friend.status = ToxFriendStatusOffline;
+        }
+    }];
 }
 
 void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata)
@@ -378,5 +393,11 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
     NSLog(@"ToxManager: connectionStatusCallback %d %d", friendnumber, status);
+
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
+        if (status == 0) {
+            friend.status = ToxFriendStatusOffline;
+        }
+    }];
 }
 

@@ -87,7 +87,20 @@
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
     cell.title = friend.associatedName ?: friend.clientId;
-    cell.status = StatusCircleStatusFriendRequest;
+
+    if (friend.status == ToxFriendStatusOffline) {
+        cell.status = StatusCircleStatusOffline;
+    }
+    else if (friend.status == ToxFriendStatusOnline) {
+        cell.status = StatusCircleStatusOnline;
+    }
+    else if (friend.status == ToxFriendStatusAway) {
+        cell.status = StatusCircleStatusAway;
+    }
+    else if (friend.status == ToxFriendStatusBusy) {
+        cell.status = StatusCircleStatusBusy;
+    }
+
     [cell redraw];
 
     return cell;
