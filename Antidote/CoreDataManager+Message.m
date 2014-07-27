@@ -11,12 +11,15 @@
 
 @implementation CoreDataManager (Message)
 
-+ (NSArray *)messagesWithPredicate:(NSPredicate *)predicate
++ (NSArray *)messagesWithPredicateSortedByDate:(NSPredicate *)predicate
 {
     __block NSArray *array;
 
     dispatch_sync([self private_queue], ^{
-        array = [CDMessage MR_findAllSortedBy:@"date" ascending:YES withPredicate:predicate];
+        array = [CDMessage MR_findAllSortedBy:@"date"
+                                    ascending:YES
+                                withPredicate:predicate
+                                    inContext:[self private_context]];
     });
 
     return array;
@@ -84,6 +87,5 @@
 
     return [array lastObject];
 }
-
 
 @end

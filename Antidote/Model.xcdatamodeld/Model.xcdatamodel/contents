@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="14A298i" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="CDChat" representedClassName="CDChat" syncable="YES">
+        <relationship name="lastMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="unused_property" inverseEntity="CDMessage" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDMessage" inverseName="chat" inverseEntity="CDMessage" syncable="YES"/>
+        <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="chats" inverseEntity="CDUser" syncable="YES"/>
+    </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
-        <attribute name="friendClientId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="isIncoming" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isDelivered" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDChat" inverseName="messages" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="unused_property" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDChat" inverseName="lastMessage" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="messages" inverseEntity="CDUser" syncable="YES"/>
+    </entity>
+    <entity name="CDUser" representedClassName="CDUser" syncable="YES">
+        <attribute name="clientId" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDChat" inverseName="users" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="user" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDMessage" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="CDMessage" positionX="-63" positionY="-27" width="128" height="148"/>
+        <element name="CDChat" positionX="288" positionY="-0" width="128" height="88"/>
+        <element name="CDUser" positionX="97" positionY="182" width="128" height="88"/>
     </elements>
 </model>

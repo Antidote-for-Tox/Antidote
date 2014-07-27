@@ -11,7 +11,7 @@
 
 @interface CoreDataManager (Message)
 
-+ (NSArray *)messagesWithPredicate:(NSPredicate *)predicate;
++ (NSArray *)messagesWithPredicateSortedByDate:(NSPredicate *)predicate;
 
 + (CDMessage *)insertMessageWithConfigBlock:(void (^)(CDMessage *theMessage))configBlock;
 + (CDMessage *)editMessageWithId:(NSNumber *)messageId editBlock:(void (^)(CDMessage *theMessage))editBlock;
