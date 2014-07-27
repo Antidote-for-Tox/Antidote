@@ -11,6 +11,7 @@
 		1146308C19842D360075DA16 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146308B19842D360075DA16 /* CoreDataManager.m */; };
 		1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309219842F490075DA16 /* CoreDataManager+Message.m */; };
 		114630961984332C0075DA16 /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630951984332C0075DA16 /* CDMessage.m */; };
+		1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309A1984E1AF0075DA16 /* AllChatsViewController.m */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -67,6 +68,8 @@
 		1146309219842F490075DA16 /* CoreDataManager+Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Message.m"; sourceTree = "<group>"; };
 		114630941984332C0075DA16 /* CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessage.h; sourceTree = "<group>"; };
 		114630951984332C0075DA16 /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
+		114630991984E1AF0075DA16 /* AllChatsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllChatsViewController.h; sourceTree = "<group>"; };
+		1146309A1984E1AF0075DA16 /* AllChatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllChatsViewController.m; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -195,6 +198,15 @@
 				114630951984332C0075DA16 /* CDMessage.m */,
 			);
 			name = Objects;
+			sourceTree = "<group>";
+		};
+		114630981984E19A0075DA16 /* AllChatsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				114630991984E1AF0075DA16 /* AllChatsViewController.h */,
+				1146309A1984E1AF0075DA16 /* AllChatsViewController.m */,
+			);
+			name = AllChatsViewController;
 			sourceTree = "<group>";
 		};
 		1164762619794D3300DB20B8 = {
@@ -336,6 +348,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				114630981984E19A0075DA16 /* AllChatsViewController */,
 				118352D3197AC15E0048CA64 /* FriendRequests */,
 				118352B6197A7AF60048CA64 /* Friends */,
 				118352B2197A72DE0048CA64 /* QRViewer */,
@@ -543,6 +556,7 @@
 				118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */,
 				1164769919794E7300DB20B8 /* onion_client.c in Sources */,
 				118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */,
+				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				1164768C19794E7300DB20B8 /* assoc.c in Sources */,

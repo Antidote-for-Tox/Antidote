@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "ToxManager.h"
+#import "AllChatsViewController.h"
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
 #import "CoreData+MagicalRecord.h"
@@ -23,25 +24,18 @@
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
 
-    UIViewController *first  = [UIViewController new];
-    first.title = NSLocalizedString(@"Chats", @"Chats title");
-
-    FriendsViewController *friends = [FriendsViewController new];
-
-    SettingsViewController *settings  = [SettingsViewController new];
-
-    UITabBarController *tabBar = [UITabBarController new];
-    tabBar.viewControllers = @[
-        [[UINavigationController alloc] initWithRootViewController:first],
-        [[UINavigationController alloc] initWithRootViewController:friends],
-        [[UINavigationController alloc] initWithRootViewController:settings],
-    ];
-
-    self.window.rootViewController = tabBar;
-
     [[ToxManager sharedInstance] bootstrapWithAddress:@"23.226.230.47"
                                                  port:33445
                                             publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"];
+
+    UITabBarController *tabBar = [UITabBarController new];
+    tabBar.viewControllers = @[
+        [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]],
+        [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]],
+        [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]],
+    ];
+
+    self.window.rootViewController = tabBar;
 
     [self.window makeKeyAndVisible];
     return YES;
