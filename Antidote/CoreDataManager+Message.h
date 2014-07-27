@@ -13,6 +13,9 @@
 
 + (NSArray *)messagesWithPredicateSortedByDate:(NSPredicate *)predicate;
 
++ (NSFetchedResultsController *)messagesFetchedControllerForChat:(CDChat *)chat
+                                                    withDelegate:(id <NSFetchedResultsControllerDelegate>)delegate;
+
 + (CDMessage *)insertMessageWithConfigBlock:(void (^)(CDMessage *theMessage))configBlock;
 + (CDMessage *)editMessageWithId:(NSNumber *)messageId editBlock:(void (^)(CDMessage *theMessage))editBlock;
 

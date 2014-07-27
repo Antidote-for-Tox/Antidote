@@ -1,38 +1,36 @@
 //
-//  AllChatsViewController.m
+//  ChatViewController.m
 //  Antidote
 //
 //  Created by Dmitry Vorobyov on 27.07.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "AllChatsViewController.h"
-#import "UIViewController+Utilities.h"
-#import "CoreDataManager+Chat.h"
-#import "AllChatsCell.h"
-#import "CDMessage.h"
-#import "CDUser.h"
 #import "ChatViewController.h"
+#import "UIViewController+Utilities.h"
+#import "ChatIncomingCell.h"
+#import "CoreDataManager+Message.h"
 
-@interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate,
-    NSFetchedResultsControllerDelegate>
+@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
+@property (strong, nonatomic) CDChat *chat;
+
 @end
 
-@implementation AllChatsViewController
+@implementation ChatViewController
 
 #pragma mark -  Lifecycle
 
-- (id)init
+- (instancetype)initWithChat:(CDChat *)chat;
 {
     self = [super init];
 
     if (self) {
-        self.title = NSLocalizedString(@"Chats", @"Chats");
+        self.chat = chat;
     }
 
     return self;
@@ -49,7 +47,7 @@
 {
     [super viewDidLoad];
 
-    self.fetchedResultsController = [CoreDataManager allChatsFetchedControllerWithDelegate:self];
+    self.fetchedResultsController = [CoreDataManager messagesFetchedControllerForChat:self.chat withDelegate:self];
 }
 
 - (void)viewDidLayoutSubviews
@@ -63,24 +61,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    AllChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:[AllChatsCell reuseIdentifier]
-                                                         forIndexPath:indexPath];
+    ChatIncomingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
+                                                             forIndexPath:indexPath];
 
-    CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    cell.textLabel.text = chat.lastMessage.text;
-
-    NSString *usersString;
-    for (CDUser *user in chat.users) {
-        if (usersString) {
-            usersString = [usersString stringByAppendingFormat:@", %@", user.clientId];
-        }
-        else {
-            usersString = user.clientId;
-        }
-    }
-
-    cell.detailTextLabel.text = usersString;
+    cell.textLabel.text = message.text;
 
     return cell;
 }
@@ -96,18 +82,12 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 40.0;
+    return 44.0;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
-    ChatViewController *cvc = [[ChatViewController alloc] initWithChat:chat];
-
-    [self.navigationController pushViewController:cvc animated:YES];
 }
 
 #pragma mark -  NSFetchedResultsControllerDelegate
@@ -152,7 +132,7 @@
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor clearColor];
 
-    [self.tableView registerClass:[AllChatsCell class] forCellReuseIdentifier:[AllChatsCell reuseIdentifier]];
+    [self.tableView registerClass:[ChatIncomingCell class] forCellReuseIdentifier:[ChatIncomingCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }

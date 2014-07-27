@@ -17,6 +17,8 @@
 		114630D9198554B70075DA16 /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630D8198554B70075DA16 /* CDMessage.m */; };
 		114630DC198554B70075DA16 /* CDChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DB198554B70075DA16 /* CDChat.m */; };
 		114630E0198555730075DA16 /* AllChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DF198555730075DA16 /* AllChatsCell.m */; };
+		114630E419857CB00075DA16 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630E319857CB00075DA16 /* ChatViewController.m */; };
+		114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630EA19857CF70075DA16 /* ChatIncomingCell.m */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -85,6 +87,10 @@
 		114630DB198554B70075DA16 /* CDChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDChat.m; sourceTree = "<group>"; };
 		114630DE198555730075DA16 /* AllChatsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllChatsCell.h; sourceTree = "<group>"; };
 		114630DF198555730075DA16 /* AllChatsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllChatsCell.m; sourceTree = "<group>"; };
+		114630E219857CB00075DA16 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		114630E319857CB00075DA16 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		114630E919857CF70075DA16 /* ChatIncomingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatIncomingCell.h; sourceTree = "<group>"; };
+		114630EA19857CF70075DA16 /* ChatIncomingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatIncomingCell.m; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -242,6 +248,25 @@
 			name = Cells;
 			sourceTree = "<group>";
 		};
+		114630E119857C5D0075DA16 /* ChatViewController */ = {
+			isa = PBXGroup;
+			children = (
+				114630E519857CD00075DA16 /* Cells */,
+				114630E219857CB00075DA16 /* ChatViewController.h */,
+				114630E319857CB00075DA16 /* ChatViewController.m */,
+			);
+			name = ChatViewController;
+			sourceTree = "<group>";
+		};
+		114630E519857CD00075DA16 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				114630E919857CF70075DA16 /* ChatIncomingCell.h */,
+				114630EA19857CF70075DA16 /* ChatIncomingCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		1164762619794D3300DB20B8 = {
 			isa = PBXGroup;
 			children = (
@@ -382,6 +407,7 @@
 			isa = PBXGroup;
 			children = (
 				114630981984E19A0075DA16 /* AllChatsViewController */,
+				114630E119857C5D0075DA16 /* ChatViewController */,
 				118352D3197AC15E0048CA64 /* FriendRequests */,
 				118352B6197A7AF60048CA64 /* Friends */,
 				118352B2197A72DE0048CA64 /* QRViewer */,
@@ -598,7 +624,9 @@
 				1164769519794E7300DB20B8 /* Messenger.c in Sources */,
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
+				114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
+				114630E419857CB00075DA16 /* ChatViewController.m in Sources */,
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,

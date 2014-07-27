@@ -25,6 +25,25 @@
     return array;
 }
 
++ (NSFetchedResultsController *)messagesFetchedControllerForChat:(CDChat *)chat
+                                                    withDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
+{
+    __block NSFetchedResultsController *controller;
+
+    dispatch_sync([self private_queue], ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
+
+        controller = [CDMessage MR_fetchAllSortedBy:@"date"
+                                          ascending:YES
+                                      withPredicate:predicate
+                                            groupBy:nil
+                                           delegate:delegate
+                                          inContext:[self private_context]];
+    });
+
+    return controller;
+}
+
 + (CDMessage *)insertMessageWithConfigBlock:(void (^)(CDMessage *theMessage))configBlock;
 {
     if (! configBlock) {
