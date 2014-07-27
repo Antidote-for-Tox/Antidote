@@ -22,4 +22,20 @@
     return array;
 }
 
++ (NSFetchedResultsController *)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
+{
+    __block NSFetchedResultsController *controller;
+
+    dispatch_sync([self private_queue], ^{
+        controller = [CDChat MR_fetchAllSortedBy:@"lastMessage.date"
+                                       ascending:NO
+                                   withPredicate:nil
+                                         groupBy:nil
+                                        delegate:delegate
+                                       inContext:[self private_context]];
+    });
+
+    return controller;
+}
+
 @end

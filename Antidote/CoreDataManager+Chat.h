@@ -12,5 +12,6 @@
 @interface CoreDataManager (Chat)
 
 + (NSArray *)allChatsSortedByDate;
++ (NSFetchedResultsController *)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate;
 
 @end

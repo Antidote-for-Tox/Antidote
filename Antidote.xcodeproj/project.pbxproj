@@ -16,6 +16,7 @@
 		114630D6198554B60075DA16 /* CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630D5198554B60075DA16 /* CDUser.m */; };
 		114630D9198554B70075DA16 /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630D8198554B70075DA16 /* CDMessage.m */; };
 		114630DC198554B70075DA16 /* CDChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DB198554B70075DA16 /* CDChat.m */; };
+		114630E0198555730075DA16 /* AllChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DF198555730075DA16 /* AllChatsCell.m */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -82,6 +83,8 @@
 		114630D8198554B70075DA16 /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
 		114630DA198554B70075DA16 /* CDChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDChat.h; sourceTree = "<group>"; };
 		114630DB198554B70075DA16 /* CDChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDChat.m; sourceTree = "<group>"; };
+		114630DE198555730075DA16 /* AllChatsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllChatsCell.h; sourceTree = "<group>"; };
+		114630DF198555730075DA16 /* AllChatsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllChatsCell.m; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -223,10 +226,20 @@
 		114630981984E19A0075DA16 /* AllChatsViewController */ = {
 			isa = PBXGroup;
 			children = (
+				114630DD198555620075DA16 /* Cells */,
 				114630991984E1AF0075DA16 /* AllChatsViewController.h */,
 				1146309A1984E1AF0075DA16 /* AllChatsViewController.m */,
 			);
 			name = AllChatsViewController;
+			sourceTree = "<group>";
+		};
+		114630DD198555620075DA16 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				114630DE198555730075DA16 /* AllChatsCell.h */,
+				114630DF198555730075DA16 /* AllChatsCell.m */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		1164762619794D3300DB20B8 = {
@@ -597,6 +610,7 @@
 				11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */,
 				118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */,
 				1164769219794E7300DB20B8 /* list.c in Sources */,
+				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				114630D6198554B60075DA16 /* CDUser.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
