@@ -11,8 +11,7 @@
 
 @interface CoreDataManager (User)
 
-+ (CDUser *)firstUserWithPredicate:(NSPredicate *)predicate;
-
-+ (CDUser *)insertUserWithConfigBlock:(void (^)(CDUser *theUser))configBlock;
++ (CDUser *)getOrInsertUserWithPredicate:(NSPredicate *)predicate
+                             configBlock:(void (^)(CDUser *theUser))configBlock;
 
 @end

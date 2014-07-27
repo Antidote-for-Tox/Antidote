@@ -34,6 +34,7 @@ extern NSString *const kToxFriendsContainerUpdateKeyUpdatedSet;
 
 - (NSUInteger)friendsCount;
 - (ToxFriend *)friendAtIndex:(NSUInteger)index;
+- (ToxFriend *)friendWithId:(int32_t)id;
 
 - (NSUInteger)requestsCount;
 - (ToxFriendRequest *)requestAtIndex:(NSUInteger)index;

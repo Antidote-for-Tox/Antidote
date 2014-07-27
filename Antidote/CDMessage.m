@@ -19,6 +19,6 @@
 @dynamic isDelivered;
 @dynamic chat;
 @dynamic user;
-@dynamic unused_property;
+@dynamic chatForLastMessageInverse;
 
 @end

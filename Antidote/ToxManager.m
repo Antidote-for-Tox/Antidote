@@ -9,6 +9,9 @@
 #import "ToxManager.h"
 #import "tox.h"
 #import "UserInfoManager.h"
+#import "CoreDataManager+User.h"
+#import "CoreDataManager+Chat.h"
+#import "CoreDataManager+Message.h"
 
 uint8_t *hexStringToBin(NSString *string);
 NSString *binToHexString(uint8_t *bin);
@@ -292,6 +295,30 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
 }
 
+- (void)incomingMessage:(NSString *)text fromFriend:(ToxFriend *)friend
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", friend.clientId];
+    CDUser *user = [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
+        u.clientId = friend.clientId;
+    }];
+
+    predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
+    CDChat *chat = [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
+        [c addUsersObject:user];
+    }];
+
+    [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
+        m.text = text;
+        m.date = [[NSDate date] timeIntervalSince1970];
+        m.user = user;
+        m.chat = chat;
+
+        if (m.date > chat.lastMessage.date) {
+            m.chatForLastMessageInverse = chat;
+        }
+    }];
+}
+
 @end
 
 #pragma mark -  C functions
@@ -342,6 +369,11 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
 {
     NSLog(@"ToxManager: friendMessageCallback %d %s", friendnumber, message);
+
+    NSString *messageString = [[NSString alloc] initWithBytes:message length:length encoding:NSUTF8StringEncoding];
+    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
+
+    [[ToxManager sharedInstance] incomingMessage:messageString fromFriend:friend];
 }
 
 void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata)

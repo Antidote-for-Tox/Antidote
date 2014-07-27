@@ -38,21 +38,40 @@
     return controller;
 }
 
-+ (CDChat *)insertChatWithConfigBlock:(void (^)(CDChat *theChat))configBlock
++ (CDChat *)getOrInsertChatWithPredicate:(NSPredicate *)predicate configBlock:(void (^)(CDChat *theChat))configBlock
 {
-    if (! configBlock) {
-        return nil;
-    }
-
     __block CDChat *chat;
 
     dispatch_sync([self private_queue], ^{
-        chat = [NSEntityDescription insertNewObjectForEntityForName:@"CDChat"
-                                             inManagedObjectContext:[self private_context]];
+        chat = [CDChat MR_findFirstWithPredicate:predicate inContext:[self private_context]];
 
-        configBlock(chat);
+        if (! chat) {
+            chat = [NSEntityDescription insertNewObjectForEntityForName:@"CDChat"
+                                                 inManagedObjectContext:[self private_context]];
 
-        [[self private_context] MR_saveToPersistentStoreAndWait];
+            if (configBlock) {
+                configBlock(chat);
+            }
+
+            [[self private_context] MR_saveToPersistentStoreAndWait];
+        }
+    });
+
+    return chat;
+}
+
++ (CDChat *)editChatWithPredicate:(NSPredicate *)predicate editBlock:(void (^)(CDChat *theChat))editBlock
+{
+    __block CDChat *chat;
+
+    dispatch_sync([self private_queue], ^{
+        chat = [CDChat MR_findFirstWithPredicate:predicate inContext:[self private_context]];
+
+        if (chat && editBlock) {
+            editBlock(chat);
+
+            [[self private_context] MR_saveToPersistentStoreAndWait];
+        }
     });
 
     return chat;

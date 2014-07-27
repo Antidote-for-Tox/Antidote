@@ -19,6 +19,6 @@
 @property (nonatomic) BOOL isDelivered;
 @property (nonatomic, retain) CDChat *chat;
 @property (nonatomic, retain) CDUser *user;
-@property (nonatomic, retain) CDChat *unused_property;
+@property (nonatomic, retain) CDChat *chatForLastMessageInverse;
 
 @end
