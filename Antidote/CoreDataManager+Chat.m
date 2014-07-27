@@ -38,4 +38,24 @@
     return controller;
 }
 
++ (CDChat *)insertChatWithConfigBlock:(void (^)(CDChat *theChat))configBlock
+{
+    if (! configBlock) {
+        return nil;
+    }
+
+    __block CDChat *chat;
+
+    dispatch_sync([self private_queue], ^{
+        chat = [NSEntityDescription insertNewObjectForEntityForName:@"CDChat"
+                                             inManagedObjectContext:[self private_context]];
+
+        configBlock(chat);
+
+        [[self private_context] MR_saveToPersistentStoreAndWait];
+    });
+
+    return chat;
+}
+
 @end

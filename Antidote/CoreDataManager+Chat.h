@@ -14,4 +14,6 @@
 + (NSArray *)allChatsSortedByDate;
 + (NSFetchedResultsController *)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate;
 
++ (CDChat *)insertChatWithConfigBlock:(void (^)(CDChat *theChat))configBlock;
+
 @end
