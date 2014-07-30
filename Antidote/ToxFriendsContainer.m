@@ -77,6 +77,23 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
     }
 }
 
+- (ToxFriend *)friendWithClientId:(NSString *)clientId
+{
+    if (! clientId) {
+        return nil;
+    }
+
+    @synchronized(self.friends) {
+        for (ToxFriend *friend in self.friends) {
+            if ([friend.clientId isEqual:clientId]) {
+                return friend;
+            }
+        }
+
+        return nil;
+    }
+}
+
 - (NSUInteger)requestsCount
 {
     @synchronized(self.friendRequests) {

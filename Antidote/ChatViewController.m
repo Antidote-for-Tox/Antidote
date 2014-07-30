@@ -11,6 +11,7 @@
 #import "ChatIncomingCell.h"
 #import "ChatInputView.h"
 #import "CoreDataManager+Message.h"
+#import "ToxManager.h"
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate,
     ChatInputViewDelegate>
@@ -169,7 +170,7 @@
 
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
 {
-    NSLog(@"Send %@", text);
+    [[ToxManager sharedInstance] sendMessage:text toChat:self.chat];
 }
 
 #pragma mark -  Notifications

@@ -125,6 +125,29 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }
 }
 
+- (void)sendMessage:(NSString *)message toChat:(CDChat *)chat
+{
+    if (! message.length || ! chat) {
+        return;
+    }
+
+    if (chat.users.count > 1) {
+        NSLog(@"group chat isn't supported yet");
+        return;
+    }
+
+    CDUser *user = [chat.users anyObject];
+
+    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
+
+    const char *cMessage = [message cStringUsingEncoding:NSUTF8StringEncoding];
+
+    tox_send_message(self.tox, friend.id, (uint8_t *)cMessage, message.length);
+
+    CDUser *currentUser = [self userFromClientId:[self toxId]];
+    [self addMessage:message toChat:chat fromUser:currentUser];
+}
+
 #pragma mark -  Private
 
 - (void)createTox
@@ -295,20 +318,36 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
 }
 
-- (void)incomingMessage:(NSString *)text fromFriend:(ToxFriend *)friend
+- (void)incomingMessage:(NSString *)message fromFriend:(ToxFriend *)friend
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", friend.clientId];
-    CDUser *user = [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
-        u.clientId = friend.clientId;
-    }];
+    CDUser *user = [self userFromClientId:friend.clientId];
+    CDChat *chat = [self chatWithUser:user];
 
-    predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
-    CDChat *chat = [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
+    [self addMessage:message toChat:chat fromUser:user];
+}
+
+- (CDUser *)userFromClientId:(NSString *)clientId
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", clientId];
+
+    return [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
+        u.clientId = clientId;
+    }];
+}
+
+- (CDChat *)chatWithUser:(CDUser *)user
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
+
+    return [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
         [c addUsersObject:user];
     }];
+}
 
+- (void)addMessage:(NSString *)message toChat:(CDChat *)chat fromUser:(CDUser *)user
+{
     [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
-        m.text = text;
+        m.text = message;
         m.date = [[NSDate date] timeIntervalSince1970];
         m.user = user;
         m.chat = chat;

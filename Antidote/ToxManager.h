@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "ToxFriendsContainer.h"
+#import "CDChat.h"
 
 @interface ToxManager : NSObject
 
@@ -21,5 +22,7 @@
 - (NSString *)toxId;
 
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
+
+- (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;
 
 @end
