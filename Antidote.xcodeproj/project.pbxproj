@@ -19,6 +19,7 @@
 		114630E0198555730075DA16 /* AllChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DF198555730075DA16 /* AllChatsCell.m */; };
 		114630E419857CB00075DA16 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630E319857CB00075DA16 /* ChatViewController.m */; };
 		114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630EA19857CF70075DA16 /* ChatIncomingCell.m */; };
+		114630EF1986C4BF0075DA16 /* ChatInputView.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630EE1986C4BF0075DA16 /* ChatInputView.m */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -91,6 +92,8 @@
 		114630E319857CB00075DA16 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		114630E919857CF70075DA16 /* ChatIncomingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatIncomingCell.h; sourceTree = "<group>"; };
 		114630EA19857CF70075DA16 /* ChatIncomingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatIncomingCell.m; sourceTree = "<group>"; };
+		114630ED1986C4BF0075DA16 /* ChatInputView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatInputView.h; sourceTree = "<group>"; };
+		114630EE1986C4BF0075DA16 /* ChatInputView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatInputView.m; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -251,9 +254,10 @@
 		114630E119857C5D0075DA16 /* ChatViewController */ = {
 			isa = PBXGroup;
 			children = (
-				114630E519857CD00075DA16 /* Cells */,
 				114630E219857CB00075DA16 /* ChatViewController.h */,
 				114630E319857CB00075DA16 /* ChatViewController.m */,
+				114630E519857CD00075DA16 /* Cells */,
+				114630EC1986C4B30075DA16 /* InputView */,
 			);
 			name = ChatViewController;
 			sourceTree = "<group>";
@@ -265,6 +269,15 @@
 				114630EA19857CF70075DA16 /* ChatIncomingCell.m */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		114630EC1986C4B30075DA16 /* InputView */ = {
+			isa = PBXGroup;
+			children = (
+				114630ED1986C4BF0075DA16 /* ChatInputView.h */,
+				114630EE1986C4BF0075DA16 /* ChatInputView.m */,
+			);
+			name = InputView;
 			sourceTree = "<group>";
 		};
 		1164762619794D3300DB20B8 = {
@@ -618,6 +631,7 @@
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
+				114630EF1986C4BF0075DA16 /* ChatInputView.m in Sources */,
 				1164768C19794E7300DB20B8 /* assoc.c in Sources */,
 				116476A019794E7300DB20B8 /* util.c in Sources */,
 				118352D6197AC1760048CA64 /* FriendRequestsViewController.m in Sources */,
