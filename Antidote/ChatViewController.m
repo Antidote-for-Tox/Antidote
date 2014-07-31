@@ -138,6 +138,8 @@
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
 {
     [[ToxManager sharedInstance] sendMessage:text toChat:self.chat];
+
+    [view setText:nil];
 }
 
 #pragma mark -  Notifications

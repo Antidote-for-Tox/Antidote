@@ -20,6 +20,8 @@
 
 @property (weak, nonatomic) id <ChatInputViewDelegate> delegate;
 
+- (void)setText:(NSString *)text;
+
 - (CGFloat)heightWithCurrentText;
 
 @end

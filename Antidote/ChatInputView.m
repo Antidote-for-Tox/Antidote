@@ -55,6 +55,11 @@
 
 #pragma mark -  Public methods
 
+- (void)setText:(NSString *)text
+{
+    self.textView.text = nil;
+}
+
 - (CGFloat)heightWithCurrentText
 {
     return 40.0;
