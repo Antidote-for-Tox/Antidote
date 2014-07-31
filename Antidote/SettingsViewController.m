@@ -13,9 +13,11 @@
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
 
-@interface SettingsViewController ()
+@interface SettingsViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
+
+@property (strong, nonatomic) UITextField *nameField;
 
 @property (strong, nonatomic) UILabel *toxIdTitleLabel;
 @property (strong, nonatomic) UIButton *toxIdQRButton;
@@ -43,6 +45,7 @@
     [self loadWhiteView];
 
     [self createScrollView];
+    [self createNameField];
     [self createToxIdViews];
 }
 
@@ -62,6 +65,36 @@
     [self presentViewController:qrVC animated:YES completion:nil];
 }
 
+#pragma mark -  UITextFieldDelegate
+
+- (BOOL)             textField:(UITextField *)textField
+ shouldChangeCharactersInRange:(NSRange)range
+             replacementString:(NSString *)string
+{
+    NSString *resultText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+
+    if ([textField isEqual:self.nameField]) {
+        if (resultText.length > TOX_MAX_NAME_LENGTH) {
+            textField.text = [resultText substringToIndex:TOX_MAX_NAME_LENGTH];
+
+            return NO;
+        }
+    }
+
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    if ([textField isEqual:self.nameField]) {
+        [textField resignFirstResponder];
+
+        [[ToxManager sharedInstance] setUserName:textField.text];
+    }
+
+    return YES;
+}
+
 #pragma mark -  Private
 
 - (void)createScrollView
@@ -70,11 +103,23 @@
     [self.view addSubview:self.scrollView];
 }
 
+- (void)createNameField
+{
+    self.nameField = [UITextField new];
+    self.nameField.delegate = self;
+    self.nameField.placeholder = NSLocalizedString(@"Name", @"Settings");
+    self.nameField.borderStyle = UITextBorderStyleRoundedRect;
+    self.nameField.returnKeyType = UIReturnKeyDone;
+    [self.scrollView addSubview:self.nameField];
+
+    self.nameField.text = [[ToxManager sharedInstance] userName];
+}
+
 - (void)createToxIdViews
 {
     self.toxIdTitleLabel = [self.scrollView addLabelWithTextColor:[UIColor blackColor]
                                                           bgColor:[UIColor clearColor]];
-    self.toxIdTitleLabel.text = NSLocalizedString(@"Tox ID", @"Settings");
+    self.toxIdTitleLabel.text = NSLocalizedString(@"My Tox ID", @"Settings");
 
     self.toxIdQRButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.toxIdQRButton setTitle:NSLocalizedString(@"QR", @"Settings") forState:UIControlStateNormal];
@@ -97,6 +142,17 @@
     const CGFloat yIndentation = 10.0;
 
     CGRect frame = CGRectZero;
+
+    {
+        frame = self.nameField.frame;
+        frame.size.width = 240.0;
+        frame.size.height = 30.0;
+        frame.origin.x = self.view.bounds.size.width - frame.size.width - 10.0;
+        frame.origin.y = currentOriginY + yIndentation;
+
+        self.nameField.frame = frame;
+    }
+    currentOriginY = CGRectGetMaxY(frame);
 
     {
         frame.size = [self.toxIdTitleLabel.text stringSizeWithFont:self.toxIdTitleLabel.font];

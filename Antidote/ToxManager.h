@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "ToxFriendsContainer.h"
+#import "tox.h"
 #import "CDChat.h"
 
 @interface ToxManager : NSObject
@@ -20,6 +21,8 @@
 - (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey;
 
 - (NSString *)toxId;
+- (NSString *)userName;
+- (BOOL)setUserName:(NSString *)userName;
 
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
 

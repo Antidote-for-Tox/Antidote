@@ -7,7 +7,6 @@
 //
 
 #import "ToxManager.h"
-#import "tox.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
 #import "CoreDataManager+User.h"
@@ -101,7 +100,33 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     free(address);
 
-    return [toxId copy];
+    return toxId;
+}
+
+- (NSString *)userName
+{
+    uint8_t *name = malloc(TOX_MAX_NAME_LENGTH);
+    int size = tox_get_self_name(self.tox, name);
+
+    NSString *userName = [[NSString alloc] initWithBytes:name length:size encoding:NSUTF8StringEncoding];
+
+    free(name);
+
+    return userName;
+}
+
+- (BOOL)setUserName:(NSString *)userName
+{
+    const char *name = [userName cStringUsingEncoding:NSUTF8StringEncoding];
+
+    int result = tox_set_name(self.tox, (uint8_t *)name, userName.length);
+
+    if (result == 0) {
+        [self saveTox];
+        return YES;
+    }
+
+    return NO;
 }
 
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
