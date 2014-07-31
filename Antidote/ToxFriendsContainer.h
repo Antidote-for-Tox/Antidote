@@ -13,6 +13,13 @@
 
 /**
  * userInfo will contain dictionary with following keys:
+ * kToxFriendsContainerUpdateKeyFriend - appropriate ToxFriend
+ */
+extern NSString *const kToxFriendsContainerUpdateSpecificFriendNotification;
+extern NSString *const kToxFriendsContainerUpdateKeyFriend;
+
+/**
+ * userInfo will contain dictionary with following keys:
  * kToxFriendsContainerUpdateKeyInsertedSet - NSIndexSet with indexes of objects, that were inserted
  * kToxFriendsContainerUpdateKeyRemovedSet - NSIndexSet with indexes of objects, that were removed
  * kToxFriendsContainerUpdateKeyUpdatedSet - NSIndexSet with indexes of objects, that were updated

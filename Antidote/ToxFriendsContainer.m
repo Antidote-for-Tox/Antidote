@@ -9,6 +9,8 @@
 #import "ToxFriendsContainer.h"
 #import "UserInfoManager.h"
 
+NSString *const kToxFriendsContainerUpdateSpecificFriendNotification = @"kToxFriendsContainerUpdateSpecificFriendNotification";
+NSString *const kToxFriendsContainerUpdateKeyFriend = @"kToxFriendsContainerUpdateKeyFriend";
 NSString *const kToxFriendsContainerUpdateFriendsNotification = @"kToxFriendsContainerUpdateFriendsNotification";
 NSString *const kToxFriendsContainerUpdateRequestsNotification = @"kToxFriendsContainerUpdateRequestsNotification";
 NSString *const kToxFriendsContainerUpdateKeyInsertedSet = @"kToxFriendsContainerUpdateKeyInsertedSet";
@@ -164,6 +166,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                  insertedSet:nil
                                   removedSet:nil
                                   updatedSet:[NSIndexSet indexSetWithIndex:index]];
+
+        [self sendUpdateFriendWithIdNotification:friend];
     }
 }
 
@@ -251,6 +255,23 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         [[NSNotificationCenter defaultCenter] postNotificationName:type
                                                             object:nil
                                                           userInfo:[userInfo copy]];
+    });
+}
+
+- (void)sendUpdateFriendWithIdNotification:(ToxFriend *)friend
+{
+    if (! friend) {
+        return;
+    }
+
+    NSDictionary *userInfo = @{
+        kToxFriendsContainerUpdateKeyFriend : friend,
+    };
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:kToxFriendsContainerUpdateSpecificFriendNotification
+                                                            object:nil
+                                                          userInfo:userInfo];
     });
 }
 
