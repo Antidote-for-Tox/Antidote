@@ -12,6 +12,7 @@
 #import "ToxManager.h"
 #import "FriendRequestsViewController.h"
 #import "NSIndexSet+Utilities.h"
+#import "Helper.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -88,19 +89,7 @@
 
     cell.title = friend.associatedName ?: friend.clientId;
     cell.subtitle = friend.statusMessage;
-
-    if (friend.status == ToxFriendStatusOffline) {
-        cell.status = StatusCircleStatusOffline;
-    }
-    else if (friend.status == ToxFriendStatusOnline) {
-        cell.status = StatusCircleStatusOnline;
-    }
-    else if (friend.status == ToxFriendStatusAway) {
-        cell.status = StatusCircleStatusAway;
-    }
-    else if (friend.status == ToxFriendStatusBusy) {
-        cell.status = StatusCircleStatusBusy;
-    }
+    cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
     [cell redraw];
 

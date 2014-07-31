@@ -12,6 +12,8 @@
 #import "ChatInputView.h"
 #import "CoreDataManager+Message.h"
 #import "ToxManager.h"
+#import "UIView+Utilities.h"
+#import "Helper.h"
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate>
 
@@ -21,6 +23,7 @@
 @property (strong, nonatomic) NSMutableArray *messages;
 
 @property (strong, nonatomic) CDChat *chat;
+@property (strong, nonatomic) ToxFriend *friend;
 
 @property (assign, nonatomic) BOOL didLayousSubviewsForFirstTime;
 
@@ -35,9 +38,14 @@
     self = [super init];
 
     if (self) {
+        self.hidesBottomBarWhenPushed = YES;
+
         self.chat = chat;
 
-        self.hidesBottomBarWhenPushed = YES;
+        NSString *clientId = [[chat.users anyObject] clientId];
+        self.friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:clientId];
+
+        [self updateTitleView];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
@@ -50,6 +58,10 @@
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(newMessageNotification:)
                                                      name:kCoreDataManagerNewMessageNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(friendUpdateNotification:)
+                                                     name:kToxFriendsContainerUpdateSpecificFriendNotification
                                                    object:nil];
     }
 
@@ -202,6 +214,18 @@
     }
 }
 
+- (void)friendUpdateNotification:(NSNotification *)notification
+{
+    ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+
+    if (! [self.friend isEqual:updatedFriend]) {
+        return;
+    }
+
+    self.friend = updatedFriend;
+    [self updateTitleView];
+}
+
 #pragma mark -  Private
 
 - (void)createTableView
@@ -250,6 +274,39 @@
 
         [self moveInputViewToBelowTableWithAnimationDuration:0.0];
     }
+}
+
+- (void)updateTitleView
+{
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor clearColor];
+
+    UILabel *label = [view addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
+    label.text = self.friend.associatedName;
+    [label sizeToFit];
+
+    StatusCircleView *statusView = [StatusCircleView new];
+    statusView.status = [Helper toxFriendStatusToCircleStatus:self.friend.status];
+    [statusView redraw];
+    [view addSubview:statusView];
+
+    const CGFloat height = MAX(label.frame.size.height, statusView.frame.size.height);
+
+    CGRect frame = label.frame;
+    frame.origin.y = (height - frame.size.height) / 2;
+    label.frame = frame;
+
+    frame = statusView.frame;
+    frame.origin.x = label.frame.size.width + 10.0;
+    frame.origin.y = (height - frame.size.height) / 2;
+    statusView.frame = frame;
+
+    frame = CGRectZero;
+    frame.size.height = height;
+    frame.size.width = CGRectGetMaxX(statusView.frame);
+    view.frame = frame;
+
+    self.navigationItem.titleView = view;
 }
 
 - (void)scrollToBottomAnimated:(BOOL)animated
