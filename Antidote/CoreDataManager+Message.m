@@ -9,13 +9,18 @@
 #import "CoreDataManager+Message.h"
 #import "CoreData+MagicalRecord.h"
 
+NSString *const kCoreDataManagerNewMessageNotification = @"kCoreDataManagerNewMessageNotification";
+NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey";
+
 @implementation CoreDataManager (Message)
 
-+ (NSArray *)messagesWithPredicateSortedByDate:(NSPredicate *)predicate
++ (NSArray *)messagesForChat:(CDChat *)chat
 {
     __block NSArray *array;
 
     dispatch_sync([self private_queue], ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
+
         array = [CDMessage MR_findAllSortedBy:@"date"
                                     ascending:YES
                                 withPredicate:predicate
@@ -59,6 +64,12 @@
         configBlock(message);
 
         [[self private_context] MR_saveToPersistentStoreAndWait];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCoreDataManagerNewMessageNotification
+                                                                object:nil
+                                                              userInfo:@{kCoreDataManagerNewMessageKey: message}];
+        });
     });
 
     return message;

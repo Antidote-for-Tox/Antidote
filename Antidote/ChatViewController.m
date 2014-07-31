@@ -13,13 +13,12 @@
 #import "CoreDataManager+Message.h"
 #import "ToxManager.h"
 
-@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate,
-    ChatInputViewDelegate>
+@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) NSMutableArray *messages;
 
 @property (strong, nonatomic) CDChat *chat;
 
@@ -48,6 +47,10 @@
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(newMessageNotification:)
+                                                     name:kCoreDataManagerNewMessageNotification
+                                                   object:nil];
     }
 
     return self;
@@ -71,7 +74,7 @@
 {
     [super viewDidLoad];
 
-    self.fetchedResultsController = [CoreDataManager messagesFetchedControllerForChat:self.chat withDelegate:self];
+    self.messages = [NSMutableArray arrayWithArray:[CoreDataManager messagesForChat:self.chat]];
     [self.tableView reloadData];
 }
 
@@ -79,11 +82,10 @@
 {
     [super viewDidLayoutSubviews];
 
-    [self adjustSubviews];
-
     if (! self.didLayousSubviewsForFirstTime) {
         self.didLayousSubviewsForFirstTime = YES;
 
+        [self adjustSubviews];
         [self scrollToBottomAnimated:NO];
     }
 }
@@ -102,7 +104,7 @@
     ChatIncomingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
                                                              forIndexPath:indexPath];
 
-    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    CDMessage *message = self.messages[indexPath.row];
 
     cell.textLabel.text = message.text;
 
@@ -111,9 +113,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[section];
-
-    return info.numberOfObjects;
+    return self.messages.count;
 }
 
 #pragma mark -  UITableViewDelegate
@@ -126,39 +126,6 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
-
-#pragma mark -  NSFetchedResultsControllerDelegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    if (type == NSFetchedResultsChangeInsert) {
-        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeMove) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeUpdate) {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
 }
 
 #pragma mark -  ChatInputViewDelegate
@@ -192,6 +159,45 @@
     [self changeTableViewBottomInsetTo:self.inputView.frame.size.height
                  withAnimationDuration:duration];
     [self moveInputViewToBelowTableWithAnimationDuration:duration];
+}
+
+- (void)newMessageNotification:(NSNotification *)notification
+{
+    CDMessage *message = notification.userInfo[kCoreDataManagerNewMessageKey];
+
+    if (! [message.chat isEqual:self.chat]) {
+        return;
+    }
+
+    NSIndexPath *lastMessagePath;
+
+    if (self.messages.count) {
+        lastMessagePath = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
+    }
+
+    [self.messages addObject:message];
+
+    @synchronized(self.tableView) {
+        NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
+
+        [self.tableView beginUpdates];
+        [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView endUpdates];
+    }
+
+    // scroll to bottom only if last message was visible
+    if (lastMessagePath) {
+        CGRect rect = CGRectZero;
+        rect.origin = self.tableView.contentOffset;
+        rect.size = self.tableView.frame.size;
+        rect.size.height -= self.tableView.contentInset.bottom;
+
+        NSArray *visiblePathes = [self.tableView indexPathsForRowsInRect:rect];
+
+        if ([visiblePathes containsObject:lastMessagePath]) {
+            [self scrollToBottomAnimated:YES];
+        }
+    }
 }
 
 #pragma mark -  Private
@@ -246,9 +252,7 @@
 
 - (void)scrollToBottomAnimated:(BOOL)animated
 {
-    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[0];
-
-    NSIndexPath *path = [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:0];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
 
     [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }

@@ -9,9 +9,16 @@
 #import "CoreDataManager.h"
 #import "CDMessage.h"
 
+/**
+ * userInfo will contain dictionary with following keys:
+ * kCoreDataManagerNewMessageKey - containing appropriate CDMessage
+ */
+extern NSString *const kCoreDataManagerNewMessageNotification;
+extern NSString *const kCoreDataManagerNewMessageKey;
+
 @interface CoreDataManager (Message)
 
-+ (NSArray *)messagesWithPredicateSortedByDate:(NSPredicate *)predicate;
++ (NSArray *)messagesForChat:(CDChat *)chat;
 
 + (NSFetchedResultsController *)messagesFetchedControllerForChat:(CDChat *)chat
                                                     withDelegate:(id <NSFetchedResultsControllerDelegate>)delegate;
