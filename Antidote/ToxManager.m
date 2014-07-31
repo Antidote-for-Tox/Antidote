@@ -80,16 +80,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     return instance;
 }
 
-#pragma mark -  Public
-
-- (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
-{
-    uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
-    tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
-    free(pub_key);
-
-    [self maybeStartTimer];
-}
+#pragma mark -  Properties
 
 - (NSString *)toxId
 {
@@ -115,18 +106,59 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     return userName;
 }
 
-- (BOOL)setUserName:(NSString *)userName
+- (void)setUserName:(NSString *)userName
 {
+    if (userName.length > TOX_MAX_NAME_LENGTH) {
+        userName = [userName substringToIndex:TOX_MAX_NAME_LENGTH];
+    }
+
     const char *name = [userName cStringUsingEncoding:NSUTF8StringEncoding];
 
     int result = tox_set_name(self.tox, (uint8_t *)name, userName.length);
 
     if (result == 0) {
         [self saveTox];
-        return YES;
+    }
+}
+
+- (NSString *)userStatusMessage
+{
+    int size = tox_get_self_status_message_size(self.tox);
+
+    uint8_t *message = malloc(size);
+    tox_get_self_status_message(self.tox, message, size);
+
+    NSString *statusMessage = [[NSString alloc] initWithBytes:message length:size encoding:NSUTF8StringEncoding];
+
+    free(message);
+
+    return statusMessage;
+}
+
+- (void)setUserStatusMessage:(NSString *)statusMessage
+{
+    if (statusMessage.length > TOX_MAX_STATUSMESSAGE_LENGTH) {
+        statusMessage = [statusMessage substringToIndex:TOX_MAX_STATUSMESSAGE_LENGTH];
     }
 
-    return NO;
+    const char *message = [statusMessage cStringUsingEncoding:NSUTF8StringEncoding];
+
+    int result = tox_set_status_message(self.tox, (uint8_t *)message, statusMessage.length);
+
+    if (result == 0) {
+        [self saveTox];
+    }
+}
+
+#pragma mark -  Public
+
+- (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
+{
+    uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
+    tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
+    free(pub_key);
+
+    [self maybeStartTimer];
 }
 
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError

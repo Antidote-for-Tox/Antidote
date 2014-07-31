@@ -18,6 +18,7 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 @property (strong, nonatomic) UITextField *nameField;
+@property (strong, nonatomic) UITextField *statusMessageField;
 
 @property (strong, nonatomic) UILabel *toxIdTitleLabel;
 @property (strong, nonatomic) UIButton *toxIdQRButton;
@@ -46,6 +47,7 @@
 
     [self createScrollView];
     [self createNameField];
+    [self createStatusMessageField];
     [self createToxIdViews];
 }
 
@@ -72,13 +74,19 @@
              replacementString:(NSString *)string
 {
     NSString *resultText = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSUInteger maxLength = NSUIntegerMax;
 
     if ([textField isEqual:self.nameField]) {
-        if (resultText.length > TOX_MAX_NAME_LENGTH) {
-            textField.text = [resultText substringToIndex:TOX_MAX_NAME_LENGTH];
+        maxLength = TOX_MAX_NAME_LENGTH;
+    }
+    else if ([textField isEqual:self.statusMessageField]) {
+        maxLength = TOX_MAX_STATUSMESSAGE_LENGTH;
+    }
 
-            return NO;
-        }
+    if (resultText.length > maxLength) {
+        textField.text = [resultText substringToIndex:maxLength];
+
+        return NO;
     }
 
     return YES;
@@ -89,7 +97,12 @@
     if ([textField isEqual:self.nameField]) {
         [textField resignFirstResponder];
 
-        [[ToxManager sharedInstance] setUserName:textField.text];
+        [ToxManager sharedInstance].userName = textField.text;
+    }
+    else if ([textField isEqual:self.statusMessageField]) {
+        [textField resignFirstResponder];
+
+        [ToxManager sharedInstance].userStatusMessage = textField.text;
     }
 
     return YES;
@@ -112,7 +125,19 @@
     self.nameField.returnKeyType = UIReturnKeyDone;
     [self.scrollView addSubview:self.nameField];
 
-    self.nameField.text = [[ToxManager sharedInstance] userName];
+    self.nameField.text = [ToxManager sharedInstance].userName;
+}
+
+- (void)createStatusMessageField
+{
+    self.statusMessageField = [UITextField new];
+    self.statusMessageField.delegate = self;
+    self.statusMessageField.placeholder = NSLocalizedString(@"Status", @"Settings");
+    self.statusMessageField.borderStyle = UITextBorderStyleRoundedRect;
+    self.statusMessageField.returnKeyType = UIReturnKeyDone;
+    [self.scrollView addSubview:self.statusMessageField];
+
+    self.statusMessageField.text = [ToxManager sharedInstance].userStatusMessage;
 }
 
 - (void)createToxIdViews
@@ -151,6 +176,17 @@
         frame.origin.y = currentOriginY + yIndentation;
 
         self.nameField.frame = frame;
+    }
+    currentOriginY = CGRectGetMaxY(frame);
+
+    {
+        frame = self.statusMessageField.frame;
+        frame.size.width = 240.0;
+        frame.size.height = 30.0;
+        frame.origin.x = self.view.bounds.size.width - frame.size.width - 10.0;
+        frame.origin.y = currentOriginY + yIndentation;
+
+        self.statusMessageField.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
