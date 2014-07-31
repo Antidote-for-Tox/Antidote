@@ -64,6 +64,7 @@
 		118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */; };
 		118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352DC197AEB010048CA64 /* FriendRequestsCell.m */; };
 		119BB117198A05A600380557 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB116198A05A600380557 /* Helper.m */; };
+		119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11A198AC1B300380557 /* ToxFunctions.m */; };
 		11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -183,6 +184,8 @@
 		118352DC197AEB010048CA64 /* FriendRequestsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsCell.m; sourceTree = "<group>"; };
 		119BB115198A05A600380557 /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
 		119BB116198A05A600380557 /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
+		119BB119198AC1B300380557 /* ToxFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFunctions.h; sourceTree = "<group>"; };
+		119BB11A198AC1B300380557 /* ToxFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFunctions.m; sourceTree = "<group>"; };
 		11C7C6B31983FB42001B849B /* ToxFriendsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriendsContainer.h; sourceTree = "<group>"; };
 		11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsContainer.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
@@ -406,6 +409,8 @@
 				118352CA197A8C950048CA64 /* Friends */,
 				11835293197994050048CA64 /* ToxManager.h */,
 				11835294197994050048CA64 /* ToxManager.m */,
+				119BB119198AC1B300380557 /* ToxFunctions.h */,
+				119BB11A198AC1B300380557 /* ToxFunctions.m */,
 			);
 			name = ToxManager;
 			sourceTree = "<group>";
@@ -629,6 +634,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */,
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */,
 				1164769919794E7300DB20B8 /* onion_client.c in Sources */,

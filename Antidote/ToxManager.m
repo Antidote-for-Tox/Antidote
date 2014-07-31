@@ -8,13 +8,11 @@
 
 #import "ToxManager.h"
 #import "tox.h"
+#import "ToxFunctions.h"
 #import "UserInfoManager.h"
 #import "CoreDataManager+User.h"
 #import "CoreDataManager+Chat.h"
 #import "CoreDataManager+Message.h"
-
-uint8_t *hexStringToBin(NSString *string);
-NSString *binToHexString(uint8_t *bin);
 
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
@@ -87,7 +85,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
 {
-    uint8_t *pub_key = hexStringToBin(publicKey);
+    uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
     tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
     free(pub_key);
 
@@ -99,7 +97,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     uint8_t *address = malloc(TOX_FRIEND_ADDRESS_SIZE);
     tox_get_address(self.tox, address);
 
-    NSString *toxId = binToHexString(address);
+    NSString *toxId = [ToxFunctions addressToString:address];
 
     free(address);
 
@@ -108,7 +106,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
 {
-    uint8_t *clientId = hexStringToBin(request.clientId);
+    uint8_t *clientId = [ToxFunctions hexStringToBin:request.clientId];
     uint32_t friendId = tox_add_friend_norequest(self.tox, clientId);
     free(clientId);
 
@@ -266,7 +264,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         int result = tox_get_client_id(self.tox, friendId, clientId);
 
         if (result == 0) {
-            friend.clientId = binToHexString(clientId);
+            friend.clientId = [ToxFunctions clientIdToString:clientId];
             free(clientId);
         }
     }
@@ -362,42 +360,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 #pragma mark -  C functions
 
-// You are responsible for freeing the return value!
-uint8_t *hexStringToBin(NSString *string)
-{
-    // byte is represented by exactly 2 hex digits, so lenth of binary string
-    // is half of that of the hex one. only hex string with even length
-    // valid. the more proper implementation would be to check if strlen(hex_string)
-    // is odd and return error code if it is. we assume strlen is even. if it's not
-    // then the last byte just won't be written in 'ret'.
-
-    char *hex_string = (char *)string.UTF8String;
-    size_t i, len = strlen(hex_string) / 2;
-    uint8_t *ret = malloc(len);
-    char *pos = hex_string;
-
-    for (i = 0; i < len; ++i, pos += 2)
-        sscanf(pos, "%2hhx", &ret[i]);
-
-    return ret;
-}
-
-NSString *binToHexString(uint8_t *bin)
-{
-    NSMutableString *string = [NSMutableString stringWithCapacity:TOX_FRIEND_ADDRESS_SIZE * 2];
-
-    for (NSInteger idx = 0; idx < TOX_FRIEND_ADDRESS_SIZE; ++idx) {
-        [string appendFormat:@"%02X", bin[idx]];
-    }
-
-    return [string copy];
-}
-
 void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * data, uint16_t length, void *userdata)
 {
     NSLog(@"ToxManager: friendRequestCallback, publicKey %s", publicKey);
 
-    NSString *key = binToHexString((uint8_t *)publicKey);
+    NSString *key = [ToxFunctions publicKeyToString:(uint8_t *)publicKey];
     NSString *message = [[NSString alloc] initWithBytes:data length:length encoding:NSUTF8StringEncoding];
 
     ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:key message:message];
