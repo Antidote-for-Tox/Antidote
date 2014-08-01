@@ -67,7 +67,10 @@
 
 - (void)sendRequestButtonPressed
 {
-    NSLog(@"send request button pressed");
+    [[ToxManager sharedInstance] sendFriendRequestWithAddress:self.toxIdTextView.text
+                                                      message:self.messageTextView.text];
+
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (void)finishEditingButtonPressed

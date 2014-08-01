@@ -161,6 +161,29 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     [self maybeStartTimer];
 }
 
+- (void)sendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString
+{
+    uint8_t *address = [ToxFunctions hexStringToBin:addressString];
+    const char *message = NULL;
+
+    if (messageString) {
+        message = [messageString cStringUsingEncoding:NSUTF8StringEncoding];
+    }
+
+    int32_t result = tox_add_friend(self.tox, address, (const uint8_t *)message, messageString.length);
+
+    free(address);
+
+    if (result > -1) {
+        [self saveTox];
+
+        [self.friendsContainer private_addFriend:[self createFriendWithId:result]];
+    }
+    else {
+
+    }
+}
+
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
 {
     uint8_t *clientId = [ToxFunctions hexStringToBin:request.clientId];
