@@ -12,6 +12,8 @@
 
 @interface ChatViewController : UIViewController
 
+@property (strong, nonatomic, readonly) CDChat *chat;
+
 - (instancetype)initWithChat:(CDChat *)chat;
 
 @end

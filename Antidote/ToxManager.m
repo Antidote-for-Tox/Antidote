@@ -203,6 +203,12 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     [self addMessage:message toChat:chat fromUser:currentUser];
 }
 
+- (CDChat *)chatWithToxFriend:(ToxFriend *)friend
+{
+    CDUser *user = [self userFromClientId:friend.clientId];
+    return [self chatWithUser:user];
+}
+
 #pragma mark -  Private
 
 - (void)createTox

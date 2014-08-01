@@ -13,6 +13,7 @@
 #import "FriendRequestsViewController.h"
 #import "NSIndexSet+Utilities.h"
 #import "Helper.h"
+#import "AppDelegate+Utilities.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -111,6 +112,14 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+
+    CDChat *chat = [[ToxManager sharedInstance] chatWithToxFriend:friend];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
 }
 
 #pragma mark -  Notifications

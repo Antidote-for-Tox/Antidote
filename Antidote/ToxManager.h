@@ -28,4 +28,6 @@
 
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;
 
+- (CDChat *)chatWithToxFriend:(ToxFriend *)friend;
+
 @end
