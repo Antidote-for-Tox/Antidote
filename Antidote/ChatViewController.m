@@ -311,6 +311,9 @@
 
 - (void)scrollToBottomAnimated:(BOOL)animated
 {
+    if (! self.messages.count) {
+        return;
+    }
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
 
     [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:animated];
