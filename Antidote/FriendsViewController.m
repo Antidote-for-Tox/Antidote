@@ -14,6 +14,7 @@
 #import "NSIndexSet+Utilities.h"
 #import "Helper.h"
 #import "AppDelegate+Utilities.h"
+#import "AddFriendViewController.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -41,6 +42,11 @@
                     style:UIBarButtonItemStylePlain
                    target:self
                    action:@selector(requestsButtonPressed)];
+
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
+            initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                 target:self
+                                 action:@selector(addButtonPressed)];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateFriendsNotification:)
@@ -77,6 +83,13 @@
     FriendRequestsViewController *frvc = [FriendRequestsViewController new];
 
     [self.navigationController pushViewController:frvc animated:YES];
+}
+
+- (void)addButtonPressed
+{
+    AddFriendViewController *afvc = [AddFriendViewController new];
+
+    [self.navigationController pushViewController:afvc animated:YES];
 }
 
 #pragma mark -  UITableViewDataSource

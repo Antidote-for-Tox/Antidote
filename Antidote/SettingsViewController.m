@@ -191,7 +191,8 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     {
-        frame.size = [self.toxIdTitleLabel.text stringSizeWithFont:self.toxIdTitleLabel.font];
+        [self.toxIdTitleLabel sizeToFit];
+        frame = self.toxIdTitleLabel.frame;
         frame.origin.x = 10.0;
         frame.origin.y = currentOriginY + yIndentation;
         self.toxIdTitleLabel.frame = frame;
@@ -199,11 +200,8 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     {
-        NSString *title = [self.toxIdQRButton titleForState:UIControlStateNormal];
-        UIFont *font = self.toxIdQRButton.titleLabel.font;
-
-        frame = CGRectZero;
-        frame.size = [title stringSizeWithFont:font];
+        [self.toxIdQRButton sizeToFit];
+        frame = self.toxIdQRButton.frame;
         frame.origin.x = self.view.bounds.size.width - frame.size.width - 20.0;
         frame.origin.y = self.toxIdTitleLabel.frame.origin.y;
         self.toxIdQRButton.frame = frame;
