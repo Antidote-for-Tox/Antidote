@@ -17,6 +17,7 @@
 #import "AddFriendViewController.h"
 #import "FriendCardViewController.h"
 #import "UIAlertView+BlocksKit.h"
+#import "CoreDataManager+Chat.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsCellDelegate>
 
@@ -125,20 +126,33 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         __weak FriendsViewController *weakSelf = self;
 
-        NSString *title = NSLocalizedString(@"Are you sure you want to delete a friend?", @"Friends");
-        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
+        NSString *friendTitle = NSLocalizedString(@"Are you sure you want to delete a friend?", @"Friends");
+        NSString *chatTitle = NSLocalizedString(@"Remove private chat with this friend?", @"Friends");
 
-        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
+        UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
+
+        [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
             ToxFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
+            CDChat *chat = [[ToxManager sharedInstance] chatWithToxFriend:friend];
 
             [[ToxManager sharedInstance] removeFriend:friend];
+
+            UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
+
+            [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
+                [CoreDataManager removeChatWithAllMessages:chat];
+            }];
+
+            [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
+
+            [chatAlert show];
         }];
 
-        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
+        [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
             [tableView setEditing:NO animated:YES];
         }];
 
-        [alert show];
+        [friendAlert show];
     }
 }
 
