@@ -118,6 +118,10 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 
 - (void)private_addFriend:(ToxFriend *)friend
 {
+    if (! friend) {
+        return;
+    }
+
     @synchronized(self.friends) {
         NSUInteger index = [self.friends indexOfObject:friend];
 
@@ -168,6 +172,29 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                   updatedSet:[NSIndexSet indexSetWithIndex:index]];
 
         [self sendUpdateFriendWithIdNotification:friend];
+    }
+}
+
+- (void)private_removeFriend:(ToxFriend *)friend
+{
+    if (! friend) {
+        return;
+    }
+
+    @synchronized(self.friends) {
+        NSUInteger index = [self.friends indexOfObject:friend];
+
+        if (index == NSNotFound) {
+            return;
+        }
+
+        NSIndexSet *removed = [NSIndexSet indexSetWithIndex:index];
+        [self.friends removeObjectAtIndex:index];
+
+        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
+                                 insertedSet:nil
+                                  removedSet:removed
+                                  updatedSet:nil];
     }
 }
 

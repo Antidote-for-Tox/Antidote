@@ -59,6 +59,7 @@ extern NSString *const kToxFriendsContainerUpdateKeyUpdatedSet;
 
 - (void)private_addFriend:(ToxFriend *)friend;
 - (void)private_updateFriendWithId:(int32_t)id updateBlock:(void (^)(ToxFriend *friend))updateBlock;
+- (void)private_removeFriend:(ToxFriend *)friend;
 
 - (void)private_addFriendRequest:(ToxFriendRequest *)request;
 - (void)private_removeFriendRequest:(ToxFriendRequest *)request;

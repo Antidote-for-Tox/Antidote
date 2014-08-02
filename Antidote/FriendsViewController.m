@@ -16,6 +16,7 @@
 #import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
 #import "FriendCardViewController.h"
+#import "UIAlertView+BlocksKit.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsCellDelegate>
 
@@ -115,6 +116,30 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.friendsContainer.friendsCount;
+}
+
+- (void)  tableView:(UITableView *)tableView
+ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+  forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        __weak FriendsViewController *weakSelf = self;
+
+        NSString *title = NSLocalizedString(@"Are you sure you want to delete a friend?", @"Friends");
+        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
+
+        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
+            ToxFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
+
+            [[ToxManager sharedInstance] removeFriend:friend];
+        }];
+
+        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
+            [tableView setEditing:NO animated:YES];
+        }];
+
+        [alert show];
+    }
 }
 
 #pragma mark -  UITableViewDelegate

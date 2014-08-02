@@ -183,12 +183,12 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)sendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString
 {
-    uint8_t *address = [ToxFunctions hexStringToBin:addressString];
-    const char *message = NULL;
-
-    if (messageString) {
-        message = [messageString cStringUsingEncoding:NSUTF8StringEncoding];
+    if (! messageString.length) {
+        messageString = NSLocalizedString(@"Please, add me", @"Tox empty message");
     }
+
+    uint8_t *address = [ToxFunctions hexStringToBin:addressString];
+    const char *message = [messageString cStringUsingEncoding:NSUTF8StringEncoding];
 
     int32_t result = tox_add_friend(self.tox, address, (const uint8_t *)message, messageString.length);
 
@@ -221,6 +221,18 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [self.friendsContainer private_removeFriendRequest:request];
         [self.friendsContainer private_addFriend:[self createFriendWithId:friendId]];
     }
+}
+
+- (void)removeFriend:(ToxFriend *)friend
+{
+    if (! friend) {
+        return;
+    }
+
+    tox_del_friend(self.tox, friend.id);
+    [self saveTox];
+
+    [self.friendsContainer private_removeFriend:friend];
 }
 
 - (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
