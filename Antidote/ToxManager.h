@@ -31,4 +31,6 @@
 
 - (CDChat *)chatWithToxFriend:(ToxFriend *)friend;
 
+- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friend;
+
 @end

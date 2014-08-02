@@ -7,6 +7,7 @@
 //
 
 #import "ToxFriend.h"
+#import "ToxFriend+Private.h"
 
 @implementation ToxFriend
 

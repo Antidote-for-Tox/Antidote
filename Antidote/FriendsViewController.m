@@ -15,8 +15,9 @@
 #import "Helper.h"
 #import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
+#import "FriendCardViewController.h"
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -98,6 +99,7 @@
 {
     FriendsCell *cell = [tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
                                                         forIndexPath:indexPath];
+    cell.delegate = self;
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
@@ -133,6 +135,17 @@
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
+}
+
+#pragma mark -  FriendsCellDelegate
+
+- (void)friendsCellInfoButtonPressed:(FriendsCell *)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+
+    FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
+    [self.navigationController pushViewController:fcvc animated:YES];
 }
 
 #pragma mark -  Notifications

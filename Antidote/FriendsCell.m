@@ -16,6 +16,7 @@
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subtitleLabel;
 @property (strong, nonatomic) StatusCircleView *statusView;
+@property (strong, nonatomic) UIButton *infoButton;
 
 @end
 
@@ -32,6 +33,7 @@
         [self createTitleView];
         [self createSubtitleView];
         [self createStatusView];
+        [self createInfoButton];
     }
 
     return self;
@@ -61,6 +63,13 @@
 
     self.avatarImageView.backgroundColor = avatar;
     self.statusView.backgroundColor = status;
+}
+
+#pragma mark -  Actions
+
+- (void)infoButtonPressed
+{
+    [self.delegate friendsCellInfoButtonPressed:self];
 }
 
 #pragma mark -  Public
@@ -117,6 +126,15 @@
     [self.contentView addSubview:self.statusView];
 }
 
+- (void)createInfoButton
+{
+    self.infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+    [self.infoButton addTarget:self
+                        action:@selector(infoButtonPressed)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:self.infoButton];
+}
+
 - (void)adjustSubviews
 {
     CGRect frame = CGRectZero;
@@ -154,6 +172,14 @@
         frame.origin.y = CGRectGetMinY(self.titleLabel.frame) +
             (self.titleLabel.frame.size.height - frame.size.height) / 2;
         self.statusView.frame = frame;
+    }
+
+    {
+        [self.infoButton sizeToFit];
+        frame = self.infoButton.frame;
+        frame.origin.x = self.bounds.size.width - frame.size.width - 10.0;
+        frame.origin.y = (self.bounds.size.height - frame.size.height) / 2;
+        self.infoButton.frame = frame;
     }
 }
 

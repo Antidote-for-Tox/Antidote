@@ -10,7 +10,14 @@
 
 #import "StatusCircleView.h"
 
+@class FriendsCell;
+@protocol FriendsCellDelegate <NSObject>
+- (void)friendsCellInfoButtonPressed:(FriendsCell *)cell;
+@end
+
 @interface FriendsCell : UITableViewCell
+
+@property (weak, nonatomic) id<FriendsCellDelegate> delegate;
 
 @property (strong, nonatomic) UIImage *avatarImage;
 @property (strong, nonatomic) NSString *title;

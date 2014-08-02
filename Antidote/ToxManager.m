@@ -12,6 +12,7 @@
 #import "CoreDataManager+User.h"
 #import "CoreDataManager+Chat.h"
 #import "CoreDataManager+Message.h"
+#import "ToxFriend+Private.h"
 
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
@@ -230,6 +231,29 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     CDUser *user = [self userFromClientId:friend.clientId];
     return [self chatWithUser:user];
+}
+
+- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
+{
+    [self.friendsContainer private_updateFriendWithId:friendToChange.id updateBlock:^(ToxFriend *friend) {
+        if (! friend.clientId) {
+            return;
+        }
+
+        friend.associatedName = name;
+
+        if (name.length) {
+            NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
+                [UserInfoManager sharedInstance].uAssociatedNames];
+
+            names[friend.clientId] = name;
+
+            [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
+        }
+        else {
+            [[ToxManager sharedInstance] maybeCreateAssociatedNameForFriend:friend];
+        }
+    }];
 }
 
 #pragma mark -  Private
