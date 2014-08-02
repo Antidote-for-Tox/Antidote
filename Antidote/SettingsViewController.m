@@ -85,16 +85,22 @@
 {
     if ([textField isEqual:self.nameField]) {
         [textField resignFirstResponder];
-
-        [ToxManager sharedInstance].userName = textField.text;
     }
     else if ([textField isEqual:self.statusMessageField]) {
         [textField resignFirstResponder];
-
-        [ToxManager sharedInstance].userStatusMessage = textField.text;
     }
 
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if ([textField isEqual:self.nameField]) {
+        [ToxManager sharedInstance].userName = textField.text;
+    }
+    else if ([textField isEqual:self.statusMessageField]) {
+        [ToxManager sharedInstance].userStatusMessage = textField.text;
+    }
 }
 
 #pragma mark -  ToxIdViewDelegate

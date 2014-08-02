@@ -116,6 +116,12 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)setUserName:(NSString *)userName
 {
+    NSString *oldUserName = self.userName;
+
+    if (userName && oldUserName && [userName isEqualToString:oldUserName]) {
+        return;
+    }
+
     if (userName.length > TOX_MAX_NAME_LENGTH) {
         userName = [userName substringToIndex:TOX_MAX_NAME_LENGTH];
     }
@@ -145,6 +151,12 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)setUserStatusMessage:(NSString *)statusMessage
 {
+    NSString *oldUserStatusMessage = self.userStatusMessage;
+
+    if (statusMessage && oldUserStatusMessage && [statusMessage isEqualToString:oldUserStatusMessage]) {
+        return;
+    }
+
     if (statusMessage.length > TOX_MAX_STATUSMESSAGE_LENGTH) {
         statusMessage = [statusMessage substringToIndex:TOX_MAX_STATUSMESSAGE_LENGTH];
     }
