@@ -267,6 +267,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 - (void)applicationWillTerminateNotification:(NSNotification *)notification
 {
+    [self saveTox];
     tox_kill(self.tox);
 }
 

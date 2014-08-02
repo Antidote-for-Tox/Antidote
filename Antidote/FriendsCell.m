@@ -149,7 +149,7 @@
     {
         frame = CGRectZero;
         frame.size = [self.titleLabel.text stringSizeWithFont:self.titleLabel.font];
-        frame.size.width = MIN(230.0, frame.size.width);
+        frame.size.width = MIN(200.0, frame.size.width);
         frame.origin.x = CGRectGetMaxX(self.avatarImageView.frame) + 10.0;
         frame.origin.y = self.avatarImageView.frame.origin.y;
 

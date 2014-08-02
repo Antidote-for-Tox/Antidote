@@ -176,7 +176,9 @@
     self.title = self.friend.associatedName;
 
     self.associatedNameField.text = self.friend.associatedName;
-    self.realNameLabel.text = [NSString stringWithFormat:@"(%@)", self.friend.realName];
+
+    self.realNameLabel.text = self.friend.realName.length ?
+        [NSString stringWithFormat:@"(%@)", self.friend.realName] : nil;
 
     [self adjustSubviews];
 }
