@@ -13,6 +13,7 @@
 #import "CDMessage.h"
 #import "CDUser.h"
 #import "ChatViewController.h"
+#import "UIAlertView+BlocksKit.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate,
     NSFetchedResultsControllerDelegate>
@@ -90,6 +91,30 @@
     id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[section];
 
     return info.numberOfObjects;
+}
+
+- (void)  tableView:(UITableView *)tableView
+ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+  forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        __weak AllChatsViewController *weakSelf = self;
+
+        NSString *title = NSLocalizedString(@"Are you sure you want to delete chat with all messages?", @"Chats");
+        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
+
+        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Chats") handler:^{
+            CDChat *chat = [weakSelf.fetchedResultsController objectAtIndexPath:indexPath];
+
+            [CoreDataManager removeChatWithAllMessages:chat];
+        }];
+
+        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Chats") handler:^{
+            [tableView setEditing:NO animated:YES];
+        }];
+
+        [alert show];
+    }
 }
 
 #pragma mark -  UITableViewDelegate

@@ -77,4 +77,13 @@
     return chat;
 }
 
++ (void)removeChatWithAllMessages:(CDChat *)chat
+{
+    dispatch_sync([self private_queue], ^{
+        [chat MR_deleteInContext:[self private_context]];
+
+        [[self private_context] MR_saveToPersistentStoreAndWait];
+    });
+}
+
 @end
