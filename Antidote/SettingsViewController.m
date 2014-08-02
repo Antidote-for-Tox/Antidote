@@ -9,20 +9,18 @@
 #import "SettingsViewController.h"
 #import "ToxManager.h"
 #import "QRViewerController.h"
-#import "NSString+Utilities.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
+#import "ToxIdView.h"
 
-@interface SettingsViewController () <UITextFieldDelegate>
+@interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 @property (strong, nonatomic) UITextField *nameField;
 @property (strong, nonatomic) UITextField *statusMessageField;
 
-@property (strong, nonatomic) UILabel *toxIdTitleLabel;
-@property (strong, nonatomic) UIButton *toxIdQRButton;
-@property (strong, nonatomic) CopyLabel *toxIdValueLabel;
+@property (strong, nonatomic) ToxIdView *toxIdView;
 
 @end
 
@@ -48,7 +46,7 @@
     [self createScrollView];
     [self createNameField];
     [self createStatusMessageField];
-    [self createToxIdViews];
+    [self createToxIdView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -56,15 +54,6 @@
     [super viewDidLayoutSubviews];
 
     [self adjustSubviews];
-}
-
-#pragma mark -  Actions
-
-- (void)toxIdQRButtonPressed
-{
-    QRViewerController *qrVC = [[QRViewerController alloc] initWithText:[ToxManager sharedInstance].toxId];
-
-    [self presentViewController:qrVC animated:YES completion:nil];
 }
 
 #pragma mark -  UITextFieldDelegate
@@ -108,6 +97,15 @@
     return YES;
 }
 
+#pragma mark -  ToxIdViewDelegate
+
+- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithText:(NSString *)text
+{
+    QRViewerController *qrVC = [[QRViewerController alloc] initWithText:text];
+
+    [self presentViewController:qrVC animated:YES completion:nil];
+}
+
 #pragma mark -  Private
 
 - (void)createScrollView
@@ -140,23 +138,13 @@
     self.statusMessageField.text = [ToxManager sharedInstance].userStatusMessage;
 }
 
-- (void)createToxIdViews
+- (void)createToxIdView
 {
-    self.toxIdTitleLabel = [self.scrollView addLabelWithTextColor:[UIColor blackColor]
-                                                          bgColor:[UIColor clearColor]];
-    self.toxIdTitleLabel.text = NSLocalizedString(@"My Tox ID", @"Settings");
+    NSString *toxId = [ToxManager sharedInstance].toxId;
 
-    self.toxIdQRButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.toxIdQRButton setTitle:NSLocalizedString(@"QR", @"Settings") forState:UIControlStateNormal];
-    [self.toxIdQRButton addTarget:self
-                           action:@selector(toxIdQRButtonPressed)
-                 forControlEvents:UIControlEventTouchUpInside];
-    [self.scrollView addSubview:self.toxIdQRButton];
-
-    self.toxIdValueLabel = [self.scrollView addCopyLabelWithTextColor:[UIColor grayColor]
-                                                              bgColor:[UIColor clearColor]];
-    self.toxIdValueLabel.numberOfLines = 0;
-    self.toxIdValueLabel.text = [[ToxManager sharedInstance] toxId];
+    self.toxIdView = [[ToxIdView alloc] initWithId:toxId];
+    self.toxIdView.delegate = self;
+    [self.scrollView addSubview:self.toxIdView];
 }
 
 - (void)adjustSubviews
@@ -191,32 +179,9 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     {
-        [self.toxIdTitleLabel sizeToFit];
-        frame = self.toxIdTitleLabel.frame;
-        frame.origin.x = 10.0;
+        frame = self.toxIdView.frame;
         frame.origin.y = currentOriginY + yIndentation;
-        self.toxIdTitleLabel.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        [self.toxIdQRButton sizeToFit];
-        frame = self.toxIdQRButton.frame;
-        frame.origin.x = self.view.bounds.size.width - frame.size.width - 20.0;
-        frame.origin.y = self.toxIdTitleLabel.frame.origin.y;
-        self.toxIdQRButton.frame = frame;
-    }
-
-    {
-        const CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
-        const CGFloat maxWidth = self.scrollView.bounds.size.width - 2 * xIndentation;
-
-        frame = CGRectZero;
-        frame.size = [self.toxIdValueLabel.text stringSizeWithFont:self.toxIdValueLabel.font
-                                                 constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
-        frame.origin.x = xIndentation;
-        frame.origin.y = currentOriginY + yIndentation;
-        self.toxIdValueLabel.frame = frame;
+        self.toxIdView.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
