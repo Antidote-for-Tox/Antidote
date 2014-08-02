@@ -56,6 +56,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [self loadFriendsAndCreateContainer];
 
         _queue = dispatch_queue_create("ToxManager queue", NULL);
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillTerminateNotification:)
+                                                     name:UIApplicationWillTerminateNotification
+                                                   object:nil];
     }
 
     return self;
@@ -67,6 +72,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     dispatch_source_cancel(self.timer);
     self.timer = nil;
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 + (instancetype)sharedInstance
@@ -254,6 +261,13 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
             [[ToxManager sharedInstance] maybeCreateAssociatedNameForFriend:friend];
         }
     }];
+}
+
+#pragma mark -  Notifications
+
+- (void)applicationWillTerminateNotification:(NSNotification *)notification
+{
+    tox_kill(self.tox);
 }
 
 #pragma mark -  Private
