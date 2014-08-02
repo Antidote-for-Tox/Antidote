@@ -69,6 +69,7 @@
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
 		119BB129198CECAB00380557 /* ToxIdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB128198CECAB00380557 /* ToxIdView.m */; };
 		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
+		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
 		11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -199,6 +200,8 @@
 		11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
 		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxFriend+Private.h"; sourceTree = "<group>"; };
+		11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utilities.h"; sourceTree = "<group>"; };
+		11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utilities.m"; sourceTree = "<group>"; };
 		11C7C6B31983FB42001B849B /* ToxFriendsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriendsContainer.h; sourceTree = "<group>"; };
 		11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsContainer.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
@@ -479,6 +482,8 @@
 				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
 				118352C7197A867A0048CA64 /* UIColor+Utilities.h */,
 				118352C8197A867A0048CA64 /* UIColor+Utilities.m */,
+				11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */,
+				11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */,
 				118352C4197A802D0048CA64 /* UIView+Utilities.h */,
 				118352C5197A802D0048CA64 /* UIView+Utilities.m */,
 				118352BA197A7B960048CA64 /* UIViewController+Utilities.h */,
@@ -726,6 +731,7 @@
 				114630D9198554B70075DA16 /* CDMessage.m in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
+				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
