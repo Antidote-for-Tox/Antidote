@@ -13,6 +13,7 @@
 
 - (void)chatInputViewWantsToUpdateFrame:(ChatInputView *)view;
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
+- (void)chatInputView:(ChatInputView *)view typingChangedTo:(BOOL)isTyping;
 
 @end
 

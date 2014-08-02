@@ -154,6 +154,11 @@
     [view setText:nil];
 }
 
+- (void)chatInputView:(ChatInputView *)view typingChangedTo:(BOOL)isTyping
+{
+    [[ToxManager sharedInstance] changeIsTypingInChat:self.chat to:isTyping];
+}
+
 #pragma mark -  Notifications
 
 - (void)keyboardWillShow:(NSNotification *)notification

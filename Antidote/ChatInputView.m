@@ -8,10 +8,14 @@
 
 #import "ChatInputView.h"
 
+static const CGFloat kTypingTimerInterval = 5.0;
+
 @interface ChatInputView() <UITextViewDelegate>
 
 @property (strong, nonatomic) UITextView *textView;
 @property (strong, nonatomic) UIButton *button;
+
+@property (strong, nonatomic) NSTimer *typingTimer;
 
 @end
 
@@ -51,6 +55,7 @@
 - (void)buttonPressed
 {
     [self.delegate chatInputView:self sendButtonPressedWithText:self.textView.text];
+    [self stopTyping];
 }
 
 #pragma mark -  Public methods
@@ -63,6 +68,23 @@
 - (CGFloat)heightWithCurrentText
 {
     return 40.0;
+}
+
+#pragma mark -  UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [self startTyping];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [self stopTyping];
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self startTyping];
 }
 
 #pragma mark -  Private methods
@@ -100,6 +122,36 @@
     frame.origin.x = self.frame.size.width - frame.size.width - 10.0;
     frame.origin.y = (self.frame.size.height - frame.size.height) / 2;
     self.button.frame = frame;
+}
+
+- (void)startTyping
+{
+    @synchronized(self) {
+        if (self.typingTimer) {
+            [self.typingTimer invalidate];
+            self.typingTimer = nil;
+        }
+
+        self.typingTimer = [NSTimer scheduledTimerWithTimeInterval:kTypingTimerInterval
+                                                            target:self
+                                                          selector:@selector(stopTyping)
+                                                          userInfo:nil
+                                                           repeats:NO];
+
+        [self.delegate chatInputView:self typingChangedTo:YES];
+    }
+}
+
+- (void)stopTyping
+{
+    @synchronized(self) {
+        if (self.typingTimer) {
+            [self.typingTimer invalidate];
+            self.typingTimer = nil;
+        }
+
+        [self.delegate chatInputView:self typingChangedTo:NO];
+    }
 }
 
 @end
