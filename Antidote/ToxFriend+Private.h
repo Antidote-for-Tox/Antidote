@@ -16,5 +16,6 @@
 @property (strong, nonatomic, readwrite) NSString *associatedName;
 @property (strong, nonatomic, readwrite) NSString *statusMessage;
 @property (assign, nonatomic, readwrite) ToxFriendStatus status;
+@property (assign, nonatomic, readwrite) BOOL isTyping;
 
 @end

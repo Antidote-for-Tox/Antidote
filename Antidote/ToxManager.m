@@ -429,6 +429,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         }
     }
 
+    friend.isTyping = tox_get_is_typing(self.tox, friendId);
+
     {
         if (friend.clientId) {
             NSDictionary *names = [UserInfoManager sharedInstance].uAssociatedNames;
@@ -575,6 +577,10 @@ void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *us
 void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata)
 {
     NSLog(@"ToxManager: typingChangeCallback %d %d", friendnumber, isTyping);
+
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
+        friend.isTyping = (isTyping == 1);
+    }];
 }
 
 void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata)

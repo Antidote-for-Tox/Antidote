@@ -23,6 +23,7 @@ typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
 @property (strong, nonatomic, readonly) NSString *associatedName;
 @property (strong, nonatomic, readonly) NSString *statusMessage;
 @property (assign, nonatomic, readonly) ToxFriendStatus status;
+@property (assign, nonatomic, readonly) BOOL isTyping;
 
 - (BOOL)isEqual:(id)object;
 - (NSUInteger)hash;
