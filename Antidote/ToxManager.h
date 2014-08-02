@@ -27,10 +27,11 @@
 - (void)sendFriendRequestWithAddress:(NSString *)address message:(NSString *)message;
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
 
+- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friend;
+
+- (void)changeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping;
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;
 
 - (CDChat *)chatWithToxFriend:(ToxFriend *)friend;
-
-- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friend;
 
 @end

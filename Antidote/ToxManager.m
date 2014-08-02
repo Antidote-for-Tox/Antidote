@@ -223,6 +223,42 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }
 }
 
+- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
+{
+    [self.friendsContainer private_updateFriendWithId:friendToChange.id updateBlock:^(ToxFriend *friend) {
+        if (! friend.clientId) {
+            return;
+        }
+
+        friend.associatedName = name;
+
+        if (name.length) {
+            NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
+                [UserInfoManager sharedInstance].uAssociatedNames];
+
+            names[friend.clientId] = name;
+
+            [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
+        }
+        else {
+            [[ToxManager sharedInstance] maybeCreateAssociatedNameForFriend:friend];
+        }
+    }];
+}
+
+- (void)changeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping
+{
+    if (! chat) {
+        return;
+    }
+
+    CDUser *user = [chat.users anyObject];
+    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
+
+    uint8_t typing = isTyping ? 1 : 0;
+    tox_set_user_is_typing(self.tox, friend.id, typing);
+}
+
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat
 {
     if (! message.length || ! chat) {
@@ -250,29 +286,6 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     CDUser *user = [self userFromClientId:friend.clientId];
     return [self chatWithUser:user];
-}
-
-- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
-{
-    [self.friendsContainer private_updateFriendWithId:friendToChange.id updateBlock:^(ToxFriend *friend) {
-        if (! friend.clientId) {
-            return;
-        }
-
-        friend.associatedName = name;
-
-        if (name.length) {
-            NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-                [UserInfoManager sharedInstance].uAssociatedNames];
-
-            names[friend.clientId] = name;
-
-            [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
-        }
-        else {
-            [[ToxManager sharedInstance] maybeCreateAssociatedNameForFriend:friend];
-        }
-    }];
 }
 
 #pragma mark -  Notifications
