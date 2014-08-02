@@ -88,6 +88,8 @@
 
     self.messages = [NSMutableArray arrayWithArray:[CoreDataManager messagesForChat:self.chat]];
     [self.tableView reloadData];
+
+    [self updateIsTypingFooter];
 }
 
 - (void)viewDidLayoutSubviews
@@ -229,6 +231,7 @@
 
     self.friend = updatedFriend;
     [self updateTitleView];
+    [self updateIsTypingFooter];
 }
 
 #pragma mark -  Private
@@ -364,6 +367,31 @@
 
         self.inputView.frame = frame;
     }];
+}
+
+- (void)updateIsTypingFooter
+{
+    if (self.friend.isTyping) {
+        if (self.tableView.tableFooterView) {
+            return;
+        }
+
+        UILabel *label = [UILabel new];
+        label.backgroundColor = [UIColor clearColor];
+        label.textColor = [UIColor lightGrayColor];
+        label.font = [UIFont systemFontOfSize:16];
+        label.text = NSLocalizedString(@"typing...", @"Chat");
+        label.textAlignment = NSTextAlignmentCenter;
+        [label sizeToFit];
+
+        self.tableView.tableFooterView = label;
+        [self scrollToBottomAnimated:YES];
+    }
+    else {
+        if (self.tableView.tableFooterView) {
+            self.tableView.tableFooterView = nil;
+        }
+    }
 }
 
 @end
