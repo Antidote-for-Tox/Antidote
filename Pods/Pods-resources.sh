@@ -41,6 +41,32 @@ install_resource()
       ;;
   esac
 }
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_min.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_min@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_min_tailless.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_min_tailless@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_stroked.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_stroked@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_stroked_tailless.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_stroked_tailless@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_tailless.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/bubble_tailless@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/camera.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/camera@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/typing.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images/typing@2x.png"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Sounds/message_received.aiff"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Sounds/message_sent.aiff"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Images"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Assets/Sounds"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Controllers/JSQMessagesViewController.xib"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellIncoming.xib"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesCollectionViewCellOutgoing.xib"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesLoadEarlierHeaderView.xib"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesToolbarContentView.xib"
+install_resource "JSQMessagesViewController/JSQMessagesViewController/Views/JSQMessagesTypingIndicatorFooterView.xib"
 
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 if [[ "${ACTION}" == "install" ]]; then
