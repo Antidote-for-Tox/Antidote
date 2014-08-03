@@ -11,6 +11,7 @@
 
 @interface AppDelegate (Utilities)
 
+- (UIViewController *)visibleViewController;
 - (void)switchToChatsTabAndShowChatViewControllerWithChat:(CDChat *)chat;
 
 @end

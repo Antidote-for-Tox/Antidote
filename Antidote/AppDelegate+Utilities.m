@@ -13,6 +13,15 @@ static const NSUInteger kChatsIndex = 0;
 
 @implementation AppDelegate (Utilities)
 
+- (UIViewController *)visibleViewController
+{
+    UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
+
+    UINavigationController *navCon = (UINavigationController *)[tabBar selectedViewController];
+
+    return [navCon topViewController];
+}
+
 - (void)switchToChatsTabAndShowChatViewControllerWithChat:(CDChat *)chat
 {
     UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;

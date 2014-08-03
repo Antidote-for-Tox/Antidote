@@ -13,6 +13,7 @@
 #import "CoreDataManager+Chat.h"
 #import "CoreDataManager+Message.h"
 #import "ToxFriend+Private.h"
+#import "EventsManager.h"
 
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
@@ -485,7 +486,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     CDUser *user = [self userFromClientId:friend.clientId];
     CDChat *chat = [self chatWithUser:user];
 
-    [self addMessage:message toChat:chat fromUser:user];
+    CDMessage *cdMessage = [self addMessage:message toChat:chat fromUser:user];
+
+    EventObject *object = [EventObject objectWithType:EventObjectTypeChatMessage image:nil object:cdMessage];
+
+    [[EventsManager sharedInstance] addObject:object];
 }
 
 - (CDUser *)userFromClientId:(NSString *)clientId
@@ -506,9 +511,9 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }];
 }
 
-- (void)addMessage:(NSString *)message toChat:(CDChat *)chat fromUser:(CDUser *)user
+- (CDMessage *)addMessage:(NSString *)message toChat:(CDChat *)chat fromUser:(CDUser *)user
 {
-    [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
+    return [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
         m.text = message;
         m.date = [[NSDate date] timeIntervalSince1970];
         m.user = user;
