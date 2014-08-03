@@ -7,16 +7,16 @@
 //
 
 #import "EventsManager.h"
-#import "CDMessage.h"
-#import "CDChat.h"
-#import "CDUser.h"
 #import "AppDelegate+Utilities.h"
-#import "ChatViewController.h"
-#import "ToxManager.h"
 #import "NSTimer+BlocksKit.h"
 #import "UIControl+BlocksKit.h"
 #import "UIColor+Utilities.h"
 #import "UIView+Utilities.h"
+#import "ChatViewController.h"
+#import "ToxManager.h"
+#import "CDMessage.h"
+#import "CDChat.h"
+#import "CDUser.h"
 
 @interface EventsManager()
 
@@ -95,28 +95,6 @@
     [self dequeueAndShowNextObject];
 }
 
-- (BOOL)shouldShowAlertWindowFor:(EventObject *)object
-{
-    if (object.type == EventObjectTypeChatMessage) {
-        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        UIViewController *visibleVC = [delegate visibleViewController];
-
-        if (! [visibleVC isKindOfClass:[ChatViewController class]]) {
-            return YES;
-        }
-
-        ChatViewController *chatVC = (ChatViewController *)visibleVC;
-        CDMessage *message = object.object;
-
-        if (message.chat && [chatVC.chat isEqual:message.chat]) {
-            // Chat is already visible, don't show alert window
-            return NO;
-        }
-    }
-
-    return YES;
-}
-
 - (void)queueObject:(EventObject *)object
 {
     @synchronized(self) {
@@ -180,9 +158,11 @@
         }];
     };
 
-    NSString *text = [self textForObject:object];
-
-    UIView *activeView = [self eventViewWithText:text image:object.image tapHandler:^(UIView *theActiveView) {
+    UIView *activeView = [self eventViewWithTopText:[self topTextForObject:object]
+                                         bottomText:[self bottomTextForObject:object]
+                                              image:object.image
+                                         tapHandler:^(UIView *theActiveView)
+    {
         [weakSelf performActionForObject:object];
 
         closeBlock(theActiveView);
@@ -204,9 +184,10 @@
     } repeats:NO];
 }
 
-- (UIView *)eventViewWithText:(NSString *)text
-                        image:(UIImage *)image
-                   tapHandler:(void (^)(UIView *view))tapHandler
+- (UIView *)eventViewWithTopText:(NSString *)topText
+                      bottomText:(NSString *)bottomText
+                           image:(UIImage *)image
+                      tapHandler:(void (^)(UIView *view))tapHandler
 {
     UIView *view = [[UIView alloc] initWithFrame:self.window.bounds];
     view.clipsToBounds = YES;
@@ -223,12 +204,13 @@
         [view addSubview:imageView];
     }
 
+    UILabel *topLabel;
     {
         CGRect frame = CGRectZero;
-        frame.size.width = view.frame.size.width - frame.origin.x;
-        frame.size.height = 40.0;
         frame.origin.x = 10.0;
-        frame.origin.y = (view.frame.size.height - frame.size.height);
+        frame.origin.y = 4.0;
+        frame.size.width = view.frame.size.width - frame.origin.x;
+        frame.size.height = 20.0;
 
         if (imageView) {
             CGFloat delta = CGRectGetMaxX(imageView.frame);
@@ -237,9 +219,21 @@
             frame.size.width -= delta;
         }
 
-        UILabel *label = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        label.frame = frame;
-        label.text = text;
+        topLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
+        topLabel.font = [UIFont systemFontOfSize:16];
+        topLabel.frame = frame;
+        topLabel.text = topText;
+    }
+
+    {
+        CGRect frame = topLabel.frame;
+        frame.origin.y = CGRectGetMaxY(topLabel.frame);
+        frame.size.height = 20.0;
+
+        UILabel *bottomLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
+        bottomLabel.font = [UIFont systemFontOfSize:14];
+        bottomLabel.frame = frame;
+        bottomLabel.text = bottomText;
     }
 
     {
@@ -259,7 +253,31 @@
     return view;
 }
 
-- (NSString *)textForObject:(EventObject *)object
+#pragma mark -  Type depend methods
+
+- (BOOL)shouldShowAlertWindowFor:(EventObject *)object
+{
+    if (object.type == EventObjectTypeChatMessage) {
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        UIViewController *visibleVC = [delegate visibleViewController];
+
+        if (! [visibleVC isKindOfClass:[ChatViewController class]]) {
+            return YES;
+        }
+
+        ChatViewController *chatVC = (ChatViewController *)visibleVC;
+        CDMessage *message = object.object;
+
+        if (message.chat && [chatVC.chat isEqual:message.chat]) {
+            // Chat is already visible, don't show alert window
+            return NO;
+        }
+    }
+
+    return YES;
+}
+
+- (NSString *)topTextForObject:(EventObject *)object
 {
     NSString *text;
 
@@ -267,12 +285,28 @@
         CDMessage *message = object.object;
         ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
-        NSString *name = friend.associatedName ?: friend.clientId;
-        if (name.length > 15) {
-            name = [name substringToIndex:15];
-        }
+        text = friend.associatedName ?: friend.clientId;
+    }
+    else if (object.type == EventObjectTypeFriendRequest) {
+        text = NSLocalizedString(@"Incoming friend request", @"Events");
+    }
 
-        text = [NSString stringWithFormat:@"%@: %@", name, message.text];
+    return text;
+}
+
+- (NSString *)bottomTextForObject:(EventObject *)object
+{
+    NSString *text;
+
+    if (object.type == EventObjectTypeChatMessage) {
+        CDMessage *message = object.object;
+
+        text = message.text;
+    }
+    else if (object.type == EventObjectTypeFriendRequest) {
+        ToxFriendRequest *request = object.object;
+
+        text = request.message;
     }
 
     return text;
@@ -286,6 +320,9 @@
         CDMessage *message = object.object;
 
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];
+    }
+    else if (object.type == EventObjectTypeFriendRequest) {
+        [delegate switchToFriendsTabAndShowFriendRequests];
     }
 }
 

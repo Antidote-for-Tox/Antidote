@@ -10,6 +10,7 @@
 
 typedef NS_ENUM(NSUInteger, EventObjectType) {
     EventObjectTypeChatMessage,
+    EventObjectTypeFriendRequest,
 };
 
 @interface EventObject : NSObject
@@ -19,7 +20,8 @@ typedef NS_ENUM(NSUInteger, EventObjectType) {
 
 /**
  * object depends on type. For:
- * - EventObjectTypeChatMessage - CDMessage
+ * - EventObjectTypeChatMessage   - CDMessage
+ * - EventObjectTypeFriendRequest - ToxFriendRequest
  */
 @property (strong, nonatomic, readonly) id object;
 

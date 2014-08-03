@@ -539,6 +539,11 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
     ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:key message:message];
 
     [[ToxManager sharedInstance].friendsContainer private_addFriendRequest:request];
+
+    EventObject *object = [EventObject objectWithType:EventObjectTypeFriendRequest
+                                                image:nil
+                                               object:request];
+    [[EventsManager sharedInstance] addObject:object];
 }
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
