@@ -21,12 +21,14 @@ PODS:
   - MagicalRecord (2.2):
     - MagicalRecord/Core
   - MagicalRecord/Core (2.2)
+  - ZBarSDK (1.3.1)
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2.3)
   - JSQMessagesViewController (~> 5.2.0)
   - libsodium-ios (~> 0.4.5)
   - MagicalRecord (~> 2.2)
+  - ZBarSDK (~> 1.3.1)
 
 SPEC CHECKSUMS:
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
@@ -34,5 +36,6 @@ SPEC CHECKSUMS:
   JSQSystemSoundPlayer: c24914bc96ff5365b5d28b59d7ecffd60d1c5587
   libsodium-ios: 569dedc61af104e5ba188f4cd4ab3eb607f2ce44
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  ZBarSDK: 3ed560856963f765b66d834f464590bd6ba13b44
 
 COCOAPODS: 0.33.1

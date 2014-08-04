@@ -66,6 +66,12 @@
 #define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
 #define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
 
+// ZBarSDK
+#define COCOAPODS_POD_AVAILABLE_ZBarSDK
+#define COCOAPODS_VERSION_MAJOR_ZBarSDK 1
+#define COCOAPODS_VERSION_MINOR_ZBarSDK 3
+#define COCOAPODS_VERSION_PATCH_ZBarSDK 1
+
 // libsodium-ios
 #define COCOAPODS_POD_AVAILABLE_libsodium_ios
 #define COCOAPODS_VERSION_MAJOR_libsodium_ios 0
