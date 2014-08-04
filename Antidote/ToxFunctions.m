@@ -34,6 +34,21 @@
     return ret;
 }
 
++ (BOOL)isAddressString:(NSString *)string
+{
+    if (string.length != TOX_FRIEND_ADDRESS_SIZE * 2) {
+        return NO;
+    }
+
+    NSCharacterSet *validChars = [NSCharacterSet characterSetWithCharactersInString:@"1234567890abcdefABCDEF"];
+
+    NSArray *components = [string componentsSeparatedByCharactersInSet:validChars];
+
+    NSString *leftChars = [components componentsJoinedByString:@""];
+
+    return (leftChars.length == 0);
+}
+
 + (NSString *)addressToString:(uint8_t *)address
 {
     return [self binToHexString:address length:TOX_FRIEND_ADDRESS_SIZE];

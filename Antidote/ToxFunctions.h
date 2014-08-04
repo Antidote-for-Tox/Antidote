@@ -13,6 +13,8 @@
 // You are responsible for freeing the return value!
 + (uint8_t *)hexStringToBin:(NSString *)string;
 
++ (BOOL)isAddressString:(NSString *)string;
+
 + (NSString *)addressToString:(uint8_t *)address;
 + (NSString *)clientIdToString:(uint8_t *)clientId;
 + (NSString *)publicKeyToString:(uint8_t *)publicKey;
