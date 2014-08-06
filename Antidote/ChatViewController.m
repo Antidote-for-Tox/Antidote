@@ -9,13 +9,16 @@
 #import "ChatViewController.h"
 #import "UIViewController+Utilities.h"
 #import "ChatIncomingCell.h"
+#import "ChatOutgoingCell.h"
 #import "ChatInputView.h"
 #import "CoreDataManager+Message.h"
+#import "CDUser.h"
 #import "ToxManager.h"
 #import "UIView+Utilities.h"
 #import "Helper.h"
 
-@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate>
+@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
+    UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -25,7 +28,11 @@
 @property (strong, nonatomic) CDChat *chat;
 @property (strong, nonatomic) ToxFriend *friend;
 
+@property (strong, nonatomic) NSString *myClientId;
+
 @property (assign, nonatomic) BOOL didLayousSubviewsForFirstTime;
+
+@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -40,12 +47,17 @@
     if (self) {
         self.hidesBottomBarWhenPushed = YES;
 
+        self.myClientId = [ToxManager sharedInstance].clientId;
+
         self.chat = chat;
 
         NSString *clientId = [[chat.users anyObject] clientId];
         self.friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:clientId];
 
         [self updateTitleView];
+
+        self.dateFormatter = [NSDateFormatter new];
+        self.dateFormatter.dateFormat = @"H:m";
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
@@ -106,6 +118,45 @@
 
 #pragma mark -  Gestures
 
+- (void)tableViewPanGesture:(UIPanGestureRecognizer *)panGR
+{
+    if (panGR.state == UIGestureRecognizerStateChanged) {
+        const CGPoint translation = [panGR translationInView:self.tableView];
+        const CGFloat minOriginX = -40.0;
+
+        [panGR setTranslation:CGPointZero inView:self.tableView];
+
+        for (UITableViewCell *cell in [self.tableView visibleCells]) {
+            CGRect frame = cell.contentView.frame;
+            frame.origin.x += translation.x;
+
+            if (frame.origin.x <= minOriginX) {
+                frame.origin.x = minOriginX;
+            }
+            if (frame.origin.x >= 0.0) {
+                frame.origin.x = 0.0;
+            }
+
+            cell.contentView.frame = frame;
+        }
+    }
+    else if (panGR.state == UIGestureRecognizerStateEnded ||
+        panGR.state == UIGestureRecognizerStateCancelled)
+    {
+        self.view.userInteractionEnabled = NO;
+
+        [UIView animateWithDuration:0.2 animations:^{
+            for (UITableViewCell *cell in [self.tableView visibleCells]) {
+                CGRect frame = cell.contentView.frame;
+                frame.origin.x = 0.0;
+                cell.contentView.frame = frame;
+            }
+        } completion:^(BOOL f) {
+            self.view.userInteractionEnabled = YES;
+        }];
+    }
+}
+
 - (void)tableViewTapGesture:(UITapGestureRecognizer *)tapGR
 {
     [self.inputView resignFirstResponder];
@@ -115,12 +166,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ChatIncomingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
-                                                             forIndexPath:indexPath];
-
     CDMessage *message = self.messages[indexPath.row];
 
-    cell.textLabel.text = message.text;
+    ChatBasicCell *cell;
+
+    if ([self isOutgoingMessage:message]) {
+        cell = [tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
+                                               forIndexPath:indexPath];
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
+                                               forIndexPath:indexPath];
+    }
+
+    cell.message = message.text;
+
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
+    cell.dateString = [self.dateFormatter stringFromDate:date];
+
+    [cell redraw];
 
     return cell;
 }
@@ -134,7 +198,14 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44.0;
+    CDMessage *message = self.messages[indexPath.row];
+
+    if ([self isOutgoingMessage:message]) {
+        return [ChatOutgoingCell heightWithMessage:message.text];
+    }
+    else {
+        return [ChatIncomingCell heightWithMessage:message.text];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -159,6 +230,22 @@
 - (void)chatInputView:(ChatInputView *)view typingChangedTo:(BOOL)isTyping
 {
     [[ToxManager sharedInstance] changeIsTypingInChat:self.chat to:isTyping];
+}
+
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        UIPanGestureRecognizer *panGR = (UIPanGestureRecognizer *)gestureRecognizer;
+
+        CGPoint translation = [panGR translationInView:self.tableView];
+
+        // Check for horizontal gesture
+        if (fabsf(translation.x) > fabsf(translation.y)) {
+            return YES;
+        }
+    }
+
+    return NO;
 }
 
 #pragma mark -  Notifications
@@ -245,6 +332,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     [self.tableView registerClass:[ChatIncomingCell class] forCellReuseIdentifier:[ChatIncomingCell reuseIdentifier]];
+    [self.tableView registerClass:[ChatOutgoingCell class] forCellReuseIdentifier:[ChatOutgoingCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }
@@ -255,6 +343,11 @@
                                                                             action:@selector(tableViewTapGesture:)];
 
     [self.tableView addGestureRecognizer:tapGR];
+
+    UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget:self
+                                                                            action:@selector(tableViewPanGesture:)];
+    panGR.delegate = self;
+    [self.tableView addGestureRecognizer:panGR];
 }
 
 - (void)createInputView
@@ -392,6 +485,11 @@
             self.tableView.tableFooterView = nil;
         }
     }
+}
+
+- (BOOL)isOutgoingMessage:(CDMessage *)message
+{
+    return [message.user.clientId isEqual:self.myClientId];
 }
 
 @end

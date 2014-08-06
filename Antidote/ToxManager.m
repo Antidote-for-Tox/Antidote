@@ -103,6 +103,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     return toxId;
 }
 
+- (NSString *)clientId
+{
+    return [ToxFunctions addressToClientId:[self toxId]];
+}
+
 - (NSString *)userName
 {
     uint8_t *name = malloc(TOX_MAX_NAME_LENGTH);
@@ -291,7 +296,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     tox_send_message(self.tox, friend.id, (uint8_t *)cMessage, message.length);
 
-    CDUser *currentUser = [self userFromClientId:[self toxId]];
+    CDUser *currentUser = [self userFromClientId:self.clientId];
     [self addMessage:message toChat:chat fromUser:currentUser];
 }
 

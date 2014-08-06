@@ -6,10 +6,9 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "ChatBasicCell.h"
 
-@interface ChatIncomingCell : UITableViewCell
+@interface ChatIncomingCell : ChatBasicCell
 
-+ (NSString *)reuseIdentifier;
 
 @end

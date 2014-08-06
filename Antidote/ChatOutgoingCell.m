@@ -1,12 +1,12 @@
 //
-//  ChatIncomingCell.m
+//  ChatOutgoingCell.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 27.07.14.
+//  Created by Dmitry Vorobyov on 06.08.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ChatIncomingCell.h"
+#import "ChatOutgoingCell.h"
 #import "JSQMessagesBubbleImageFactory.h"
 #import "UIColor+Utilities.h"
 #import "NSString+Utilities.h"
@@ -15,15 +15,15 @@ static const CGFloat kMaxMessageWidth = 240.0;
 
 static const CGFloat kCellWhitespaceTop = 3.0;
 static const CGFloat kCellWhitespaceBottom = 3.0;
-static const UIEdgeInsets kBubbleInsets = { 10.0, 15.0, 10.0, 10.0 };
+static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
 
-@interface ChatIncomingCell()
+@interface ChatOutgoingCell()
 
 @property (strong, nonatomic) UIImageView *bubbleImageView;
 
 @end
 
-@implementation ChatIncomingCell
+@implementation ChatOutgoingCell
 
 #pragma mark -  Lifecycle
 
@@ -47,7 +47,7 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 15.0, 10.0, 10.0 };
     CGRect frame = CGRectZero;
     frame.size = [self.message stringSizeWithFont:self.messageLabel.font
                                 constrainedToSize:CGSizeMake(kMaxMessageWidth, CGFLOAT_MAX)];
-    frame.origin.x = 30.0;
+    frame.origin.x = self.bounds.size.width - frame.size.width - 30.0;
     frame.origin.y = kCellWhitespaceTop + kBubbleInsets.top;
     self.messageLabel.frame = frame;
 
@@ -71,8 +71,8 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 15.0, 10.0, 10.0 };
 
 - (void)createSubviews
 {
-    UIColor *color = [UIColor uColorOpaqueWithRed:194 green:233 blue:255];
-    self.bubbleImageView = [JSQMessagesBubbleImageFactory incomingMessageBubbleImageViewWithColor:color];
+    UIColor *color = [UIColor uColorOpaqueWithRed:235 green:244 blue:250];
+    self.bubbleImageView = [JSQMessagesBubbleImageFactory outgoingMessageBubbleImageViewWithColor:color];
     [self.contentView addSubview:self.bubbleImageView];
 
     [self.contentView sendSubviewToBack:self.bubbleImageView];

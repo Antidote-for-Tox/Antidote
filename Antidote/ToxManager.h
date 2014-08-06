@@ -17,6 +17,7 @@
 @property (strong, nonatomic, readonly) ToxFriendsContainer *friendsContainer;
 
 @property (strong, nonatomic, readonly) NSString *toxId;
+@property (strong, nonatomic, readonly) NSString *clientId;
 @property (strong, nonatomic) NSString *userName;
 @property (strong, nonatomic) NSString *userStatusMessage;
 

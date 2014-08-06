@@ -19,4 +19,6 @@
 + (NSString *)clientIdToString:(uint8_t *)clientId;
 + (NSString *)publicKeyToString:(uint8_t *)publicKey;
 
++ (NSString *)addressToClientId:(NSString *)address;
+
 @end

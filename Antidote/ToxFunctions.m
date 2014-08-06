@@ -64,6 +64,15 @@
     return [self binToHexString:publicKey length:crypto_box_PUBLICKEYBYTES];
 }
 
++ (NSString *)addressToClientId:(NSString *)address
+{
+    if (address.length >= TOX_CLIENT_ID_SIZE * 2) {
+        return [address substringToIndex:TOX_CLIENT_ID_SIZE * 2];
+    }
+
+    return nil;
+}
+
 #pragma mark -  Private
 
 + (NSString *)binToHexString:(uint8_t *)bin length:(NSUInteger)length
