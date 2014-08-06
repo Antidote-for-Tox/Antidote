@@ -102,6 +102,7 @@
     [self.tableView reloadData];
 
     [self updateIsTypingFooter];
+    [self updateSendButtonEnabled];
 }
 
 - (void)viewDidLayoutSubviews
@@ -319,6 +320,7 @@
     self.friend = updatedFriend;
     [self updateTitleView];
     [self updateIsTypingFooter];
+    [self updateSendButtonEnabled];
 }
 
 #pragma mark -  Private
@@ -485,6 +487,11 @@
             self.tableView.tableFooterView = nil;
         }
     }
+}
+
+- (void)updateSendButtonEnabled
+{
+    self.inputView.sendButtonEnabled = (self.friend.status != ToxFriendStatusOffline);
 }
 
 - (BOOL)isOutgoingMessage:(CDMessage *)message

@@ -50,6 +50,18 @@ static const CGFloat kTypingTimerInterval = 5.0;
     return [self.textView resignFirstResponder];
 }
 
+#pragma mark -  Properties
+
+- (void)setSendButtonEnabled:(BOOL)enabled
+{
+    self.button.enabled = enabled;
+}
+
+- (BOOL)sendButtonEnabled
+{
+    return self.button.enabled;
+}
+
 #pragma mark -  Actions
 
 - (void)buttonPressed

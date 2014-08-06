@@ -21,6 +21,8 @@
 
 @property (weak, nonatomic) id <ChatInputViewDelegate> delegate;
 
+@property (assign, nonatomic) BOOL sendButtonEnabled;
+
 - (void)setText:(NSString *)text;
 
 - (CGFloat)heightWithCurrentText;
