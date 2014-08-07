@@ -9,17 +9,14 @@
 #import "FriendCardViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
-#import "ToxIdView.h"
-#import "QRViewerController.h"
 #import "ToxManager.h"
 
-@interface FriendCardViewController () <UITextFieldDelegate, ToxIdViewDelegate>
+@interface FriendCardViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 @property (strong, nonatomic) UITextField *associatedNameField;
 @property (strong, nonatomic) UILabel *realNameLabel;
-@property (strong, nonatomic) ToxIdView *toxIdView;
 
 @property (strong, nonatomic) ToxFriend *friend;
 
@@ -55,7 +52,6 @@
 
     [self createScrollView];
     [self createNameViews];
-    [self createToxIdView];
 
     [self redrawTitleAndViews];
 }
@@ -65,15 +61,6 @@
     [super viewDidLayoutSubviews];
 
     [self adjustSubviews];
-}
-
-#pragma mark -  ToxIdViewDelegate
-
-- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithText:(NSString *)text
-{
-    QRViewerController *qrVC = [[QRViewerController alloc] initWithText:text];
-
-    [self presentViewController:qrVC animated:YES completion:nil];
 }
 
 #pragma mark -  UITextFieldDelegate
@@ -125,13 +112,6 @@
                                                         bgColor:[UIColor clearColor]];
 }
 
-- (void)createToxIdView
-{
-    self.toxIdView = [[ToxIdView alloc] initWithId:self.friend.clientId];
-    self.toxIdView.delegate = self;
-    [self.scrollView addSubview:self.toxIdView];
-}
-
 - (void)adjustSubviews
 {
     self.scrollView.frame = self.view.bounds;
@@ -158,13 +138,6 @@
         frame.origin.x = (self.view.bounds.size.width - frame.size.width) / 2;
         frame.origin.y = currentOriginY + yIndentation;
         self.realNameLabel.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        frame = self.toxIdView.frame;
-        frame.origin.y = currentOriginY + yIndentation;
-        self.toxIdView.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
