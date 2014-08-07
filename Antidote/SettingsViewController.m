@@ -12,8 +12,10 @@
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
 #import "ToxIdView.h"
+#import "SettingsColorView.h"
+#import "AppDelegate.h"
 
-@interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate>
+@interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate, SettingsColorViewDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
@@ -21,6 +23,8 @@
 @property (strong, nonatomic) UITextField *statusMessageField;
 
 @property (strong, nonatomic) ToxIdView *toxIdView;
+
+@property (strong, nonatomic) SettingsColorView *colorView;
 
 @end
 
@@ -47,6 +51,7 @@
     [self createNameField];
     [self createStatusMessageField];
     [self createToxIdView];
+    [self createColorView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -112,6 +117,17 @@
     [self presentViewController:qrVC animated:YES completion:nil];
 }
 
+#pragma mark -  SettingsColorViewDelegate
+
+- (void)settingsColorView:(SettingsColorView *)view didSelectScheme:(AppearanceManagerColorscheme)scheme
+{
+    [AppearanceManager changeColorschemeTo:scheme];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+}
+
 #pragma mark -  Private
 
 - (void)createScrollView
@@ -153,6 +169,13 @@
     [self.scrollView addSubview:self.toxIdView];
 }
 
+- (void)createColorView
+{
+    self.colorView = [SettingsColorView new];
+    self.colorView.delegate = self;
+    [self.scrollView addSubview:self.colorView];
+}
+
 - (void)adjustSubviews
 {
     self.scrollView.frame = self.view.bounds;
@@ -188,6 +211,15 @@
         frame = self.toxIdView.frame;
         frame.origin.y = currentOriginY + yIndentation;
         self.toxIdView.frame = frame;
+    }
+    currentOriginY = CGRectGetMaxY(frame);
+
+    {
+        [self.colorView sizeToFit];
+        frame = self.colorView.frame;
+        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2;
+        frame.origin.y = currentOriginY + yIndentation;
+        self.colorView.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 

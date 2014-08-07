@@ -28,13 +28,13 @@
                                                  port:33445
                                             publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"];
 
-    [self recreateControllers];
+    [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
     [self.window makeKeyAndVisible];
     return YES;
 }
 
-- (void)recreateControllers
+- (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
 {
     UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
     UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
@@ -47,6 +47,8 @@
     friends.navigationBar.tintColor  =
     settings.navigationBar.tintColor =
     tabBar.tabBar.tintColor          = [AppearanceManager textMainColor];
+
+    tabBar.selectedIndex = tabIndex;
 
     self.window.rootViewController = tabBar;
 }

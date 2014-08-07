@@ -8,10 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, AppDelegateTabIndex) {
+    AppDelegateTabIndexChats = 0,
+    AppDelegateTabIndexFriends,
+    AppDelegateTabIndexSettings,
+};
+
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-- (void)recreateControllers;
+- (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex;
 
 @end

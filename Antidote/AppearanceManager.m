@@ -61,19 +61,16 @@
     return [self sharedInstance].colorscheme;
 }
 
++ (void)changeColorschemeTo:(AppearanceManagerColorscheme)newColorscheme
+{
+    [self sharedInstance].colorscheme = newColorscheme;
+
+    [UserInfoManager sharedInstance].uCurrentColorscheme = @(newColorscheme);
+}
+
 + (UIColor *)textMainColor
 {
-    if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeRed) {
-        return [UIColor uColorOpaqueWithRed:229 green:84 blue:81];
-    }
-    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeIce) {
-        return [UIColor uColorOpaqueWithRed:38 green:133 blue:172];
-    }
-    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
-        return [UIColor uColorOpaqueWithRed:255 green:166 blue:47];
-    }
-
-    return nil;
+    return [self textMainColorForScheme:self.colorscheme];
 }
 
 + (UIColor *)statusOfflineColor
@@ -92,6 +89,9 @@
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
         return [UIColor uColorOpaqueWithRed:117 green:142 blue:86];
     }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:102 green:146 blue:87];
+    }
 
     return nil;
 }
@@ -106,6 +106,9 @@
     }
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
         return [UIColor uColorOpaqueWithRed:245 green:234 blue:57];
+    }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:244 green:243 blue:143];
     }
 
     return nil;
@@ -122,23 +125,16 @@
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
         return [UIColor uColorOpaqueWithRed:156 green:72 blue:69];
     }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:152 green:88 blue:109];
+    }
 
     return nil;
 }
 
 + (UIColor *)bubbleIncomingColor;
 {
-    if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeRed) {
-        return [UIColor uColorOpaqueWithRed:204 green:217 blue:230];
-    }
-    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeIce) {
-        return [UIColor uColorOpaqueWithRed:247 green:242 blue:203];
-    }
-    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
-        return [UIColor uColorOpaqueWithRed:239 green:227 blue:207];
-    }
-
-    return nil;
+    return [self bubbleIncomingColorForScheme:self.colorscheme];
 }
 
 + (UIColor *)bubbleOutgoingColor
@@ -150,9 +146,49 @@
         return [UIColor uColorOpaqueWithRed:248 green:248 blue:237];
     }
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
-        return [UIColor uColorOpaqueWithRed:239 green:236 blue:231];
+        return [UIColor uColorOpaqueWithRed:242 green:240 blue:236];
+    }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:235 green:240 blue:229];
     }
 
     return nil;
 }
+
++ (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme
+{
+    if (scheme == AppearanceManagerColorschemeRed) {
+        return [UIColor uColorOpaqueWithRed:229 green:84 blue:81];
+    }
+    else if (scheme == AppearanceManagerColorschemeIce) {
+        return [UIColor uColorOpaqueWithRed:38 green:133 blue:172];
+    }
+    else if (scheme == AppearanceManagerColorschemeOrange) {
+        return [UIColor uColorOpaqueWithRed:255 green:166 blue:47];
+    }
+    else if (scheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:82 green:58 blue:175];
+    }
+
+    return nil;
+}
+
++ (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme
+{
+    if (scheme == AppearanceManagerColorschemeRed) {
+        return [UIColor uColorOpaqueWithRed:204 green:217 blue:230];
+    }
+    else if (scheme == AppearanceManagerColorschemeIce) {
+        return [UIColor uColorOpaqueWithRed:247 green:242 blue:203];
+    }
+    else if (scheme == AppearanceManagerColorschemeOrange) {
+        return [UIColor uColorOpaqueWithRed:232 green:226 blue:202];
+    }
+    else if (scheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:212 green:225 blue:208];
+    }
+
+    return nil;
+}
+
 @end

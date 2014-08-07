@@ -9,15 +9,17 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
-    AppearanceManagerColorschemeRed,
+    AppearanceManagerColorschemeRed = 0,
     AppearanceManagerColorschemeIce,
     AppearanceManagerColorschemeOrange,
     AppearanceManagerColorschemePurple,
+    __AppearanceManagerColorschemeCount,
 };
 
 @interface AppearanceManager : NSObject
 
 + (AppearanceManagerColorscheme)colorscheme;
++ (void)changeColorschemeTo:(AppearanceManagerColorscheme)newColorscheme;
 
 + (UIColor *)textMainColor;
 
@@ -28,5 +30,8 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 
 + (UIColor *)bubbleIncomingColor;
 + (UIColor *)bubbleOutgoingColor;
+
++ (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme;
++ (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
 
 @end

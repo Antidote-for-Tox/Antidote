@@ -10,8 +10,6 @@
 #import "ChatViewController.h"
 #import "FriendRequestsViewController.h"
 
-static const NSUInteger kChatsIndex = 0;
-static const NSUInteger kFriendsIndex = 1;
 
 @implementation AppDelegate (Utilities)
 
@@ -28,7 +26,7 @@ static const NSUInteger kFriendsIndex = 1;
 
 - (void)switchToChatsTabAndShowChatViewControllerWithChat:(CDChat *)chat
 {
-    UINavigationController *navCon = [self switchToIndexAndGetNavigation:kChatsIndex];
+    UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexChats];
 
     ChatViewController *chatVC = nil;
     NSUInteger index = [self findViewControllerWithClass:[ChatViewController class]
@@ -64,7 +62,7 @@ static const NSUInteger kFriendsIndex = 1;
 
 - (void)switchToFriendsTabAndShowFriendRequests
 {
-    UINavigationController *navCon = [self switchToIndexAndGetNavigation:kFriendsIndex];
+    UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexFriends];
 
     FriendRequestsViewController *friendRequestVC = nil;
     NSUInteger index = [self findViewControllerWithClass:[FriendRequestsViewController class]
@@ -91,10 +89,10 @@ static const NSUInteger kFriendsIndex = 1;
 
 #pragma mark -  Private
 
-- (UINavigationController *)switchToIndexAndGetNavigation:(NSUInteger)index
+- (UINavigationController *)switchToIndexAndGetNavigation:(AppDelegateTabIndex)index
 {
     UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-    tabBar.selectedIndex = kChatsIndex;
+    tabBar.selectedIndex = index;
 
     return (UINavigationController *)[tabBar selectedViewController];
 }

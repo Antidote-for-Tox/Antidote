@@ -71,6 +71,7 @@
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
+		11B9E6231993FDAF00FB20A6 /* SettingsColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */; };
 		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
 		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
 		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
@@ -209,6 +210,8 @@
 		11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeFormatter.m; sourceTree = "<group>"; };
 		11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceManager.h; sourceTree = "<group>"; };
 		11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceManager.m; sourceTree = "<group>"; };
+		11B9E6211993FDAF00FB20A6 /* SettingsColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsColorView.h; sourceTree = "<group>"; };
+		11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsColorView.m; sourceTree = "<group>"; };
 		11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
 		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxFriend+Private.h"; sourceTree = "<group>"; };
@@ -520,6 +523,7 @@
 		118352B1197A72D90048CA64 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				11B9E6201993FDA100FB20A6 /* SettingsColorView */,
 				118352A6197A64B70048CA64 /* SettingsViewController.h */,
 				118352A7197A64B70048CA64 /* SettingsViewController.m */,
 			);
@@ -611,6 +615,15 @@
 				11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */,
 			);
 			name = AppearanceManager;
+			sourceTree = "<group>";
+		};
+		11B9E6201993FDA100FB20A6 /* SettingsColorView */ = {
+			isa = PBXGroup;
+			children = (
+				11B9E6211993FDAF00FB20A6 /* SettingsColorView.h */,
+				11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */,
+			);
+			name = SettingsColorView;
 			sourceTree = "<group>";
 		};
 		11C3A74C198CF4870029A7A0 /* FriendCard */ = {
@@ -747,6 +760,7 @@
 				118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */,
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
+				11B9E6231993FDAF00FB20A6 /* SettingsColorView.m in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */,
 				114630EF1986C4BF0075DA16 /* ChatInputView.m in Sources */,
