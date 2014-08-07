@@ -70,6 +70,7 @@
 		11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */; };
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
+		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
 		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
 		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
 		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
@@ -206,6 +207,8 @@
 		11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatOutgoingCell.m; sourceTree = "<group>"; };
 		11B9E6151993EBDB00FB20A6 /* TimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeFormatter.h; sourceTree = "<group>"; };
 		11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeFormatter.m; sourceTree = "<group>"; };
+		11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceManager.h; sourceTree = "<group>"; };
+		11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceManager.m; sourceTree = "<group>"; };
 		11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
 		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxFriend+Private.h"; sourceTree = "<group>"; };
@@ -431,6 +434,7 @@
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
 				1146308919842D220075DA16 /* CoreDataManager */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11B9E6141993EBCC00FB20A6 /* TimeFormatter */,
@@ -598,6 +602,15 @@
 				11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */,
 			);
 			name = TimeFormatter;
+			sourceTree = "<group>";
+		};
+		11B9E61C1993F3C700FB20A6 /* AppearanceManager */ = {
+			isa = PBXGroup;
+			children = (
+				11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */,
+				11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */,
+			);
+			name = AppearanceManager;
 			sourceTree = "<group>";
 		};
 		11C3A74C198CF4870029A7A0 /* FriendCard */ = {
@@ -771,6 +784,7 @@
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
 				118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */,
+				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
 				114630D9198554B70075DA16 /* CDMessage.m in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,

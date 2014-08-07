@@ -13,7 +13,6 @@ typedef NS_ENUM(NSInteger, StatusCircleStatus) {
     StatusCircleStatusOnline,
     StatusCircleStatusAway,
     StatusCircleStatusBusy,
-    StatusCircleStatusFriendRequest,
 };
 
 @interface StatusCircleView : UIView

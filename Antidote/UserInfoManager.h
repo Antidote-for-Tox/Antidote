@@ -22,6 +22,8 @@
  */
 @property (strong, nonatomic) NSDictionary *uAssociatedNames;
 
+@property (strong, nonatomic) NSNumber *uCurrentColorscheme;
+
 + (instancetype)sharedInstance;
 
 @end

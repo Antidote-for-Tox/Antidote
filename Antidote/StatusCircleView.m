@@ -24,19 +24,17 @@
     self.layer.cornerRadius = side / 2;
 
     if (self.status == StatusCircleStatusOffline) {
+        self.backgroundColor = [AppearanceManager statusOfflineColor];
         self.backgroundColor = [UIColor lightGrayColor];
     }
     else if (self.status == StatusCircleStatusOnline) {
-        self.backgroundColor = [UIColor uColorOpaqueWithRed:92 green:184 blue:75];
+        self.backgroundColor = [AppearanceManager statusOnlineColor];
     }
     else if (self.status == StatusCircleStatusAway) {
-        self.backgroundColor = [UIColor uColorOpaqueWithRed:195 green:182 blue:41];
+        self.backgroundColor = [AppearanceManager statusAwayColor];
     }
     else if (self.status == StatusCircleStatusBusy) {
-        self.backgroundColor = [UIColor uColorOpaqueWithRed:170 green:57 blue:59];
-    }
-    else if (self.status == StatusCircleStatusFriendRequest) {
-        self.backgroundColor = [UIColor uColorOpaqueWithRed:57 green:132 blue:158];
+        self.backgroundColor = [AppearanceManager statusBusyColor];
     }
 }
 

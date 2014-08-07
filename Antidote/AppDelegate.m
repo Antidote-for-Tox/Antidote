@@ -28,17 +28,27 @@
                                                  port:33445
                                             publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"];
 
-    UITabBarController *tabBar = [UITabBarController new];
-    tabBar.viewControllers = @[
-        [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]],
-        [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]],
-        [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]],
-    ];
-
-    self.window.rootViewController = tabBar;
+    [self recreateControllers];
 
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)recreateControllers
+{
+    UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
+    UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
+    UINavigationController *settings = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
+
+    UITabBarController *tabBar = [UITabBarController new];
+    tabBar.viewControllers = @[allChats, friends, settings];
+
+    allChats.navigationBar.tintColor =
+    friends.navigationBar.tintColor  =
+    settings.navigationBar.tintColor =
+    tabBar.tabBar.tintColor          = [AppearanceManager textMainColor];
+
+    self.window.rootViewController = tabBar;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
