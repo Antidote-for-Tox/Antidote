@@ -48,6 +48,18 @@
     settings.navigationBar.tintColor =
     tabBar.tabBar.tintColor          = [AppearanceManager textMainColor];
 
+    allChats.tabBarItem = [[UITabBarItem alloc] initWithTitle:allChats.title
+                                                        image:[UIImage imageNamed:@"tab-bar-chats"]
+                                                          tag:AppDelegateTabIndexChats];
+
+    friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
+                                                       image:[UIImage imageNamed:@"tab-bar-friends"]
+                                                         tag:AppDelegateTabIndexFriends];
+
+    settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:settings.title
+                                                        image:[UIImage imageNamed:@"tab-bar-settings"]
+                                                          tag:AppDelegateTabIndexSettings];
+
     tabBar.selectedIndex = tabIndex;
 
     self.window.rootViewController = tabBar;

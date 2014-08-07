@@ -72,6 +72,12 @@
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
 		11B9E6231993FDAF00FB20A6 /* SettingsColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */; };
+		11B9E62919940F3900FB20A6 /* tab-bar-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62619940F3900FB20A6 /* tab-bar-settings.png */; };
+		11B9E62A19940F3900FB20A6 /* tab-bar-chats.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62719940F3900FB20A6 /* tab-bar-chats.png */; };
+		11B9E62B19940F3900FB20A6 /* tab-bar-friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62819940F3900FB20A6 /* tab-bar-friends.png */; };
+		11B9E62F1994109A00FB20A6 /* tab-bar-settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */; };
+		11B9E6301994109A00FB20A6 /* tab-bar-friends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */; };
+		11B9E6311994109A00FB20A6 /* tab-bar-chats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */; };
 		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
 		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
 		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
@@ -212,6 +218,12 @@
 		11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceManager.m; sourceTree = "<group>"; };
 		11B9E6211993FDAF00FB20A6 /* SettingsColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsColorView.h; sourceTree = "<group>"; };
 		11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsColorView.m; sourceTree = "<group>"; };
+		11B9E62619940F3900FB20A6 /* tab-bar-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-settings.png"; sourceTree = "<group>"; };
+		11B9E62719940F3900FB20A6 /* tab-bar-chats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-chats.png"; sourceTree = "<group>"; };
+		11B9E62819940F3900FB20A6 /* tab-bar-friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-friends.png"; sourceTree = "<group>"; };
+		11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-settings@2x.png"; sourceTree = "<group>"; };
+		11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-friends@2x.png"; sourceTree = "<group>"; };
+		11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-chats@2x.png"; sourceTree = "<group>"; };
 		11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
 		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxFriend+Private.h"; sourceTree = "<group>"; };
@@ -370,6 +382,7 @@
 				1164763919794D3300DB20B8 /* Supporting Files */,
 				118352AD197A6F5B0048CA64 /* Utilities */,
 				118352A9197A6C210048CA64 /* Views */,
+				11B9E62419940F0400FB20A6 /* Resources */,
 			);
 			path = Antidote;
 			sourceTree = "<group>";
@@ -626,6 +639,27 @@
 			name = SettingsColorView;
 			sourceTree = "<group>";
 		};
+		11B9E62419940F0400FB20A6 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				11B9E62519940F1400FB20A6 /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		11B9E62519940F1400FB20A6 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				11B9E62719940F3900FB20A6 /* tab-bar-chats.png */,
+				11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */,
+				11B9E62819940F3900FB20A6 /* tab-bar-friends.png */,
+				11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */,
+				11B9E62619940F3900FB20A6 /* tab-bar-settings.png */,
+				11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		11C3A74C198CF4870029A7A0 /* FriendCard */ = {
 			isa = PBXGroup;
 			children = (
@@ -707,8 +741,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11B9E6301994109A00FB20A6 /* tab-bar-friends@2x.png in Resources */,
+				11B9E62B19940F3900FB20A6 /* tab-bar-friends.png in Resources */,
+				11B9E6311994109A00FB20A6 /* tab-bar-chats@2x.png in Resources */,
+				11B9E62F1994109A00FB20A6 /* tab-bar-settings@2x.png in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
+				11B9E62A19940F3900FB20A6 /* tab-bar-chats.png in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
+				11B9E62919940F3900FB20A6 /* tab-bar-settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
