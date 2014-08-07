@@ -47,7 +47,7 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 15.0, 10.0, 10.0 };
     frame.size = [self.message stringSizeWithFont:self.messageLabel.font
                                 constrainedToSize:CGSizeMake(kMaxMessageWidth, CGFLOAT_MAX)];
     frame.origin.x = 30.0;
-    frame.origin.y = kCellWhitespaceTop + kBubbleInsets.top;
+    frame.origin.y = CGRectGetMaxY(self.fullDateLabel.frame) + kCellWhitespaceTop + kBubbleInsets.top;
     self.messageLabel.frame = frame;
 
     frame = self.messageLabel.frame;
@@ -58,12 +58,15 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 15.0, 10.0, 10.0 };
     self.bubbleImageView.frame = frame;
 }
 
-+ (CGFloat)heightWithMessage:(NSString *)message
++ (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString
 {
-    CGSize size = [message stringSizeWithFont:[self messageLabelFont]
-                            constrainedToSize:CGSizeMake(kMaxMessageWidth, CGFLOAT_MAX)];
+    CGSize messageSize = [message stringSizeWithFont:[self messageLabelFont]
+                                   constrainedToSize:CGSizeMake(kMaxMessageWidth, CGFLOAT_MAX)];
 
-    return kCellWhitespaceTop + kBubbleInsets.top + size.height + kBubbleInsets.bottom + kCellWhitespaceBottom;
+    CGSize fullDateSize = [fullDateString stringSizeWithFont:[self fullDateLabelFont]];
+
+    return fullDateSize.height +
+        kCellWhitespaceTop + kBubbleInsets.top + messageSize.height + kBubbleInsets.bottom + kCellWhitespaceBottom;
 }
 
 #pragma mark -  Private

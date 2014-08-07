@@ -11,18 +11,14 @@
 @interface TimeFormatter()
 
 @property (strong, nonatomic, readonly) NSDateFormatter *messageTimeFormatter;
-@property (strong, nonatomic, readonly) NSDateFormatter *messageWeekdayFormatter;
-@property (strong, nonatomic, readonly) NSDateFormatter *messageDateFormatter;
-@property (strong, nonatomic, readonly) NSDateFormatter *messageDateWithYearFormatter;
+@property (strong, nonatomic, readonly) NSDateFormatter *messageRelativeFormatter;
 @property (strong, nonatomic, readonly) NSCalendar *currentCalendar;
 
 @end
 
 @implementation TimeFormatter
 @synthesize messageTimeFormatter         = _messageTimeFormatter;
-@synthesize messageWeekdayFormatter      = _messageWeekdayFormatter;
-@synthesize messageDateFormatter         = _messageDateFormatter;
-@synthesize messageDateWithYearFormatter = _messageDateWithYearFormatter;
+@synthesize messageRelativeFormatter     = _messageRelativeFormatter;
 @synthesize currentCalendar              = _currentCalendar;
 
 #pragma mark -  Lifecycle
@@ -65,34 +61,16 @@
     return _messageTimeFormatter;
 }
 
-- (NSDateFormatter *)messageWeekdayFormatter
+- (NSDateFormatter *)messageRelativeFormatter
 {
-    if (! _messageWeekdayFormatter) {
-        _messageWeekdayFormatter = [NSDateFormatter new];
-        _messageWeekdayFormatter.dateFormat = @"EEEE";
+    if (! _messageRelativeFormatter) {
+        _messageRelativeFormatter = [NSDateFormatter new];
+        _messageRelativeFormatter.dateStyle = NSDateFormatterShortStyle;
+        _messageRelativeFormatter.timeStyle = NSDateFormatterShortStyle;
+        _messageRelativeFormatter.doesRelativeDateFormatting = YES;
     }
 
-    return _messageWeekdayFormatter;
-}
-
-- (NSDateFormatter *)messageDateFormatter
-{
-    if (! _messageDateFormatter) {
-        _messageDateFormatter = [NSDateFormatter new];
-        _messageDateFormatter.dateFormat = @"EEE, MMM d";
-    }
-
-    return _messageDateFormatter;
-}
-
-- (NSDateFormatter *)messageDateWithYearFormatter
-{
-    if (! _messageDateFormatter) {
-        _messageDateFormatter = [NSDateFormatter new];
-        _messageDateFormatter.dateFormat = @"yyyy, MMM d";
-    }
-
-    return _messageDateFormatter;
+    return _messageRelativeFormatter;
 }
 
 - (NSCalendar *)currentCalendar
@@ -121,44 +99,20 @@
         return nil;
     }
 
+    return [self.messageRelativeFormatter stringFromDate:originalDate];
+}
+
+- (BOOL)doHaveSameDay:(NSDate *)first and:(NSDate *)second
+{
     const NSUInteger components = NSEraCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
 
-    NSDateComponents *dc = [self.currentCalendar components:components fromDate:originalDate];
-    NSDate *originalNormalized = [self.currentCalendar dateFromComponents:dc];
+    NSDateComponents *dc = [self.currentCalendar components:components fromDate:first];
+    NSDate *firstNormalized = [self.currentCalendar dateFromComponents:dc];
 
-    dc = [self.currentCalendar components:components fromDate:[NSDate date]];
-    NSDate *today = [self.currentCalendar dateFromComponents:dc];
+    dc = [self.currentCalendar components:components fromDate:second];
+    NSDate *secondNormalized = [self.currentCalendar dateFromComponents:dc];
 
-    if ([today isEqualToDate:originalNormalized]) {
-
-        return [self.messageTimeFormatter stringFromDate:originalDate];
-    }
-
-    [dc setHour:-24];
-    NSDate *yesterday = [self.currentCalendar dateFromComponents:dc];
-
-    if ([yesterday isEqualToDate:originalNormalized]) {
-
-        return NSLocalizedString(@"Yesterday", @"chat time");
-    }
-
-    [dc setHour:- 24 * 6];
-    NSDate *weekAgo = [self.currentCalendar dateFromComponents:dc];
-
-    if ([weekAgo compare:originalNormalized] == NSOrderedAscending) {
-
-        return [self.messageWeekdayFormatter stringFromDate:originalDate];
-    }
-
-    dc = [self.currentCalendar components:components fromDate:[NSDate date]];
-    NSDateComponents *originalDC = [self.currentCalendar components:components fromDate:originalNormalized];
-
-    if (dc.year < originalDC.year) {
-
-        return [self.messageDateWithYearFormatter stringFromDate:originalDate];
-    }
-
-    return [self.messageDateFormatter stringFromDate:originalDate];
+    return [firstNormalized isEqualToDate:secondNormalized];
 }
 
 @end

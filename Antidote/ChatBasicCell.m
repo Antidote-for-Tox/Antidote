@@ -34,13 +34,20 @@
 {
     self.messageLabel.text = self.message;
 
-    self.dateLabel.text = self.dateString;
+    self.fullDateLabel.text = self.fullDateString;
+    [self.fullDateLabel sizeToFit];
+    CGRect frame = self.fullDateLabel.frame;
+    frame.origin.x = (self.bounds.size.width - frame.size.width) / 2;
+    frame.origin.y = 0.0;
+    self.fullDateLabel.frame = frame;
 
-    [self.dateLabel sizeToFit];
-    CGRect frame = self.dateLabel.frame;
+    self.hiddenDateLabel.text = self.hiddenDateString;
+
+    [self.hiddenDateLabel sizeToFit];
+    frame = self.hiddenDateLabel.frame;
     frame.origin.x = self.bounds.size.width;
     frame.origin.y = (self.bounds.size.height - frame.size.height) / 2;
-    self.dateLabel.frame = frame;
+    self.hiddenDateLabel.frame = frame;
 }
 
 + (NSString *)reuseIdentifier
@@ -48,7 +55,7 @@
     return NSStringFromClass([self class]);
 }
 
-+ (CGFloat)heightWithMessage:(NSString *)message
++ (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString
 {
     return 0.0;
 }
@@ -56,6 +63,11 @@
 + (UIFont *)messageLabelFont
 {
     return [UIFont fontWithName:@"HelveticaNeue" size:16];
+}
+
++ (UIFont *)fullDateLabelFont
+{
+    return [UIFont fontWithName:@"HelveticaNeue" size:12.0];
 }
 
 #pragma mark -  Private
@@ -67,9 +79,13 @@
     self.messageLabel.font = [[self class] messageLabelFont];
     self.messageLabel.numberOfLines = 0;
 
-    self.dateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
+    self.fullDateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
                                                      bgColor:[UIColor clearColor]];
-    self.dateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+    self.fullDateLabel.font = [[self class] fullDateLabelFont];
+
+    self.hiddenDateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
+                                                     bgColor:[UIColor clearColor]];
+    self.hiddenDateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
 }
 
 @end

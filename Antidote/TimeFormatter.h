@@ -15,4 +15,6 @@
 - (NSString *)timeStringFromDate:(NSDate *)date;
 - (NSString *)stringFromDate:(NSDate *)date;
 
+- (BOOL)doHaveSameDay:(NSDate *)first and:(NSDate *)second;
+
 @end

@@ -16,6 +16,7 @@
 #import "ToxManager.h"
 #import "UIView+Utilities.h"
 #import "Helper.h"
+#import "TimeFormatter.h"
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
     UIGestureRecognizerDelegate>
@@ -31,8 +32,6 @@
 @property (strong, nonatomic) NSString *myClientId;
 
 @property (assign, nonatomic) BOOL didLayousSubviewsForFirstTime;
-
-@property (strong, nonatomic) NSDateFormatter *dateFormatter;
 
 @end
 
@@ -55,9 +54,6 @@
         self.friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:clientId];
 
         [self updateTitleView];
-
-        self.dateFormatter = [NSDateFormatter new];
-        self.dateFormatter.dateFormat = @"H:mm";
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
@@ -183,7 +179,11 @@
     cell.message = message.text;
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
-    cell.dateString = [self.dateFormatter stringFromDate:date];
+
+    cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
+        [[TimeFormatter sharedInstance] stringFromDate:date] : nil;
+
+    cell.hiddenDateString = [[TimeFormatter sharedInstance] timeStringFromDate:date];
 
     [cell redraw];
 
@@ -201,11 +201,13 @@
 {
     CDMessage *message = self.messages[indexPath.row];
 
+    NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
+
     if ([self isOutgoingMessage:message]) {
-        return [ChatOutgoingCell heightWithMessage:message.text];
+        return [ChatOutgoingCell heightWithMessage:message.text fullDateString:fullDateString];
     }
     else {
-        return [ChatIncomingCell heightWithMessage:message.text];
+        return [ChatIncomingCell heightWithMessage:message.text fullDateString:fullDateString];
     }
 }
 
@@ -497,6 +499,30 @@
 - (BOOL)isOutgoingMessage:(CDMessage *)message
 {
     return [message.user.clientId isEqual:self.myClientId];
+}
+
+- (BOOL)showFullDateForMessage:(CDMessage *)message atIndexPath:(NSIndexPath *)path
+{
+    if (path.row == 0) {
+        return YES;
+    }
+
+    CDMessage *previous = self.messages[path.row-1];
+
+    NSDate *messageDate  = [NSDate dateWithTimeIntervalSince1970:message.date];
+    NSDate *previousDate = [NSDate dateWithTimeIntervalSince1970:previous.date];
+
+    if (! [[TimeFormatter sharedInstance] doHaveSameDay:messageDate and:previousDate]) {
+        return YES;
+    }
+
+    NSTimeInterval delta = message.date - previous.date;
+
+    if (delta > 5 * 60 * 60) {
+        return YES;
+    }
+
+    return NO;
 }
 
 @end

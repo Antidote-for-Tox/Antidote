@@ -11,15 +11,18 @@
 @interface ChatBasicCell : UITableViewCell
 
 @property (strong, nonatomic) UILabel *messageLabel;
-@property (strong, nonatomic) UILabel *dateLabel;
+@property (strong, nonatomic) UILabel *fullDateLabel;
+@property (strong, nonatomic) UILabel *hiddenDateLabel;
 
 @property (strong, nonatomic) NSString *message;
-@property (strong, nonatomic) NSString *dateString;
+@property (strong, nonatomic) NSString *fullDateString;
+@property (strong, nonatomic) NSString *hiddenDateString;
 
 - (void)redraw;
 
 + (NSString *)reuseIdentifier;
-+ (CGFloat)heightWithMessage:(NSString *)message;
++ (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString;
 + (UIFont *)messageLabelFont;
++ (UIFont *)fullDateLabelFont;
 
 @end
