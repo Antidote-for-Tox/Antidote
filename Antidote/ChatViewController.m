@@ -57,7 +57,7 @@
         [self updateTitleView];
 
         self.dateFormatter = [NSDateFormatter new];
-        self.dateFormatter.dateFormat = @"H:m";
+        self.dateFormatter.dateFormat = @"H:mm";
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)

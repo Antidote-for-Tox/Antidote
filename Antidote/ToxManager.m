@@ -447,6 +447,14 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         }
     }
 
+    {
+        uint64_t lastOnline = tox_get_last_online(self.tox, friendId);
+
+        if (lastOnline > 0) {
+            friend.lastSeenOnline = [NSDate dateWithTimeIntervalSince1970:lastOnline];
+        }
+    }
+
     friend.isTyping = tox_get_is_typing(self.tox, friendId);
 
     {
@@ -624,5 +632,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
             friend.status = ToxFriendStatusOffline;
         }
     }];
+
+    [[ToxManager sharedInstance] saveTox];
 }
 

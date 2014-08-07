@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
 @property (strong, nonatomic, readonly) NSString *realName;
 @property (strong, nonatomic, readonly) NSString *associatedName;
 @property (strong, nonatomic, readonly) NSString *statusMessage;
+@property (strong, nonatomic, readonly) NSDate *lastSeenOnline;
 @property (assign, nonatomic, readonly) ToxFriendStatus status;
 @property (assign, nonatomic, readonly) BOOL isTyping;
 

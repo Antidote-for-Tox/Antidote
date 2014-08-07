@@ -18,6 +18,7 @@
 #import "FriendCardViewController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "CoreDataManager+Chat.h"
+#import "TimeFormatter.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsCellDelegate>
 
@@ -106,8 +107,17 @@
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
     cell.title = friend.associatedName ?: friend.clientId;
-    cell.subtitle = friend.statusMessage;
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
+
+    if (friend.status == ToxFriendStatusOffline) {
+        if (friend.lastSeenOnline) {
+            cell.subtitle = [NSString stringWithFormat:NSLocalizedString(@"Last seen %@", @"Friends"),
+                [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline]];
+        }
+    }
+    else {
+        cell.subtitle = friend.statusMessage;
+    }
 
     [cell redraw];
 
