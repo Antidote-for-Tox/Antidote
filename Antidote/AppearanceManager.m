@@ -54,6 +54,13 @@
     return instance;
 }
 
+- (void)setColorscheme:(AppearanceManagerColorscheme)colorscheme
+{
+    _colorscheme = colorscheme;
+
+    [[UIButton appearance] setTintColor:[[self class] textMainColorForScheme:colorscheme]];
+}
+
 #pragma mark -  Public
 
 + (AppearanceManagerColorscheme)colorscheme
@@ -164,7 +171,7 @@
         return [UIColor uColorOpaqueWithRed:38 green:133 blue:172];
     }
     else if (scheme == AppearanceManagerColorschemeOrange) {
-        return [UIColor uColorOpaqueWithRed:255 green:166 blue:47];
+        return [UIColor uColorOpaqueWithRed:245 green:156 blue:37];
     }
     else if (scheme == AppearanceManagerColorschemePurple) {
         return [UIColor uColorOpaqueWithRed:82 green:58 blue:175];

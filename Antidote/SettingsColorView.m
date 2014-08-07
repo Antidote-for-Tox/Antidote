@@ -8,6 +8,7 @@
 
 #import "SettingsColorView.h"
 #import "UIView+Utilities.h"
+#import "UIColor+Utilities.h"
 
 static const CGFloat kButtonSide = 40.0;
 static const CGFloat kButtonIndentation = 15.0;
@@ -68,7 +69,7 @@ static const CGFloat kButtonIndentation = 15.0;
 
         frame = button.frame;
         frame.origin.x = buttonsXDelta + index * (kButtonSide + kButtonIndentation);
-        frame.origin.y = CGRectGetMaxY(self.label.frame);
+        frame.origin.y = CGRectGetMaxY(self.label.frame) + 5.0;
         button.frame = frame;
 
         size.height = CGRectGetMaxY(button.frame);
@@ -101,7 +102,7 @@ static const CGFloat kButtonIndentation = 15.0;
 
         if (index == currentScheme) {
             button.layer.borderWidth = 2.0;
-            button.layer.borderColor = [UIColor blackColor].CGColor;
+            button.layer.borderColor = [UIColor uColorOpaqueWithWhite:182].CGColor;
         }
 
         frame.size.width /= 2;

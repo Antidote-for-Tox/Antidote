@@ -30,31 +30,32 @@
 
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
+    [[UIButton appearance] setTintColor:[AppearanceManager textMainColor]];
     [self.window makeKeyAndVisible];
     return YES;
 }
 
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
 {
-    UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
     UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
+    UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
     UINavigationController *settings = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
 
     UITabBarController *tabBar = [UITabBarController new];
-    tabBar.viewControllers = @[allChats, friends, settings];
+    tabBar.viewControllers = @[friends, allChats, settings];
 
-    allChats.navigationBar.tintColor =
     friends.navigationBar.tintColor  =
+    allChats.navigationBar.tintColor =
     settings.navigationBar.tintColor =
     tabBar.tabBar.tintColor          = [AppearanceManager textMainColor];
-
-    allChats.tabBarItem = [[UITabBarItem alloc] initWithTitle:allChats.title
-                                                        image:[UIImage imageNamed:@"tab-bar-chats"]
-                                                          tag:AppDelegateTabIndexChats];
 
     friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
                                                        image:[UIImage imageNamed:@"tab-bar-friends"]
                                                          tag:AppDelegateTabIndexFriends];
+
+    allChats.tabBarItem = [[UITabBarItem alloc] initWithTitle:allChats.title
+                                                        image:[UIImage imageNamed:@"tab-bar-chats"]
+                                                          tag:AppDelegateTabIndexChats];
 
     settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:settings.title
                                                         image:[UIImage imageNamed:@"tab-bar-settings"]

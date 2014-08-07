@@ -7,6 +7,7 @@
 //
 
 #import "ChatInputView.h"
+#import "UIColor+Utilities.h"
 
 static const CGFloat kTypingTimerInterval = 5.0;
 
@@ -28,7 +29,7 @@ static const CGFloat kTypingTimerInterval = 5.0;
     self = [super initWithFrame:frame];
 
     if (self) {
-        self.backgroundColor = [UIColor lightGrayColor];
+        self.backgroundColor = [UIColor uColorOpaqueWithWhite:236];
 
         [self createTextView];
         [self createButton];

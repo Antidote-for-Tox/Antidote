@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSUInteger, AppDelegateTabIndex) {
-    AppDelegateTabIndexChats = 0,
-    AppDelegateTabIndexFriends,
+    AppDelegateTabIndexFriends = 0,
+    AppDelegateTabIndexChats,
     AppDelegateTabIndexSettings,
 };
 
