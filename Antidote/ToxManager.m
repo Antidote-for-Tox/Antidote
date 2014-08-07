@@ -229,6 +229,15 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }
 }
 
+- (void)removeFriendRequest:(ToxFriendRequest *)request
+{
+    if (! request) {
+        return;
+    }
+
+    [self.friendsContainer private_removeFriendRequest:request];
+}
+
 - (void)removeFriend:(ToxFriend *)friend
 {
     if (! friend) {

@@ -27,6 +27,7 @@
 
 - (void)sendFriendRequestWithAddress:(NSString *)address message:(NSString *)message;
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
+- (void)removeFriendRequest:(ToxFriendRequest *)request;
 - (void)removeFriend:(ToxFriend *)friend;
 
 - (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friend;

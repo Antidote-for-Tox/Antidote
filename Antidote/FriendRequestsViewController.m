@@ -11,6 +11,7 @@
 #import "ToxManager.h"
 #import "FriendRequestsCell.h"
 #import "NSIndexSet+Utilities.h"
+#import "UIAlertView+BlocksKit.h"
 
 @interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
@@ -82,6 +83,31 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return self.friendsContainer.requestsCount;
+}
+
+- (void)  tableView:(UITableView *)tableView
+ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+  forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        __weak FriendRequestsViewController *weakSelf = self;
+
+        NSString *friendTitle = NSLocalizedString(@"Are you sure you want to delete friend request?", @"Friend requests");
+
+        UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
+
+        [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friend requestss") handler:^{
+            ToxFriendRequest *request = [weakSelf.friendsContainer requestAtIndex:indexPath.row];
+
+            [[ToxManager sharedInstance] removeFriendRequest:request];
+        }];
+
+        [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friend requestss") handler:^{
+            [tableView setEditing:NO animated:YES];
+        }];
+
+        [friendAlert show];
+    }
 }
 
 #pragma mark -  UITableViewDelegate
