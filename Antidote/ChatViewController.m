@@ -223,8 +223,8 @@
 
 - (void)chatInputViewWantsToUpdateFrame:(ChatInputView *)view
 {
-    const CGFloat maxHeight = self.tableView.frame.size.height - self.tableView.contentInset.top - 
-        self.visibleKeyboardHeight;
+    CGFloat maxHeight = self.tableView.frame.size.height - self.tableView.contentInset.top - self.visibleKeyboardHeight;
+    maxHeight *= 2.0 / 3.0;
 
     CGRect frame = view.frame;
     frame.size.height = MIN(maxHeight, [view heightWithCurrentTextAndWidth:frame.size.width]);
