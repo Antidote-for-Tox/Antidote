@@ -15,6 +15,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "ToxManager.h"
 #import "UIImage+Utilities.h"
+#import "AvatarFactory.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate,
     NSFetchedResultsControllerDelegate>
@@ -102,8 +103,9 @@
     cell.detailTextLabel.text = chat.lastMessage.text;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-    cell.imageView.image = [UIImage imageWithColor:[UIColor grayColor] size:CGSizeMake(40.0, 40.0)];
-    cell.imageView.layer.cornerRadius = 3.0;
+    const CGFloat side = 40.0;
+    cell.imageView.image = [AvatarFactory avatarFromString:usersString side:side];
+    cell.imageView.layer.cornerRadius = side / 2;
     cell.imageView.layer.masksToBounds = YES;
 
     return cell;

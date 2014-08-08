@@ -19,6 +19,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "CoreDataManager+Chat.h"
 #import "TimeFormatter.h"
+#import "AvatarFactory.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsCellDelegate>
 
@@ -108,6 +109,8 @@
 
     cell.title = friend.associatedName ?: friend.clientId;
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
+
+    cell.avatarImage = [AvatarFactory avatarFromString:cell.title side:40.0];
 
     if (friend.status == ToxFriendStatusOffline) {
         if (friend.lastSeenOnline) {

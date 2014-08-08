@@ -85,6 +85,7 @@
 		11C3A785199008760029A7A0 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A784199008760029A7A0 /* ChatViewController.m */; };
 		11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
+		11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D6298B19954BCE00F840AE /* AvatarFactory.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -239,6 +240,8 @@
 		11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsContainer.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
 		11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Utilities.m"; sourceTree = "<group>"; };
+		11D6298A19954BCE00F840AE /* AvatarFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarFactory.h; sourceTree = "<group>"; };
+		11D6298B19954BCE00F840AE /* AvatarFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarFactory.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -451,6 +454,7 @@
 			isa = PBXGroup;
 			children = (
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
+				11D6298919954BB700F840AE /* AvatarFactory */,
 				1146308919842D220075DA16 /* CoreDataManager */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11B9E6141993EBCC00FB20A6 /* TimeFormatter */,
@@ -688,6 +692,15 @@
 			name = EventsManager;
 			sourceTree = "<group>";
 		};
+		11D6298919954BB700F840AE /* AvatarFactory */ = {
+			isa = PBXGroup;
+			children = (
+				11D6298A19954BCE00F840AE /* AvatarFactory.h */,
+				11D6298B19954BCE00F840AE /* AvatarFactory.m */,
+			);
+			name = AvatarFactory;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -845,6 +858,7 @@
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
+				11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,

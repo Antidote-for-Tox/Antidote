@@ -19,6 +19,7 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 @interface AppearanceManager : NSObject
 
 + (UIFont *)fontHelveticaNeueWithSize:(CGFloat)size;
++ (UIFont *)fontHelveticaNeueLightWithSize:(CGFloat)size;
 
 + (AppearanceManagerColorscheme)colorscheme;
 + (void)changeColorschemeTo:(AppearanceManagerColorscheme)newColorscheme;

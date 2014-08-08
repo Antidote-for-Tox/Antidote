@@ -68,6 +68,11 @@
     return [UIFont fontWithName:@"HelveticaNeue" size:size];
 }
 
++ (UIFont *)fontHelveticaNeueLightWithSize:(CGFloat)size
+{
+    return [UIFont fontWithName:@"HelveticaNeue-Light" size:size];
+}
+
 + (AppearanceManagerColorscheme)colorscheme
 {
     return [self sharedInstance].colorscheme;

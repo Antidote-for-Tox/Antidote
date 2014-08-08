@@ -105,7 +105,9 @@
 
     self.avatarImageView = [[UIImageView alloc] initWithFrame:frame];
     self.avatarImageView.backgroundColor = [UIColor grayColor];
-    self.avatarImageView.layer.cornerRadius = 3.0;
+    self.avatarImageView.layer.cornerRadius = frame.size.width / 2;
+    self.avatarImageView.layer.masksToBounds = YES;
+
 
     [self.contentView addSubview:self.avatarImageView];
 }
