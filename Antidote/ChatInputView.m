@@ -8,8 +8,12 @@
 
 #import "ChatInputView.h"
 #import "UIColor+Utilities.h"
+#import "NSString+Utilities.h"
+#import "ToxManager.h"
 
 static const CGFloat kTypingTimerInterval = 5.0;
+
+static const CGFloat kTextViewDeltaWidth = 60.0;
 
 @interface ChatInputView() <UITextViewDelegate>
 
@@ -76,11 +80,27 @@ static const CGFloat kTypingTimerInterval = 5.0;
 - (void)setText:(NSString *)text
 {
     self.textView.text = nil;
+
+    [self.delegate chatInputViewWantsToUpdateFrame:self];
 }
 
-- (CGFloat)heightWithCurrentText
+- (CGFloat)heightWithCurrentTextAndWidth:(CGFloat)width
 {
-    return 40.0;
+    NSString *text = self.textView.text;
+
+    if (! text.length) {
+        text = @"pl";
+    }
+
+    if ([text hasSuffix:@"\n"]) {
+        // add character on new line for right size computation
+        text = [text stringByAppendingString:@"s"];
+    }
+
+    CGSize size = [text stringSizeWithFont:self.textView.font
+                         constrainedToSize:CGSizeMake(width - kTextViewDeltaWidth, CGFLOAT_MAX)];
+
+    return size.height + 18.0;
 }
 
 #pragma mark -  UITextViewDelegate
@@ -95,9 +115,29 @@ static const CGFloat kTypingTimerInterval = 5.0;
     [self stopTyping];
 }
 
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    BOOL answer = YES;
+
+    NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
+
+    if (result.length > TOX_MAX_MESSAGE_LENGTH) {
+        self.textView.text = [result substringToIndex:TOX_MAX_MESSAGE_LENGTH];
+        answer = NO;
+    }
+
+    return answer;
+}
+
 - (void)textViewDidChange:(UITextView *)textView
 {
     [self startTyping];
+
+    const CGFloat height = [self heightWithCurrentTextAndWidth:self.frame.size.width];
+
+    if (height != self.frame.size.height) {
+        [self.delegate chatInputViewWantsToUpdateFrame:self];
+    }
 }
 
 #pragma mark -  Private methods
@@ -108,7 +148,8 @@ static const CGFloat kTypingTimerInterval = 5.0;
     self.textView.delegate = self;
     self.textView.textColor = [UIColor blackColor];
     self.textView.backgroundColor = [UIColor whiteColor];
-    self.textView.scrollEnabled = NO;
+    self.textView.font = [AppearanceManager fontHelveticaNeueWithSize:16];
+    self.textView.layer.cornerRadius = 3.0;
 
     [self addSubview:self.textView];
 }
@@ -124,8 +165,8 @@ static const CGFloat kTypingTimerInterval = 5.0;
 - (void)adjustSubviews
 {
     CGRect frame = self.textView.frame;
-    frame.size.width = self.bounds.size.width - 60.0;
-    frame.size.height = self.bounds.size.height - 4.0;
+    frame.size.width = self.bounds.size.width - kTextViewDeltaWidth;
+    frame.size.height = self.bounds.size.height - 8.0;
     frame.origin.x = 5.0;
     frame.origin.y = (self.bounds.size.height - frame.size.height) / 2.0;
     self.textView.frame = frame;

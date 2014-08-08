@@ -25,6 +25,6 @@
 
 - (void)setText:(NSString *)text;
 
-- (CGFloat)heightWithCurrentText;
+- (CGFloat)heightWithCurrentTextAndWidth:(CGFloat)width;
 
 @end

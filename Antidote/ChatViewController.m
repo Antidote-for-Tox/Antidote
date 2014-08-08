@@ -33,6 +33,8 @@
 
 @property (assign, nonatomic) BOOL didLayousSubviewsForFirstTime;
 
+@property (assign, nonatomic) CGFloat visibleKeyboardHeight;
+
 @end
 
 @implementation ChatViewController
@@ -45,6 +47,7 @@
 
     if (self) {
         self.hidesBottomBarWhenPushed = YES;
+        self.visibleKeyboardHeight = 0.0;
 
         self.myClientId = [ToxManager sharedInstance].clientId;
 
@@ -220,7 +223,14 @@
 
 - (void)chatInputViewWantsToUpdateFrame:(ChatInputView *)view
 {
+    const CGFloat maxHeight = self.tableView.frame.size.height - self.tableView.contentInset.top - 
+        self.visibleKeyboardHeight;
 
+    CGRect frame = view.frame;
+    frame.size.height = MIN(maxHeight, [view heightWithCurrentTextAndWidth:frame.size.width]);
+    view.frame = frame;
+
+    [self updateTableViewInsetAndInputViewWithDuration:0.3 curve:UIViewAnimationCurveEaseInOut];
 }
 
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
@@ -256,20 +266,22 @@
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    self.visibleKeyboardHeight = keyboardRect.size.height;
 
-    [self changeTableViewBottomInsetTo:self.inputView.frame.size.height + keyboardRect.size.height
-                 withAnimationDuration:duration];
-    [self moveInputViewToBelowTableWithAnimationDuration:duration];
+    NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] doubleValue];
+
+    [self updateTableViewInsetAndInputViewWithDuration:duration curve:curve];
 }
 
 - (void)keyboardWillHide:(NSNotification *)notification
 {
-    NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    self.visibleKeyboardHeight = 0.0;
 
-    [self changeTableViewBottomInsetTo:self.inputView.frame.size.height
-                 withAnimationDuration:duration];
-    [self moveInputViewToBelowTableWithAnimationDuration:duration];
+    NSTimeInterval duration = [notification.userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] doubleValue];
+
+    [self updateTableViewInsetAndInputViewWithDuration:duration curve:curve];
 }
 
 - (void)newMessageNotification:(NSNotification *)notification
@@ -363,22 +375,19 @@
 
 - (void)adjustSubviews
 {
-    const CGFloat inputViewHeight = [self.inputView heightWithCurrentText];
+    const CGFloat inputViewWidth = self.view.bounds.size.width;
+    const CGFloat inputViewHeight = [self.inputView heightWithCurrentTextAndWidth:inputViewWidth];
 
-    {
-        self.tableView.frame = self.view.bounds;
-
-        [self changeTableViewBottomInsetTo:inputViewHeight withAnimationDuration:0.0];
-    }
+    self.tableView.frame = self.view.bounds;
 
     {
         CGRect frame = CGRectZero;
-        frame.size.width = self.view.bounds.size.width;
+        frame.size.width = inputViewWidth;
         frame.size.height = inputViewHeight;
         self.inputView.frame = frame;
-
-        [self moveInputViewToBelowTableWithAnimationDuration:0.0];
     }
+
+    [self updateTableViewInsetAndInputViewWithDuration:0.0 curve:0];
 }
 
 - (void)updateTitleView
@@ -424,11 +433,18 @@
     [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:animated];
 }
 
-- (void)changeTableViewBottomInsetTo:(CGFloat)new withAnimationDuration:(NSTimeInterval)duration
+- (void)updateTableViewInsetAndInputViewWithDuration:(NSTimeInterval)duration curve:(UIViewAnimationCurve)curve
 {
-    const CGFloat old = self.tableView.contentInset.bottom;
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:duration];
+    [UIView setAnimationCurve:curve];
 
-    [UIView animateWithDuration:duration animations:^{
+    {
+        // tableView
+
+        const CGFloat old = self.tableView.contentInset.bottom;
+        const CGFloat new = self.inputView.frame.size.height + self.visibleKeyboardHeight;
+
         UIEdgeInsets insets = self.tableView.contentInset;
         insets.bottom = new;
         self.tableView.contentInset = insets;
@@ -451,19 +467,17 @@
 
             [self.tableView setContentOffset:offset animated:NO];
         }
-    }];
-}
+    }
 
-- (void)moveInputViewToBelowTableWithAnimationDuration:(NSTimeInterval)duration
-{
-    [UIView animateWithDuration:duration animations:^{
+    {
+        // inputView
+
         CGRect frame = self.inputView.frame;
-
-        frame.origin.y = self.tableView.frame.size.height -
-            self.tableView.contentInset.bottom;
-
+        frame.origin.y = self.tableView.frame.size.height - self.tableView.contentInset.bottom;
         self.inputView.frame = frame;
-    }];
+    }
+
+    [UIView commitAnimations];
 }
 
 - (void)updateIsTypingFooter
