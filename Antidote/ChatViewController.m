@@ -476,7 +476,7 @@
         UILabel *label = [UILabel new];
         label.backgroundColor = [UIColor clearColor];
         label.textColor = [UIColor lightGrayColor];
-        label.font = [UIFont systemFontOfSize:16];
+        label.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
         label.text = NSLocalizedString(@"typing...", @"Chat");
         label.textAlignment = NSTextAlignmentCenter;
         [label sizeToFit];

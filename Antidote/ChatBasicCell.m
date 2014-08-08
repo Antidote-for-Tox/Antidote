@@ -62,12 +62,12 @@
 
 + (UIFont *)messageLabelFont
 {
-    return [UIFont fontWithName:@"HelveticaNeue" size:16];
+    return [AppearanceManager fontHelveticaNeueWithSize:16.0];
 }
 
 + (UIFont *)fullDateLabelFont
 {
-    return [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+    return [AppearanceManager fontHelveticaNeueWithSize:12.0];
 }
 
 #pragma mark -  Private
@@ -85,7 +85,7 @@
 
     self.hiddenDateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
                                                      bgColor:[UIColor clearColor]];
-    self.hiddenDateLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:12.0];
+    self.hiddenDateLabel.font = [AppearanceManager fontHelveticaNeueWithSize:12.0];
 }
 
 @end

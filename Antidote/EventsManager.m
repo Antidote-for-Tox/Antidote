@@ -220,7 +220,7 @@
         }
 
         topLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        topLabel.font = [UIFont systemFontOfSize:16];
+        topLabel.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
         topLabel.frame = frame;
         topLabel.text = topText;
     }
@@ -231,7 +231,7 @@
         frame.size.height = 20.0;
 
         UILabel *bottomLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        bottomLabel.font = [UIFont systemFontOfSize:14];
+        bottomLabel.font = [AppearanceManager fontHelveticaNeueWithSize:14.0];
         bottomLabel.frame = frame;
         bottomLabel.text = bottomText;
     }

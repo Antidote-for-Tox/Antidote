@@ -63,6 +63,11 @@
 
 #pragma mark -  Public
 
++ (UIFont *)fontHelveticaNeueWithSize:(CGFloat)size
+{
+    return [UIFont fontWithName:@"HelveticaNeue" size:size];
+}
+
 + (AppearanceManagerColorscheme)colorscheme
 {
     return [self sharedInstance].colorscheme;
