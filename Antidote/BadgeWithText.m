@@ -24,6 +24,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.userInteractionEnabled = NO;
         self.layer.masksToBounds = YES;
 
         self.backgroundView = [UIView new];
