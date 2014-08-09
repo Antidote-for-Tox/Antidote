@@ -34,6 +34,8 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 + (UIColor *)bubbleIncomingColor;
 + (UIColor *)bubbleOutgoingColor;
 
++ (UIColor *)unreadChatCellBackground;
+
 + (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme;
 + (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
 

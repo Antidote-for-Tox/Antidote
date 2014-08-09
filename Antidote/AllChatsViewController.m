@@ -112,6 +112,9 @@
     [cell setMessage:chat.lastMessage.text
              andDate:[[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime]];
 
+    cell.backgroundColor = (chat.lastMessage.date < chat.lastReadDate) ? [UIColor whiteColor] :
+        [AppearanceManager unreadChatCellBackground];
+
     return cell;
 }
 

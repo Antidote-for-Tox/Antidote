@@ -172,6 +172,24 @@
     return nil;
 }
 
++ (UIColor *)unreadChatCellBackground
+{
+    if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeRed) {
+        return [UIColor uColorOpaqueWithRed:249 green:244 blue:244];
+    }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeIce) {
+        return [UIColor uColorOpaqueWithRed:240 green:245 blue:247];
+    }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
+        return [UIColor uColorOpaqueWithRed:249 green:246 blue:241];
+    }
+    else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemePurple) {
+        return [UIColor uColorOpaqueWithRed:243 green:241 blue:247];
+    }
+
+    return nil;
+}
+
 + (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme
 {
     if (scheme == AppearanceManagerColorschemeRed) {
