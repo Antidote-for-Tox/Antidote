@@ -435,9 +435,11 @@
 
 - (void)updateTableViewInsetAndInputViewWithDuration:(NSTimeInterval)duration curve:(UIViewAnimationCurve)curve
 {
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:duration];
-    [UIView setAnimationCurve:curve];
+    if (duration) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:duration];
+        [UIView setAnimationCurve:curve];
+    }
 
     {
         // tableView
@@ -456,7 +458,7 @@
             const CGFloat visibleHeight = self.tableView.frame.size.height - insets.top - insets.bottom;
             if (self.tableView.contentSize.height < visibleHeight) {
                 // don't change offset
-                return;
+                goto tableViewEnd;
             }
 
             offset.y += (new - old);
@@ -467,7 +469,9 @@
 
             [self.tableView setContentOffset:offset animated:NO];
         }
+
     }
+    tableViewEnd:
 
     {
         // inputView
@@ -477,7 +481,9 @@
         self.inputView.frame = frame;
     }
 
-    [UIView commitAnimations];
+    if (duration) {
+        [UIView commitAnimations];
+    }
 }
 
 - (void)updateIsTypingFooter
