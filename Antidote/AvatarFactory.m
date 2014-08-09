@@ -42,7 +42,7 @@
     CGRect frame = CGRectZero;
     frame.size.width = frame.size.height = side;
 
-    label.font = [AppearanceManager fontHelveticaNeueLightWithSize:fontSize - 15];
+    label.font = [AppearanceManager fontHelveticaNeueLightWithSize:(int) (fontSize * 0.6)];
     label.layer.cornerRadius = frame.size.width / 2;
     label.frame = frame;
 

@@ -18,6 +18,10 @@ typedef NS_ENUM(NSInteger, StatusCircleStatus) {
 @interface StatusCircleView : UIView
 
 @property (assign, nonatomic) StatusCircleStatus status;
+@property (assign, nonatomic) BOOL showWhiteBorder;
+
+// default value is 10
+@property (assign, nonatomic) CGFloat side;
 
 // this method will adjust StatusCircleView frame.size
 - (void)redraw;

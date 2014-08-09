@@ -184,9 +184,9 @@
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
 
     cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
-        [[TimeFormatter sharedInstance] stringFromDate:date] : nil;
+        [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
 
-    cell.hiddenDateString = [[TimeFormatter sharedInstance] timeStringFromDate:date];
+    cell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
 
     [cell redraw];
 
@@ -532,7 +532,7 @@
     NSDate *messageDate  = [NSDate dateWithTimeIntervalSince1970:message.date];
     NSDate *previousDate = [NSDate dateWithTimeIntervalSince1970:previous.date];
 
-    if (! [[TimeFormatter sharedInstance] doHaveSameDay:messageDate and:previousDate]) {
+    if (! [[TimeFormatter sharedInstance] areSameDays:messageDate and:previousDate]) {
         return YES;
     }
 

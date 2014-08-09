@@ -20,8 +20,9 @@
 #import "CoreDataManager+Chat.h"
 #import "TimeFormatter.h"
 #import "AvatarFactory.h"
+#import "UIColor+Utilities.h"
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsCellDelegate>
+@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -103,26 +104,29 @@
 {
     FriendsCell *cell = [tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
                                                         forIndexPath:indexPath];
-    cell.delegate = self;
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.title = friend.associatedName ?: friend.clientId;
+    cell.textLabel.text = friend.associatedName ?: friend.clientId;
+    cell.imageView.image = [AvatarFactory avatarFromString:cell.textLabel.text side:30.0];
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
-
-    cell.avatarImage = [AvatarFactory avatarFromString:cell.title side:40.0];
 
     if (friend.status == ToxFriendStatusOffline) {
         if (friend.lastSeenOnline) {
-            cell.subtitle = [NSString stringWithFormat:NSLocalizedString(@"Last seen %@", @"Friends"),
-                [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline]];
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"last seen %@", @"Friends"),
+                [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline
+                                                          type:TimeFormatterTypeRelativeDateAndTime]];
         }
     }
     else {
-        cell.subtitle = friend.statusMessage;
+        cell.detailTextLabel.text = friend.statusMessage;
     }
 
-    [cell redraw];
+    if (! cell.detailTextLabel.text.length) {
+        // add whitespace for nice alignment
+
+        cell.detailTextLabel.text = @" ";
+    }
 
     return cell;
 }
@@ -189,11 +193,8 @@
     [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
 }
 
-#pragma mark -  FriendsCellDelegate
-
-- (void)friendsCellInfoButtonPressed:(FriendsCell *)cell
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
     FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];

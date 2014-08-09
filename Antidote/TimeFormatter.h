@@ -8,13 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, TimeFormatterType) {
+    TimeFormatterTypeTime,
+    TimeFormatterTypeRelativeDateAndTime,
+    TimeFormatterTypeRelativeDate,
+};
+
 @interface TimeFormatter : NSObject
 
 + (instancetype)sharedInstance;
 
-- (NSString *)timeStringFromDate:(NSDate *)date;
-- (NSString *)stringFromDate:(NSDate *)date;
+- (NSString *)stringFromDate:(NSDate *)date type:(TimeFormatterType)type;
 
-- (BOOL)doHaveSameDay:(NSDate *)first and:(NSDate *)second;
+- (BOOL)areSameDays:(NSDate *)first and:(NSDate *)second;
 
 @end

@@ -8,15 +8,11 @@
 
 #import "FriendsCell.h"
 #import "NSString+Utilities.h"
-#import "UIView+Utilities.h"
+#import "UIColor+Utilities.h"
 
 @interface FriendsCell()
 
-@property (strong, nonatomic) UIImageView *avatarImageView;
-@property (strong, nonatomic) UILabel *titleLabel;
-@property (strong, nonatomic) UILabel *subtitleLabel;
 @property (strong, nonatomic) StatusCircleView *statusView;
-@property (strong, nonatomic) UIButton *infoButton;
 
 @end
 
@@ -26,14 +22,21 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
 
     if (self) {
-        [self createAvatarImageView];
-        [self createTitleView];
-        [self createSubtitleView];
+        self.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:18];
+        self.detailTextLabel.textColor = [UIColor uColorOpaqueWithWhite:140];
+        self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+
+        CGRect frame = self.imageView.frame;
+        frame.size.width = frame.size.height = 30.0;
+        self.imageView.frame = frame;
+
+        self.imageView.layer.cornerRadius = frame.size.width / 2;
+        self.imageView.layer.masksToBounds = YES;
+
         [self createStatusView];
-        [self createInfoButton];
     }
 
     return self;
@@ -41,54 +44,46 @@
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
-    // fixing background colors in highlighted state
-
-    UIColor *avatar = self.avatarImageView.backgroundColor;
-    UIColor *status = self.statusView.backgroundColor;
-
     [super setHighlighted:highlighted animated:animated];
 
-    self.avatarImageView.backgroundColor = avatar;
-    self.statusView.backgroundColor = status;
+    // fixing background colors in highlighted state
+    [self.statusView redraw];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-    // fixing background colors in selected state
-
-    UIColor *avatar = self.avatarImageView.backgroundColor;
-    UIColor *status = self.statusView.backgroundColor;
-
     [super setSelected:selected animated:animated];
 
-    self.avatarImageView.backgroundColor = avatar;
-    self.statusView.backgroundColor = status;
-}
-
-#pragma mark -  Actions
-
-- (void)infoButtonPressed
-{
-    [self.delegate friendsCellInfoButtonPressed:self];
-}
-
-#pragma mark -  Public
-
-- (void)redraw
-{
-    self.avatarImageView.image = self.avatarImage;
-    self.titleLabel.text = self.title;
-    self.subtitleLabel.text = self.subtitle;
-
-    self.statusView.status = self.status;
+    // fixing background colors in selected state
     [self.statusView redraw];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
 
     [self adjustSubviews];
 }
 
+#pragma mark -  Properties
+
+- (void)setStatus:(StatusCircleStatus)status
+{
+    self.statusView.status = status;
+
+    [self.statusView redraw];
+}
+
+- (StatusCircleStatus)status
+{
+    return self.statusView.status;
+}
+
+#pragma mark -  Public
+
 + (CGFloat)height
 {
-    return 50.0;
+    return 44.0;
 }
 
 + (NSString *)reuseIdentifier
@@ -98,43 +93,12 @@
 
 #pragma mark -  Private
 
-- (void)createAvatarImageView
-{
-    CGRect frame = CGRectZero;
-    frame.size.width = frame.size.height = 40.0;
-
-    self.avatarImageView = [[UIImageView alloc] initWithFrame:frame];
-    self.avatarImageView.backgroundColor = [UIColor grayColor];
-    self.avatarImageView.layer.cornerRadius = frame.size.width / 2;
-    self.avatarImageView.layer.masksToBounds = YES;
-
-
-    [self.contentView addSubview:self.avatarImageView];
-}
-
-- (void)createTitleView
-{
-    self.titleLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
-}
-
-- (void)createSubtitleView
-{
-    self.subtitleLabel = [self.contentView addLabelWithTextColor:[UIColor grayColor] bgColor:[UIColor clearColor]];
-}
-
 - (void)createStatusView
 {
     self.statusView = [StatusCircleView new];
-    [self.contentView addSubview:self.statusView];
-}
+    self.statusView.side = 8.0;
 
-- (void)createInfoButton
-{
-    self.infoButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
-    [self.infoButton addTarget:self
-                        action:@selector(infoButtonPressed)
-              forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:self.infoButton];
+    [self.contentView addSubview:self.statusView];
 }
 
 - (void)adjustSubviews
@@ -142,46 +106,13 @@
     CGRect frame = CGRectZero;
 
     {
-        frame = self.avatarImageView.frame;
-        frame.origin.x = 10.0;
-        frame.origin.y = (self.bounds.size.height - frame.size.height) / 2;
-        self.avatarImageView.frame = frame;
-    }
+        CGSize size = [self.textLabel.text stringSizeWithFont:self.textLabel.font];
 
-    {
-        frame = CGRectZero;
-        frame.size = [self.titleLabel.text stringSizeWithFont:self.titleLabel.font];
-        frame.size.width = MIN(200.0, frame.size.width);
-        frame.origin.x = CGRectGetMaxX(self.avatarImageView.frame) + 10.0;
-        frame.origin.y = self.avatarImageView.frame.origin.y;
-
-        self.titleLabel.frame = frame;
-    }
-
-    {
-        frame = CGRectZero;
-        frame.size = [self.subtitleLabel.text stringSizeWithFont:self.subtitleLabel.font];
-        frame.size.width = MIN(230.0, frame.size.width);
-        frame.origin.x = CGRectGetMinX(self.titleLabel.frame);
-        frame.origin.y = CGRectGetMaxY(self.titleLabel.frame) + 1.0;
-
-        self.subtitleLabel.frame = frame;
-    }
-
-    {
         frame = self.statusView.frame;
-        frame.origin.x = CGRectGetMaxX(self.titleLabel.frame) + 10.0;
-        frame.origin.y = CGRectGetMinY(self.titleLabel.frame) +
-            (self.titleLabel.frame.size.height - frame.size.height) / 2;
-        self.statusView.frame = frame;
-    }
+        frame.origin.x = CGRectGetMinX(self.textLabel.frame) + size.width + 8.0;
+        frame.origin.y = (CGRectGetMaxY(self.textLabel.frame) - frame.size.height) / 2 + 2.0;
 
-    {
-        [self.infoButton sizeToFit];
-        frame = self.infoButton.frame;
-        frame.origin.x = self.bounds.size.width - frame.size.width - 10.0;
-        frame.origin.y = (self.bounds.size.height - frame.size.height) / 2;
-        self.infoButton.frame = frame;
+        self.statusView.frame = frame;
     }
 }
 

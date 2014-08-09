@@ -8,7 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "StatusCircleView.h"
+
 @interface AllChatsCell : UITableViewCell
+
+@property (assign, nonatomic) StatusCircleStatus status;
+
+- (void)setMessage:(NSString *)message andDate:(NSString *)date;
+
++ (CGFloat)height;
 
 + (NSString *)reuseIdentifier;
 

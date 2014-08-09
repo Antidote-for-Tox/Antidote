@@ -7,6 +7,7 @@
 //
 
 #import "AllChatsViewController.h"
+#import "AllChatsCell.h"
 #import "UIViewController+Utilities.h"
 #import "CoreDataManager+Chat.h"
 #import "CDMessage.h"
@@ -16,6 +17,9 @@
 #import "ToxManager.h"
 #import "UIImage+Utilities.h"
 #import "AvatarFactory.h"
+#import "UIColor+Utilities.h"
+#import "Helper.h"
+#import "TimeFormatter.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate,
     NSFetchedResultsControllerDelegate>
@@ -74,16 +78,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *const chatCellReuseIdentifier = @"chatCellReuseIdentifier";
-
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:chatCellReuseIdentifier];
-
-    if (! cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle
-                                      reuseIdentifier:chatCellReuseIdentifier];
-    }
+    AllChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:[AllChatsCell reuseIdentifier]
+                                                         forIndexPath:indexPath];
 
     CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    CDUser *user = [chat.users anyObject];
+    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
 
     NSString *usersString;
     for (CDUser *user in chat.users) {
@@ -100,13 +100,13 @@
     }
 
     cell.textLabel.text = usersString;
-    cell.detailTextLabel.text = chat.lastMessage.text;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.imageView.image = [AvatarFactory avatarFromString:usersString side:cell.imageView.frame.size.width];
+    cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
-    const CGFloat side = 40.0;
-    cell.imageView.image = [AvatarFactory avatarFromString:usersString side:side];
-    cell.imageView.layer.cornerRadius = side / 2;
-    cell.imageView.layer.masksToBounds = YES;
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:chat.lastMessage.date];
+
+    [cell setMessage:chat.lastMessage.text
+             andDate:[[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime]];
 
     return cell;
 }
@@ -146,7 +146,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50.0;
+    return [AllChatsCell height];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -184,7 +184,7 @@
         [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     else if (type == NSFetchedResultsChangeUpdate) {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
     }
 }
 
@@ -201,6 +201,8 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor clearColor];
+
+    [self.tableView registerClass:[AllChatsCell class] forCellReuseIdentifier:[AllChatsCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }

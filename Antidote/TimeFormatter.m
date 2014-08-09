@@ -11,15 +11,17 @@
 @interface TimeFormatter()
 
 @property (strong, nonatomic, readonly) NSDateFormatter *messageTimeFormatter;
-@property (strong, nonatomic, readonly) NSDateFormatter *messageRelativeFormatter;
+@property (strong, nonatomic, readonly) NSDateFormatter *messageRelativeDateAndTimeFormatter;
+@property (strong, nonatomic, readonly) NSDateFormatter *messageRelativeDateFormatter;
 @property (strong, nonatomic, readonly) NSCalendar *currentCalendar;
 
 @end
 
 @implementation TimeFormatter
-@synthesize messageTimeFormatter         = _messageTimeFormatter;
-@synthesize messageRelativeFormatter     = _messageRelativeFormatter;
-@synthesize currentCalendar              = _currentCalendar;
+@synthesize messageTimeFormatter                = _messageTimeFormatter;
+@synthesize messageRelativeDateAndTimeFormatter = _messageRelativeDateAndTimeFormatter;
+@synthesize messageRelativeDateFormatter        = _messageRelativeDateFormatter;
+@synthesize currentCalendar                     = _currentCalendar;
 
 #pragma mark -  Lifecycle
 
@@ -61,16 +63,28 @@
     return _messageTimeFormatter;
 }
 
-- (NSDateFormatter *)messageRelativeFormatter
+- (NSDateFormatter *)messageRelativeDateAndTimeFormatter
 {
-    if (! _messageRelativeFormatter) {
-        _messageRelativeFormatter = [NSDateFormatter new];
-        _messageRelativeFormatter.dateStyle = NSDateFormatterShortStyle;
-        _messageRelativeFormatter.timeStyle = NSDateFormatterShortStyle;
-        _messageRelativeFormatter.doesRelativeDateFormatting = YES;
+    if (! _messageRelativeDateAndTimeFormatter) {
+        _messageRelativeDateAndTimeFormatter = [NSDateFormatter new];
+        _messageRelativeDateAndTimeFormatter.dateStyle = NSDateFormatterShortStyle;
+        _messageRelativeDateAndTimeFormatter.timeStyle = NSDateFormatterShortStyle;
+        _messageRelativeDateAndTimeFormatter.doesRelativeDateFormatting = YES;
     }
 
-    return _messageRelativeFormatter;
+    return _messageRelativeDateAndTimeFormatter;
+}
+
+- (NSDateFormatter *)messageRelativeDateFormatter
+{
+    if (! _messageRelativeDateFormatter) {
+        _messageRelativeDateFormatter = [NSDateFormatter new];
+        _messageRelativeDateFormatter.dateStyle = NSDateFormatterShortStyle;
+        _messageRelativeDateFormatter.timeStyle = NSDateFormatterNoStyle;
+        _messageRelativeDateFormatter.doesRelativeDateFormatting = YES;
+    }
+
+    return _messageRelativeDateFormatter;
 }
 
 - (NSCalendar *)currentCalendar
@@ -84,25 +98,26 @@
 
 #pragma mark -  Public
 
-- (NSString *)timeStringFromDate:(NSDate *)date
+- (NSString *)stringFromDate:(NSDate *)date type:(TimeFormatterType)type
 {
     if (! date) {
         return nil;
     }
 
-    return [self.messageTimeFormatter stringFromDate:date];
-}
-
-- (NSString *)stringFromDate:(NSDate *)originalDate
-{
-    if (! originalDate) {
-        return nil;
+    if (type == TimeFormatterTypeTime) {
+        return [self.messageTimeFormatter stringFromDate:date];
+    }
+    else if (type == TimeFormatterTypeRelativeDateAndTime) {
+        return [self.messageRelativeDateAndTimeFormatter stringFromDate:date];
+    }
+    else if (type == TimeFormatterTypeRelativeDate) {
+        return [self.messageRelativeDateFormatter stringFromDate:date];
     }
 
-    return [self.messageRelativeFormatter stringFromDate:originalDate];
+    return nil;
 }
 
-- (BOOL)doHaveSameDay:(NSDate *)first and:(NSDate *)second
+- (BOOL)areSameDays:(NSDate *)first and:(NSDate *)second
 {
     const NSUInteger components = NSEraCalendarUnit | NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit;
 
