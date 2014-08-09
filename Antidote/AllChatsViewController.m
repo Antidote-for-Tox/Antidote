@@ -40,6 +40,11 @@
 
     if (self) {
         self.title = NSLocalizedString(@"Chats", @"Chats");
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(friendUpdateNotification:)
+                                                     name:kToxFriendsContainerUpdateSpecificFriendNotification
+                                                   object:nil];
     }
 
     return self;
@@ -82,8 +87,7 @@
                                                          forIndexPath:indexPath];
 
     CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    CDUser *user = [chat.users anyObject];
-    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
+    ToxFriend *friend = [self friendForIndexPath:indexPath];
 
     NSString *usersString;
     for (CDUser *user in chat.users) {
@@ -193,6 +197,22 @@
     [self.tableView endUpdates];
 }
 
+#pragma mark -  Notifications
+
+- (void)friendUpdateNotification:(NSNotification *)notification
+{
+    ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+
+    for (NSIndexPath *path in self.tableView.indexPathsForVisibleRows) {
+        ToxFriend *friend = [self friendForIndexPath:path];
+
+        if ([friend isEqual:updatedFriend]) {
+            [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+            return;
+        }
+    }
+}
+
 #pragma mark -  Private
 
 - (void)createTableView
@@ -210,6 +230,14 @@
 - (void)adjustSubviews
 {
     self.tableView.frame = self.view.bounds;
+}
+
+- (ToxFriend *)friendForIndexPath:(NSIndexPath *)path
+{
+    CDChat *chat = [self.fetchedResultsController objectAtIndexPath:path];
+    CDUser *user = [chat.users anyObject];
+
+    return [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
 }
 
 @end
