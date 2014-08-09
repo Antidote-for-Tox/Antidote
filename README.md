@@ -12,7 +12,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 ## Features
 
--  1v1 messaging
+-  one to one conversations
 -  typing notification
 -  emoticons
 -  spell check
@@ -32,3 +32,14 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 Antidote is available under the MIT license. See the [LICENSE](LICENSE.txt) file for more info.
 
+## Links
+
+- [icons8](http://icons8.com/) - icons used in app
+
+#### Third-party frameworks
+
+- [libsodium-ios](https://github.com/mochtu/libsodium-ios)
+- [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
+- [BlocksKit](https://zwaldowski.github.io/BlocksKit/)
+- [JSQMessagesViewController](http://www.jessesquires.com/JSQMessagesViewController/)
+- [ZBarSDK](http://zbar.sourceforge.net/)
