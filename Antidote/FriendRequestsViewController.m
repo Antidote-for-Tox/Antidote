@@ -12,6 +12,7 @@
 #import "FriendRequestsCell.h"
 #import "NSIndexSet+Utilities.h"
 #import "UIAlertView+BlocksKit.h"
+#import "AppDelegate.h"
 
 @interface FriendRequestsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
@@ -53,6 +54,16 @@
     [self loadWhiteView];
 
     [self createTableView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [[ToxManager sharedInstance] markAllFriendRequestsAsSeen];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
 }
 
 - (void)viewDidLayoutSubviews
@@ -147,6 +158,14 @@
 
 - (void)updateRequestsNotification:(NSNotification *)notification
 {
+    if (self.isViewLoaded && self.view.window) {
+        // is visible
+        [[ToxManager sharedInstance] markAllFriendRequestsAsSeen];
+
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+    }
+
     NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
     NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
 

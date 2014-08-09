@@ -211,6 +211,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }
 }
 
+- (void)markAllFriendRequestsAsSeen
+{
+    [self.friendsContainer private_markAllFriendRequestsAsSeen];
+}
+
 - (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
 {
     uint8_t *clientId = [ToxFunctions hexStringToBin:request.clientId];
@@ -518,12 +523,6 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     [self performSelectorOnMainThread:@selector(updateAppDelegateChatsBadge) withObject:nil waitUntilDone:YES];
 }
 
-- (void)updateAppDelegateChatsBadge
-{
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
-}
-
 - (CDUser *)userFromClientId:(NSString *)clientId
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", clientId];
@@ -556,6 +555,18 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }];
 }
 
+- (void)updateAppDelegateFriendsBadge
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+}
+
+- (void)updateAppDelegateChatsBadge
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
+}
+
 @end
 
 #pragma mark -  C functions
@@ -575,6 +586,10 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
                                                 image:nil
                                                object:request];
     [[EventsManager sharedInstance] addObject:object];
+
+    [[ToxManager sharedInstance] performSelectorOnMainThread:@selector(updateAppDelegateFriendsBadge)
+                                                  withObject:nil
+                                               waitUntilDone:YES];
 }
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)

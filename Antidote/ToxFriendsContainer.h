@@ -46,6 +46,7 @@ extern NSString *const kToxFriendsContainerUpdateKeyUpdatedSet;
 
 - (NSUInteger)requestsCount;
 - (ToxFriendRequest *)requestAtIndex:(NSUInteger)index;
+- (NSUInteger)numberOfNotSeenRequests;
 
 @end
 
@@ -63,5 +64,6 @@ extern NSString *const kToxFriendsContainerUpdateKeyUpdatedSet;
 
 - (void)private_addFriendRequest:(ToxFriendRequest *)request;
 - (void)private_removeFriendRequest:(ToxFriendRequest *)request;
+- (void)private_markAllFriendRequestsAsSeen;
 
 @end

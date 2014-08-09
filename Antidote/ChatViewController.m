@@ -98,10 +98,7 @@
 {
     [super viewWillAppear:animated];
 
-    [self updateLastReadDate];
-
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
+    [self updateLastReadDateAndChatsBadge];
 }
 
 - (void)viewDidLoad
@@ -299,7 +296,7 @@
 {
     if (self.isViewLoaded && self.view.window) {
         // is visible
-        [self updateLastReadDate];
+        [self updateLastReadDateAndChatsBadge];
     }
 
     CDMessage *message = notification.userInfo[kCoreDataManagerNewMessageKey];
@@ -561,13 +558,16 @@
     return NO;
 }
 
-- (void)updateLastReadDate
+- (void)updateLastReadDateAndChatsBadge
 {
     NSDate *date = [NSDate date];
 
     [CoreDataManager editCDObjectWithBlock:^{
         self.chat.lastReadDate = [date timeIntervalSince1970];
     }];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 @end

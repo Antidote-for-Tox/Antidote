@@ -43,12 +43,6 @@
 
         self.friendsContainer = [ToxManager sharedInstance].friendsContainer;
 
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-            initWithTitle:NSLocalizedString(@"Requests", @"Friends")
-                    style:UIBarButtonItemStylePlain
-                   target:self
-                   action:@selector(requestsButtonPressed)];
-
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
             initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                  target:self
@@ -73,6 +67,13 @@
     [self loadWhiteView];
 
     [self createTableView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self updateLeftBarButtonItem];
 }
 
 - (void)viewDidLayoutSubviews
@@ -248,6 +249,22 @@
 - (void)adjustSubviews
 {
     self.tableView.frame = self.view.bounds;
+}
+
+- (void)updateLeftBarButtonItem
+{
+    NSString *title = NSLocalizedString(@"Requests", @"Friends");
+
+    NSUInteger number = [[ToxManager sharedInstance].friendsContainer numberOfNotSeenRequests];
+
+    if (number) {
+        title = [title stringByAppendingFormat:@" (%d)", number];
+    }
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title
+                                                                             style:UIBarButtonItemStylePlain
+                                                                            target:self
+                                                                            action:@selector(requestsButtonPressed)];
 }
 
 @end

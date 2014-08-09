@@ -12,6 +12,7 @@
 
 @property (strong, nonatomic) NSString *publicKey;
 @property (strong, nonatomic) NSString *message;
+@property (assign, nonatomic) BOOL wasSeen;
 
 + (ToxFriendRequest *)friendRequestWithPublicKey:(NSString *)publicKey message:(NSString *)message;
 

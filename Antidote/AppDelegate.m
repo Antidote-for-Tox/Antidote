@@ -78,6 +78,7 @@
     self.friendsBadge = [self addBadgeAtIndex:AppDelegateTabIndexFriends];
     self.chatsBadge = [self addBadgeAtIndex:AppDelegateTabIndexChats];
 
+    [self updateBadgeForTab:AppDelegateTabIndexFriends];
     [self updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
@@ -99,7 +100,12 @@
 
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
 {
-    if (tabIndex == AppDelegateTabIndexChats) {
+    if (tabIndex == AppDelegateTabIndexFriends) {
+        NSUInteger number = [[ToxManager sharedInstance].friendsContainer numberOfNotSeenRequests];
+
+        self.friendsBadge.value = number ? [NSString stringWithFormat:@"%d", number] : nil;
+    }
+    else if (tabIndex == AppDelegateTabIndexChats) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
         NSArray *array = [CoreDataManager chatsWithPredicateSortedByDate:predicate];
 
