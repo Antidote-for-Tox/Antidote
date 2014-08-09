@@ -72,6 +72,19 @@
     return instance;
 }
 
+#pragma mark -  Public
+
++ (void)editCDObjectWithBlock:(void (^)())block
+{
+    dispatch_sync([self private_queue], ^{
+        if (block) {
+            block();
+
+            [[self private_context] MR_saveToPersistentStoreAndWait];
+        }
+    });
+}
+
 #pragma mark -  Class methods
 
 + (dispatch_queue_t)private_queue

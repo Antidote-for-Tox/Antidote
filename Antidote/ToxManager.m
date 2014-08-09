@@ -14,6 +14,7 @@
 #import "CoreDataManager+Message.h"
 #import "ToxFriend+Private.h"
 #import "EventsManager.h"
+#import "AppDelegate.h"
 
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
@@ -513,6 +514,14 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     EventObject *object = [EventObject objectWithType:EventObjectTypeChatMessage image:nil object:cdMessage];
 
     [[EventsManager sharedInstance] addObject:object];
+
+    [self performSelectorOnMainThread:@selector(updateAppDelegateChatsBadge) withObject:nil waitUntilDone:YES];
+}
+
+- (void)updateAppDelegateChatsBadge
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 - (CDUser *)userFromClientId:(NSString *)clientId

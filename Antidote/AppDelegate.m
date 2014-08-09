@@ -14,6 +14,8 @@
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
 #import "CoreData+MagicalRecord.h"
+#import "CoreDataManager+Chat.h"
+#import "CoreDataManager+Message.h"
 #import "BadgeWithText.h"
 
 @interface AppDelegate()
@@ -75,6 +77,8 @@
 
     self.friendsBadge = [self addBadgeAtIndex:AppDelegateTabIndexFriends];
     self.chatsBadge = [self addBadgeAtIndex:AppDelegateTabIndexChats];
+
+    [self updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 - (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index
@@ -91,6 +95,16 @@
     [tabBarController.tabBar addSubview:badge];
 
     return badge;
+}
+
+- (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
+{
+    if (tabIndex == AppDelegateTabIndexChats) {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
+        NSArray *array = [CoreDataManager chatsWithPredicateSortedByDate:predicate];
+
+        self.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%d", array.count] : nil;
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

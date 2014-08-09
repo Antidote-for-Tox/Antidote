@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="14A298i" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="14A314h" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CDChat" representedClassName="CDChat" syncable="YES">
+        <attribute name="lastReadDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="lastMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="chatForLastMessageInverse" inverseEntity="CDMessage" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDMessage" inverseName="chat" inverseEntity="CDMessage" syncable="YES"/>
         <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="chats" inverseEntity="CDUser" syncable="YES"/>
@@ -20,8 +21,8 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="user" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <elements>
+        <element name="CDChat" positionX="288" positionY="-0" width="128" height="103"/>
         <element name="CDMessage" positionX="-63" positionY="-27" width="128" height="148"/>
-        <element name="CDChat" positionX="288" positionY="-0" width="128" height="88"/>
         <element name="CDUser" positionX="97" positionY="182" width="128" height="88"/>
     </elements>
 </model>

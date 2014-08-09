@@ -10,6 +10,8 @@
 
 @interface CoreDataManager : NSObject
 
++ (void)editCDObjectWithBlock:(void (^)())block;
+
 @end
 
 /**

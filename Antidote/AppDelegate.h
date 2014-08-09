@@ -19,5 +19,6 @@ typedef NS_ENUM(NSUInteger, AppDelegateTabIndex) {
 @property (strong, nonatomic) UIWindow *window;
 
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex;
+- (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex;
 
 @end

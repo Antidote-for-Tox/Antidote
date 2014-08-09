@@ -17,6 +17,7 @@
 #import "UIView+Utilities.h"
 #import "Helper.h"
 #import "TimeFormatter.h"
+#import "AppDelegate.h"
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
     UIGestureRecognizerDelegate>
@@ -91,6 +92,16 @@
     [self createTableView];
     [self createRecognizers];
     [self createInputView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self updateLastReadDate];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 - (void)viewDidLoad
@@ -286,6 +297,11 @@
 
 - (void)newMessageNotification:(NSNotification *)notification
 {
+    if (self.isViewLoaded && self.view.window) {
+        // is visible
+        [self updateLastReadDate];
+    }
+
     CDMessage *message = notification.userInfo[kCoreDataManagerNewMessageKey];
 
     if (! [message.chat isEqual:self.chat]) {
@@ -543,6 +559,15 @@
     }
 
     return NO;
+}
+
+- (void)updateLastReadDate
+{
+    NSDate *date = [NSDate date];
+
+    [CoreDataManager editCDObjectWithBlock:^{
+        self.chat.lastReadDate = [date timeIntervalSince1970];
+    }];
 }
 
 @end

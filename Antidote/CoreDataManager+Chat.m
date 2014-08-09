@@ -13,10 +13,18 @@
 
 + (NSArray *)allChatsSortedByDate
 {
+    return [self chatsWithPredicateSortedByDate:nil];
+}
+
++ (NSArray *)chatsWithPredicateSortedByDate:(NSPredicate *)predicate
+{
     __block NSArray *array;
 
     dispatch_sync([self private_queue], ^{
-        array = [CDChat MR_findAllSortedBy:@"lastMessage.date" ascending:YES inContext:[self private_context]];
+        array = [CDChat MR_findAllSortedBy:@"lastMessage.date"
+                                 ascending:YES
+                             withPredicate:predicate
+                                 inContext:[self private_context]];
     });
 
     return array;
@@ -52,23 +60,6 @@
             if (configBlock) {
                 configBlock(chat);
             }
-
-            [[self private_context] MR_saveToPersistentStoreAndWait];
-        }
-    });
-
-    return chat;
-}
-
-+ (CDChat *)editChatWithPredicate:(NSPredicate *)predicate editBlock:(void (^)(CDChat *theChat))editBlock
-{
-    __block CDChat *chat;
-
-    dispatch_sync([self private_queue], ^{
-        chat = [CDChat MR_findFirstWithPredicate:predicate inContext:[self private_context]];
-
-        if (chat && editBlock) {
-            editBlock(chat);
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
         }

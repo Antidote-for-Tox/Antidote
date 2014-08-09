@@ -16,6 +16,8 @@
 @property (nonatomic, retain) NSSet *messages;
 @property (nonatomic, retain) NSSet *users;
 @property (nonatomic, retain) CDMessage *lastMessage;
+@property (nonatomic) NSTimeInterval lastReadDate;
+
 @end
 
 @interface CDChat (CoreDataGeneratedAccessors)
