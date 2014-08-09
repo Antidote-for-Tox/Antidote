@@ -67,6 +67,7 @@
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
 		119BB129198CECAB00380557 /* ToxIdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB128198CECAB00380557 /* ToxIdView.m */; };
+		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
 		11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */; };
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
@@ -209,6 +210,8 @@
 		119BB121198BE77900380557 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
 		119BB127198CECAB00380557 /* ToxIdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxIdView.h; sourceTree = "<group>"; };
 		119BB128198CECAB00380557 /* ToxIdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxIdView.m; sourceTree = "<group>"; };
+		11B5A364199626920005C1E7 /* BadgeWithText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeWithText.h; sourceTree = "<group>"; };
+		11B5A365199626920005C1E7 /* BadgeWithText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeWithText.m; sourceTree = "<group>"; };
 		11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicCell.h; sourceTree = "<group>"; };
 		11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicCell.m; sourceTree = "<group>"; };
 		11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatOutgoingCell.h; sourceTree = "<group>"; };
@@ -504,6 +507,8 @@
 		118352A9197A6C210048CA64 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11B5A364199626920005C1E7 /* BadgeWithText.h */,
+				11B5A365199626920005C1E7 /* BadgeWithText.m */,
 				118352AA197A6C410048CA64 /* CopyLabel.h */,
 				118352AB197A6C410048CA64 /* CopyLabel.m */,
 				118352C1197A7D390048CA64 /* StatusCircleView.h */,
@@ -860,6 +865,7 @@
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
 				11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
+				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,

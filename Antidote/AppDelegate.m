@@ -14,6 +14,14 @@
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
 #import "CoreData+MagicalRecord.h"
+#import "BadgeWithText.h"
+
+@interface AppDelegate()
+
+@property (strong, nonatomic) BadgeWithText *friendsBadge;
+@property (strong, nonatomic) BadgeWithText *chatsBadge;
+
+@end
 
 @implementation AppDelegate
 
@@ -64,6 +72,25 @@
     tabBar.selectedIndex = tabIndex;
 
     self.window.rootViewController = tabBar;
+
+    self.friendsBadge = [self addBadgeAtIndex:AppDelegateTabIndexFriends];
+    self.chatsBadge = [self addBadgeAtIndex:AppDelegateTabIndexChats];
+}
+
+- (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index
+{
+    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+
+    CGRect frame = CGRectZero;
+    frame.origin.x = index * (tabBarController.tabBar.frame.size.width / 3) +
+        tabBarController.tabBar.frame.size.width / 6;
+    frame.origin.y = 3.0;
+
+    BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
+    badge.backgroundColor = [AppearanceManager statusBusyColor];
+    [tabBarController.tabBar addSubview:badge];
+
+    return badge;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
