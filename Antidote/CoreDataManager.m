@@ -31,7 +31,7 @@
 - (id)initPrivate
 {
     if (self = [super init]) {
-        _queue = dispatch_queue_create("CoreDataManager queue", NULL);
+        _queue = dispatch_queue_create("me.dvor.antidote.CoreDataManager", NULL);
 
         dispatch_sync(_queue, ^{
             _context = [NSManagedObjectContext MR_contextForCurrentThread];
