@@ -69,11 +69,16 @@
 {
     if ([textField isEqual:self.associatedNameField]) {
         [textField resignFirstResponder];
-
-        [[ToxManager sharedInstance] changeAssociatedNameTo:textField.text forFriend:self.friend];
     }
 
     return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    if ([textField isEqual:self.associatedNameField]) {
+        [[ToxManager sharedInstance] changeAssociatedNameTo:textField.text forFriend:self.friend];
+    }
 }
 
 #pragma mark -  Notifications
