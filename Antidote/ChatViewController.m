@@ -443,7 +443,18 @@
     }
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
 
-    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:animated];
+    // tableView animation may cause lags (in case if there will be too many messages). When using default UIView
+    // animation, there's no lags for some reason
+    if (animated) {
+        [UIView beginAnimations:nil context:NULL];
+        [UIView setAnimationDuration:0.3];
+    }
+
+    [self.tableView scrollToRowAtIndexPath:path atScrollPosition:UITableViewScrollPositionTop animated:NO];
+
+    if (animated) {
+        [UIView commitAnimations];
+    }
 }
 
 - (void)updateTableViewInsetAndInputViewWithDuration:(NSTimeInterval)duration curve:(UIViewAnimationCurve)curve
