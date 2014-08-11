@@ -18,14 +18,12 @@ extern NSString *const kCoreDataManagerNewMessageKey;
 
 @interface CoreDataManager (Message)
 
-+ (NSArray *)messagesForChat:(CDChat *)chat;
++ (void)messagesForChat:(CDChat *)chat
+        completionQueue:(dispatch_queue_t)queue
+        completionBlock:(void (^)(NSArray *messages))completionBlock;
 
-+ (NSFetchedResultsController *)messagesFetchedControllerForChat:(CDChat *)chat
-                                                    withDelegate:(id <NSFetchedResultsControllerDelegate>)delegate;
-
-+ (CDMessage *)insertMessageWithConfigBlock:(void (^)(CDMessage *theMessage))configBlock;
-+ (CDMessage *)editMessageWithId:(NSNumber *)messageId editBlock:(void (^)(CDMessage *theMessage))editBlock;
-
-+ (void)removeAllMessages;
++ (void)insertMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
+                     completionQueue:(dispatch_queue_t)queue
+                     completionBlock:(void (^)(CDMessage *message))completionBlock;
 
 @end

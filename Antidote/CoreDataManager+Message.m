@@ -14,56 +14,47 @@ NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey"
 
 @implementation CoreDataManager (Message)
 
-+ (NSArray *)messagesForChat:(CDChat *)chat
++ (void)messagesForChat:(CDChat *)chat
+        completionQueue:(dispatch_queue_t)queue
+        completionBlock:(void (^)(NSArray *messages))completionBlock;
 {
-    __block NSArray *array;
-
-    dispatch_sync([self private_queue], ^{
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
-
-        array = [CDMessage MR_findAllSortedBy:@"date"
-                                    ascending:YES
-                                withPredicate:predicate
-                                    inContext:[self private_context]];
-    });
-
-    return array;
-}
-
-+ (NSFetchedResultsController *)messagesFetchedControllerForChat:(CDChat *)chat
-                                                    withDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
-{
-    __block NSFetchedResultsController *controller;
-
-    dispatch_sync([self private_queue], ^{
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
-
-        controller = [CDMessage MR_fetchAllSortedBy:@"date"
-                                          ascending:YES
-                                      withPredicate:predicate
-                                            groupBy:nil
-                                           delegate:delegate
-                                          inContext:[self private_context]];
-    });
-
-    return controller;
-}
-
-+ (CDMessage *)insertMessageWithConfigBlock:(void (^)(CDMessage *theMessage))configBlock;
-{
-    if (! configBlock) {
-        return nil;
+    if (! completionBlock) {
+        return;
     }
 
-    __block CDMessage *message;
+    dispatch_async([self private_queue], ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
 
-    dispatch_sync([self private_queue], ^{
-        message = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessage"
-                                                inManagedObjectContext:[self private_context]];
+        NSArray *array = [CDMessage MR_findAllSortedBy:@"date"
+                                             ascending:YES
+                                         withPredicate:predicate
+                                             inContext:[self private_context]];
 
-        configBlock(message);
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(array);
+        }];
+    });
+}
+
++ (void)insertMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
+                     completionQueue:(dispatch_queue_t)queue
+                     completionBlock:(void (^)(CDMessage *message))completionBlock
+{
+    dispatch_async([self private_queue], ^{
+        CDMessage * message = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessage"
+                                                            inManagedObjectContext:[self private_context]];
+
+        if (configBlock) {
+            configBlock(message);
+        }
 
         [[self private_context] MR_saveToPersistentStoreAndWait];
+
+        if (completionBlock) {
+            [self private_performBlockOnQueueOrMain:queue block:^{
+                completionBlock(message);
+            }];
+        }
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kCoreDataManagerNewMessageNotification
@@ -71,51 +62,6 @@ NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey"
                                                               userInfo:@{kCoreDataManagerNewMessageKey: message}];
         });
     });
-
-    return message;
-}
-
-+ (CDMessage *)editMessageWithId:(NSNumber *)messageId editBlock:(void (^)(CDMessage *theMessage))editBlock;
-{
-    if (! messageId || ! editBlock) {
-        return nil;
-    }
-
-    __block CDMessage *editedMessage;
-
-    dispatch_sync([self private_queue], ^{
-        editedMessage = [self messageWithId:messageId];
-
-        if (editedMessage) {
-            editBlock(editedMessage);
-
-            [[self private_context] MR_saveToPersistentStoreAndWait];
-        }
-    });
-
-    return editedMessage;
-}
-
-+ (void)removeAllMessages
-{
-    dispatch_sync([self private_queue], ^{
-        for (CDMessage *message in [CDMessage MR_findAllInContext:[self private_context]]) {
-            [message MR_deleteInContext:[self private_context]];
-        }
-
-        [[self private_context] MR_saveToPersistentStoreAndWait];
-    });
-}
-
-#pragma mark -  Private
-
-+ (CDMessage *)messageWithId:(NSNumber *)messageId
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"id == %@", messageId];
-
-    NSArray *array = [CDMessage MR_findAllWithPredicate:predicate inContext:[self private_context]];
-
-    return [array lastObject];
 }
 
 @end

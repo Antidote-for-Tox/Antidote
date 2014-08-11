@@ -107,9 +107,15 @@
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
-        NSArray *array = [CoreDataManager chatsWithPredicateSortedByDate:predicate];
 
-        self.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%d", array.count] : nil;
+        __weak AppDelegate *weakSelf = self;
+
+        [CoreDataManager chatsWithPredicateSortedByDate:predicate
+                                        completionQueue:dispatch_get_main_queue()
+                                        completionBlock:^(NSArray *array)
+        {
+            weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%d", array.count] : nil;
+        }];
     }
 }
 

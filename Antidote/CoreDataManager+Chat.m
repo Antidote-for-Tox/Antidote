@@ -11,47 +11,55 @@
 
 @implementation CoreDataManager (Chat)
 
-+ (NSArray *)allChatsSortedByDate
++ (void)chatsWithPredicateSortedByDate:(NSPredicate *)predicate
+                       completionQueue:(dispatch_queue_t)queue
+                       completionBlock:(void (^)(NSArray *chats))completionBlock
 {
-    return [self chatsWithPredicateSortedByDate:nil];
-}
+    if (! completionBlock) {
+        return;
+    }
 
-+ (NSArray *)chatsWithPredicateSortedByDate:(NSPredicate *)predicate
-{
-    __block NSArray *array;
+    dispatch_async([self private_queue], ^{
+        NSArray *array = [CDChat MR_findAllSortedBy:@"lastMessage.date"
+                                          ascending:YES
+                                      withPredicate:predicate
+                                          inContext:[self private_context]];
 
-    dispatch_sync([self private_queue], ^{
-        array = [CDChat MR_findAllSortedBy:@"lastMessage.date"
-                                 ascending:YES
-                             withPredicate:predicate
-                                 inContext:[self private_context]];
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(array);
+        }];
     });
-
-    return array;
 }
 
-+ (NSFetchedResultsController *)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
++ (void)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
+                              completionQueue:(dispatch_queue_t)queue
+                              completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock
 {
-    __block NSFetchedResultsController *controller;
+    if (! completionBlock) {
+        return;
+    }
 
-    dispatch_sync([self private_queue], ^{
-        controller = [CDChat MR_fetchAllSortedBy:@"lastMessage.date"
-                                       ascending:NO
-                                   withPredicate:nil
-                                         groupBy:nil
-                                        delegate:delegate
-                                       inContext:[self private_context]];
+    dispatch_async([self private_queue], ^{
+        NSFetchedResultsController *controller = [CDChat MR_fetchAllSortedBy:@"lastMessage.date"
+                                                                   ascending:NO
+                                                               withPredicate:nil
+                                                                     groupBy:nil
+                                                                    delegate:delegate
+                                                                   inContext:[self private_context]];
+
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(controller);
+        }];
     });
-
-    return controller;
 }
 
-+ (CDChat *)getOrInsertChatWithPredicate:(NSPredicate *)predicate configBlock:(void (^)(CDChat *theChat))configBlock
++ (void)getOrInsertChatWithPredicate:(NSPredicate *)predicate
+                         configBlock:(void (^)(CDChat *theChat))configBlock
+                     completionQueue:(dispatch_queue_t)queue
+                     completionBlock:(void (^)(CDChat *chat))completionBlock
 {
-    __block CDChat *chat;
-
-    dispatch_sync([self private_queue], ^{
-        chat = [CDChat MR_findFirstWithPredicate:predicate inContext:[self private_context]];
+    dispatch_async([self private_queue], ^{
+        CDChat *chat = [CDChat MR_findFirstWithPredicate:predicate inContext:[self private_context]];
 
         if (! chat) {
             chat = [NSEntityDescription insertNewObjectForEntityForName:@"CDChat"
@@ -63,17 +71,27 @@
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
         }
-    });
 
-    return chat;
+        if (! completionBlock) {
+            return;
+        }
+
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(chat);
+        }];
+    });
 }
 
 + (void)removeChatWithAllMessages:(CDChat *)chat
+                  completionQueue:(dispatch_queue_t)queue
+                  completionBlock:(void (^)())completionBlock
 {
-    dispatch_sync([self private_queue], ^{
+    dispatch_async([self private_queue], ^{
         [chat MR_deleteInContext:[self private_context]];
 
         [[self private_context] MR_saveToPersistentStoreAndWait];
+
+        [self private_performBlockOnQueueOrMain:queue block:completionBlock];
     });
 }
 

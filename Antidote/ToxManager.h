@@ -36,6 +36,6 @@
 - (void)changeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping;
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;
 
-- (CDChat *)chatWithToxFriend:(ToxFriend *)friend;
+- (void)chatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock;
 
 @end

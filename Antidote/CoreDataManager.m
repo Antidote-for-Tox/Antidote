@@ -75,13 +75,17 @@
 #pragma mark -  Public
 
 + (void)editCDObjectWithBlock:(void (^)())block
+              completionQueue:(dispatch_queue_t)queue
+              completionBlock:(void (^)())completionBlock
 {
-    dispatch_sync([self private_queue], ^{
+    dispatch_async([self private_queue], ^{
         if (block) {
             block();
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
         }
+
+        [self private_performBlockOnQueueOrMain:queue block:completionBlock];
     });
 }
 
@@ -99,6 +103,20 @@
                 @"Must be on CoreDataManager queue");
 
     return [[self sharedInstance] context];
+}
+
++ (void)private_performBlockOnQueueOrMain:(dispatch_queue_t)queue block:(void (^)())block
+{
+    if (! block) {
+        return;
+    }
+
+    if (queue) {
+        dispatch_async(queue, block);
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
 }
 
 @end

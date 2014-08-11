@@ -238,15 +238,23 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     });
 }
 
-- (CDChat *)chatWithToxFriend:(ToxFriend *)friend
+- (void)chatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock
 {
-    __block CDChat *chat;
+    if (! completionBlock) {
+        return;
+    }
 
-    dispatch_sync(self.queue, ^{
-        chat = [self qChatWithToxFriend:friend];
+    if (! friend) {
+        completionBlock(nil);
+    }
+
+    dispatch_async(self.queue, ^{
+        [self qChatWithToxFriend:friend completionBlock:^(CDChat *chat) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionBlock(chat);
+            });
+        }];
     });
-
-    return chat;
 }
 
 #pragma mark -  Notifications
@@ -300,7 +308,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    NSString *oldUserName = self.userName;
+    NSString *oldUserName = [self qUserName];;
 
     if (userName && oldUserName && [userName isEqualToString:oldUserName]) {
         return;
@@ -508,16 +516,23 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     tox_send_message(self.tox, friend.id, (uint8_t *)cMessage, message.length);
 
-    CDUser *currentUser = [self qUserFromClientId:[self qClientId]];
-    [self qAddMessage:message toChat:chat fromUser:currentUser];
+    __weak ToxManager *weakSelf = self;
+
+    [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
+        [weakSelf qAddMessage:message toChat:chat fromUser:currentUser completionBlock:nil];
+    }];
 }
 
-- (CDChat *)qChatWithToxFriend:(ToxFriend *)friend
+- (void)qChatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    CDUser *user = [self qUserFromClientId:friend.clientId];
-    return [self qChatWithUser:user];
+    __weak ToxManager *weakSelf = self;
+
+    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+
+        [weakSelf qChatWithUser:user completionBlock:completionBlock];
+    }];
 }
 
 - (void)qCreateTox
@@ -714,45 +729,59 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    CDUser *user = [self qUserFromClientId:friend.clientId];
-    CDChat *chat = [self qChatWithUser:user];
+    __weak ToxManager *weakSelf = self;
 
-    CDMessage *cdMessage = [self qAddMessage:message toChat:chat fromUser:user];
+    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
+            // todo
 
-    EventObject *object = [EventObject objectWithType:EventObjectTypeChatMessage image:nil object:cdMessage];
+            [weakSelf qAddMessage:message toChat:chat fromUser:user completionBlock:^(CDMessage *cdMessage) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    EventObject *object = [EventObject objectWithType:EventObjectTypeChatMessage
+                                                                image:nil
+                                                               object:cdMessage];
+                    [[EventsManager sharedInstance] addObject:object];
 
-    [[EventsManager sharedInstance] addObject:object];
-
-    [self performSelectorOnMainThread:@selector(updateAppDelegateChatsBadge) withObject:nil waitUntilDone:YES];
+                    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+                    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
+                });
+            }];
+        }];
+    }];
 }
 
-- (CDUser *)qUserFromClientId:(NSString *)clientId
+- (void)qUserFromClientId:(NSString *)clientId completionBlock:(void (^)(CDUser *user))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", clientId];
 
-    return [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
+    [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
         u.clientId = clientId;
-    }];
+
+    } completionQueue:self.queue completionBlock:completionBlock];
 }
 
-- (CDChat *)qChatWithUser:(CDUser *)user
+- (void)qChatWithUser:(CDUser *)user completionBlock:(void (^)(CDChat *chat))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
 
-    return [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
+    [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
         [c addUsersObject:user];
-    }];
+
+    } completionQueue:self.queue completionBlock:completionBlock];
 }
 
-- (CDMessage *)qAddMessage:(NSString *)message toChat:(CDChat *)chat fromUser:(CDUser *)user
+- (void)qAddMessage:(NSString *)message
+             toChat:(CDChat *)chat
+           fromUser:(CDUser *)user
+    completionBlock:(void (^)(CDMessage *message))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    return [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
+    [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
         m.text = message;
         m.date = [[NSDate date] timeIntervalSince1970];
         m.user = user;
@@ -761,22 +790,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         if (m.date > chat.lastMessage.date) {
             m.chatForLastMessageInverse = chat;
         }
-    }];
+
+    } completionQueue:self.queue completionBlock:completionBlock];
 }
 
 #pragma mark -  Private
-
-- (void)updateAppDelegateFriendsBadge
-{
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
-}
-
-- (void)updateAppDelegateChatsBadge
-{
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
-}
 
 @end
 
@@ -798,9 +816,10 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
                                                object:request];
     [[EventsManager sharedInstance] addObject:object];
 
-    [[ToxManager sharedInstance] performSelectorOnMainThread:@selector(updateAppDelegateFriendsBadge)
-                                                  withObject:nil
-                                               waitUntilDone:YES];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+    });
 }
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)

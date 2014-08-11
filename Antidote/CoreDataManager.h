@@ -10,7 +10,9 @@
 
 @interface CoreDataManager : NSObject
 
-+ (void)editCDObjectWithBlock:(void (^)())block;
++ (void)editCDObjectWithBlock:(void (^)())block
+              completionQueue:(dispatch_queue_t)queue
+              completionBlock:(void (^)())completionBlock;
 
 @end
 
@@ -21,5 +23,6 @@
 
 + (dispatch_queue_t)private_queue;
 + (NSManagedObjectContext *)private_context;
++ (void)private_performBlockOnQueueOrMain:(dispatch_queue_t)queue block:(void (^)())block;
 
 @end

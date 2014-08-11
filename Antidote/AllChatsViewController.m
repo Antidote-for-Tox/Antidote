@@ -61,7 +61,15 @@
 {
     [super viewDidLoad];
 
-    self.fetchedResultsController = [CoreDataManager allChatsFetchedControllerWithDelegate:self];
+    __weak AllChatsViewController *weakSelf = self;
+
+    [CoreDataManager allChatsFetchedControllerWithDelegate:self
+                                           completionQueue:dispatch_get_main_queue()
+                                           completionBlock:^(NSFetchedResultsController *controller)
+    {
+        weakSelf.fetchedResultsController = controller;
+        [weakSelf.tableView reloadData];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -138,7 +146,7 @@
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Chats") handler:^{
             CDChat *chat = [weakSelf.fetchedResultsController objectAtIndexPath:indexPath];
 
-            [CoreDataManager removeChatWithAllMessages:chat];
+            [CoreDataManager removeChatWithAllMessages:chat completionQueue:nil completionBlock:nil];
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Chats") handler:^{

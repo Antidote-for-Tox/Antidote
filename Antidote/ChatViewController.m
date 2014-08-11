@@ -105,8 +105,23 @@
 {
     [super viewDidLoad];
 
-    self.messages = [NSMutableArray arrayWithArray:[CoreDataManager messagesForChat:self.chat]];
-    [self.tableView reloadData];
+    __weak ChatViewController *weakSelf = self;
+
+    [CoreDataManager messagesForChat:self.chat
+                     completionQueue:dispatch_get_main_queue()
+                     completionBlock:^(NSArray *array)
+    {
+        ChatViewController *strongSelf = weakSelf;
+
+        if (! strongSelf) {
+            return;
+        }
+
+        strongSelf.messages = [NSMutableArray arrayWithArray:array];
+        [strongSelf.tableView reloadData];
+
+        [strongSelf scrollToBottomAnimated:NO];
+    }];
 
     [self updateIsTypingFooter];
     [self updateSendButtonEnabled];
@@ -120,7 +135,6 @@
         self.didLayousSubviewsForFirstTime = YES;
 
         [self adjustSubviews];
-        [self scrollToBottomAnimated:NO];
     }
 }
 
@@ -575,10 +589,11 @@
 
     [CoreDataManager editCDObjectWithBlock:^{
         self.chat.lastReadDate = [date timeIntervalSince1970];
-    }];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
+    } completionQueue:dispatch_get_main_queue() completionBlock:^{
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+        [delegate updateBadgeForTab:AppDelegateTabIndexChats];
+    }];
 }
 
 @end

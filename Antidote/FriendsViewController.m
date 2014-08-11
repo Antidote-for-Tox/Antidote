@@ -151,19 +151,20 @@
 
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
             ToxFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
-            CDChat *chat = [[ToxManager sharedInstance] chatWithToxFriend:friend];
 
-            [[ToxManager sharedInstance] removeFriend:friend];
+            [[ToxManager sharedInstance] chatWithToxFriend:friend completionBlock:^(CDChat *chat) {
+                [[ToxManager sharedInstance] removeFriend:friend];
 
-            UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
+                UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
 
-            [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
-                [CoreDataManager removeChatWithAllMessages:chat];
+                [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
+                    [CoreDataManager removeChatWithAllMessages:chat completionQueue:nil completionBlock:nil];
+                }];
+
+                [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
+
+                [chatAlert show];
             }];
-
-            [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
-
-            [chatAlert show];
         }];
 
         [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
@@ -187,11 +188,11 @@
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    CDChat *chat = [[ToxManager sharedInstance] chatWithToxFriend:friend];
+    [[ToxManager sharedInstance] chatWithToxFriend:friend completionBlock:^(CDChat *chat) {
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
-    [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
+        [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
+    }];
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath

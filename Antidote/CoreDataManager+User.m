@@ -11,13 +11,13 @@
 
 @implementation CoreDataManager (User)
 
-+ (CDUser *)getOrInsertUserWithPredicate:(NSPredicate *)predicate
-                             configBlock:(void (^)(CDUser *theUser))configBlock
++ (void)getOrInsertUserWithPredicate:(NSPredicate *)predicate
+                         configBlock:(void (^)(CDUser *user))configBlock
+                     completionQueue:(dispatch_queue_t)queue
+                     completionBlock:(void (^)(CDUser *user))completionBlock
 {
-    __block CDUser *user;
-
-    dispatch_sync([self private_queue], ^{
-        user = [CDUser MR_findFirstWithPredicate:predicate inContext:[self private_context]];
+    dispatch_async([self private_queue], ^{
+        CDUser *user = [CDUser MR_findFirstWithPredicate:predicate inContext:[self private_context]];
 
         if (! user) {
             user = [NSEntityDescription insertNewObjectForEntityForName:@"CDUser"
@@ -28,10 +28,17 @@
             }
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
-        }
-    });
 
-    return user;
+        }
+
+        if (! completionBlock) {
+            return;
+        }
+
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(user);
+        }];
+    });
 }
 
 @end

@@ -11,13 +11,21 @@
 
 @interface CoreDataManager (Chat)
 
-+ (NSArray *)allChatsSortedByDate;
-+ (NSArray *)chatsWithPredicateSortedByDate:(NSPredicate *)predicate;
++ (void)chatsWithPredicateSortedByDate:(NSPredicate *)predicate
+                       completionQueue:(dispatch_queue_t)queue
+                       completionBlock:(void (^)(NSArray *chats))completionBlock;
 
-+ (NSFetchedResultsController *)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate;
++ (void)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
+                              completionQueue:(dispatch_queue_t)queue
+                              completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock;
 
-+ (CDChat *)getOrInsertChatWithPredicate:(NSPredicate *)predicate configBlock:(void (^)(CDChat *theChat))configBlock;
++ (void)getOrInsertChatWithPredicate:(NSPredicate *)predicate
+                         configBlock:(void (^)(CDChat *theChat))configBlock
+                     completionQueue:(dispatch_queue_t)queue
+                     completionBlock:(void (^)(CDChat *chat))completionBlock;
 
-+ (void)removeChatWithAllMessages:(CDChat *)chat;
++ (void)removeChatWithAllMessages:(CDChat *)chat
+                  completionQueue:(dispatch_queue_t)queue
+                  completionBlock:(void (^)())completionBlock;
 
 @end
