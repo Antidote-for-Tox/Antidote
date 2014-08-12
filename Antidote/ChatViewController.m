@@ -10,6 +10,7 @@
 #import "UIViewController+Utilities.h"
 #import "ChatIncomingCell.h"
 #import "ChatOutgoingCell.h"
+#import "ChatTypingCell.h"
 #import "ChatInputView.h"
 #import "CoreDataManager+Message.h"
 #import "CDUser.h"
@@ -18,6 +19,11 @@
 #import "Helper.h"
 #import "TimeFormatter.h"
 #import "AppDelegate.h"
+
+typedef NS_ENUM(NSInteger, Section) {
+    SectionMessages = 0,
+    SectionTyping,
+};
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
     UIGestureRecognizerDelegate>
@@ -32,9 +38,9 @@
 
 @property (strong, nonatomic) NSString *myClientId;
 
-@property (assign, nonatomic) BOOL didLayousSubviewsForFirstTime;
-
 @property (assign, nonatomic) CGFloat visibleKeyboardHeight;
+
+@property (assign, nonatomic) BOOL showTypingSection;
 
 @end
 
@@ -123,7 +129,7 @@
         [strongSelf scrollToBottomAnimated:NO];
     }];
 
-    [self updateIsTypingFooter];
+    [self updateIsTypingSection];
     [self updateSendButtonEnabled];
 }
 
@@ -131,11 +137,7 @@
 {
     [super viewDidLayoutSubviews];
 
-    if (! self.didLayousSubviewsForFirstTime) {
-        self.didLayousSubviewsForFirstTime = YES;
-
-        [self adjustSubviews];
-    }
+    [self adjustSubviews];
 }
 
 #pragma mark -  Gestures
@@ -188,52 +190,86 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CDMessage *message = self.messages[indexPath.row];
+    UITableViewCell *tableViewCell;
 
-    ChatBasicCell *cell;
+    if (indexPath.section == SectionMessages) {
+        CDMessage *message = self.messages[indexPath.row];
 
-    if ([self isOutgoingMessage:message]) {
-        cell = [tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
-                                               forIndexPath:indexPath];
+        ChatBasicCell *cell;
+
+        if ([self isOutgoingMessage:message]) {
+            cell = [tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
+                                                   forIndexPath:indexPath];
+        }
+        else {
+            cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
+                                                   forIndexPath:indexPath];
+        }
+
+        cell.message = message.text;
+
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
+
+        cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
+            [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
+
+        cell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
+
+        [cell redraw];
+
+        tableViewCell = cell;
     }
-    else {
-        cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
-                                               forIndexPath:indexPath];
+    else if (indexPath.section == SectionTyping) {
+        ChatTypingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatTypingCell reuseIdentifier]
+                                                               forIndexPath:indexPath];
+        [cell redraw];
+
+        tableViewCell = cell;
     }
 
-    cell.message = message.text;
+    return tableViewCell;
+}
 
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
-
-    cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
-        [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
-
-    cell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
-
-    [cell redraw];
-
-    return cell;
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return self.showTypingSection ? 2 : 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.messages.count;
+    if (section == SectionMessages) {
+        return self.messages.count;
+    }
+    else if (section == SectionTyping) {
+        return 1;
+    }
+
+    return 0;
 }
 
 #pragma mark -  UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CDMessage *message = self.messages[indexPath.row];
+    CGFloat height = 0.0;
 
-    NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
+    if (indexPath.section == SectionMessages) {
+        CDMessage *message = self.messages[indexPath.row];
 
-    if ([self isOutgoingMessage:message]) {
-        return [ChatOutgoingCell heightWithMessage:message.text fullDateString:fullDateString];
+        NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
+
+        if ([self isOutgoingMessage:message]) {
+            height = [ChatOutgoingCell heightWithMessage:message.text fullDateString:fullDateString];
+        }
+        else {
+            height = [ChatIncomingCell heightWithMessage:message.text fullDateString:fullDateString];
+        }
     }
-    else {
-        return [ChatIncomingCell heightWithMessage:message.text fullDateString:fullDateString];
+    else if (indexPath.section == SectionTyping) {
+        height = [ChatTypingCell height];
     }
+
+    return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -322,18 +358,20 @@
     NSIndexPath *lastMessagePath;
 
     if (self.messages.count) {
-        lastMessagePath = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
+        lastMessagePath = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:SectionMessages];
     }
 
     [self.messages addObject:message];
 
     @synchronized(self.tableView) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
+        NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:SectionMessages];
 
         [self.tableView beginUpdates];
         [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
         [self.tableView endUpdates];
     }
+
+    [self changeIsTypingTo:NO];
 
     // scroll to bottom only if last message was visible
     if (lastMessagePath) {
@@ -360,7 +398,7 @@
 
     self.friend = updatedFriend;
     [self updateTitleView];
-    [self updateIsTypingFooter];
+    [self updateIsTypingSection];
     [self updateSendButtonEnabled];
 }
 
@@ -376,6 +414,7 @@
 
     [self.tableView registerClass:[ChatIncomingCell class] forCellReuseIdentifier:[ChatIncomingCell reuseIdentifier]];
     [self.tableView registerClass:[ChatOutgoingCell class] forCellReuseIdentifier:[ChatOutgoingCell reuseIdentifier]];
+    [self.tableView registerClass:[ChatTypingCell class] forCellReuseIdentifier:[ChatTypingCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }
@@ -455,7 +494,9 @@
     if (! self.messages.count) {
         return;
     }
-    NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:0];
+    NSIndexPath *path = self.showTypingSection ?
+        [NSIndexPath indexPathForRow:0 inSection:SectionTyping] :
+        [NSIndexPath indexPathForRow:self.messages.count-1 inSection:SectionMessages];
 
     // tableView animation may cause lags (in case if there will be too many messages). When using default UIView
     // animation, there's no lags for some reason
@@ -524,27 +565,30 @@
     }
 }
 
-- (void)updateIsTypingFooter
+- (void)updateIsTypingSection
 {
-    if (self.friend.isTyping) {
-        if (self.tableView.tableFooterView) {
-            return;
+    [self changeIsTypingTo:self.friend.isTyping];
+}
+
+- (void)changeIsTypingTo:(BOOL)newTyping
+{
+    if (newTyping == self.showTypingSection) {
+        return;
+    }
+    self.showTypingSection = newTyping;
+
+    NSIndexSet *set = [NSIndexSet indexSetWithIndex:SectionTyping];
+
+    if (newTyping) {
+        @synchronized(self.tableView) {
+            [self.tableView insertSections:set withRowAnimation:UITableViewRowAnimationBottom];
         }
 
-        UILabel *label = [UILabel new];
-        label.backgroundColor = [UIColor clearColor];
-        label.textColor = [UIColor lightGrayColor];
-        label.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
-        label.text = NSLocalizedString(@"typing...", @"Chat");
-        label.textAlignment = NSTextAlignmentCenter;
-        [label sizeToFit];
-
-        self.tableView.tableFooterView = label;
         [self scrollToBottomAnimated:YES];
     }
     else {
-        if (self.tableView.tableFooterView) {
-            self.tableView.tableFooterView = nil;
+        @synchronized(self.tableView) {
+            [self.tableView deleteSections:set withRowAnimation:UITableViewRowAnimationNone];
         }
     }
 }
