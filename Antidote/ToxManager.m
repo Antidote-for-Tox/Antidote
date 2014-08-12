@@ -654,6 +654,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     ToxFriend *friend = [ToxFriend new];
     friend.id = friendId;
+    friend.status = ToxFriendStatusOffline;
 
     {
         uint8_t *clientId = malloc(TOX_CLIENT_ID_SIZE);

@@ -41,9 +41,66 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 
             [self.friendRequests addObject:request];
         }
+
+        self.friendsSort = ToxFriendsContainerSortByName;
     }
 
     return self;
+}
+
+#pragma mark -  Properties
+
+- (void)setFriendsSort:(ToxFriendsContainerSort)sort
+{
+    _friendsSort = sort;
+
+    @synchronized(self.friends) {
+        if (self.friends.count <= 1) {
+            return;
+        }
+
+        NSComparator nameComparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
+            if (first.associatedName && second.associatedName) {
+                return [first.associatedName compare:second.associatedName];
+            }
+
+            if (first.associatedName) {
+                return NSOrderedDescending;
+            }
+            if (second.associatedName) {
+                return NSOrderedAscending;
+            }
+
+            return [first.clientId compare:second.clientId];
+        };
+
+        NSComparator comparator;
+
+        if (sort == ToxFriendsContainerSortByName) {
+            comparator = nameComparator;
+        }
+        else if (sort == ToxFriendsContainerSortByStatus) {
+            comparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
+                if (first.status == second.status) {
+                    return nameComparator(first, second);
+                }
+
+                if (first.status > second.status) {
+                    return NSOrderedDescending;
+                }
+
+                return NSOrderedAscending;
+            };
+        }
+
+        [self.friends sortUsingComparator:comparator];
+
+        NSRange range = NSMakeRange(0, self.friends.count);
+        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
+                                 insertedSet:nil
+                                  removedSet:nil
+                                  updatedSet:[NSIndexSet indexSetWithIndexesInRange:range]];
+    }
 }
 
 #pragma mark -  Public

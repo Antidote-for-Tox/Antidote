@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
-    ToxFriendStatusOffline,
-    ToxFriendStatusOnline,
+    ToxFriendStatusOnline = 0,
     ToxFriendStatusAway,
     ToxFriendStatusBusy,
+    ToxFriendStatusOffline,
 };
 
 @interface ToxFriend : NSObject
