@@ -29,4 +29,6 @@ typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
 - (BOOL)isEqual:(id)object;
 - (NSUInteger)hash;
 
+- (NSString *)nameToShow;
+
 @end

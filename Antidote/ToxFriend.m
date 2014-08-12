@@ -27,4 +27,9 @@
     return self.id;
 }
 
+- (NSString *)nameToShow
+{
+    return self.associatedName ?: self.clientId;
+}
+
 @end

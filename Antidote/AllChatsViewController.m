@@ -101,7 +101,7 @@
     for (CDUser *user in chat.users) {
         ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
 
-        NSString *name = friend.associatedName ?: friend.clientId;
+        NSString *name = [friend nameToShow];
 
         if (usersString) {
             usersString = [usersString stringByAppendingFormat:@", %@", name];

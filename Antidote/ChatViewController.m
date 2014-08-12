@@ -462,7 +462,7 @@ typedef NS_ENUM(NSInteger, Section) {
     view.backgroundColor = [UIColor clearColor];
 
     UILabel *label = [view addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
-    label.text = self.friend.associatedName;
+    label.text = [self.friend nameToShow];
     [label sizeToFit];
 
     StatusCircleView *statusView = [StatusCircleView new];

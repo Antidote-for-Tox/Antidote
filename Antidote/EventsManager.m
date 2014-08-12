@@ -285,7 +285,7 @@
         CDMessage *message = object.object;
         ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
-        text = friend.associatedName ?: friend.clientId;
+        text = [friend nameToShow];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         text = NSLocalizedString(@"Incoming friend request", @"Events");
