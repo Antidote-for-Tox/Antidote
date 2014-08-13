@@ -174,17 +174,22 @@
 
 + (UIColor *)unreadChatCellBackground
 {
+    return [self unreadChatCellBackgroundWithAlpha:1.0];
+}
+
++ (UIColor *)unreadChatCellBackgroundWithAlpha:(CGFloat)alpha
+{
     if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeRed) {
-        return [UIColor uColorOpaqueWithRed:249 green:244 blue:244];
+        return [UIColor uColorWithRed:249 green:244 blue:244 alpha:alpha];
     }
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeIce) {
-        return [UIColor uColorOpaqueWithRed:240 green:245 blue:247];
+        return [UIColor uColorWithRed:240 green:245 blue:247 alpha:alpha];
     }
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemeOrange) {
-        return [UIColor uColorOpaqueWithRed:249 green:246 blue:241];
+        return [UIColor uColorWithRed:249 green:246 blue:241 alpha:alpha];
     }
     else if ([self sharedInstance].colorscheme == AppearanceManagerColorschemePurple) {
-        return [UIColor uColorOpaqueWithRed:243 green:241 blue:247];
+        return [UIColor uColorWithRed:243 green:241 blue:247 alpha:alpha];
     }
 
     return nil;

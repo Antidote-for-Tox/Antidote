@@ -21,8 +21,12 @@
 #import "TimeFormatter.h"
 #import "AvatarFactory.h"
 #import "UIColor+Utilities.h"
+#import "FriendsFilterView.h"
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendsFilterViewDelegate>
+
+@property (strong, nonatomic) UIButton *titleButton;
+@property (strong, nonatomic) FriendsFilterView *filterView;
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -40,6 +44,7 @@
 
     if (self) {
         self.title = NSLocalizedString(@"Friends", @"Friends");
+        [self createTitleButton];
 
         self.friendsContainer = [ToxManager sharedInstance].friendsContainer;
 
@@ -84,6 +89,16 @@
 }
 
 #pragma mark -  Actions
+
+- (void)titleButtonPressed
+{
+    if (self.filterView) {
+        [self hideFilterView];
+    }
+    else {
+        [self showFilterView];
+    }
+}
 
 - (void)requestsButtonPressed
 {
@@ -203,6 +218,33 @@
     [self.navigationController pushViewController:fcvc animated:YES];
 }
 
+#pragma mark -  FriendsFilterViewDelegate
+
+- (void)friendsFilterView:(FriendsFilterView *)view didSelectStringAtIndex:(NSUInteger)index
+{
+    [self hideFilterView];
+
+    ToxFriendsContainerSort newSort;
+
+    if (index == 0) {
+        newSort = ToxFriendsContainerSortByName;
+    }
+    else if (index == 1) {
+        newSort = ToxFriendsContainerSortByStatus;
+    }
+
+    if (newSort == self.friendsContainer.friendsSort) {
+        return;
+    }
+
+    self.friendsContainer.friendsSort = newSort;
+}
+
+- (void)friendsFilterViewEmptySpacePressed:(FriendsFilterView *)view
+{
+    [self hideFilterView];
+}
+
 #pragma mark -  Notifications
 
 - (void)updateFriendsNotification:(NSNotification *)notification
@@ -235,6 +277,34 @@
 
 #pragma mark -  Private
 
+- (void)createTitleButton
+{
+    self.titleButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    self.titleButton.titleLabel.font = [AppearanceManager fontHelveticaNeueWithSize:18];
+    [self.titleButton setTitle:self.title forState:UIControlStateNormal];
+    [self.titleButton addTarget:self
+                         action:@selector(titleButtonPressed)
+               forControlEvents:UIControlEventTouchUpInside];
+
+    [self setTitleButtonImageToArrowIsTop:NO];
+
+    [self.titleButton sizeToFit];
+
+    self.titleButton.titleEdgeInsets = UIEdgeInsetsMake(
+            0.0,
+            - self.titleButton.imageView.frame.size.width - 10.0,
+            0.0,
+            self.titleButton.imageView.frame.size.width);
+
+    self.titleButton.imageEdgeInsets = UIEdgeInsetsMake(
+            0.0,
+            self.titleButton.titleLabel.frame.size.width,
+            0.0,
+            - self.titleButton.titleLabel.frame.size.width);
+
+    self.navigationItem.titleView = self.titleButton;
+}
+
 - (void)createTableView
 {
     self.tableView = [UITableView new];
@@ -266,6 +336,74 @@
                                                                              style:UIBarButtonItemStylePlain
                                                                             target:self
                                                                             action:@selector(requestsButtonPressed)];
+}
+
+- (void)setTitleButtonImageToArrowIsTop:(BOOL)isTop
+{
+    UIImage *image = isTop ?
+        [UIImage imageNamed:@"friends-vc-arrow-up"] :
+        [UIImage imageNamed:@"friends-vc-arrow-down"];
+
+    [self.titleButton setImage:image forState:UIControlStateNormal];
+}
+
+- (void)showFilterView
+{
+    if (self.filterView) {
+        return;
+    }
+
+    [self setTitleButtonImageToArrowIsTop:YES];
+
+    self.filterView = [[FriendsFilterView alloc] initWithFrame:self.view.bounds stringsArray:@[
+        NSLocalizedString(@"By name", @"Friends"),
+        NSLocalizedString(@"By status", @"Friends"),
+    ]];
+
+    self.filterView.delegate = self;
+
+    [self.view addSubview:self.filterView];
+
+    const CGFloat originY = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+
+    CGRect frame = self.filterView.frame;
+    frame.origin.y = originY - [self.filterView heightOfVisiblePart];
+    self.filterView.frame = frame;
+
+    frame.origin.y = originY;
+
+    self.view.userInteractionEnabled = NO;
+
+    [UIView animateWithDuration:0.3 animations:^{
+        self.filterView.frame = frame;
+
+    } completion:^(BOOL f) {
+        self.view.userInteractionEnabled = YES;
+    }];
+}
+
+- (void)hideFilterView
+{
+    if (! self.filterView) {
+        return;
+    }
+
+    [self setTitleButtonImageToArrowIsTop:NO];
+
+    self.view.userInteractionEnabled = NO;
+
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = self.filterView.frame;
+        frame.origin.y = - [self.filterView heightOfVisiblePart];
+        self.filterView.frame = frame;
+
+    } completion:^(BOOL f) {
+        self.view.userInteractionEnabled = YES;
+
+        [self.filterView removeFromSuperview];
+        self.filterView = nil;
+    }];
+
 }
 
 @end

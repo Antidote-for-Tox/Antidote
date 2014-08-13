@@ -69,6 +69,9 @@
 		119BB129198CECAB00380557 /* ToxIdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB128198CECAB00380557 /* ToxIdView.m */; };
 		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
 		11B6C301199A9B4C00A48FBC /* ChatTypingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C300199A9B4C00A48FBC /* ChatTypingCell.m */; };
+		11B6C305199AB06300A48FBC /* friends-vc-arrow-down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C303199AB06300A48FBC /* friends-vc-arrow-down@2x.png */; };
+		11B6C306199AB06300A48FBC /* friends-vc-arrow-up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C304199AB06300A48FBC /* friends-vc-arrow-up@2x.png */; };
+		11B6C30B199AB34400A48FBC /* FriendsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C30A199AB34400A48FBC /* FriendsFilterView.m */; };
 		11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */; };
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
@@ -215,6 +218,10 @@
 		11B5A365199626920005C1E7 /* BadgeWithText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeWithText.m; sourceTree = "<group>"; };
 		11B6C2FF199A9B4C00A48FBC /* ChatTypingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTypingCell.h; sourceTree = "<group>"; };
 		11B6C300199A9B4C00A48FBC /* ChatTypingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatTypingCell.m; sourceTree = "<group>"; };
+		11B6C303199AB06300A48FBC /* friends-vc-arrow-down@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-vc-arrow-down@2x.png"; sourceTree = "<group>"; };
+		11B6C304199AB06300A48FBC /* friends-vc-arrow-up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-vc-arrow-up@2x.png"; sourceTree = "<group>"; };
+		11B6C309199AB34400A48FBC /* FriendsFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsFilterView.h; sourceTree = "<group>"; };
+		11B6C30A199AB34400A48FBC /* FriendsFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsFilterView.m; sourceTree = "<group>"; };
 		11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicCell.h; sourceTree = "<group>"; };
 		11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicCell.m; sourceTree = "<group>"; };
 		11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatOutgoingCell.h; sourceTree = "<group>"; };
@@ -570,6 +577,7 @@
 			isa = PBXGroup;
 			children = (
 				118352BD197A7CD50048CA64 /* Cells */,
+				11B6C308199AB33800A48FBC /* FriendsFilterView */,
 				118352B7197A7B040048CA64 /* FriendsViewController.h */,
 				118352B8197A7B040048CA64 /* FriendsViewController.m */,
 			);
@@ -626,6 +634,24 @@
 			name = AddFriend;
 			sourceTree = "<group>";
 		};
+		11B6C302199AB03B00A48FBC /* FriendsViewController */ = {
+			isa = PBXGroup;
+			children = (
+				11B6C303199AB06300A48FBC /* friends-vc-arrow-down@2x.png */,
+				11B6C304199AB06300A48FBC /* friends-vc-arrow-up@2x.png */,
+			);
+			name = FriendsViewController;
+			sourceTree = "<group>";
+		};
+		11B6C308199AB33800A48FBC /* FriendsFilterView */ = {
+			isa = PBXGroup;
+			children = (
+				11B6C309199AB34400A48FBC /* FriendsFilterView.h */,
+				11B6C30A199AB34400A48FBC /* FriendsFilterView.m */,
+			);
+			name = FriendsFilterView;
+			sourceTree = "<group>";
+		};
 		11B9E6141993EBCC00FB20A6 /* TimeFormatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -664,6 +690,7 @@
 		11B9E62519940F1400FB20A6 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				11B6C302199AB03B00A48FBC /* FriendsViewController */,
 				11B9E62719940F3900FB20A6 /* tab-bar-chats.png */,
 				11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */,
 				11B9E62819940F3900FB20A6 /* tab-bar-friends.png */,
@@ -770,7 +797,9 @@
 				11B9E62F1994109A00FB20A6 /* tab-bar-settings@2x.png in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
 				11B9E62A19940F3900FB20A6 /* tab-bar-chats.png in Resources */,
+				11B6C305199AB06300A48FBC /* friends-vc-arrow-down@2x.png in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
+				11B6C306199AB06300A48FBC /* friends-vc-arrow-up@2x.png in Resources */,
 				11B9E62919940F3900FB20A6 /* tab-bar-settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -854,6 +883,7 @@
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				114630D6198554B60075DA16 /* CDUser.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
+				11B6C30B199AB34400A48FBC /* FriendsFilterView.m in Sources */,
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
 				119BB129198CECAB00380557 /* ToxIdView.m in Sources */,
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
