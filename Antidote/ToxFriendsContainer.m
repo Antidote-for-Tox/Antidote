@@ -59,41 +59,7 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
             return;
         }
 
-        NSComparator nameComparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
-            if (first.associatedName && second.associatedName) {
-                return [first.associatedName compare:second.associatedName];
-            }
-
-            if (first.associatedName) {
-                return NSOrderedDescending;
-            }
-            if (second.associatedName) {
-                return NSOrderedAscending;
-            }
-
-            return [first.clientId compare:second.clientId];
-        };
-
-        NSComparator comparator;
-
-        if (sort == ToxFriendsContainerSortByName) {
-            comparator = nameComparator;
-        }
-        else if (sort == ToxFriendsContainerSortByStatus) {
-            comparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
-                if (first.status == second.status) {
-                    return nameComparator(first, second);
-                }
-
-                if (first.status > second.status) {
-                    return NSOrderedDescending;
-                }
-
-                return NSOrderedAscending;
-            };
-        }
-
-        [self.friends sortUsingComparator:comparator];
+        [self.friends sortUsingComparator:[self comparatorForCurrentSort]];
 
         NSRange range = NSMakeRange(0, self.friends.count);
         [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
@@ -238,10 +204,29 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 
         updateBlock(friend);
 
+        [self.friends removeObjectAtIndex:index];
+
+        NSUInteger newIndex = [self.friends indexOfObject:friend
+                                            inSortedRange:NSMakeRange(0, self.friends.count)
+                                                  options:NSBinarySearchingInsertionIndex
+                                          usingComparator:[self comparatorForCurrentSort]];
+
+        [self.friends insertObject:friend atIndex:newIndex];
+
+        NSIndexSet *inserted, *removed, *updated;
+
+        if (index == newIndex) {
+            updated = [NSIndexSet indexSetWithIndex:index];
+        }
+        else {
+            inserted = [NSIndexSet indexSetWithIndex:newIndex];
+            removed = [NSIndexSet indexSetWithIndex:index];
+        }
+
         [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
-                                 insertedSet:nil
-                                  removedSet:nil
-                                  updatedSet:[NSIndexSet indexSetWithIndex:index]];
+                                 insertedSet:inserted
+                                  removedSet:removed
+                                  updatedSet:updated];
 
         [self sendUpdateFriendWithIdNotification:friend];
     }
@@ -420,6 +405,45 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
     }
 
     return NSNotFound;
+}
+
+- (NSComparator)comparatorForCurrentSort
+{
+    NSComparator nameComparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
+        if (first.associatedName && second.associatedName) {
+            return [first.associatedName compare:second.associatedName];
+        }
+
+        if (first.associatedName) {
+            return NSOrderedDescending;
+        }
+        if (second.associatedName) {
+            return NSOrderedAscending;
+        }
+
+        return [first.clientId compare:second.clientId];
+    };
+
+    NSComparator comparator;
+
+    if (self.friendsSort == ToxFriendsContainerSortByName) {
+        comparator = nameComparator;
+    }
+    else if (self.friendsSort == ToxFriendsContainerSortByStatus) {
+        comparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
+            if (first.status == second.status) {
+                return nameComparator(first, second);
+            }
+
+            if (first.status > second.status) {
+                return NSOrderedDescending;
+            }
+
+            return NSOrderedAscending;
+        };
+    }
+
+    return comparator;
 }
 
 @end
