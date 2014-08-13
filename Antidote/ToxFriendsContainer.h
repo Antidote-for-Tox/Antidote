@@ -38,7 +38,7 @@ extern NSString *const kToxFriendsContainerUpdateKeyRemovedSet;
 extern NSString *const kToxFriendsContainerUpdateKeyUpdatedSet;
 
 typedef NS_ENUM(NSUInteger, ToxFriendsContainerSort) {
-    ToxFriendsContainerSortByName,
+    ToxFriendsContainerSortByName = 0,
     ToxFriendsContainerSortByStatus,
 };
 

@@ -42,7 +42,7 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
             [self.friendRequests addObject:request];
         }
 
-        self.friendsSort = ToxFriendsContainerSortByName;
+        self.friendsSort = [[UserInfoManager sharedInstance].uFriendsSort unsignedIntegerValue];
     }
 
     return self;
@@ -53,6 +53,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 - (void)setFriendsSort:(ToxFriendsContainerSort)sort
 {
     _friendsSort = sort;
+
+    [UserInfoManager sharedInstance].uFriendsSort = @(sort);
 
     @synchronized(self.friends) {
         if (self.friends.count <= 1) {

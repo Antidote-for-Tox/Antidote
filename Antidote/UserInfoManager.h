@@ -23,6 +23,7 @@
 @property (strong, nonatomic) NSDictionary *uAssociatedNames;
 
 @property (strong, nonatomic) NSNumber *uCurrentColorscheme;
+@property (strong, nonatomic) NSNumber *uFriendsSort;
 
 + (instancetype)sharedInstance;
 
