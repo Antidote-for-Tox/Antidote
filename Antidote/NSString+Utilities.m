@@ -25,4 +25,25 @@
     return CGSizeMake(ceil(boundingRect.size.width), ceil(boundingRect.size.height));
 }
 
+- (NSString *)substringToByteLength:(NSUInteger)length usingEncoding:(NSStringEncoding)encoding
+{
+    if (! length) {
+        return @"";
+    }
+
+    NSString *substring = self;
+
+    while ([substring lengthOfBytesUsingEncoding:encoding] > length) {
+        NSUInteger newLength = substring.length - 1;
+
+        if (! newLength) {
+            return @"";
+        }
+
+        substring = [substring substringToIndex:newLength];
+    }
+
+    return substring;
+}
+
 @end

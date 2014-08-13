@@ -121,8 +121,9 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
 
     NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
 
-    if (result.length > TOX_MAX_MESSAGE_LENGTH) {
-        self.textView.text = [result substringToIndex:TOX_MAX_MESSAGE_LENGTH];
+    if ([result lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > TOX_MAX_MESSAGE_LENGTH) {
+        self.textView.text = [result substringToByteLength:TOX_MAX_MESSAGE_LENGTH
+                                             usingEncoding:NSUTF8StringEncoding];
         answer = NO;
     }
 

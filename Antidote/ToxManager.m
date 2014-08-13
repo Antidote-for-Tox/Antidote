@@ -320,7 +320,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     const char *name = [userName cStringUsingEncoding:NSUTF8StringEncoding];
 
-    int result = tox_set_name(self.tox, (uint8_t *)name, userName.length);
+    int result = tox_set_name(self.tox, (uint8_t *)name, [userName lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 
     if (result == 0) {
         [self qSaveTox];
@@ -359,7 +359,10 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     const char *message = [statusMessage cStringUsingEncoding:NSUTF8StringEncoding];
 
-    int result = tox_set_status_message(self.tox, (uint8_t *)message, statusMessage.length);
+    int result = tox_set_status_message(
+            self.tox,
+            (uint8_t *)message,
+            [statusMessage lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 
     if (result == 0) {
         [self qSaveTox];
@@ -388,7 +391,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     uint8_t *address = [ToxFunctions hexStringToBin:addressString];
     const char *message = [messageString cStringUsingEncoding:NSUTF8StringEncoding];
 
-    int32_t result = tox_add_friend(self.tox, address, (const uint8_t *)message, messageString.length);
+    int32_t result = tox_add_friend(
+            self.tox,
+            address,
+            (const uint8_t *)message,
+            [messageString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 
     free(address);
 
@@ -514,7 +521,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     const char *cMessage = [message cStringUsingEncoding:NSUTF8StringEncoding];
 
-    tox_send_message(self.tox, friend.id, (uint8_t *)cMessage, message.length);
+    tox_send_message(
+            self.tox,
+            friend.id,
+            (uint8_t *)cMessage,
+            [message lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 
     __weak ToxManager *weakSelf = self;
 

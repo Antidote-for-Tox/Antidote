@@ -13,4 +13,6 @@
 - (CGSize)stringSizeWithFont:(UIFont *)font;
 - (CGSize)stringSizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size;
 
+- (NSString *)substringToByteLength:(NSUInteger)length usingEncoding:(NSStringEncoding)encoding;
+
 @end

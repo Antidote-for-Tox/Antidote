@@ -14,6 +14,7 @@
 #import "ToxIdView.h"
 #import "SettingsColorView.h"
 #import "AppDelegate.h"
+#import "NSString+Utilities.h"
 
 @interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate, SettingsColorViewDelegate>
 
@@ -77,8 +78,8 @@
         maxLength = TOX_MAX_STATUSMESSAGE_LENGTH;
     }
 
-    if (resultText.length > maxLength) {
-        textField.text = [resultText substringToIndex:maxLength];
+    if ([resultText lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > maxLength) {
+        textField.text = [resultText substringToByteLength:maxLength usingEncoding:NSUTF8StringEncoding];
 
         return NO;
     }
