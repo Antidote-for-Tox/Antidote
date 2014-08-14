@@ -1009,6 +1009,7 @@
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
+				GCC_WARN_SIGN_COMPARE = YES;
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -1025,6 +1026,7 @@
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
+				GCC_WARN_SIGN_COMPARE = YES;
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = YES;
