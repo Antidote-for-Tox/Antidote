@@ -46,6 +46,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
 
 @implementation ToxManager
+@synthesize clientId = _clientId;
 
 #pragma mark -  Lifecycle
 
@@ -131,13 +132,12 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
 - (NSString *)clientId
 {
-    __block NSString *clientId;
-
-    dispatch_sync(self.queue, ^{
-        clientId = [self qClientId];
-    });
-
-    return clientId;
+    if (! _clientId) {
+        dispatch_sync(self.queue, ^{
+            _clientId = [self qClientId];
+        });
+    }
+    return _clientId;
 }
 
 - (NSString *)userName
