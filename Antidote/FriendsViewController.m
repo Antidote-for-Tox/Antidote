@@ -224,7 +224,7 @@
 {
     [self hideFilterView];
 
-    ToxFriendsContainerSort newSort;
+    ToxFriendsContainerSort newSort = ToxFriendsContainerSortByName;
 
     if (index == 0) {
         newSort = ToxFriendsContainerSortByName;
@@ -329,7 +329,7 @@
     NSUInteger number = [[ToxManager sharedInstance].friendsContainer numberOfNotSeenRequests];
 
     if (number) {
-        title = [title stringByAppendingFormat:@" (%d)", number];
+        title = [title stringByAppendingFormat:@" (%lu)", (unsigned long)number];
     }
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:title
