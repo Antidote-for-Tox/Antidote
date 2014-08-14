@@ -499,10 +499,10 @@
 			children = (
 				118352CA197A8C950048CA64 /* Friends */,
 				11C3A750198CFBD60029A7A0 /* Private */,
-				11835293197994050048CA64 /* ToxManager.h */,
-				11835294197994050048CA64 /* ToxManager.m */,
 				119BB119198AC1B300380557 /* ToxFunctions.h */,
 				119BB11A198AC1B300380557 /* ToxFunctions.m */,
+				11835293197994050048CA64 /* ToxManager.h */,
+				11835294197994050048CA64 /* ToxManager.m */,
 			);
 			name = ToxManager;
 			sourceTree = "<group>";

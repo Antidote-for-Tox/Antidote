@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, EventObjectType) {
-    EventObjectTypeChatMessage,
+    EventObjectTypeChatIncomingMessage,
+    EventObjectTypeChatIncomingFile,
     EventObjectTypeFriendRequest,
 };
 
@@ -20,7 +21,7 @@ typedef NS_ENUM(NSUInteger, EventObjectType) {
 
 /**
  * object depends on type. For:
- * - EventObjectTypeChatMessage   - CDMessage
+ * - EventObjectTypeChatIncomingMessage   - CDMessage
  * - EventObjectTypeFriendRequest - ToxFriendRequest
  */
 @property (strong, nonatomic, readonly) id object;

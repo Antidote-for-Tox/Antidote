@@ -36,16 +36,27 @@ NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey"
     });
 }
 
-+ (void)insertTextMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
-                         completionQueue:(dispatch_queue_t)queue
-                         completionBlock:(void (^)(CDMessage *message))completionBlock
++ (void)insertMessageWithType:(CDMessageType)type
+                  configBlock:(void (^)(CDMessage *message))configBlock
+              completionQueue:(dispatch_queue_t)queue
+              completionBlock:(void (^)(CDMessage *message))completionBlock;
 {
     dispatch_async([self private_queue], ^{
         CDMessage *message = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessage"
                                                            inManagedObjectContext:[self private_context]];
 
-        message.text = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageText"
-                                                     inManagedObjectContext:[self private_context]];
+        if (type == CDMessageTypeText) {
+            message.text = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageText"
+                                                         inManagedObjectContext:[self private_context]];
+        }
+        else if (type == CDMessageTypeFile) {
+            message.file = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageFile"
+                                                         inManagedObjectContext:[self private_context]];
+        }
+        else if (type == CDMessageTypeCall) {
+            message.call = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageCall"
+                                                         inManagedObjectContext:[self private_context]];
+        }
 
         if (configBlock) {
             configBlock(message);

@@ -12,6 +12,9 @@
 
 @implementation CDMessageFile
 
+@dynamic isFullyLoaded;
+@dynamic name;
+@dynamic pathFileName;
 @dynamic messageInverse;
 
 @end
