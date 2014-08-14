@@ -103,7 +103,7 @@
     if (tabIndex == AppDelegateTabIndexFriends) {
         NSUInteger number = [[ToxManager sharedInstance].friendsContainer numberOfNotSeenRequests];
 
-        self.friendsBadge.value = number ? [NSString stringWithFormat:@"%d", number] : nil;
+        self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
@@ -114,7 +114,7 @@
                                         completionQueue:dispatch_get_main_queue()
                                         completionBlock:^(NSArray *array)
         {
-            weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%d", array.count] : nil;
+            weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
         }];
     }
 }
