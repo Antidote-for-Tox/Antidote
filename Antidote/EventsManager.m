@@ -301,7 +301,7 @@
     if (object.type == EventObjectTypeChatMessage) {
         CDMessage *message = object.object;
 
-        text = message.text;
+        text = message.text.text;
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         ToxFriendRequest *request = object.object;

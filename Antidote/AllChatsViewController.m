@@ -117,7 +117,7 @@
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:chat.lastMessage.date];
 
-    [cell setMessage:chat.lastMessage.text
+    [cell setMessage:chat.lastMessage.text.text
              andDate:[[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime]];
 
     cell.backgroundColor = (chat.lastMessage.date < chat.lastReadDate) ? [UIColor whiteColor] :

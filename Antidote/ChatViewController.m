@@ -206,7 +206,7 @@ typedef NS_ENUM(NSInteger, Section) {
                                                    forIndexPath:indexPath];
         }
 
-        cell.message = message.text;
+        cell.message = message.text.text;
 
         NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
 
@@ -259,10 +259,10 @@ typedef NS_ENUM(NSInteger, Section) {
         NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
 
         if ([self isOutgoingMessage:message]) {
-            height = [ChatOutgoingCell heightWithMessage:message.text fullDateString:fullDateString];
+            height = [ChatOutgoingCell heightWithMessage:message.text.text fullDateString:fullDateString];
         }
         else {
-            height = [ChatIncomingCell heightWithMessage:message.text fullDateString:fullDateString];
+            height = [ChatIncomingCell heightWithMessage:message.text.text fullDateString:fullDateString];
         }
     }
     else if (indexPath.section == SectionTyping) {

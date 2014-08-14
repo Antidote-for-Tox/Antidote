@@ -22,7 +22,7 @@ extern NSString *const kCoreDataManagerNewMessageKey;
         completionQueue:(dispatch_queue_t)queue
         completionBlock:(void (^)(NSArray *messages))completionBlock;
 
-+ (void)insertMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
++ (void)insertTextMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
                      completionQueue:(dispatch_queue_t)queue
                      completionBlock:(void (^)(CDMessage *message))completionBlock;
 

@@ -793,8 +793,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    [CoreDataManager insertMessageWithConfigBlock:^(CDMessage *m) {
-        m.text = message;
+    [CoreDataManager insertTextMessageWithConfigBlock:^(CDMessage *m) {
+        m.text.text = message;
         m.date = [[NSDate date] timeIntervalSince1970];
         m.user = user;
         m.chat = chat;

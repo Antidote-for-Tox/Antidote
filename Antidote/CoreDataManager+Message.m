@@ -36,13 +36,16 @@ NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey"
     });
 }
 
-+ (void)insertMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
-                     completionQueue:(dispatch_queue_t)queue
-                     completionBlock:(void (^)(CDMessage *message))completionBlock
++ (void)insertTextMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
+                         completionQueue:(dispatch_queue_t)queue
+                         completionBlock:(void (^)(CDMessage *message))completionBlock
 {
     dispatch_async([self private_queue], ^{
-        CDMessage * message = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessage"
-                                                            inManagedObjectContext:[self private_context]];
+        CDMessage *message = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessage"
+                                                           inManagedObjectContext:[self private_context]];
+
+        message.text = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageText"
+                                                     inManagedObjectContext:[self private_context]];
 
         if (configBlock) {
             configBlock(message);

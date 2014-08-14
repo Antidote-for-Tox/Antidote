@@ -14,7 +14,6 @@
 		114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630C619854C0A0075DA16 /* CoreDataManager+User.m */; };
 		114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630C919854F450075DA16 /* CoreDataManager+Chat.m */; };
 		114630D6198554B60075DA16 /* CDUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630D5198554B60075DA16 /* CDUser.m */; };
-		114630D9198554B70075DA16 /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630D8198554B70075DA16 /* CDMessage.m */; };
 		114630DC198554B70075DA16 /* CDChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DB198554B70075DA16 /* CDChat.m */; };
 		114630E0198555730075DA16 /* AllChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DF198555730075DA16 /* AllChatsCell.m */; };
 		114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630EA19857CF70075DA16 /* ChatIncomingCell.m */; };
@@ -72,6 +71,10 @@
 		11B6C305199AB06300A48FBC /* friends-vc-arrow-down@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C303199AB06300A48FBC /* friends-vc-arrow-down@2x.png */; };
 		11B6C306199AB06300A48FBC /* friends-vc-arrow-up@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C304199AB06300A48FBC /* friends-vc-arrow-up@2x.png */; };
 		11B6C30B199AB34400A48FBC /* FriendsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C30A199AB34400A48FBC /* FriendsFilterView.m */; };
+		11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C311199D2CCE00A48FBC /* CDMessage.m */; };
+		11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C314199D2CCE00A48FBC /* CDMessageText.m */; };
+		11B6C318199D2CCE00A48FBC /* CDMessageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C317199D2CCE00A48FBC /* CDMessageFile.m */; };
+		11B6C31B199D2CCE00A48FBC /* CDMessageCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */; };
 		11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */; };
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
@@ -108,8 +111,6 @@
 		114630C919854F450075DA16 /* CoreDataManager+Chat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CoreDataManager+Chat.m"; sourceTree = "<group>"; };
 		114630D4198554B60075DA16 /* CDUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDUser.h; sourceTree = "<group>"; };
 		114630D5198554B60075DA16 /* CDUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDUser.m; sourceTree = "<group>"; };
-		114630D7198554B70075DA16 /* CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessage.h; sourceTree = "<group>"; };
-		114630D8198554B70075DA16 /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
 		114630DA198554B70075DA16 /* CDChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDChat.h; sourceTree = "<group>"; };
 		114630DB198554B70075DA16 /* CDChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDChat.m; sourceTree = "<group>"; };
 		114630DE198555730075DA16 /* AllChatsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllChatsCell.h; sourceTree = "<group>"; };
@@ -222,6 +223,14 @@
 		11B6C304199AB06300A48FBC /* friends-vc-arrow-up@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-vc-arrow-up@2x.png"; sourceTree = "<group>"; };
 		11B6C309199AB34400A48FBC /* FriendsFilterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendsFilterView.h; sourceTree = "<group>"; };
 		11B6C30A199AB34400A48FBC /* FriendsFilterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendsFilterView.m; sourceTree = "<group>"; };
+		11B6C310199D2CCE00A48FBC /* CDMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessage.h; sourceTree = "<group>"; };
+		11B6C311199D2CCE00A48FBC /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
+		11B6C313199D2CCE00A48FBC /* CDMessageText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageText.h; sourceTree = "<group>"; };
+		11B6C314199D2CCE00A48FBC /* CDMessageText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageText.m; sourceTree = "<group>"; };
+		11B6C316199D2CCE00A48FBC /* CDMessageFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageFile.h; sourceTree = "<group>"; };
+		11B6C317199D2CCE00A48FBC /* CDMessageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageFile.m; sourceTree = "<group>"; };
+		11B6C319199D2CCE00A48FBC /* CDMessageCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageCall.h; sourceTree = "<group>"; };
+		11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageCall.m; sourceTree = "<group>"; };
 		11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicCell.h; sourceTree = "<group>"; };
 		11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicCell.m; sourceTree = "<group>"; };
 		11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatOutgoingCell.h; sourceTree = "<group>"; };
@@ -295,8 +304,14 @@
 			children = (
 				114630DA198554B70075DA16 /* CDChat.h */,
 				114630DB198554B70075DA16 /* CDChat.m */,
-				114630D7198554B70075DA16 /* CDMessage.h */,
-				114630D8198554B70075DA16 /* CDMessage.m */,
+				11B6C310199D2CCE00A48FBC /* CDMessage.h */,
+				11B6C311199D2CCE00A48FBC /* CDMessage.m */,
+				11B6C319199D2CCE00A48FBC /* CDMessageCall.h */,
+				11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */,
+				11B6C316199D2CCE00A48FBC /* CDMessageFile.h */,
+				11B6C317199D2CCE00A48FBC /* CDMessageFile.m */,
+				11B6C313199D2CCE00A48FBC /* CDMessageText.h */,
+				11B6C314199D2CCE00A48FBC /* CDMessageText.m */,
 				114630D4198554B60075DA16 /* CDUser.h */,
 				114630D5198554B60075DA16 /* CDUser.m */,
 			);
@@ -856,6 +871,7 @@
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */,
 				114630EF1986C4BF0075DA16 /* ChatInputView.m in Sources */,
+				11B6C31B199D2CCE00A48FBC /* CDMessageCall.m in Sources */,
 				1164768C19794E7300DB20B8 /* assoc.c in Sources */,
 				116476A019794E7300DB20B8 /* util.c in Sources */,
 				118352D6197AC1760048CA64 /* FriendRequestsViewController.m in Sources */,
@@ -863,6 +879,7 @@
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */,
+				11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,
@@ -894,8 +911,8 @@
 				118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */,
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
-				114630D9198554B70075DA16 /* CDMessage.m in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
+				11B6C318199D2CCE00A48FBC /* CDMessageFile.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
@@ -907,6 +924,7 @@
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,
 				1146308C19842D360075DA16 /* CoreDataManager.m in Sources */,
+				11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */,
 				1164769B19794E7300DB20B8 /* ping_array.c in Sources */,
 				11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
