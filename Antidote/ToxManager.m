@@ -7,43 +7,12 @@
 //
 
 #import "ToxManager.h"
+#import "ToxManager+Private.h"
+#import "ToxManager+PrivateFriends.h"
+#import "ToxManager+PrivateChat.h"
+#import "ToxManager+PrivateFiles.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
-#import "CoreDataManager+User.h"
-#import "CoreDataManager+Chat.h"
-#import "CoreDataManager+Message.h"
-#import "ToxFriend+Private.h"
-#import "EventsManager.h"
-#import "AppDelegate.h"
-
-void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
-void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
-void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata);
-void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata);
-void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata);
-void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata);
-void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata);
-void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata);
-void fileSendRequestCallback(Tox *, int32_t, uint8_t, uint64_t, const uint8_t *, uint16_t, void *);
-void fileControlCallback(Tox *, int32_t, uint8_t, uint8_t, uint8_t, const uint8_t *, uint16_t, void *);
-void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *);
-
-@interface ToxManager()
-{
-    void *kIsOnToxManagerQueue;
-}
-
-@property (assign, nonatomic, readonly) Tox *tox;
-
-@property (strong, nonatomic, readonly) dispatch_queue_t queue;
-
-@property (strong, nonatomic) dispatch_source_t timer;
-@property (assign, nonatomic) uint32_t timerMillisecondsUpdateInterval;
-
-@property (assign, nonatomic) BOOL isConnected;
-
-@end
-
 
 @implementation ToxManager
 @synthesize clientId = _clientId;
@@ -82,6 +51,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
         dispatch_sync(self.queue, ^{
             [self qCreateTox];
+            [self qRegisterFriendsCallbacks];
+            [self qRegisterChatsCallbacks];
+            [self qRegisterFilesCallbacks];;
 
             [self qLoadFriendsAndCreateContainer];
         });
@@ -270,7 +242,94 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     });
 }
 
-#pragma mark -  Private methods that should run only on Tox queue
+#pragma mark -  Private
+
+- (void)qCreateTox
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSLog(@"ToxManager: creating tox");
+    _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
+
+    NSData *toxData = [UserInfoManager sharedInstance].uToxData;
+
+    if (toxData) {
+        NSLog(@"ToxManager: old data found, loading...");
+        tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
+    }
+    else {
+        [self qSaveTox];
+    }
+}
+
+- (void)qMaybeStartTimer
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    if (self.timer) {
+        return;
+    }
+
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _queue);
+
+    [self qUpdateTimerInterval:tox_do_interval(self.tox)];
+
+    __weak ToxManager *weakSelf = self;
+
+    dispatch_source_set_event_handler(self.timer, ^{
+        tox_do(weakSelf.tox);
+
+        int isConnected = tox_isconnected(weakSelf.tox);
+
+        if (isConnected != weakSelf.isConnected) {
+            weakSelf.isConnected = isConnected;
+            NSLog(@"ToxManager: connected changed to %d", isConnected);
+        }
+
+        uint32_t newInterval = tox_do_interval(weakSelf.tox);
+
+        if (newInterval != weakSelf.timerMillisecondsUpdateInterval) {
+            [weakSelf qUpdateTimerInterval:newInterval];
+        }
+    });
+    dispatch_resume(self.timer);
+}
+
+- (void)qUpdateTimerInterval:(uint32_t)newInterval
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    self.timerMillisecondsUpdateInterval = newInterval;
+
+    uint64_t actualInterval = newInterval * (NSEC_PER_SEC / 1000);
+
+    dispatch_source_set_timer(self.timer, dispatch_walltime(NULL, 0), actualInterval, actualInterval / 5);
+}
+
+- (void)qBootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
+    tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
+    free(pub_key);
+
+    [self qMaybeStartTimer];
+}
+
+- (void)qSaveTox
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    uint32_t size = tox_size(_tox);
+    uint8_t *data = malloc(size);
+
+    tox_save(_tox, data);
+
+    [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+
+    free(data);
+}
 
 - (NSString *)qToxId
 {
@@ -372,650 +431,5 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }
 }
 
-- (void)qBootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
-    tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
-    free(pub_key);
-
-    [self qMaybeStartTimer];
-}
-
-- (void)qSendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (! messageString.length) {
-        messageString = NSLocalizedString(@"Please, add me", @"Tox empty message");
-    }
-
-    uint8_t *address = [ToxFunctions hexStringToBin:addressString];
-    const char *message = [messageString cStringUsingEncoding:NSUTF8StringEncoding];
-
-    int32_t result = tox_add_friend(
-            self.tox,
-            address,
-            (const uint8_t *)message,
-            [messageString lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
-
-    free(address);
-
-    if (result > -1) {
-        [self qSaveTox];
-
-        [self.friendsContainer private_addFriend:[self qCreateFriendWithId:result]];
-    }
-    else {
-
-    }
-}
-
-- (void)qMarkAllFriendRequestsAsSeen
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    [self.friendsContainer private_markAllFriendRequestsAsSeen];
-}
-
-- (void)qApproveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    uint8_t *clientId = [ToxFunctions hexStringToBin:request.clientId];
-    int32_t friendId = tox_add_friend_norequest(self.tox, clientId);
-    free(clientId);
-
-    if (friendId == -1) {
-        if (wasError) {
-            *wasError = YES;
-        }
-    }
-    else {
-        [self qSaveTox];
-
-        [self.friendsContainer private_removeFriendRequest:request];
-        [self.friendsContainer private_addFriend:[self qCreateFriendWithId:friendId]];
-    }
-}
-
-- (void)qRemoveFriendRequest:(ToxFriendRequest *)request
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (! request) {
-        return;
-    }
-
-    [self.friendsContainer private_removeFriendRequest:request];
-}
-
-- (void)qRemoveFriend:(ToxFriend *)friend
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (! friend) {
-        return;
-    }
-
-    tox_del_friend(self.tox, friend.id);
-    [self qSaveTox];
-
-    [self.friendsContainer private_removeFriend:friend];
-}
-
-- (void)qChangeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    [self.friendsContainer private_updateFriendWithId:friendToChange.id updateBlock:^(ToxFriend *friend) {
-        if (! friend.clientId) {
-            return;
-        }
-
-        friend.associatedName = name;
-
-        if (name.length) {
-            NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-                [UserInfoManager sharedInstance].uAssociatedNames];
-
-            names[friend.clientId] = name;
-
-            [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
-        }
-        else {
-            [[ToxManager sharedInstance] qMaybeCreateAssociatedNameForFriend:friend];
-        }
-    }];
-}
-
-- (void)qChangeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (! chat) {
-        return;
-    }
-
-    CDUser *user = [chat.users anyObject];
-    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
-
-    uint8_t typing = isTyping ? 1 : 0;
-    tox_set_user_is_typing(self.tox, friend.id, typing);
-}
-
-- (void)qSendMessage:(NSString *)message toChat:(CDChat *)chat
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (! message.length || ! chat) {
-        return;
-    }
-
-    if (chat.users.count > 1) {
-        NSLog(@"group chat isn't supported yet");
-        return;
-    }
-
-    CDUser *user = [chat.users anyObject];
-
-    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
-
-    const char *cMessage = [message cStringUsingEncoding:NSUTF8StringEncoding];
-
-    tox_send_message(
-            self.tox,
-            friend.id,
-            (uint8_t *)cMessage,
-            (uint32_t)[message lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
-
-    __weak ToxManager *weakSelf = self;
-
-    [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
-        [weakSelf qAddMessage:message toChat:chat fromUser:currentUser completionBlock:nil];
-    }];
-}
-
-- (void)qChatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    __weak ToxManager *weakSelf = self;
-
-    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
-
-        [weakSelf qChatWithUser:user completionBlock:completionBlock];
-    }];
-}
-
-- (void)qCreateTox
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    NSLog(@"ToxManager: creating tox");
-    _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
-
-    NSData *toxData = [UserInfoManager sharedInstance].uToxData;
-
-    if (toxData) {
-        NSLog(@"ToxManager: old data found, loading...");
-        tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
-    }
-    else {
-        [self qSaveTox];
-    }
-
-    tox_callback_friend_request    (_tox, friendRequestCallback,     NULL);
-    tox_callback_friend_message    (_tox, friendMessageCallback,     NULL);
-    tox_callback_name_change       (_tox, nameChangeCallback,        NULL);
-    tox_callback_status_message    (_tox, statusMessageCallback,     NULL);
-    tox_callback_user_status       (_tox, userStatusCallback,        NULL);
-    tox_callback_typing_change     (_tox, typingChangeCallback,      NULL);
-    tox_callback_read_receipt      (_tox, readReceiptCallback,       NULL);
-    tox_callback_connection_status (_tox, connectionStatusCallback,  NULL);
-    tox_callback_file_send_request (_tox, fileSendRequestCallback,   NULL);
-    tox_callback_file_control      (_tox, fileControlCallback,       NULL);
-    tox_callback_file_data         (_tox, fileDataCallback,          NULL);
-}
-
-- (void)qLoadFriendsAndCreateContainer
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    uint32_t friendsCount = tox_count_friendlist(self.tox);
-    uint32_t listSize = friendsCount * sizeof(int32_t);
-
-    int32_t *friendsList = malloc(listSize);
-
-    tox_get_friendlist(self.tox, friendsList, listSize);
-
-    NSMutableArray *friendsArray = [NSMutableArray new];
-
-    for (NSUInteger index = 0; index < friendsCount; index++) {
-        int32_t friendId = friendsList[index];
-
-        [friendsArray addObject:[self qCreateFriendWithId:friendId]];
-    }
-
-    _friendsContainer = [[ToxFriendsContainer alloc] initWithFriendsArray:[friendsArray copy]];
-
-    free(friendsList);
-}
-
-- (void)qSaveTox
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    uint32_t size = tox_size(_tox);
-    uint8_t *data = malloc(size);
-
-    tox_save(_tox, data);
-
-    [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
-
-    free(data);
-}
-
-- (void)qMaybeStartTimer
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (self.timer) {
-        return;
-    }
-
-    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _queue);
-
-    [self qUpdateTimerInterval:tox_do_interval(self.tox)];
-
-    __weak ToxManager *weakSelf = self;
-
-    dispatch_source_set_event_handler(self.timer, ^{
-        tox_do(weakSelf.tox);
-
-        int isConnected = tox_isconnected(weakSelf.tox);
-
-        if (isConnected != weakSelf.isConnected) {
-            weakSelf.isConnected = isConnected;
-            NSLog(@"ToxManager: connected changed to %d", isConnected);
-        }
-
-        uint32_t newInterval = tox_do_interval(weakSelf.tox);
-
-        if (newInterval != weakSelf.timerMillisecondsUpdateInterval) {
-            [weakSelf qUpdateTimerInterval:newInterval];
-        }
-    });
-    dispatch_resume(self.timer);
-}
-
-- (void)qUpdateTimerInterval:(uint32_t)newInterval
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    self.timerMillisecondsUpdateInterval = newInterval;
-
-    uint64_t actualInterval = newInterval * (NSEC_PER_SEC / 1000);
-
-    dispatch_source_set_timer(self.timer, dispatch_walltime(NULL, 0), actualInterval, actualInterval / 5);
-}
-
-- (ToxFriend *)qCreateFriendWithId:(int32_t)friendId
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (! tox_friend_exists(self.tox, friendId)) {
-        return nil;
-    }
-
-    ToxFriend *friend = [ToxFriend new];
-    friend.id = friendId;
-    friend.status = ToxFriendStatusOffline;
-
-    {
-        uint8_t *clientId = malloc(TOX_CLIENT_ID_SIZE);
-
-        int result = tox_get_client_id(self.tox, friendId, clientId);
-
-        if (result == 0) {
-            friend.clientId = [ToxFunctions clientIdToString:clientId];
-            free(clientId);
-        }
-    }
-
-    {
-        uint8_t *name = malloc(TOX_MAX_NAME_LENGTH);
-        int length = tox_get_name(self.tox, friendId, name);
-
-        if (length > 0) {
-            friend.realName = [NSString stringWithCString:(const char*)name encoding:NSUTF8StringEncoding];
-            free(name);
-        }
-    }
-
-    {
-        uint64_t lastOnline = tox_get_last_online(self.tox, friendId);
-
-        if (lastOnline > 0) {
-            friend.lastSeenOnline = [NSDate dateWithTimeIntervalSince1970:lastOnline];
-        }
-    }
-
-    friend.isTyping = tox_get_is_typing(self.tox, friendId);
-
-    {
-        if (friend.clientId) {
-            NSDictionary *names = [UserInfoManager sharedInstance].uAssociatedNames;
-
-            friend.associatedName = names[friend.clientId];
-        }
-    }
-
-    [self qMaybeCreateAssociatedNameForFriend:friend];
-
-    return friend;
-}
-
-- (void)qMaybeCreateAssociatedNameForFriend:(ToxFriend *)friend
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    if (friend.associatedName.length) {
-        return;
-    }
-
-    if (! friend.realName) {
-        return;
-    }
-
-    friend.associatedName = friend.realName;
-
-    if (! friend.clientId) {
-        return;
-    }
-
-    NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-        [UserInfoManager sharedInstance].uAssociatedNames];
-
-    names[friend.clientId] = friend.realName;
-
-    [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
-}
-
-- (void)qIncomingMessage:(NSString *)message fromFriend:(ToxFriend *)friend
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    __weak ToxManager *weakSelf = self;
-
-    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
-        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            [weakSelf qAddMessage:message toChat:chat fromUser:user completionBlock:^(CDMessage *cdMessage) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    EventObject *object = [EventObject objectWithType:EventObjectTypeChatIncomingMessage
-                                                                image:nil
-                                                               object:cdMessage];
-                    [[EventsManager sharedInstance] addObject:object];
-
-                    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
-                });
-            }];
-        }];
-    }];
-}
-
-- (void)qIncomingFileWithName:(NSString *)name
-                   fromFriend:(ToxFriend *)friend
-                   fileNumber:(uint8_t)filenumber
-                     fileSize:(uint64_t)filesize
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    __weak ToxManager *weakSelf = self;
-
-    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
-        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            [weakSelf qAddFileWithPathFileName:nil
-                                          name:name
-                                 isFullyLoaded:NO
-                                        toChat:chat
-                                      fromUser:user
-                               completionBlock:^(CDMessage *cdMessage)
-            {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    EventObject *object = [EventObject objectWithType:EventObjectTypeChatIncomingFile
-                                                                image:nil
-                                                               object:cdMessage];
-                    [[EventsManager sharedInstance] addObject:object];
-
-                    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-                    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
-                });
-            }];
-        }];
-    }];
-}
-
-- (void)qUserFromClientId:(NSString *)clientId completionBlock:(void (^)(CDUser *user))completionBlock
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", clientId];
-
-    [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
-        u.clientId = clientId;
-
-    } completionQueue:self.queue completionBlock:completionBlock];
-}
-
-- (void)qChatWithUser:(CDUser *)user completionBlock:(void (^)(CDChat *chat))completionBlock
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
-
-    [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
-        [c addUsersObject:user];
-
-    } completionQueue:self.queue completionBlock:completionBlock];
-}
-
-- (void)qAddMessage:(NSString *)message
-             toChat:(CDChat *)chat
-           fromUser:(CDUser *)user
-    completionBlock:(void (^)(CDMessage *message))completionBlock
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    [CoreDataManager insertMessageWithType:CDMessageTypeText configBlock:^(CDMessage *m) {
-        m.text.text = message;
-        m.date = [[NSDate date] timeIntervalSince1970];
-        m.user = user;
-        m.chat = chat;
-
-        if (m.date > chat.lastMessage.date) {
-            m.chatForLastMessageInverse = chat;
-        }
-
-    } completionQueue:self.queue completionBlock:completionBlock];
-}
-
-- (void)qAddFileWithPathFileName:(NSString *)pathFileName
-                            name:(NSString *)name
-                   isFullyLoaded:(BOOL)isFullyLoaded
-                          toChat:(CDChat *)chat
-                        fromUser:(CDUser *)user
-                 completionBlock:(void (^)(CDMessage *message))completionBlock
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    [CoreDataManager insertMessageWithType:CDMessageTypeFile configBlock:^(CDMessage *m) {
-        m.file.name = name;
-        m.file.pathFileName = pathFileName;
-        m.file.isFullyLoaded = isFullyLoaded;
-        m.date = [[NSDate date] timeIntervalSince1970];
-        m.user = user;
-        m.chat = chat;
-
-        if (m.date > chat.lastMessage.date) {
-            m.chatForLastMessageInverse = chat;
-        }
-
-    } completionQueue:self.queue completionBlock:completionBlock];
-}
-
-#pragma mark -  Private
-
 @end
-
-#pragma mark -  C functions
-
-void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * data, uint16_t length, void *userdata)
-{
-    NSLog(@"ToxManager: friendRequestCallback, publicKey %s", publicKey);
-
-    NSString *key = [ToxFunctions publicKeyToString:(uint8_t *)publicKey];
-    NSString *message = [[NSString alloc] initWithBytes:data length:length encoding:NSUTF8StringEncoding];
-
-    ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:key message:message];
-
-    [[ToxManager sharedInstance].friendsContainer private_addFriendRequest:request];
-
-    EventObject *object = [EventObject objectWithType:EventObjectTypeFriendRequest
-                                                image:nil
-                                               object:request];
-    [[EventsManager sharedInstance] addObject:object];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
-    });
-}
-
-void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
-{
-    NSLog(@"ToxManager: friendMessageCallback %d %s", friendnumber, message);
-
-    NSString *messageString = [[NSString alloc] initWithBytes:message length:length encoding:NSUTF8StringEncoding];
-    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
-
-    [[ToxManager sharedInstance] qIncomingMessage:messageString fromFriend:friend];
-}
-
-void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata)
-{
-    NSLog(@"ToxManager: nameChangeCallback %d %s", friendnumber, newname);
-
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.realName = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
-
-        [[ToxManager sharedInstance] qMaybeCreateAssociatedNameForFriend:friend];
-    }];
-}
-
-void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata)
-{
-    NSLog(@"ToxManager: statusMessageCallback %d %s", friendnumber, newstatus);
-
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.statusMessage = [NSString stringWithCString:(const char*)newstatus encoding:NSUTF8StringEncoding];
-    }];
-}
-
-void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
-{
-    NSLog(@"ToxManager: userStatusCallback %d %d", friendnumber, status);
-
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        if (status == TOX_USERSTATUS_NONE) {
-            friend.status = ToxFriendStatusOnline;
-        }
-        else if (status == TOX_USERSTATUS_AWAY) {
-            friend.status = ToxFriendStatusAway;
-        }
-        else if (status == TOX_USERSTATUS_BUSY) {
-            friend.status = ToxFriendStatusBusy;
-        }
-        else if (status == TOX_USERSTATUS_INVALID) {
-            friend.status = ToxFriendStatusOffline;
-        }
-    }];
-}
-
-void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata)
-{
-    NSLog(@"ToxManager: typingChangeCallback %d %d", friendnumber, isTyping);
-
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.isTyping = (isTyping == 1);
-    }];
-}
-
-void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata)
-{
-    NSLog(@"ToxManager: readReceiptCallback %d %d", friendnumber, receipt);
-}
-
-void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
-{
-    NSLog(@"ToxManager: connectionStatusCallback %d %d", friendnumber, status);
-
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        if (status == 0) {
-            friend.status = ToxFriendStatusOffline;
-        }
-    }];
-
-    [[ToxManager sharedInstance] qSaveTox];
-}
-
-void fileSendRequestCallback(
-        Tox *tox,
-        int32_t friendnumber,
-        uint8_t filenumber,
-        uint64_t filesize,
-        const uint8_t *filename,
-        uint16_t filename_length,
-        void *userdata)
-{
-    NSLog(@"ToxManager: fileSendRequestCallback %d %d %llu %s", friendnumber, filenumber, filesize, filename);
-
-    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
-
-    NSString *nameString = [[NSString alloc] initWithBytes:filename
-                                                    length:filename_length
-                                                  encoding:NSUTF8StringEncoding];
-
-    [[ToxManager sharedInstance] qIncomingFileWithName:nameString
-                                            fromFriend:friend
-                                            fileNumber:filenumber
-                                              fileSize:filesize];
-}
-
-void fileControlCallback(
-        Tox *tox,
-        int32_t friendnumber,
-        uint8_t receive_send,
-        uint8_t filenumber,
-        uint8_t control_type,
-        const uint8_t *data,
-        uint16_t length,
-        void *userdata)
-{
-    NSLog(@"ToxManager: fileControlCallback %d %d %d", friendnumber, filenumber, receive_send);
-}
-
-void fileDataCallback(
-        Tox *tox,
-        int32_t friendnumber,
-        uint8_t filenumber,
-        const uint8_t *data,
-        uint16_t length,
-        void *userdata)
-{
-    NSLog(@"ToxManager: fileDataCallback %d %d %d", friendnumber, filenumber, length);
-
-}
 
