@@ -424,7 +424,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
     uint8_t *clientId = [ToxFunctions hexStringToBin:request.clientId];
-    uint32_t friendId = tox_add_friend_norequest(self.tox, clientId);
+    int32_t friendId = tox_add_friend_norequest(self.tox, clientId);
     free(clientId);
 
     if (friendId == -1) {
@@ -528,7 +528,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
             self.tox,
             friend.id,
             (uint8_t *)cMessage,
-            [message lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
+            (uint32_t)[message lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 
     __weak ToxManager *weakSelf = self;
 
@@ -560,7 +560,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     if (toxData) {
         NSLog(@"ToxManager: old data found, loading...");
-        tox_load(_tox, (uint8_t *)toxData.bytes, toxData.length);
+        tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
     }
     else {
         [self qSaveTox];
