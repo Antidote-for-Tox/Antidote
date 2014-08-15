@@ -11,6 +11,7 @@
 #import "ChatIncomingCell.h"
 #import "ChatOutgoingCell.h"
 #import "ChatTypingCell.h"
+#import "ChatFileCell.h"
 #import "ChatInputView.h"
 #import "CoreDataManager+Message.h"
 #import "CDUser.h"
@@ -26,7 +27,7 @@ typedef NS_ENUM(NSInteger, Section) {
 };
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
-    UIGestureRecognizerDelegate>
+    UIGestureRecognizerDelegate, ChatFileCellDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -35,8 +36,6 @@ typedef NS_ENUM(NSInteger, Section) {
 
 @property (strong, nonatomic) CDChat *chat;
 @property (strong, nonatomic) ToxFriend *friend;
-
-@property (strong, nonatomic) NSString *myClientId;
 
 @property (assign, nonatomic) CGFloat visibleKeyboardHeight;
 
@@ -55,8 +54,6 @@ typedef NS_ENUM(NSInteger, Section) {
     if (self) {
         self.hidesBottomBarWhenPushed = YES;
         self.visibleKeyboardHeight = 0.0;
-
-        self.myClientId = [ToxManager sharedInstance].clientId;
 
         self.chat = chat;
 
@@ -195,29 +192,12 @@ typedef NS_ENUM(NSInteger, Section) {
     if (indexPath.section == SectionMessages) {
         CDMessage *message = self.messages[indexPath.row];
 
-        ChatBasicCell *cell;
-
-        if ([self isOutgoingMessage:message]) {
-            cell = [tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
-                                                   forIndexPath:indexPath];
+        if (message.text) {
+            tableViewCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
         }
-        else {
-            cell = [tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
-                                                   forIndexPath:indexPath];
+        else if (message.file) {
+            tableViewCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
         }
-
-        cell.message = message.text;
-
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
-
-        cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
-            [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
-
-        cell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
-
-        [cell redraw];
-
-        tableViewCell = cell;
     }
     else if (indexPath.section == SectionTyping) {
         ChatTypingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatTypingCell reuseIdentifier]
@@ -258,11 +238,16 @@ typedef NS_ENUM(NSInteger, Section) {
 
         NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
 
-        if ([self isOutgoingMessage:message]) {
-            height = [ChatOutgoingCell heightWithMessage:message.text fullDateString:fullDateString];
+        if (message.text) {
+            if ([Helper isOutgoingMessage:message]) {
+                height = [ChatOutgoingCell heightWithMessage:message.text.text fullDateString:fullDateString];
+            }
+            else {
+                height = [ChatIncomingCell heightWithMessage:message.text.text fullDateString:fullDateString];
+            }
         }
-        else {
-            height = [ChatIncomingCell heightWithMessage:message.text fullDateString:fullDateString];
+        else if (message.file) {
+            height = [ChatFileCell height];
         }
     }
     else if (indexPath.section == SectionTyping) {
@@ -303,6 +288,8 @@ typedef NS_ENUM(NSInteger, Section) {
     [[ToxManager sharedInstance] changeIsTypingInChat:self.chat to:isTyping];
 }
 
+#pragma mark -  UIGestureRecognizerDelegate
+
 - (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
@@ -317,6 +304,18 @@ typedef NS_ENUM(NSInteger, Section) {
     }
 
     return NO;
+}
+
+#pragma mark -  ChatFileCellDelegate
+
+- (void)chatFileCellButtonPressedYes:(ChatFileCell *)cell
+{
+    NSLog(@"---- yes");
+}
+
+- (void)chatFileCellButtonPressedNo:(ChatFileCell *)cell
+{
+    NSLog(@"---- no");
 }
 
 #pragma mark -  Notifications
@@ -415,6 +414,7 @@ typedef NS_ENUM(NSInteger, Section) {
     [self.tableView registerClass:[ChatIncomingCell class] forCellReuseIdentifier:[ChatIncomingCell reuseIdentifier]];
     [self.tableView registerClass:[ChatOutgoingCell class] forCellReuseIdentifier:[ChatOutgoingCell reuseIdentifier]];
     [self.tableView registerClass:[ChatTypingCell class] forCellReuseIdentifier:[ChatTypingCell reuseIdentifier]];
+    [self.tableView registerClass:[ChatFileCell class] forCellReuseIdentifier:[ChatFileCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }
@@ -454,6 +454,47 @@ typedef NS_ENUM(NSInteger, Section) {
     }
 
     [self updateTableViewInsetAndInputViewWithDuration:0.0 curve:0];
+}
+
+- (UITableViewCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+{
+    ChatBasicCell *cell;
+
+    if ([Helper isOutgoingMessage:message]) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
+                                                    forIndexPath:indexPath];
+    }
+    else {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
+                                                    forIndexPath:indexPath];
+    }
+
+    cell.message = message.text.text;
+
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
+
+    cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
+        [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
+
+    cell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
+
+    [cell redraw];
+
+    return cell;
+}
+
+- (UITableViewCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+{
+    ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
+                                                              forIndexPath:indexPath];
+
+    cell.delegate = self;
+    cell.textLabel.text = message.file.name;
+    cell.showYesNoButtons = YES;
+
+    [cell redraw];
+
+    return cell;
 }
 
 - (void)updateTitleView
@@ -596,11 +637,6 @@ typedef NS_ENUM(NSInteger, Section) {
 - (void)updateSendButtonEnabled
 {
     self.inputView.sendButtonEnabled = (self.friend.status != ToxFriendStatusOffline);
-}
-
-- (BOOL)isOutgoingMessage:(CDMessage *)message
-{
-    return [message.user.clientId isEqual:self.myClientId];
 }
 
 - (BOOL)showFullDateForMessage:(CDMessage *)message atIndexPath:(NSIndexPath *)path

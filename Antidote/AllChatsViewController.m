@@ -116,9 +116,24 @@
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:chat.lastMessage.date];
+    NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime];
 
-    [cell setMessage:chat.lastMessage.text
-             andDate:[[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime]];
+    if (chat.lastMessage.text) {
+        [cell setMessage:chat.lastMessage.text.text andDate:dateString];
+    }
+    else if (chat.lastMessage.file) {
+        NSString *format;
+
+        if ([Helper isOutgoingMessage:chat.lastMessage]) {
+            format = NSLocalizedString(@"Outgoing file: %@", @"Chats");
+        }
+        else {
+            format = NSLocalizedString(@"Incoming file: %@", @"Chats");
+        }
+
+        [cell setMessage:[NSString stringWithFormat:format, chat.lastMessage.file.name]
+                 andDate:dateString];
+    }
 
     cell.backgroundColor = (chat.lastMessage.date < chat.lastReadDate) ? [UIColor whiteColor] :
         [AppearanceManager unreadChatCellBackground];

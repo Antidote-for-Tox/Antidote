@@ -16,14 +16,21 @@
 extern NSString *const kCoreDataManagerNewMessageNotification;
 extern NSString *const kCoreDataManagerNewMessageKey;
 
+typedef NS_ENUM(NSUInteger, CDMessageType) {
+    CDMessageTypeText,
+    CDMessageTypeFile,
+    CDMessageTypeCall,
+};
+
 @interface CoreDataManager (Message)
 
 + (void)messagesForChat:(CDChat *)chat
         completionQueue:(dispatch_queue_t)queue
         completionBlock:(void (^)(NSArray *messages))completionBlock;
 
-+ (void)insertMessageWithConfigBlock:(void (^)(CDMessage *message))configBlock
-                     completionQueue:(dispatch_queue_t)queue
-                     completionBlock:(void (^)(CDMessage *message))completionBlock;
++ (void)insertMessageWithType:(CDMessageType)type
+                  configBlock:(void (^)(CDMessage *message))configBlock
+              completionQueue:(dispatch_queue_t)queue
+              completionBlock:(void (^)(CDMessage *message))completionBlock;
 
 @end

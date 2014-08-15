@@ -8,12 +8,27 @@
     </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
         <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="call" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDMessageCall" inverseName="messageInverse" inverseEntity="CDMessageCall" syncable="YES"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDChat" inverseName="messages" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="chatForLastMessageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDChat" inverseName="lastMessage" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="file" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDMessageFile" inverseName="messageInverse" inverseEntity="CDMessageFile" syncable="YES"/>
+        <relationship name="text" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDMessageText" inverseName="messageInverse" inverseEntity="CDMessageText" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="messages" inverseEntity="CDUser" syncable="YES"/>
+    </entity>
+    <entity name="CDMessageCall" representedClassName="CDMessageCall" syncable="YES">
+        <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="call" inverseEntity="CDMessage" syncable="YES"/>
+    </entity>
+    <entity name="CDMessageFile" representedClassName="CDMessageFile" syncable="YES">
+        <attribute name="isFullyLoaded" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pathFileName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="file" inverseEntity="CDMessage" syncable="YES"/>
+    </entity>
+    <entity name="CDMessageText" representedClassName="CDMessageText" syncable="YES">
         <attribute name="id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="isDelivered" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDChat" inverseName="messages" inverseEntity="CDChat" syncable="YES"/>
-        <relationship name="chatForLastMessageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDChat" inverseName="lastMessage" inverseEntity="CDChat" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDUser" inverseName="messages" inverseEntity="CDUser" syncable="YES"/>
+        <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="text" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDUser" representedClassName="CDUser" syncable="YES">
         <attribute name="clientId" optional="YES" attributeType="String" syncable="YES"/>
@@ -23,6 +38,9 @@
     <elements>
         <element name="CDChat" positionX="288" positionY="-0" width="128" height="103"/>
         <element name="CDMessage" positionX="-63" positionY="-27" width="128" height="148"/>
+        <element name="CDMessageCall" positionX="-299" positionY="-72" width="128" height="58"/>
+        <element name="CDMessageFile" positionX="-270" positionY="54" width="128" height="105"/>
+        <element name="CDMessageText" positionX="-252" positionY="158" width="128" height="103"/>
         <element name="CDUser" positionX="97" positionY="182" width="128" height="88"/>
     </elements>
 </model>

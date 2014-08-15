@@ -257,7 +257,9 @@
 
 - (BOOL)shouldShowAlertWindowFor:(EventObject *)object
 {
-    if (object.type == EventObjectTypeChatMessage) {
+    if (object.type == EventObjectTypeChatIncomingMessage ||
+        object.type == EventObjectTypeChatIncomingFile)
+    {
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         UIViewController *visibleVC = [delegate visibleViewController];
 
@@ -281,7 +283,9 @@
 {
     NSString *text;
 
-    if (object.type == EventObjectTypeChatMessage) {
+    if (object.type == EventObjectTypeChatIncomingMessage ||
+        object.type == EventObjectTypeChatIncomingFile)
+    {
         CDMessage *message = object.object;
         ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
@@ -298,10 +302,16 @@
 {
     NSString *text;
 
-    if (object.type == EventObjectTypeChatMessage) {
+    if (object.type == EventObjectTypeChatIncomingMessage) {
         CDMessage *message = object.object;
 
-        text = message.text;
+        text = message.text.text;
+    }
+    else if (object.type == EventObjectTypeChatIncomingFile) {
+        CDMessage *message = object.object;
+
+        text = [NSString stringWithFormat:NSLocalizedString(@"Incoming file: %@", @"Events"),
+            message.file.name];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         ToxFriendRequest *request = object.object;
@@ -316,7 +326,8 @@
 {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    if (object.type == EventObjectTypeChatMessage) {
+    if (object.type == EventObjectTypeChatIncomingMessage ||
+        object.type == EventObjectTypeChatIncomingFile) {
         CDMessage *message = object.object;
 
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];

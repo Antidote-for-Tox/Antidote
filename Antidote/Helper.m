@@ -7,6 +7,8 @@
 //
 
 #import "Helper.h"
+#import "ToxManager.h"
+#import "CDUser.h"
 
 @implementation Helper
 
@@ -26,6 +28,11 @@
     }
 
     return StatusCircleStatusOffline;
+}
+
++ (BOOL)isOutgoingMessage:(CDMessage *)message
+{
+    return [message.user.clientId isEqual:[ToxManager sharedInstance].clientId];
 }
 
 @end
