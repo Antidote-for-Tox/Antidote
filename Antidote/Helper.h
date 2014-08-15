@@ -10,9 +10,12 @@
 
 #import "ToxFriend.h"
 #import "StatusCircleView.h"
+#import "CDMessage.h"
 
 @interface Helper : NSObject
 
 + (StatusCircleStatus)toxFriendStatusToCircleStatus:(ToxFriendStatus)toxFriendStatus;
+
++ (BOOL)isOutgoingMessage:(CDMessage *)message;
 
 @end

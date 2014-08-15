@@ -75,6 +75,9 @@
 		11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C314199D2CCE00A48FBC /* CDMessageText.m */; };
 		11B6C318199D2CCE00A48FBC /* CDMessageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C317199D2CCE00A48FBC /* CDMessageFile.m */; };
 		11B6C31B199D2CCE00A48FBC /* CDMessageCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */; };
+		11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C321199D499800A48FBC /* ChatFileCell.m */; };
+		11B6C325199E6D6F00A48FBC /* checkmark-no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */; };
+		11B6C326199E6D6F00A48FBC /* checkmark-yes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C324199E6D6F00A48FBC /* checkmark-yes@2x.png */; };
 		11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */; };
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
@@ -231,6 +234,10 @@
 		11B6C317199D2CCE00A48FBC /* CDMessageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageFile.m; sourceTree = "<group>"; };
 		11B6C319199D2CCE00A48FBC /* CDMessageCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageCall.h; sourceTree = "<group>"; };
 		11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageCall.m; sourceTree = "<group>"; };
+		11B6C320199D499800A48FBC /* ChatFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatFileCell.h; sourceTree = "<group>"; };
+		11B6C321199D499800A48FBC /* ChatFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatFileCell.m; sourceTree = "<group>"; };
+		11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark-no@2x.png"; sourceTree = "<group>"; };
+		11B6C324199E6D6F00A48FBC /* checkmark-yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark-yes@2x.png"; sourceTree = "<group>"; };
 		11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicCell.h; sourceTree = "<group>"; };
 		11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicCell.m; sourceTree = "<group>"; };
 		11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatOutgoingCell.h; sourceTree = "<group>"; };
@@ -353,6 +360,8 @@
 			children = (
 				11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */,
 				11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */,
+				11B6C320199D499800A48FBC /* ChatFileCell.h */,
+				11B6C321199D499800A48FBC /* ChatFileCell.m */,
 				114630E919857CF70075DA16 /* ChatIncomingCell.h */,
 				114630EA19857CF70075DA16 /* ChatIncomingCell.m */,
 				11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */,
@@ -705,13 +714,15 @@
 		11B9E62519940F1400FB20A6 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				11B6C302199AB03B00A48FBC /* FriendsViewController */,
+				11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */,
+				11B6C324199E6D6F00A48FBC /* checkmark-yes@2x.png */,
 				11B9E62719940F3900FB20A6 /* tab-bar-chats.png */,
 				11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */,
 				11B9E62819940F3900FB20A6 /* tab-bar-friends.png */,
 				11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */,
 				11B9E62619940F3900FB20A6 /* tab-bar-settings.png */,
 				11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */,
+				11B6C302199AB03B00A48FBC /* FriendsViewController */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -806,8 +817,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11B6C326199E6D6F00A48FBC /* checkmark-yes@2x.png in Resources */,
 				11B9E6301994109A00FB20A6 /* tab-bar-friends@2x.png in Resources */,
 				11B9E62B19940F3900FB20A6 /* tab-bar-friends.png in Resources */,
+				11B6C325199E6D6F00A48FBC /* checkmark-no@2x.png in Resources */,
 				11B9E6311994109A00FB20A6 /* tab-bar-chats@2x.png in Resources */,
 				11B9E62F1994109A00FB20A6 /* tab-bar-settings@2x.png in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
@@ -927,6 +940,7 @@
 				11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */,
 				1164769B19794E7300DB20B8 /* ping_array.c in Sources */,
 				11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */,
+				11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				1164769E19794E7300DB20B8 /* TCP_server.c in Sources */,
