@@ -22,7 +22,7 @@
 
 @property (assign, nonatomic) BOOL isConnected;
 
-@property (strong, nonatomic) ToxFriendsContainer *friendsContainer;
+@property (strong, nonatomic, readwrite) ToxFriendsContainer *friendsContainer;
 
 - (void)qSaveTox;
 - (NSString *)qClientId;

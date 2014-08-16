@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ToxFriendsContainer.h"
 #import "tox.h"
+#import "ToxFriendsContainer.h"
 #import "CDChat.h"
 
 @interface ToxManager : NSObject

@@ -53,6 +53,10 @@ NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey"
             message.file = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageFile"
                                                          inManagedObjectContext:[self private_context]];
         }
+        else if (type == CDMessageTypePendingFile) {
+            message.pendingFile = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessagePendingFile"
+                                                                inManagedObjectContext:[self private_context]];
+        }
         else if (type == CDMessageTypeCall) {
             message.call = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageCall"
                                                          inManagedObjectContext:[self private_context]];

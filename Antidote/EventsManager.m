@@ -311,7 +311,7 @@
         CDMessage *message = object.object;
 
         text = [NSString stringWithFormat:NSLocalizedString(@"Incoming file: %@", @"Events"),
-            message.file.name];
+            message.pendingFile.fileName];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         ToxFriendRequest *request = object.object;

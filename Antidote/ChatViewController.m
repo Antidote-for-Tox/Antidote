@@ -195,8 +195,8 @@ typedef NS_ENUM(NSInteger, Section) {
         if (message.text) {
             tableViewCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
         }
-        else if (message.file) {
-            tableViewCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
+        else if (message.pendingFile) {
+            tableViewCell = [self messagePendingFileCellForRowAtIndexPath:indexPath message:message];
         }
     }
     else if (indexPath.section == SectionTyping) {
@@ -246,7 +246,7 @@ typedef NS_ENUM(NSInteger, Section) {
                 height = [ChatIncomingCell heightWithMessage:message.text.text fullDateString:fullDateString];
             }
         }
-        else if (message.file) {
+        else if (message.pendingFile) {
             height = [ChatFileCell height];
         }
     }
@@ -308,14 +308,8 @@ typedef NS_ENUM(NSInteger, Section) {
 
 #pragma mark -  ChatFileCellDelegate
 
-- (void)chatFileCellButtonPressedYes:(ChatFileCell *)cell
+- (void)chatFileCell:(ChatFileCell *)cell answerButtonPressedWith:(BOOL)answer
 {
-    NSLog(@"---- yes");
-}
-
-- (void)chatFileCellButtonPressedNo:(ChatFileCell *)cell
-{
-    NSLog(@"---- no");
 }
 
 #pragma mark -  Notifications
@@ -483,14 +477,14 @@ typedef NS_ENUM(NSInteger, Section) {
     return cell;
 }
 
-- (UITableViewCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+- (UITableViewCell *)messagePendingFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
 {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
                                                               forIndexPath:indexPath];
 
     cell.delegate = self;
-    cell.textLabel.text = message.file.name;
-    cell.showYesNoButtons = YES;
+    cell.textLabel.text = message.pendingFile.fileName;
+    cell.showYesNoButtons = message.pendingFile.isActive;
 
     [cell redraw];
 

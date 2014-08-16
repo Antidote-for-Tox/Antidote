@@ -32,10 +32,10 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
 #pragma mark -  Private
 
-- (void)qIncomingFileWithName:(NSString *)name
-                   fromFriend:(ToxFriend *)friend
-                   fileNumber:(uint8_t)filenumber
-                     fileSize:(uint64_t)filesize
+- (void)qIncomingFileFromFriend:(ToxFriend *)friend
+                       fileName:(NSString *)fileName
+                     fileNumber:(uint8_t)fileNumber
+                       fileSize:(uint64_t)fileSize
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
@@ -43,12 +43,16 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            [weakSelf qAddFileWithPathFileName:nil
-                                          name:name
-                                 isFullyLoaded:NO
-                                        toChat:chat
-                                      fromUser:user
-                               completionBlock:^(CDMessage *cdMessage)
+            NSString *documentPath = [weakSelf newDocumentPath];
+
+            [weakSelf qAddPendingFileToChat:chat
+                                   fromUser:user
+                                 fileNumber:fileNumber
+                               friendNumber:friend.id
+                                   fileSize:fileSize
+                                   fileName:fileName
+                               documentPath:documentPath
+                            completionBlock:^(CDMessage *cdMessage)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     EventObject *object = [EventObject objectWithType:EventObjectTypeChatIncomingFile
@@ -64,22 +68,29 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }];
 }
 
-- (void)qAddFileWithPathFileName:(NSString *)pathFileName
-                            name:(NSString *)name
-                   isFullyLoaded:(BOOL)isFullyLoaded
-                          toChat:(CDChat *)chat
-                        fromUser:(CDUser *)user
-                 completionBlock:(void (^)(CDMessage *message))completionBlock
+- (void)qAddPendingFileToChat:(CDChat *)chat
+                     fromUser:(CDUser *)user
+                   fileNumber:(uint16_t)fileNumber
+                 friendNumber:(int32_t)friendNumber
+                     fileSize:(uint64_t)fileSize
+                     fileName:(NSString *)fileName
+                 documentPath:(NSString *)documentPath
+              completionBlock:(void (^)(CDMessage *message))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    [CoreDataManager insertMessageWithType:CDMessageTypeFile configBlock:^(CDMessage *m) {
-        m.file.name = name;
-        m.file.pathFileName = pathFileName;
-        m.file.isFullyLoaded = isFullyLoaded;
+    [CoreDataManager insertMessageWithType:CDMessageTypePendingFile configBlock:^(CDMessage *m) {
         m.date = [[NSDate date] timeIntervalSince1970];
-        m.user = user;
         m.chat = chat;
+        m.user = user;
+
+        m.pendingFile.isActive     = YES;
+        m.pendingFile.fileNumber   = fileNumber;
+        m.pendingFile.friendNumber = friendNumber;
+        m.pendingFile.fileSize     = fileSize;
+        m.pendingFile.fileName     = fileName;
+        m.pendingFile.documentPath = documentPath;
+        m.pendingFile.loadedSize   = 0;
 
         if (m.date > chat.lastMessage.date) {
             m.chatForLastMessageInverse = chat;
@@ -88,7 +99,18 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     } completionQueue:self.queue completionBlock:completionBlock];
 }
 
+- (NSString *)newDocumentPath
+{
+    CFUUIDRef uuidObj = CFUUIDCreate(NULL);
+    NSString *identifier = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuidObj);
+    CFRelease(uuidObj);
+
+    return [NSString stringWithFormat:@"Files/%@", identifier];
+}
+
 @end
+
+#pragma mark -  C functions
 
 void fileSendRequestCallback(
         Tox *tox,
@@ -103,14 +125,14 @@ void fileSendRequestCallback(
 
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
 
-    NSString *nameString = [[NSString alloc] initWithBytes:filename
-                                                    length:filename_length
-                                                  encoding:NSUTF8StringEncoding];
+    NSString *fileNameString = [[NSString alloc] initWithBytes:filename
+                                                        length:filename_length
+                                                      encoding:NSUTF8StringEncoding];
 
-    [[ToxManager sharedInstance] qIncomingFileWithName:nameString
-                                            fromFriend:friend
-                                            fileNumber:filenumber
-                                              fileSize:filesize];
+    [[ToxManager sharedInstance] qIncomingFileFromFriend:friend
+                                                fileName:fileNameString
+                                              fileNumber:filenumber
+                                                fileSize:filesize];
 }
 
 void fileControlCallback(

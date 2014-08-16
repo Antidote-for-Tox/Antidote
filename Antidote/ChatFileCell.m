@@ -34,12 +34,12 @@
 
 - (void)yesButtonPressed
 {
-    [self.delegate chatFileCellButtonPressedYes:self];
+    [self.delegate chatFileCell:self answerButtonPressedWith:YES];
 }
 
 - (void)noButtonPressed
 {
-    [self.delegate chatFileCellButtonPressedNo:self];
+    [self.delegate chatFileCell:self answerButtonPressedWith:NO];
 }
 
 #pragma mark -  Public

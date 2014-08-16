@@ -19,6 +19,7 @@ extern NSString *const kCoreDataManagerNewMessageKey;
 typedef NS_ENUM(NSUInteger, CDMessageType) {
     CDMessageTypeText,
     CDMessageTypeFile,
+    CDMessageTypePendingFile,
     CDMessageTypeCall,
 };
 

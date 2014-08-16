@@ -10,6 +10,8 @@
 		111EC713199E94DF00A27A0E /* ToxManager+PrivateFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC712199E94DF00A27A0E /* ToxManager+PrivateFriends.m */; };
 		111EC716199E985900A27A0E /* ToxManager+PrivateChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC715199E985900A27A0E /* ToxManager+PrivateChat.m */; };
 		111EC719199E99B700A27A0E /* ToxManager+PrivateFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC718199E99B700A27A0E /* ToxManager+PrivateFiles.m */; };
+		111EC732199FD6DA00A27A0E /* CDMessagePendingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC731199FD6DA00A27A0E /* CDMessagePendingFile.m */; };
+		111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC734199FD6DB00A27A0E /* CDMessageFile.m */; };
 		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
 		1146308C19842D360075DA16 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146308B19842D360075DA16 /* CoreDataManager.m */; };
 		1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309219842F490075DA16 /* CoreDataManager+Message.m */; };
@@ -76,7 +78,6 @@
 		11B6C30B199AB34400A48FBC /* FriendsFilterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C30A199AB34400A48FBC /* FriendsFilterView.m */; };
 		11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C311199D2CCE00A48FBC /* CDMessage.m */; };
 		11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C314199D2CCE00A48FBC /* CDMessageText.m */; };
-		11B6C318199D2CCE00A48FBC /* CDMessageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C317199D2CCE00A48FBC /* CDMessageFile.m */; };
 		11B6C31B199D2CCE00A48FBC /* CDMessageCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */; };
 		11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C321199D499800A48FBC /* ChatFileCell.m */; };
 		11B6C325199E6D6F00A48FBC /* checkmark-no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */; };
@@ -111,6 +112,10 @@
 		111EC715199E985900A27A0E /* ToxManager+PrivateChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToxManager+PrivateChat.m"; sourceTree = "<group>"; };
 		111EC717199E99B700A27A0E /* ToxManager+PrivateFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxManager+PrivateFiles.h"; sourceTree = "<group>"; };
 		111EC718199E99B700A27A0E /* ToxManager+PrivateFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToxManager+PrivateFiles.m"; sourceTree = "<group>"; };
+		111EC730199FD6DA00A27A0E /* CDMessagePendingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessagePendingFile.h; sourceTree = "<group>"; };
+		111EC731199FD6DA00A27A0E /* CDMessagePendingFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessagePendingFile.m; sourceTree = "<group>"; };
+		111EC733199FD6DB00A27A0E /* CDMessageFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageFile.h; sourceTree = "<group>"; };
+		111EC734199FD6DB00A27A0E /* CDMessageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageFile.m; sourceTree = "<group>"; };
 		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		1146308A19842D360075DA16 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		1146308B19842D360075DA16 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
@@ -240,8 +245,6 @@
 		11B6C311199D2CCE00A48FBC /* CDMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessage.m; sourceTree = "<group>"; };
 		11B6C313199D2CCE00A48FBC /* CDMessageText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageText.h; sourceTree = "<group>"; };
 		11B6C314199D2CCE00A48FBC /* CDMessageText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageText.m; sourceTree = "<group>"; };
-		11B6C316199D2CCE00A48FBC /* CDMessageFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageFile.h; sourceTree = "<group>"; };
-		11B6C317199D2CCE00A48FBC /* CDMessageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageFile.m; sourceTree = "<group>"; };
 		11B6C319199D2CCE00A48FBC /* CDMessageCall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessageCall.h; sourceTree = "<group>"; };
 		11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageCall.m; sourceTree = "<group>"; };
 		11B6C320199D499800A48FBC /* ChatFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatFileCell.h; sourceTree = "<group>"; };
@@ -325,8 +328,10 @@
 				11B6C311199D2CCE00A48FBC /* CDMessage.m */,
 				11B6C319199D2CCE00A48FBC /* CDMessageCall.h */,
 				11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */,
-				11B6C316199D2CCE00A48FBC /* CDMessageFile.h */,
-				11B6C317199D2CCE00A48FBC /* CDMessageFile.m */,
+				111EC733199FD6DB00A27A0E /* CDMessageFile.h */,
+				111EC734199FD6DB00A27A0E /* CDMessageFile.m */,
+				111EC730199FD6DA00A27A0E /* CDMessagePendingFile.h */,
+				111EC731199FD6DA00A27A0E /* CDMessagePendingFile.m */,
 				11B6C313199D2CCE00A48FBC /* CDMessageText.h */,
 				11B6C314199D2CCE00A48FBC /* CDMessageText.m */,
 				114630D4198554B60075DA16 /* CDUser.h */,
@@ -923,6 +928,7 @@
 				1164769119794E7300DB20B8 /* LAN_discovery.c in Sources */,
 				11C3A785199008760029A7A0 /* ChatViewController.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
+				111EC732199FD6DA00A27A0E /* CDMessagePendingFile.m in Sources */,
 				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,
 				1164769319794E7300DB20B8 /* logger.c in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
@@ -936,6 +942,7 @@
 				11B6C30B199AB34400A48FBC /* FriendsFilterView.m in Sources */,
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
 				119BB129198CECAB00380557 /* ToxIdView.m in Sources */,
+				111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */,
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
 				1164769619794E7300DB20B8 /* net_crypto.c in Sources */,
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
@@ -945,7 +952,6 @@
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
 				1164769719794E7300DB20B8 /* network.c in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
-				11B6C318199D2CCE00A48FBC /* CDMessageFile.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
