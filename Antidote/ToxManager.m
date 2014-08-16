@@ -232,6 +232,13 @@
     });
 }
 
+- (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept
+{
+    dispatch_async(self.queue, ^{
+        [self qAcceptOrRefusePendingFileInMessage:message accept:accept];
+    });
+}
+
 #pragma mark -  Notifications
 
 - (void)applicationWillTerminateNotification:(NSNotification *)notification

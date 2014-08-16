@@ -12,5 +12,7 @@
 
 - (void)qRegisterFilesCallbacks;
 
+- (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
+
 @end
 

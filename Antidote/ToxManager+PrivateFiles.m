@@ -30,6 +30,38 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     tox_callback_file_data         (self.tox, fileDataCallback,        NULL);
 }
 
+- (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    if (! message.pendingFile.isActive) {
+        return;
+    }
+
+    uint8_t messageId = 0;
+
+    if (accept) {
+        messageId = TOX_FILECONTROL_ACCEPT;
+    }
+    else {
+        messageId = TOX_FILECONTROL_KILL;
+
+        [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
+            message.pendingFile.isActive = NO;
+
+        } completionQueue:nil completionBlock:nil];
+    }
+
+    tox_file_send_control(
+            self.tox,
+            message.pendingFile.friendNumber,
+            1,
+            message.pendingFile.fileNumber,
+            messageId,
+            NULL,
+            0);
+}
+
 #pragma mark -  Private
 
 - (void)qIncomingFileFromFriend:(ToxFriend *)friend

@@ -11,10 +11,12 @@
 
 /**
  * userInfo will contain dictionary with following keys:
- * kCoreDataManagerNewMessageKey - containing appropriate CDMessage
+ * kCoreDataManagerCDMessageKey - containing appropriate CDMessage
  */
 extern NSString *const kCoreDataManagerNewMessageNotification;
-extern NSString *const kCoreDataManagerNewMessageKey;
+extern NSString *const kCoreDataManagerMessageUpdateNotification;
+
+extern NSString *const kCoreDataManagerCDMessageKey;
 
 typedef NS_ENUM(NSUInteger, CDMessageType) {
     CDMessageTypeText,
@@ -33,5 +35,10 @@ typedef NS_ENUM(NSUInteger, CDMessageType) {
                   configBlock:(void (^)(CDMessage *message))configBlock
               completionQueue:(dispatch_queue_t)queue
               completionBlock:(void (^)(CDMessage *message))completionBlock;
+
++ (void)editCDMessageAndSendNotificationsWithMessage:(CDMessage *)message
+                                               block:(void (^)())block
+                                     completionQueue:(dispatch_queue_t)queue
+                                     completionBlock:(void (^)())completionBlock;
 
 @end

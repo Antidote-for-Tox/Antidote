@@ -11,6 +11,7 @@
 #import "tox.h"
 #import "ToxFriendsContainer.h"
 #import "CDChat.h"
+#import "CDMessage.h"
 
 @interface ToxManager : NSObject
 
@@ -37,5 +38,7 @@
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;
 
 - (void)chatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock;
+
+- (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 
 @end

@@ -10,7 +10,8 @@
 #import "CoreData+MagicalRecord.h"
 
 NSString *const kCoreDataManagerNewMessageNotification = @"kCoreDataManagerNewMessageNotification";
-NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey";
+NSString *const kCoreDataManagerMessageUpdateNotification = @"kCoreDataManagerMessageUpdateNotification";
+NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
 
 @implementation CoreDataManager (Message)
 
@@ -77,7 +78,29 @@ NSString *const kCoreDataManagerNewMessageKey = @"kCoreDataManagerNewMessageKey"
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kCoreDataManagerNewMessageNotification
                                                                 object:nil
-                                                              userInfo:@{kCoreDataManagerNewMessageKey: message}];
+                                                              userInfo:@{kCoreDataManagerCDMessageKey: message}];
+        });
+    });
+}
+
++ (void)editCDMessageAndSendNotificationsWithMessage:(CDMessage *)message
+                                               block:(void (^)())block
+                                     completionQueue:(dispatch_queue_t)queue
+                                     completionBlock:(void (^)())completionBlock;
+{
+    dispatch_async([self private_queue], ^{
+        if (block) {
+            block();
+
+            [[self private_context] MR_saveToPersistentStoreAndWait];
+        }
+
+        [self private_performBlockOnQueueOrMain:queue block:completionBlock];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCoreDataManagerMessageUpdateNotification
+                                                                object:nil
+                                                              userInfo:@{kCoreDataManagerCDMessageKey: message}];
         });
     });
 }

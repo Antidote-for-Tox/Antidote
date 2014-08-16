@@ -75,6 +75,10 @@ typedef NS_ENUM(NSInteger, Section) {
                                                      name:kCoreDataManagerNewMessageNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(messageUpdateNotification:)
+                                                     name:kCoreDataManagerMessageUpdateNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(friendUpdateNotification:)
                                                      name:kToxFriendsContainerUpdateSpecificFriendNotification
                                                    object:nil];
@@ -310,6 +314,19 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)chatFileCell:(ChatFileCell *)cell answerButtonPressedWith:(BOOL)answer
 {
+    NSIndexPath *path = [self.tableView indexPathForCell:cell];
+
+    if (! path) {
+        return;
+    }
+
+    if (path.section != SectionMessages) {
+        return;
+    }
+
+    CDMessage *message = self.messages[path.row];
+
+    [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
 }
 
 #pragma mark -  Notifications
@@ -337,15 +354,15 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)newMessageNotification:(NSNotification *)notification
 {
-    if (self.isViewLoaded && self.view.window) {
-        // is visible
-        [self updateLastReadDateAndChatsBadge];
-    }
-
-    CDMessage *message = notification.userInfo[kCoreDataManagerNewMessageKey];
+    CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
 
     if (! [message.chat isEqual:self.chat]) {
         return;
+    }
+
+    if (self.isViewLoaded && self.view.window) {
+        // is visible
+        [self updateLastReadDateAndChatsBadge];
     }
 
     NSIndexPath *lastMessagePath;
@@ -377,6 +394,29 @@ typedef NS_ENUM(NSInteger, Section) {
 
         if ([visiblePathes containsObject:lastMessagePath]) {
             [self scrollToBottomAnimated:YES];
+        }
+    }
+}
+
+- (void)messageUpdateNotification:(NSNotification *)notification
+{
+    CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
+
+    if (! [message.chat isEqual:self.chat]) {
+        return;
+    }
+
+    @synchronized(self.tableView) {
+        for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+            if (path.section == SectionMessages) {
+                CDMessage *m = self.messages[path.row];
+
+                if ([m isEqual:message]) {
+                    [self.tableView reloadRowsAtIndexPaths:@[path]
+                                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                    return;
+                }
+            }
         }
     }
 }
