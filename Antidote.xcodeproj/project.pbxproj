@@ -119,6 +119,7 @@
 		111EC734199FD6DB00A27A0E /* CDMessageFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageFile.m; sourceTree = "<group>"; };
 		111EC73719A097A900A27A0E /* ToxDownloadingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxDownloadingFile.h; sourceTree = "<group>"; };
 		111EC73819A097A900A27A0E /* ToxDownloadingFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxDownloadingFile.m; sourceTree = "<group>"; };
+		111EC73A19A0FBFE00A27A0E /* ToxManagerFileProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToxManagerFileProgressDelegate.h; sourceTree = "<group>"; };
 		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		1146308A19842D360075DA16 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		1146308B19842D360075DA16 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
@@ -540,6 +541,7 @@
 				119BB11A198AC1B300380557 /* ToxFunctions.m */,
 				11835293197994050048CA64 /* ToxManager.h */,
 				11835294197994050048CA64 /* ToxManager.m */,
+				111EC73A19A0FBFE00A27A0E /* ToxManagerFileProgressDelegate.h */,
 			);
 			name = ToxManager;
 			sourceTree = "<group>";

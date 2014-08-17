@@ -10,9 +10,11 @@
 
 @interface ToxDownloadingFile : NSObject
 
+@property (assign, nonatomic, readonly) unsigned long long savedLength;
+
 - (instancetype)initWithFilePath:(NSString *)filePath;
 
-- (void)appendData:(NSData *)data;
+- (void)appendData:(NSData *)data didSavedOnDisk:(BOOL *)didSavedOnDisk;
 - (void)finishDownloading;
 
 @end

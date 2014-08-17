@@ -123,6 +123,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     ToxDownloadingFile *file = self.privateFiles_downloadingFiles[key];
     [file finishDownloading];
 
+    [self.privateFiles_downloadingFiles removeObjectForKey:key];
+
     tox_file_send_control(self.tox, friendNumber, 1, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:
@@ -238,8 +240,6 @@ void fileDataCallback(
         uint16_t length,
         void *userdata)
 {
-    NSLog(@"ToxManager: fileDataCallback %d %d %d", friendnumber, filenumber, length);
-
     NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber fileNumber:filenumber];
 
     ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
@@ -248,6 +248,23 @@ void fileDataCallback(
         return;
     }
 
-    [file appendData:[NSData dataWithBytes:data length:length]];
+    BOOL didSaveOnDisk;
+
+    [file appendData:[NSData dataWithBytes:data length:length] didSavedOnDisk:&didSaveOnDisk];
+
+    if (didSaveOnDisk) {
+        CGFloat saved = file.savedLength;
+        CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendnumber, filenumber, 1);
+
+        CGFloat total = saved + remaining;
+
+        CGFloat progress = total ? saved/total : 0.0;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[ToxManager sharedInstance].fileProgressDelegate toxManagerProgressChanged:progress
+                                                           forPendingFileWithFileNumber:filenumber
+                                                                           friendNumber:friendnumber];
+        });
+    }
 }
 

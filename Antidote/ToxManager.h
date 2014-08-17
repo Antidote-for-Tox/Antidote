@@ -10,10 +10,13 @@
 
 #import "tox.h"
 #import "ToxFriendsContainer.h"
+#import "ToxManagerFileProgressDelegate.h"
 #import "CDChat.h"
 #import "CDMessage.h"
 
 @interface ToxManager : NSObject
+
+@property (weak, nonatomic) id <ToxManagerFileProgressDelegate> fileProgressDelegate;
 
 @property (strong, nonatomic, readonly) ToxFriendsContainer *friendsContainer;
 

@@ -8,7 +8,7 @@
 
 #import "ToxDownloadingFile.h"
 
-static const NSTimeInterval kCacheTimeInterval = 1.0;
+static const NSTimeInterval kCacheTimeInterval = 0.3;
 
 @interface ToxDownloadingFile()
 
@@ -17,6 +17,8 @@ static const NSTimeInterval kCacheTimeInterval = 1.0;
 @property (strong, nonatomic) NSMutableData *cachedData;
 
 @property (assign, nonatomic) NSTimeInterval lastWriteTimeInterval;
+
+@property (assign, nonatomic, readwrite) unsigned long long savedLength;
 
 @end
 
@@ -46,6 +48,8 @@ static const NSTimeInterval kCacheTimeInterval = 1.0;
         self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
         [self.fileHandle seekToEndOfFile];
 
+        self.savedLength = [self.fileHandle offsetInFile];
+
         self.cachedData = [NSMutableData new];
         self.lastWriteTimeInterval = [self currentTimeInterval];
     }
@@ -53,7 +57,7 @@ static const NSTimeInterval kCacheTimeInterval = 1.0;
     return self;
 }
 
-- (void)appendData:(NSData *)data
+- (void)appendData:(NSData *)data didSavedOnDisk:(BOOL *)didSavedOnDisk
 {
     @synchronized(self) {
         [self.cachedData appendData:data];
@@ -61,14 +65,21 @@ static const NSTimeInterval kCacheTimeInterval = 1.0;
         NSTimeInterval currentTimeInterval = [self currentTimeInterval];
 
         if (currentTimeInterval < self.lastWriteTimeInterval + kCacheTimeInterval) {
+            if (didSavedOnDisk) {
+                *didSavedOnDisk = NO;
+            }
             return;
         }
 
-        NSLog(@"---- write %lu", (unsigned long)self.cachedData.length);
+        self.savedLength += self.cachedData.length;
         self.lastWriteTimeInterval = currentTimeInterval;
 
         [self.fileHandle writeData:self.cachedData];
         self.cachedData = [NSMutableData new];
+
+        if (didSavedOnDisk) {
+            *didSavedOnDisk = YES;
+        }
     }
 }
 

@@ -27,7 +27,8 @@ typedef NS_ENUM(NSInteger, Section) {
 };
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
-    UIGestureRecognizerDelegate, ChatFileCellDelegate, UIDocumentInteractionControllerDelegate>
+    UIGestureRecognizerDelegate, ChatFileCellDelegate, UIDocumentInteractionControllerDelegate,
+    ToxManagerFileProgressDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -103,13 +104,6 @@ typedef NS_ENUM(NSInteger, Section) {
     [self createInputView];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self updateLastReadDateAndChatsBadge];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -134,6 +128,20 @@ typedef NS_ENUM(NSInteger, Section) {
 
     [self updateIsTypingSection];
     [self updateSendButtonEnabled];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self updateLastReadDateAndChatsBadge];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [ToxManager sharedInstance].fileProgressDelegate = self;
 }
 
 - (void)viewDidLayoutSubviews
@@ -369,6 +377,32 @@ typedef NS_ENUM(NSInteger, Section) {
     return self.view.frame;
 }
 
+#pragma mark -  ToxManagerFileProgressDelegate
+
+- (void)toxManagerProgressChanged:(CGFloat)progress
+     forPendingFileWithFileNumber:(uint16_t)fileNumber
+                     friendNumber:(int32_t)friendNumber
+{
+    for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+        if (path.section != SectionMessages) {
+            continue;
+        }
+
+        CDMessage *message = self.messages[path.row];
+
+        if (! message.pendingFile) {
+            continue;
+        }
+
+        if (message.pendingFile.fileNumber == fileNumber && message.pendingFile.friendNumber == friendNumber) {
+            ChatFileCell *cell = (ChatFileCell *)[self.tableView cellForRowAtIndexPath:path];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f", 100 * progress];
+
+            break;
+        }
+    }
+}
+
 #pragma mark -  Notifications
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -586,7 +620,7 @@ typedef NS_ENUM(NSInteger, Section) {
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
         cell.showYesNoButtons = NO;
-        cell.detailTextLabel.text = nil;
+        // cell.detailTextLabel.text = nil;
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
         cell.showYesNoButtons = NO;
