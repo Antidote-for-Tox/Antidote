@@ -22,7 +22,9 @@
 
 @property (assign, nonatomic) BOOL isConnected;
 
-@property (strong, nonatomic) ToxFriendsContainer *friendsContainer;
+@property (strong, nonatomic, readwrite) ToxFriendsContainer *friendsContainer;
+
+@property (strong, nonatomic) NSMutableDictionary *privateFiles_downloadingFiles;
 
 - (void)qSaveTox;
 - (NSString *)qClientId;

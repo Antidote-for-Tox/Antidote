@@ -11,6 +11,7 @@
 
 #import "CDMessageText.h"
 #import "CDMessageFile.h"
+#import "CDMessagePendingFile.h"
 #import "CDMessageCall.h"
 
 @class CDChat, CDUser;
@@ -25,6 +26,7 @@
 // should have one of below properties
 @property (nonatomic, retain) CDMessageText *text;
 @property (nonatomic, retain) CDMessageFile *file;
+@property (nonatomic, retain) CDMessagePendingFile *pendingFile;
 @property (nonatomic, retain) CDMessageCall *call;
 
 @end

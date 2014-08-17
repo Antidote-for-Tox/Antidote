@@ -53,7 +53,7 @@
             [self qCreateTox];
             [self qRegisterFriendsCallbacks];
             [self qRegisterChatsCallbacks];
-            [self qRegisterFilesCallbacks];;
+            [self qRegisterFilesCallbacksAndSetup];
 
             [self qLoadFriendsAndCreateContainer];
         });
@@ -229,6 +229,13 @@
                 completionBlock(chat);
             });
         }];
+    });
+}
+
+- (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept
+{
+    dispatch_async(self.queue, ^{
+        [self qAcceptOrRefusePendingFileInMessage:message accept:accept];
     });
 }
 

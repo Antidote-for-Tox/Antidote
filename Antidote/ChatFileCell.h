@@ -10,8 +10,7 @@
 
 @class ChatFileCell;
 @protocol ChatFileCellDelegate <NSObject>
-- (void)chatFileCellButtonPressedYes:(ChatFileCell *)cell;
-- (void)chatFileCellButtonPressedNo:(ChatFileCell *)cell;
+- (void)chatFileCell:(ChatFileCell *)cell answerButtonPressedWith:(BOOL)answer;
 @end
 
 @interface ChatFileCell : UITableViewCell

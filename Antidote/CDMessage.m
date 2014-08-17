@@ -19,6 +19,7 @@
 @dynamic user;
 @dynamic text;
 @dynamic file;
+@dynamic pendingFile;
 @dynamic call;
 
 @end

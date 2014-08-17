@@ -27,7 +27,8 @@ typedef NS_ENUM(NSInteger, Section) {
 };
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
-    UIGestureRecognizerDelegate, ChatFileCellDelegate>
+    UIGestureRecognizerDelegate, ChatFileCellDelegate, UIDocumentInteractionControllerDelegate,
+    ToxManagerFileProgressDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -40,6 +41,8 @@ typedef NS_ENUM(NSInteger, Section) {
 @property (assign, nonatomic) CGFloat visibleKeyboardHeight;
 
 @property (assign, nonatomic) BOOL showTypingSection;
+
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 @end
 
@@ -75,6 +78,10 @@ typedef NS_ENUM(NSInteger, Section) {
                                                      name:kCoreDataManagerNewMessageNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(messageUpdateNotification:)
+                                                     name:kCoreDataManagerMessageUpdateNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(friendUpdateNotification:)
                                                      name:kToxFriendsContainerUpdateSpecificFriendNotification
                                                    object:nil];
@@ -95,13 +102,6 @@ typedef NS_ENUM(NSInteger, Section) {
     [self createTableView];
     [self createRecognizers];
     [self createInputView];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-    [self updateLastReadDateAndChatsBadge];
 }
 
 - (void)viewDidLoad
@@ -128,6 +128,20 @@ typedef NS_ENUM(NSInteger, Section) {
 
     [self updateIsTypingSection];
     [self updateSendButtonEnabled];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self updateLastReadDateAndChatsBadge];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [ToxManager sharedInstance].fileProgressDelegate = self;
 }
 
 - (void)viewDidLayoutSubviews
@@ -198,6 +212,9 @@ typedef NS_ENUM(NSInteger, Section) {
         else if (message.file) {
             tableViewCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
         }
+        else if (message.pendingFile) {
+            tableViewCell = [self messagePendingFileCellForRowAtIndexPath:indexPath message:message];
+        }
     }
     else if (indexPath.section == SectionTyping) {
         ChatTypingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatTypingCell reuseIdentifier]
@@ -249,6 +266,9 @@ typedef NS_ENUM(NSInteger, Section) {
         else if (message.file) {
             height = [ChatFileCell height];
         }
+        else if (message.pendingFile) {
+            height = [ChatFileCell height];
+        }
     }
     else if (indexPath.section == SectionTyping) {
         height = [ChatTypingCell height];
@@ -260,6 +280,21 @@ typedef NS_ENUM(NSInteger, Section) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    CDMessage *message = self.messages[indexPath.row];
+
+    if (message.file) {
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        path = [path stringByAppendingPathComponent:message.file.documentPath];
+
+        NSURL *url = [NSURL fileURLWithPath:path isDirectory:NO];
+
+        self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        self.documentInteractionController.delegate = self;
+        self.documentInteractionController.name = message.file.fileName;
+
+        [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
+    }
 }
 
 #pragma mark -  ChatInputViewDelegate
@@ -308,14 +343,64 @@ typedef NS_ENUM(NSInteger, Section) {
 
 #pragma mark -  ChatFileCellDelegate
 
-- (void)chatFileCellButtonPressedYes:(ChatFileCell *)cell
+- (void)chatFileCell:(ChatFileCell *)cell answerButtonPressedWith:(BOOL)answer
 {
-    NSLog(@"---- yes");
+    NSIndexPath *path = [self.tableView indexPathForCell:cell];
+
+    if (! path) {
+        return;
+    }
+
+    if (path.section != SectionMessages) {
+        return;
+    }
+
+    CDMessage *message = self.messages[path.row];
+
+    [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
 }
 
-- (void)chatFileCellButtonPressedNo:(ChatFileCell *)cell
+#pragma mark -  UIDocumentInteractionControllerDelegate
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
 {
-    NSLog(@"---- no");
+    return self;
+}
+
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view.frame;
+}
+
+#pragma mark -  ToxManagerFileProgressDelegate
+
+- (void)toxManagerProgressChanged:(CGFloat)progress
+     forPendingFileWithFileNumber:(uint16_t)fileNumber
+                     friendNumber:(int32_t)friendNumber
+{
+    for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+        if (path.section != SectionMessages) {
+            continue;
+        }
+
+        CDMessage *message = self.messages[path.row];
+
+        if (! message.pendingFile) {
+            continue;
+        }
+
+        if (message.pendingFile.fileNumber == fileNumber && message.pendingFile.friendNumber == friendNumber) {
+            ChatFileCell *cell = (ChatFileCell *)[self.tableView cellForRowAtIndexPath:path];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f", 100 * progress];
+
+            break;
+        }
+    }
 }
 
 #pragma mark -  Notifications
@@ -343,15 +428,15 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)newMessageNotification:(NSNotification *)notification
 {
-    if (self.isViewLoaded && self.view.window) {
-        // is visible
-        [self updateLastReadDateAndChatsBadge];
-    }
-
-    CDMessage *message = notification.userInfo[kCoreDataManagerNewMessageKey];
+    CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
 
     if (! [message.chat isEqual:self.chat]) {
         return;
+    }
+
+    if (self.isViewLoaded && self.view.window) {
+        // is visible
+        [self updateLastReadDateAndChatsBadge];
     }
 
     NSIndexPath *lastMessagePath;
@@ -383,6 +468,29 @@ typedef NS_ENUM(NSInteger, Section) {
 
         if ([visiblePathes containsObject:lastMessagePath]) {
             [self scrollToBottomAnimated:YES];
+        }
+    }
+}
+
+- (void)messageUpdateNotification:(NSNotification *)notification
+{
+    CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
+
+    if (! [message.chat isEqual:self.chat]) {
+        return;
+    }
+
+    @synchronized(self.tableView) {
+        for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+            if (path.section == SectionMessages) {
+                CDMessage *m = self.messages[path.row];
+
+                if ([m isEqual:message]) {
+                    [self.tableView reloadRowsAtIndexPaths:@[path]
+                                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                    return;
+                }
+            }
         }
     }
 }
@@ -423,7 +531,7 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                             action:@selector(tableViewTapGesture:)];
-
+    tapGR.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tapGR];
 
     UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget:self
@@ -489,8 +597,35 @@ typedef NS_ENUM(NSInteger, Section) {
                                                               forIndexPath:indexPath];
 
     cell.delegate = self;
-    cell.textLabel.text = message.file.name;
-    cell.showYesNoButtons = YES;
+    cell.textLabel.text = message.file.fileName;
+    cell.detailTextLabel.text = NSLocalizedString(@"Downloaded", @"Chat");
+    cell.showYesNoButtons = NO;
+
+    [cell redraw];
+
+    return cell;
+}
+
+- (UITableViewCell *)messagePendingFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+{
+    ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
+                                                              forIndexPath:indexPath];
+
+    cell.delegate = self;
+    cell.textLabel.text = message.pendingFile.fileName;
+
+    if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
+        cell.showYesNoButtons = YES;
+        cell.detailTextLabel.text = nil;
+    }
+    else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
+        cell.showYesNoButtons = NO;
+        // cell.detailTextLabel.text = nil;
+    }
+    else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
+        cell.showYesNoButtons = NO;
+        cell.detailTextLabel.text = NSLocalizedString(@"Canceled", @"Chat");
+    }
 
     [cell redraw];
 

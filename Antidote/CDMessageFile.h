@@ -2,7 +2,7 @@
 //  CDMessageFile.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 14.08.14.
+//  Created by Dmitry Vorobyov on 16.08.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
@@ -13,9 +13,9 @@
 
 @interface CDMessageFile : NSManagedObject
 
-@property (nonatomic) BOOL isFullyLoaded;
-@property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *pathFileName;
+@property (nonatomic, retain) NSString * fileName;
+@property (nonatomic, retain) NSString * documentPath;
+@property (nonatomic) uint64_t fileSize;
 @property (nonatomic, retain) CDMessage *messageInverse;
 
 @end

@@ -21,7 +21,7 @@
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
 
     if (self) {
         [self createSubviews];
@@ -34,12 +34,12 @@
 
 - (void)yesButtonPressed
 {
-    [self.delegate chatFileCellButtonPressedYes:self];
+    [self.delegate chatFileCell:self answerButtonPressedWith:YES];
 }
 
 - (void)noButtonPressed
 {
-    [self.delegate chatFileCellButtonPressedNo:self];
+    [self.delegate chatFileCell:self answerButtonPressedWith:NO];
 }
 
 #pragma mark -  Public

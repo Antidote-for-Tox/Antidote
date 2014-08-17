@@ -8,11 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ToxFriendsContainer.h"
 #import "tox.h"
+#import "ToxFriendsContainer.h"
+#import "ToxManagerFileProgressDelegate.h"
 #import "CDChat.h"
+#import "CDMessage.h"
 
 @interface ToxManager : NSObject
+
+@property (weak, nonatomic) id <ToxManagerFileProgressDelegate> fileProgressDelegate;
 
 @property (strong, nonatomic, readonly) ToxFriendsContainer *friendsContainer;
 
@@ -37,5 +41,7 @@
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;
 
 - (void)chatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock;
+
+- (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 
 @end
