@@ -89,7 +89,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            NSString *documentPath = [weakSelf newDocumentPath];
+            NSString *documentPath = [weakSelf newDocumentPathWithExtension:[fileName pathExtension]];
 
             [weakSelf qAddPendingFileToChat:chat
                                    fromUser:user
@@ -169,13 +169,13 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     } completionQueue:self.queue completionBlock:completionBlock];
 }
 
-- (NSString *)newDocumentPath
+- (NSString *)newDocumentPathWithExtension:(NSString *)extension
 {
     CFUUIDRef uuidObj = CFUUIDCreate(NULL);
     NSString *identifier = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuidObj);
     CFRelease(uuidObj);
 
-    return [NSString stringWithFormat:@"Files/%@", identifier];
+    return [[NSString stringWithFormat:@"Files/%@", identifier] stringByAppendingPathExtension:extension];
 }
 
 - (NSString *)keyFromFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber

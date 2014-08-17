@@ -27,7 +27,7 @@ typedef NS_ENUM(NSInteger, Section) {
 };
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
-    UIGestureRecognizerDelegate, ChatFileCellDelegate>
+    UIGestureRecognizerDelegate, ChatFileCellDelegate, UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, Section) {
 @property (assign, nonatomic) CGFloat visibleKeyboardHeight;
 
 @property (assign, nonatomic) BOOL showTypingSection;
+
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 @end
 
@@ -270,6 +272,21 @@ typedef NS_ENUM(NSInteger, Section) {
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    CDMessage *message = self.messages[indexPath.row];
+
+    if (message.file) {
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        path = [path stringByAppendingPathComponent:message.file.documentPath];
+
+        NSURL *url = [NSURL fileURLWithPath:path isDirectory:NO];
+
+        self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        self.documentInteractionController.delegate = self;
+        self.documentInteractionController.name = message.file.fileName;
+
+        [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
+    }
 }
 
 #pragma mark -  ChatInputViewDelegate
@@ -333,6 +350,23 @@ typedef NS_ENUM(NSInteger, Section) {
     CDMessage *message = self.messages[path.row];
 
     [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
+}
+
+#pragma mark -  UIDocumentInteractionControllerDelegate
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view.frame;
 }
 
 #pragma mark -  Notifications
@@ -463,7 +497,7 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                             action:@selector(tableViewTapGesture:)];
-
+    tapGR.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tapGR];
 
     UIPanGestureRecognizer *panGR = [[UIPanGestureRecognizer alloc] initWithTarget:self
