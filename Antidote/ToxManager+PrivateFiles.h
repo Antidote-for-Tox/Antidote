@@ -10,7 +10,7 @@
 
 @interface ToxManager (PrivateFiles)
 
-- (void)qRegisterFilesCallbacks;
+- (void)qRegisterFilesCallbacksAndSetup;
 
 - (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 

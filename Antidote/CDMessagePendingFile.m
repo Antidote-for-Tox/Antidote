@@ -12,13 +12,12 @@
 
 @implementation CDMessagePendingFile
 
-@dynamic isActive;
+@dynamic state;
 @dynamic fileNumber;
 @dynamic friendNumber;
 @dynamic fileSize;
 @dynamic fileName;
 @dynamic documentPath;
-@dynamic loadedSize;
 @dynamic messageInverse;
 
 @end

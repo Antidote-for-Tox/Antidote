@@ -19,13 +19,20 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
         completionQueue:(dispatch_queue_t)queue
         completionBlock:(void (^)(NSArray *messages))completionBlock;
 {
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
+
+    [self messagesWithPredicate:predicate completionQueue:queue completionBlock:completionBlock];
+}
+
++ (void)messagesWithPredicate:(NSPredicate *)predicate
+              completionQueue:(dispatch_queue_t)queue
+              completionBlock:(void (^)(NSArray *messages))completionBlock
+{
     if (! completionBlock) {
         return;
     }
 
     dispatch_async([self private_queue], ^{
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
-
         NSArray *array = [CDMessage MR_findAllSortedBy:@"date"
                                              ascending:YES
                                          withPredicate:predicate
@@ -94,6 +101,32 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
         }
+
+        [self private_performBlockOnQueueOrMain:queue block:completionBlock];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:kCoreDataManagerMessageUpdateNotification
+                                                                object:nil
+                                                              userInfo:@{kCoreDataManagerCDMessageKey: message}];
+        });
+    });
+}
+
++ (void)movePendingFileToFileForMessage:(CDMessage *)message
+                        completionQueue:(dispatch_queue_t)queue
+                        completionBlock:(void (^)())completionBlock
+{
+    dispatch_async([self private_queue], ^{
+        message.file = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageFile"
+                                                     inManagedObjectContext:[self private_context]];
+
+        message.file.fileName     = message.pendingFile.fileName;
+        message.file.documentPath = message.pendingFile.documentPath;
+        message.file.fileSize     = message.pendingFile.fileSize;
+
+        message.pendingFile = nil;
+
+        [[self private_context] MR_saveToPersistentStoreAndWait];
 
         [self private_performBlockOnQueueOrMain:queue block:completionBlock];
 

@@ -31,6 +31,10 @@ typedef NS_ENUM(NSUInteger, CDMessageType) {
         completionQueue:(dispatch_queue_t)queue
         completionBlock:(void (^)(NSArray *messages))completionBlock;
 
++ (void)messagesWithPredicate:(NSPredicate *)predicate
+              completionQueue:(dispatch_queue_t)queue
+              completionBlock:(void (^)(NSArray *messages))completionBlock;
+
 + (void)insertMessageWithType:(CDMessageType)type
                   configBlock:(void (^)(CDMessage *message))configBlock
               completionQueue:(dispatch_queue_t)queue
@@ -40,5 +44,9 @@ typedef NS_ENUM(NSUInteger, CDMessageType) {
                                                block:(void (^)())block
                                      completionQueue:(dispatch_queue_t)queue
                                      completionBlock:(void (^)())completionBlock;
+
++ (void)movePendingFileToFileForMessage:(CDMessage *)message
+                        completionQueue:(dispatch_queue_t)queue
+                        completionBlock:(void (^)())completionBlock;
 
 @end

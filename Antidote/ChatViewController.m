@@ -199,6 +199,9 @@ typedef NS_ENUM(NSInteger, Section) {
         if (message.text) {
             tableViewCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
         }
+        else if (message.file) {
+            tableViewCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
+        }
         else if (message.pendingFile) {
             tableViewCell = [self messagePendingFileCellForRowAtIndexPath:indexPath message:message];
         }
@@ -249,6 +252,9 @@ typedef NS_ENUM(NSInteger, Section) {
             else {
                 height = [ChatIncomingCell heightWithMessage:message.text.text fullDateString:fullDateString];
             }
+        }
+        else if (message.file) {
+            height = [ChatFileCell height];
         }
         else if (message.pendingFile) {
             height = [ChatFileCell height];
@@ -517,6 +523,21 @@ typedef NS_ENUM(NSInteger, Section) {
     return cell;
 }
 
+- (UITableViewCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+{
+    ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
+                                                              forIndexPath:indexPath];
+
+    cell.delegate = self;
+    cell.textLabel.text = message.file.fileName;
+    cell.detailTextLabel.text = NSLocalizedString(@"Downloaded", @"Chat");
+    cell.showYesNoButtons = NO;
+
+    [cell redraw];
+
+    return cell;
+}
+
 - (UITableViewCell *)messagePendingFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
 {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
@@ -524,7 +545,19 @@ typedef NS_ENUM(NSInteger, Section) {
 
     cell.delegate = self;
     cell.textLabel.text = message.pendingFile.fileName;
-    cell.showYesNoButtons = message.pendingFile.isActive;
+
+    if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
+        cell.showYesNoButtons = YES;
+        cell.detailTextLabel.text = nil;
+    }
+    else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
+        cell.showYesNoButtons = NO;
+        cell.detailTextLabel.text = nil;
+    }
+    else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
+        cell.showYesNoButtons = NO;
+        cell.detailTextLabel.text = NSLocalizedString(@"Canceled", @"Chat");
+    }
 
     [cell redraw];
 

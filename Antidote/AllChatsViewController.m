@@ -121,7 +121,7 @@
     if (chat.lastMessage.text) {
         [cell setMessage:chat.lastMessage.text.text andDate:dateString];
     }
-    else if (chat.lastMessage.pendingFile) {
+    else if (chat.lastMessage.file || chat.lastMessage.pendingFile) {
         NSString *format;
 
         if ([Helper isOutgoingMessage:chat.lastMessage]) {
@@ -131,7 +131,9 @@
             format = NSLocalizedString(@"Incoming file: %@", @"Chats");
         }
 
-        [cell setMessage:[NSString stringWithFormat:format, chat.lastMessage.pendingFile.fileName]
+        NSString *fileName = chat.lastMessage.file.fileName ?: chat.lastMessage.pendingFile.fileName;
+
+        [cell setMessage:[NSString stringWithFormat:format, fileName]
                  andDate:dateString];
     }
 

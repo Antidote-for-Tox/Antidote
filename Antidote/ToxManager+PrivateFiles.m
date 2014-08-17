@@ -12,6 +12,7 @@
 #import "CoreDataManager+Message.h"
 #import "EventsManager.h"
 #import "AppDelegate.h"
+#import "ToxDownloadingFile.h"
 
 void fileSendRequestCallback(Tox *, int32_t, uint8_t, uint64_t, const uint8_t *, uint16_t, void *);
 void fileControlCallback(Tox *, int32_t, uint8_t, uint8_t, uint8_t, const uint8_t *, uint16_t, void *);
@@ -21,9 +22,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
 #pragma mark -  Public
 
-- (void)qRegisterFilesCallbacks
+- (void)qRegisterFilesCallbacksAndSetup
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    self.privateFiles_downloadingFiles = [NSMutableDictionary new];
 
     tox_callback_file_send_request (self.tox, fileSendRequestCallback, NULL);
     tox_callback_file_control      (self.tox, fileControlCallback,     NULL);
@@ -34,22 +37,28 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    if (! message.pendingFile.isActive) {
+    if (message.pendingFile.state != CDMessagePendingFileStateWaitingConfirmation) {
         return;
     }
 
-    uint8_t messageId = 0;
+    uint8_t messageId;
+    CDMessagePendingFileState state;
 
     if (accept) {
         messageId = TOX_FILECONTROL_ACCEPT;
+        state = CDMessagePendingFileStateActive;
+
+        NSString *key = [self keyFromFriendNumber:message.pendingFile.friendNumber
+                                       fileNumber:message.pendingFile.fileNumber];
+
+        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        path = [path stringByAppendingPathComponent:message.pendingFile.documentPath];
+
+        self.privateFiles_downloadingFiles[key] = [[ToxDownloadingFile alloc] initWithFilePath:path];
     }
     else {
         messageId = TOX_FILECONTROL_KILL;
-
-        [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
-            message.pendingFile.isActive = NO;
-
-        } completionQueue:nil completionBlock:nil];
+        state = CDMessagePendingFileStateCanceled;
     }
 
     tox_file_send_control(
@@ -60,6 +69,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
             messageId,
             NULL,
             0);
+
+    [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
+        message.pendingFile.state = state;
+
+    } completionQueue:nil completionBlock:nil];
 }
 
 #pragma mark -  Private
@@ -100,6 +114,31 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }];
 }
 
+- (void)qIncomingFileFinishedDownloadingWithFriendNumber:(int32_t)friendNumber fileNumber:(uint8_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSString *key = [self keyFromFriendNumber:friendNumber fileNumber:fileNumber];
+
+    ToxDownloadingFile *file = self.privateFiles_downloadingFiles[key];
+    [file finishDownloading];
+
+    tox_file_send_control(self.tox, friendNumber, 1, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+        @"pendingFile.fileNumber == %d AND pendingFile.friendNumber == %d", fileNumber, friendNumber];
+
+    [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
+        if (! array.count) {
+            return;
+        }
+
+        CDMessage *message = [array lastObject];
+
+        [CoreDataManager movePendingFileToFileForMessage:message completionQueue:nil completionBlock:nil];
+    }];
+}
+
 - (void)qAddPendingFileToChat:(CDChat *)chat
                      fromUser:(CDUser *)user
                    fileNumber:(uint16_t)fileNumber
@@ -116,13 +155,12 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         m.chat = chat;
         m.user = user;
 
-        m.pendingFile.isActive     = YES;
+        m.pendingFile.state        = CDMessagePendingFileStateWaitingConfirmation;
         m.pendingFile.fileNumber   = fileNumber;
         m.pendingFile.friendNumber = friendNumber;
         m.pendingFile.fileSize     = fileSize;
         m.pendingFile.fileName     = fileName;
         m.pendingFile.documentPath = documentPath;
-        m.pendingFile.loadedSize   = 0;
 
         if (m.date > chat.lastMessage.date) {
             m.chatForLastMessageInverse = chat;
@@ -138,6 +176,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     CFRelease(uuidObj);
 
     return [NSString stringWithFormat:@"Files/%@", identifier];
+}
+
+- (NSString *)keyFromFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
+{
+    return [NSString stringWithFormat:@"%d-%d", friendNumber, fileNumber];
 }
 
 @end
@@ -178,6 +221,13 @@ void fileControlCallback(
         void *userdata)
 {
     NSLog(@"ToxManager: fileControlCallback %d %d %d", friendnumber, filenumber, receive_send);
+
+    if (receive_send == 0) {
+        if (control_type == TOX_FILECONTROL_FINISHED) {
+            [[ToxManager sharedInstance] qIncomingFileFinishedDownloadingWithFriendNumber:friendnumber
+                                                                               fileNumber:filenumber];
+        }
+    }
 }
 
 void fileDataCallback(
@@ -190,5 +240,14 @@ void fileDataCallback(
 {
     NSLog(@"ToxManager: fileDataCallback %d %d %d", friendnumber, filenumber, length);
 
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber fileNumber:filenumber];
+
+    ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
+
+    if (! file) {
+        return;
+    }
+
+    [file appendData:[NSData dataWithBytes:data length:length]];
 }
 

@@ -53,7 +53,7 @@
             [self qCreateTox];
             [self qRegisterFriendsCallbacks];
             [self qRegisterChatsCallbacks];
-            [self qRegisterFilesCallbacks];;
+            [self qRegisterFilesCallbacksAndSetup];
 
             [self qLoadFriendsAndCreateContainer];
         });
