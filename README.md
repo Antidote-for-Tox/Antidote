@@ -72,8 +72,9 @@ Antidote is available under the MIT license. See the [LICENSE](LICENSE.txt) file
 
 #### Third-party frameworks
 
-- [libsodium-ios](https://github.com/mochtu/libsodium-ios)
-- [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
 - [BlocksKit](https://zwaldowski.github.io/BlocksKit/)
+- [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack)
 - [JSQMessagesViewController](http://www.jessesquires.com/JSQMessagesViewController/)
+- [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
 - [ZBarSDK](http://zbar.sourceforge.net/)
+- [libsodium-ios](https://github.com/mochtu/libsodium-ios)

@@ -14,6 +14,11 @@ PODS:
   - BlocksKit/UIKit (2.2.3):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
+  - CocoaLumberjack (1.9.2):
+    - CocoaLumberjack/Extensions
+  - CocoaLumberjack/Core (1.9.2)
+  - CocoaLumberjack/Extensions (1.9.2):
+    - CocoaLumberjack/Core
   - JSQMessagesViewController (5.2.1):
     - JSQSystemSoundPlayer
   - JSQSystemSoundPlayer (1.5.2)
@@ -25,6 +30,7 @@ PODS:
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2.3)
+  - CocoaLumberjack (~> 1.9.2)
   - JSQMessagesViewController (~> 5.2.0)
   - libsodium-ios (~> 0.4.5)
   - MagicalRecord (~> 2.2)
@@ -32,6 +38,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   BlocksKit: 07c8a80f04275efac6a5f8b973782489c083a182
+  CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
   JSQMessagesViewController: 23980f4af7898f94085072feaf4675c5221b38b4
   JSQSystemSoundPlayer: c24914bc96ff5365b5d28b59d7ecffd60d1c5587
   libsodium-ios: 569dedc61af104e5ba188f4cd4ab3eb607f2ce44
