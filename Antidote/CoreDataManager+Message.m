@@ -76,6 +76,8 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
 
         [[self private_context] MR_saveToPersistentStoreAndWait];
 
+        DDLogVerbose(@"CoreDataManager+Message: inserted message %@", message);
+
         if (completionBlock) {
             [self private_performBlockOnQueueOrMain:queue block:^{
                 completionBlock(message);
@@ -100,6 +102,8 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
             block();
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
+
+            DDLogVerbose(@"CoreDataManager+Message: edited message %@", message);
         }
 
         [self private_performBlockOnQueueOrMain:queue block:completionBlock];
@@ -129,6 +133,8 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
         [[self private_context] MR_saveToPersistentStoreAndWait];
 
         [self private_performBlockOnQueueOrMain:queue block:completionBlock];
+
+        DDLogVerbose(@"CoreDataManager+Message: pendingFile -> file for message message %@", message);
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:kCoreDataManagerMessageUpdateNotification

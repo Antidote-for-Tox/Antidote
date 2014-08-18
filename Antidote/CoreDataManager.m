@@ -83,6 +83,8 @@
             block();
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
+
+            DDLogVerbose(@"CoreDataManager: some object has been edited");
         }
 
         [self private_performBlockOnQueueOrMain:queue block:completionBlock];

@@ -26,6 +26,8 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: registering callbacks");
+
     tox_callback_friend_message (self.tox, friendMessageCallback, NULL);
     tox_callback_read_receipt   (self.tox, readReceiptCallback,   NULL);
 }
@@ -49,12 +51,16 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: send message with length %lu to chat %@...", message.length, chat);
+
     if (! message.length || ! chat) {
+        DDLogError(@"ToxManager: send message... empty message or no chat");
+
         return;
     }
 
     if (chat.users.count > 1) {
-        NSLog(@"group chat isn't supported yet");
+        DDLogError(@"ToxManager: send message... group chats aren't supported yet");
         return;
     }
 
@@ -75,6 +81,8 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
     [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
         [weakSelf qAddMessage:message toChat:chat fromUser:currentUser completionBlock:nil];
     }];
+
+    DDLogInfo(@"ToxManager: send message... success");
 }
 
 - (void)qChatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock
@@ -119,6 +127,8 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: incoming message with length %lu from friend id %d", (unsigned long)message.length, friend.id);
+
     __weak ToxManager *weakSelf = self;
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
@@ -145,6 +155,8 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: adding message to CoreData");
+
     [CoreDataManager insertMessageWithType:CDMessageTypeText configBlock:^(CDMessage *m) {
         m.text.text = message;
         m.date = [[NSDate date] timeIntervalSince1970];
@@ -164,7 +176,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
 {
-    NSLog(@"ToxManager: friendMessageCallback %d %s", friendnumber, message);
+    DDLogCVerbose(@"ToxManager+PrivateChat: friendMessageCallback with friendnumber %d", friendnumber);
 
     NSString *messageString = [[NSString alloc] initWithBytes:message length:length encoding:NSUTF8StringEncoding];
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
@@ -174,6 +186,6 @@ void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *messag
 
 void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata)
 {
-    NSLog(@"ToxManager: readReceiptCallback %d %d", friendnumber, receipt);
+    DDLogCVerbose(@"ToxManager+PrivateChat: readReceiptCallback with friendnumber %d receipt %d", friendnumber, receipt);
 }
 

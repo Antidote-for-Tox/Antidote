@@ -70,6 +70,8 @@
             }
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
+
+            DDLogVerbose(@"CoreDataManager: inserted chat %@", chat);
         }
 
         if (! completionBlock) {
@@ -87,6 +89,8 @@
                   completionBlock:(void (^)())completionBlock
 {
     dispatch_async([self private_queue], ^{
+        DDLogVerbose(@"CoreDataManager+Chat: deleting chat with all messages %@", chat);
+
         [chat MR_deleteInContext:[self private_context]];
 
         [[self private_context] MR_saveToPersistentStoreAndWait];

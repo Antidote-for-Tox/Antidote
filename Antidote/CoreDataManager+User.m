@@ -29,6 +29,7 @@
 
             [[self private_context] MR_saveToPersistentStoreAndWait];
 
+            DDLogVerbose(@"CoreDataManager+User: inserted user %@", user);
         }
 
         if (! completionBlock) {

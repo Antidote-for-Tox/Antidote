@@ -33,16 +33,33 @@ static const NSTimeInterval kCacheTimeInterval = 0.3;
     self = [super init];
 
     if (self) {
+        DDLogInfo(@"ToxDownloadingFile: initing... %@ with cacheTimeInterval %f", self, kCacheTimeInterval);
+
         NSFileManager *manager = [NSFileManager defaultManager];
 
         if (! [manager fileExistsAtPath:filePath]) {
+            DDLogInfo(@"ToxDownloadingFile: initing... there is no file, creating new one");
+
+            NSError *error;
 
             [manager createDirectoryAtPath:[filePath stringByDeletingLastPathComponent]
                withIntermediateDirectories:YES
                                 attributes:nil
-                                     error:nil];
+                                     error:&error];
 
-            [manager createFileAtPath:filePath contents:nil attributes:nil];
+            if (error) {
+                DDLogError(@"ToxDownloadingFile: initing... cannot create directory, returning nil, error %@", error);
+
+                return nil;
+            }
+
+            BOOL created = [manager createFileAtPath:filePath contents:nil attributes:nil];
+
+            if (! created) {
+                DDLogError(@"ToxDownloadingFile: initing... cannot create file, returning nil");
+
+                return nil;
+            }
         }
 
         self.fileHandle = [NSFileHandle fileHandleForWritingAtPath:filePath];
@@ -52,6 +69,9 @@ static const NSTimeInterval kCacheTimeInterval = 0.3;
 
         self.cachedData = [NSMutableData new];
         self.lastWriteTimeInterval = [self currentTimeInterval];
+
+        DDLogInfo(@"ToxDownloadingFile: initing... inited with fileHandle %@, savedLength %llu",
+                self.fileHandle, self.savedLength);
     }
 
     return self;
@@ -71,6 +91,8 @@ static const NSTimeInterval kCacheTimeInterval = 0.3;
             return;
         }
 
+        DDLogInfo(@"ToxDownloadingFile: %@ appending %lu bytes to file", self, self.cachedData.length);
+
         self.savedLength += self.cachedData.length;
         self.lastWriteTimeInterval = currentTimeInterval;
 
@@ -86,12 +108,17 @@ static const NSTimeInterval kCacheTimeInterval = 0.3;
 - (void)finishDownloading
 {
     @synchronized(self) {
+        DDLogInfo(@"ToxDownloadingFile: %@ finish downloading...", self);
+
         if (self.cachedData.length) {
+            DDLogInfo(@"ToxDownloadingFile: %@ appending %lu bytes to file", self, (unsigned long)self.cachedData.length);
             [self.fileHandle writeData:self.cachedData];
         }
 
         [self.fileHandle closeFile];
         self.fileHandle = nil;
+
+        DDLogInfo(@"ToxDownloadingFile: %@ finish downloading... file closed", self);
     }
 }
 

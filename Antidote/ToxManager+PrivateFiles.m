@@ -26,6 +26,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: registering callbacks");
+
     self.privateFiles_downloadingFiles = [NSMutableDictionary new];
 
     tox_callback_file_send_request (self.tox, fileSendRequestCallback, NULL);
@@ -37,7 +39,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: accept or refuse pending file %d...", accept);
+
     if (message.pendingFile.state != CDMessagePendingFileStateWaitingConfirmation) {
+        DDLogError(@"ToxManager: accept or refuse... wrong state %@", message.pendingFile);
+
         return;
     }
 
@@ -74,6 +80,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         message.pendingFile.state = state;
 
     } completionQueue:nil completionBlock:nil];
+
+    DDLogInfo(@"ToxManager: accept or refuse... success");
 }
 
 #pragma mark -  Private
@@ -85,11 +93,15 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: incoming file from friend id %d, filenumber %d", friend.id, fileNumber);
+
     __weak ToxManager *weakSelf = self;
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
             NSString *documentPath = [weakSelf newDocumentPathWithExtension:[fileName pathExtension]];
+
+            DDLogInfo(@"ToxManager: creating new document path %@", documentPath);
 
             [weakSelf qAddPendingFileToChat:chat
                                    fromUser:user
@@ -117,6 +129,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 - (void)qIncomingFileFinishedDownloadingWithFriendNumber:(int32_t)friendNumber fileNumber:(uint8_t)fileNumber
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    DDLogInfo(@"ToxManager: incoming file finished downloading from friend id %d, filenumber %d",
+            friendNumber, fileNumber);
 
     NSString *key = [self keyFromFriendNumber:friendNumber fileNumber:fileNumber];
 
@@ -151,6 +166,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
               completionBlock:(void (^)(CDMessage *message))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    DDLogInfo(@"ToxManager: adding pending file to CoreData");
 
     [CoreDataManager insertMessageWithType:CDMessageTypePendingFile configBlock:^(CDMessage *m) {
         m.date = [[NSDate date] timeIntervalSince1970];
@@ -198,7 +215,8 @@ void fileSendRequestCallback(
         uint16_t filename_length,
         void *userdata)
 {
-    NSLog(@"ToxManager: fileSendRequestCallback %d %d %llu %s", friendnumber, filenumber, filesize, filename);
+    DDLogCVerbose(@"ToxManager+PrivateFiles: fileSendRequestCallback with friendnumber %d filenumber %d filesize %llu",
+            friendnumber, filenumber, filesize);
 
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
 
@@ -222,7 +240,8 @@ void fileControlCallback(
         uint16_t length,
         void *userdata)
 {
-    NSLog(@"ToxManager: fileControlCallback %d %d %d", friendnumber, filenumber, receive_send);
+    DDLogCVerbose(@"ToxManager+PrivateFiles: fileControlCallback with friendnumber %d filenumber %d receiveSend %d controlType %d",
+            friendnumber, filenumber, receive_send, control_type);
 
     if (receive_send == 0) {
         if (control_type == TOX_FILECONTROL_FINISHED) {

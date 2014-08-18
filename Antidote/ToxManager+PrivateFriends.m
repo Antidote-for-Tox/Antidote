@@ -29,6 +29,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: registering callbacks");
+
     tox_callback_friend_request    (self.tox, friendRequestCallback,    NULL);
     tox_callback_name_change       (self.tox, nameChangeCallback,       NULL);
     tox_callback_status_message    (self.tox, statusMessageCallback,    NULL);
@@ -40,6 +42,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 - (void)qLoadFriendsAndCreateContainer
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    DDLogInfo(@"ToxManager: creating friends container...");
 
     uint32_t friendsCount = tox_count_friendlist(self.tox);
     uint32_t listSize = friendsCount * sizeof(int32_t);
@@ -66,6 +70,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: send friendRequest...");
+
     if (! messageString.length) {
         messageString = NSLocalizedString(@"Please, add me", @"Tox empty message");
     }
@@ -85,9 +91,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [self qSaveTox];
 
         [self.friendsContainer private_addFriend:[self qCreateFriendWithId:result]];
+
+        DDLogInfo(@"ToxManager: send friendRequest... success");
     }
     else {
-
+        DDLogError(@"ToxManager: send friendRequest... error occured");
     }
 }
 
@@ -102,6 +110,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: approve friendRequest...");
+
     uint8_t *clientId = [ToxFunctions hexStringToBin:request.clientId];
     int32_t friendId = tox_add_friend_norequest(self.tox, clientId);
     free(clientId);
@@ -110,12 +120,16 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         if (wasError) {
             *wasError = YES;
         }
+
+        DDLogError(@"ToxManager: approve friendRequest... error occured");
     }
     else {
         [self qSaveTox];
 
         [self.friendsContainer private_removeFriendRequest:request];
         [self.friendsContainer private_addFriend:[self qCreateFriendWithId:friendId]];
+
+        DDLogInfo(@"ToxManager: approve friendRequest... approved");
     }
 }
 
@@ -127,6 +141,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         return;
     }
 
+    DDLogInfo(@"ToxManager: removing friendRequest");
+
     [self.friendsContainer private_removeFriendRequest:request];
 }
 
@@ -137,6 +153,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     if (! friend) {
         return;
     }
+
+    DDLogInfo(@"ToxManager: removing friend");
 
     tox_del_friend(self.tox, friend.id);
     [self qSaveTox];
@@ -178,6 +196,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     if (! tox_friend_exists(self.tox, friendId)) {
         return nil;
     }
+
+    DDLogInfo(@"ToxManager: creating friend with id %d", friendId);
 
     ToxFriend *friend = [ToxFriend new];
     friend.id = friendId;
@@ -259,7 +279,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * data, uint16_t length, void *userdata)
 {
-    NSLog(@"ToxManager: friendRequestCallback, publicKey %s", publicKey);
+    DDLogCVerbose(@"ToxManager+PrivateFriends: friendRequestCallback");
 
     NSString *key = [ToxFunctions publicKeyToString:(uint8_t *)publicKey];
     NSString *message = [[NSString alloc] initWithBytes:data length:length encoding:NSUTF8StringEncoding];
@@ -281,7 +301,7 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
 
 void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata)
 {
-    NSLog(@"ToxManager: nameChangeCallback %d %s", friendnumber, newname);
+    DDLogCVerbose(@"ToxManager+PrivateFriends: nameChangeCallback with friendnumber %d", friendnumber);
 
     [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
         friend.realName = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
@@ -292,7 +312,7 @@ void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, 
 
 void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata)
 {
-    NSLog(@"ToxManager: statusMessageCallback %d %s", friendnumber, newstatus);
+    DDLogCVerbose(@"ToxManager+PrivateFriends: statusMessageCallback with friendnumber %d", friendnumber);
 
     [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
         friend.statusMessage = [NSString stringWithCString:(const char*)newstatus encoding:NSUTF8StringEncoding];
@@ -301,7 +321,7 @@ void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newsta
 
 void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
-    NSLog(@"ToxManager: userStatusCallback %d %d", friendnumber, status);
+    DDLogCVerbose(@"ToxManager+PrivateFriends: userStatusCallback with friendnumber %d status %d", friendnumber, status);
 
     [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
         if (status == TOX_USERSTATUS_NONE) {
@@ -321,8 +341,6 @@ void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *us
 
 void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata)
 {
-    NSLog(@"ToxManager: typingChangeCallback %d %d", friendnumber, isTyping);
-
     [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
         friend.isTyping = (isTyping == 1);
     }];
@@ -330,7 +348,7 @@ void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void
 
 void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
-    NSLog(@"ToxManager: connectionStatusCallback %d %d", friendnumber, status);
+    DDLogCVerbose(@"ToxManager+PrivateFriends: connectionStatusCallback with friendnumber %d status %d", friendnumber, status);
 
     [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
         if (status == 0) {

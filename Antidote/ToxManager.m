@@ -56,6 +56,8 @@
             [self qRegisterFilesCallbacksAndSetup];
 
             [self qLoadFriendsAndCreateContainer];
+
+            DDLogInfo(@"ToxManager: created");
         });
 
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -69,6 +71,7 @@
 
 - (void)dealloc
 {
+    DDLogInfo(@"ToxManager: dealloc called, killing tox");
     tox_kill(_tox);
 
     dispatch_source_cancel(self.timer);
@@ -244,8 +247,12 @@
 - (void)applicationWillTerminateNotification:(NSNotification *)notification
 {
     dispatch_sync(self.queue, ^{
+        DDLogInfo(@"ToxManager: applicationWillTerminateNotification: saving and killing tox...");
+
         [self qSaveTox];
         tox_kill(self.tox);
+
+        DDLogInfo(@"ToxManager: applicationWillTerminateNotification: saving and killing tox... done");
     });
 }
 
@@ -255,16 +262,17 @@
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    NSLog(@"ToxManager: creating tox");
+    DDLogInfo(@"ToxManager: creating tox...");
     _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
 
     NSData *toxData = [UserInfoManager sharedInstance].uToxData;
 
     if (toxData) {
-        NSLog(@"ToxManager: old data found, loading...");
+        DDLogInfo(@"ToxManager: creating tox... old data found, loading");
         tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
     }
     else {
+        DDLogInfo(@"ToxManager: creating tox... no old data, new tox has been created");
         [self qSaveTox];
     }
 }
@@ -273,7 +281,10 @@
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: starting timer...");
+
     if (self.timer) {
+        DDLogWarn(@"ToxManager: starting timer... already started");
         return;
     }
 
@@ -290,7 +301,7 @@
 
         if (isConnected != weakSelf.isConnected) {
             weakSelf.isConnected = isConnected;
-            NSLog(@"ToxManager: connected changed to %d", isConnected);
+            DDLogInfo(@"ToxManager: ***  connected changed to %d  ***", isConnected);
         }
 
         uint32_t newInterval = tox_do_interval(weakSelf.tox);
@@ -300,6 +311,8 @@
         }
     });
     dispatch_resume(self.timer);
+
+    DDLogInfo(@"ToxManager: starting timer... started");
 }
 
 - (void)qUpdateTimerInterval:(uint32_t)newInterval
@@ -317,6 +330,8 @@
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: bootstraping with address %@, port %lu, publicKey %@", address, port, publicKey);
+
     uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
     tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
     free(pub_key);
@@ -328,6 +343,8 @@
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager: saving tox...");
+
     uint32_t size = tox_size(_tox);
     uint8_t *data = malloc(size);
 
@@ -336,6 +353,8 @@
     [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
 
     free(data);
+
+    DDLogInfo(@"ToxManager: saving tox... saved, size = %d", size);
 }
 
 - (NSString *)qToxId
@@ -383,6 +402,8 @@
         return;
     }
 
+    DDLogInfo(@"ToxManager: changing userName to %@", userName);
+
     if (userName.length > TOX_MAX_NAME_LENGTH) {
         userName = [userName substringToIndex:TOX_MAX_NAME_LENGTH];
     }
@@ -421,6 +442,8 @@
     if (statusMessage && oldUserStatusMessage && [statusMessage isEqualToString:oldUserStatusMessage]) {
         return;
     }
+
+    DDLogInfo(@"ToxManager: changing statusMessage to %@", statusMessage);
 
     if (statusMessage.length > TOX_MAX_STATUSMESSAGE_LENGTH) {
         statusMessage = [statusMessage substringToIndex:TOX_MAX_STATUSMESSAGE_LENGTH];

@@ -43,6 +43,9 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         }
 
         self.friendsSort = [[UserInfoManager sharedInstance].uFriendsSort unsignedIntegerValue];
+
+        DDLogInfo(@"ToxFriendsContainer: created with number of friends %lu, number of friendRequests %lu",
+                self.friends.count, self.friendRequests.count);
     }
 
     return self;
@@ -158,7 +161,10 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 
 - (void)private_addFriend:(ToxFriend *)friend
 {
+    DDLogInfo(@"ToxFriendsContainer: adding friend %@ with id %d...", friend, friend.id);
+
     if (! friend) {
+        DDLogError(@"ToxFriendsContainer: adding friend... no friend, quiting");
         return;
     }
 
@@ -166,6 +172,7 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         NSUInteger index = [self.friends indexOfObject:friend];
 
         if (index != NSNotFound) {
+            DDLogWarn(@"ToxFriendsContainer: adding friend... friend already exist");
             return;
         }
 
@@ -177,6 +184,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                  insertedSet:inserted
                                   removedSet:nil
                                   updatedSet:nil];
+
+        DDLogInfo(@"ToxFriendsContainer: adding friend... added");
     }
 }
 
@@ -187,6 +196,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
     }
 
     @synchronized(self.friends) {
+        DDLogInfo(@"ToxFriendsContainer: updating friend with id %d...", id);
+
         NSUInteger index = NSNotFound;
         ToxFriend *friend = nil;
 
@@ -201,6 +212,7 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         }
 
         if (index == NSNotFound) {
+            DDLogError(@"ToxFriendsContainer: updating friend with id %d... not found", id);
             return;
         }
 
@@ -231,6 +243,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                   updatedSet:updated];
 
         [self sendUpdateFriendWithIdNotification:friend];
+
+        DDLogInfo(@"ToxFriendsContainer: updating friend with id %d... updated", id);
     }
 }
 
@@ -241,9 +255,12 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
     }
 
     @synchronized(self.friends) {
+        DDLogInfo(@"ToxFriendsContainer: removing friend with id %d...", friend.id);
+
         NSUInteger index = [self.friends indexOfObject:friend];
 
         if (index == NSNotFound) {
+            DDLogError(@"ToxFriendsContainer: removing friend with id %d... not found", friend.id);
             return;
         }
 
@@ -254,6 +271,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                  insertedSet:nil
                                   removedSet:removed
                                   updatedSet:nil];
+
+        DDLogInfo(@"ToxFriendsContainer: removing friend with id %d... removed", friend.id);
     }
 }
 
@@ -263,12 +282,15 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         return;
     }
 
+    DDLogInfo(@"ToxFriendsContainer: adding friendRequest...");
+
     NSArray *pendingRequests = [UserInfoManager sharedInstance].uPendingFriendRequests;
 
     NSUInteger index = [self indexOfClientId:request.clientId inPendingRequestsArray:pendingRequests];
 
     if (index != NSNotFound) {
         // already added this request
+        DDLogWarn(@"ToxFriendsContainer: adding friendRequest... already added");
         return;
     }
 
@@ -284,6 +306,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                  insertedSet:inserted
                                   removedSet:nil
                                   updatedSet:nil];
+
+        DDLogInfo(@"ToxFriendsContainer: adding friendRequest... added");
     }
 }
 
@@ -293,11 +317,14 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         return;
     }
 
+    DDLogInfo(@"ToxFriendsContainer: removing friendRequest...");
+
     NSArray *pendingRequests = [UserInfoManager sharedInstance].uPendingFriendRequests;
 
     NSUInteger index = [self indexOfClientId:request.clientId inPendingRequestsArray:pendingRequests];
 
     if (index == NSNotFound) {
+        DDLogError(@"ToxFriendsContainer: removing friendRequest... not found");
         return;
     }
 
@@ -313,12 +340,16 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                  insertedSet:nil
                                   removedSet:removed
                                   updatedSet:nil];
+
+        DDLogInfo(@"ToxFriendsContainer: removing friendRequest... removed");
     }
 }
 
 - (void)private_markAllFriendRequestsAsSeen
 {
     @synchronized(self.friendRequests) {
+        DDLogInfo(@"ToxFriendsContainer: marking all friendRequests as seen");
+
         BOOL didChange = NO;
 
         for (ToxFriendRequest *request in self.friendRequests) {

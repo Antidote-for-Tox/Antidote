@@ -79,11 +79,16 @@
 
 - (void)addObjectOnMainThread:(EventObject *)object
 {
+    DDLogVerbose(@"EventsManager: adding object with type %lu...", object.type);
+
     if (! [self shouldShowAlertWindowFor:object]) {
+        DDLogVerbose(@"EventsManager: we shouldn't show this object, quiting");
         return;
     }
 
     [self queueObject:object];
+
+    DDLogVerbose(@"EventsManager: object queued");
 
     @synchronized(self) {
         if (self.isActive) {

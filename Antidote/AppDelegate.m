@@ -9,6 +9,9 @@
 #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
 
 #import "AppDelegate.h"
+#import "CustomLogFormatter.h"
+#import "DDASLLogger.h"
+#import "DDTTYLogger.h"
 #import "ToxManager.h"
 #import "AllChatsViewController.h"
 #import "FriendsViewController.h"
@@ -31,6 +34,8 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.backgroundColor = [UIColor whiteColor];
+
+    [self configureLoggingStuff];
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
 
@@ -117,6 +122,21 @@
             weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
         }];
     }
+}
+
+- (void)configureLoggingStuff
+{
+    // your log statements will be sent to the Console.app and the Xcode console (just like a normal NSLog)
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+
+    [[DDTTYLogger sharedInstance] setLogFormatter:[CustomLogFormatter new]];
+
+    DDLogInfo(@"\n\n\n\t\t\t\t\t\t***** Application started *****\n\n\n");
+    DDLogInfo(@"Device:\n\tname = %@\n\tmodel = %@\n\tsystemVersion = %@\n\n",
+            [UIDevice currentDevice].name,
+            [UIDevice currentDevice].model,
+            [UIDevice currentDevice].systemVersion);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
