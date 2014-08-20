@@ -135,6 +135,18 @@ typedef NS_ENUM(NSInteger, Section) {
     [super viewWillAppear:animated];
 
     [self updateLastReadDateAndChatsBadge];
+
+    self.inputView.text = self.chat.enteredMessage;
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [CoreDataManager editCDObjectWithBlock:^{
+        self.chat.enteredMessage = self.inputView.text;
+
+    } completionQueue:nil completionBlock:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -142,6 +154,10 @@ typedef NS_ENUM(NSInteger, Section) {
     [super viewDidAppear:animated];
 
     [ToxManager sharedInstance].fileProgressDelegate = self;
+
+    if (self.inputView.text.length) {
+        [self.inputView becomeFirstResponder];
+    }
 }
 
 - (void)viewDidLayoutSubviews

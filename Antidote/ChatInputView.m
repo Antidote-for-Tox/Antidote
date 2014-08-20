@@ -67,6 +67,18 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
     return self.button.enabled;
 }
 
+- (void)setText:(NSString *)text
+{
+    self.textView.text = text;
+
+    [self.delegate chatInputViewWantsToUpdateFrame:self];
+}
+
+- (NSString *)text
+{
+    return self.textView.text;
+}
+
 #pragma mark -  Actions
 
 - (void)buttonPressed
@@ -76,13 +88,6 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
 }
 
 #pragma mark -  Public methods
-
-- (void)setText:(NSString *)text
-{
-    self.textView.text = nil;
-
-    [self.delegate chatInputViewWantsToUpdateFrame:self];
-}
 
 - (CGFloat)heightWithCurrentTextAndWidth:(CGFloat)width
 {
@@ -101,6 +106,11 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
                          constrainedToSize:CGSizeMake(width - kTextViewDeltaWidth, CGFLOAT_MAX)];
 
     return size.height + 18.0;
+}
+
+- (BOOL)becomeFirstResponder
+{
+    return [self.textView becomeFirstResponder];
 }
 
 #pragma mark -  UITextViewDelegate

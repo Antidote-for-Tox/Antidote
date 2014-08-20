@@ -17,5 +17,6 @@
 @dynamic users;
 @dynamic lastMessage;
 @dynamic lastReadDate;
+@dynamic enteredMessage;
 
 @end

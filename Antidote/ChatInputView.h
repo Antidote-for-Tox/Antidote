@@ -21,10 +21,12 @@
 
 @property (weak, nonatomic) id <ChatInputViewDelegate> delegate;
 
+@property (strong, nonatomic) NSString *text;
+
 @property (assign, nonatomic) BOOL sendButtonEnabled;
 
-- (void)setText:(NSString *)text;
-
 - (CGFloat)heightWithCurrentTextAndWidth:(CGFloat)width;
+
+- (BOOL)becomeFirstResponder;
 
 @end

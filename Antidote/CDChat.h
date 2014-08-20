@@ -17,6 +17,7 @@
 @property (nonatomic, retain) NSSet *users;
 @property (nonatomic, retain) CDMessage *lastMessage;
 @property (nonatomic) NSTimeInterval lastReadDate;
+@property (nonatomic, retain) NSString *enteredMessage;
 
 @end
 
