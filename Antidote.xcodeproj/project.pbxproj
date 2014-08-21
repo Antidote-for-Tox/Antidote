@@ -13,6 +13,11 @@
 		111EC732199FD6DA00A27A0E /* CDMessagePendingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC731199FD6DA00A27A0E /* CDMessagePendingFile.m */; };
 		111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC734199FD6DB00A27A0E /* CDMessageFile.m */; };
 		111EC73919A097A900A27A0E /* ToxDownloadingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC73819A097A900A27A0E /* ToxDownloadingFile.m */; };
+		1138E0BF19A6653B004E06E2 /* chat-file-type-basic@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1138E0BE19A6653B004E06E2 /* chat-file-type-basic@2x.png */; };
+		1138E0C219A6812B004E06E2 /* chat-file-download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1138E0C019A6812B004E06E2 /* chat-file-download@2x.png */; };
+		1138E0C319A6812B004E06E2 /* chat-file-cancel@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1138E0C119A6812B004E06E2 /* chat-file-cancel@2x.png */; };
+		1138E0C619A685F8004E06E2 /* chat-file-play@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1138E0C419A685F8004E06E2 /* chat-file-play@2x.png */; };
+		1138E0C719A685F8004E06E2 /* chat-file-pause@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1138E0C519A685F8004E06E2 /* chat-file-pause@2x.png */; };
 		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
 		1146308C19842D360075DA16 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146308B19842D360075DA16 /* CoreDataManager.m */; };
 		1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309219842F490075DA16 /* CoreDataManager+Message.m */; };
@@ -81,8 +86,6 @@
 		11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C314199D2CCE00A48FBC /* CDMessageText.m */; };
 		11B6C31B199D2CCE00A48FBC /* CDMessageCall.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */; };
 		11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C321199D499800A48FBC /* ChatFileCell.m */; };
-		11B6C325199E6D6F00A48FBC /* checkmark-no@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */; };
-		11B6C326199E6D6F00A48FBC /* checkmark-yes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B6C324199E6D6F00A48FBC /* checkmark-yes@2x.png */; };
 		11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */; };
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
@@ -99,6 +102,8 @@
 		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
 		11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77E198E948D0029A7A0 /* EventObject.m */; };
 		11C3A785199008760029A7A0 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A784199008760029A7A0 /* ChatViewController.m */; };
+		11C4D9E519A69D4E0038DB2B /* chat-file-type-canceled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C4D9E319A69D4E0038DB2B /* chat-file-type-canceled@2x.png */; };
+		11C4D9E619A69D4E0038DB2B /* chat-file-type-deleted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C4D9E419A69D4E0038DB2B /* chat-file-type-deleted@2x.png */; };
 		11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D6298B19954BCE00F840AE /* AvatarFactory.m */; };
@@ -121,6 +126,11 @@
 		111EC73719A097A900A27A0E /* ToxDownloadingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxDownloadingFile.h; sourceTree = "<group>"; };
 		111EC73819A097A900A27A0E /* ToxDownloadingFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxDownloadingFile.m; sourceTree = "<group>"; };
 		111EC73A19A0FBFE00A27A0E /* ToxManagerFileProgressDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ToxManagerFileProgressDelegate.h; sourceTree = "<group>"; };
+		1138E0BE19A6653B004E06E2 /* chat-file-type-basic@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-basic@2x.png"; sourceTree = "<group>"; };
+		1138E0C019A6812B004E06E2 /* chat-file-download@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-download@2x.png"; sourceTree = "<group>"; };
+		1138E0C119A6812B004E06E2 /* chat-file-cancel@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-cancel@2x.png"; sourceTree = "<group>"; };
+		1138E0C419A685F8004E06E2 /* chat-file-play@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-play@2x.png"; sourceTree = "<group>"; };
+		1138E0C519A685F8004E06E2 /* chat-file-pause@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-pause@2x.png"; sourceTree = "<group>"; };
 		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		1146308A19842D360075DA16 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		1146308B19842D360075DA16 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
@@ -254,8 +264,6 @@
 		11B6C31A199D2CCE00A48FBC /* CDMessageCall.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CDMessageCall.m; sourceTree = "<group>"; };
 		11B6C320199D499800A48FBC /* ChatFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatFileCell.h; sourceTree = "<group>"; };
 		11B6C321199D499800A48FBC /* ChatFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatFileCell.m; sourceTree = "<group>"; };
-		11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark-no@2x.png"; sourceTree = "<group>"; };
-		11B6C324199E6D6F00A48FBC /* checkmark-yes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "checkmark-yes@2x.png"; sourceTree = "<group>"; };
 		11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicCell.h; sourceTree = "<group>"; };
 		11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicCell.m; sourceTree = "<group>"; };
 		11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatOutgoingCell.h; sourceTree = "<group>"; };
@@ -283,6 +291,8 @@
 		11C3A77E198E948D0029A7A0 /* EventObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventObject.m; sourceTree = "<group>"; };
 		11C3A783199008760029A7A0 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		11C3A784199008760029A7A0 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		11C4D9E319A69D4E0038DB2B /* chat-file-type-canceled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-canceled@2x.png"; sourceTree = "<group>"; };
+		11C4D9E419A69D4E0038DB2B /* chat-file-type-deleted@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-deleted@2x.png"; sourceTree = "<group>"; };
 		11C7C6B31983FB42001B849B /* ToxFriendsContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFriendsContainer.h; sourceTree = "<group>"; };
 		11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsContainer.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
@@ -317,6 +327,20 @@
 				111EC73819A097A900A27A0E /* ToxDownloadingFile.m */,
 			);
 			name = Files;
+			sourceTree = "<group>";
+		};
+		1138E0BD19A6651C004E06E2 /* ChatViewController */ = {
+			isa = PBXGroup;
+			children = (
+				1138E0C119A6812B004E06E2 /* chat-file-cancel@2x.png */,
+				1138E0C019A6812B004E06E2 /* chat-file-download@2x.png */,
+				1138E0C519A685F8004E06E2 /* chat-file-pause@2x.png */,
+				1138E0C419A685F8004E06E2 /* chat-file-play@2x.png */,
+				1138E0BE19A6653B004E06E2 /* chat-file-type-basic@2x.png */,
+				11C4D9E319A69D4E0038DB2B /* chat-file-type-canceled@2x.png */,
+				11C4D9E419A69D4E0038DB2B /* chat-file-type-deleted@2x.png */,
+			);
+			name = ChatViewController;
 			sourceTree = "<group>";
 		};
 		1146308919842D220075DA16 /* CoreDataManager */ = {
@@ -748,14 +772,13 @@
 		11B9E62519940F1400FB20A6 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				11B6C323199E6D6F00A48FBC /* checkmark-no@2x.png */,
-				11B6C324199E6D6F00A48FBC /* checkmark-yes@2x.png */,
 				11B9E62719940F3900FB20A6 /* tab-bar-chats.png */,
 				11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */,
 				11B9E62819940F3900FB20A6 /* tab-bar-friends.png */,
 				11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */,
 				11B9E62619940F3900FB20A6 /* tab-bar-settings.png */,
 				11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */,
+				1138E0BD19A6651C004E06E2 /* ChatViewController */,
 				11B6C302199AB03B00A48FBC /* FriendsViewController */,
 			);
 			name = Images;
@@ -867,18 +890,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11B6C326199E6D6F00A48FBC /* checkmark-yes@2x.png in Resources */,
 				11B9E6301994109A00FB20A6 /* tab-bar-friends@2x.png in Resources */,
 				11B9E62B19940F3900FB20A6 /* tab-bar-friends.png in Resources */,
-				11B6C325199E6D6F00A48FBC /* checkmark-no@2x.png in Resources */,
 				11B9E6311994109A00FB20A6 /* tab-bar-chats@2x.png in Resources */,
 				11B9E62F1994109A00FB20A6 /* tab-bar-settings@2x.png in Resources */,
+				1138E0C619A685F8004E06E2 /* chat-file-play@2x.png in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
+				1138E0C719A685F8004E06E2 /* chat-file-pause@2x.png in Resources */,
+				1138E0C319A6812B004E06E2 /* chat-file-cancel@2x.png in Resources */,
 				11B9E62A19940F3900FB20A6 /* tab-bar-chats.png in Resources */,
 				11B6C305199AB06300A48FBC /* friends-vc-arrow-down@2x.png in Resources */,
+				11C4D9E619A69D4E0038DB2B /* chat-file-type-deleted@2x.png in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
+				1138E0BF19A6653B004E06E2 /* chat-file-type-basic@2x.png in Resources */,
 				11B6C306199AB06300A48FBC /* friends-vc-arrow-up@2x.png in Resources */,
+				1138E0C219A6812B004E06E2 /* chat-file-download@2x.png in Resources */,
 				11B9E62919940F3900FB20A6 /* tab-bar-settings.png in Resources */,
+				11C4D9E519A69D4E0038DB2B /* chat-file-type-canceled@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

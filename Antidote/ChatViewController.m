@@ -613,11 +613,11 @@ typedef NS_ENUM(NSInteger, Section) {
                                                               forIndexPath:indexPath];
 
     cell.delegate = self;
-    cell.textLabel.text = message.file.fileName;
-    cell.detailTextLabel.text = NSLocalizedString(@"Downloaded", @"Chat");
-    cell.showYesNoButtons = NO;
+    // cell.textLabel.text = message.file.fileName;
+    // cell.detailTextLabel.text = NSLocalizedString(@"Downloaded", @"Chat");
+    // cell.showYesNoButtons = NO;
 
-    [cell redraw];
+    [cell redrawAnimated:NO];
 
     return cell;
 }
@@ -631,19 +631,19 @@ typedef NS_ENUM(NSInteger, Section) {
     cell.textLabel.text = message.pendingFile.fileName;
 
     if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
-        cell.showYesNoButtons = YES;
-        cell.detailTextLabel.text = nil;
+        // cell.showYesNoButtons = YES;
+        // cell.detailTextLabel.text = nil;
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
-        cell.showYesNoButtons = NO;
+        // cell.showYesNoButtons = NO;
         // cell.detailTextLabel.text = nil;
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
-        cell.showYesNoButtons = NO;
-        cell.detailTextLabel.text = NSLocalizedString(@"Canceled", @"Chat");
+        // cell.showYesNoButtons = NO;
+        // cell.detailTextLabel.text = NSLocalizedString(@"Canceled", @"Chat");
     }
 
-    [cell redraw];
+    [cell redrawAnimated:NO];
 
     return cell;
 }
