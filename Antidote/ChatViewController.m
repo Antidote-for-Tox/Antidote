@@ -374,6 +374,15 @@ typedef NS_ENUM(NSInteger, Section) {
     CDMessage *message = self.messages[path.row];
 
     [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
+
+    if (answer) {
+        cell.type = ChatFileCellTypeIncomingDownloading;
+    }
+    else {
+        cell.type = ChatFileCellTypeIncomingCanceled;
+    }
+
+    [cell redrawAnimated:YES];
 }
 
 #pragma mark -  UIDocumentInteractionControllerDelegate
@@ -410,9 +419,14 @@ typedef NS_ENUM(NSInteger, Section) {
             continue;
         }
 
+        if (message.pendingFile.state != CDMessagePendingFileStateActive) {
+            continue;
+        }
+
         if (message.pendingFile.fileNumber == fileNumber && message.pendingFile.friendNumber == friendNumber) {
             ChatFileCell *cell = (ChatFileCell *)[self.tableView cellForRowAtIndexPath:path];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f", 100 * progress];
+            cell.loadedPercent = progress;
+            [cell redrawLoadingPercentOnlyAnimated:YES];
 
             break;
         }
@@ -611,11 +625,15 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
                                                               forIndexPath:indexPath];
-
     cell.delegate = self;
-    // cell.textLabel.text = message.file.fileName;
-    // cell.detailTextLabel.text = NSLocalizedString(@"Downloaded", @"Chat");
-    // cell.showYesNoButtons = NO;
+    cell.fileName = message.file.fileName;
+
+    if (message.file.documentPath) {
+        cell.type = ChatFileCellTypeIncomingLoaded;
+    }
+    else {
+        cell.type = ChatFileCellTypeIncomingDeleted;
+    }
 
     [cell redrawAnimated:NO];
 
@@ -628,19 +646,19 @@ typedef NS_ENUM(NSInteger, Section) {
                                                               forIndexPath:indexPath];
 
     cell.delegate = self;
-    cell.textLabel.text = message.pendingFile.fileName;
+    cell.fileName = message.pendingFile.fileName;
 
     if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
-        // cell.showYesNoButtons = YES;
-        // cell.detailTextLabel.text = nil;
+        cell.type = ChatFileCellTypeIncomingWaitingConfirmation;
+        cell.fileSize = [NSString stringWithFormat:@"%llu", message.pendingFile.fileSize];
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
-        // cell.showYesNoButtons = NO;
-        // cell.detailTextLabel.text = nil;
+        cell.type = ChatFileCellTypeIncomingDownloading;
+        cell.isPaused = NO;
+        cell.loadedPercent = 0.0;
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
-        // cell.showYesNoButtons = NO;
-        // cell.detailTextLabel.text = NSLocalizedString(@"Canceled", @"Chat");
+        cell.type = ChatFileCellTypeIncomingCanceled;
     }
 
     [cell redrawAnimated:NO];

@@ -108,7 +108,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     [self updateTitleLabel];
     [self updateDescriptionLabel];
     [self updatePlayPauseButton];
-    [self updateProgressView];
+    [self updateProgressViewAnimated:animated];
 
     CGRect newTitleLabelFrame = self.titleLabel.frame;
     CGRect newNoButtonFrame = self.noButton.frame;
@@ -157,8 +157,8 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)redrawLoadingPercentOnlyAnimated:(BOOL)animated
 {
-    [self.progressView setProgress:self.loadedPercent animated:animated];
-    self.descriptionLabel.text = [NSString stringWithFormat:@"%d%%", (int) (self.loadedPercent * 100)];
+    [self updateDescriptionLabel];
+    [self updateProgressViewAnimated:animated];
 }
 
 + (CGFloat)height
@@ -394,12 +394,16 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     frame.origin.x = CGRectGetMaxX(self.typeImageView.frame) + 5.0;
 
     if (self.type == ChatFileCellTypeIncomingWaitingConfirmation ||
-        self.type == ChatFileCellTypeIncomingDownloading ||
-        self.type == ChatFileCellTypeIncomingDeleted ||
-        self.type == ChatFileCellTypeIncomingCanceled)
+        self.type == ChatFileCellTypeIncomingDownloading)
     {
         frame.origin.y = self.typeImageView.frame.origin.y;
         frame.size.width = CGRectGetMinX(self.noButton.frame) - frame.origin.x - 5.0;
+    }
+    else if (self.type == ChatFileCellTypeIncomingDeleted ||
+            self.type == ChatFileCellTypeIncomingCanceled)
+    {
+        frame.origin.y = self.typeImageView.frame.origin.y;
+        frame.size.width = self.contentView.frame.size.width - frame.origin.x - 5.0;
     }
     else if (self.type == ChatFileCellTypeIncomingLoaded) {
         frame.origin.y = (kCellHeight - frame.size.height) / 2;
@@ -465,13 +469,13 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     self.playPauseButton.frame = frame;
 }
 
-- (void)updateProgressView
+- (void)updateProgressViewAnimated:(BOOL)animated
 {
     if (self.type != ChatFileCellTypeIncomingDownloading) {
         return;
     }
 
-    [self.progressView setProgress:self.loadedPercent animated:NO];
+    [self.progressView setProgress:self.loadedPercent animated:animated];
 
     CGRect frame = self.progressView.frame;
     frame.size.height = 10.0;
