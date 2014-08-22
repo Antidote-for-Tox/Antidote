@@ -33,6 +33,18 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     tox_callback_file_send_request (self.tox, fileSendRequestCallback, NULL);
     tox_callback_file_control      (self.tox, fileControlCallback,     NULL);
     tox_callback_file_data         (self.tox, fileDataCallback,        NULL);
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pendingFile.state != %d",
+                CDMessagePendingFileStateCanceled];
+
+    [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
+        for (CDMessage *message in array) {
+
+            [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
+                message.pendingFile.state = CDMessagePendingFileStateCanceled;
+            } completionQueue:nil completionBlock:nil];
+        }
+    }];
 }
 
 - (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept
@@ -97,6 +109,51 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                     friendNumber:friendNumber
                                       fileNumber:fileNumber];
     }
+}
+
+- (void)qTogglePauseForPendingFileInMessage:(CDMessage *)message
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    DDLogInfo(@"ToxManager: toggle pause for pending file...");
+
+    if (! message.pendingFile) {
+        DDLogWarn(@"ToxManager: toggle pause for pending file... wrong message, quiting");
+        return;
+    }
+
+    uint8_t messageId;
+    CDMessagePendingFileState newState;
+
+    if (message.pendingFile.state == CDMessagePendingFileStateActive) {
+        messageId = TOX_FILECONTROL_PAUSE;
+        newState = CDMessagePendingFileStatePaused;
+    }
+    else if (message.pendingFile.state == CDMessagePendingFileStatePaused) {
+        messageId = TOX_FILECONTROL_ACCEPT;
+        newState = CDMessagePendingFileStateActive;
+    }
+    else {
+        DDLogWarn(@"ToxManager: toggle pause for pending file... wrong status, quiting");
+        return;
+    }
+
+    tox_file_send_control(
+            self.tox,
+            message.pendingFile.friendNumber,
+            1,
+            message.pendingFile.fileNumber,
+            messageId,
+            NULL,
+            0);
+
+    [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
+        message.pendingFile.state = newState;
+
+    } completionQueue:nil completionBlock:nil];
+
+    DDLogInfo(@"ToxManager: toggle pause for pending file... success, pause = %d",
+            messageId == TOX_FILECONTROL_PAUSE);
 }
 
 #pragma mark -  Private

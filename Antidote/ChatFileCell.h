@@ -39,4 +39,5 @@ typedef NS_ENUM(NSUInteger, ChatFileCellType) {
 
 @protocol ChatFileCellDelegate <NSObject>
 - (void)chatFileCell:(ChatFileCell *)cell answerButtonPressedWith:(BOOL)answer;
+- (void)chatFileCellPausePlayButtonPressed:(ChatFileCell *)cell;
 @end

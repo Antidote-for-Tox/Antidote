@@ -253,6 +253,13 @@
                                                   fileNumber:message.pendingFile.fileNumber];
 }
 
+- (void)togglePauseForPendingFileInMessage:(CDMessage *)message
+{
+    dispatch_async(self.queue, ^{
+        [self qTogglePauseForPendingFileInMessage:message];
+    });
+}
+
 #pragma mark -  Notifications
 
 - (void)applicationWillTerminateNotification:(NSNotification *)notification

@@ -44,5 +44,6 @@
 
 - (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 - (CGFloat)progressForPendingFileInMessage:(CDMessage *)message;
+- (void)togglePauseForPendingFileInMessage:(CDMessage *)message;
 
 @end

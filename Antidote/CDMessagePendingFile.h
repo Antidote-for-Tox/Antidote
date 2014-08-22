@@ -14,6 +14,7 @@
 typedef NS_ENUM(int16_t, CDMessagePendingFileState) {
     CDMessagePendingFileStateWaitingConfirmation,
     CDMessagePendingFileStateActive,
+    CDMessagePendingFileStatePaused,
     CDMessagePendingFileStateCanceled,
 };
 

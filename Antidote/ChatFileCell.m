@@ -76,7 +76,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)playPauseButtonPressed
 {
-
+    [self.delegate chatFileCellPausePlayButtonPressed:self];
 }
 
 #pragma mark -  Public
@@ -446,7 +446,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         return;
     }
 
-    [self updatePlayPauseImageWith:self.isPaused ? PlayPauseImageTypePause : PlayPauseImageTypePlay];
+    [self updatePlayPauseImageWith:self.isPaused ? PlayPauseImageTypePlay : PlayPauseImageTypePause];
 
     CGRect frame = CGRectZero;
     frame.size = self.playPauseButton.imageView.image.size;

@@ -385,6 +385,27 @@ typedef NS_ENUM(NSInteger, Section) {
     [cell redrawAnimated:YES];
 }
 
+- (void)chatFileCellPausePlayButtonPressed:(ChatFileCell *)cell
+{
+    NSIndexPath *path = [self.tableView indexPathForCell:cell];
+
+    if (! path) {
+        return;
+    }
+
+    if (path.section != SectionMessages) {
+        return;
+    }
+
+    CDMessage *message = self.messages[path.row];
+
+    [[ToxManager sharedInstance] togglePauseForPendingFileInMessage:message];
+
+    cell.isPaused = ! cell.isPaused;
+
+    [cell redrawAnimated:NO];
+}
+
 #pragma mark -  UIDocumentInteractionControllerDelegate
 
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
@@ -652,10 +673,13 @@ typedef NS_ENUM(NSInteger, Section) {
         cell.type = ChatFileCellTypeIncomingWaitingConfirmation;
         cell.fileSize = [NSString stringWithFormat:@"%llu", message.pendingFile.fileSize];
     }
-    else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
+    else if (message.pendingFile.state == CDMessagePendingFileStateActive ||
+             message.pendingFile.state == CDMessagePendingFileStatePaused)
+    {
         cell.type = ChatFileCellTypeIncomingDownloading;
-        cell.isPaused = NO;
         cell.loadedPercent = [[ToxManager sharedInstance] progressForPendingFileInMessage:message];
+
+        cell.isPaused = (message.pendingFile.state == CDMessagePendingFileStatePaused);
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
         cell.type = ChatFileCellTypeIncomingCanceled;

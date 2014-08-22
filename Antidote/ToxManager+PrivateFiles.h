@@ -16,5 +16,7 @@
 
 - (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber;
 
+- (void)qTogglePauseForPendingFileInMessage:(CDMessage *)message;
+
 @end
 
