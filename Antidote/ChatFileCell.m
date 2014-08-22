@@ -62,20 +62,6 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     return self;
 }
 
-- (void)tt
-{
-    ChatFileCellType type = self.type;
-    type++;
-
-    if (type > ChatFileCellTypeIncomingCanceled) {
-        type = 0;
-    }
-
-    self.type = type;
-
-    [self redrawAnimated:YES];
-}
-
 #pragma mark -  Actions
 
 - (void)yesButtonPressed
@@ -114,8 +100,8 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     CGRect newNoButtonFrame = self.noButton.frame;
     CGRect newDescriptionLabelFrame = self.descriptionLabel.frame;
 
-    BOOL animateTitleLabel       = ! CGRectEqualToRect(oldTitleLabelFrame,        newTitleLabelFrame);
-    BOOL animateNoButton         = ! CGRectEqualToRect(oldNoButtonFrame,          newNoButtonFrame);
+    BOOL animateTitleLabel = ! CGRectEqualToRect(oldTitleLabelFrame, newTitleLabelFrame);
+    BOOL animateNoButton   = ! CGRectEqualToRect(oldNoButtonFrame,   newNoButtonFrame);
 
     BOOL animateDescriptionLabel = self.descriptionLabel.alpha &&
         ! CGPointEqualToPoint(oldDescriptionLabelFrame.origin, newDescriptionLabelFrame.origin);
