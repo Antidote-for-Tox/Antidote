@@ -14,5 +14,7 @@
 
 - (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 
+- (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber;
+
 @end
 

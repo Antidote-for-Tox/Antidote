@@ -60,7 +60,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         path = [path stringByAppendingPathComponent:message.pendingFile.documentPath];
 
-        self.privateFiles_downloadingFiles[key] = [[ToxDownloadingFile alloc] initWithFilePath:path];
+        @synchronized(self.privateFiles_downloadingFiles) {
+            self.privateFiles_downloadingFiles[key] = [[ToxDownloadingFile alloc] initWithFilePath:path];
+        }
     }
     else {
         messageId = TOX_FILECONTROL_KILL;
@@ -82,6 +84,19 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     } completionQueue:nil completionBlock:nil];
 
     DDLogInfo(@"ToxManager: accept or refuse... success");
+}
+
+- (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
+{
+    @synchronized([ToxManager sharedInstance].privateFiles_downloadingFiles) {
+        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber fileNumber:fileNumber];
+
+        ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
+
+        return [self progressFromDownloadingFile:file
+                                    friendNumber:friendNumber
+                                      fileNumber:fileNumber];
+    }
 }
 
 #pragma mark -  Private
@@ -135,10 +150,12 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     NSString *key = [self keyFromFriendNumber:friendNumber fileNumber:fileNumber];
 
-    ToxDownloadingFile *file = self.privateFiles_downloadingFiles[key];
-    [file finishDownloading];
+    @synchronized(self.privateFiles_downloadingFiles) {
+        ToxDownloadingFile *file = self.privateFiles_downloadingFiles[key];
+        [file finishDownloading];
 
-    [self.privateFiles_downloadingFiles removeObjectForKey:key];
+        [self.privateFiles_downloadingFiles removeObjectForKey:key];
+    }
 
     tox_file_send_control(self.tox, friendNumber, 1, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
 
@@ -200,6 +217,20 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 - (NSString *)keyFromFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
 {
     return [NSString stringWithFormat:@"%d-%d", friendNumber, fileNumber];
+}
+
+- (CGFloat)progressFromDownloadingFile:(ToxDownloadingFile *)file
+                          friendNumber:(uint32_t)friendNumber
+                            fileNumber:(uint8_t)fileNumber
+{
+    CGFloat saved = file.savedLength;
+    CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendNumber, fileNumber, 1);
+
+    CGFloat total = saved + remaining;
+
+    CGFloat progress = total ? saved/total : 0.0;
+
+    return progress;
 }
 
 @end
@@ -267,8 +298,11 @@ void fileDataCallback(
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
         NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber fileNumber:filenumber];
+        ToxDownloadingFile *file;
 
-        ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
+        @synchronized([ToxManager sharedInstance].privateFiles_downloadingFiles) {
+            file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
+        }
 
         if (! file) {
             return;
@@ -279,12 +313,9 @@ void fileDataCallback(
         [file appendData:nsData didSavedOnDisk:&didSaveOnDisk];
 
         if (didSaveOnDisk) {
-            CGFloat saved = file.savedLength;
-            CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendnumber, filenumber, 1);
-
-            CGFloat total = saved + remaining;
-
-            CGFloat progress = total ? saved/total : 0.0;
+            CGFloat progress = [[ToxManager sharedInstance] progressFromDownloadingFile:file
+                                                                           friendNumber:friendnumber
+                                                                             fileNumber:filenumber];
 
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[ToxManager sharedInstance].fileProgressDelegate toxManagerProgressChanged:progress

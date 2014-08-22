@@ -655,7 +655,7 @@ typedef NS_ENUM(NSInteger, Section) {
     else if (message.pendingFile.state == CDMessagePendingFileStateActive) {
         cell.type = ChatFileCellTypeIncomingDownloading;
         cell.isPaused = NO;
-        cell.loadedPercent = 0.0;
+        cell.loadedPercent = [[ToxManager sharedInstance] progressForPendingFileInMessage:message];
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
         cell.type = ChatFileCellTypeIncomingCanceled;

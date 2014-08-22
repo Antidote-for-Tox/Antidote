@@ -43,5 +43,6 @@
 - (void)chatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock;
 
 - (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
+- (CGFloat)progressForPendingFileInMessage:(CDMessage *)message;
 
 @end

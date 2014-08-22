@@ -243,6 +243,16 @@
     });
 }
 
+- (CGFloat)progressForPendingFileInMessage:(CDMessage *)message
+{
+    if (! message.pendingFile) {
+        return 0.0;
+    }
+
+    return [self synchronizedProgressForFileWithFriendNumber:message.pendingFile.friendNumber
+                                                  fileNumber:message.pendingFile.fileNumber];
+}
+
 #pragma mark -  Notifications
 
 - (void)applicationWillTerminateNotification:(NSNotification *)notification
