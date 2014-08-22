@@ -264,7 +264,8 @@
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
     DDLogInfo(@"ToxManager: creating tox...");
-    _tox = tox_new(TOX_ENABLE_IPV6_DEFAULT);
+
+    _tox = tox_new(NULL);
 
     NSData *toxData = [UserInfoManager sharedInstance].uToxData;
 
@@ -336,7 +337,7 @@
     DDLogInfo(@"ToxManager: bootstraping with address %@, port %lu, publicKey %@", address, port, publicKey);
 
     uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
-    tox_bootstrap_from_address(self.tox, address.UTF8String, 1, htons(port), pub_key);
+    tox_bootstrap_from_address(self.tox, address.UTF8String, htons(port), pub_key);
     free(pub_key);
 
     [self qMaybeStartTimer];
