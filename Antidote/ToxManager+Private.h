@@ -16,6 +16,7 @@
 @property (assign, nonatomic, readonly) Tox *tox;
 
 @property (strong, nonatomic, readonly) dispatch_queue_t queue;
+@property (strong, nonatomic, readonly) dispatch_queue_t toxDoQueue;
 
 @property (strong, nonatomic) dispatch_source_t timer;
 @property (assign, nonatomic) uint32_t timerMillisecondsUpdateInterval;

@@ -45,7 +45,6 @@
 
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
-    [[UIButton appearance] setTintColor:[AppearanceManager textMainColor]];
     [self.window makeKeyAndVisible];
     return YES;
 }

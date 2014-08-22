@@ -181,11 +181,16 @@ void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *messag
     NSString *messageString = [[NSString alloc] initWithBytes:message length:length encoding:NSUTF8StringEncoding];
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
 
-    [[ToxManager sharedInstance] qIncomingMessage:messageString fromFriend:friend];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance] qIncomingMessage:messageString fromFriend:friend];
+    });
 }
 
 void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata)
 {
     DDLogCVerbose(@"ToxManager+PrivateChat: readReceiptCallback with friendnumber %d receipt %d", friendnumber, receipt);
+
+    // dispatch_async([ToxManager sharedInstance].queue, ^{
+    // });
 }
 

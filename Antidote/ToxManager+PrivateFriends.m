@@ -286,16 +286,18 @@ void friendRequestCallback(Tox *tox, const uint8_t * publicKey, const uint8_t * 
 
     ToxFriendRequest *request = [ToxFriendRequest friendRequestWithPublicKey:key message:message];
 
-    [[ToxManager sharedInstance].friendsContainer private_addFriendRequest:request];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance].friendsContainer private_addFriendRequest:request];
 
-    EventObject *object = [EventObject objectWithType:EventObjectTypeFriendRequest
-                                                image:nil
-                                               object:request];
-    [[EventsManager sharedInstance] addObject:object];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            EventObject *object = [EventObject objectWithType:EventObjectTypeFriendRequest
+                                                        image:nil
+                                                       object:request];
+            [[EventsManager sharedInstance] addObject:object];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
-        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+            AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+            [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+        });
     });
 }
 
@@ -303,59 +305,83 @@ void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, 
 {
     DDLogCVerbose(@"ToxManager+PrivateFriends: nameChangeCallback with friendnumber %d", friendnumber);
 
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.realName = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
+    NSString *realName = [NSString stringWithCString:(const char*)newname encoding:NSUTF8StringEncoding];
 
-        [[ToxManager sharedInstance] qMaybeCreateAssociatedNameForFriend:friend];
-    }];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
+                                                                     updateBlock:^(ToxFriend *friend)
+        {
+            friend.realName = realName;
+
+            [[ToxManager sharedInstance] qMaybeCreateAssociatedNameForFriend:friend];
+        }];
+    });
 }
 
 void statusMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *newstatus, uint16_t length, void *userdata)
 {
     DDLogCVerbose(@"ToxManager+PrivateFriends: statusMessageCallback with friendnumber %d", friendnumber);
 
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.statusMessage = [NSString stringWithCString:(const char*)newstatus encoding:NSUTF8StringEncoding];
-    }];
+    NSString *statusMessage = [NSString stringWithCString:(const char*)newstatus encoding:NSUTF8StringEncoding];
+
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
+                                                                     updateBlock:^(ToxFriend *friend)
+        {
+            friend.statusMessage = statusMessage;
+        }];
+    });
 }
 
 void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
     DDLogCVerbose(@"ToxManager+PrivateFriends: userStatusCallback with friendnumber %d status %d", friendnumber, status);
 
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        if (status == TOX_USERSTATUS_NONE) {
-            friend.status = ToxFriendStatusOnline;
-        }
-        else if (status == TOX_USERSTATUS_AWAY) {
-            friend.status = ToxFriendStatusAway;
-        }
-        else if (status == TOX_USERSTATUS_BUSY) {
-            friend.status = ToxFriendStatusBusy;
-        }
-        else if (status == TOX_USERSTATUS_INVALID) {
-            friend.status = ToxFriendStatusOffline;
-        }
-    }];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
+                                                                     updateBlock:^(ToxFriend *friend)
+        {
+            if (status == TOX_USERSTATUS_NONE) {
+                friend.status = ToxFriendStatusOnline;
+            }
+            else if (status == TOX_USERSTATUS_AWAY) {
+                friend.status = ToxFriendStatusAway;
+            }
+            else if (status == TOX_USERSTATUS_BUSY) {
+                friend.status = ToxFriendStatusBusy;
+            }
+            else if (status == TOX_USERSTATUS_INVALID) {
+                friend.status = ToxFriendStatusOffline;
+            }
+        }];
+    });
 }
 
 void typingChangeCallback(Tox *tox, int32_t friendnumber, uint8_t isTyping, void *userdata)
 {
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        friend.isTyping = (isTyping == 1);
-    }];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
+                                                                     updateBlock:^(ToxFriend *friend)
+        {
+            friend.isTyping = (isTyping == 1);
+        }];
+    });
 }
 
 void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *userdata)
 {
     DDLogCVerbose(@"ToxManager+PrivateFriends: connectionStatusCallback with friendnumber %d status %d", friendnumber, status);
 
-    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber updateBlock:^(ToxFriend *friend) {
-        if (status == 0) {
-            friend.status = ToxFriendStatusOffline;
-        }
-    }];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
+                                                                     updateBlock:^(ToxFriend *friend)
+        {
+            if (status == 0) {
+                friend.status = ToxFriendStatusOffline;
+            }
+        }];
 
-    [[ToxManager sharedInstance] qSaveTox];
+        [[ToxManager sharedInstance] qSaveTox];
+    });
 }
 

@@ -30,6 +30,7 @@
 
     if (self) {
         _queue = dispatch_queue_create("me.dvor.antidote.ToxManager", NULL);
+        _toxDoQueue = dispatch_queue_create("me.dvor.antidote.ToxManager_toxDo", NULL);
 
         {
             // The dispatch_queue_set_specific() and dispatch_get_specific() functions take a
@@ -288,7 +289,7 @@
         return;
     }
 
-    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, _queue);
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, self.toxDoQueue);
 
     [self qUpdateTimerInterval:tox_do_interval(self.tox)];
 
@@ -307,7 +308,9 @@
         uint32_t newInterval = tox_do_interval(weakSelf.tox);
 
         if (newInterval != weakSelf.timerMillisecondsUpdateInterval) {
-            [weakSelf qUpdateTimerInterval:newInterval];
+            dispatch_async(weakSelf.queue, ^{
+                [weakSelf qUpdateTimerInterval:newInterval];
+            });
         }
     });
     dispatch_resume(self.timer);

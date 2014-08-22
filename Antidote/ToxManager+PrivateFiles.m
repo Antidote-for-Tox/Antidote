@@ -224,10 +224,12 @@ void fileSendRequestCallback(
                                                         length:filename_length
                                                       encoding:NSUTF8StringEncoding];
 
-    [[ToxManager sharedInstance] qIncomingFileFromFriend:friend
-                                                fileName:fileNameString
-                                              fileNumber:filenumber
-                                                fileSize:filesize];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance] qIncomingFileFromFriend:friend
+                                                    fileName:fileNameString
+                                                  fileNumber:filenumber
+                                                    fileSize:filesize];
+    });
 }
 
 void fileControlCallback(
@@ -243,12 +245,14 @@ void fileControlCallback(
     DDLogCVerbose(@"ToxManager+PrivateFiles: fileControlCallback with friendnumber %d filenumber %d receiveSend %d controlType %d",
             friendnumber, filenumber, receive_send, control_type);
 
-    if (receive_send == 0) {
-        if (control_type == TOX_FILECONTROL_FINISHED) {
-            [[ToxManager sharedInstance] qIncomingFileFinishedDownloadingWithFriendNumber:friendnumber
-                                                                               fileNumber:filenumber];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        if (receive_send == 0) {
+            if (control_type == TOX_FILECONTROL_FINISHED) {
+                [[ToxManager sharedInstance] qIncomingFileFinishedDownloadingWithFriendNumber:friendnumber
+                                                                                   fileNumber:filenumber];
+            }
         }
-    }
+    });
 }
 
 void fileDataCallback(
@@ -259,31 +263,35 @@ void fileDataCallback(
         uint16_t length,
         void *userdata)
 {
-    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber fileNumber:filenumber];
+    NSData *nsData = [NSData dataWithBytes:data length:length];
 
-    ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber fileNumber:filenumber];
 
-    if (! file) {
-        return;
-    }
+        ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
 
-    BOOL didSaveOnDisk;
+        if (! file) {
+            return;
+        }
 
-    [file appendData:[NSData dataWithBytes:data length:length] didSavedOnDisk:&didSaveOnDisk];
+        BOOL didSaveOnDisk;
 
-    if (didSaveOnDisk) {
-        CGFloat saved = file.savedLength;
-        CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendnumber, filenumber, 1);
+        [file appendData:nsData didSavedOnDisk:&didSaveOnDisk];
 
-        CGFloat total = saved + remaining;
+        if (didSaveOnDisk) {
+            CGFloat saved = file.savedLength;
+            CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendnumber, filenumber, 1);
 
-        CGFloat progress = total ? saved/total : 0.0;
+            CGFloat total = saved + remaining;
 
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[ToxManager sharedInstance].fileProgressDelegate toxManagerProgressChanged:progress
-                                                           forPendingFileWithFileNumber:filenumber
-                                                                           friendNumber:friendnumber];
-        });
-    }
+            CGFloat progress = total ? saved/total : 0.0;
+
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[ToxManager sharedInstance].fileProgressDelegate toxManagerProgressChanged:progress
+                                                               forPendingFileWithFileNumber:filenumber
+                                                                               friendNumber:friendnumber];
+            });
+        }
+    });
 }
 
