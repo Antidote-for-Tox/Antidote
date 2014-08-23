@@ -37,6 +37,13 @@
 
 + (NSString *)fullFilePathInFilesDirectoryFromFileName:(NSString *)fileName temporary:(BOOL)temporary
 {
+    NSString *path = [self fileDirectoryPathIsTemporary:temporary];
+
+    return [path stringByAppendingPathComponent:fileName];
+}
+
++ (NSString *)fileDirectoryPathIsTemporary:(BOOL)temporary
+{
     NSString *path = nil;
 
     if (temporary) {
@@ -46,9 +53,7 @@
         path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     }
 
-    path = [path stringByAppendingPathComponent:@"Files"];
-
-    return [path stringByAppendingPathComponent:fileName];
+    return [path stringByAppendingPathComponent:@"Files"];
 }
 
 @end

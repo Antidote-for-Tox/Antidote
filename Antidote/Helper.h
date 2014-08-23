@@ -19,5 +19,6 @@
 + (BOOL)isOutgoingMessage:(CDMessage *)message;
 
 + (NSString *)fullFilePathInFilesDirectoryFromFileName:(NSString *)fileName temporary:(BOOL)temporary;
++ (NSString *)fileDirectoryPathIsTemporary:(BOOL)temporary;
 
 @end

@@ -38,6 +38,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pendingFile.state != %d",
                 CDMessagePendingFileStateCanceled];
 
+    // mark all pending messages as canceled
     [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
         for (CDMessage *message in array) {
 
@@ -46,6 +47,20 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
             } completionQueue:nil completionBlock:nil];
         }
     }];
+
+    // remove all temp files
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *tempFileDirectoryPath = [Helper fileDirectoryPathIsTemporary:YES];
+
+    if ([fileManager fileExistsAtPath:tempFileDirectoryPath]) {
+        NSError *error;
+
+        [fileManager removeItemAtPath:tempFileDirectoryPath error:&error];
+
+        if (error) {
+            DDLogWarn(@"ToxManager: cannot remove tempFileDirectoryPath %@ error %@", tempFileDirectoryPath, error);
+        }
+    }
 }
 
 - (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept
