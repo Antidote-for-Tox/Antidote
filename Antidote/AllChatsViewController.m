@@ -131,7 +131,7 @@
             format = NSLocalizedString(@"Incoming file: %@", @"Chats");
         }
 
-        NSString *fileName = chat.lastMessage.file.fileName ?: chat.lastMessage.pendingFile.fileName;
+        NSString *fileName = chat.lastMessage.file.originalFileName ?: chat.lastMessage.pendingFile.originalFileName;
 
         [cell setMessage:[NSString stringWithFormat:format, fileName]
                  andDate:dateString];

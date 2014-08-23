@@ -300,14 +300,13 @@ typedef NS_ENUM(NSInteger, Section) {
     CDMessage *message = self.messages[indexPath.row];
 
     if (message.file) {
-        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        path = [path stringByAppendingPathComponent:message.file.documentPath];
+        NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.file.fileNameOnDisk temporary:NO];
 
         NSURL *url = [NSURL fileURLWithPath:path isDirectory:NO];
 
         self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
         self.documentInteractionController.delegate = self;
-        self.documentInteractionController.name = message.file.fileName;
+        self.documentInteractionController.name = message.file.originalFileName;
 
         [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
     }
@@ -647,9 +646,9 @@ typedef NS_ENUM(NSInteger, Section) {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
                                                               forIndexPath:indexPath];
     cell.delegate = self;
-    cell.fileName = message.file.fileName;
+    cell.fileName = message.file.originalFileName;
 
-    if (message.file.documentPath) {
+    if (message.file.fileNameOnDisk) {
         cell.type = ChatFileCellTypeIncomingLoaded;
     }
     else {
@@ -667,7 +666,7 @@ typedef NS_ENUM(NSInteger, Section) {
                                                               forIndexPath:indexPath];
 
     cell.delegate = self;
-    cell.fileName = message.pendingFile.fileName;
+    cell.fileName = message.pendingFile.originalFileName;
 
     if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
         cell.type = ChatFileCellTypeIncomingWaitingConfirmation;

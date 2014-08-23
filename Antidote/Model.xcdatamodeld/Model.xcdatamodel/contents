@@ -21,17 +21,18 @@
         <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="call" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDMessageFile" representedClassName="CDMessageFile" syncable="YES">
-        <attribute name="documentPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fileNameOnDisk" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="fileUTI" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="originalFileName" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="file" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDMessagePendingFile" representedClassName="CDMessagePendingFile" syncable="YES">
-        <attribute name="documentPath" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="fileNameOnDisk" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fileNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
         <attribute name="fileSize" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="friendNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="originalFileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="state" optional="YES" attributeType="Integer 16" syncable="YES"/>
         <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="pendingFile" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
@@ -50,7 +51,7 @@
         <element name="CDChat" positionX="288" positionY="-0" width="128" height="120"/>
         <element name="CDMessage" positionX="-63" positionY="-27" width="128" height="163"/>
         <element name="CDMessageCall" positionX="-299" positionY="-72" width="128" height="58"/>
-        <element name="CDMessageFile" positionX="-270" positionY="54" width="128" height="103"/>
+        <element name="CDMessageFile" positionX="-270" positionY="54" width="128" height="118"/>
         <element name="CDMessagePendingFile" positionX="-90" positionY="81" width="128" height="148"/>
         <element name="CDMessageText" positionX="-252" positionY="158" width="128" height="103"/>
         <element name="CDUser" positionX="97" positionY="182" width="128" height="88"/>

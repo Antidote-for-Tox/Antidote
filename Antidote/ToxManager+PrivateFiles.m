@@ -13,6 +13,7 @@
 #import "EventsManager.h"
 #import "AppDelegate.h"
 #import "ToxDownloadingFile.h"
+#import "Helper.h"
 
 void fileSendRequestCallback(Tox *, int32_t, uint8_t, uint64_t, const uint8_t *, uint16_t, void *);
 void fileControlCallback(Tox *, int32_t, uint8_t, uint8_t, uint8_t, const uint8_t *, uint16_t, void *);
@@ -69,8 +70,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         NSString *key = [self keyFromFriendNumber:message.pendingFile.friendNumber
                                        fileNumber:message.pendingFile.fileNumber];
 
-        NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        path = [path stringByAppendingPathComponent:message.pendingFile.documentPath];
+        NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.pendingFile.fileNameOnDisk
+                                                                temporary:YES];
 
         @synchronized(self.privateFiles_downloadingFiles) {
             self.privateFiles_downloadingFiles[key] = [[ToxDownloadingFile alloc] initWithFilePath:path];
@@ -159,7 +160,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 #pragma mark -  Private
 
 - (void)qIncomingFileFromFriend:(ToxFriend *)friend
-                       fileName:(NSString *)fileName
+               originalFileName:(NSString *)originalFileName
                      fileNumber:(uint8_t)fileNumber
                        fileSize:(uint64_t)fileSize
 {
@@ -171,17 +172,17 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            NSString *documentPath = [weakSelf newDocumentPathWithExtension:[fileName pathExtension]];
+            NSString *fileNameOnDisk = [weakSelf randomFileNameOnDiskWithExtension:[originalFileName pathExtension]];
 
-            DDLogInfo(@"ToxManager: creating new document path %@", documentPath);
+            DDLogInfo(@"ToxManager: creating new document with fileNameOnDisk %@", fileNameOnDisk);
 
             [weakSelf qAddPendingFileToChat:chat
                                    fromUser:user
                                  fileNumber:fileNumber
                                friendNumber:friend.id
                                    fileSize:fileSize
-                                   fileName:fileName
-                               documentPath:documentPath
+                           originalFileName:originalFileName
+                             fileNameOnDisk:fileNameOnDisk
                             completionBlock:^(CDMessage *cdMessage)
             {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -226,7 +227,34 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
         CDMessage *message = [array lastObject];
 
-        [CoreDataManager movePendingFileToFileForMessage:message completionQueue:nil completionBlock:nil];
+        NSString *oldPath = [Helper fullFilePathInFilesDirectoryFromFileName:message.pendingFile.fileNameOnDisk
+                                                                   temporary:YES];
+        NSString *newPath = [Helper fullFilePathInFilesDirectoryFromFileName:message.pendingFile.fileNameOnDisk
+                                                                   temporary:NO];
+
+        NSError *error = nil;
+
+        [[NSFileManager defaultManager] createDirectoryAtPath:[newPath stringByDeletingLastPathComponent]
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:&error];
+
+        if (error) {
+            DDLogError(@"ToxManager: cannot create directory at path %@ error %@",
+                    [newPath stringByDeletingLastPathComponent], error);
+            return;
+        }
+
+        [[NSFileManager defaultManager] moveItemAtPath:oldPath toPath:newPath error:&error];
+
+        if (error) {
+            DDLogError(@"ToxManager: cannot move file from path %@ to newPath %@ error %@", oldPath, newPath, error);
+            return;
+        }
+
+        [CoreDataManager movePendingFileToFileForMessage:message
+                                         completionQueue:nil
+                                         completionBlock:nil];
     }];
 }
 
@@ -235,8 +263,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                    fileNumber:(uint16_t)fileNumber
                  friendNumber:(int32_t)friendNumber
                      fileSize:(uint64_t)fileSize
-                     fileName:(NSString *)fileName
-                 documentPath:(NSString *)documentPath
+             originalFileName:(NSString *)originalFileName
+               fileNameOnDisk:(NSString *)fileNameOnDisk
               completionBlock:(void (^)(CDMessage *message))completionBlock
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
@@ -248,12 +276,12 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         m.chat = chat;
         m.user = user;
 
-        m.pendingFile.state        = CDMessagePendingFileStateWaitingConfirmation;
-        m.pendingFile.fileNumber   = fileNumber;
-        m.pendingFile.friendNumber = friendNumber;
-        m.pendingFile.fileSize     = fileSize;
-        m.pendingFile.fileName     = fileName;
-        m.pendingFile.documentPath = documentPath;
+        m.pendingFile.state            = CDMessagePendingFileStateWaitingConfirmation;
+        m.pendingFile.fileNumber       = fileNumber;
+        m.pendingFile.friendNumber     = friendNumber;
+        m.pendingFile.fileSize         = fileSize;
+        m.pendingFile.originalFileName = originalFileName;
+        m.pendingFile.fileNameOnDisk   = fileNameOnDisk;
 
         if (m.date > chat.lastMessage.date) {
             m.chatForLastMessageInverse = chat;
@@ -262,13 +290,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     } completionQueue:self.queue completionBlock:completionBlock];
 }
 
-- (NSString *)newDocumentPathWithExtension:(NSString *)extension
+- (NSString *)randomFileNameOnDiskWithExtension:(NSString *)extension
 {
-    CFUUIDRef uuidObj = CFUUIDCreate(NULL);
-    NSString *identifier = (__bridge_transfer NSString *)CFUUIDCreateString(NULL, uuidObj);
-    CFRelease(uuidObj);
-
-    return [[NSString stringWithFormat:@"Files/%@", identifier] stringByAppendingPathExtension:extension];
+    return [[[NSUUID UUID] UUIDString] stringByAppendingPathExtension:extension];
 }
 
 - (NSString *)keyFromFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
@@ -314,7 +338,7 @@ void fileSendRequestCallback(
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
         [[ToxManager sharedInstance] qIncomingFileFromFriend:friend
-                                                    fileName:fileNameString
+                                            originalFileName:fileNameString
                                                   fileNumber:filenumber
                                                     fileSize:filesize];
     });

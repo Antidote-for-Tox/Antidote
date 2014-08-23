@@ -16,8 +16,8 @@
 @dynamic fileNumber;
 @dynamic friendNumber;
 @dynamic fileSize;
-@dynamic fileName;
-@dynamic documentPath;
+@dynamic originalFileName;
+@dynamic fileNameOnDisk;
 @dynamic messageInverse;
 
 @end

@@ -24,8 +24,8 @@ typedef NS_ENUM(int16_t, CDMessagePendingFileState) {
 @property (nonatomic) uint16_t fileNumber;
 @property (nonatomic) int32_t friendNumber;
 @property (nonatomic) uint64_t fileSize;
-@property (nonatomic, retain) NSString * fileName;
-@property (nonatomic, retain) NSString * documentPath;
+@property (nonatomic, retain) NSString * originalFileName;
+@property (nonatomic, retain) NSString * fileNameOnDisk;
 
 @property (nonatomic, retain) CDMessage *messageInverse;
 
