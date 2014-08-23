@@ -24,6 +24,7 @@ typedef NS_ENUM(NSUInteger, ChatFileCellType) {
 @property (assign, nonatomic) ChatFileCellType type;
 @property (strong, nonatomic) NSString *fileName;
 @property (strong, nonatomic) NSString *fileSize;
+@property (strong, nonatomic) NSString *fileUTI;
 
 // from 0.0 to 1.0
 @property (assign, nonatomic) CGFloat loadedPercent;

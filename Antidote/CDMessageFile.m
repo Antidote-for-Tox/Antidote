@@ -12,10 +12,10 @@
 
 @implementation CDMessageFile
 
-@dynamic originalFileName;
-@dynamic fileUTI;
-@dynamic fileNameOnDisk;
 @dynamic fileSize;
+@dynamic originalFileName;
+@dynamic fileNameOnDisk;
+@dynamic fileUTI;
 @dynamic messageInverse;
 
 @end

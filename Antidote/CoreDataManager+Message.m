@@ -124,9 +124,10 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
         message.file = [NSEntityDescription insertNewObjectForEntityForName:@"CDMessageFile"
                                                      inManagedObjectContext:[self private_context]];
 
+        message.file.fileSize         = message.pendingFile.fileSize;
         message.file.originalFileName = message.pendingFile.originalFileName;
         message.file.fileNameOnDisk   = message.pendingFile.fileNameOnDisk;
-        message.file.fileSize         = message.pendingFile.fileSize;
+        message.file.fileUTI          = message.pendingFile.fileUTI;
 
         message.pendingFile = nil;
 

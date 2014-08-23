@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "ToxManager+PrivateFiles.h"
 #import "ToxManager+Private.h"
 #import "ToxManager+PrivateChat.h"
@@ -286,8 +288,20 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     DDLogInfo(@"ToxManager: adding pending file to CoreData");
 
+    NSTimeInterval dateInterval = [[NSDate date] timeIntervalSince1970];
+
+    NSString *fileUTI = nil;
+    NSString *extension = [originalFileName pathExtension];
+
+    if (extension) {
+        fileUTI = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(
+                kUTTagClassFilenameExtension,
+                (__bridge CFStringRef)extension,
+                NULL);
+    }
+
     [CoreDataManager insertMessageWithType:CDMessageTypePendingFile configBlock:^(CDMessage *m) {
-        m.date = [[NSDate date] timeIntervalSince1970];
+        m.date = dateInterval;
         m.chat = chat;
         m.user = user;
 
@@ -297,6 +311,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         m.pendingFile.fileSize         = fileSize;
         m.pendingFile.originalFileName = originalFileName;
         m.pendingFile.fileNameOnDisk   = fileNameOnDisk;
+        m.pendingFile.fileUTI          = fileUTI;
 
         if (m.date > chat.lastMessage.date) {
             m.chatForLastMessageInverse = chat;

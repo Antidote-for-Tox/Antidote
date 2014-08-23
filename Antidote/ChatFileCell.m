@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "ChatFileCell.h"
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
@@ -41,6 +43,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 @property (assign, nonatomic) TypeImageViewType currentTypeImageViewType;
 @property (assign, nonatomic) PlayPauseImageType currentPlayPauseImageType;
+@property (assign, nonatomic) NSString *currentUTI;
 
 @end
 
@@ -293,13 +296,28 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         newType = TypeImageViewTypeCanceled;
     }
 
-    if (self.currentTypeImageViewType != newType) {
+    BOOL changeImage = NO;
+
+    if (newType == TypeImageViewTypeDeleted || newType == TypeImageViewTypeCanceled) {
+        changeImage = (self.currentTypeImageViewType != newType);
+    }
+    else if (newType == TypeImageViewTypeBasic) {
+        if (self.currentUTI) {
+            changeImage = ! [self.currentUTI isEqualToString:self.fileUTI];
+        }
+        else {
+            changeImage = YES;
+        }
+    }
+
+    if (changeImage) {
         self.currentTypeImageViewType = newType;
+        self.currentUTI = (newType == TypeImageViewTypeBasic) ? self.fileUTI : nil;
 
         UIImage *image = nil;
 
         if (newType == TypeImageViewTypeBasic) {
-            image = [UIImage imageNamed:@"chat-file-type-basic"];
+            image = [self typeImageForCurrentUTI];
         }
         else if (newType == TypeImageViewTypeDeleted) {
             image = [UIImage imageNamed:@"chat-file-type-deleted"];
@@ -470,6 +488,73 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         self.playPauseButton.frame.size.width - frame.size.height - 3.0;
     frame.size.width = CGRectGetMinX(self.descriptionLabel.frame) - frame.origin.x - 10.0;
     self.progressView.frame = frame;
+}
+
+- (UIImage *)typeImageForCurrentUTI
+{
+    NSString *basicName = @"chat-file-type-basic";
+
+    if (! self.fileUTI) {
+        return [UIImage imageNamed:basicName];
+    }
+
+    CFStringRef fileUTI = (__bridge CFStringRef)(self.fileUTI);
+
+    #define MATCH(theFileUTI, theImageName) \
+        if (UTTypeEqual(fileUTI, theFileUTI)) { \
+            return [UIImage imageNamed:theImageName]; \
+        }
+
+    MATCH(kUTTypeGIF,        @"chat-file-type-gif")
+    MATCH(kUTTypeHTML,       @"chat-file-type-html")
+    MATCH(kUTTypeJPEG,       @"chat-file-type-jpg")
+    MATCH(kUTTypeMP3,        @"chat-file-type-mp3")
+    MATCH(kUTTypeMPEG,       @"chat-file-type-mpg")
+    MATCH(kUTTypePDF,        @"chat-file-type-pdf")
+    MATCH(kUTTypePNG,        @"chat-file-type-png")
+    MATCH(kUTTypeTIFF,       @"chat-file-type-tif")
+    MATCH(kUTTypePlainText,  @"chat-file-type-txt")
+
+    #undef MATCH
+
+    NSString *extension = (__bridge_transfer NSString *)
+        (UTTypeCopyPreferredTagWithClass(fileUTI, kUTTagClassFilenameExtension));
+
+    if (! extension) {
+        return [UIImage imageNamed:basicName];
+    }
+
+    #define MATCH(theExtension, theImageName) \
+        if ([extension isEqual:theExtension]) { \
+            return [UIImage imageNamed:theImageName]; \
+        }
+
+    MATCH(@"7z",    @"chat-file-type-7zip")
+    MATCH(@"aac",   @"chat-file-type-aac")
+    MATCH(@"avi",   @"chat-file-type-avi")
+    MATCH(@"css",   @"chat-file-type-css")
+    MATCH(@"csv",   @"chat-file-type-csv")
+    MATCH(@"doc",   @"chat-file-type-doc")
+    MATCH(@"ebup",  @"chat-file-type-ebup")
+    MATCH(@"exe",   @"chat-file-type-exe")
+    MATCH(@"fb2",   @"chat-file-type-fb2")
+    MATCH(@"flv",   @"chat-file-type-flv")
+    MATCH(@"mov",   @"chat-file-type-mov")
+    MATCH(@"ogg",   @"chat-file-type-ogg")
+    MATCH(@"otf",   @"chat-file-type-otf")
+    MATCH(@"ppt",   @"chat-file-type-ppt")
+    MATCH(@"psd",   @"chat-file-type-psd")
+    MATCH(@"rar",   @"chat-file-type-rar")
+    MATCH(@"tar",   @"chat-file-type-tar")
+    MATCH(@"ttf",   @"chat-file-type-ttf")
+    MATCH(@"wav",   @"chat-file-type-wav")
+    MATCH(@"wma",   @"chat-file-type-wma")
+    MATCH(@"xls",   @"chat-file-type-xls")
+    MATCH(@"zip",   @"chat-file-type-zip")
+
+    #undef MATCH
+
+    return [UIImage imageNamed:basicName];
 }
 
 @end
