@@ -99,14 +99,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     }
 }
 
-- (void)qMarkAllFriendRequestsAsSeen
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    [self.friendsContainer private_markAllFriendRequestsAsSeen];
-}
-
-- (void)qApproveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
+- (void)qApproveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
@@ -116,10 +109,10 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     int32_t friendId = tox_add_friend_norequest(self.tox, clientId);
     free(clientId);
 
+    BOOL wasError = NO;
+
     if (friendId == -1) {
-        if (wasError) {
-            *wasError = YES;
-        }
+        wasError = YES;
 
         DDLogError(@"ToxManager: approve friendRequest... error occured");
     }
@@ -130,6 +123,12 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [self.friendsContainer private_addFriend:[self qCreateFriendWithId:friendId]];
 
         DDLogInfo(@"ToxManager: approve friendRequest... approved");
+    }
+
+    if (block) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            block(wasError);
+        });
     }
 }
 

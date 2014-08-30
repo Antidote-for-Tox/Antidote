@@ -30,8 +30,7 @@
 - (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey;
 
 - (void)sendFriendRequestWithAddress:(NSString *)address message:(NSString *)message;
-- (void)markAllFriendRequestsAsSeen;
-- (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
+- (void)approveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block;
 - (void)removeFriendRequest:(ToxFriendRequest *)request;
 - (void)removeFriend:(ToxFriend *)friend;
 

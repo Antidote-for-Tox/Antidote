@@ -11,7 +11,6 @@
 
 static NSString *const kPublicKeyKey = @"kPublicKeyKey";
 static NSString *const kMessageKey = @"kMessageKey";
-static NSString *const kWasSeenKey = @"kWasSeenKey";
 
 @implementation ToxFriendRequest
 
@@ -21,7 +20,6 @@ static NSString *const kWasSeenKey = @"kWasSeenKey";
 
     request.publicKey = publicKey;
     request.message = message;
-    request.wasSeen = NO;
 
     return request;
 }
@@ -42,7 +40,6 @@ static NSString *const kWasSeenKey = @"kWasSeenKey";
 
     request.publicKey = dictionary[kPublicKeyKey];
     request.message = dictionary[kMessageKey];
-    request.wasSeen = [dictionary[kWasSeenKey] boolValue];
 
     return request;
 }
@@ -57,8 +54,6 @@ static NSString *const kWasSeenKey = @"kWasSeenKey";
     if (self.message) {
         dict[kMessageKey] = self.message;
     }
-
-    dict[kWasSeenKey] = @(self.wasSeen);
 
     return dict;
 }

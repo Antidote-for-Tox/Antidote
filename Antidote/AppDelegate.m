@@ -105,7 +105,7 @@
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
 {
     if (tabIndex == AppDelegateTabIndexFriends) {
-        NSUInteger number = [[ToxManager sharedInstance].friendsContainer numberOfNotSeenRequests];
+        NSUInteger number = [[ToxManager sharedInstance].friendsContainer requestsCount];
 
         self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
     }

@@ -14,8 +14,7 @@
 
 - (void)qLoadFriendsAndCreateContainer;
 - (void)qSendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString;
-- (void)qMarkAllFriendRequestsAsSeen;
-- (void)qApproveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError;
+- (void)qApproveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block;
 - (void)qRemoveFriendRequest:(ToxFriendRequest *)request;
 - (void)qRemoveFriend:(ToxFriend *)friend;
 - (void)qChangeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange;

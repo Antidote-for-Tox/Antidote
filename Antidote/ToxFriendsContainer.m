@@ -142,21 +142,6 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
     }
 }
 
-- (NSUInteger)numberOfNotSeenRequests
-{
-    @synchronized(self.friendRequests) {
-        NSUInteger number = 0;
-
-        for (ToxFriendRequest *request in self.friendRequests) {
-            if (! request.wasSeen) {
-                number++;
-            }
-        }
-
-        return number;
-    }
-}
-
 #pragma mark -  Private for ToxManager
 
 - (void)private_addFriend:(ToxFriend *)friend
@@ -342,37 +327,6 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                   updatedSet:nil];
 
         DDLogInfo(@"ToxFriendsContainer: removing friendRequest... removed");
-    }
-}
-
-- (void)private_markAllFriendRequestsAsSeen
-{
-    @synchronized(self.friendRequests) {
-        DDLogInfo(@"ToxFriendsContainer: marking all friendRequests as seen");
-
-        BOOL didChange = NO;
-
-        for (ToxFriendRequest *request in self.friendRequests) {
-            if (! request.wasSeen) {
-                request.wasSeen = YES;
-                didChange = YES;
-            }
-        }
-
-        if (! didChange) {
-            return;
-        }
-
-        NSMutableArray *array = [NSMutableArray new];
-
-        for (NSDictionary *dict in [UserInfoManager sharedInstance].uPendingFriendRequests) {
-            ToxFriendRequest *request = [ToxFriendRequest friendRequestFromDictionary:dict];
-            request.wasSeen = YES;
-
-            [array addObject:[request requestToDictionary]];
-        }
-
-        [UserInfoManager sharedInstance].uPendingFriendRequests = [array copy];
     }
 }
 
