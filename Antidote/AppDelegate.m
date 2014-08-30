@@ -26,6 +26,8 @@
 @property (strong, nonatomic) BadgeWithText *friendsBadge;
 @property (strong, nonatomic) BadgeWithText *chatsBadge;
 
+@property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTask;
+
 @end
 
 @implementation AppDelegate
@@ -148,6 +150,14 @@
 {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+    DDLogInfo(@"AppDelegate: starting background task...");
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        DDLogInfo(@"AppDelegate: starting background task... time is up, stopping it");
+
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
+    }];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
