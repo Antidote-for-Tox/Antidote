@@ -168,17 +168,10 @@
     });
 }
 
-- (void)markAllFriendRequestsAsSeen
+- (void)approveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block
 {
     dispatch_async(self.queue, ^{
-        [self qMarkAllFriendRequestsAsSeen];
-    });
-}
-
-- (void)approveFriendRequest:(ToxFriendRequest *)request wasError:(BOOL *)wasError
-{
-    dispatch_async(self.queue, ^{
-        [self qApproveFriendRequest:request wasError:wasError];
+        [self qApproveFriendRequest:request withBlock:block];
     });
 }
 

@@ -53,7 +53,6 @@ typedef NS_ENUM(NSUInteger, ToxFriendsContainerSort) {
 
 - (NSUInteger)requestsCount;
 - (ToxFriendRequest *)requestAtIndex:(NSUInteger)index;
-- (NSUInteger)numberOfNotSeenRequests;
 
 @end
 
@@ -71,6 +70,5 @@ typedef NS_ENUM(NSUInteger, ToxFriendsContainerSort) {
 
 - (void)private_addFriendRequest:(ToxFriendRequest *)request;
 - (void)private_removeFriendRequest:(ToxFriendRequest *)request;
-- (void)private_markAllFriendRequestsAsSeen;
 
 @end

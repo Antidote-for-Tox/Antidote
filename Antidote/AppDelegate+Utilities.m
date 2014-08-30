@@ -7,9 +7,8 @@
 //
 
 #import "AppDelegate+Utilities.h"
+#import "FriendsViewController.h"
 #import "ChatViewController.h"
-#import "FriendRequestsViewController.h"
-
 
 @implementation AppDelegate (Utilities)
 
@@ -64,27 +63,13 @@
 {
     UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexFriends];
 
-    FriendRequestsViewController *friendRequestVC = nil;
-    NSUInteger index = [self findViewControllerWithClass:[FriendRequestsViewController class]
-                                            inNavigation:navCon
-                                        resultController:&friendRequestVC
-                                             searchBlock:^BOOL (UIViewController *v) { return YES; }];
-
-    if (index != NSNotFound) {
-        if (index == navCon.viewControllers.count - 1) {
-            // nothing to do here, controller is already visible
-            return;
-        }
-
-        [navCon popToViewController:friendRequestVC animated:NO];
-        return;
+    if (navCon.viewControllers.count > 1) {
+        [navCon popToRootViewControllerAnimated:YES];
     }
 
-    // no controller found, creating and pushing it
-    friendRequestVC = [FriendRequestsViewController new];
+    FriendsViewController *friendsVC = (FriendsViewController *)[navCon topViewController];
 
-    [navCon popToRootViewControllerAnimated:NO];
-    [navCon pushViewController:friendRequestVC animated:NO];
+    [friendsVC switchToRequestsTab];
 }
 
 #pragma mark -  Private
