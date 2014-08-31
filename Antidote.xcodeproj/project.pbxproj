@@ -71,6 +71,7 @@
 		118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352CF197A8D5C0048CA64 /* ToxFriend.m */; };
 		118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */; };
 		118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352DC197AEB010048CA64 /* FriendRequestsCell.m */; };
+		11925BB519B3077A00349651 /* ToxUploadingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 11925BB419B3077A00349651 /* ToxUploadingFile.m */; };
 		119BB117198A05A600380557 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB116198A05A600380557 /* Helper.m */; };
 		119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11A198AC1B300380557 /* ToxFunctions.m */; };
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
@@ -265,6 +266,8 @@
 		118352D8197AC1CC0048CA64 /* ToxFriendRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendRequest.m; sourceTree = "<group>"; };
 		118352DB197AEB010048CA64 /* FriendRequestsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendRequestsCell.h; sourceTree = "<group>"; };
 		118352DC197AEB010048CA64 /* FriendRequestsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsCell.m; sourceTree = "<group>"; };
+		11925BB319B3077A00349651 /* ToxUploadingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxUploadingFile.h; sourceTree = "<group>"; };
+		11925BB419B3077A00349651 /* ToxUploadingFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxUploadingFile.m; sourceTree = "<group>"; };
 		119BB115198A05A600380557 /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
 		119BB116198A05A600380557 /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
 		119BB119198AC1B300380557 /* ToxFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxFunctions.h; sourceTree = "<group>"; };
@@ -381,6 +384,8 @@
 			children = (
 				111EC73719A097A900A27A0E /* ToxDownloadingFile.h */,
 				111EC73819A097A900A27A0E /* ToxDownloadingFile.m */,
+				11925BB319B3077A00349651 /* ToxUploadingFile.h */,
+				11925BB419B3077A00349651 /* ToxUploadingFile.m */,
 			);
 			name = Files;
 			sourceTree = "<group>";
@@ -1115,6 +1120,7 @@
 				11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
+				11925BB519B3077A00349651 /* ToxUploadingFile.m in Sources */,
 				1164769E19794E7300DB20B8 /* TCP_server.c in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
 				1164768F19794E7300DB20B8 /* friend_requests.c in Sources */,
