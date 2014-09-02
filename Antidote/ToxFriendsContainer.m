@@ -181,8 +181,6 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
     }
 
     @synchronized(self.friends) {
-        DDLogInfo(@"ToxFriendsContainer: updating friend with id %d...", id);
-
         NSUInteger index = NSNotFound;
         ToxFriend *friend = nil;
 
@@ -228,8 +226,6 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
                                   updatedSet:updated];
 
         [self sendUpdateFriendWithIdNotification:friend];
-
-        DDLogInfo(@"ToxFriendsContainer: updating friend with id %d... updated", id);
     }
 }
 
