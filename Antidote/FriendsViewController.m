@@ -449,8 +449,6 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
             ToxFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
 
             [[ToxManager sharedInstance] chatWithToxFriend:friend completionBlock:^(CDChat *chat) {
-                [[ToxManager sharedInstance] removeFriend:friend];
-
                 UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
 
                 [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
@@ -461,6 +459,8 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
                 [chatAlert show];
             }];
+
+            [[ToxManager sharedInstance] removeFriend:friend];
         }];
 
         [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
