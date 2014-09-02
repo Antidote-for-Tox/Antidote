@@ -111,9 +111,9 @@
 
 #pragma mark -  ToxIdViewDelegate
 
-- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithText:(NSString *)text
+- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithToxId:(NSString *)toxId
 {
-    QRViewerController *qrVC = [[QRViewerController alloc] initWithText:text];
+    QRViewerController *qrVC = [[QRViewerController alloc] initWithToxId:toxId];
 
     [self presentViewController:qrVC animated:YES completion:nil];
 }

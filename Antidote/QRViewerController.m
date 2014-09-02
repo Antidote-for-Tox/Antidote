@@ -26,6 +26,12 @@
 
 @implementation QRViewerController
 
+- (instancetype)initWithToxId:(NSString *)toxId
+{
+    NSString *text = [NSString stringWithFormat:@"tox:%@", toxId];
+    return [self initWithText:text];
+}
+
 - (instancetype)initWithText:(NSString *)text
 {
     self = [super init];

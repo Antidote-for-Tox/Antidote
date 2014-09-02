@@ -10,6 +10,8 @@
 
 @interface QRViewerController : UIViewController
 
+- (instancetype)initWithToxId:(NSString *)toxId;
+
 - (instancetype)initWithText:(NSString *)text;
 
 @end

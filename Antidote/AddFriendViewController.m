@@ -153,8 +153,18 @@
     ZBarSymbolSet *set = [info objectForKey: ZBarReaderControllerResults];
 
     for (ZBarSymbol *symbol in set) {
-        if ([ToxFunctions isAddressString:symbol.data]) {
-            self.toxIdTextView.text = symbol.data;
+        NSString *string = [symbol.data uppercaseString];
+
+        string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        NSString *toxPrefix = @"TOX:";
+
+        if ([string hasPrefix:toxPrefix] && string.length > toxPrefix.length) {
+            string = [string substringFromIndex:toxPrefix.length];
+        }
+
+        if ([ToxFunctions isAddressString:string]) {
+            self.toxIdTextView.text = string;
 
             [self dismissViewControllerAnimated:YES completion:nil];
         }

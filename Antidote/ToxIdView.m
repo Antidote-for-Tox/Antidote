@@ -37,7 +37,7 @@
 
 - (void)qrButtonPressed
 {
-    [self.delegate toxIdView:self wantsToShowQRWithText:self.valueLabel.text];
+    [self.delegate toxIdView:self wantsToShowQRWithToxId:self.valueLabel.text];
 }
 
 #pragma mark -  Private

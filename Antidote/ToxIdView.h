@@ -10,7 +10,7 @@
 
 @class ToxIdView;
 @protocol ToxIdViewDelegate <NSObject>
-- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithText:(NSString *)text;
+- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithToxId:(NSString *)toxId;
 @end
 
 @interface ToxIdView : UIView
