@@ -11,6 +11,7 @@
 #import "tox.h"
 #import "ToxFriendsContainer.h"
 #import "ToxManagerFileProgressDelegate.h"
+#import "ToxNode.h"
 #import "CDChat.h"
 #import "CDMessage.h"
 
@@ -27,7 +28,7 @@
 
 + (instancetype)sharedInstance;
 
-- (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey;
+- (void)bootstrapWithNodes:(NSArray *)nodes;
 
 - (void)sendFriendRequestWithAddress:(NSString *)address message:(NSString *)message;
 - (void)approveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block;

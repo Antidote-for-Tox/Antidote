@@ -41,9 +41,17 @@
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
 
-    [[ToxManager sharedInstance] bootstrapWithAddress:@"23.226.230.47"
-                                                 port:33445
-                                            publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"];
+    [[ToxManager sharedInstance] bootstrapWithNodes:@[
+        [ToxNode nodeWithAddress:@"192.254.75.98"   port:33445 publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"],
+        [ToxNode nodeWithAddress:@"107.161.17.51"   port:33445 publicKey:@"7BE3951B97CA4B9ECDDA768E8C52BA19E9E2690AB584787BF4C90E04DBB75111"],
+        [ToxNode nodeWithAddress:@"144.76.60.215"   port:33445 publicKey:@"04119E835DF3E78BACF0F84235B300546AF8B936F035185E2A8E9E0A67C8924F"],
+        [ToxNode nodeWithAddress:@"23.226.230.47"   port:33445 publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"],
+        [ToxNode nodeWithAddress:@"37.59.102.176"   port:33445 publicKey:@"B98A2CEAA6C6A2FADC2C3632D284318B60FE5375CCB41EFA081AB67F500C1B0B"],
+        [ToxNode nodeWithAddress:@"37.187.46.132"   port:33445 publicKey:@"5EB67C51D3FF5A9D528D242B669036ED2A30F8A60E674C45E7D43010CB2E1331"],
+        [ToxNode nodeWithAddress:@"178.21.112.187"  port:33445 publicKey:@"4B2C19E924972CB9B57732FB172F8A8604DE13EEDA2A6234E348983344B23057"],
+        [ToxNode nodeWithAddress:@"192.210.149.121" port:33445 publicKey:@"F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"],
+        [ToxNode nodeWithAddress:@"54.199.139.199"  port:33445 publicKey:@"7F9C31FE850E97CEFD4C4591DF93FC757C7C12549DDD55F8EEAECC34FE76C029"],
+    ]];
 
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 

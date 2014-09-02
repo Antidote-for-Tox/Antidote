@@ -138,6 +138,7 @@
 		11DCC6F119A92C75000A5763 /* friends-sort-alphabet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6EF19A92C75000A5763 /* friends-sort-alphabet@2x.png */; };
 		11DCC6F219A92C75000A5763 /* friends-sort-status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6F019A92C75000A5763 /* friends-sort-status@2x.png */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
+		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -362,6 +363,8 @@
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
+		84F9E6E819B61D49005F3889 /* ToxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxNode.h; sourceTree = "<group>"; };
+		84F9E6E919B61D49005F3889 /* ToxNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxNode.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -656,12 +659,13 @@
 			children = (
 				111EC73619A0979900A27A0E /* Files */,
 				118352CA197A8C950048CA64 /* Friends */,
+				84F9E6E719B61D3E005F3889 /* Node */,
 				11C3A750198CFBD60029A7A0 /* Private */,
 				119BB119198AC1B300380557 /* ToxFunctions.h */,
-				119BB11A198AC1B300380557 /* ToxFunctions.m */,
 				11835293197994050048CA64 /* ToxManager.h */,
-				11835294197994050048CA64 /* ToxManager.m */,
 				111EC73A19A0FBFE00A27A0E /* ToxManagerFileProgressDelegate.h */,
+				119BB11A198AC1B300380557 /* ToxFunctions.m */,
+				11835294197994050048CA64 /* ToxManager.m */,
 			);
 			name = ToxManager;
 			sourceTree = "<group>";
@@ -901,6 +905,15 @@
 			name = CustomLogFormatter;
 			sourceTree = "<group>";
 		};
+		84F9E6E719B61D3E005F3889 /* Node */ = {
+			isa = PBXGroup;
+			children = (
+				84F9E6E819B61D49005F3889 /* ToxNode.h */,
+				84F9E6E919B61D49005F3889 /* ToxNode.m */,
+			);
+			name = Node;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1096,6 +1109,7 @@
 				111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */,
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
 				1164769619794E7300DB20B8 /* net_crypto.c in Sources */,
+				84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */,
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,

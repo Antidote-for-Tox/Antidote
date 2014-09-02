@@ -154,10 +154,10 @@
 
 #pragma mark -  Public
 
-- (void)bootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
+- (void)bootstrapWithNodes:(NSArray *)nodes
 {
     dispatch_async(self.queue, ^{
-        [self qBootstrapWithAddress:address port:port publicKey:publicKey];
+        [self qBootstrapWithNodes:nodes];
     });
 }
 
@@ -340,15 +340,18 @@
     dispatch_source_set_timer(self.timer, dispatch_walltime(NULL, 0), actualInterval, actualInterval / 5);
 }
 
-- (void)qBootstrapWithAddress:(NSString *)address port:(NSUInteger)port publicKey:(NSString *)publicKey
+- (void)qBootstrapWithNodes:(NSArray *)nodes
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: bootstraping with address %@, port %lu, publicKey %@", address, port, publicKey);
+    for (ToxNode *node in nodes) {
+        DDLogInfo(@"ToxManager: bootstraping with address %@, port %lu, publicKey %@",
+                node.address, node.port, node.publicKey);
 
-    uint8_t *pub_key = [ToxFunctions hexStringToBin:publicKey];
-    tox_bootstrap_from_address(self.tox, address.UTF8String, htons(port), pub_key);
-    free(pub_key);
+        uint8_t *pub_key = [ToxFunctions hexStringToBin:node.publicKey];
+        tox_bootstrap_from_address(self.tox, node.address.UTF8String, htons(node.port), pub_key);
+        free(pub_key);
+    }
 
     [self qMaybeStartTimer];
 }
