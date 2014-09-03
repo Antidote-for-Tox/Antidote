@@ -8,7 +8,13 @@ Tox client for iOS 7.0+;
 ![](https://i.imgur.com/Avu8kvu.png)
 ![](https://i.imgur.com/DfYtnCe.png)
 
-## Downloads
+##Usage
+
+#### Cydia
+
+You can install [0.1](https://github.com/dvor/Antidote/releases/tag/0.1) version of Antidote from Cydia repo `http://dvor.me/cydia/`
+
+#### Downloads
 
 Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open `Antidote.xcworkspace` file with Xcode 5+.
 
