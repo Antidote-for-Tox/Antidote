@@ -296,16 +296,16 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 {
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[
         NSLocalizedString(@"Friends", @"Friends"),
-        @"Request",
+        @"Requests",
     ]];
-    self.segmentedControl.tintColor = [UIColor uColorOpaqueWithWhite:160];
+    self.segmentedControl.tintColor = [AppearanceManager textMainColor];
     self.segmentedControl.selectedSegmentIndex = SegmentedIndexFriends;
 
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlPressed:)
                     forControlEvents:UIControlEventValueChanged];
 
-    [self.view addSubview:self.segmentedControl];
+    self.navigationItem.titleView = self.segmentedControl;
 
     [self updateSegmentedControlRequestTitle];
 }
@@ -326,17 +326,11 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 - (void)adjustSubviews
 {
-    CGRect frame = CGRectZero;
-    frame.origin.x = 15.0;
-    frame.size.width = self.view.bounds.size.width - 2 * frame.origin.x;
+    CGRect frame = self.segmentedControl.frame;
     frame.size.height = 25.0;
     self.segmentedControl.frame = frame;
 
-    frame = self.tableView.frame;
-    frame.origin.y = CGRectGetMaxY(self.segmentedControl.frame) + 5.0;
-    frame.size.width = self.view.bounds.size.width;
-    frame.size.height = self.view.bounds.size.height - frame.origin.y;
-    self.tableView.frame = frame;
+    self.tableView.frame = self.view.bounds;
 }
 
 - (UIImageView *)findHairlineImageViewUnder:(UIView *)view
