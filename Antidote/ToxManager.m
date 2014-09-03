@@ -349,7 +349,7 @@
                 node.address, node.port, node.publicKey);
 
         uint8_t *pub_key = [ToxFunctions hexStringToBin:node.publicKey];
-        tox_bootstrap_from_address(self.tox, node.address.UTF8String, htons(node.port), pub_key);
+        tox_bootstrap_from_address(self.tox, node.address.UTF8String, node.port, pub_key);
         free(pub_key);
     }
 
