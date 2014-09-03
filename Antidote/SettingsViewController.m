@@ -15,6 +15,7 @@
 #import "SettingsColorView.h"
 #import "AppDelegate.h"
 #import "NSString+Utilities.h"
+#import "MFMailComposeViewController+BlocksKit.h"
 
 @interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate, SettingsColorViewDelegate>
 
@@ -26,6 +27,8 @@
 @property (strong, nonatomic) ToxIdView *toxIdView;
 
 @property (strong, nonatomic) SettingsColorView *colorView;
+
+@property (strong, nonatomic) UIButton *feedbackButton;
 
 @end
 
@@ -53,6 +56,7 @@
     [self createStatusMessageField];
     [self createToxIdView];
     [self createColorView];
+    [self createFeedbackButton];
 }
 
 - (void)viewDidLayoutSubviews
@@ -60,6 +64,32 @@
     [super viewDidLayoutSubviews];
 
     [self adjustSubviews];
+}
+
+#pragma mark -  Actions
+
+- (void)feedbackButtonPressed
+{
+    if (! [MFMailComposeViewController canSendMail]) {
+        [[[UIAlertView alloc] initWithTitle:nil
+                                    message:NSLocalizedString(@"Please configure your mail settings", @"Settings")
+                                   delegate:nil
+                          cancelButtonTitle:NSLocalizedString(@"OK", @"Settings")
+                          otherButtonTitles:nil] show];
+
+        return;
+    }
+
+    MFMailComposeViewController *vc = [MFMailComposeViewController new];
+    vc.navigationBar.tintColor = [AppearanceManager textMainColor];
+    [vc setSubject:@"Feedback"];
+    [vc setToRecipients:@[@"antidote@dvor.me"]];
+
+    vc.bk_completionBlock = ^(MFMailComposeViewController *vc, MFMailComposeResult result, NSError *error) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 #pragma mark -  UITextFieldDelegate
@@ -177,11 +207,22 @@
     [self.scrollView addSubview:self.colorView];
 }
 
+- (void)createFeedbackButton
+{
+    self.feedbackButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.feedbackButton setTitle:NSLocalizedString(@"Feedback", @"Settings") forState:UIControlStateNormal];
+    [self.feedbackButton addTarget:self
+                            action:@selector(feedbackButtonPressed)
+                  forControlEvents:UIControlEventTouchUpInside];
+
+    [self.scrollView addSubview:self.feedbackButton];
+}
+
 - (void)adjustSubviews
 {
     self.scrollView.frame = self.view.bounds;
 
-    CGFloat currentOriginY = 0.0;
+    __unused CGFloat currentOriginY = 0.0;
     const CGFloat yIndentation = 10.0;
 
     CGRect frame = CGRectZero;
@@ -221,6 +262,16 @@
         frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2;
         frame.origin.y = currentOriginY + yIndentation;
         self.colorView.frame = frame;
+    }
+    currentOriginY = CGRectGetMaxY(frame);
+
+    {
+        [self.feedbackButton sizeToFit];
+        frame = self.feedbackButton.frame;
+        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2;
+        frame.origin.y = self.scrollView.frame.size.height - frame.size.height - yIndentation -
+            self.scrollView.contentInset.top - self.scrollView.contentInset.bottom;
+        self.feedbackButton.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
