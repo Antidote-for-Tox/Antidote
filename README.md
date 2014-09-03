@@ -19,38 +19,26 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 -  emoticons
 -  spell check
 -  reading/scanning Tox ID via QR code
+-  receiving files
 
 #### In progress
 
 -  UI polishing
-  - all screens design
-  - top notifications design
-  - sorting/search in Friends
-  - saving unsend text in chats
-  - copying messages in chat
--  file transfer
-  - receiving
-  - opening files in another apps
-  - sending images from app
-  - inline images
-  - sending files from another apps *("Open in Antidote" -> Send to friend)*
-
-#### Then
-
--  group chats *(as soon as group chats will be rewritten in toxcore)*
+-  sending files
 -  read receipts
 
 #### Then
 
-- audio calls
-- video calls
+-  group chats *(as soon as group chats will be rewritten in toxcore)*
+-  audio calls
+-  video calls
 
 #### Future
 
 -  offline mode
--  background mode (10 minutes, via background fetch?)
+-  background mode (via background fetch?)
 -  iOS notifications (with app in background)
--  tox:// scheme
+-  tox:// scheme from another apps
 -  *...*
 -  App Store ?
 -  *...*
@@ -60,7 +48,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 ## Contact
 
-[email](mailto:d@dvor.me)
+[email](mailto:antidote@dvor.me)
 
 ## License
 
