@@ -84,64 +84,18 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 #pragma mark -  Public
 
-- (void)redrawAnimated:(BOOL)animated
+- (void)redraw
 {
-    CGRect oldTitleLabelFrame = self.titleLabel.frame;
-    CGRect oldDescriptionLabelFrame = self.descriptionLabel.frame;
-    CGRect oldNoButtonFrame = self.noButton.frame;
+    [super redraw];
 
-    // order matters
-    [self updateTypeImageViewAnimated:animated];
-    [self updateYesButton];
-    [self updateNoButton];
-    [self updateTitleLabel];
-    [self updateDescriptionLabel];
-    [self updatePlayPauseButton];
-    [self updateProgressViewAnimated:animated];
+    [self redrawAnimated:NO];
+}
 
-    CGRect newTitleLabelFrame = self.titleLabel.frame;
-    CGRect newNoButtonFrame = self.noButton.frame;
-    CGRect newDescriptionLabelFrame = self.descriptionLabel.frame;
+- (void)redrawAnimated
+{
+    [super redraw];
 
-    BOOL animateTitleLabel = ! CGRectEqualToRect(oldTitleLabelFrame, newTitleLabelFrame);
-    BOOL animateNoButton   = ! CGRectEqualToRect(oldNoButtonFrame,   newNoButtonFrame);
-
-    BOOL animateDescriptionLabel = self.descriptionLabel.alpha &&
-        ! CGPointEqualToPoint(oldDescriptionLabelFrame.origin, newDescriptionLabelFrame.origin);
-
-    if (animated && (animateTitleLabel || animateDescriptionLabel || animateNoButton)) {
-        if (animateTitleLabel) {
-            self.titleLabel.frame = oldTitleLabelFrame;
-        }
-        if (animateDescriptionLabel) {
-            self.descriptionLabel.alpha = 0.0;
-        }
-        if (animateNoButton) {
-            self.noButton.frame = oldNoButtonFrame;
-        }
-
-        self.userInteractionEnabled = NO;
-
-        [UIView animateWithDuration:kAnimationDuration animations:^{
-            [self changeHiddenForSubview];
-
-            if (animateTitleLabel) {
-                self.titleLabel.frame = newTitleLabelFrame;
-            }
-            if (animateDescriptionLabel) {
-                self.descriptionLabel.alpha = 1.0;
-            }
-            if (animateNoButton) {
-                self.noButton.frame = newNoButtonFrame;
-            }
-
-        } completion:^(BOOL f) {
-            self.userInteractionEnabled = YES;
-        }];
-    }
-    else {
-        [self changeHiddenForSubview];
-    }
+    [self redrawAnimated:YES];
 }
 
 - (void)redrawLoadingPercentOnlyAnimated:(BOOL)animated
@@ -150,9 +104,9 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     [self updateProgressViewAnimated:animated];
 }
 
-+ (CGFloat)height
++ (CGFloat)heightWithFullDateString:(NSString *)fullDateString
 {
-    return kCellHeight;
+    return [super heightWithFullDateString:fullDateString] + kCellHeight;
 }
 
 #pragma mark -  Private
@@ -215,6 +169,66 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     [self.contentView addSubview:self.playPauseButton];
 
     self.currentPlayPauseImageType = PlayPauseImageTypeNone;
+}
+
+- (void)redrawAnimated:(BOOL)animated
+{
+    CGRect oldTitleLabelFrame = self.titleLabel.frame;
+    CGRect oldDescriptionLabelFrame = self.descriptionLabel.frame;
+    CGRect oldNoButtonFrame = self.noButton.frame;
+
+    // order matters
+    [self updateTypeImageViewAnimated:animated];
+    [self updateYesButton];
+    [self updateNoButton];
+    [self updateTitleLabel];
+    [self updateDescriptionLabel];
+    [self updatePlayPauseButton];
+    [self updateProgressViewAnimated:animated];
+
+    CGRect newTitleLabelFrame = self.titleLabel.frame;
+    CGRect newNoButtonFrame = self.noButton.frame;
+    CGRect newDescriptionLabelFrame = self.descriptionLabel.frame;
+
+    BOOL animateTitleLabel = ! CGRectEqualToRect(oldTitleLabelFrame, newTitleLabelFrame);
+    BOOL animateNoButton   = ! CGRectEqualToRect(oldNoButtonFrame,   newNoButtonFrame);
+
+    BOOL animateDescriptionLabel = self.descriptionLabel.alpha &&
+        ! CGPointEqualToPoint(oldDescriptionLabelFrame.origin, newDescriptionLabelFrame.origin);
+
+    if (animated && (animateTitleLabel || animateDescriptionLabel || animateNoButton)) {
+        if (animateTitleLabel) {
+            self.titleLabel.frame = oldTitleLabelFrame;
+        }
+        if (animateDescriptionLabel) {
+            self.descriptionLabel.alpha = 0.0;
+        }
+        if (animateNoButton) {
+            self.noButton.frame = oldNoButtonFrame;
+        }
+
+        self.userInteractionEnabled = NO;
+
+        [UIView animateWithDuration:kAnimationDuration animations:^{
+            [self changeHiddenForSubview];
+
+            if (animateTitleLabel) {
+                self.titleLabel.frame = newTitleLabelFrame;
+            }
+            if (animateDescriptionLabel) {
+                self.descriptionLabel.alpha = 1.0;
+            }
+            if (animateNoButton) {
+                self.noButton.frame = newNoButtonFrame;
+            }
+
+        } completion:^(BOOL f) {
+            self.userInteractionEnabled = YES;
+        }];
+    }
+    else {
+        [self changeHiddenForSubview];
+    }
 }
 
 - (void)updatePlayPauseImageWith:(PlayPauseImageType)imageType
@@ -336,7 +350,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     CGRect frame = CGRectZero;
     frame.size = self.typeImageView.image.size;
     frame.origin.x = 20.0;
-    frame.origin.y = (kCellHeight - frame.size.height) / 2;
+    frame.origin.y = [self startingOriginY] + (kCellHeight - frame.size.height) / 2;
     self.typeImageView.frame = frame;
 }
 
@@ -348,7 +362,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
     CGRect frame = self.yesButton.frame;
     frame.origin.x = self.frame.size.width - frame.size.width - 20.0;
-    frame.origin.y = (kCellHeight - frame.size.height) / 2;
+    frame.origin.y = [self startingOriginY] + (kCellHeight - frame.size.height) / 2;
     self.yesButton.frame = frame;
 }
 
@@ -361,7 +375,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     }
 
     CGRect frame = self.noButton.frame;
-    frame.origin.y = (kCellHeight - frame.size.height) / 2;
+    frame.origin.y = [self startingOriginY] + (kCellHeight - frame.size.height) / 2;
 
     if (self.type == ChatFileCellTypeIncomingWaitingConfirmation) {
         frame.origin.x = CGRectGetMinX(self.yesButton.frame) - frame.size.width - 20.0;
@@ -405,7 +419,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         frame.size.width = self.contentView.frame.size.width - frame.origin.x - 5.0;
     }
     else if (self.type == ChatFileCellTypeIncomingLoaded) {
-        frame.origin.y = (kCellHeight - frame.size.height) / 2;
+        frame.origin.y = [self startingOriginY] + (kCellHeight - frame.size.height) / 2;
         frame.size.width = self.contentView.frame.size.width - frame.origin.x - 5.0;
     }
 

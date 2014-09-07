@@ -57,6 +57,7 @@
 		1164769F19794E7300DB20B8 /* tox.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768819794E7300DB20B8 /* tox.c */; };
 		116476A019794E7300DB20B8 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768A19794E7300DB20B8 /* util.c */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
+		117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */; };
 		11835295197994050048CA64 /* ToxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11835294197994050048CA64 /* ToxManager.m */; };
 		118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A31979BD4C0048CA64 /* UserInfoManager.m */; };
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
@@ -240,6 +241,8 @@
 		1164768B19794E7300DB20B8 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = toxcore/toxcore/util.h; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
+		117FCFB619BCC1990026C13B /* ChatBasicMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicMessageCell.h; sourceTree = "<group>"; };
+		117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicMessageCell.m; sourceTree = "<group>"; };
 		11835293197994050048CA64 /* ToxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxManager.h; sourceTree = "<group>"; };
 		11835294197994050048CA64 /* ToxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManager.m; sourceTree = "<group>"; };
 		118352A21979BD4C0048CA64 /* UserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoManager.h; sourceTree = "<group>"; };
@@ -513,14 +516,10 @@
 			children = (
 				11B9E60B19929DAE00FB20A6 /* ChatBasicCell.h */,
 				11B9E60C19929DAE00FB20A6 /* ChatBasicCell.m */,
-				11B6C320199D499800A48FBC /* ChatFileCell.h */,
-				11B6C321199D499800A48FBC /* ChatFileCell.m */,
-				114630E919857CF70075DA16 /* ChatIncomingCell.h */,
-				114630EA19857CF70075DA16 /* ChatIncomingCell.m */,
-				11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */,
-				11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */,
 				11B6C2FF199A9B4C00A48FBC /* ChatTypingCell.h */,
 				11B6C300199A9B4C00A48FBC /* ChatTypingCell.m */,
+				117FCFB519BCC1820026C13B /* File */,
+				117FCFB319BCC1750026C13B /* Message */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -640,6 +639,28 @@
 				1164768B19794E7300DB20B8 /* util.h */,
 			);
 			name = toxcore;
+			sourceTree = "<group>";
+		};
+		117FCFB319BCC1750026C13B /* Message */ = {
+			isa = PBXGroup;
+			children = (
+				117FCFB619BCC1990026C13B /* ChatBasicMessageCell.h */,
+				117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */,
+				114630E919857CF70075DA16 /* ChatIncomingCell.h */,
+				114630EA19857CF70075DA16 /* ChatIncomingCell.m */,
+				11B9E60E19929DBA00FB20A6 /* ChatOutgoingCell.h */,
+				11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */,
+			);
+			name = Message;
+			sourceTree = "<group>";
+		};
+		117FCFB519BCC1820026C13B /* File */ = {
+			isa = PBXGroup;
+			children = (
+				11B6C320199D499800A48FBC /* ChatFileCell.h */,
+				11B6C321199D499800A48FBC /* ChatFileCell.m */,
+			);
+			name = File;
 			sourceTree = "<group>";
 		};
 		11835292197993F90048CA64 /* Classes */ = {
@@ -1085,6 +1106,7 @@
 				114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */,
 				11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
+				117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */,
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,
 				111EC719199E99B700A27A0E /* ToxManager+PrivateFiles.m in Sources */,
 				1164769A19794E7300DB20B8 /* onion.c in Sources */,

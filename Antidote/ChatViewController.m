@@ -221,17 +221,29 @@ typedef NS_ENUM(NSInteger, Section) {
     UITableViewCell *tableViewCell;
 
     if (indexPath.section == SectionMessages) {
+        ChatBasicCell *basicCell;
         CDMessage *message = self.messages[indexPath.row];
 
         if (message.text) {
-            tableViewCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
+            basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
         }
         else if (message.file) {
-            tableViewCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
+            basicCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
         }
         else if (message.pendingFile) {
-            tableViewCell = [self messagePendingFileCellForRowAtIndexPath:indexPath message:message];
+            basicCell = [self messagePendingFileCellForRowAtIndexPath:indexPath message:message];
         }
+
+        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
+
+        basicCell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
+            [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
+
+        basicCell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
+
+        [basicCell redraw];
+
+        tableViewCell = basicCell;
     }
     else if (indexPath.section == SectionTyping) {
         ChatTypingCell *cell = [tableView dequeueReusableCellWithIdentifier:[ChatTypingCell reuseIdentifier]
@@ -280,11 +292,8 @@ typedef NS_ENUM(NSInteger, Section) {
                 height = [ChatIncomingCell heightWithMessage:message.text.text fullDateString:fullDateString];
             }
         }
-        else if (message.file) {
-            height = [ChatFileCell height];
-        }
-        else if (message.pendingFile) {
-            height = [ChatFileCell height];
+        else if (message.file || message.pendingFile) {
+            height = [ChatFileCell heightWithFullDateString:fullDateString];
         }
     }
     else if (indexPath.section == SectionTyping) {
@@ -382,7 +391,7 @@ typedef NS_ENUM(NSInteger, Section) {
         cell.type = ChatFileCellTypeIncomingCanceled;
     }
 
-    [cell redrawAnimated:YES];
+    [cell redrawAnimated];
 }
 
 - (void)chatFileCellPausePlayButtonPressed:(ChatFileCell *)cell
@@ -403,7 +412,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
     cell.isPaused = ! cell.isPaused;
 
-    [cell redrawAnimated:NO];
+    [cell redraw];
 }
 
 #pragma mark -  UIDocumentInteractionControllerDelegate
@@ -615,9 +624,9 @@ typedef NS_ENUM(NSInteger, Section) {
     [self updateTableViewInsetAndInputViewWithDuration:0.0 curve:0];
 }
 
-- (UITableViewCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+- (ChatBasicCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
 {
-    ChatBasicCell *cell;
+    ChatBasicMessageCell *cell;
 
     if ([Helper isOutgoingMessage:message]) {
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
@@ -630,19 +639,10 @@ typedef NS_ENUM(NSInteger, Section) {
 
     cell.message = message.text.text;
 
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
-
-    cell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
-        [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
-
-    cell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
-
-    [cell redraw];
-
     return cell;
 }
 
-- (UITableViewCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+- (ChatBasicCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
 {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
                                                               forIndexPath:indexPath];
@@ -657,12 +657,10 @@ typedef NS_ENUM(NSInteger, Section) {
         cell.type = ChatFileCellTypeIncomingDeleted;
     }
 
-    [cell redrawAnimated:NO];
-
     return cell;
 }
 
-- (UITableViewCell *)messagePendingFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+- (ChatBasicCell *)messagePendingFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
 {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
                                                               forIndexPath:indexPath];
@@ -686,8 +684,6 @@ typedef NS_ENUM(NSInteger, Section) {
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
         cell.type = ChatFileCellTypeIncomingCanceled;
     }
-
-    [cell redrawAnimated:NO];
 
     return cell;
 }

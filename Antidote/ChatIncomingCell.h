@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ChatBasicCell.h"
+#import "ChatBasicMessageCell.h"
 
-@interface ChatIncomingCell : ChatBasicCell
+@interface ChatIncomingCell : ChatBasicMessageCell
+
++ (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString;
 
 @end

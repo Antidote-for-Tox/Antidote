@@ -10,18 +10,18 @@
 
 @interface ChatBasicCell : UITableViewCell
 
-@property (strong, nonatomic) UILabel *messageLabel;
 @property (strong, nonatomic) UILabel *fullDateLabel;
 @property (strong, nonatomic) UILabel *hiddenDateLabel;
 
-@property (strong, nonatomic) NSString *message;
 @property (strong, nonatomic) NSString *fullDateString;
 @property (strong, nonatomic) NSString *hiddenDateString;
 
 - (void)redraw;
 
-+ (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString;
-+ (UIFont *)messageLabelFont;
+// originY from which subclasses should place their views
+- (CGFloat)startingOriginY;
+
++ (CGFloat)heightWithFullDateString:(NSString *)fullDateString;
 + (UIFont *)fullDateLabelFont;
 
 @end

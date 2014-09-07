@@ -9,6 +9,7 @@
 #import "ChatBasicCell.h"
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "NSString+Utilities.h"
 
 @interface ChatBasicCell()
 
@@ -23,7 +24,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        [self createBasicSubviews];
+        [self createChatBasicCellSubviews];
     }
     return self;
 }
@@ -32,8 +33,6 @@
 
 - (void)redraw
 {
-    self.messageLabel.text = self.message;
-
     self.fullDateLabel.text = self.fullDateString;
     [self.fullDateLabel sizeToFit];
     CGRect frame = self.fullDateLabel.frame;
@@ -50,14 +49,18 @@
     self.hiddenDateLabel.frame = frame;
 }
 
-+ (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString
+- (CGFloat)startingOriginY
 {
-    return 0.0;
+    return CGRectGetMaxY(self.fullDateLabel.frame);
 }
 
-+ (UIFont *)messageLabelFont
++ (CGFloat)heightWithFullDateString:(NSString *)fullDateString
 {
-    return [AppearanceManager fontHelveticaNeueWithSize:16.0];
+    if (! fullDateString) {
+        return 0.0;
+    }
+
+    return [fullDateString stringSizeWithFont:[self fullDateLabelFont]].height;
 }
 
 + (UIFont *)fullDateLabelFont
@@ -67,13 +70,8 @@
 
 #pragma mark -  Private
 
-- (void)createBasicSubviews
+- (void)createChatBasicCellSubviews
 {
-    self.messageLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor]
-                                                        bgColor:[UIColor clearColor]];
-    self.messageLabel.font = [[self class] messageLabelFont];
-    self.messageLabel.numberOfLines = 0;
-
     self.fullDateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
                                                      bgColor:[UIColor clearColor]];
     self.fullDateLabel.font = [[self class] fullDateLabelFont];

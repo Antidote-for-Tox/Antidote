@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "ChatBasicCell.h"
 
 typedef NS_ENUM(NSUInteger, ChatFileCellType) {
     ChatFileCellTypeIncomingWaitingConfirmation,
@@ -17,7 +17,8 @@ typedef NS_ENUM(NSUInteger, ChatFileCellType) {
 };
 
 @protocol ChatFileCellDelegate;
-@interface ChatFileCell : UITableViewCell
+
+@interface ChatFileCell : ChatBasicCell
 
 @property (weak, nonatomic) id <ChatFileCellDelegate> delegate;
 
@@ -30,10 +31,10 @@ typedef NS_ENUM(NSUInteger, ChatFileCellType) {
 @property (assign, nonatomic) CGFloat loadedPercent;
 @property (assign, nonatomic) BOOL isPaused;
 
-- (void)redrawAnimated:(BOOL)animated;
+- (void)redrawAnimated;
 - (void)redrawLoadingPercentOnlyAnimated:(BOOL)animated;
 
-+ (CGFloat)height;
++ (CGFloat)heightWithFullDateString:(NSString *)fullDateString;
 
 @end
 
