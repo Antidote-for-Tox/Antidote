@@ -22,11 +22,6 @@
 #import "AvatarFactory.h"
 #import "UIColor+Utilities.h"
 
-typedef NS_ENUM(NSUInteger, SegmentedIndex) {
-    SegmentedIndexFriends = 0,
-    SegmentedIndexRequests,
-};
-
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
@@ -128,9 +123,18 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 #pragma mark -  Public
 
-- (void)switchToRequestsTab
+- (void)switchToTab:(FriendsViewControllerTab)tab
 {
-    self.segmentedControl.selectedSegmentIndex = SegmentedIndexRequests;
+    if (! self.segmentedControl) {
+        // it seems that view isn't loaded, so we load it
+        [self view];
+    }
+
+    if (self.segmentedControl.selectedSegmentIndex == tab) {
+        return;
+    }
+
+    self.segmentedControl.selectedSegmentIndex = tab;
 
     [self segmentedControlPressed:self.segmentedControl];
 }
@@ -139,10 +143,10 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         return [self friendsCellForRowAtIndexPath:indexPath];
     }
-    else if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexRequests) {
+    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
         return [self requestsCellForRowAtIndexPath:indexPath];
     }
 
@@ -151,10 +155,10 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         return self.friendsContainer.friendsCount;
     }
-    else if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexRequests) {
+    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
         return self.friendsContainer.requestsCount;
     }
 
@@ -165,10 +169,10 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
  commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
   forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         [self friendsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
     }
-    else if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexRequests) {
+    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
         [self requestsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
     }
 }
@@ -177,10 +181,10 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         return [FriendsCell height];
     }
-    else if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexRequests) {
+    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
         return [FriendRequestsCell height];
     }
 
@@ -191,14 +195,14 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         return [self friendsDidSelectRowAtIndexPath:indexPath];
     }
 }
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
         FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
@@ -214,6 +218,10 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
     ToxFriendRequest *request = [self.friendsContainer requestAtIndex:path.row];
 
+    BOOL wasLastRequest = (self.friendsContainer.requestsCount == 1);
+
+    __weak FriendsViewController *weakSelf = self;
+
     [[ToxManager sharedInstance] approveFriendRequest:request withBlock:^(BOOL wasError) {
         if (wasError) {
             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
@@ -225,6 +233,10 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+
+        if (wasLastRequest) {
+            [weakSelf switchToTab:FriendsViewControllerTabFriends];
+        }
     }];
 }
 
@@ -232,7 +244,7 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 - (void)updateFriendsNotification:(NSNotification *)notification
 {
-    if (self.segmentedControl.selectedSegmentIndex != SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
         return;
     }
 
@@ -266,7 +278,7 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 {
     [self updateSegmentedControlRequestTitle];
 
-    if (self.segmentedControl.selectedSegmentIndex != SegmentedIndexRequests) {
+    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabRequests) {
         return;
     }
 
@@ -299,7 +311,7 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
         @"Requests",
     ]];
     self.segmentedControl.tintColor = [AppearanceManager textMainColor];
-    self.segmentedControl.selectedSegmentIndex = SegmentedIndexFriends;
+    self.segmentedControl.selectedSegmentIndex = FriendsViewControllerTabFriends;
 
     [self.segmentedControl addTarget:self
                               action:@selector(segmentedControlPressed:)
@@ -352,7 +364,7 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
 
 - (void)updateBarButtonItem
 {
-    if (self.segmentedControl.selectedSegmentIndex != SegmentedIndexFriends) {
+    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
         self.navigationItem.leftBarButtonItem = nil;
         self.navigationItem.rightBarButtonItem = nil;
 
@@ -510,7 +522,7 @@ typedef NS_ENUM(NSUInteger, SegmentedIndex) {
         title = [title stringByAppendingFormat:@" (%lu)", (unsigned long)number];
     }
 
-    [self.segmentedControl setTitle:title forSegmentAtIndex:SegmentedIndexRequests];
+    [self.segmentedControl setTitle:title forSegmentAtIndex:FriendsViewControllerTabRequests];
 }
 
 @end

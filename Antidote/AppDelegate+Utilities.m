@@ -69,7 +69,7 @@
 
     FriendsViewController *friendsVC = (FriendsViewController *)[navCon topViewController];
 
-    [friendsVC switchToRequestsTab];
+    [friendsVC switchToTab:FriendsViewControllerTabRequests];
 }
 
 #pragma mark -  Private

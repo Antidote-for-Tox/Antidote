@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSUInteger, FriendsViewControllerTab) {
+    FriendsViewControllerTabFriends = 0,
+    FriendsViewControllerTabRequests,
+};
+
 @interface FriendsViewController : UIViewController
 
-- (void)switchToRequestsTab;
+- (void)switchToTab:(FriendsViewControllerTab)tab;
 
 @end
