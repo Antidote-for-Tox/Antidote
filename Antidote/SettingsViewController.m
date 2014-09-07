@@ -16,6 +16,8 @@
 #import "AppDelegate.h"
 #import "NSString+Utilities.h"
 #import "MFMailComposeViewController+BlocksKit.h"
+#import "UIAlertView+BlocksKit.h"
+#import "DDFileLogger.h"
 
 @interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate, SettingsColorViewDelegate>
 
@@ -80,16 +82,19 @@
         return;
     }
 
-    MFMailComposeViewController *vc = [MFMailComposeViewController new];
-    vc.navigationBar.tintColor = [AppearanceManager textMainColor];
-    [vc setSubject:@"Feedback"];
-    [vc setToRecipients:@[@"antidote@dvor.me"]];
+    UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:NSLocalizedString(@"Add log files?", @"Settings")];
 
-    vc.bk_completionBlock = ^(MFMailComposeViewController *vc, MFMailComposeResult result, NSError *error) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    };
+    __weak SettingsViewController *weakSelf = self;
 
-    [self presentViewController:vc animated:YES completion:nil];
+    [alertView bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Settings") handler:^{
+        [weakSelf showMailControllerWithLogs:NO];
+    }];
+
+    [alertView bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Settings") handler:^{
+        [weakSelf showMailControllerWithLogs:YES];
+    }];
+
+    [alertView show];
 }
 
 #pragma mark -  UITextFieldDelegate
@@ -276,6 +281,32 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
+}
+
+- (void)showMailControllerWithLogs:(BOOL)withLogs
+{
+    MFMailComposeViewController *vc = [MFMailComposeViewController new];
+    vc.navigationBar.tintColor = [AppearanceManager textMainColor];
+    [vc setSubject:@"Feedback"];
+    [vc setToRecipients:@[@"antidote@dvor.me"]];
+
+    if (withLogs) {
+        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+        for (NSString *path in [delegate getLogFilesPaths]) {
+            NSData *data = [NSData dataWithContentsOfFile:path];
+
+            if (data) {
+                [vc addAttachmentData:data mimeType:@"text/plain" fileName:[path lastPathComponent]];
+            }
+        }
+    }
+
+    vc.bk_completionBlock = ^(MFMailComposeViewController *vc, MFMailComposeResult result, NSError *error) {
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 @end

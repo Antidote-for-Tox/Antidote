@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 #import "CustomLogFormatter.h"
+#import "DDFileLogger.h"
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 #import "ToxManager.h"
@@ -22,6 +23,8 @@
 #import "BadgeWithText.h"
 
 @interface AppDelegate()
+
+@property (strong, nonatomic) DDFileLogger *fileLogger;
 
 @property (strong, nonatomic) BadgeWithText *friendsBadge;
 @property (strong, nonatomic) BadgeWithText *chatsBadge;
@@ -128,13 +131,29 @@
     }
 }
 
+- (NSArray *)getLogFilesPaths
+{
+    return [self.fileLogger.logFileManager unsortedLogFilePaths];
+}
+
 - (void)configureLoggingStuff
 {
+    self.fileLogger = [DDFileLogger new];
+    self.fileLogger.maximumFileSize = 1024 * 1024;
+    self.fileLogger.rollingFrequency = 0.0;
+    self.fileLogger.logFileManager.maximumNumberOfLogFiles = 2;
+
+    [DDLog addLogger:self.fileLogger];
+
     // your log statements will be sent to the Console.app and the Xcode console (just like a normal NSLog)
     [DDLog addLogger:[DDASLLogger sharedInstance]];
     [DDLog addLogger:[DDTTYLogger sharedInstance]];
 
-    [[DDTTYLogger sharedInstance] setLogFormatter:[CustomLogFormatter new]];
+    CustomLogFormatter *formatter = [CustomLogFormatter new];
+
+    [self.fileLogger setLogFormatter:formatter];
+    [[DDASLLogger sharedInstance] setLogFormatter:formatter];
+    [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
 
     DDLogInfo(@"\n\n\n\t\t\t\t\t\t***** Application started *****\n\n\n");
     DDLogInfo(@"Device:\n\tname = %@\n\tmodel = %@\n\tsystemVersion = %@\n\n",
