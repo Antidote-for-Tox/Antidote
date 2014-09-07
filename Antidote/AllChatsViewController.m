@@ -20,6 +20,7 @@
 #import "UIColor+Utilities.h"
 #import "Helper.h"
 #import "TimeFormatter.h"
+#import "UITableViewCell+Utilities.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate,
     NSFetchedResultsControllerDelegate>

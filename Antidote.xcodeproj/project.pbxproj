@@ -56,6 +56,7 @@
 		1164769E19794E7300DB20B8 /* TCP_server.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768619794E7300DB20B8 /* TCP_server.c */; };
 		1164769F19794E7300DB20B8 /* tox.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768819794E7300DB20B8 /* tox.c */; };
 		116476A019794E7300DB20B8 /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 1164768A19794E7300DB20B8 /* util.c */; };
+		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		11835295197994050048CA64 /* ToxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11835294197994050048CA64 /* ToxManager.m */; };
 		118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A31979BD4C0048CA64 /* UserInfoManager.m */; };
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
@@ -237,6 +238,8 @@
 		1164768919794E7300DB20B8 /* tox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tox.h; path = toxcore/toxcore/tox.h; sourceTree = "<group>"; };
 		1164768A19794E7300DB20B8 /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = util.c; path = toxcore/toxcore/util.c; sourceTree = "<group>"; };
 		1164768B19794E7300DB20B8 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = toxcore/toxcore/util.h; sourceTree = "<group>"; };
+		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
+		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		11835293197994050048CA64 /* ToxManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxManager.h; sourceTree = "<group>"; };
 		11835294197994050048CA64 /* ToxManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManager.m; sourceTree = "<group>"; };
 		118352A21979BD4C0048CA64 /* UserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoManager.h; sourceTree = "<group>"; };
@@ -723,6 +726,8 @@
 				118352C8197A867A0048CA64 /* UIColor+Utilities.m */,
 				11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */,
 				11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */,
+				117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */,
+				117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */,
 				118352C4197A802D0048CA64 /* UIView+Utilities.h */,
 				118352C5197A802D0048CA64 /* UIView+Utilities.m */,
 				118352BA197A7B960048CA64 /* UIViewController+Utilities.h */,
@@ -1106,6 +1111,7 @@
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
 				119BB129198CECAB00380557 /* ToxIdView.m in Sources */,
+				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */,
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
 				1164769619794E7300DB20B8 /* net_crypto.c in Sources */,

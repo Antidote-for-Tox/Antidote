@@ -24,6 +24,5 @@
 - (void)redraw;
 
 + (CGFloat)height;
-+ (NSString *)reuseIdentifier;
 
 @end

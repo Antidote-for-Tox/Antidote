@@ -12,7 +12,6 @@
 
 - (void)redraw;
 
-+ (NSString *)reuseIdentifier;
 + (CGFloat)height;
 
 @end

@@ -57,11 +57,6 @@
     return 50.0;
 }
 
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
 #pragma mark -  Private
 
 - (void)createTitleView

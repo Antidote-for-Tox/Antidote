@@ -20,6 +20,7 @@
 #import "Helper.h"
 #import "TimeFormatter.h"
 #import "AppDelegate.h"
+#import "UITableViewCell+Utilities.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,

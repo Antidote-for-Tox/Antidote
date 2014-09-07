@@ -20,7 +20,6 @@
 
 - (void)redraw;
 
-+ (NSString *)reuseIdentifier;
 + (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString;
 + (UIFont *)messageLabelFont;
 + (UIFont *)fullDateLabelFont;

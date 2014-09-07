@@ -21,6 +21,7 @@
 #import "TimeFormatter.h"
 #import "AvatarFactory.h"
 #import "UIColor+Utilities.h"
+#import "UITableViewCell+Utilities.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 

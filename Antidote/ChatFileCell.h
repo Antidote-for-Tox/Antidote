@@ -34,7 +34,6 @@ typedef NS_ENUM(NSUInteger, ChatFileCellType) {
 - (void)redrawLoadingPercentOnlyAnimated:(BOOL)animated;
 
 + (CGFloat)height;
-+ (NSString *)reuseIdentifier;
 
 @end
 

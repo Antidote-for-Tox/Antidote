@@ -155,11 +155,6 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     return kCellHeight;
 }
 
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
 #pragma mark -  Private
 
 - (void)createTypeImageView

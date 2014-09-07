@@ -15,6 +15,5 @@
 @property (assign, nonatomic) StatusCircleStatus status;
 
 + (CGFloat)height;
-+ (NSString *)reuseIdentifier;
 
 @end

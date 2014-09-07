@@ -50,11 +50,6 @@
     self.hiddenDateLabel.frame = frame;
 }
 
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
 + (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString
 {
     return 0.0;

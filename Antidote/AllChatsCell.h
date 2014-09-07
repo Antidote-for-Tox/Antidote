@@ -18,6 +18,4 @@
 
 + (CGFloat)height;
 
-+ (NSString *)reuseIdentifier;
-
 @end

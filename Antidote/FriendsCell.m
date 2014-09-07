@@ -86,11 +86,6 @@
     return 44.0;
 }
 
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
 #pragma mark -  Private
 
 - (void)createStatusView

@@ -51,11 +51,6 @@ static const UIEdgeInsets kBubbleInsets = { 16.0, 15.0, 16.0, 10.0 };
     self.bubbleImageView.frame = frame;
 }
 
-+ (NSString *)reuseIdentifier
-{
-    return NSStringFromClass([self class]);
-}
-
 + (CGFloat)height
 {
     return 50.0;
