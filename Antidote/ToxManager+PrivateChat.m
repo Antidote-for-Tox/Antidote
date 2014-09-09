@@ -70,7 +70,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
     const char *cMessage = [message cStringUsingEncoding:NSUTF8StringEncoding];
 
-    tox_send_message(
+    uint32_t messageId = tox_send_message(
             self.tox,
             friend.id,
             (uint8_t *)cMessage,
@@ -79,7 +79,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
     __weak ToxManager *weakSelf = self;
 
     [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
-        [weakSelf qAddMessage:message toChat:chat fromUser:currentUser completionBlock:nil];
+        [weakSelf qAddMessage:message messageId:messageId toChat:chat fromUser:currentUser completionBlock:nil];
     }];
 
     DDLogInfo(@"ToxManager: send message... success");
@@ -133,7 +133,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            [weakSelf qAddMessage:message toChat:chat fromUser:user completionBlock:^(CDMessage *cdMessage) {
+            [weakSelf qAddMessage:message messageId:0 toChat:chat fromUser:user completionBlock:^(CDMessage *cdMessage) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     EventObject *object = [EventObject objectWithType:EventObjectTypeChatIncomingMessage
                                                                 image:nil
@@ -148,7 +148,37 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
     }];
 }
 
+
+- (void)qReadReceipt:(uint32_t)receipt fromFriend:(ToxFriend *)friend
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+
+    __weak ToxManager *weakSelf = self;
+
+    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
+
+            NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@ AND text.id == %d",
+                chat, receipt];
+
+            [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
+                CDMessage *message = [array lastObject];
+
+                if (! message.text) {
+                    return;
+                }
+
+                [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
+                    message.text.isDelivered = YES;
+                } completionQueue:nil completionBlock:nil];
+            }];
+        }];
+    }];
+}
+
 - (void)qAddMessage:(NSString *)message
+          messageId:(uint32_t)messageId
              toChat:(CDChat *)chat
            fromUser:(CDUser *)user
     completionBlock:(void (^)(CDMessage *message))completionBlock
@@ -158,6 +188,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
     DDLogInfo(@"ToxManager: adding message to CoreData");
 
     [CoreDataManager insertMessageWithType:CDMessageTypeText configBlock:^(CDMessage *m) {
+        m.text.id = messageId;
         m.text.text = message;
         m.date = [[NSDate date] timeIntervalSince1970];
         m.user = user;
@@ -190,7 +221,10 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     DDLogCVerbose(@"ToxManager+PrivateChat: readReceiptCallback with friendnumber %d receipt %d", friendnumber, receipt);
 
-    // dispatch_async([ToxManager sharedInstance].queue, ^{
-    // });
+    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
+
+    dispatch_async([ToxManager sharedInstance].queue, ^{
+        [[ToxManager sharedInstance] qReadReceipt:receipt fromFriend:friend];
+    });
 }
 

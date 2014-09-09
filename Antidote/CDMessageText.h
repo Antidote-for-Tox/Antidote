@@ -13,7 +13,7 @@
 
 @interface CDMessageText : NSManagedObject
 
-@property (nonatomic) int32_t id;
+@property (nonatomic) uint32_t id;
 @property (nonatomic, retain) NSString * text;
 @property (nonatomic) BOOL isDelivered;
 @property (nonatomic, retain) CDMessage *messageInverse;
