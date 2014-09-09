@@ -9,6 +9,8 @@
 #import "ChatOutgoingCell.h"
 #import "JSQMessagesBubbleImageFactory.h"
 #import "NSString+Utilities.h"
+#import "UIColor+Utilities.h"
+#import "UIView+Utilities.h"
 
 static const CGFloat kMaxMessageWidth = 240.0;
 
@@ -19,6 +21,7 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
 @interface ChatOutgoingCell()
 
 @property (strong, nonatomic) UIImageView *bubbleImageView;
+@property (strong, nonatomic) UILabel *statusLabel;
 
 @end
 
@@ -56,6 +59,15 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
     frame.size.width += kBubbleInsets.left + kBubbleInsets.right;
     frame.size.height += kBubbleInsets.top + kBubbleInsets.bottom;
     self.bubbleImageView.frame = frame;
+
+    self.statusLabel.text = self.isDelivered ?
+        NSLocalizedString(@"Delivered", @"Chat") : NSLocalizedString(@"Sent", @"Chat");
+
+    [self.statusLabel sizeToFit];
+    frame = self.statusLabel.frame;
+    frame.origin.x = CGRectGetMinX(self.bubbleImageView.frame) - frame.size.width - 10.0;
+    frame.origin.y = CGRectGetMaxY(self.bubbleImageView.frame) - frame.size.height - 5.0;
+    self.statusLabel.frame = frame;
 }
 
 + (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString
@@ -76,6 +88,10 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
     [self.contentView addSubview:self.bubbleImageView];
 
     [self.contentView sendSubviewToBack:self.bubbleImageView];
+
+    self.statusLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:160]
+                                                       bgColor:[UIColor clearColor]];
+    self.statusLabel.font = [AppearanceManager fontHelveticaNeueLightWithSize:10.0];
 }
 
 @end

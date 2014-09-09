@@ -10,6 +10,8 @@
 
 @interface ChatOutgoingCell : ChatBasicMessageCell
 
+@property (assign, nonatomic) BOOL isDelivered;
+
 + (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString;
 
 @end

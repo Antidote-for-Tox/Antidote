@@ -631,6 +631,8 @@ typedef NS_ENUM(NSInteger, Section) {
     if ([Helper isOutgoingMessage:message]) {
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
                                                     forIndexPath:indexPath];
+
+        ((ChatOutgoingCell *)cell).isDelivered = message.text.isDelivered;
     }
     else {
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
