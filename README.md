@@ -26,12 +26,12 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 -  spell check
 -  reading/scanning Tox ID via QR code
 -  receiving files
+-  read receipts
 
 #### In progress
 
 -  UI polishing
 -  sending files
--  read receipts
 
 #### Then
 
