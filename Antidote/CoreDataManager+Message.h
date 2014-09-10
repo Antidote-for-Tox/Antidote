@@ -27,9 +27,9 @@ typedef NS_ENUM(NSUInteger, CDMessageType) {
 
 @interface CoreDataManager (Message)
 
-+ (void)messagesForChat:(CDChat *)chat
-        completionQueue:(dispatch_queue_t)queue
-        completionBlock:(void (^)(NSArray *messages))completionBlock;
++ (void)fetchedControllerForMessagesFromChat:(CDChat *)chat
+                             completionQueue:(dispatch_queue_t)queue
+                             completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock;
 
 + (void)messagesWithPredicate:(NSPredicate *)predicate
               completionQueue:(dispatch_queue_t)queue

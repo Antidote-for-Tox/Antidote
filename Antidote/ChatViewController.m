@@ -34,7 +34,7 @@ typedef NS_ENUM(NSInteger, Section) {
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
 
-@property (strong, nonatomic) NSMutableArray *messages;
+@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @property (strong, nonatomic) CDChat *chat;
 @property (strong, nonatomic) ToxFriend *friend;
@@ -111,20 +111,14 @@ typedef NS_ENUM(NSInteger, Section) {
 
     __weak ChatViewController *weakSelf = self;
 
-    [CoreDataManager messagesForChat:self.chat
+    [CoreDataManager fetchedControllerForMessagesFromChat:self.chat
                      completionQueue:dispatch_get_main_queue()
-                     completionBlock:^(NSArray *array)
+                     completionBlock:^(NSFetchedResultsController *controller)
     {
-        ChatViewController *strongSelf = weakSelf;
+        weakSelf.fetchedResultsController = controller;
+        [weakSelf.tableView reloadData];
 
-        if (! strongSelf) {
-            return;
-        }
-
-        strongSelf.messages = [NSMutableArray arrayWithArray:array];
-        [strongSelf.tableView reloadData];
-
-        [strongSelf scrollToBottomAnimated:NO];
+        [weakSelf scrollToBottomAnimated:NO];
     }];
 
     [self updateIsTypingSection];
@@ -222,7 +216,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
     if (indexPath.section == SectionMessages) {
         ChatBasicCell *basicCell;
-        CDMessage *message = self.messages[indexPath.row];
+        CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
         if (message.text) {
             basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
@@ -264,7 +258,9 @@ typedef NS_ENUM(NSInteger, Section) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == SectionMessages) {
-        return self.messages.count;
+        id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[section];
+
+        return info.numberOfObjects;
     }
     else if (section == SectionTyping) {
         return 1;
@@ -280,7 +276,7 @@ typedef NS_ENUM(NSInteger, Section) {
     CGFloat height = 0.0;
 
     if (indexPath.section == SectionMessages) {
-        CDMessage *message = self.messages[indexPath.row];
+        CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
         NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
 
@@ -307,7 +303,7 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    CDMessage *message = self.messages[indexPath.row];
+    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     if (message.file) {
         NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.file.fileNameOnDisk temporary:NO];
@@ -380,7 +376,7 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    CDMessage *message = self.messages[path.row];
+    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
     [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
 
@@ -406,7 +402,7 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    CDMessage *message = self.messages[path.row];
+    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
     [[ToxManager sharedInstance] togglePauseForPendingFileInMessage:message];
 
@@ -443,7 +439,7 @@ typedef NS_ENUM(NSInteger, Section) {
             continue;
         }
 
-        CDMessage *message = self.messages[path.row];
+        CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
         if (! message.pendingFile) {
             continue;
@@ -501,14 +497,16 @@ typedef NS_ENUM(NSInteger, Section) {
 
     NSIndexPath *lastMessagePath;
 
-    if (self.messages.count) {
-        lastMessagePath = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:SectionMessages];
+    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
+
+    if (info.numberOfObjects) {
+        lastMessagePath = [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:SectionMessages];
     }
 
-    [self.messages addObject:message];
+    [self.fetchedResultsController performFetch:nil];
 
     @synchronized(self.tableView) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:self.messages.count-1 inSection:SectionMessages];
+        NSIndexPath *path = [NSIndexPath indexPathForRow:info.numberOfObjects inSection:SectionMessages];
 
         [self.tableView beginUpdates];
         [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -543,7 +541,7 @@ typedef NS_ENUM(NSInteger, Section) {
     @synchronized(self.tableView) {
         for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
             if (path.section == SectionMessages) {
-                CDMessage *m = self.messages[path.row];
+                CDMessage *m = [self.fetchedResultsController objectAtIndexPath:path];
 
                 if ([m isEqual:message]) {
                     [self.tableView reloadRowsAtIndexPaths:@[path]
@@ -725,12 +723,14 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)scrollToBottomAnimated:(BOOL)animated
 {
-    if (! self.messages.count) {
+    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
+
+    if (! info.numberOfObjects) {
         return;
     }
     NSIndexPath *path = self.showTypingSection ?
         [NSIndexPath indexPathForRow:0 inSection:SectionTyping] :
-        [NSIndexPath indexPathForRow:self.messages.count-1 inSection:SectionMessages];
+        [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:SectionMessages];
 
     // tableView animation may cause lags (in case if there will be too many messages). When using default UIView
     // animation, there's no lags for some reason
@@ -838,7 +838,8 @@ typedef NS_ENUM(NSInteger, Section) {
         return YES;
     }
 
-    CDMessage *previous = self.messages[path.row-1];
+    NSIndexPath *previousPath = [NSIndexPath indexPathForRow:path.row-1 inSection:path.section];
+    CDMessage *previous = [self.fetchedResultsController objectAtIndexPath:previousPath];
 
     NSDate *messageDate  = [NSDate dateWithTimeIntervalSince1970:message.date];
     NSDate *previousDate = [NSDate dateWithTimeIntervalSince1970:previous.date];

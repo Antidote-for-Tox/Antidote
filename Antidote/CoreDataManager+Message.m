@@ -15,13 +15,28 @@ NSString *const kCoreDataManagerCDMessageKey = @"kCoreDataManagerCDMessageKey";
 
 @implementation CoreDataManager (Message)
 
-+ (void)messagesForChat:(CDChat *)chat
-        completionQueue:(dispatch_queue_t)queue
-        completionBlock:(void (^)(NSArray *messages))completionBlock;
++ (void)fetchedControllerForMessagesFromChat:(CDChat *)chat
+                             completionQueue:(dispatch_queue_t)queue
+                             completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
+    if (! completionBlock) {
+        return;
+    }
 
-    [self messagesWithPredicate:predicate completionQueue:queue completionBlock:completionBlock];
+    dispatch_async([self private_queue], ^{
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@", chat];
+
+        NSFetchedResultsController *controller = [CDMessage MR_fetchAllSortedBy:@"date"
+                                                                      ascending:YES
+                                                                  withPredicate:predicate
+                                                                        groupBy:nil
+                                                                       delegate:nil
+                                                                      inContext:[self private_context]];
+
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(controller);
+        }];
+    });
 }
 
 + (void)messagesWithPredicate:(NSPredicate *)predicate
