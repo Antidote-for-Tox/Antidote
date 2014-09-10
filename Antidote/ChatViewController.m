@@ -545,7 +545,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
                 if ([m isEqual:message]) {
                     [self.tableView reloadRowsAtIndexPaths:@[path]
-                                          withRowAnimation:UITableViewRowAnimationAutomatic];
+                                          withRowAnimation:UITableViewRowAnimationNone];
                     return;
                 }
             }

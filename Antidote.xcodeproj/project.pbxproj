@@ -139,6 +139,7 @@
 		11DCC6EE19A91C88000A5763 /* chat-file-type-zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6CF19A91C88000A5763 /* chat-file-type-zip@2x.png */; };
 		11DCC6F119A92C75000A5763 /* friends-sort-alphabet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6EF19A92C75000A5763 /* friends-sort-alphabet@2x.png */; };
 		11DCC6F219A92C75000A5763 /* friends-sort-status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6F019A92C75000A5763 /* friends-sort-status@2x.png */; };
+		11E57F4219C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -365,6 +366,7 @@
 		11DCC6CF19A91C88000A5763 /* chat-file-type-zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-zip@2x.png"; sourceTree = "<group>"; };
 		11DCC6EF19A92C75000A5763 /* friends-sort-alphabet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-sort-alphabet@2x.png"; sourceTree = "<group>"; };
 		11DCC6F019A92C75000A5763 /* friends-sort-status@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-sort-status@2x.png"; sourceTree = "<group>"; };
+		11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-delivered-checkmark@2x.png"; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 		1138E0BD19A6651C004E06E2 /* ChatViewController */ = {
 			isa = PBXGroup;
 			children = (
+				11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */,
 				1138E0C119A6812B004E06E2 /* chat-file-cancel@2x.png */,
 				1138E0C019A6812B004E06E2 /* chat-file-download@2x.png */,
 				1138E0C519A685F8004E06E2 /* chat-file-pause@2x.png */,
@@ -1011,6 +1014,7 @@
 				11DCC6E619A91C88000A5763 /* chat-file-type-rar@2x.png in Resources */,
 				1138E0C619A685F8004E06E2 /* chat-file-play@2x.png in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
+				11E57F4219C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png in Resources */,
 				1138E0C719A685F8004E06E2 /* chat-file-pause@2x.png in Resources */,
 				11DCC6E419A91C88000A5763 /* chat-file-type-ppt@2x.png in Resources */,
 				1138E0C319A6812B004E06E2 /* chat-file-cancel@2x.png in Resources */,

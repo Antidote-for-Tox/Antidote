@@ -21,7 +21,7 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
 @interface ChatOutgoingCell()
 
 @property (strong, nonatomic) UIImageView *bubbleImageView;
-@property (strong, nonatomic) UILabel *statusLabel;
+@property (strong, nonatomic) UIImageView *checkmarkImageView;
 
 @end
 
@@ -60,14 +60,17 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
     frame.size.height += kBubbleInsets.top + kBubbleInsets.bottom;
     self.bubbleImageView.frame = frame;
 
-    self.statusLabel.text = self.isDelivered ?
-        NSLocalizedString(@"Delivered", @"Chat") : NSLocalizedString(@"Sent", @"Chat");
+    if (self.isDelivered) {
+        self.checkmarkImageView.hidden = NO;
 
-    [self.statusLabel sizeToFit];
-    frame = self.statusLabel.frame;
-    frame.origin.x = CGRectGetMinX(self.bubbleImageView.frame) - frame.size.width - 10.0;
-    frame.origin.y = CGRectGetMaxY(self.bubbleImageView.frame) - frame.size.height - 5.0;
-    self.statusLabel.frame = frame;
+        frame = self.checkmarkImageView.frame;
+        frame.origin.x = CGRectGetMinX(self.bubbleImageView.frame) - frame.size.width - 12.0;
+        frame.origin.y = CGRectGetMaxY(self.bubbleImageView.frame) - frame.size.height - 8.0;
+        self.checkmarkImageView.frame = frame;
+    }
+    else {
+        self.checkmarkImageView.hidden = YES;
+    }
 }
 
 + (CGFloat)heightWithMessage:(NSString *)message fullDateString:(NSString *)fullDateString
@@ -89,9 +92,12 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
 
     [self.contentView sendSubviewToBack:self.bubbleImageView];
 
-    self.statusLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:160]
-                                                       bgColor:[UIColor clearColor]];
-    self.statusLabel.font = [AppearanceManager fontHelveticaNeueLightWithSize:10.0];
+    UIImage *image = [UIImage imageNamed:@"chat-delivered-checkmark"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    self.checkmarkImageView = [[UIImageView alloc] initWithImage:image];
+    self.checkmarkImageView.tintColor = [UIColor uColorOpaqueWithWhite:200];
+    [self.contentView addSubview:self.checkmarkImageView];
 }
 
 @end
