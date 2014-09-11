@@ -4,9 +4,9 @@ Tox client for iOS 7.0+;
 
 ## Screenshots
 
-![](https://i.imgur.com/2dbrmVQ.png)
-![](https://i.imgur.com/Avu8kvu.png)
-![](https://i.imgur.com/DfYtnCe.png)
+![](https://i.imgur.com/geSRhlQ.png)
+![](https://i.imgur.com/kAXdWwI.png)
+![](https://i.imgur.com/VOpGzgg.png)
 
 ##Usage
 
