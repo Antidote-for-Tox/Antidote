@@ -671,7 +671,8 @@ typedef NS_ENUM(NSInteger, Section) {
 
     if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
         cell.type = ChatFileCellTypeIncomingWaitingConfirmation;
-        cell.fileSize = [NSString stringWithFormat:@"%llu", message.pendingFile.fileSize];
+        cell.fileSize = [NSByteCountFormatter stringFromByteCount:message.pendingFile.fileSize
+                                                       countStyle:NSByteCountFormatterCountStyleFile];
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateActive ||
              message.pendingFile.state == CDMessagePendingFileStatePaused)
