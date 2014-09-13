@@ -1,38 +1,33 @@
 //
-//  SettingsColorView.m
+//  CellWithColorscheme.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 07.08.14.
+//  Created by Dmitry Vorobyov on 13.09.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "SettingsColorView.h"
+#import "CellWithColorscheme.h"
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
 
 static const CGFloat kButtonSide = 40.0;
 static const CGFloat kButtonIndentation = 15.0;
 
-@interface SettingsColorView()
+@interface CellWithColorscheme()
 
 @property (strong, nonatomic) UILabel *label;
 @property (strong, nonatomic) NSArray *buttonsArray;
 
 @end
 
-@implementation SettingsColorView
+@implementation CellWithColorscheme
 
-#pragma mark -  Lifecycle
-
-- (id)initWithFrame:(CGRect)frame
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
-
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        self.backgroundColor = [UIColor clearColor];
-
-        self.label = [self addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
-        self.label.text = NSLocalizedString(@"Colorscheme", @"Settings");
+        self.label = [self.contentView addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
+        self.label.text = NSLocalizedString(@"Colorscheme", @"CellWithColorscheme");
 
         [self createButtons];
     }
@@ -45,39 +40,19 @@ static const CGFloat kButtonIndentation = 15.0;
 {
     NSUInteger index = [self.buttonsArray indexOfObject:button];
 
-    [self.delegate settingsColorView:self didSelectScheme:index];
+    [self.delegate cellWithColorscheme:self didSelectScheme:index];
 }
 
 #pragma mark -  Public
 
-- (CGSize)sizeThatFits:(CGSize)size
+- (void)redraw
 {
-    [self.label sizeToFit];
+    [self adjustSubviews];
+}
 
-    const CGFloat buttonsWidth = self.buttonsArray.count * kButtonSide +
-        (self.buttonsArray.count - 1) * kButtonIndentation;
-
-    const CGFloat maxWidth = MAX(self.label.frame.size.width, buttonsWidth);
-    const CGFloat buttonsXDelta = (maxWidth - buttonsWidth) / 2;
-
-    CGRect frame = self.label.frame;
-    frame.origin.x = (maxWidth - frame.size.width) / 2;
-    self.label.frame = frame;
-
-    for (NSUInteger index = 0; index < self.buttonsArray.count; index++) {
-        UIButton *button = self.buttonsArray[index];
-
-        frame = button.frame;
-        frame.origin.x = buttonsXDelta + index * (kButtonSide + kButtonIndentation);
-        frame.origin.y = CGRectGetMaxY(self.label.frame) + 5.0;
-        button.frame = frame;
-
-        size.height = CGRectGetMaxY(button.frame);
-    }
-
-    size.width = maxWidth;
-
-    return size;
++ (CGFloat)height
+{
+    return 70.0;
 }
 
 #pragma mark -  Private
@@ -122,6 +97,30 @@ static const CGFloat kButtonIndentation = 15.0;
     }
 
     self.buttonsArray = [array copy];
+}
+
+- (void)adjustSubviews
+{
+    [self.label sizeToFit];
+
+    CGRect frame = self.label.frame;
+    frame.origin.x = (self.bounds.size.width - frame.size.width) / 2;
+    self.label.frame = frame;
+
+    const CGFloat buttonsWidth = self.buttonsArray.count * kButtonSide +
+        (self.buttonsArray.count - 1) * kButtonIndentation;
+    CGFloat originX = (self.bounds.size.width - buttonsWidth) / 2;
+
+    for (NSUInteger index = 0; index < self.buttonsArray.count; index++) {
+        UIButton *button = self.buttonsArray[index];
+
+        frame = button.frame;
+        frame.origin.x = originX;
+        frame.origin.y = CGRectGetMaxY(self.label.frame) + 5.0;
+        button.frame = frame;
+
+        originX += kButtonSide + kButtonIndentation;
+    }
 }
 
 @end

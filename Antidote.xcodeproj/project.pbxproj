@@ -78,7 +78,6 @@
 		119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11A198AC1B300380557 /* ToxFunctions.m */; };
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
-		119BB129198CECAB00380557 /* ToxIdView.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB128198CECAB00380557 /* ToxIdView.m */; };
 		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
 		11B6C301199A9B4C00A48FBC /* ChatTypingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C300199A9B4C00A48FBC /* ChatTypingCell.m */; };
 		11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C311199D2CCE00A48FBC /* CDMessage.m */; };
@@ -89,13 +88,14 @@
 		11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E60F19929DBA00FB20A6 /* ChatOutgoingCell.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
-		11B9E6231993FDAF00FB20A6 /* SettingsColorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */; };
 		11B9E62919940F3900FB20A6 /* tab-bar-settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62619940F3900FB20A6 /* tab-bar-settings.png */; };
 		11B9E62A19940F3900FB20A6 /* tab-bar-chats.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62719940F3900FB20A6 /* tab-bar-chats.png */; };
 		11B9E62B19940F3900FB20A6 /* tab-bar-friends.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62819940F3900FB20A6 /* tab-bar-friends.png */; };
 		11B9E62F1994109A00FB20A6 /* tab-bar-settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */; };
 		11B9E6301994109A00FB20A6 /* tab-bar-friends@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */; };
 		11B9E6311994109A00FB20A6 /* tab-bar-chats@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */; };
+		11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0219C48F31003BE161 /* CellWithToxId.m */; };
+		11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */; };
 		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
 		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
 		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
@@ -140,6 +140,7 @@
 		11DCC6F119A92C75000A5763 /* friends-sort-alphabet@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6EF19A92C75000A5763 /* friends-sort-alphabet@2x.png */; };
 		11DCC6F219A92C75000A5763 /* friends-sort-status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6F019A92C75000A5763 /* friends-sort-status@2x.png */; };
 		11E57F4219C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */; };
+		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -284,8 +285,6 @@
 		119BB11D198B536300380557 /* AppDelegate+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Utilities.m"; sourceTree = "<group>"; };
 		119BB120198BE77900380557 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
 		119BB121198BE77900380557 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
-		119BB127198CECAB00380557 /* ToxIdView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxIdView.h; sourceTree = "<group>"; };
-		119BB128198CECAB00380557 /* ToxIdView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxIdView.m; sourceTree = "<group>"; };
 		11B5A364199626920005C1E7 /* BadgeWithText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeWithText.h; sourceTree = "<group>"; };
 		11B5A365199626920005C1E7 /* BadgeWithText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeWithText.m; sourceTree = "<group>"; };
 		11B6C2FF199A9B4C00A48FBC /* ChatTypingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTypingCell.h; sourceTree = "<group>"; };
@@ -306,14 +305,16 @@
 		11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeFormatter.m; sourceTree = "<group>"; };
 		11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceManager.h; sourceTree = "<group>"; };
 		11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceManager.m; sourceTree = "<group>"; };
-		11B9E6211993FDAF00FB20A6 /* SettingsColorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsColorView.h; sourceTree = "<group>"; };
-		11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsColorView.m; sourceTree = "<group>"; };
 		11B9E62619940F3900FB20A6 /* tab-bar-settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-settings.png"; sourceTree = "<group>"; };
 		11B9E62719940F3900FB20A6 /* tab-bar-chats.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-chats.png"; sourceTree = "<group>"; };
 		11B9E62819940F3900FB20A6 /* tab-bar-friends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-friends.png"; sourceTree = "<group>"; };
 		11B9E62C1994109A00FB20A6 /* tab-bar-settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-settings@2x.png"; sourceTree = "<group>"; };
 		11B9E62D1994109A00FB20A6 /* tab-bar-friends@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-friends@2x.png"; sourceTree = "<group>"; };
 		11B9E62E1994109A00FB20A6 /* tab-bar-chats@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "tab-bar-chats@2x.png"; sourceTree = "<group>"; };
+		11C2AA0119C48F31003BE161 /* CellWithToxId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithToxId.h; sourceTree = "<group>"; };
+		11C2AA0219C48F31003BE161 /* CellWithToxId.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithToxId.m; sourceTree = "<group>"; };
+		11C2AA0419C4979A003BE161 /* CellWithColorscheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithColorscheme.h; sourceTree = "<group>"; };
+		11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithColorscheme.m; sourceTree = "<group>"; };
 		11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
 		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxFriend+Private.h"; sourceTree = "<group>"; };
@@ -367,6 +368,8 @@
 		11DCC6EF19A92C75000A5763 /* friends-sort-alphabet@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-sort-alphabet@2x.png"; sourceTree = "<group>"; };
 		11DCC6F019A92C75000A5763 /* friends-sort-status@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends-sort-status@2x.png"; sourceTree = "<group>"; };
 		11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-delivered-checkmark@2x.png"; sourceTree = "<group>"; };
+		11E57F4419C23D1F00C8ACB8 /* CellWithNameStatusAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithNameStatusAvatar.h; sourceTree = "<group>"; };
+		11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithNameStatusAvatar.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
@@ -723,14 +726,13 @@
 		118352A9197A6C210048CA64 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11E57F4319C23CF100C8ACB8 /* Cells */,
 				11B5A364199626920005C1E7 /* BadgeWithText.h */,
 				11B5A365199626920005C1E7 /* BadgeWithText.m */,
 				118352AA197A6C410048CA64 /* CopyLabel.h */,
 				118352AB197A6C410048CA64 /* CopyLabel.m */,
 				118352C1197A7D390048CA64 /* StatusCircleView.h */,
 				118352C2197A7D3A0048CA64 /* StatusCircleView.m */,
-				119BB127198CECAB00380557 /* ToxIdView.h */,
-				119BB128198CECAB00380557 /* ToxIdView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -763,7 +765,6 @@
 		118352B1197A72D90048CA64 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				11B9E6201993FDA100FB20A6 /* SettingsColorView */,
 				118352A6197A64B70048CA64 /* SettingsViewController.h */,
 				118352A7197A64B70048CA64 /* SettingsViewController.m */,
 			);
@@ -849,15 +850,6 @@
 			name = AppearanceManager;
 			sourceTree = "<group>";
 		};
-		11B9E6201993FDA100FB20A6 /* SettingsColorView */ = {
-			isa = PBXGroup;
-			children = (
-				11B9E6211993FDAF00FB20A6 /* SettingsColorView.h */,
-				11B9E6221993FDAF00FB20A6 /* SettingsColorView.m */,
-			);
-			name = SettingsColorView;
-			sourceTree = "<group>";
-		};
 		11B9E62419940F0400FB20A6 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -923,6 +915,19 @@
 				11D6298B19954BCE00F840AE /* AvatarFactory.m */,
 			);
 			name = AvatarFactory;
+			sourceTree = "<group>";
+		};
+		11E57F4319C23CF100C8ACB8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				11C2AA0419C4979A003BE161 /* CellWithColorscheme.h */,
+				11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */,
+				11E57F4419C23D1F00C8ACB8 /* CellWithNameStatusAvatar.h */,
+				11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */,
+				11C2AA0119C48F31003BE161 /* CellWithToxId.h */,
+				11C2AA0219C48F31003BE161 /* CellWithToxId.m */,
+			);
+			name = Cells;
 			sourceTree = "<group>";
 		};
 		84B6628A19A250FF00328874 /* CustomLogFormatter */ = {
@@ -1096,7 +1101,6 @@
 				118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */,
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				1164769819794E7300DB20B8 /* onion_announce.c in Sources */,
-				11B9E6231993FDAF00FB20A6 /* SettingsColorView.m in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */,
 				114630EF1986C4BF0075DA16 /* ChatInputView.m in Sources */,
@@ -1136,12 +1140,12 @@
 				114630D6198554B60075DA16 /* CDUser.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				1164769D19794E7300DB20B8 /* TCP_client.c in Sources */,
-				119BB129198CECAB00380557 /* ToxIdView.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */,
 				1164769F19794E7300DB20B8 /* tox.c in Sources */,
 				1164769619794E7300DB20B8 /* net_crypto.c in Sources */,
 				84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */,
+				11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */,
 				1164768E19794E7300DB20B8 /* DHT.c in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				1164769019794E7300DB20B8 /* group_chats.c in Sources */,
@@ -1154,12 +1158,14 @@
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
 				11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
+				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1164769C19794E7300DB20B8 /* ping.c in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				1164768D19794E7300DB20B8 /* crypto_core.c in Sources */,
 				1146308C19842D360075DA16 /* CoreDataManager.m in Sources */,
+				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
 				11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */,
 				1164769B19794E7300DB20B8 /* ping_array.c in Sources */,
 				11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */,

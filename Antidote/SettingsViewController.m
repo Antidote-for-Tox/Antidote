@@ -11,26 +11,32 @@
 #import "QRViewerController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
-#import "ToxIdView.h"
-#import "SettingsColorView.h"
 #import "AppDelegate.h"
-#import "NSString+Utilities.h"
 #import "MFMailComposeViewController+BlocksKit.h"
 #import "UIAlertView+BlocksKit.h"
 #import "DDFileLogger.h"
+#import "UITableViewCell+Utilities.h"
+#import "AvatarFactory.h"
+#import "CellWithNameStatusAvatar.h"
+#import "CellWithToxId.h"
+#import "CellWithColorscheme.h"
 
-@interface SettingsViewController () <UITextFieldDelegate, ToxIdViewDelegate, SettingsColorViewDelegate>
+typedef NS_ENUM(NSUInteger, CellType) {
+    CellTypeNameStatusAvatar,
+    CellTypeToxId,
+    CellTypeColorscheme,
+    CellTypeFeedback,
+    __CellTypeTotalCount,
+};
 
-@property (strong, nonatomic) UIScrollView *scrollView;
+static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
-@property (strong, nonatomic) UITextField *nameField;
-@property (strong, nonatomic) UITextField *statusMessageField;
+@interface SettingsViewController () <UITableViewDataSource, UITableViewDelegate,
+    SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate, CellWithColorschemeDelegate>
 
-@property (strong, nonatomic) ToxIdView *toxIdView;
+@property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) SettingsColorView *colorView;
-
-@property (strong, nonatomic) UIButton *feedbackButton;
+@property (strong, nonatomic) NSArray *tableStructure;
 
 @end
 
@@ -44,6 +50,19 @@
 
     if (self) {
         self.title = NSLocalizedString(@"Settings", @"Settings");
+
+        self.tableStructure = @[
+            @[
+                @(CellTypeNameStatusAvatar),
+            ],
+            @[
+                @(CellTypeToxId),
+                @(CellTypeColorscheme),
+            ],
+            @[
+                @(CellTypeFeedback),
+            ],
+        ];
     }
 
     return self;
@@ -53,12 +72,7 @@
 {
     [self loadWhiteView];
 
-    [self createScrollView];
-    [self createNameField];
-    [self createStatusMessageField];
-    [self createToxIdView];
-    [self createColorView];
-    [self createFeedbackButton];
+    [self createTableView];
 }
 
 - (void)viewDidLayoutSubviews
@@ -68,94 +82,129 @@
     [self adjustSubviews];
 }
 
-#pragma mark -  Actions
+#pragma mark -  UITableViewDataSource
 
-- (void)feedbackButtonPressed
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (! [MFMailComposeViewController canSendMail]) {
-        [[[UIAlertView alloc] initWithTitle:nil
-                                    message:NSLocalizedString(@"Please configure your mail settings", @"Settings")
-                                   delegate:nil
-                          cancelButtonTitle:NSLocalizedString(@"OK", @"Settings")
-                          otherButtonTitles:nil] show];
+    CellType type = [self cellTypeForIndexPath:indexPath];
 
-        return;
+    if (type == CellTypeNameStatusAvatar) {
+        return [self cellWithNameStatusAvatarAtIndexPath:indexPath];
+    }
+    else if (type == CellTypeToxId) {
+        return [self cellWithToxIdAtIndexPath:indexPath];
+    }
+    else if (type == CellTypeColorscheme) {
+        return [self cellWithColorschemeIdAtIndexPath:indexPath];
+    }
+    else if (type == CellTypeFeedback) {
+        return [self feedbackCellAtIndexPath:indexPath];
     }
 
-    UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:NSLocalizedString(@"Add log files?", @"Settings")];
-
-    __weak SettingsViewController *weakSelf = self;
-
-    [alertView bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Settings") handler:^{
-        [weakSelf showMailControllerWithLogs:NO];
-    }];
-
-    [alertView bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Settings") handler:^{
-        [weakSelf showMailControllerWithLogs:YES];
-    }];
-
-    [alertView show];
+    return [UITableViewCell new];
 }
 
-#pragma mark -  UITextFieldDelegate
-
-- (BOOL)             textField:(UITextField *)textField
- shouldChangeCharactersInRange:(NSRange)range
-             replacementString:(NSString *)string
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSString *resultText = [textField.text stringByReplacingCharactersInRange:range withString:string];
-    NSUInteger maxLength = NSUIntegerMax;
-
-    if ([textField isEqual:self.nameField]) {
-        maxLength = TOX_MAX_NAME_LENGTH;
-    }
-    else if ([textField isEqual:self.statusMessageField]) {
-        maxLength = TOX_MAX_STATUSMESSAGE_LENGTH;
-    }
-
-    if ([resultText lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > maxLength) {
-        textField.text = [resultText substringToByteLength:maxLength usingEncoding:NSUTF8StringEncoding];
-
-        return NO;
-    }
-
-    return YES;
+    return self.tableStructure.count;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([textField isEqual:self.nameField]) {
-        [textField resignFirstResponder];
-    }
-    else if ([textField isEqual:self.statusMessageField]) {
-        [textField resignFirstResponder];
-    }
-
-    return YES;
+    NSArray *subArray = self.tableStructure[section];
+    return subArray.count;
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField
+#pragma mark -  UITableViewDelegate
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([textField isEqual:self.nameField]) {
-        [ToxManager sharedInstance].userName = textField.text;
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    if (type == CellTypeNameStatusAvatar) {
+        return [CellWithNameStatusAvatar height];
     }
-    else if ([textField isEqual:self.statusMessageField]) {
-        [ToxManager sharedInstance].userStatusMessage = textField.text;
+    else if (type == CellTypeToxId) {
+        return [CellWithToxId height];
+    }
+    else if (type == CellTypeColorscheme) {
+        return [CellWithColorscheme height];
+    }
+    else if (type == CellTypeFeedback) {
+        return 44.0;
+    }
+
+    return 0.0;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    if (type == CellTypeFeedback) {
+        if (! [MFMailComposeViewController canSendMail]) {
+            [[[UIAlertView alloc] initWithTitle:nil
+                                        message:NSLocalizedString(@"Please configure your mail settings", @"Settings")
+                                       delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"OK", @"Settings")
+                              otherButtonTitles:nil] show];
+
+            return;
+        }
+
+        UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:NSLocalizedString(@"Add log files?", @"Settings")];
+
+        __weak SettingsViewController *weakSelf = self;
+
+        [alertView bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Settings") handler:^{
+            [weakSelf showMailControllerWithLogs:NO];
+        }];
+
+        [alertView bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Settings") handler:^{
+            [weakSelf showMailControllerWithLogs:YES];
+        }];
+
+        [alertView show];
     }
 }
 
-#pragma mark -  ToxIdViewDelegate
-
-- (void)toxIdView:(ToxIdView *)view wantsToShowQRWithToxId:(NSString *)toxId
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    QRViewerController *qrVC = [[QRViewerController alloc] initWithToxId:toxId];
+    return (section == 0) ? 20.0 : 1.0;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 10.0;
+}
+
+#pragma mark -  SettingsNameStatusAvatarCellDelegate
+
+- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
+{
+    [ToxManager sharedInstance].userName = newName;
+}
+
+- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell
+          statusMessageChangedTo:(NSString *)newStatusMessage
+{
+    [ToxManager sharedInstance].userStatusMessage = newStatusMessage;
+}
+
+#pragma mark -  CellWithToxIdDelegate
+
+- (void)cellWithToxIdQrButtonPressed:(CellWithToxId *)cell
+{
+    QRViewerController *qrVC = [[QRViewerController alloc] initWithToxId:cell.toxId];
 
     [self presentViewController:qrVC animated:YES completion:nil];
 }
 
-#pragma mark -  SettingsColorViewDelegate
+#pragma mark -  CellWithColorscheme
 
-- (void)settingsColorView:(SettingsColorView *)view didSelectScheme:(AppearanceManagerColorscheme)scheme
+- (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
 {
     [AppearanceManager changeColorschemeTo:scheme];
 
@@ -166,121 +215,28 @@
 
 #pragma mark -  Private
 
-- (void)createScrollView
+- (void)createTableView
 {
-    self.scrollView = [UIScrollView new];
-    [self.view addSubview:self.scrollView];
-}
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
 
-- (void)createNameField
-{
-    self.nameField = [UITextField new];
-    self.nameField.delegate = self;
-    self.nameField.placeholder = NSLocalizedString(@"Name", @"Settings");
-    self.nameField.borderStyle = UITextBorderStyleRoundedRect;
-    self.nameField.returnKeyType = UIReturnKeyDone;
-    [self.scrollView addSubview:self.nameField];
+    [self.tableView registerClass:[CellWithNameStatusAvatar class]
+           forCellReuseIdentifier:[CellWithNameStatusAvatar reuseIdentifier]];
 
-    self.nameField.text = [ToxManager sharedInstance].userName;
-}
+    [self.tableView registerClass:[CellWithToxId class] forCellReuseIdentifier:[CellWithToxId reuseIdentifier]];
 
-- (void)createStatusMessageField
-{
-    self.statusMessageField = [UITextField new];
-    self.statusMessageField.delegate = self;
-    self.statusMessageField.placeholder = NSLocalizedString(@"Status", @"Settings");
-    self.statusMessageField.borderStyle = UITextBorderStyleRoundedRect;
-    self.statusMessageField.returnKeyType = UIReturnKeyDone;
-    [self.scrollView addSubview:self.statusMessageField];
+    [self.tableView registerClass:[CellWithColorscheme class]
+           forCellReuseIdentifier:[CellWithColorscheme reuseIdentifier]];
 
-    self.statusMessageField.text = [ToxManager sharedInstance].userStatusMessage;
-}
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kFeedbackReuseIdentifier];
 
-- (void)createToxIdView
-{
-    NSString *toxId = [ToxManager sharedInstance].toxId;
-
-    self.toxIdView = [[ToxIdView alloc] initWithId:toxId];
-    self.toxIdView.delegate = self;
-    [self.scrollView addSubview:self.toxIdView];
-}
-
-- (void)createColorView
-{
-    self.colorView = [SettingsColorView new];
-    self.colorView.delegate = self;
-    [self.scrollView addSubview:self.colorView];
-}
-
-- (void)createFeedbackButton
-{
-    self.feedbackButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.feedbackButton setTitle:NSLocalizedString(@"Feedback", @"Settings") forState:UIControlStateNormal];
-    [self.feedbackButton addTarget:self
-                            action:@selector(feedbackButtonPressed)
-                  forControlEvents:UIControlEventTouchUpInside];
-
-    [self.scrollView addSubview:self.feedbackButton];
+    [self.view addSubview:self.tableView];
 }
 
 - (void)adjustSubviews
 {
-    self.scrollView.frame = self.view.bounds;
-
-    __unused CGFloat currentOriginY = 0.0;
-    const CGFloat yIndentation = 10.0;
-
-    CGRect frame = CGRectZero;
-
-    {
-        frame = self.nameField.frame;
-        frame.size.width = 240.0;
-        frame.size.height = 30.0;
-        frame.origin.x = self.view.bounds.size.width - frame.size.width - 10.0;
-        frame.origin.y = currentOriginY + yIndentation;
-
-        self.nameField.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        frame = self.statusMessageField.frame;
-        frame.size.width = 240.0;
-        frame.size.height = 30.0;
-        frame.origin.x = self.view.bounds.size.width - frame.size.width - 10.0;
-        frame.origin.y = currentOriginY + yIndentation;
-
-        self.statusMessageField.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        frame = self.toxIdView.frame;
-        frame.origin.y = currentOriginY + yIndentation;
-        self.toxIdView.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        [self.colorView sizeToFit];
-        frame = self.colorView.frame;
-        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2;
-        frame.origin.y = currentOriginY + yIndentation;
-        self.colorView.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        [self.feedbackButton sizeToFit];
-        frame = self.feedbackButton.frame;
-        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2;
-        frame.origin.y = self.scrollView.frame.size.height - frame.size.height - yIndentation -
-            self.scrollView.contentInset.top - self.scrollView.contentInset.bottom;
-        self.feedbackButton.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
+    self.tableView.frame = self.view.bounds;
 }
 
 - (void)showMailControllerWithLogs:(BOOL)withLogs
@@ -307,6 +263,85 @@
     };
 
     [self presentViewController:vc animated:YES completion:nil];
+}
+
+- (NSIndexPath *)indexPathForCellType:(CellType)type
+{
+    for (NSUInteger section = 0; section < self.tableStructure.count; section++) {
+        NSArray *subArray = self.tableStructure[section];
+
+        for (NSUInteger row = 0; row < subArray.count; row++) {
+            NSNumber *number = subArray[row];
+
+            if (number.unsignedIntegerValue == type) {
+                return [NSIndexPath indexPathForRow:row inSection:section];
+            }
+        }
+    }
+
+    return nil;
+}
+
+- (CellType)cellTypeForIndexPath:(NSIndexPath *)indexPath
+{
+    NSNumber *number = self.tableStructure[indexPath.section][indexPath.row];
+    return number.unsignedIntegerValue;
+}
+
+- (CellWithNameStatusAvatar *)cellWithNameStatusAvatarAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [CellWithNameStatusAvatar reuseIdentifier];
+
+    CellWithNameStatusAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier
+                                                                          forIndexPath:indexPath];
+
+    NSString *userName = [ToxManager sharedInstance].userName;
+
+    cell.delegate = self;
+    cell.avatarImage = [AvatarFactory avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
+    cell.name = userName;
+    cell.statusMessage = [ToxManager sharedInstance].userStatusMessage;
+    cell.maxNameLength = TOX_MAX_NAME_LENGTH;
+    cell.maxStatusMessageLength = TOX_MAX_STATUSMESSAGE_LENGTH;
+
+    [cell redraw];
+
+    return cell;
+}
+
+- (CellWithToxId *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
+{
+    CellWithToxId *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithToxId reuseIdentifier]
+                                                               forIndexPath:indexPath];
+    cell.delegate = self;
+    cell.title = NSLocalizedString(@"My Tox ID", @"Settings");
+    cell.toxId = [ToxManager sharedInstance].toxId;
+
+    [cell redraw];
+
+    return cell;
+}
+
+- (CellWithColorscheme *)cellWithColorschemeIdAtIndexPath:(NSIndexPath *)indexPath
+{
+    CellWithColorscheme *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithColorscheme reuseIdentifier]
+                                                                     forIndexPath:indexPath];
+    cell.delegate = self;
+
+    [cell redraw];
+
+    return cell;
+}
+
+- (UITableViewCell *)feedbackCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kFeedbackReuseIdentifier
+                                                                 forIndexPath:indexPath];
+    cell.textLabel.text = NSLocalizedString(@"Feedback", @"Settings");
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [AppearanceManager textMainColor];
+
+    return cell;
 }
 
 @end

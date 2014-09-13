@@ -1,16 +1,16 @@
 //
-//  ToxIdView.m
+//  CellWithToxId.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 02.08.14.
+//  Created by Dmitry Vorobyov on 13.09.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ToxIdView.h"
+#import "CellWithToxId.h"
 #import "UIView+Utilities.h"
 #import "NSString+Utilities.h"
 
-@interface ToxIdView()
+@interface CellWithToxId()
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UIButton *qrButton;
@@ -18,17 +18,13 @@
 
 @end
 
-@implementation ToxIdView
+@implementation CellWithToxId
 
-- (instancetype)initWithId:(NSString *)toxId
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super init];
-
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         [self createSubviews];
-        self.valueLabel.text = toxId;
-
-        [self adjustSubviews];
     }
     return self;
 }
@@ -37,27 +33,41 @@
 
 - (void)qrButtonPressed
 {
-    [self.delegate toxIdView:self wantsToShowQRWithToxId:self.valueLabel.text];
+    [self.delegate cellWithToxIdQrButtonPressed:self];
+}
+
+#pragma mark -  Public
+
+- (void)redraw
+{
+    self.titleLabel.text = self.title;
+    self.valueLabel.text = self.toxId;
+
+    [self adjustSubviews];
+}
+
++ (CGFloat)height
+{
+    return 100.0;
 }
 
 #pragma mark -  Private
 
 - (void)createSubviews
 {
-    self.titleLabel = [self addLabelWithTextColor:[UIColor blackColor]
-                                          bgColor:[UIColor clearColor]];
-    self.titleLabel.text = NSLocalizedString(@"My Tox ID", @"Settings");
+    self.titleLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor]
+                                                      bgColor:[UIColor clearColor]];
 
     self.qrButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.qrButton setTitle:NSLocalizedString(@"QR", @"Settings") forState:UIControlStateNormal];
+    [self.qrButton setTitle:NSLocalizedString(@"QR", @"CellWithToxId") forState:UIControlStateNormal];
     [self.qrButton addTarget:self
                       action:@selector(qrButtonPressed)
             forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.qrButton];
+    [self.contentView addSubview:self.qrButton];
 
-    self.valueLabel = [self addCopyLabelWithTextColor:[UIColor grayColor]
-                                              bgColor:[UIColor clearColor]];
-    self.valueLabel.numberOfLines = 0;
+    self.valueLabel = [self.contentView addCopyLabelWithTextColor:[UIColor grayColor]
+                                                          bgColor:[UIColor clearColor]];
+    self.valueLabel.numberOfLines = 3;
 }
 
 - (void)adjustSubviews
@@ -69,7 +79,7 @@
         [self.titleLabel sizeToFit];
         frame = self.titleLabel.frame;
         frame.origin.x = 10.0;
-        frame.origin.y = 0.0;
+        frame.origin.y = 5.0;
         self.titleLabel.frame = frame;
     }
 
@@ -77,7 +87,8 @@
         [self.qrButton sizeToFit];
         frame = self.qrButton.frame;
         frame.origin.x = viewWidth - frame.size.width - 20.0;
-        frame.origin.y = self.titleLabel.frame.origin.y;
+        frame.origin.y = self.titleLabel.frame.origin.y +
+            (self.titleLabel.frame.size.height - frame.size.height) / 2;
         self.qrButton.frame = frame;
     }
 
@@ -92,11 +103,6 @@
         frame.origin.y = CGRectGetMaxY(self.titleLabel.frame) + 10.0;
         self.valueLabel.frame = frame;
     }
-
-    frame = self.frame;
-    frame.size.width = viewWidth;
-    frame.size.height = CGRectGetMaxY(self.valueLabel.frame);
-    self.frame = frame;
 }
 
 @end
