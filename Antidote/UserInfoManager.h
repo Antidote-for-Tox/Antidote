@@ -10,8 +10,6 @@
 
 @interface UserInfoManager : NSObject
 
-@property (strong, nonatomic) NSData *uToxData;
-
 // array with ToxFriendRequest's NSDictionaries
 @property (strong, nonatomic) NSArray *uPendingFriendRequests;
 

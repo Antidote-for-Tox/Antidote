@@ -14,6 +14,8 @@
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
 
+static NSString *const kToxSaveName = @"tox_save";
+
 @implementation ToxManager
 @synthesize clientId = _clientId;
 
@@ -51,6 +53,7 @@
         }
 
         dispatch_sync(self.queue, ^{
+            [self configureDirectoryWithToxSaves];
             [self qCreateTox];
             [self qRegisterFriendsCallbacks];
             [self qRegisterChatsCallbacks];
@@ -269,6 +272,16 @@
 
 #pragma mark -  Private
 
+- (void)configureDirectoryWithToxSaves
+{
+    NSString *directory = [self directoryWithToxSaves];
+    NSFileManager *manager = [NSFileManager defaultManager];
+
+    if (! [manager fileExistsAtPath:directory]) {
+        [manager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+}
+
 - (void)qCreateTox
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
@@ -277,13 +290,32 @@
 
     _tox = tox_new(NULL);
 
-    NSData *toxData = [UserInfoManager sharedInstance].uToxData;
+    NSString *path = [self directoryWithToxSaves];
+    path = [path stringByAppendingPathComponent:kToxSaveName];
+
+    NSData *toxData = [NSData dataWithContentsOfFile:path];
 
     if (toxData) {
         DDLogInfo(@"ToxManager: creating tox... old data found, loading");
         tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
     }
     else {
+#warning Added for compatibility with 0.1 version. Remove in future (after few alpha versions).
+        {
+            // trying to load tox from user defaults (it was stored there in 0.1 version
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+            toxData = [defaults objectForKey:@"tox-data"];
+
+            if (toxData) {
+                DDLogInfo(@"ToxManager: creating tox... found old data in NSUserDefaults, moving it to file");
+
+                [defaults removeObjectForKey:@"tox-data"];
+                [defaults synchronize];
+
+                tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
+            }
+        }
+
         DDLogInfo(@"ToxManager: creating tox... no old data, new tox has been created");
         [self qSaveTox];
     }
@@ -367,7 +399,11 @@
 
     tox_save(_tox, data);
 
-    [UserInfoManager sharedInstance].uToxData = [NSData dataWithBytes:data length:size];
+    NSString *path = [self directoryWithToxSaves];
+    path = [path stringByAppendingPathComponent:kToxSaveName];
+
+    NSData *nsData = [NSData dataWithBytes:data length:size];
+    [nsData writeToFile:path atomically:NO];
 
     free(data);
 
@@ -476,6 +512,13 @@
     if (result == 0) {
         [self qSaveTox];
     }
+}
+
+- (NSString *)directoryWithToxSaves
+{
+    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+
+    return [path stringByAppendingPathComponent:@"ToxSaves"];
 }
 
 @end
