@@ -8,6 +8,8 @@
 
 #define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
 
+#import <MobileCoreServices/MobileCoreServices.h>
+
 #import "AppDelegate.h"
 #import "CustomLogFormatter.h"
 #import "DDFileLogger.h"
@@ -21,6 +23,7 @@
 #import "CoreDataManager+Chat.h"
 #import "CoreDataManager+Message.h"
 #import "BadgeWithText.h"
+#import "UIAlertView+BlocksKit.h"
 
 @interface AppDelegate()
 
@@ -54,6 +57,35 @@
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
     [self.window makeKeyAndVisible];
+    return YES;
+}
+
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation
+{
+    if ([url isFileURL]) {
+        NSURLRequest *fileUrlRequest = [[NSURLRequest alloc] initWithURL:url
+                                                             cachePolicy:NSURLCacheStorageNotAllowed
+                                                         timeoutInterval:.1];
+
+        NSURLResponse *response = nil;
+        [NSURLConnection sendSynchronousRequest:fileUrlRequest returningResponse:&response error:nil];
+
+        NSString* mimeType = [response MIMEType];
+
+        CFStringRef mimeTypeRef = (__bridge CFStringRef)mimeType;
+        CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeTypeRef, NULL);
+
+        if (CFStringCompare(UTI, kUTTypeData, 0) == kCFCompareEqualTo) {
+            [self handleIncomingFileAtUrl:url isDataFile:YES];
+        }
+        else {
+            [self handleIncomingFileAtUrl:url isDataFile:NO];
+        }
+    }
+
     return YES;
 }
 
@@ -160,6 +192,32 @@
             [UIDevice currentDevice].name,
             [UIDevice currentDevice].model,
             [UIDevice currentDevice].systemVersion);
+}
+
+- (void)handleIncomingFileAtUrl:(NSURL *)url isDataFile:(BOOL)isDataFile
+{
+    void (^removeFile)() = ^() {
+        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+    };
+
+    if (isDataFile) {
+        NSString *message = [NSString stringWithFormat:
+            NSLocalizedString(@"Use \"%@\" file as tox save file?", @"Incoming file"),
+            [url lastPathComponent]];
+
+        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
+
+        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Incoming file") handler:^{
+
+        }];
+
+        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Incoming file") handler:removeFile];
+
+        [alert show];
+    }
+    else {
+        removeFile();
+    }
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
