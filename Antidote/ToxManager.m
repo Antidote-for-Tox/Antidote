@@ -53,7 +53,6 @@ static NSString *const kToxSaveName = @"tox_save";
         }
 
         dispatch_sync(self.queue, ^{
-            [self configureDirectoryWithToxSaves];
             [self qCreateTox];
             [self qRegisterFriendsCallbacks];
             [self qRegisterChatsCallbacks];
@@ -272,16 +271,6 @@ static NSString *const kToxSaveName = @"tox_save";
 
 #pragma mark -  Private
 
-- (void)configureDirectoryWithToxSaves
-{
-    NSString *directory = [self directoryWithToxSaves];
-    NSFileManager *manager = [NSFileManager defaultManager];
-
-    if (! [manager fileExistsAtPath:directory]) {
-        [manager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-}
-
 - (void)qCreateTox
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
@@ -290,9 +279,14 @@ static NSString *const kToxSaveName = @"tox_save";
 
     _tox = tox_new(NULL);
 
-    NSString *path = [self directoryWithToxSaves];
-    path = [path stringByAppendingPathComponent:kToxSaveName];
+    NSString *directory = [self directoryWithToxSaves];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
 
+    if (! [fileManager fileExistsAtPath:directory]) {
+        [fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+
+    NSString *path = [directory stringByAppendingPathComponent:kToxSaveName];
     NSData *toxData = [NSData dataWithContentsOfFile:path];
 
     if (toxData) {
