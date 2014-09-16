@@ -73,6 +73,11 @@
     return [UIFont fontWithName:@"HelveticaNeue-Light" size:size];
 }
 
++ (UIFont *)fontHelveticaNeueBoldWithSize:(CGFloat)size
+{
+    return [UIFont fontWithName:@"HelveticaNeue-Bold" size:size];
+}
+
 + (AppearanceManagerColorscheme)colorscheme
 {
     return [self sharedInstance].colorscheme;

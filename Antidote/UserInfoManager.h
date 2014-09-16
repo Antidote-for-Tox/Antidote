@@ -16,6 +16,8 @@
 @property (strong, nonatomic) NSNumber *uCurrentColorscheme;
 @property (strong, nonatomic) NSNumber *uFriendsSort;
 
+@property (strong, nonatomic) NSString *uCurrentProfileFileName;
+
 + (instancetype)sharedInstance;
 
 @end

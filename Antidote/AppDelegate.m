@@ -24,6 +24,7 @@
 #import "CoreDataManager+Message.h"
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
+#import "ProfileManager.h"
 
 @interface AppDelegate()
 
@@ -46,13 +47,7 @@
     [self configureLoggingStuff];
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
-
-    [[ToxManager sharedInstance] bootstrapWithNodes:@[
-        [ToxNode nodeWithAddress:@"192.254.75.98"   port:33445 publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"],
-        [ToxNode nodeWithAddress:@"107.161.17.51"   port:33445 publicKey:@"7BE3951B97CA4B9ECDDA768E8C52BA19E9E2690AB584787BF4C90E04DBB75111"],
-        [ToxNode nodeWithAddress:@"23.226.230.47"   port:33445 publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"],
-        [ToxNode nodeWithAddress:@"37.59.102.176"   port:33445 publicKey:@"B98A2CEAA6C6A2FADC2C3632D284318B60FE5375CCB41EFA081AB67F500C1B0B"],
-    ]];
+    [[ProfileManager sharedInstance] configureCurrentProfileAndLoadTox];
 
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
@@ -91,6 +86,12 @@
 
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
 {
+    [self recreateControllersAndShow:tabIndex withBlock:nil];
+}
+
+- (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
+                         withBlock:(void (^)(UINavigationController *topNavigation))block;
+{
     UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
     UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
     UINavigationController *settings = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
@@ -124,6 +125,10 @@
 
     [self updateBadgeForTab:AppDelegateTabIndexFriends];
     [self updateBadgeForTab:AppDelegateTabIndexChats];
+
+    if (block) {
+        block((UINavigationController *) tabBar.selectedViewController);
+    }
 }
 
 - (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index

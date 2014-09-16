@@ -27,6 +27,7 @@
 @property (strong, nonatomic) NSString *userStatusMessage;
 
 + (instancetype)sharedInstance;
+- (void)killSharedInstance;
 
 - (void)bootstrapWithNodes:(NSArray *)nodes;
 

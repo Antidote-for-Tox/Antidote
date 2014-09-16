@@ -13,8 +13,12 @@
 #import "ToxManager+PrivateFiles.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
+#import "ProfileManager.h"
 
 static NSString *const kToxSaveName = @"tox_save";
+
+static ToxManager *__instance;
+static dispatch_once_t __onceToken;
 
 @implementation ToxManager
 @synthesize clientId = _clientId;
@@ -77,22 +81,21 @@ static NSString *const kToxSaveName = @"tox_save";
     DDLogInfo(@"ToxManager: dealloc called, killing tox");
     tox_kill(_tox);
 
-    dispatch_source_cancel(self.timer);
-    self.timer = nil;
+    if (self.timer) {
+        dispatch_source_cancel(self.timer);
+        self.timer = nil;
+    }
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 + (instancetype)sharedInstance
 {
-    static ToxManager *instance;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        instance = [[ToxManager alloc] initPrivate];
+    dispatch_once(&__onceToken, ^{
+        __instance = [[ToxManager alloc] initPrivate];
     });
 
-    return instance;
+    return __instance;
 }
 
 #pragma mark -  Properties
@@ -155,6 +158,12 @@ static NSString *const kToxSaveName = @"tox_save";
 }
 
 #pragma mark -  Public
+
+- (void)killSharedInstance
+{
+    __instance = nil;
+    __onceToken = 0;
+}
 
 - (void)bootstrapWithNodes:(NSArray *)nodes
 {
@@ -279,37 +288,13 @@ static NSString *const kToxSaveName = @"tox_save";
 
     _tox = tox_new(NULL);
 
-    NSString *directory = [self directoryWithToxSaves];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSData *toxData = [[ProfileManager sharedInstance] toxDataForCurrentProfile];
 
-    if (! [fileManager fileExistsAtPath:directory]) {
-        [fileManager createDirectoryAtPath:directory withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-
-    NSString *path = [directory stringByAppendingPathComponent:kToxSaveName];
-    NSData *toxData = [NSData dataWithContentsOfFile:path];
-
-    if (toxData) {
+    if (toxData.length) {
         DDLogInfo(@"ToxManager: creating tox... old data found, loading");
         tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
     }
     else {
-#warning Added for compatibility with 0.1 version. Remove in future (after few alpha versions).
-        {
-            // trying to load tox from user defaults (it was stored there in 0.1 version
-            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-            toxData = [defaults objectForKey:@"tox-data"];
-
-            if (toxData) {
-                DDLogInfo(@"ToxManager: creating tox... found old data in NSUserDefaults, moving it to file");
-
-                [defaults removeObjectForKey:@"tox-data"];
-                [defaults synchronize];
-
-                tox_load(_tox, (uint8_t *)toxData.bytes, (uint32_t)toxData.length);
-            }
-        }
-
         DDLogInfo(@"ToxManager: creating tox... no old data, new tox has been created");
         [self qSaveTox];
     }
@@ -333,20 +318,26 @@ static NSString *const kToxSaveName = @"tox_save";
     __weak ToxManager *weakSelf = self;
 
     dispatch_source_set_event_handler(self.timer, ^{
-        tox_do(weakSelf.tox);
+        ToxManager *strongSelf = weakSelf;
 
-        int isConnected = tox_isconnected(weakSelf.tox);
+        if (! strongSelf) {
+            return;
+        }
 
-        if (isConnected != weakSelf.isConnected) {
-            weakSelf.isConnected = isConnected;
+        tox_do(strongSelf.tox);
+
+        int isConnected = tox_isconnected(strongSelf.tox);
+
+        if (isConnected != strongSelf.isConnected) {
+            strongSelf.isConnected = isConnected;
             DDLogInfo(@"ToxManager: ***  connected changed to %d  ***", isConnected);
         }
 
-        uint32_t newInterval = tox_do_interval(weakSelf.tox);
+        uint32_t newInterval = tox_do_interval(strongSelf.tox);
 
-        if (newInterval != weakSelf.timerMillisecondsUpdateInterval) {
-            dispatch_async(weakSelf.queue, ^{
-                [weakSelf qUpdateTimerInterval:newInterval];
+        if (newInterval != strongSelf.timerMillisecondsUpdateInterval) {
+            dispatch_async(strongSelf.queue, ^{
+                [strongSelf qUpdateTimerInterval:newInterval];
             });
         }
     });
@@ -393,11 +384,8 @@ static NSString *const kToxSaveName = @"tox_save";
 
     tox_save(_tox, data);
 
-    NSString *path = [self directoryWithToxSaves];
-    path = [path stringByAppendingPathComponent:kToxSaveName];
-
     NSData *nsData = [NSData dataWithBytes:data length:size];
-    [nsData writeToFile:path atomically:NO];
+    [[ProfileManager sharedInstance] saveToxDataForCurrentProfile:nsData];
 
     free(data);
 
@@ -506,13 +494,6 @@ static NSString *const kToxSaveName = @"tox_save";
     if (result == 0) {
         [self qSaveTox];
     }
-}
-
-- (NSString *)directoryWithToxSaves
-{
-    NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-
-    return [path stringByAppendingPathComponent:@"ToxSaves"];
 }
 
 @end

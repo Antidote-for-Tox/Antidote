@@ -20,15 +20,18 @@
 #import "CellWithNameStatusAvatar.h"
 #import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
+#import "ProfilesViewController.h"
 
 typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeNameStatusAvatar,
     CellTypeToxId,
     CellTypeColorscheme,
     CellTypeFeedback,
+    CellTypeProfile,
     __CellTypeTotalCount,
 };
 
+static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
 static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 @interface SettingsViewController () <UITableViewDataSource, UITableViewDelegate,
@@ -58,6 +61,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
             @[
                 @(CellTypeToxId),
                 @(CellTypeColorscheme),
+            ],
+            @[
+                @(CellTypeProfile),
             ],
             @[
                 @(CellTypeFeedback),
@@ -97,6 +103,12 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [self cellWithColorschemeIdAtIndexPath:indexPath];
     }
+    else if (type == CellTypeProfile) {
+        return [self profileCellAtIndexPath:indexPath];
+    }
+    else if (type == CellTypeProfile) {
+        return [self profileCellAtIndexPath:indexPath];
+    }
     else if (type == CellTypeFeedback) {
         return [self feedbackCellAtIndexPath:indexPath];
     }
@@ -130,6 +142,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [CellWithColorscheme height];
     }
+    else if (type == CellTypeProfile) {
+        return 44.0;
+    }
     else if (type == CellTypeFeedback) {
         return 44.0;
     }
@@ -143,7 +158,10 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeFeedback) {
+    if (type == CellTypeProfile) {
+        [self.navigationController pushViewController:[ProfilesViewController new] animated:YES];
+    }
+    else if (type == CellTypeFeedback) {
         if (! [MFMailComposeViewController canSendMail]) {
             [[[UIAlertView alloc] initWithTitle:nil
                                         message:NSLocalizedString(@"Please configure your mail settings", @"Settings")
@@ -229,6 +247,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     [self.tableView registerClass:[CellWithColorscheme class]
            forCellReuseIdentifier:[CellWithColorscheme reuseIdentifier]];
 
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kProfileReuseIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kFeedbackReuseIdentifier];
 
     [self.view addSubview:self.tableView];
@@ -329,6 +348,17 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.delegate = self;
 
     [cell redraw];
+
+    return cell;
+}
+
+- (UITableViewCell *)profileCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
+                                                                 forIndexPath:indexPath];
+    cell.textLabel.text = NSLocalizedString(@"Profile", @"Settings");
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [AppearanceManager textMainColor];
 
     return cell;
 }

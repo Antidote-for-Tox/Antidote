@@ -5,6 +5,7 @@
         <attribute name="lastReadDate" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="lastMessage" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="chatForLastMessageInverse" inverseEntity="CDMessage" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDMessage" inverseName="chat" inverseEntity="CDMessage" syncable="YES"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDProfile" inverseName="chat" inverseEntity="CDProfile" syncable="YES"/>
         <relationship name="users" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDUser" inverseName="chats" inverseEntity="CDUser" syncable="YES"/>
     </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
@@ -43,19 +44,27 @@
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="messageInverse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="text" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
+    <entity name="CDProfile" representedClassName="CDProfile" syncable="YES">
+        <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDChat" inverseName="profile" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="user" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDUser" inverseName="profile" inverseEntity="CDUser" syncable="YES"/>
+    </entity>
     <entity name="CDUser" representedClassName="CDUser" syncable="YES">
         <attribute name="clientId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nickname" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="chats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDChat" inverseName="users" inverseEntity="CDChat" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDMessage" inverseName="user" inverseEntity="CDMessage" syncable="YES"/>
+        <relationship name="profile" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDProfile" inverseName="user" inverseEntity="CDProfile" syncable="YES"/>
     </entity>
     <elements>
-        <element name="CDChat" positionX="288" positionY="-0" width="128" height="120"/>
+        <element name="CDChat" positionX="288" positionY="-0" width="128" height="135"/>
         <element name="CDMessage" positionX="-63" positionY="-27" width="128" height="163"/>
         <element name="CDMessageCall" positionX="-299" positionY="-72" width="128" height="58"/>
         <element name="CDMessageFile" positionX="-270" positionY="54" width="128" height="118"/>
         <element name="CDMessagePendingFile" positionX="-90" positionY="81" width="128" height="163"/>
         <element name="CDMessageText" positionX="-252" positionY="158" width="128" height="103"/>
-        <element name="CDUser" positionX="97" positionY="182" width="128" height="105"/>
+        <element name="CDUser" positionX="97" positionY="182" width="128" height="118"/>
+        <element name="CDProfile" positionX="-81" positionY="90" width="128" height="103"/>
     </elements>
 </model>
