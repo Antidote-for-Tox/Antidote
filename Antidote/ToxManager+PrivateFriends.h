@@ -17,6 +17,6 @@
 - (void)qApproveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block;
 - (void)qRemoveFriendRequest:(ToxFriendRequest *)request;
 - (void)qRemoveFriend:(ToxFriend *)friend;
-- (void)qChangeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange;
+- (void)qChangeNicknameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange;
 
 @end

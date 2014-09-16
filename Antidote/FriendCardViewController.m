@@ -15,7 +15,7 @@
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
-@property (strong, nonatomic) UITextField *associatedNameField;
+@property (strong, nonatomic) UITextField *nicknameField;
 @property (strong, nonatomic) UILabel *realNameLabel;
 
 @property (strong, nonatomic) ToxFriend *friend;
@@ -67,7 +67,7 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if ([textField isEqual:self.associatedNameField]) {
+    if ([textField isEqual:self.nicknameField]) {
         [textField resignFirstResponder];
     }
 
@@ -76,8 +76,8 @@
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
-    if ([textField isEqual:self.associatedNameField]) {
-        [[ToxManager sharedInstance] changeAssociatedNameTo:textField.text forFriend:self.friend];
+    if ([textField isEqual:self.nicknameField]) {
+        [[ToxManager sharedInstance] changeNicknameTo:textField.text forFriend:self.friend];
     }
 }
 
@@ -105,13 +105,13 @@
 
 - (void)createNameViews
 {
-    self.associatedNameField = [UITextField new];
-    self.associatedNameField.delegate = self;
-    self.associatedNameField.placeholder = NSLocalizedString(@"Name", @"Settings");
-    self.associatedNameField.borderStyle = UITextBorderStyleRoundedRect;
-    self.associatedNameField.returnKeyType = UIReturnKeyDone;
-    self.associatedNameField.textAlignment = NSTextAlignmentCenter;
-    [self.scrollView addSubview:self.associatedNameField];
+    self.nicknameField = [UITextField new];
+    self.nicknameField.delegate = self;
+    self.nicknameField.placeholder = NSLocalizedString(@"Name", @"Settings");
+    self.nicknameField.borderStyle = UITextBorderStyleRoundedRect;
+    self.nicknameField.returnKeyType = UIReturnKeyDone;
+    self.nicknameField.textAlignment = NSTextAlignmentCenter;
+    [self.scrollView addSubview:self.nicknameField];
 
     self.realNameLabel = [self.scrollView addLabelWithTextColor:[UIColor lightGrayColor]
                                                         bgColor:[UIColor clearColor]];
@@ -127,13 +127,13 @@
     CGRect frame = CGRectZero;
 
     {
-        frame = self.associatedNameField.frame;
+        frame = self.nicknameField.frame;
         frame.size.width = 200.0;
         frame.size.height = 30.0;
         frame.origin.x = (self.view.bounds.size.width - frame.size.width) / 2;
         frame.origin.y = currentOriginY + yIndentation;
 
-        self.associatedNameField.frame = frame;
+        self.nicknameField.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
@@ -151,9 +151,9 @@
 
 - (void)redrawTitleAndViews
 {
-    self.title = self.friend.associatedName;
+    self.title = self.friend.nickname;
 
-    self.associatedNameField.text = self.friend.associatedName;
+    self.nicknameField.text = self.friend.nickname;
 
     self.realNameLabel.text = self.friend.realName.length ?
         [NSString stringWithFormat:@"(%@)", self.friend.realName] : nil;

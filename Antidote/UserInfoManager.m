@@ -66,7 +66,7 @@
 }
 
 GENERATE_OBJECT(PendingFriendRequests,  @"pending-friend-requests",  NSArray *)
-GENERATE_OBJECT(AssociatedNames,        @"associated-names",         NSDictionary *)
+GENERATE_OBJECT(Nicknames,        @"associated-names",         NSDictionary *)
 GENERATE_OBJECT(CurrentColorscheme,     @"current-colorscheme",      NSNumber *)
 GENERATE_OBJECT(FriendsSort,            @"friends-sort",             NSNumber *)
 

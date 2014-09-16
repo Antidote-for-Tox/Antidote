@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
 @property (assign, nonatomic, readonly) int32_t id;
 @property (strong, nonatomic, readonly) NSString *clientId;
 @property (strong, nonatomic, readonly) NSString *realName;
-@property (strong, nonatomic, readonly) NSString *associatedName;
+@property (strong, nonatomic, readonly) NSString *nickname;
 @property (strong, nonatomic, readonly) NSString *statusMessage;
 @property (strong, nonatomic, readonly) NSDate *lastSeenOnline;
 @property (assign, nonatomic, readonly) ToxFriendStatus status;

@@ -161,7 +161,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     [self.friendsContainer private_removeFriend:friend];
 }
 
-- (void)qChangeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
+- (void)qChangeNicknameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
@@ -170,18 +170,18 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
             return;
         }
 
-        friend.associatedName = name;
+        friend.nickname = name;
 
         if (name.length) {
             NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-                [UserInfoManager sharedInstance].uAssociatedNames];
+                [UserInfoManager sharedInstance].uNicknames];
 
             names[friend.clientId] = name;
 
-            [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
+            [UserInfoManager sharedInstance].uNicknames = [names copy];
         }
         else {
-            [[ToxManager sharedInstance] qMaybeCreateAssociatedNameForFriend:friend];
+            [[ToxManager sharedInstance] qMaybeCreateNicknameForFriend:friend];
         }
     }];
 }
@@ -235,22 +235,22 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     {
         if (friend.clientId) {
-            NSDictionary *names = [UserInfoManager sharedInstance].uAssociatedNames;
+            NSDictionary *names = [UserInfoManager sharedInstance].uNicknames;
 
-            friend.associatedName = names[friend.clientId];
+            friend.nickname = names[friend.clientId];
         }
     }
 
-    [self qMaybeCreateAssociatedNameForFriend:friend];
+    [self qMaybeCreateNicknameForFriend:friend];
 
     return friend;
 }
 
-- (void)qMaybeCreateAssociatedNameForFriend:(ToxFriend *)friend
+- (void)qMaybeCreateNicknameForFriend:(ToxFriend *)friend
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    if (friend.associatedName.length) {
+    if (friend.nickname.length) {
         return;
     }
 
@@ -258,18 +258,18 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         return;
     }
 
-    friend.associatedName = friend.realName;
+    friend.nickname = friend.realName;
 
     if (! friend.clientId) {
         return;
     }
 
     NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-        [UserInfoManager sharedInstance].uAssociatedNames];
+        [UserInfoManager sharedInstance].uNicknames];
 
     names[friend.clientId] = friend.realName;
 
-    [UserInfoManager sharedInstance].uAssociatedNames = [names copy];
+    [UserInfoManager sharedInstance].uNicknames = [names copy];
 }
 
 @end
@@ -312,7 +312,7 @@ void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, 
         {
             friend.realName = realName;
 
-            [[ToxManager sharedInstance] qMaybeCreateAssociatedNameForFriend:friend];
+            [[ToxManager sharedInstance] qMaybeCreateNicknameForFriend:friend];
         }];
     });
 }

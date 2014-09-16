@@ -401,7 +401,7 @@
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.textLabel.text = friend.associatedName ?: friend.clientId;
+    cell.textLabel.text = friend.nickname ?: friend.clientId;
     cell.imageView.image = [AvatarFactory avatarFromString:cell.textLabel.text side:30.0];
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 

@@ -16,9 +16,9 @@
 /**
  * Dictionary with:
  * keys - NSString *clientId
- * values - NSString *associatedName
+ * values - NSString *nickname
  */
-@property (strong, nonatomic) NSDictionary *uAssociatedNames;
+@property (strong, nonatomic) NSDictionary *uNicknames;
 
 @property (strong, nonatomic) NSNumber *uCurrentColorscheme;
 @property (strong, nonatomic) NSNumber *uFriendsSort;

@@ -393,14 +393,14 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 - (NSComparator)comparatorForCurrentSort
 {
     NSComparator nameComparator = ^NSComparisonResult (ToxFriend *first, ToxFriend *second) {
-        if (first.associatedName && second.associatedName) {
-            return [first.associatedName compare:second.associatedName];
+        if (first.nickname && second.nickname) {
+            return [first.nickname compare:second.nickname];
         }
 
-        if (first.associatedName) {
+        if (first.nickname) {
             return NSOrderedDescending;
         }
-        if (second.associatedName) {
+        if (second.nickname) {
             return NSOrderedAscending;
         }
 

@@ -29,7 +29,7 @@
 
 - (NSString *)nameToShow
 {
-    return self.associatedName ?: self.clientId;
+    return self.nickname ?: self.clientId;
 }
 
 @end

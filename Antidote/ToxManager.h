@@ -35,7 +35,7 @@
 - (void)removeFriendRequest:(ToxFriendRequest *)request;
 - (void)removeFriend:(ToxFriend *)friend;
 
-- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friend;
+- (void)changeNicknameTo:(NSString *)name forFriend:(ToxFriend *)friend;
 
 - (void)changeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping;
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat;

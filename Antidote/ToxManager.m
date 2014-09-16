@@ -191,10 +191,10 @@ static NSString *const kToxSaveName = @"tox_save";
     });
 }
 
-- (void)changeAssociatedNameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
+- (void)changeNicknameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
 {
     dispatch_async(self.queue, ^{
-        [self qChangeAssociatedNameTo:name forFriend:friendToChange];
+        [self qChangeNicknameTo:name forFriend:friendToChange];
     });
 }
 

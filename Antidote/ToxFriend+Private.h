@@ -13,7 +13,7 @@
 @property (assign, nonatomic, readwrite) int32_t id;
 @property (strong, nonatomic, readwrite) NSString *clientId;
 @property (strong, nonatomic, readwrite) NSString *realName;
-@property (strong, nonatomic, readwrite) NSString *associatedName;
+@property (strong, nonatomic, readwrite) NSString *nickname;
 @property (strong, nonatomic, readwrite) NSString *statusMessage;
 @property (strong, nonatomic, readwrite) NSDate *lastSeenOnline;
 @property (assign, nonatomic, readwrite) ToxFriendStatus status;
