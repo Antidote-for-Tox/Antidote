@@ -13,13 +13,6 @@
 // array with ToxFriendRequest's NSDictionaries
 @property (strong, nonatomic) NSArray *uPendingFriendRequests;
 
-/**
- * Dictionary with:
- * keys - NSString *clientId
- * values - NSString *nickname
- */
-@property (strong, nonatomic) NSDictionary *uNicknames;
-
 @property (strong, nonatomic) NSNumber *uCurrentColorscheme;
 @property (strong, nonatomic) NSNumber *uFriendsSort;
 

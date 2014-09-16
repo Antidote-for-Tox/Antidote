@@ -8,11 +8,14 @@
 
 #import "ToxManager+PrivateFriends.h"
 #import "ToxManager+Private.h"
+#import "ToxManager+PrivateChat.h"
 #import "ToxFriend+Private.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
 #import "EventsManager.h"
 #import "AppDelegate.h"
+#import "CoreDataManager.h"
+#import "CDUser.h"
 
 void friendRequestCallback(Tox *tox, const uint8_t * public_key, const uint8_t * data, uint16_t length, void *userdata);
 void nameChangeCallback(Tox *tox, int32_t friendnumber, const uint8_t *newname, uint16_t length, void *userdata);
@@ -165,6 +168,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    __weak ToxManager *weakSelf = self;
+
     [self.friendsContainer private_updateFriendWithId:friendToChange.id updateBlock:^(ToxFriend *friend) {
         if (! friend.clientId) {
             return;
@@ -173,15 +178,14 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         friend.nickname = name;
 
         if (name.length) {
-            NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-                [UserInfoManager sharedInstance].uNicknames];
-
-            names[friend.clientId] = name;
-
-            [UserInfoManager sharedInstance].uNicknames = [names copy];
+            [weakSelf qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+                [CoreDataManager editCDObjectWithBlock:^{
+                    user.nickname = name;
+                } completionQueue:nil completionBlock:nil];
+            }];
         }
         else {
-            [[ToxManager sharedInstance] qMaybeCreateNicknameForFriend:friend];
+            [weakSelf qMaybeCreateNicknameForFriend:friend];
         }
     }];
 }
@@ -235,9 +239,13 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     {
         if (friend.clientId) {
-            NSDictionary *names = [UserInfoManager sharedInstance].uNicknames;
+            __weak ToxManager *weakSelf = self;
 
-            friend.nickname = names[friend.clientId];
+            [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+                friend.nickname = user.nickname;
+
+                [weakSelf qMaybeCreateNicknameForFriend:friend];
+            }];
         }
     }
 
@@ -264,12 +272,11 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         return;
     }
 
-    NSMutableDictionary *names = [NSMutableDictionary dictionaryWithDictionary:
-        [UserInfoManager sharedInstance].uNicknames];
-
-    names[friend.clientId] = friend.realName;
-
-    [UserInfoManager sharedInstance].uNicknames = [names copy];
+    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [CoreDataManager editCDObjectWithBlock:^{
+            user.nickname = friend.realName;
+        } completionQueue:nil completionBlock:nil];
+    }];
 }
 
 @end

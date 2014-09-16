@@ -14,6 +14,7 @@
 @implementation CDUser
 
 @dynamic clientId;
+@dynamic nickname;
 @dynamic chats;
 @dynamic messages;
 

@@ -14,6 +14,7 @@
 @interface CDUser : NSManagedObject
 
 @property (nonatomic, retain) NSString * clientId;
+@property (nonatomic, retain) NSString * nickname;
 @property (nonatomic, retain) NSSet *chats;
 @property (nonatomic, retain) NSSet *messages;
 @end
