@@ -42,7 +42,8 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
             [self.friendRequests addObject:request];
         }
 
-        self.friendsSort = [[UserInfoManager sharedInstance].uFriendsSort unsignedIntegerValue];
+        ToxFriendsContainerSort sort = [[UserInfoManager sharedInstance].uFriendsSort unsignedIntegerValue];
+        [self setFriendsSort:sort sendNotification:NO];
 
         DDLogInfo(@"ToxFriendsContainer: created with number of friends %lu, number of friendRequests %lu",
                 self.friends.count, self.friendRequests.count);
@@ -55,6 +56,11 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 
 - (void)setFriendsSort:(ToxFriendsContainerSort)sort
 {
+    [self setFriendsSort:sort sendNotification:YES];
+}
+
+- (void)setFriendsSort:(ToxFriendsContainerSort)sort sendNotification:(BOOL)sendNotification
+{
     _friendsSort = sort;
 
     [UserInfoManager sharedInstance].uFriendsSort = @(sort);
@@ -66,11 +72,13 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
 
         [self.friends sortUsingComparator:[self comparatorForCurrentSort]];
 
-        NSRange range = NSMakeRange(0, self.friends.count);
-        [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
-                                 insertedSet:nil
-                                  removedSet:nil
-                                  updatedSet:[NSIndexSet indexSetWithIndexesInRange:range]];
+        if (sendNotification) {
+            NSRange range = NSMakeRange(0, self.friends.count);
+            [self sendUpdateNotificationWithType:kToxFriendsContainerUpdateFriendsNotification
+                                     insertedSet:nil
+                                      removedSet:nil
+                                      updatedSet:[NSIndexSet indexSetWithIndexesInRange:range]];
+        }
     }
 }
 

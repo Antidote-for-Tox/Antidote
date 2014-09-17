@@ -132,11 +132,6 @@
     }
 }
 
-- (void)killAllControllers;
-{
-    self.window.rootViewController = nil;
-}
-
 - (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index
 {
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
