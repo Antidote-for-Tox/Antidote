@@ -32,6 +32,8 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 -  UI polishing
 -  sending files
+-  tox_save import/export
+-  multiple profiles
 
 #### Then
 
