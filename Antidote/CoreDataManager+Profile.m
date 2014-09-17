@@ -13,24 +13,31 @@
 
 + (CDProfile *)syncProfileWithPredicate:(NSPredicate *)predicate;
 {
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
-    return [CDProfile MR_findFirstWithPredicate:predicate inContext:context];
+    __block CDProfile *profile = nil;
+
+    dispatch_sync([self private_queue], ^{
+        profile = [CDProfile MR_findFirstWithPredicate:predicate inContext:[self private_context]];
+    });
+
+    return profile;
 }
 
 + (CDProfile *)syncAddProfileWithConfigBlock:(void (^)(CDProfile *profile))configBlock
 {
-    NSManagedObjectContext *context = [NSManagedObjectContext MR_contextForCurrentThread];
+    __block CDProfile *profile = nil;
 
-    CDProfile *profile = [NSEntityDescription insertNewObjectForEntityForName:@"CDProfile"
-                                                       inManagedObjectContext:context];
+    dispatch_sync([self private_queue], ^{
+        profile = [NSEntityDescription insertNewObjectForEntityForName:@"CDProfile"
+                                                inManagedObjectContext:[self private_context]];
 
-    if (configBlock) {
-        configBlock(profile);
-    }
+        if (configBlock) {
+            configBlock(profile);
+        }
 
-    [context MR_saveToPersistentStoreAndWait];
+        [[self private_context] MR_saveToPersistentStoreAndWait];
 
-    DDLogVerbose(@"CoreDataManager+Profile: created profile %@", profile);
+        DDLogVerbose(@"CoreDataManager+Profile: created profile %@", profile);
+    });
 
     return profile;
 }

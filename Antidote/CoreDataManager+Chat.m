@@ -8,16 +8,19 @@
 
 #import "CoreDataManager+Chat.h"
 #import "CoreData+MagicalRecord.h"
+#import "ProfileManager.h"
 
 @implementation CoreDataManager (Chat)
 
-+ (void)chatsWithPredicateSortedByDate:(NSPredicate *)predicate
-                       completionQueue:(dispatch_queue_t)queue
-                       completionBlock:(void (^)(NSArray *chats))completionBlock
++ (void)currentProfileChatsWithPredicateSortedByDate:(NSPredicate *)predicate
+                                     completionQueue:(dispatch_queue_t)queue
+                                     completionBlock:(void (^)(NSArray *chats))completionBlock
 {
     if (! completionBlock) {
         return;
     }
+
+    predicate = [self private_predicateByAddingCurrentProfile:predicate];
 
     dispatch_async([self private_queue], ^{
         NSArray *array = [CDChat MR_findAllSortedBy:@"lastMessage.date"
@@ -31,18 +34,20 @@
     });
 }
 
-+ (void)allChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
-                              completionQueue:(dispatch_queue_t)queue
-                              completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock
++ (void)currentProfileAllChatsFetchedControllerWithDelegate:(id <NSFetchedResultsControllerDelegate>)delegate
+                                            completionQueue:(dispatch_queue_t)queue
+                                            completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock
 {
     if (! completionBlock) {
         return;
     }
 
     dispatch_async([self private_queue], ^{
+        NSPredicate *predicate = [self private_predicateByAddingCurrentProfile:nil];
+
         NSFetchedResultsController *controller = [CDChat MR_fetchAllSortedBy:@"lastMessage.date"
                                                                    ascending:NO
-                                                               withPredicate:nil
+                                                               withPredicate:predicate
                                                                      groupBy:nil
                                                                     delegate:delegate
                                                                    inContext:[self private_context]];
@@ -53,17 +58,21 @@
     });
 }
 
-+ (void)getOrInsertChatWithPredicate:(NSPredicate *)predicate
-                         configBlock:(void (^)(CDChat *theChat))configBlock
-                     completionQueue:(dispatch_queue_t)queue
-                     completionBlock:(void (^)(CDChat *chat))completionBlock
++ (void)getOrInsertChatWithPredicateInCurrentProfile:(NSPredicate *)predicate
+                                         configBlock:(void (^)(CDChat *theChat))configBlock
+                                     completionQueue:(dispatch_queue_t)queue
+                                     completionBlock:(void (^)(CDChat *chat))completionBlock
 {
+    predicate = [self private_predicateByAddingCurrentProfile:predicate];
+
     dispatch_async([self private_queue], ^{
         CDChat *chat = [CDChat MR_findFirstWithPredicate:predicate inContext:[self private_context]];
 
         if (! chat) {
             chat = [NSEntityDescription insertNewObjectForEntityForName:@"CDChat"
                                                  inManagedObjectContext:[self private_context]];
+
+            chat.profile = [ProfileManager sharedInstance].currentProfile;
 
             if (configBlock) {
                 configBlock(chat);

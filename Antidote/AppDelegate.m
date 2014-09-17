@@ -131,6 +131,11 @@
     }
 }
 
+- (void)killAllControllers;
+{
+    self.window.rootViewController = nil;
+}
+
 - (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index
 {
     UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
@@ -159,9 +164,9 @@
 
         __weak AppDelegate *weakSelf = self;
 
-        [CoreDataManager chatsWithPredicateSortedByDate:predicate
-                                        completionQueue:dispatch_get_main_queue()
-                                        completionBlock:^(NSArray *array)
+        [CoreDataManager currentProfileChatsWithPredicateSortedByDate:predicate
+                                                      completionQueue:dispatch_get_main_queue()
+                                                      completionBlock:^(NSArray *array)
         {
             weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
         }];

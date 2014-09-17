@@ -9,6 +9,7 @@
 #import "CDUser.h"
 #import "CDChat.h"
 #import "CDMessage.h"
+#import "CDProfile.h"
 
 
 @implementation CDUser
@@ -17,5 +18,6 @@
 @dynamic nickname;
 @dynamic chats;
 @dynamic messages;
+@dynamic profile;
 
 @end

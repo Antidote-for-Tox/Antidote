@@ -21,6 +21,8 @@ typedef NS_ENUM(NSUInteger, AppDelegateTabIndex) {
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex;
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
                          withBlock:(void (^)(UINavigationController *topNavigation))block;
+- (void)killAllControllers;
+
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex;
 
 - (NSArray *)getLogFilesPaths;

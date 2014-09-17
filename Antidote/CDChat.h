@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class CDMessage, CDUser;
+@class CDMessage, CDUser, CDProfile;
 
 @interface CDChat : NSManagedObject
 
@@ -18,6 +18,7 @@
 @property (nonatomic, retain) CDMessage *lastMessage;
 @property (nonatomic) NSTimeInterval lastReadDate;
 @property (nonatomic, retain) NSString *enteredMessage;
+@property (nonatomic, retain) CDProfile *profile;
 
 @end
 

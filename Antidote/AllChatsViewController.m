@@ -64,9 +64,9 @@
 
     __weak AllChatsViewController *weakSelf = self;
 
-    [CoreDataManager allChatsFetchedControllerWithDelegate:self
-                                           completionQueue:dispatch_get_main_queue()
-                                           completionBlock:^(NSFetchedResultsController *controller)
+    [CoreDataManager currentProfileAllChatsFetchedControllerWithDelegate:self
+                                                         completionQueue:dispatch_get_main_queue()
+                                                         completionBlock:^(NSFetchedResultsController *controller)
     {
         weakSelf.fetchedResultsController = controller;
         [weakSelf.tableView reloadData];

@@ -230,11 +230,14 @@
 
 - (void)selectProfile:(CDProfile *)profile
 {
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+
+    [delegate killAllControllers];
+
     [[ProfileManager sharedInstance] switchToProfile:profile];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
-                 [nav pushViewController:[ProfilesViewController new] animated:NO];
+         [nav pushViewController:[ProfilesViewController new] animated:NO];
     }];
 }
 

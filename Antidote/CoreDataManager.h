@@ -24,5 +24,6 @@
 + (dispatch_queue_t)private_queue;
 + (NSManagedObjectContext *)private_context;
 + (void)private_performBlockOnQueueOrMain:(dispatch_queue_t)queue block:(void (^)())block;
++ (NSPredicate *)private_predicateByAddingCurrentProfile:(NSPredicate *)predicate;
 
 @end

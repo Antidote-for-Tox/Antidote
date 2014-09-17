@@ -8,6 +8,7 @@
 
 #import "CoreDataManager.h"
 #import "CoreData+MagicalRecord.h"
+#import "ProfileManager.h"
 
 @interface CoreDataManager()
 {
@@ -117,6 +118,18 @@
     else {
         dispatch_async(dispatch_get_main_queue(), block);
     }
+}
+
++ (NSPredicate *)private_predicateByAddingCurrentProfile:(NSPredicate *)predicate
+{
+    NSPredicate *profilePredicate = [NSPredicate predicateWithFormat:@"profile == %@",
+                [ProfileManager sharedInstance].currentProfile];
+
+    if (predicate) {
+        return [NSCompoundPredicate andPredicateWithSubpredicates:@[profilePredicate, predicate]];
+    }
+
+    return profilePredicate;
 }
 
 @end

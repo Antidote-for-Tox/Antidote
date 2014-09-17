@@ -9,6 +9,7 @@
 #import "CDChat.h"
 #import "CDMessage.h"
 #import "CDUser.h"
+#import "CDProfile.h"
 
 
 @implementation CDChat
@@ -18,5 +19,6 @@
 @dynamic lastMessage;
 @dynamic lastReadDate;
 @dynamic enteredMessage;
+@dynamic profile;
 
 @end

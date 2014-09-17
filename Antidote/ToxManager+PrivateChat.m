@@ -103,7 +103,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", clientId];
 
-    [CoreDataManager getOrInsertUserWithPredicate:predicate configBlock:^(CDUser *u) {
+    [CoreDataManager getOrInsertUserWithPredicateInCurrentProfile:predicate configBlock:^(CDUser *u) {
         u.clientId = clientId;
 
     } completionQueue:self.queue completionBlock:completionBlock];
@@ -115,7 +115,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
 
-    [CoreDataManager getOrInsertChatWithPredicate:predicate configBlock:^(CDChat *c) {
+    [CoreDataManager getOrInsertChatWithPredicateInCurrentProfile:predicate configBlock:^(CDChat *c) {
         [c addUsersObject:user];
 
     } completionQueue:self.queue completionBlock:completionBlock];

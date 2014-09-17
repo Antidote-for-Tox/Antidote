@@ -11,9 +11,9 @@
 
 @interface CoreDataManager (User)
 
-+ (void)getOrInsertUserWithPredicate:(NSPredicate *)predicate
-                         configBlock:(void (^)(CDUser *user))configBlock
-                     completionQueue:(dispatch_queue_t)queue
-                     completionBlock:(void (^)(CDUser *user))completionBlock;
++ (void)getOrInsertUserWithPredicateInCurrentProfile:(NSPredicate *)predicate
+                                         configBlock:(void (^)(CDUser *user))configBlock
+                                     completionQueue:(dispatch_queue_t)queue
+                                     completionBlock:(void (^)(CDUser *user))completionBlock;
 
 @end

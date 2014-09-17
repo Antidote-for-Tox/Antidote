@@ -8,20 +8,24 @@
 
 #import "CoreDataManager+User.h"
 #import "CoreData+MagicalRecord.h"
+#import "ProfileManager.h"
 
 @implementation CoreDataManager (User)
 
-+ (void)getOrInsertUserWithPredicate:(NSPredicate *)predicate
-                         configBlock:(void (^)(CDUser *user))configBlock
-                     completionQueue:(dispatch_queue_t)queue
-                     completionBlock:(void (^)(CDUser *user))completionBlock
++ (void)getOrInsertUserWithPredicateInCurrentProfile:(NSPredicate *)predicate
+                                         configBlock:(void (^)(CDUser *user))configBlock
+                                     completionQueue:(dispatch_queue_t)queue
+                                     completionBlock:(void (^)(CDUser *user))completionBlock
 {
+    predicate = [self private_predicateByAddingCurrentProfile:predicate];
+
     dispatch_async([self private_queue], ^{
         CDUser *user = [CDUser MR_findFirstWithPredicate:predicate inContext:[self private_context]];
 
         if (! user) {
             user = [NSEntityDescription insertNewObjectForEntityForName:@"CDUser"
                                                  inManagedObjectContext:[self private_context]];
+            user.profile = [ProfileManager sharedInstance].currentProfile;
 
             if (configBlock) {
                 configBlock(user);

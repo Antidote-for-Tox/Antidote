@@ -47,8 +47,8 @@
     <entity name="CDProfile" representedClassName="CDProfile" syncable="YES">
         <attribute name="fileName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="chat" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDChat" inverseName="profile" inverseEntity="CDChat" syncable="YES"/>
-        <relationship name="user" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDUser" inverseName="profile" inverseEntity="CDUser" syncable="YES"/>
+        <relationship name="chat" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDChat" inverseName="profile" inverseEntity="CDChat" syncable="YES"/>
+        <relationship name="user" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDUser" inverseName="profile" inverseEntity="CDUser" syncable="YES"/>
     </entity>
     <entity name="CDUser" representedClassName="CDUser" syncable="YES">
         <attribute name="clientId" optional="YES" attributeType="String" syncable="YES"/>
@@ -64,7 +64,7 @@
         <element name="CDMessageFile" positionX="-270" positionY="54" width="128" height="118"/>
         <element name="CDMessagePendingFile" positionX="-90" positionY="81" width="128" height="163"/>
         <element name="CDMessageText" positionX="-252" positionY="158" width="128" height="103"/>
+        <element name="CDProfile" positionX="-81" positionY="90" width="128" height="105"/>
         <element name="CDUser" positionX="97" positionY="182" width="128" height="118"/>
-        <element name="CDProfile" positionX="-81" positionY="90" width="128" height="103"/>
     </elements>
 </model>

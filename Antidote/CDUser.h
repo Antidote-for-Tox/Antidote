@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class CDChat, CDMessage;
+@class CDChat, CDMessage, CDProfile;
 
 @interface CDUser : NSManagedObject
 
@@ -17,6 +17,8 @@
 @property (nonatomic, retain) NSString * nickname;
 @property (nonatomic, retain) NSSet *chats;
 @property (nonatomic, retain) NSSet *messages;
+@property (nonatomic, retain) CDProfile *profile;
+
 @end
 
 @interface CDUser (CoreDataGeneratedAccessors)
