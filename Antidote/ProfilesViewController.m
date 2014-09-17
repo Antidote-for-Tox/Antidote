@@ -122,15 +122,13 @@
 
     CDProfile *profile = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
-    if ([profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
-        return;
-    }
-
     UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
 
-    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Select", @"Profiles") handler:^{
-        [self selectProfile:profile];
-    }];
+    if (! [profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
+        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Select", @"Profiles") handler:^{
+            [self selectProfile:profile];
+        }];
+    }
 
     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Rename", @"Profiles") handler:^{
         [self renameProfile:profile];
@@ -154,7 +152,7 @@
             NSString *title = NSLocalizedString(@"Cannot delete active profile", @"Profiles");
             UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
 
-            [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+            [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:nil];
 
             [alert show];
 

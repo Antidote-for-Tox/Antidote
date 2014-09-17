@@ -65,7 +65,7 @@ static NSString *const kToxSaveName = @"tox_save";
 
     self.currentProfile = [CoreDataManager syncAddProfileWithConfigBlock:^(CDProfile *profile) {
         // default name
-        profile.name = NSLocalizedString(@"Main profile", @"Main profile name");
+        profile.name = NSLocalizedString(@"Main", @"Main profile name");
         profile.fileName = [[NSUUID UUID] UUIDString];
     }];
 

@@ -21,6 +21,7 @@
 #import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
 #import "ProfilesViewController.h"
+#import "ProfileManager.h"
 
 typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeNameStatusAvatar,
@@ -356,7 +357,10 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
                                                                  forIndexPath:indexPath];
-    cell.textLabel.text = NSLocalizedString(@"Profile", @"Settings");
+    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
+        NSLocalizedString(@"Profile", @"Settings"),
+        [ProfileManager sharedInstance].currentProfile.name];
+
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [AppearanceManager textMainColor];
 
