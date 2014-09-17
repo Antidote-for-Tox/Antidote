@@ -27,13 +27,13 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 -  reading/scanning Tox ID via QR code
 -  receiving files
 -  read receipts
+-  multiple profiles
+-  tox_save import/export
 
 #### In progress
 
 -  UI polishing
 -  sending files
--  tox_save import/export
--  multiple profiles
 
 #### Then
 
