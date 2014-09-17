@@ -22,6 +22,7 @@
 - (void)saveToxDataForCurrentProfile:(NSData *)data;
 
 - (void)addNewProfileWithName:(NSString *)name;
+- (void)addNewProfileWithName:(NSString *)name fromURL:(NSURL *)url removeAfterAdding:(BOOL)removeAfterAdding;
 - (void)switchToProfile:(CDProfile *)profile;
 - (void)renameProfile:(CDProfile *)profile to:(NSString *)name;
 - (void)deleteProfile:(CDProfile *)profile;

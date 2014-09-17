@@ -11,6 +11,8 @@
 #import "UserInfoManager.h"
 #import "ToxManager.h"
 
+static NSString *const kToxSaveName = @"tox_save";
+
 @interface ProfileManager()
 
 @property (strong, nonatomic, readwrite) CDProfile *currentProfile;
@@ -63,7 +65,7 @@
 
     self.currentProfile = [CoreDataManager syncAddProfileWithConfigBlock:^(CDProfile *profile) {
         // default name
-        profile.name = @"tox_save";
+        profile.name = NSLocalizedString(@"Main profile", @"Main profile name");
         profile.fileName = [[NSUUID UUID] UUIDString];
     }];
 
@@ -92,7 +94,31 @@
         profile.name = name;
         profile.fileName = [[NSUUID UUID] UUIDString];
 
-    } completionQueue:dispatch_get_main_queue() completionBlock:nil];
+    } completionQueue:nil completionBlock:nil];
+}
+
+- (void)addNewProfileWithName:(NSString *)name fromURL:(NSURL *)url removeAfterAdding:(BOOL)removeAfterAdding
+{
+    [CoreDataManager addProfileWithConfigBlock:^(CDProfile *profile) {
+        profile.name = name;
+        profile.fileName = [[NSUUID UUID] UUIDString];
+
+    } completionQueue:dispatch_get_main_queue() completionBlock:^(CDProfile *profile) {
+        NSString *path = [self profileDirectoryWithFileName:profile.fileName];
+
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+
+        [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+
+        NSURL *newURL = [[NSURL fileURLWithPath:path] URLByAppendingPathComponent:kToxSaveName];
+
+        if (removeAfterAdding) {
+            [fileManager moveItemAtURL:url toURL:newURL error:nil];
+        }
+        else {
+            [fileManager copyItemAtURL:url toURL:newURL error:nil];
+        }
+    }];
 }
 
 - (void)switchToProfile:(CDProfile *)profile
@@ -167,7 +193,7 @@
 {
     NSString *path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
 
-    path = [path stringByAppendingPathComponent:@"tox_save"];
+    path = [path stringByAppendingPathComponent:kToxSaveName];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
 

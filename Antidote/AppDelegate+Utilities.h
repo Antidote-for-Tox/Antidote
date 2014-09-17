@@ -14,5 +14,6 @@
 - (UIViewController *)visibleViewController;
 - (void)switchToChatsTabAndShowChatViewControllerWithChat:(CDChat *)chat;
 - (void)switchToFriendsTabAndShowFriendRequests;
+- (void)switchToSettingsTabAndShowProfiles;
 
 @end

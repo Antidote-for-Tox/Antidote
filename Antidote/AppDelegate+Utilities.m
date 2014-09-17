@@ -9,6 +9,7 @@
 #import "AppDelegate+Utilities.h"
 #import "FriendsViewController.h"
 #import "ChatViewController.h"
+#import "ProfilesViewController.h"
 
 @implementation AppDelegate (Utilities)
 
@@ -70,6 +71,17 @@
     FriendsViewController *friendsVC = (FriendsViewController *)[navCon topViewController];
 
     [friendsVC switchToTab:FriendsViewControllerTabRequests];
+}
+
+- (void)switchToSettingsTabAndShowProfiles
+{
+    UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexSettings];
+
+    if (navCon.viewControllers.count > 1) {
+        [navCon popToRootViewControllerAnimated:NO];
+    }
+
+    [navCon pushViewController:[ProfilesViewController new] animated:YES];
 }
 
 #pragma mark -  Private

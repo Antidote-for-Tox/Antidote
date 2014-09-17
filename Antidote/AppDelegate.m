@@ -11,6 +11,7 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "AppDelegate.h"
+#import "AppDelegate+Utilities.h"
 #import "CustomLogFormatter.h"
 #import "DDFileLogger.h"
 #import "DDASLLogger.h"
@@ -218,11 +219,26 @@
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Incoming file") handler:^{
+            NSString *title = NSLocalizedString(@"Enter profile name", @"Incoming file");
+
+            UIAlertView *nameAlert = [UIAlertView bk_alertViewWithTitle:title];
+            nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            [nameAlert textFieldAtIndex:0].text = [url lastPathComponent];
+
+            [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
+                NSString *name = [nameAlert textFieldAtIndex:0].text;
+
+                [[ProfileManager sharedInstance] addNewProfileWithName:name fromURL:url removeAfterAdding:YES];
+
+                [self switchToSettingsTabAndShowProfiles];
+            }];
+
+            [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:nil];
+            [nameAlert show];
 
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Incoming file") handler:removeFile];
-
         [alert show];
     }
     else {
