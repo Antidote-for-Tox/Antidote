@@ -76,14 +76,14 @@ static NSString *const kToxSaveName = @"tox_save";
 
 - (NSData *)toxDataForCurrentProfile
 {
-    NSString *path = [self toxDataPathForCurrentProfile];
+    NSString *path = [self toxDataPathForProfile:self.currentProfile];
 
     return [NSData dataWithContentsOfFile:path];
 }
 
 - (void)saveToxDataForCurrentProfile:(NSData *)data
 {
-    NSString *path = [self toxDataPathForCurrentProfile];
+    NSString *path = [self toxDataPathForProfile:self.currentProfile];
 
     [data writeToFile:path atomically:NO];
 }
@@ -153,6 +153,13 @@ static NSString *const kToxSaveName = @"tox_save";
     [CoreDataManager removeProfileWithAllRelatedCDObjects:profile completionQueue:nil completionBlock:nil];
 }
 
+- (NSURL *)toxDataURLForProfile:(CDProfile *)profile
+{
+    NSString *path = [self toxDataPathForProfile:profile];
+
+    return [NSURL fileURLWithPath:path isDirectory:NO];
+}
+
 #pragma mark -  Private
 
 - (void)loadToxManagerForCurrentProfile
@@ -189,9 +196,9 @@ static NSString *const kToxSaveName = @"tox_save";
     return [path stringByAppendingPathComponent:fileName];
 }
 
-- (NSString *)toxDataPathForCurrentProfile
+- (NSString *)toxDataPathForProfile:(CDProfile *)profile
 {
-    NSString *path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
+    NSString *path = [self profileDirectoryWithFileName:profile.fileName];
 
     path = [path stringByAppendingPathComponent:kToxSaveName];
 

@@ -16,11 +16,13 @@
 #import "UIActionSheet+BlocksKit.h"
 
 @interface ProfilesViewController () <UITableViewDataSource, UITableViewDelegate,
-    NSFetchedResultsControllerDelegate>
+    NSFetchedResultsControllerDelegate, UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 @end
 
@@ -134,6 +136,10 @@
         [self renameProfile:profile];
     }];
 
+    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Export", @"Profiles") handler:^{
+        [self exportProfile:profile];
+    }];
+
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
 
     [sheet showFromTabBar:self.tabBarController.tabBar];
@@ -208,6 +214,23 @@
     [self.tableView endUpdates];
 }
 
+#pragma mark -  UIDocumentInteractionControllerDelegate
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view.frame;
+}
+
 #pragma mark -  Private
 
 - (void)createTableView
@@ -252,6 +275,17 @@
     [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
 
     [view show];
+}
+
+- (void)exportProfile:(CDProfile *)profile
+{
+    NSURL *url = [[ProfileManager sharedInstance] toxDataURLForProfile:profile];
+
+    self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+    self.documentInteractionController.delegate = self;
+    self.documentInteractionController.name = [url lastPathComponent];
+
+    [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
 }
 
 @end
