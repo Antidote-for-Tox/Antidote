@@ -22,4 +22,8 @@
                       completionQueue:(dispatch_queue_t)queue
                       completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock;
 
++ (void)removeProfileWithAllRelatedCDObjects:(CDProfile *)profile
+                             completionQueue:(dispatch_queue_t)queue
+                             completionBlock:(void (^)())completionBlock;
+
 @end

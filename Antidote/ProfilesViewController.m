@@ -13,6 +13,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "ProfileManager.h"
 #import "AppDelegate.h"
+#import "UIActionSheet+BlocksKit.h"
 
 @interface ProfilesViewController () <UITableViewDataSource, UITableViewDelegate,
     NSFetchedResultsControllerDelegate>
@@ -71,7 +72,8 @@
 
 - (void)addButtonPressed
 {
-    UIAlertView *view = [UIAlertView bk_alertViewWithTitle:nil];
+    NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
+    UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
     view.alertViewStyle = UIAlertViewStylePlainTextInput;
 
     [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
@@ -124,12 +126,55 @@
         return;
     }
 
-    [[ProfileManager sharedInstance] switchToProfile:profile];
+    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
-        [nav pushViewController:[ProfilesViewController new] animated:NO];
+    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Select", @"Profiles") handler:^{
+        [self selectProfile:profile];
     }];
+
+    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Rename", @"Profiles") handler:^{
+        [self renameProfile:profile];
+    }];
+
+    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+
+    [sheet showFromTabBar:self.tabBarController.tabBar];
+}
+
+- (void)  tableView:(UITableView *)tableView
+ commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+  forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        CDProfile *profile = [self.fetchedResultsController objectAtIndexPath:indexPath];
+
+        if ([profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
+            tableView.editing = NO;
+
+            NSString *title = NSLocalizedString(@"Cannot delete active profile", @"Profiles");
+            UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
+
+            [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+
+            [alert show];
+
+            return;
+        }
+
+        NSString *title = [NSString stringWithFormat:
+            NSLocalizedString(@"Delete profile %@?", @"Profiles"), profile.name];
+
+        NSString *message = NSLocalizedString(@"This operation cannot be undone", @"Profiles");
+        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title message:message];
+
+        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Profiles") handler:^{
+            [[ProfileManager sharedInstance] deleteProfile:profile];
+        }];
+
+        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Profiles") handler:nil];
+
+        [alert show];
+    }
 }
 
 #pragma mark -  NSFetchedResultsControllerDelegate
@@ -181,6 +226,34 @@
 - (void)adjustSubviews
 {
     self.tableView.frame = self.view.bounds;
+}
+
+- (void)selectProfile:(CDProfile *)profile
+{
+    [[ProfileManager sharedInstance] switchToProfile:profile];
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
+                 [nav pushViewController:[ProfilesViewController new] animated:NO];
+    }];
+}
+
+- (void)renameProfile:(CDProfile *)profile
+{
+    NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
+    UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
+    view.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [view textFieldAtIndex:0].text = profile.name;
+
+    [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
+        NSString *name = [view textFieldAtIndex:0].text;
+
+        [[ProfileManager sharedInstance] renameProfile:profile to:name];
+    }];
+
+    [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+
+    [view show];
 }
 
 @end

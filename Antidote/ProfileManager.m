@@ -105,6 +105,28 @@
     [self loadToxManagerForCurrentProfile];
 }
 
+- (void)renameProfile:(CDProfile *)profile to:(NSString *)name
+{
+    [CoreDataManager editCDObjectWithBlock:^{
+        profile.name = name;
+    } completionQueue:nil completionBlock:nil];
+}
+
+- (void)deleteProfile:(CDProfile *)profile
+{
+    if ([profile.fileName isEqual:[UserInfoManager sharedInstance].uCurrentProfileFileName]) {
+        return;
+    }
+
+    NSString *path = [self profileDirectoryWithFileName:profile.fileName];
+
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
+        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    }
+
+    [CoreDataManager removeProfileWithAllRelatedCDObjects:profile completionQueue:nil completionBlock:nil];
+}
+
 #pragma mark -  Private
 
 - (void)loadToxManagerForCurrentProfile
@@ -135,10 +157,15 @@
     return [path stringByAppendingPathComponent:@"ToxSaves"];
 }
 
-- (NSString *)toxDataPathForCurrentProfile
+- (NSString *)profileDirectoryWithFileName:(NSString *)fileName
 {
     NSString *path = [self directoryWithToxSaves];
-    path = [path stringByAppendingPathComponent:self.currentProfile.fileName];
+    return [path stringByAppendingPathComponent:fileName];
+}
+
+- (NSString *)toxDataPathForCurrentProfile
+{
+    NSString *path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
 
     path = [path stringByAppendingPathComponent:@"tox_save"];
 

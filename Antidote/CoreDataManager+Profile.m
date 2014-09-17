@@ -71,7 +71,7 @@
 
     dispatch_async([self private_queue], ^{
         NSFetchedResultsController *controller = [CDProfile MR_fetchAllSortedBy:@"name"
-                                                                      ascending:NO
+                                                                      ascending:YES
                                                                   withPredicate:nil
                                                                         groupBy:nil
                                                                        delegate:delegate
@@ -80,6 +80,21 @@
         [self private_performBlockOnQueueOrMain:queue block:^{
             completionBlock(controller);
         }];
+    });
+}
+
++ (void)removeProfileWithAllRelatedCDObjects:(CDProfile *)profile
+                             completionQueue:(dispatch_queue_t)queue
+                             completionBlock:(void (^)())completionBlock
+{
+    dispatch_async([self private_queue], ^{
+        DDLogVerbose(@"CoreDataManager+Profile: deleting profile %@", profile);
+
+        [profile MR_deleteInContext:[self private_context]];
+
+        [[self private_context] MR_saveToPersistentStoreAndWait];
+
+        [self private_performBlockOnQueueOrMain:queue block:completionBlock];
     });
 }
 

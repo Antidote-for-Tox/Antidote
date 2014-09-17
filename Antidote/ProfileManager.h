@@ -23,5 +23,7 @@
 
 - (void)addNewProfileWithName:(NSString *)name;
 - (void)switchToProfile:(CDProfile *)profile;
+- (void)renameProfile:(CDProfile *)profile to:(NSString *)name;
+- (void)deleteProfile:(CDProfile *)profile;
 
 @end
