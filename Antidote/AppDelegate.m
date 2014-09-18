@@ -228,7 +228,7 @@
                 [self switchToSettingsTabAndShowProfiles];
             }];
 
-            [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:nil];
+            [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:removeFile];
             [nameAlert show];
 
         }];
