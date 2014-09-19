@@ -100,6 +100,32 @@
 @property (weak, nonatomic, readonly) UITextView *textView;
 
 /**
+ *  Returns the message bubble container view of the cell. This view is the superview of
+ *  the cell's textView and messageBubbleImageView.
+ *
+ *  @discussion You may customize the cell by adding custom views to this container view.
+ *  To do so, override `collectionView:cellForItemAtIndexPath:`
+ *
+ *  @warning You should not try to manipulate any properties of this view, for example adjusting
+ *  its frame, nor should you remove this view from the cell or remove any of its subviews. 
+ *  Doing so could result in unexpected behavior.
+ */
+@property (weak, nonatomic, readonly) UIView *messageBubbleContainerView;
+
+/**
+ *  Returns the avatar container view of the cell. This view is the superview of 
+ *  the cell's avatarImageView.
+ *
+ *  @discussion You may customize the cell by adding custom views to this container view.
+ *  To do so, override `collectionView:cellForItemAtIndexPath:`
+ *
+ *  @warning You should not try to manipulate any properties of this view, for example adjusting
+ *  its frame, nor should you remove this view from the cell or remove any of its subviews.
+ *  Doing so could result in unexpected behavior.
+ */
+@property (weak, nonatomic, readonly) UIView *avatarContainerView;
+
+/**
  *  The bubble image view of the cell that is responsible for displaying bubble images.
  *  The default value is `nil`.
  */
@@ -110,13 +136,6 @@
  *  The default value is `nil`.
  */
 @property (weak, nonatomic) UIImageView *avatarImageView;
-
-/**
- *  Returns the underlying gesture recognizer for long press gestures in the cell.
- *  This gesture handles the copy action for the cell.
- *  Access this property when you need to override or more precisely control the long press gesture.
- */
-@property (weak, nonatomic, readonly) UILongPressGestureRecognizer *longPressGestureRecognizer;
 
 /**
  *  Returns the underlying gesture recognizer for tap gestures in the avatarImageView of the cell.
