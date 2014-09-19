@@ -93,6 +93,6 @@
 // libsodium-ios
 #define COCOAPODS_POD_AVAILABLE_libsodium_ios
 #define COCOAPODS_VERSION_MAJOR_libsodium_ios 0
-#define COCOAPODS_VERSION_MINOR_libsodium_ios 4
-#define COCOAPODS_VERSION_PATCH_libsodium_ios 5
+#define COCOAPODS_VERSION_MINOR_libsodium_ios 7
+#define COCOAPODS_VERSION_PATCH_libsodium_ios 0
 

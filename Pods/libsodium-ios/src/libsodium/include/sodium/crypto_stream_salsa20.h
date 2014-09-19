@@ -9,16 +9,14 @@
  *  the crypto_box functions.
  */
 
-#if 0
-# ifndef SODIUM_HAVE_AMD64_ASM
-#  define SODIUM_HAVE_AMD64_ASM
-# endif
-#endif
-
 #include <stddef.h>
+#include <stdint.h>
 #include "export.h"
 
 #ifdef __cplusplus
+# if __GNUC__
+#  pragma GCC diagnostic ignored "-Wlong-long"
+# endif
 extern "C" {
 #endif
 
@@ -31,22 +29,19 @@ SODIUM_EXPORT
 size_t crypto_stream_salsa20_noncebytes(void);
 
 SODIUM_EXPORT
-const char * crypto_stream_salsa20_primitive(void);
+int crypto_stream_salsa20(unsigned char *c, unsigned long long clen,
+                          const unsigned char *n, const unsigned char *k);
 
 SODIUM_EXPORT
-int crypto_stream_salsa20(unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
+int crypto_stream_salsa20_xor(unsigned char *c, const unsigned char *m,
+                              unsigned long long mlen, const unsigned char *n,
+                              const unsigned char *k);
 
 SODIUM_EXPORT
-int crypto_stream_salsa20_xor(unsigned char *,const unsigned char *,unsigned long long,const unsigned char *,const unsigned char *);
-
-#ifdef SODIUM_HAVE_AMD64_ASM
-# define crypto_stream_salsa20_amd64_xmm6 crypto_stream_salsa20
-# define crypto_stream_salsa20_amd64_xmm6_xor crypto_stream_salsa20_xor
-#else
-# define crypto_stream_salsa20_ref crypto_stream_salsa20
-# define crypto_stream_salsa20_ref_xor crypto_stream_salsa20_xor
-#endif
-
+int crypto_stream_salsa20_xor_ic(unsigned char *c, const unsigned char *m,
+                                 unsigned long long mlen,
+                                 const unsigned char *n, uint64_t ic,
+                                 const unsigned char *k);
 #ifdef __cplusplus
 }
 #endif

@@ -1,9 +1,7 @@
-
-
 License
 -------
 
-Copyright (c) 2013
+Copyright (c) 2013-2014
 Moritz C. Türck
 
 Permission to use, copy, modify, and distribute this software for any
@@ -22,7 +20,7 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 Original License
 ----------------
 
-Copyright (c) 2013
+Copyright (c) 2013-2014
 Frank Denis <j at pureftpd dot org>
 
 Permission to use, copy, modify, and distribute this software for any
