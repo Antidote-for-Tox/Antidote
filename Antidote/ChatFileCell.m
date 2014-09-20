@@ -43,7 +43,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 @property (assign, nonatomic) TypeImageViewType currentTypeImageViewType;
 @property (assign, nonatomic) PlayPauseImageType currentPlayPauseImageType;
-@property (assign, nonatomic) NSString *currentUTI;
+@property (strong, nonatomic) NSString *currentUTI;
 
 @end
 
