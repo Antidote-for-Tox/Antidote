@@ -51,7 +51,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: send message with length %lu to chat %@...", message.length, chat);
+    DDLogInfo(@"ToxManager: send message with length %lu to chat %@...", (unsigned long)message.length, chat);
 
     if (! message.length || ! chat) {
         DDLogError(@"ToxManager: send message... empty message or no chat");

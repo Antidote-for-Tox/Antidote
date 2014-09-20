@@ -52,6 +52,8 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
 
 - (BOOL)resignFirstResponder
 {
+    [super resignFirstResponder];
+
     return [self.textView resignFirstResponder];
 }
 

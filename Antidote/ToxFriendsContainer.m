@@ -46,7 +46,7 @@ NSString *const kToxFriendsContainerUpdateKeyUpdatedSet = @"kToxFriendsContainer
         [self setFriendsSort:sort sendNotification:NO];
 
         DDLogInfo(@"ToxFriendsContainer: created with number of friends %lu, number of friendRequests %lu",
-                self.friends.count, self.friendRequests.count);
+                (unsigned long)self.friends.count, (unsigned long)self.friendRequests.count);
     }
 
     return self;

@@ -363,7 +363,7 @@ static dispatch_once_t __onceToken;
 
     for (ToxNode *node in nodes) {
         DDLogInfo(@"ToxManager: bootstraping with address %@, port %lu, publicKey %@",
-                node.address, node.port, node.publicKey);
+                node.address, (unsigned long)node.port, node.publicKey);
 
         uint8_t *pub_key = [ToxFunctions hexStringToBin:node.publicKey];
         tox_bootstrap_from_address(self.tox, node.address.UTF8String, node.port, pub_key);

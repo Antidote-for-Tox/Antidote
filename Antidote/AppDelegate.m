@@ -63,7 +63,7 @@
 {
     if ([url isFileURL]) {
         NSURLRequest *fileUrlRequest = [[NSURLRequest alloc] initWithURL:url
-                                                             cachePolicy:NSURLCacheStorageNotAllowed
+                                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                          timeoutInterval:.1];
 
         NSURLResponse *response = nil;

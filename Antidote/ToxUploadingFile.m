@@ -70,7 +70,7 @@
         }
 
         DDLogInfo(@"ToxUploadingFile: %@ nextPortionOfBytes: no cached data, caching... cached %lu bytes",
-                self, self.cachedData.length);
+                self, (unsigned long)self.cachedData.length);
     }
 
     NSUInteger offset = self.offsetInCachedData;

@@ -79,7 +79,7 @@
 
 - (void)addObjectOnMainThread:(EventObject *)object
 {
-    DDLogVerbose(@"EventsManager: adding object with type %lu...", object.type);
+    DDLogVerbose(@"EventsManager: adding object with type %lu...", (unsigned long)object.type);
 
     if (! [self shouldShowAlertWindowFor:object]) {
         DDLogVerbose(@"EventsManager: we shouldn't show this object, quiting");

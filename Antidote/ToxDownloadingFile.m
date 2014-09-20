@@ -91,7 +91,7 @@ static const NSTimeInterval kCacheTimeInterval = 0.3;
             return;
         }
 
-        DDLogInfo(@"ToxDownloadingFile: %@ appending %lu bytes to file", self, self.cachedData.length);
+        DDLogInfo(@"ToxDownloadingFile: %@ appending %lu bytes to file", self, (unsigned long)self.cachedData.length);
 
         self.savedLength += self.cachedData.length;
         self.lastWriteTimeInterval = currentTimeInterval;
