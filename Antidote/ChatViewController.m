@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <QuickLook/QuickLook.h>
+
 #import "ChatViewController.h"
 #import "UIViewController+Utilities.h"
 #import "ChatIncomingCell.h"
@@ -28,8 +30,8 @@ typedef NS_ENUM(NSInteger, Section) {
 };
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
-    UIGestureRecognizerDelegate, ChatFileCellDelegate, UIDocumentInteractionControllerDelegate,
-    ToxManagerFileProgressDelegate>
+    UIGestureRecognizerDelegate, ChatFileCellDelegate, ToxManagerFileProgressDelegate,
+    QLPreviewControllerDataSource>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -43,7 +45,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
 @property (assign, nonatomic) BOOL showTypingSection;
 
-@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
+@property (strong, nonatomic) NSArray *qlMessagesWithFiles;
 
 @end
 
@@ -306,15 +308,38 @@ typedef NS_ENUM(NSInteger, Section) {
     CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
 
     if (message.file) {
-        NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.file.fileNameOnDisk temporary:NO];
+        __weak ChatViewController *weakSelf = self;
 
-        NSURL *url = [NSURL fileURLWithPath:path isDirectory:NO];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@ AND file != nil", self.chat];
 
-        self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
-        self.documentInteractionController.delegate = self;
-        self.documentInteractionController.name = message.file.originalFileName;
+        [CoreDataManager messagesWithPredicate:predicate
+                               completionQueue:dispatch_get_main_queue()
+                               completionBlock:^(NSArray *messagesArray)
+        {
+            ChatViewController *strongSelf = weakSelf;
 
-        [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
+            if (! strongSelf) {
+                return;
+            }
+
+            strongSelf.qlMessagesWithFiles = messagesArray;
+
+            NSUInteger currentIndex = 0;
+
+            for (NSUInteger index = 0; index < messagesArray.count; index++) {
+                CDMessage *m = messagesArray[index];
+
+                if ([m isEqual:message]) {
+                    currentIndex = index;
+                }
+            }
+
+            QLPreviewController *pc = [QLPreviewController new];
+            pc.dataSource = strongSelf;
+            pc.currentPreviewItemIndex = currentIndex;
+
+            [strongSelf.navigationController pushViewController:pc animated:YES];
+        }];
     }
 }
 
@@ -411,23 +436,6 @@ typedef NS_ENUM(NSInteger, Section) {
     [cell redraw];
 }
 
-#pragma mark -  UIDocumentInteractionControllerDelegate
-
-- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
-{
-    return self;
-}
-
-- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller
-{
-    return self.view;
-}
-
-- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller
-{
-    return self.view.frame;
-}
-
 #pragma mark -  ToxManagerFileProgressDelegate
 
 - (void)toxManagerProgressChanged:(CGFloat)progress
@@ -457,6 +465,22 @@ typedef NS_ENUM(NSInteger, Section) {
             break;
         }
     }
+}
+
+#pragma mark -  QLPreviewControllerDataSource
+
+- (NSInteger)numberOfPreviewItemsInPreviewController:(QLPreviewController *)controller
+{
+    return self.qlMessagesWithFiles.count;
+}
+
+- (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
+{
+    CDMessage *message = self.qlMessagesWithFiles[index];
+
+    NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.file.fileNameOnDisk temporary:NO];
+
+    return [NSURL fileURLWithPath:path];
 }
 
 #pragma mark -  Notifications
