@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import <QuickLook/QuickLook.h>
-
 #import "ChatViewController.h"
 #import "UIViewController+Utilities.h"
 #import "ChatIncomingCell.h"
@@ -24,6 +22,7 @@
 #import "AppDelegate.h"
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
+#import "PreviewItem.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,
@@ -483,7 +482,11 @@ typedef NS_ENUM(NSInteger, Section) {
     NSString *path = [[ProfileManager sharedInstance] pathInFilesForCurrentProfileFromFileName:fileName
                                                                                      temporary:NO];
 
-    return [NSURL fileURLWithPath:path];
+    PreviewItem *item = [PreviewItem new];
+    item.previewItemURL = [NSURL fileURLWithPath:path];
+    item.previewItemTitle = message.file.originalFileName;
+
+    return item;
 }
 
 #pragma mark -  Notifications
