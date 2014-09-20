@@ -15,7 +15,7 @@
 #import "EventsManager.h"
 #import "AppDelegate.h"
 #import "ToxDownloadingFile.h"
-#import "Helper.h"
+#import "ProfileManager.h"
 
 void fileSendRequestCallback(Tox *, int32_t, uint8_t, uint64_t, const uint8_t *, uint16_t, void *);
 void fileControlCallback(Tox *, int32_t, uint8_t, uint8_t, uint8_t, const uint8_t *, uint16_t, void *);
@@ -52,7 +52,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     // remove all temp files
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *tempFileDirectoryPath = [Helper fileDirectoryPathIsTemporary:YES];
+    ProfileManager *profileManager = [ProfileManager sharedInstance];
+    NSString *tempFileDirectoryPath = [profileManager fileDirectoryPathForCurrentProfileIsTemporary:YES];
 
     if ([fileManager fileExistsAtPath:tempFileDirectoryPath]) {
         NSError *error;
@@ -87,8 +88,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         NSString *key = [self keyFromFriendNumber:message.pendingFile.friendNumber
                                        fileNumber:message.pendingFile.fileNumber];
 
-        NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.pendingFile.fileNameOnDisk
-                                                                temporary:YES];
+        ProfileManager *profileManager = [ProfileManager sharedInstance];
+        NSString *path = [profileManager pathInFilesForCurrentProfileFromFileName:message.pendingFile.fileNameOnDisk
+                                                                        temporary:YES];
 
         @synchronized(self.privateFiles_downloadingFiles) {
             self.privateFiles_downloadingFiles[key] = [[ToxDownloadingFile alloc] initWithFilePath:path];
@@ -244,10 +246,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
         CDMessage *message = [array lastObject];
 
-        NSString *oldPath = [Helper fullFilePathInFilesDirectoryFromFileName:message.pendingFile.fileNameOnDisk
-                                                                   temporary:YES];
-        NSString *newPath = [Helper fullFilePathInFilesDirectoryFromFileName:message.pendingFile.fileNameOnDisk
-                                                                   temporary:NO];
+        ProfileManager *profileManager = [ProfileManager sharedInstance];
+        NSString *oldPath = [profileManager pathInFilesForCurrentProfileFromFileName:message.pendingFile.fileNameOnDisk
+                                                                           temporary:YES];
+        NSString *newPath = [profileManager pathInFilesForCurrentProfileFromFileName:message.pendingFile.fileNameOnDisk
+                                                                           temporary:NO];
 
         NSError *error = nil;
 

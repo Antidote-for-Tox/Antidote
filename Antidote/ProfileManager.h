@@ -28,4 +28,7 @@
 - (void)deleteProfile:(CDProfile *)profile;
 - (NSURL *)toxDataURLForProfile:(CDProfile *)profile;
 
+- (NSString *)pathInFilesForCurrentProfileFromFileName:(NSString *)fileName temporary:(BOOL)temporary;
+- (NSString *)fileDirectoryPathForCurrentProfileIsTemporary:(BOOL)temporary;
+
 @end

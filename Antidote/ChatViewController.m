@@ -23,6 +23,7 @@
 #import "TimeFormatter.h"
 #import "AppDelegate.h"
 #import "UITableViewCell+Utilities.h"
+#import "ProfileManager.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,
@@ -477,8 +478,10 @@ typedef NS_ENUM(NSInteger, Section) {
 - (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
 {
     CDMessage *message = self.qlMessagesWithFiles[index];
+    NSString *fileName = message.file.fileNameOnDisk;
 
-    NSString *path = [Helper fullFilePathInFilesDirectoryFromFileName:message.file.fileNameOnDisk temporary:NO];
+    NSString *path = [[ProfileManager sharedInstance] pathInFilesForCurrentProfileFromFileName:fileName
+                                                                                     temporary:NO];
 
     return [NSURL fileURLWithPath:path];
 }

@@ -160,6 +160,27 @@ static NSString *const kToxSaveName = @"tox_save";
     return [NSURL fileURLWithPath:path isDirectory:NO];
 }
 
+- (NSString *)pathInFilesForCurrentProfileFromFileName:(NSString *)fileName temporary:(BOOL)temporary
+{
+    NSString *path = [self fileDirectoryPathForCurrentProfileIsTemporary:temporary];
+
+    return [path stringByAppendingPathComponent:fileName];
+}
+
+- (NSString *)fileDirectoryPathForCurrentProfileIsTemporary:(BOOL)temporary
+{
+    NSString *path = nil;
+
+    if (temporary) {
+        path = NSTemporaryDirectory();
+    }
+    else {
+        path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
+    }
+
+    return [path stringByAppendingPathComponent:@"Files"];
+}
+
 #pragma mark -  Private
 
 - (void)loadToxManagerForCurrentProfile

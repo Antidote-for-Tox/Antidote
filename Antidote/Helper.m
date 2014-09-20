@@ -35,25 +35,4 @@
     return [message.user.clientId isEqual:[ToxManager sharedInstance].clientId];
 }
 
-+ (NSString *)fullFilePathInFilesDirectoryFromFileName:(NSString *)fileName temporary:(BOOL)temporary
-{
-    NSString *path = [self fileDirectoryPathIsTemporary:temporary];
-
-    return [path stringByAppendingPathComponent:fileName];
-}
-
-+ (NSString *)fileDirectoryPathIsTemporary:(BOOL)temporary
-{
-    NSString *path = nil;
-
-    if (temporary) {
-        path = NSTemporaryDirectory();
-    }
-    else {
-        path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    }
-
-    return [path stringByAppendingPathComponent:@"Files"];
-}
-
 @end
