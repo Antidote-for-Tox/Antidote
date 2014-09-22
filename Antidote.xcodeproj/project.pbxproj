@@ -146,6 +146,7 @@
 		11E57F4219C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */; };
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
+		11E82AA719D097A6001561CA /* chat-camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11E82AA619D097A6001561CA /* chat-camera@2x.png */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -385,6 +386,7 @@
 		11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithNameStatusAvatar.m; sourceTree = "<group>"; };
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
+		11E82AA619D097A6001561CA /* chat-camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-camera@2x.png"; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
@@ -440,6 +442,7 @@
 		1138E0BD19A6651C004E06E2 /* ChatViewController */ = {
 			isa = PBXGroup;
 			children = (
+				11E82AA619D097A6001561CA /* chat-camera@2x.png */,
 				11E57F4119C0EC6300C8ACB8 /* chat-delivered-checkmark@2x.png */,
 				1138E0C119A6812B004E06E2 /* chat-file-cancel@2x.png */,
 				1138E0C019A6812B004E06E2 /* chat-file-download@2x.png */,
@@ -1073,6 +1076,7 @@
 				11DCC6E419A91C88000A5763 /* chat-file-type-ppt@2x.png in Resources */,
 				1138E0C319A6812B004E06E2 /* chat-file-cancel@2x.png in Resources */,
 				11DCC6DE19A91C88000A5763 /* chat-file-type-mp3@2x.png in Resources */,
+				11E82AA719D097A6001561CA /* chat-camera@2x.png in Resources */,
 				11DCC6D719A91C88000A5763 /* chat-file-type-exe@2x.png in Resources */,
 				11B9E62A19940F3900FB20A6 /* tab-bar-chats.png in Resources */,
 				11DCC6E319A91C88000A5763 /* chat-file-type-png@2x.png in Resources */,

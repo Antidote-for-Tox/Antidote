@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 #import "ChatViewController.h"
 #import "UIViewController+Utilities.h"
 #import "ChatIncomingCell.h"
@@ -23,6 +25,7 @@
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
 #import "PreviewItem.h"
+#import "UIActionSheet+BlocksKit.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,
@@ -31,7 +34,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
     UIGestureRecognizerDelegate, ChatFileCellDelegate, ToxManagerFileProgressDelegate,
-    QLPreviewControllerDataSource>
+    QLPreviewControllerDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -124,7 +127,7 @@ typedef NS_ENUM(NSInteger, Section) {
     }];
 
     [self updateIsTypingSection];
-    [self updateSendButtonEnabled];
+    [self updateInputButtons];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -357,6 +360,38 @@ typedef NS_ENUM(NSInteger, Section) {
     [self updateTableViewInsetAndInputViewWithDuration:0.3 curve:UIViewAnimationCurveEaseInOut];
 }
 
+- (void)chatInputView:(ChatInputView *)view imageButtonPressedWithText:(NSString *)text
+{
+    __weak ChatViewController *weakSelf = self;
+
+    void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
+        UIImagePickerController *ipc = [UIImagePickerController new];
+        ipc.allowsEditing = NO;
+        ipc.sourceType = sourceType;
+        ipc.delegate = weakSelf;
+
+        [weakSelf presentViewController:ipc animated:YES completion:nil];
+    };
+
+    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Chat") handler:^{
+            photoHandler(UIImagePickerControllerSourceTypeCamera);
+        }];
+    }
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Chat") handler:^{
+            photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
+        }];
+    }
+
+    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Chat") handler:nil];
+
+    [sheet showInView:self.view];
+}
+
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
 {
     [[ToxManager sharedInstance] sendMessage:text toChat:self.chat];
@@ -489,6 +524,33 @@ typedef NS_ENUM(NSInteger, Section) {
     return item;
 }
 
+#pragma mark -  UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+
+    NSURL *refURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+
+    ALAssetsLibrary* assetslibrary = [ALAssetsLibrary new];
+    [assetslibrary assetForURL:refURL resultBlock:^(ALAsset *imageAsset) {
+        ALAssetRepresentation *representation = [imageAsset defaultRepresentation];
+
+        NSString *fileName = [representation filename];
+
+        if (! fileName) {
+            fileName = @"photo.png";
+        }
+
+        DDLogInfo(@"Send %@", fileName);
+    } failureBlock:nil];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
 #pragma mark -  Notifications
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -594,7 +656,7 @@ typedef NS_ENUM(NSInteger, Section) {
     self.friend = updatedFriend;
     [self updateTitleView];
     [self updateIsTypingSection];
-    [self updateSendButtonEnabled];
+    [self updateInputButtons];
 }
 
 #pragma mark -  Private
@@ -858,9 +920,9 @@ typedef NS_ENUM(NSInteger, Section) {
     }
 }
 
-- (void)updateSendButtonEnabled
+- (void)updateInputButtons
 {
-    self.inputView.sendButtonEnabled = (self.friend.status != ToxFriendStatusOffline);
+    self.inputView.buttonsEnabled = (self.friend.status != ToxFriendStatusOffline);
 }
 
 - (BOOL)showFullDateForMessage:(CDMessage *)message atIndexPath:(NSIndexPath *)path

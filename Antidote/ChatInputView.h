@@ -12,6 +12,7 @@
 @protocol ChatInputViewDelegate <NSObject>
 
 - (void)chatInputViewWantsToUpdateFrame:(ChatInputView *)view;
+- (void)chatInputView:(ChatInputView *)view imageButtonPressedWithText:(NSString *)text;
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
 - (void)chatInputView:(ChatInputView *)view typingChangedTo:(BOOL)isTyping;
 
@@ -23,7 +24,7 @@
 
 @property (strong, nonatomic) NSString *text;
 
-@property (assign, nonatomic) BOOL sendButtonEnabled;
+@property (assign, nonatomic) BOOL buttonsEnabled;
 
 - (CGFloat)heightWithCurrentTextAndWidth:(CGFloat)width;
 

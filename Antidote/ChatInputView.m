@@ -13,12 +13,14 @@
 
 static const CGFloat kTypingTimerInterval = 5.0;
 
-static const CGFloat kTextViewDeltaWidth = 60.0;
+static const CGFloat kTextViewIndentationLeft = 45.0;
+static const CGFloat kTextViewIndentationRight = 60.0;
 
 @interface ChatInputView() <UITextViewDelegate>
 
 @property (strong, nonatomic) UITextView *textView;
-@property (strong, nonatomic) UIButton *button;
+@property (strong, nonatomic) UIButton *cameraButton;
+@property (strong, nonatomic) UIButton *sendButton;
 
 @property (strong, nonatomic) NSTimer *typingTimer;
 
@@ -36,7 +38,7 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
         self.backgroundColor = [UIColor uColorOpaqueWithWhite:236];
 
         [self createTextView];
-        [self createButton];
+        [self createButtons];
         [self adjustSubviews];
     }
 
@@ -59,14 +61,15 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
 
 #pragma mark -  Properties
 
-- (void)setSendButtonEnabled:(BOOL)enabled
+- (void)setButtonsEnabled:(BOOL)enabled
 {
-    self.button.enabled = enabled;
+    self.cameraButton.enabled = enabled;
+    self.sendButton.enabled = enabled;
 }
 
-- (BOOL)sendButtonEnabled
+- (BOOL)buttonsEnabled
 {
-    return self.button.enabled;
+    return self.sendButton.enabled;
 }
 
 - (void)setText:(NSString *)text
@@ -83,7 +86,12 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
 
 #pragma mark -  Actions
 
-- (void)buttonPressed
+- (void)cameraButtonPressed
+{
+    [self.delegate chatInputView:self imageButtonPressedWithText:self.textView.text];
+}
+
+- (void)sendButtonPressed
 {
     [self.delegate chatInputView:self sendButtonPressedWithText:self.textView.text];
     [self stopTyping];
@@ -104,8 +112,10 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
         text = [text stringByAppendingString:@"s"];
     }
 
+    const CGFloat maxWidth = width - kTextViewIndentationLeft -  kTextViewIndentationRight;
+
     CGSize size = [text stringSizeWithFont:self.textView.font
-                         constrainedToSize:CGSizeMake(width - kTextViewDeltaWidth, CGFLOAT_MAX)];
+                         constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
 
     return size.height + 18.0;
 }
@@ -167,28 +177,39 @@ static const CGFloat kTextViewDeltaWidth = 60.0;
     [self addSubview:self.textView];
 }
 
-- (void)createButton
+- (void)createButtons
 {
-    self.button = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.button setTitle:NSLocalizedString(@"Send", @"Settings") forState:UIControlStateNormal];
-    [self.button addTarget:self action:@selector(buttonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.button];
+    self.cameraButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.cameraButton setImage:[UIImage imageNamed:@"chat-camera"] forState:UIControlStateNormal];
+    [self.cameraButton addTarget:self action:@selector(cameraButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.cameraButton];
+
+    self.sendButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.sendButton setTitle:NSLocalizedString(@"Send", @"Settings") forState:UIControlStateNormal];
+    [self.sendButton addTarget:self action:@selector(sendButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.sendButton];
 }
 
 - (void)adjustSubviews
 {
     CGRect frame = self.textView.frame;
-    frame.size.width = self.bounds.size.width - kTextViewDeltaWidth;
+    frame.size.width = self.bounds.size.width - kTextViewIndentationLeft - kTextViewIndentationRight;
     frame.size.height = self.bounds.size.height - 8.0;
-    frame.origin.x = 5.0;
+    frame.origin.x = kTextViewIndentationLeft;
     frame.origin.y = (self.bounds.size.height - frame.size.height) / 2.0;
     self.textView.frame = frame;
 
-    [self.button sizeToFit];
-    frame = self.button.frame;
+    [self.cameraButton sizeToFit];
+    frame = self.cameraButton.frame;
+    frame.origin.x = 10.0;
+    frame.origin.y = (self.frame.size.height - frame.size.height) / 2;
+    self.cameraButton.frame = frame;
+
+    [self.sendButton sizeToFit];
+    frame = self.sendButton.frame;
     frame.origin.x = self.frame.size.width - frame.size.width - 10.0;
     frame.origin.y = (self.frame.size.height - frame.size.height) / 2;
-    self.button.frame = frame;
+    self.sendButton.frame = frame;
 }
 
 - (void)startTyping
