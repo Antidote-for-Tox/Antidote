@@ -33,6 +33,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 #### In progress
 
 -  UI polishing
+-  avatars
 -  sending files
 
 #### Then
