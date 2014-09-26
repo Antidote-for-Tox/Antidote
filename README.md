@@ -1,6 +1,6 @@
 [![Build Status](http://img.shields.io/travis/dvor/Antidote/master.svg?style=flat)](https://travis-ci.org/dvor/Antidote)
 
-Tox client for iOS 7.0+;
+[Tox](https://tox.im/) client for iOS 7.0+;
 
 ## Screenshots
 
@@ -33,6 +33,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 #### In progress
 
 -  UI polishing
+-  avatars
 -  sending files
 
 #### Then
