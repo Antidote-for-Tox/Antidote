@@ -47,4 +47,6 @@
 - (CGFloat)progressForPendingFileInMessage:(CDMessage *)message;
 - (void)togglePauseForPendingFileInMessage:(CDMessage *)message;
 
+- (void)uploadData:(NSData *)data withFileName:(NSString *)fileName toChat:(CDChat *)chat;
+
 @end

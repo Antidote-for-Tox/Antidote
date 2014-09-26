@@ -26,6 +26,7 @@
 @property (strong, nonatomic, readwrite) ToxFriendsContainer *friendsContainer;
 
 @property (strong, nonatomic) NSMutableDictionary *privateFiles_downloadingFiles;
+@property (strong, nonatomic) NSMutableDictionary *privateFiles_uploadingFiles;
 
 - (void)qSaveTox;
 - (NSString *)qClientId;

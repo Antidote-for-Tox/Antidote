@@ -7,6 +7,7 @@
 //
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 #import "ChatViewController.h"
 #import "UIViewController+Utilities.h"
@@ -530,19 +531,31 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 
-    NSURL *refURL = [info valueForKey:UIImagePickerControllerReferenceURL];
+    NSURL *refURL = info[UIImagePickerControllerReferenceURL];
 
     ALAssetsLibrary* assetslibrary = [ALAssetsLibrary new];
+
     [assetslibrary assetForURL:refURL resultBlock:^(ALAsset *imageAsset) {
         ALAssetRepresentation *representation = [imageAsset defaultRepresentation];
 
+        NSString *fileUTI = [representation UTI];
         NSString *fileName = [representation filename];
 
         if (! fileName) {
             fileName = @"photo.png";
         }
 
-        DDLogInfo(@"Send %@", fileName);
+        UIImage *image = info[UIImagePickerControllerOriginalImage];
+        NSData *data = nil;
+
+        if ([fileUTI isEqualToString:(NSString *)kUTTypeJPEG]) {
+            data = UIImageJPEGRepresentation(image, 1.0);
+        }
+        else {
+            data = UIImagePNGRepresentation(image);
+        }
+
+        [[ToxManager sharedInstance] uploadData:data withFileName:fileName toChat:self.chat];
     } failureBlock:nil];
 }
 

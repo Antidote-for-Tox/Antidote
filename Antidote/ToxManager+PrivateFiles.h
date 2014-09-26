@@ -18,5 +18,7 @@
 
 - (void)qTogglePauseForPendingFileInMessage:(CDMessage *)message;
 
+- (void)qUploadData:(NSData *)data withFileName:(NSString *)fileName toChat:(CDChat *)chat;
+
 @end
 

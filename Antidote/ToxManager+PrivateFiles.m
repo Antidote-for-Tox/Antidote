@@ -15,7 +15,9 @@
 #import "EventsManager.h"
 #import "AppDelegate.h"
 #import "ToxDownloadingFile.h"
+#import "ToxUploadingFile.h"
 #import "ProfileManager.h"
+#import "CDUser.h"
 
 void fileSendRequestCallback(Tox *, int32_t, uint8_t, uint64_t, const uint8_t *, uint16_t, void *);
 void fileControlCallback(Tox *, int32_t, uint8_t, uint8_t, uint8_t, const uint8_t *, uint16_t, void *);
@@ -32,6 +34,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     DDLogInfo(@"ToxManager: registering callbacks");
 
     self.privateFiles_downloadingFiles = [NSMutableDictionary new];
+    self.privateFiles_uploadingFiles = [NSMutableDictionary new];
 
     tox_callback_file_send_request (self.tox, fileSendRequestCallback, NULL);
     tox_callback_file_control      (self.tox, fileControlCallback,     NULL);
@@ -86,7 +89,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         state = CDMessagePendingFileStateActive;
 
         NSString *key = [self keyFromFriendNumber:message.pendingFile.friendNumber
-                                       fileNumber:message.pendingFile.fileNumber];
+                                       fileNumber:message.pendingFile.fileNumber
+                                      downloading:YES];
 
         ProfileManager *profileManager = [ProfileManager sharedInstance];
         NSString *path = [profileManager pathInFilesForCurrentProfileFromFileName:message.pendingFile.fileNameOnDisk
@@ -121,7 +125,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 - (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
 {
     @synchronized([ToxManager sharedInstance].privateFiles_downloadingFiles) {
-        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber fileNumber:fileNumber];
+        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                              fileNumber:fileNumber
+                                                             downloading:YES];
 
         ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
 
@@ -176,6 +182,67 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
             messageId == TOX_FILECONTROL_PAUSE);
 }
 
+- (void)qUploadData:(NSData *)data withFileName:(NSString *)originalFileName toChat:(CDChat *)chat
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    DDLogInfo(@"ToxManager: upload data with fileName %@, size %lu", originalFileName, data.length);
+
+    if (chat.users.count > 1) {
+        DDLogError(@"ToxManager: send message... group chats aren't supported yet");
+        return;
+    }
+
+    const uint64_t fileSize = data.length;
+    NSString *filePath = nil;
+    NSString *fileNameOnDisk = [self uniqueFileNameOnDiskWithExtension:[originalFileName pathExtension]];
+    {
+        // save file on disk
+        DDLogInfo(@"ToxManager: saving data on disk with fileName %@", fileNameOnDisk);
+
+        ProfileManager *profileManager = [ProfileManager sharedInstance];
+        filePath = [profileManager pathInFilesForCurrentProfileFromFileName:fileNameOnDisk temporary:NO];
+
+        [[NSFileManager defaultManager] createDirectoryAtPath:[filePath stringByDeletingLastPathComponent]
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+
+        [data writeToFile:filePath atomically:YES];
+    }
+
+    CDUser *user = [chat.users anyObject];
+    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
+
+    const char *cFileName = [originalFileName cStringUsingEncoding:NSUTF8StringEncoding];
+    uint16_t cFileNameLength = [originalFileName lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+
+    int fileNumber = tox_new_file_sender(self.tox, friend.id, fileSize, (const uint8_t *)cFileName, cFileNameLength);
+
+    __weak ToxManager *weakSelf = self;
+
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friend.id
+                                                          fileNumber:fileNumber
+                                                         downloading:NO];
+
+    int portionSize = tox_file_data_size(self.tox, friend.id);
+    self.privateFiles_uploadingFiles[key] = [[ToxUploadingFile alloc] initWithFilePath:filePath
+                                                                           portionSize:portionSize];
+
+    [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
+        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
+            [weakSelf qAddPendingFileToChat:chat
+                                   fromUser:currentUser
+                                 fileNumber:fileNumber
+                               friendNumber:friend.id
+                                   fileSize:fileSize
+                           originalFileName:originalFileName
+                             fileNameOnDisk:fileNameOnDisk
+                            completionBlock:nil];
+        }];
+    }];
+}
+
 #pragma mark -  Private
 
 - (void)qIncomingFileFromFriend:(ToxFriend *)friend
@@ -191,7 +258,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
-            NSString *fileNameOnDisk = [weakSelf randomFileNameOnDiskWithExtension:[originalFileName pathExtension]];
+            NSString *fileNameOnDisk = [weakSelf uniqueFileNameOnDiskWithExtension:[originalFileName pathExtension]];
 
             DDLogInfo(@"ToxManager: creating new document with fileNameOnDisk %@", fileNameOnDisk);
 
@@ -225,7 +292,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     DDLogInfo(@"ToxManager: incoming file finished downloading from friend id %d, filenumber %d",
             friendNumber, fileNumber);
 
-    NSString *key = [self keyFromFriendNumber:friendNumber fileNumber:fileNumber];
+    NSString *key = [self keyFromFriendNumber:friendNumber
+                                   fileNumber:fileNumber
+                                  downloading:YES];
 
     @synchronized(self.privateFiles_downloadingFiles) {
         ToxDownloadingFile *file = self.privateFiles_downloadingFiles[key];
@@ -278,6 +347,60 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }];
 }
 
+- (void)qFileTransferAcceptedWithFriendNumber:(int32_t)friendNumber fileNumber:(uint8_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                          fileNumber:fileNumber
+                                                         downloading:NO];
+
+    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+
+    [self qUploadNextFileChunkFromFile:file friendNumber:friendNumber fileNumber:fileNumber];
+}
+
+- (void)qUploadNextFileChunkFromFile:(ToxUploadingFile *)file
+                        friendNumber:(int32_t)friendNumber
+                          fileNumber:(uint8_t)fileNumber
+{
+    uint8_t buffer[file.fileSize];
+    uint16_t length = [file nextPortionOfBytes:&buffer];
+
+    if (! length) {
+        tox_file_send_control(self.tox, friendNumber, 0, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
+        return;
+    }
+
+    int result = tox_file_send_data(self.tox, friendNumber, fileNumber, buffer, length);
+
+    if (result == 0) {
+        // successfully sended, switching to next chunk
+        [file goForwardOnLength:length];
+    }
+
+    uint32_t interval = tox_do_interval(self.tox);
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, interval * USEC_PER_SEC);
+
+    dispatch_after(time, self.queue, ^{
+        [self qUploadNextFileChunkFromFile:file friendNumber:friendNumber fileNumber:fileNumber];
+    });
+}
+
+- (void)qFinishUploadingWithFriendNumber:(int32_t)friendNumber fileNumber:(uint8_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                          fileNumber:fileNumber
+                                                         downloading:NO];
+
+    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+
+    [file finishUploading];
+    [self.privateFiles_uploadingFiles removeObjectForKey:key];
+}
+
 - (void)qAddPendingFileToChat:(CDChat *)chat
                      fromUser:(CDUser *)user
                    fileNumber:(uint16_t)fileNumber
@@ -323,14 +446,16 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     } completionQueue:self.queue completionBlock:completionBlock];
 }
 
-- (NSString *)randomFileNameOnDiskWithExtension:(NSString *)extension
+- (NSString *)uniqueFileNameOnDiskWithExtension:(NSString *)extension
 {
     return [[[NSUUID UUID] UUIDString] stringByAppendingPathExtension:extension];
 }
 
-- (NSString *)keyFromFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
+- (NSString *)keyFromFriendNumber:(uint32_t)friendNumber
+                       fileNumber:(uint8_t)fileNumber
+                      downloading:(BOOL)downloading
 {
-    return [NSString stringWithFormat:@"%d-%d", friendNumber, fileNumber];
+    return [NSString stringWithFormat:@"%d-%d-%d", friendNumber, fileNumber, downloading];
 }
 
 - (CGFloat)progressFromDownloadingFile:(ToxDownloadingFile *)file
@@ -397,6 +522,15 @@ void fileControlCallback(
                                                                                    fileNumber:filenumber];
             }
         }
+        else if (receive_send == 1) {
+            if (control_type == TOX_FILECONTROL_ACCEPT) {
+                [[ToxManager sharedInstance] qFileTransferAcceptedWithFriendNumber:friendnumber
+                                                                        fileNumber:filenumber];
+            }
+            else if (control_type == TOX_FILECONTROL_FINISHED) {
+                [[ToxManager sharedInstance] qFinishUploadingWithFriendNumber:friendnumber fileNumber:filenumber];
+            }
+        }
     });
 }
 
@@ -411,7 +545,9 @@ void fileDataCallback(
     NSData *nsData = [NSData dataWithBytes:data length:length];
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
-        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber fileNumber:filenumber];
+        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendnumber
+                                                              fileNumber:filenumber
+                                                             downloading:YES];
         ToxDownloadingFile *file;
 
         @synchronized([ToxManager sharedInstance].privateFiles_downloadingFiles) {

@@ -78,14 +78,17 @@
 
     [self.cachedData getBytes:buffer range:NSMakeRange(offset, length)];
 
+    return length;
+}
+
+- (void)goForwardOnLength:(uint16_t)length
+{
     self.offsetInCachedData += length;
 
     if (self.offsetInCachedData == self.cachedData.length) {
         self.cachedData = nil;
         self.offsetInCachedData = 0;
     }
-
-    return length;
 }
 
 - (void)finishUploading

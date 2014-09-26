@@ -264,6 +264,13 @@ static dispatch_once_t __onceToken;
     });
 }
 
+- (void)uploadData:(NSData *)data withFileName:(NSString *)fileName toChat:(CDChat *)chat
+{
+    dispatch_async(self.queue, ^{
+        [self qUploadData:data withFileName:fileName toChat:chat];
+    });
+}
+
 #pragma mark -  Notifications
 
 - (void)applicationWillTerminateNotification:(NSNotification *)notification

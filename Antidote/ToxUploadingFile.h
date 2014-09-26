@@ -16,6 +16,7 @@
 
 // Returns length of portion. If there is no more data returns 0.
 - (uint16_t)nextPortionOfBytes:(void *)buffer;
+- (void)goForwardOnLength:(uint16_t)length;
 
 - (void)finishUploading;
 
