@@ -30,5 +30,6 @@
 
 - (NSString *)pathInFilesForCurrentProfileFromFileName:(NSString *)fileName temporary:(BOOL)temporary;
 - (NSString *)fileDirectoryPathForCurrentProfileIsTemporary:(BOOL)temporary;
+- (NSString *)pathInAvatarDirectoryForFileName:(NSString *)avatarHash;
 
 @end

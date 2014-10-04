@@ -31,7 +31,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: registering callbacks");
+    DDLogInfo(@"ToxManager+PrivateFiles: registering callbacks");
 
     self.privateFiles_downloadingFiles = [NSMutableDictionary new];
     self.privateFiles_uploadingFiles = [NSMutableDictionary new];

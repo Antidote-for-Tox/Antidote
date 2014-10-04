@@ -8,6 +8,7 @@
 
 #import "ToxManager.h"
 #import "ToxManager+Private.h"
+#import "ToxManager+PrivateAvatars.h"
 #import "ToxManager+PrivateFriends.h"
 #import "ToxManager+PrivateChat.h"
 #import "ToxManager+PrivateFiles.h"
@@ -61,6 +62,7 @@ static dispatch_once_t __onceToken;
             [self qRegisterFriendsCallbacks];
             [self qRegisterChatsCallbacks];
             [self qRegisterFilesCallbacksAndSetup];
+            [self qRegisterAvatarCallbacksAndSetup];
 
             [self qLoadFriendsAndCreateContainer];
 
@@ -269,6 +271,23 @@ static dispatch_once_t __onceToken;
     dispatch_async(self.queue, ^{
         [self qUploadData:data withFileName:fileName toChat:chat];
     });
+}
+
+- (void)updateAvatar:(UIImage *)image
+{
+    dispatch_async(self.queue, ^{
+        [self qUpdateAvatar:image];
+    });
+}
+
+- (BOOL)userHasAvatar
+{
+    return [self synchronizedUserHasAvatar];
+}
+
+- (UIImage *)userAvatar
+{
+    return [self synchronizedUserAvatar];
 }
 
 #pragma mark -  Notifications

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="14A343f" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6244" systemVersion="14A361c" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="CDChat" representedClassName="CDChat" syncable="YES">
         <attribute name="enteredMessage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastReadDate" optional="YES" attributeType="Date" syncable="YES"/>
@@ -51,6 +51,7 @@
         <relationship name="user" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDUser" inverseName="profile" inverseEntity="CDUser" syncable="YES"/>
     </entity>
     <entity name="CDUser" representedClassName="CDUser" syncable="YES">
+        <attribute name="avatarHash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="clientId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="nickname" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="chats" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDChat" inverseName="users" inverseEntity="CDChat" syncable="YES"/>
@@ -65,6 +66,6 @@
         <element name="CDMessagePendingFile" positionX="-90" positionY="81" width="128" height="163"/>
         <element name="CDMessageText" positionX="-252" positionY="158" width="128" height="103"/>
         <element name="CDProfile" positionX="-81" positionY="90" width="128" height="105"/>
-        <element name="CDUser" positionX="97" positionY="182" width="128" height="118"/>
+        <element name="CDUser" positionX="97" positionY="182" width="128" height="135"/>
     </elements>
 </model>

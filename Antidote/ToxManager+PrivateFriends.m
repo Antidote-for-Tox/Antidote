@@ -32,7 +32,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: registering callbacks");
+    DDLogInfo(@"ToxManager+PrivateFriends: registering callbacks");
 
     tox_callback_friend_request    (self.tox, friendRequestCallback,    NULL);
     tox_callback_name_change       (self.tox, nameChangeCallback,       NULL);

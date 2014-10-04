@@ -49,4 +49,9 @@
 
 - (void)uploadData:(NSData *)data withFileName:(NSString *)fileName toChat:(CDChat *)chat;
 
+// pass nil to delete
+- (void)updateAvatar:(UIImage *)image;
+- (BOOL)userHasAvatar;
+- (UIImage *)userAvatar;
+
 @end

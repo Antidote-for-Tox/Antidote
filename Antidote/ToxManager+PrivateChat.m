@@ -26,7 +26,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: registering callbacks");
+    DDLogInfo(@"ToxManager+PrivateChat: registering callbacks");
 
     tox_callback_friend_message (self.tox, friendMessageCallback, NULL);
     tox_callback_read_receipt   (self.tox, readReceiptCallback,   NULL);

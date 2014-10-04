@@ -181,6 +181,13 @@ static NSString *const kToxSaveName = @"tox_save";
     return [path stringByAppendingPathComponent:@"Files"];
 }
 
+- (NSString *)pathInAvatarDirectoryForFileName:(NSString *)avatarHash
+{
+    NSString *path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
+
+    return [[path stringByAppendingPathComponent:@"Avatars"] stringByAppendingPathComponent:avatarHash];
+}
+
 #pragma mark -  Private
 
 - (void)loadToxManagerForCurrentProfile

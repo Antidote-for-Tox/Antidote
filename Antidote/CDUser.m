@@ -16,6 +16,7 @@
 
 @dynamic clientId;
 @dynamic nickname;
+@dynamic avatarHash;
 @dynamic chats;
 @dynamic messages;
 @dynamic profile;
