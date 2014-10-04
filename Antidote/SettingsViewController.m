@@ -14,6 +14,7 @@
 #import "AppDelegate.h"
 #import "MFMailComposeViewController+BlocksKit.h"
 #import "UIAlertView+BlocksKit.h"
+#import "UIActionSheet+BlocksKit.h"
 #import "DDFileLogger.h"
 #import "UITableViewCell+Utilities.h"
 #import "AvatarFactory.h"
@@ -36,7 +37,8 @@ static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
 static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 @interface SettingsViewController () <UITableViewDataSource, UITableViewDelegate,
-    SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate, CellWithColorschemeDelegate>
+    SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate, CellWithColorschemeDelegate,
+    UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -201,6 +203,47 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 #pragma mark -  SettingsNameStatusAvatarCellDelegate
 
+- (void)cellWithNameStatusAvatarAvatarButtonPressed:(CellWithNameStatusAvatar *)cell
+{
+    __weak SettingsViewController *weakSelf = self;
+
+    void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
+        UIImagePickerController *ipc = [UIImagePickerController new];
+        ipc.allowsEditing = NO;
+        ipc.sourceType = sourceType;
+        ipc.delegate = weakSelf;
+
+        [weakSelf presentViewController:ipc animated:YES completion:nil];
+    };
+
+    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Settings") handler:^{
+            photoHandler(UIImagePickerControllerSourceTypeCamera);
+        }];
+    }
+
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Settings") handler:^{
+            photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
+        }];
+    }
+
+    if ([[ToxManager sharedInstance] userHasAvatar]) {
+        [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Settings") handler:^{
+            [[ToxManager sharedInstance] updateAvatar:nil];
+
+            NSIndexPath *path = [weakSelf indexPathForCellType:CellTypeNameStatusAvatar];
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+        }];
+    }
+
+    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Settings") handler:nil];
+
+    [sheet showFromTabBar:self.tabBarController.tabBar];
+}
+
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
 {
     [ToxManager sharedInstance].userName = newName;
@@ -230,6 +273,29 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+}
+
+#pragma mark -  UIImagePickerControllerDelegate
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+
+    UIImage *image = info[UIImagePickerControllerOriginalImage];
+
+    if (! image) {
+        return;
+    }
+
+    [[ToxManager sharedInstance] updateAvatar:image];
+
+    NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
+    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -  Private
@@ -317,8 +383,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     NSString *userName = [ToxManager sharedInstance].userName;
 
+    UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
+        [AvatarFactory avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
+
     cell.delegate = self;
-    cell.avatarImage = [AvatarFactory avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
+    cell.avatarImage = avatar;
     cell.name = userName;
     cell.statusMessage = [ToxManager sharedInstance].userStatusMessage;
     cell.maxNameLength = TOX_MAX_NAME_LENGTH;

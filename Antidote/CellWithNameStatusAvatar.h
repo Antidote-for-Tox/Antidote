@@ -29,6 +29,7 @@
 @end
 
 @protocol SettingsNameStatusAvatarCellDelegate <NSObject>
+- (void)cellWithNameStatusAvatarAvatarButtonPressed:(CellWithNameStatusAvatar *)cell;
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName;
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell
           statusMessageChangedTo:(NSString *)newStatusMessage;

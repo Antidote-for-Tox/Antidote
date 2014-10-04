@@ -11,13 +11,15 @@
 
 @interface CellWithNameStatusAvatar() <UITextFieldDelegate>
 
-@property (strong, nonatomic) UIImageView *avatarImageView;
+@property (strong, nonatomic) UIButton *avatarButton;
 @property (strong, nonatomic) UITextField *nameField;
 @property (strong, nonatomic) UITextField *statusMessageField;
 
 @end
 
 @implementation CellWithNameStatusAvatar
+
+#pragma mark -  Lifecycle
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -29,11 +31,18 @@
     return self;
 }
 
+#pragma mark -  Actions
+
+- (void)avatarButtonPressed
+{
+    [self.delegate cellWithNameStatusAvatarAvatarButtonPressed:self];
+}
+
 #pragma mark -  Public
 
 - (void)redraw
 {
-    self.avatarImageView.image = self.avatarImage;
+    [self.avatarButton setImage:self.avatarImage forState:UIControlStateNormal];
     self.nameField.text = self.name;
     self.statusMessageField.text = self.statusMessage;
 
@@ -104,10 +113,14 @@
     CGRect frame = CGRectZero;
     frame.size.width = frame.size.height = [CellWithNameStatusAvatar avatarHeight];
 
-    self.avatarImageView = [[UIImageView alloc] initWithFrame:frame];
-    self.avatarImageView.layer.cornerRadius = frame.size.width / 2;
-    self.avatarImageView.layer.masksToBounds = YES;
-    [self.contentView addSubview:self.avatarImageView];
+    self.avatarButton = [[UIButton alloc] initWithFrame:frame];
+    self.avatarButton.imageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.avatarButton addTarget:self
+                          action:@selector(avatarButtonPressed)
+                forControlEvents:UIControlEventTouchUpInside];
+    self.avatarButton.layer.cornerRadius = frame.size.width / 2;
+    self.avatarButton.layer.masksToBounds = YES;
+    [self.contentView addSubview:self.avatarButton];
 }
 
 - (void)createTextFields
@@ -134,13 +147,13 @@
     const CGFloat xIndentation = 10.0;
     const CGFloat yIndentation = 5.0;
 
-    CGRect frame = self.avatarImageView.frame;
+    CGRect frame = self.avatarButton.frame;
     frame.origin.x = xIndentation;
     frame.origin.y = (self.bounds.size.height - frame.size.height) / 2;
-    self.avatarImageView.frame = frame;
+    self.avatarButton.frame = frame;
 
     frame = CGRectZero;
-    frame.size.width = self.bounds.size.width - CGRectGetMaxX(self.avatarImageView.frame) - 2 * xIndentation;
+    frame.size.width = self.bounds.size.width - CGRectGetMaxX(self.avatarButton.frame) - 2 * xIndentation;
     frame.size.height = 30.0;
     frame.origin.x = self.bounds.size.width - frame.size.width - xIndentation;
     frame.origin.y = yIndentation;
