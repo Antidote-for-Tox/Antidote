@@ -14,6 +14,7 @@
 
 @property (assign, nonatomic) StatusCircleStatus status;
 
+- (void)adjustSubviews;
 + (CGFloat)height;
 
 @end

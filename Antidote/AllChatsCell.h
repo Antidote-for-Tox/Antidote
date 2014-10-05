@@ -16,6 +16,8 @@
 
 - (void)setMessage:(NSString *)message andDate:(NSString *)date;
 
+- (void)adjustSubviews;
+
 + (CGFloat)height;
 
 @end

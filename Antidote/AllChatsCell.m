@@ -24,15 +24,14 @@
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
 
     if (self) {
+        [self adjustSubviews];
+
         self.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:20];
         self.detailTextLabel.numberOfLines = 2;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
-        CGRect frame = self.imageView.frame;
-        frame.size.width = frame.size.height = 55.0;
-        self.imageView.frame = frame;
-
-        self.imageView.layer.cornerRadius = frame.size.width / 2;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2;
         self.imageView.layer.masksToBounds = YES;
 
         [self createStatusView];
@@ -113,15 +112,26 @@
 
 - (void)adjustSubviews
 {
-    CGRect frame = CGRectZero;
+    CGRect frame = self.imageView.frame;
+    frame.size.width = frame.size.height = 55.0;
+    frame.origin.x = 10.0;
+    frame.origin.y = (self.contentView.frame.size.height - frame.size.height) / 2;
+    self.imageView.frame = frame;
 
-    {
-        frame = self.statusView.frame;
-        frame.origin.x = CGRectGetMaxX(self.imageView.frame) - frame.size.width;
-        frame.origin.y = CGRectGetMaxY(self.imageView.frame) - frame.size.height - 2.0;
+    frame = self.textLabel.frame;
+    frame.origin.x = CGRectGetMaxX(self.imageView.frame) + 10.0;
+    frame.size.width = self.frame.size.width - frame.origin.x - 30.0;
+    self.textLabel.frame = frame;
 
-        self.statusView.frame = frame;
-    }
+    frame = self.detailTextLabel.frame;
+    frame.origin.x = self.textLabel.frame.origin.x;
+    frame.size.width = self.textLabel.frame.size.width;
+    self.detailTextLabel.frame = frame;
+
+    frame = self.statusView.frame;
+    frame.origin.x = CGRectGetMaxX(self.imageView.frame) - frame.size.width;
+    frame.origin.y = CGRectGetMaxY(self.imageView.frame) - frame.size.height - 2.0;
+    self.statusView.frame = frame;
 }
 
 

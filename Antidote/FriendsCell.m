@@ -25,15 +25,14 @@
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
 
     if (self) {
+        [self adjustSubviews];
+
         self.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:18];
         self.detailTextLabel.textColor = [UIColor uColorOpaqueWithWhite:140];
         self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 
-        CGRect frame = self.imageView.frame;
-        frame.size.width = frame.size.height = 30.0;
-        self.imageView.frame = frame;
-
-        self.imageView.layer.cornerRadius = frame.size.width / 2;
+        self.imageView.contentMode = UIViewContentModeScaleAspectFill;
+        self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2;
         self.imageView.layer.masksToBounds = YES;
 
         [self createStatusView];
@@ -98,17 +97,16 @@
 
 - (void)adjustSubviews
 {
-    CGRect frame = CGRectZero;
+    CGRect frame = self.imageView.frame;
+    frame.size.width = frame.size.height = 30.0;
+    frame.origin.y = (self.contentView.frame.size.height - frame.size.height) / 2;
+    self.imageView.frame = frame;
 
-    {
-        CGSize size = [self.textLabel.text stringSizeWithFont:self.textLabel.font];
-
-        frame = self.statusView.frame;
-        frame.origin.x = CGRectGetMinX(self.textLabel.frame) + size.width + 8.0;
-        frame.origin.y = (CGRectGetMaxY(self.textLabel.frame) - frame.size.height) / 2 + 2.0;
-
-        self.statusView.frame = frame;
-    }
+    CGSize size = [self.textLabel.text stringSizeWithFont:self.textLabel.font];
+    frame = self.statusView.frame;
+    frame.origin.x = CGRectGetMinX(self.textLabel.frame) + size.width + 8.0;
+    frame.origin.y = (CGRectGetMaxY(self.textLabel.frame) - frame.size.height) / 2 + 2.0;
+    self.statusView.frame = frame;
 }
 
 @end
