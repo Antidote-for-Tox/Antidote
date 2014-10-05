@@ -40,6 +40,7 @@
 		1164763F19794D3300DB20B8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1164763E19794D3300DB20B8 /* main.m */; };
 		1164764319794D3300DB20B8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1164764219794D3300DB20B8 /* AppDelegate.m */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
+		117A5B0919D6A3030067D10F /* ToxManager+PrivateAvatars.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B0819D6A3030067D10F /* ToxManager+PrivateAvatars.m */; };
 		117A5B3819D8A0040067D10F /* assoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B0D19D8A0040067D10F /* assoc.c */; };
 		117A5B3919D8A0040067D10F /* crypto_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B0F19D8A0040067D10F /* crypto_core.c */; };
 		117A5B3A19D8A0040067D10F /* DHT.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1119D8A0040067D10F /* DHT.c */; };
@@ -61,7 +62,6 @@
 		117A5B4A19D8A0040067D10F /* TCP_server.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3219D8A0040067D10F /* TCP_server.c */; };
 		117A5B4B19D8A0040067D10F /* tox.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3419D8A0040067D10F /* tox.c */; };
 		117A5B4C19D8A0040067D10F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3619D8A0040067D10F /* util.c */; };
-		117A5B0919D6A3030067D10F /* ToxManager+PrivateAvatars.m in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B0819D6A3030067D10F /* ToxManager+PrivateAvatars.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */; };
 		11835295197994050048CA64 /* ToxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11835294197994050048CA64 /* ToxManager.m */; };
@@ -111,7 +111,6 @@
 		11C4D9E619A69D4E0038DB2B /* chat-file-type-deleted@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C4D9E419A69D4E0038DB2B /* chat-file-type-deleted@2x.png */; };
 		11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
-		11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 11D6298B19954BCE00F840AE /* AvatarFactory.m */; };
 		11DCC6D019A91C88000A5763 /* chat-file-type-7zip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6B119A91C88000A5763 /* chat-file-type-7zip@2x.png */; };
 		11DCC6D119A91C88000A5763 /* chat-file-type-aac@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6B219A91C88000A5763 /* chat-file-type-aac@2x.png */; };
 		11DCC6D219A91C88000A5763 /* chat-file-type-avi@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11DCC6B319A91C88000A5763 /* chat-file-type-avi@2x.png */; };
@@ -149,6 +148,7 @@
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11E82AA719D097A6001561CA /* chat-camera@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 11E82AA619D097A6001561CA /* chat-camera@2x.png */; };
+		11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F5642F19E1296400B7A5BE /* AvatarManager.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -215,6 +215,8 @@
 		1164764219794D3300DB20B8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1164764419794D3300DB20B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		117A5B0719D6A3030067D10F /* ToxManager+PrivateAvatars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxManager+PrivateAvatars.h"; sourceTree = "<group>"; };
+		117A5B0819D6A3030067D10F /* ToxManager+PrivateAvatars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToxManager+PrivateAvatars.m"; sourceTree = "<group>"; };
 		117A5B0D19D8A0040067D10F /* assoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = assoc.c; path = toxcore/toxcore/assoc.c; sourceTree = "<group>"; };
 		117A5B0E19D8A0040067D10F /* assoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assoc.h; path = toxcore/toxcore/assoc.h; sourceTree = "<group>"; };
 		117A5B0F19D8A0040067D10F /* crypto_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto_core.c; path = toxcore/toxcore/crypto_core.c; sourceTree = "<group>"; };
@@ -258,8 +260,6 @@
 		117A5B3519D8A0040067D10F /* tox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tox.h; path = toxcore/toxcore/tox.h; sourceTree = "<group>"; };
 		117A5B3619D8A0040067D10F /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = util.c; path = toxcore/toxcore/util.c; sourceTree = "<group>"; };
 		117A5B3719D8A0040067D10F /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = toxcore/toxcore/util.h; sourceTree = "<group>"; };
-		117A5B0719D6A3030067D10F /* ToxManager+PrivateAvatars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxManager+PrivateAvatars.h"; sourceTree = "<group>"; };
-		117A5B0819D6A3030067D10F /* ToxManager+PrivateAvatars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToxManager+PrivateAvatars.m"; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		117FCFB619BCC1990026C13B /* ChatBasicMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicMessageCell.h; sourceTree = "<group>"; };
@@ -351,8 +351,6 @@
 		11C7C6B41983FB42001B849B /* ToxFriendsContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxFriendsContainer.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
 		11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Utilities.m"; sourceTree = "<group>"; };
-		11D6298A19954BCE00F840AE /* AvatarFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarFactory.h; sourceTree = "<group>"; };
-		11D6298B19954BCE00F840AE /* AvatarFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarFactory.m; sourceTree = "<group>"; };
 		11DCC6B119A91C88000A5763 /* chat-file-type-7zip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-7zip@2x.png"; sourceTree = "<group>"; };
 		11DCC6B219A91C88000A5763 /* chat-file-type-aac@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-aac@2x.png"; sourceTree = "<group>"; };
 		11DCC6B319A91C88000A5763 /* chat-file-type-avi@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-file-type-avi@2x.png"; sourceTree = "<group>"; };
@@ -392,6 +390,8 @@
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
 		11E82AA619D097A6001561CA /* chat-camera@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chat-camera@2x.png"; sourceTree = "<group>"; };
+		11F5642E19E1296400B7A5BE /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
+		11F5642F19E1296400B7A5BE /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
@@ -719,7 +719,7 @@
 			isa = PBXGroup;
 			children = (
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
-				11D6298919954BB700F840AE /* AvatarFactory */,
+				11F5642D19E1294A00B7A5BE /* AvatarManager */,
 				1146308919842D220075DA16 /* CoreDataManager */,
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
@@ -959,15 +959,6 @@
 			name = EventsManager;
 			sourceTree = "<group>";
 		};
-		11D6298919954BB700F840AE /* AvatarFactory */ = {
-			isa = PBXGroup;
-			children = (
-				11D6298A19954BCE00F840AE /* AvatarFactory.h */,
-				11D6298B19954BCE00F840AE /* AvatarFactory.m */,
-			);
-			name = AvatarFactory;
-			sourceTree = "<group>";
-		};
 		11E57F4319C23CF100C8ACB8 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -988,6 +979,15 @@
 				11E82AA119CD72E6001561CA /* PreviewItem.m */,
 			);
 			name = PreviewItem;
+			sourceTree = "<group>";
+		};
+		11F5642D19E1294A00B7A5BE /* AvatarManager */ = {
+			isa = PBXGroup;
+			children = (
+				11F5642E19E1296400B7A5BE /* AvatarManager.h */,
+				11F5642F19E1296400B7A5BE /* AvatarManager.m */,
+			);
+			name = AvatarManager;
 			sourceTree = "<group>";
 		};
 		84B6628A19A250FF00328874 /* CustomLogFormatter */ = {
@@ -1221,7 +1221,6 @@
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
 				117A5B4419D8A0040067D10F /* onion_announce.c in Sources */,
 				117A5B3D19D8A0040067D10F /* group.c in Sources */,
-				11D6298C19954BCE00F840AE /* AvatarFactory.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
 				117A5B4619D8A0040067D10F /* onion.c in Sources */,
 				117A5B3B19D8A0040067D10F /* friend_connection.c in Sources */,
@@ -1238,6 +1237,7 @@
 				117A5B4319D8A0040067D10F /* network.c in Sources */,
 				117A5B3C19D8A0040067D10F /* friend_requests.c in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
+				11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				117A5B4919D8A0040067D10F /* TCP_client.c in Sources */,
 				110B8B8019C8DAFE000E4334 /* CDProfile.m in Sources */,

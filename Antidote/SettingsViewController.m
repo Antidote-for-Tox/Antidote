@@ -17,7 +17,7 @@
 #import "UIActionSheet+BlocksKit.h"
 #import "DDFileLogger.h"
 #import "UITableViewCell+Utilities.h"
-#import "AvatarFactory.h"
+#import "AvatarManager.h"
 #import "CellWithNameStatusAvatar.h"
 #import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
@@ -384,7 +384,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     NSString *userName = [ToxManager sharedInstance].userName;
 
     UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
-        [AvatarFactory avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
+        [AvatarManager avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
 
     cell.delegate = self;
     cell.avatarImage = avatar;

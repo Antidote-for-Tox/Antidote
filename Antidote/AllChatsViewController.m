@@ -16,7 +16,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "ToxManager.h"
 #import "UIImage+Utilities.h"
-#import "AvatarFactory.h"
+#import "AvatarManager.h"
 #import "UIColor+Utilities.h"
 #import "Helper.h"
 #import "TimeFormatter.h"
@@ -98,22 +98,10 @@
     CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
     ToxFriend *friend = [self friendForIndexPath:indexPath];
 
-    NSString *usersString;
-    for (CDUser *user in chat.users) {
-        ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
-
-        NSString *name = [friend nameToShow];
-
-        if (usersString) {
-            usersString = [usersString stringByAppendingFormat:@", %@", name];
-        }
-        else {
-            usersString = name;
-        }
-    }
-
-    cell.textLabel.text = usersString;
-    cell.imageView.image = [AvatarFactory avatarFromString:usersString side:cell.imageView.frame.size.width];
+    cell.textLabel.text = [friend nameToShow];
+    cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
+                                                    orCreateAvatarFromString:[friend nameToShow]
+                                                                    withSide:cell.imageView.frame.size.width];
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
     NSDate *date = [NSDate dateWithTimeIntervalSince1970:chat.lastMessage.date];

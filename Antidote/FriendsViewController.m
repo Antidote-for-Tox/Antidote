@@ -19,7 +19,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "CoreDataManager+Chat.h"
 #import "TimeFormatter.h"
-#import "AvatarFactory.h"
+#import "AvatarManager.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
 
@@ -401,8 +401,10 @@
 
     ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.textLabel.text = friend.nickname ?: friend.clientId;
-    cell.imageView.image = [AvatarFactory avatarFromString:cell.textLabel.text side:30.0];
+    cell.textLabel.text = [friend nameToShow];
+    cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
+                                                    orCreateAvatarFromString:[friend nameToShow]
+                                                                    withSide:30.0];
     cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
     if (friend.status == ToxFriendStatusOffline) {

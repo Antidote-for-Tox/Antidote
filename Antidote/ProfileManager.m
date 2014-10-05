@@ -10,6 +10,7 @@
 #import "CoreDataManager+Profile.h"
 #import "UserInfoManager.h"
 #import "ToxManager.h"
+#import "AvatarManager.h"
 
 static NSString *const kToxSaveName = @"tox_save";
 
@@ -124,6 +125,7 @@ static NSString *const kToxSaveName = @"tox_save";
 - (void)switchToProfile:(CDProfile *)profile
 {
     [[ToxManager sharedInstance] killSharedInstance];
+    [AvatarManager clearCache];
 
     [UserInfoManager sharedInstance].uCurrentProfileFileName = profile.fileName;
     self.currentProfile = profile;

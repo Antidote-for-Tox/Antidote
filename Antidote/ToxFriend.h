@@ -17,10 +17,7 @@ typedef NS_ENUM(NSUInteger, ToxFriendStatus) {
 
 @interface ToxFriend : NSObject
 
-/**
- * Friend's avatar can be obtained with passing clientId to ProfileManager's
- * pathInAvatarDirectoryForFileName: method.
- */
+// To obtain avatar use clientId as avatar fileName.
 
 @property (assign, nonatomic, readonly) int32_t id;
 @property (strong, nonatomic, readonly) NSString *clientId;
