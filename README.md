@@ -29,12 +29,13 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 -  read receipts
 -  multiple profiles
 -  tox_save import/export
+-  avatars
 
 #### In progress
 
--  UI polishing
--  avatars
 -  sending files
+-  UI polishing
+-  Fixing bugs
 
 #### Then
 
