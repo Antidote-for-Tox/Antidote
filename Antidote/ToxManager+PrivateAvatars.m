@@ -179,25 +179,19 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 - (NSData *)pngDataFromImage:(UIImage *)image
 {
     CGSize imageSize = image.size;
-    BOOL shouldResize = NO;
 
     DDLogInfo(@"ToxManager+PrivateAvatars: image size is %@", NSStringFromCGSize(imageSize));
 
     // Maximum png size will be (4 * width * height)
-    while (4 * imageSize.width * imageSize.height > TOX_AVATAR_MAX_DATA_LENGTH) {
+    // * 1.5 to get as big avatar size as possible
+    while (4 * imageSize.width * imageSize.height > TOX_AVATAR_MAX_DATA_LENGTH * 1.5) {
         imageSize.width *= 0.9;
         imageSize.height *= 0.9;
-
-        shouldResize = YES;
     }
 
     imageSize.width = (int)imageSize.width;
     imageSize.height = (int)imageSize.height;
     DDLogInfo(@"ToxManager+PrivateAvatars: image size after resizing %@", NSStringFromCGSize(imageSize));
-
-    if (! shouldResize) {
-        return UIImagePNGRepresentation(image);
-    }
 
     NSData *data = nil;
 
