@@ -50,7 +50,6 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
     DDLogInfo(@"ToxManager+PrivateAvatars: update avatar with image %@", image);
 
-    NSData *data = UIImagePNGRepresentation(image);
     NSString *path = [[ProfileManager sharedInstance] pathInAvatarDirectoryForFileName:kUserAvatarFileName];
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
@@ -60,21 +59,10 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
         [fileManager removeItemAtPath:path error:nil];
     }
 
-    if (data) {
+    if (image) {
         DDLogInfo(@"ToxManager+PrivateAvatars: setting new avatar...");
 
-        while (data.length > TOX_AVATAR_MAX_DATA_LENGTH) {
-            DDLogInfo(@"ToxManager+PrivateAvatars: setting new avatar... avatar is too big, resizing");
-
-            CGSize newSize = CGSizeMake(image.size.width / 2.0, image.size.height / 2.0);
-
-            UIGraphicsBeginImageContext(newSize);
-            [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
-            image = UIGraphicsGetImageFromCurrentImageContext();
-            UIGraphicsEndImageContext();
-
-            data = UIImagePNGRepresentation(image);
-        }
+        NSData *data = [self pngDataFromImage:image];
 
         [fileManager createDirectoryAtPath:[path stringByDeletingLastPathComponent]
                withIntermediateDirectories:YES
@@ -186,6 +174,48 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
             } completionQueue:nil completionBlock:nil];
         }];
     }];
+}
+
+- (NSData *)pngDataFromImage:(UIImage *)image
+{
+    CGSize imageSize = image.size;
+    BOOL shouldResize = NO;
+
+    DDLogInfo(@"ToxManager+PrivateAvatars: image size is %@", NSStringFromCGSize(imageSize));
+
+    // Maximum png size will be (4 * width * height)
+    while (4 * imageSize.width * imageSize.height > TOX_AVATAR_MAX_DATA_LENGTH) {
+        imageSize.width *= 0.9;
+        imageSize.height *= 0.9;
+
+        shouldResize = YES;
+    }
+
+    imageSize.width = (int)imageSize.width;
+    imageSize.height = (int)imageSize.height;
+    DDLogInfo(@"ToxManager+PrivateAvatars: image size after resizing %@", NSStringFromCGSize(imageSize));
+
+    if (! shouldResize) {
+        return UIImagePNGRepresentation(image);
+    }
+
+    NSData *data = nil;
+
+    do {
+        DDLogInfo(@"ToxManager+PrivateAvatars: setting new avatar... avatar is too big, resizing");
+
+        UIGraphicsBeginImageContext(imageSize);
+        [image drawInRect:CGRectMake(0, 0, imageSize.width, imageSize.height)];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+
+        data = UIImagePNGRepresentation(image);
+
+        imageSize.width *= 0.9;
+        imageSize.height *= 0.9;
+    } while (data.length > TOX_AVATAR_MAX_DATA_LENGTH);
+
+    return data;
 }
 
 @end
