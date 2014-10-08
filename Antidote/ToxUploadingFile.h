@@ -11,6 +11,7 @@
 @interface ToxUploadingFile : NSObject
 
 @property (assign, nonatomic, readonly) uint64_t fileSize;
+@property (assign, nonatomic, readonly) uint16_t portionSize;
 
 - (instancetype)initWithFilePath:(NSString *)filePath portionSize:(uint16_t)portionSize;
 

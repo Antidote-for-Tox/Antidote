@@ -364,7 +364,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                         friendNumber:(int32_t)friendNumber
                           fileNumber:(uint8_t)fileNumber
 {
-    uint8_t buffer[file.fileSize];
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    uint8_t buffer[file.portionSize];
     uint16_t length = [file nextPortionOfBytes:&buffer];
 
     if (! length) {
