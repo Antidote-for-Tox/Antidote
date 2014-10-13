@@ -243,6 +243,26 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }];
 }
 
+- (void)qFriendStatusChangedToOfflineWithFriendNumber:(uint32_t)friendNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSMutableArray *keys = [NSMutableArray new];
+    NSString *prefix = [NSString stringWithFormat:@"%d-", friendNumber];
+    NSString *suffix = [NSString stringWithFormat:@"-%d", NO];
+
+    for (NSString *key in [self.privateFiles_uploadingFiles allKeys]) {
+        if ([key hasPrefix:prefix] && [key hasSuffix:suffix]) {
+            [keys addObject:key];
+        }
+    }
+
+    DDLogInfo(@"ToxManager+PrivateFiles: friend has gone offline %d, canceling all uploading files %@",
+            friendNumber, keys);
+
+    [self.privateFiles_uploadingFiles removeObjectsForKeys:keys];
+}
+
 #pragma mark -  Private
 
 - (void)qIncomingFileFromFriend:(ToxFriend *)friend
@@ -351,26 +371,34 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    DDLogInfo(@"ToxManager+PrivateFiles: friend accepted uploading file %d, starting upload", fileNumber);
+
+    [self qUploadNextFileChunkWithFriendNumber:friendNumber fileNumber:fileNumber];
+}
+
+- (void)qUploadNextFileChunkWithFriendNumber:(int32_t)friendNumber fileNumber:(uint8_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
     NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
     ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
 
-    [self qUploadNextFileChunkFromFile:file friendNumber:friendNumber fileNumber:fileNumber];
-}
-
-- (void)qUploadNextFileChunkFromFile:(ToxUploadingFile *)file
-                        friendNumber:(int32_t)friendNumber
-                          fileNumber:(uint8_t)fileNumber
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    if (! file) {
+        DDLogInfo(@"ToxManager+PrivateFiles: no file with key %@ found, quiting", key);
+        return;
+    }
 
     uint8_t buffer[file.portionSize];
     uint16_t length = [file nextPortionOfBytes:&buffer];
 
     if (! length) {
         tox_file_send_control(self.tox, friendNumber, 0, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
+
+        DDLogInfo(@"ToxManager+PrivateFiles: file successfully sended with key %@", key);
+
         return;
     }
 
@@ -385,7 +413,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, interval * USEC_PER_SEC);
 
     dispatch_after(time, self.queue, ^{
-        [self qUploadNextFileChunkFromFile:file friendNumber:friendNumber fileNumber:fileNumber];
+        [self qUploadNextFileChunkWithFriendNumber:friendNumber fileNumber:fileNumber];
     });
 }
 

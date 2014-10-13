@@ -9,6 +9,7 @@
 #import "ToxManager+PrivateFriends.h"
 #import "ToxManager+Private.h"
 #import "ToxManager+PrivateChat.h"
+#import "ToxManager+PrivateFiles.h"
 #import "ToxFriend+Private.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
@@ -344,22 +345,30 @@ void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *us
     DDLogCVerbose(@"ToxManager+PrivateFriends: userStatusCallback with friendnumber %d status %d", friendnumber, status);
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
+        ToxFriendStatus friendStatus = ToxFriendStatusOffline;
+
+        if (status == TOX_USERSTATUS_NONE) {
+            friendStatus = ToxFriendStatusOnline;
+        }
+        else if (status == TOX_USERSTATUS_AWAY) {
+            friendStatus = ToxFriendStatusAway;
+        }
+        else if (status == TOX_USERSTATUS_BUSY) {
+            friendStatus = ToxFriendStatusBusy;
+        }
+        else if (status == TOX_USERSTATUS_INVALID) {
+            friendStatus = ToxFriendStatusOffline;
+        }
+
         [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
                                                                      updateBlock:^(ToxFriend *friend)
         {
-            if (status == TOX_USERSTATUS_NONE) {
-                friend.status = ToxFriendStatusOnline;
-            }
-            else if (status == TOX_USERSTATUS_AWAY) {
-                friend.status = ToxFriendStatusAway;
-            }
-            else if (status == TOX_USERSTATUS_BUSY) {
-                friend.status = ToxFriendStatusBusy;
-            }
-            else if (status == TOX_USERSTATUS_INVALID) {
-                friend.status = ToxFriendStatusOffline;
-            }
+            friend.status = friendStatus;
         }];
+
+        if (friendStatus == ToxFriendStatusOffline) {
+            [[ToxManager sharedInstance] qFriendStatusChangedToOfflineWithFriendNumber:friendnumber];
+        }
     });
 }
 
@@ -379,13 +388,15 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
     DDLogCVerbose(@"ToxManager+PrivateFriends: connectionStatusCallback with friendnumber %d status %d", friendnumber, status);
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
-        [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
-                                                                     updateBlock:^(ToxFriend *friend)
-        {
-            if (status == 0) {
+        if (status == 0) {
+            [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:friendnumber
+                                                                         updateBlock:^(ToxFriend *friend)
+            {
                 friend.status = ToxFriendStatusOffline;
-            }
-        }];
+            }];
+
+            [[ToxManager sharedInstance] qFriendStatusChangedToOfflineWithFriendNumber:friendnumber];
+        }
 
         [[ToxManager sharedInstance] qSaveTox];
     });
