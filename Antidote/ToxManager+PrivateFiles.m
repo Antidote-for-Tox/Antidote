@@ -373,6 +373,13 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     DDLogInfo(@"ToxManager+PrivateFiles: friend accepted uploading file %d, starting upload", fileNumber);
 
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                          fileNumber:fileNumber
+                                                         downloading:NO];
+
+    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+    file.paused = NO;
+
     [self qUploadNextFileChunkWithFriendNumber:friendNumber fileNumber:fileNumber];
 }
 
@@ -388,6 +395,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     if (! file) {
         DDLogInfo(@"ToxManager+PrivateFiles: no file with key %@ found, quiting", key);
+        return;
+    }
+
+    if (file.paused) {
+        DDLogInfo(@"ToxManager+PrivateFiles: file for key %@ is paused, quiting", key);
         return;
     }
 
@@ -428,6 +440,29 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
 
     [file finishUploading];
+    [self.privateFiles_uploadingFiles removeObjectForKey:key];
+}
+
+- (void)qUploadPausedWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint16_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                          fileNumber:fileNumber
+                                                         downloading:NO];
+
+    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+    file.paused = YES;
+}
+
+- (void)qUploadKilledWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint16_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                          fileNumber:fileNumber
+                                                         downloading:NO];
+
     [self.privateFiles_uploadingFiles removeObjectForKey:key];
 }
 
@@ -559,6 +594,12 @@ void fileControlCallback(
             }
             else if (control_type == TOX_FILECONTROL_FINISHED) {
                 [[ToxManager sharedInstance] qFinishUploadingWithFriendNumber:friendnumber fileNumber:filenumber];
+            }
+            else if (control_type == TOX_FILECONTROL_PAUSE) {
+                [[ToxManager sharedInstance] qUploadPausedWithFriendNumber:friendnumber fileNumber:filenumber];
+            }
+            else if (control_type == TOX_FILECONTROL_KILL) {
+                [[ToxManager sharedInstance] qUploadKilledWithFriendNumber:friendnumber fileNumber:filenumber];
             }
         }
     });

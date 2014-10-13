@@ -13,6 +13,8 @@
 @property (assign, nonatomic, readonly) uint64_t fileSize;
 @property (assign, nonatomic, readonly) uint16_t portionSize;
 
+@property (assign, nonatomic) BOOL paused;
+
 - (instancetype)initWithFilePath:(NSString *)filePath portionSize:(uint16_t)portionSize;
 
 // Returns length of portion. If there is no more data returns 0.
