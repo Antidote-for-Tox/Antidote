@@ -373,6 +373,10 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     DDLogInfo(@"ToxManager+PrivateFiles: friend accepted uploading file %d, starting upload", fileNumber);
 
+    [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStateActive
+                            withFriendNumber:friendNumber
+                                  fileNumber:fileNumber];
+
     NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
                                                           fileNumber:fileNumber
                                                          downloading:NO];
@@ -441,11 +445,28 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     [file finishUploading];
     [self.privateFiles_uploadingFiles removeObjectForKey:key];
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+        @"pendingFile.fileNumber == %d AND pendingFile.friendNumber == %d", fileNumber, friendNumber];
+
+    [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
+        if (! array.count) {
+            return;
+        }
+
+        CDMessage *message = [array lastObject];
+
+        [CoreDataManager movePendingFileToFileForMessage:message completionQueue:nil completionBlock:nil];
+    }];
 }
 
 - (void)qUploadPausedWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint16_t)fileNumber
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStatePaused
+                            withFriendNumber:friendNumber
+                                  fileNumber:fileNumber];
 
     NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
                                                           fileNumber:fileNumber
@@ -459,11 +480,37 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
+    [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStateCanceled
+                            withFriendNumber:friendNumber
+                                  fileNumber:fileNumber];
+
     NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
     [self.privateFiles_uploadingFiles removeObjectForKey:key];
+}
+
+- (void)qChangeUploadingPendingFileStateTo:(CDMessagePendingFileState)state
+                          withFriendNumber:(int32_t)friendNumber
+                                fileNumber:(uint8_t)fileNumber
+{
+    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:
+        @"pendingFile.fileNumber == %d AND pendingFile.friendNumber == %d", fileNumber, friendNumber];
+
+    [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
+        if (! array.count) {
+            return;
+        }
+
+        CDMessage *message = [array lastObject];
+
+        [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{
+            message.pendingFile.state = state;
+        } completionQueue:nil completionBlock:nil];
+    }];
 }
 
 - (void)qAddPendingFileToChat:(CDChat *)chat
