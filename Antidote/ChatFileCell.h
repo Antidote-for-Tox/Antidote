@@ -9,11 +9,11 @@
 #import "ChatBasicCell.h"
 
 typedef NS_ENUM(NSUInteger, ChatFileCellType) {
-    ChatFileCellTypeIncomingWaitingConfirmation,
-    ChatFileCellTypeIncomingDownloading,
-    ChatFileCellTypeIncomingLoaded,
-    ChatFileCellTypeIncomingDeleted,
-    ChatFileCellTypeIncomingCanceled,
+    ChatFileCellTypeWaitingConfirmation,
+    ChatFileCellTypeDownloading,
+    ChatFileCellTypeLoaded,
+    ChatFileCellTypeDeleted,
+    ChatFileCellTypeCanceled,
 };
 
 @protocol ChatFileCellDelegate;

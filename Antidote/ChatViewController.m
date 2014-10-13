@@ -442,10 +442,10 @@ typedef NS_ENUM(NSInteger, Section) {
     [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
 
     if (answer) {
-        cell.type = ChatFileCellTypeIncomingDownloading;
+        cell.type = ChatFileCellTypeDownloading;
     }
     else {
-        cell.type = ChatFileCellTypeIncomingCanceled;
+        cell.type = ChatFileCellTypeCanceled;
     }
 
     [cell redrawAnimated];
@@ -756,10 +756,10 @@ typedef NS_ENUM(NSInteger, Section) {
     cell.fileUTI = message.file.fileUTI;
 
     if (message.file.fileNameOnDisk) {
-        cell.type = ChatFileCellTypeIncomingLoaded;
+        cell.type = ChatFileCellTypeLoaded;
     }
     else {
-        cell.type = ChatFileCellTypeIncomingDeleted;
+        cell.type = ChatFileCellTypeDeleted;
     }
 
     return cell;
@@ -775,20 +775,20 @@ typedef NS_ENUM(NSInteger, Section) {
     cell.fileUTI = message.pendingFile.fileUTI;
 
     if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
-        cell.type = ChatFileCellTypeIncomingWaitingConfirmation;
+        cell.type = ChatFileCellTypeWaitingConfirmation;
         cell.fileSize = [NSByteCountFormatter stringFromByteCount:message.pendingFile.fileSize
                                                        countStyle:NSByteCountFormatterCountStyleFile];
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateActive ||
              message.pendingFile.state == CDMessagePendingFileStatePaused)
     {
-        cell.type = ChatFileCellTypeIncomingDownloading;
+        cell.type = ChatFileCellTypeDownloading;
         cell.loadedPercent = [[ToxManager sharedInstance] progressForPendingFileInMessage:message];
 
         cell.isPaused = (message.pendingFile.state == CDMessagePendingFileStatePaused);
     }
     else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
-        cell.type = ChatFileCellTypeIncomingCanceled;
+        cell.type = ChatFileCellTypeCanceled;
     }
 
     return cell;

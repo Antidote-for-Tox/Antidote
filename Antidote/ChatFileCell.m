@@ -254,7 +254,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)changeHiddenForSubview
 {
-    if (self.type == ChatFileCellTypeIncomingWaitingConfirmation) {
+    if (self.type == ChatFileCellTypeWaitingConfirmation) {
         self.descriptionLabel.alpha = 1.0;
 
         self.yesButton.alpha = 1.0;
@@ -263,7 +263,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         self.progressView.alpha = 0.0;
         self.playPauseButton.alpha = 0.0;
     }
-    else if (self.type == ChatFileCellTypeIncomingDownloading) {
+    else if (self.type == ChatFileCellTypeDownloading) {
         self.descriptionLabel.alpha = 1.0;
 
         self.yesButton.alpha = 0.0;
@@ -272,7 +272,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         self.progressView.alpha = 1.0;
         self.playPauseButton.alpha = 1.0;
     }
-    else if (self.type == ChatFileCellTypeIncomingLoaded) {
+    else if (self.type == ChatFileCellTypeLoaded) {
         self.descriptionLabel.alpha = 0.0;
 
         self.yesButton.alpha = 0.0;
@@ -281,8 +281,8 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         self.progressView.alpha = 0.0;
         self.playPauseButton.alpha = 0.0;
     }
-    else if (self.type == ChatFileCellTypeIncomingDeleted ||
-             self.type == ChatFileCellTypeIncomingCanceled)
+    else if (self.type == ChatFileCellTypeDeleted ||
+             self.type == ChatFileCellTypeCanceled)
     {
         self.descriptionLabel.alpha = 1.0;
 
@@ -298,10 +298,10 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 {
     TypeImageViewType newType = TypeImageViewTypeBasic;
 
-    if (self.type == ChatFileCellTypeIncomingDeleted) {
+    if (self.type == ChatFileCellTypeDeleted) {
         newType = TypeImageViewTypeDeleted;
     }
-    else if (self.type == ChatFileCellTypeIncomingCanceled) {
+    else if (self.type == ChatFileCellTypeCanceled) {
         newType = TypeImageViewTypeCanceled;
     }
 
@@ -356,7 +356,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)updateYesButton
 {
-    if (self.type != ChatFileCellTypeIncomingWaitingConfirmation) {
+    if (self.type != ChatFileCellTypeWaitingConfirmation) {
         return;
     }
 
@@ -368,8 +368,8 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)updateNoButton
 {
-    if (self.type != ChatFileCellTypeIncomingWaitingConfirmation &&
-        self.type != ChatFileCellTypeIncomingDownloading)
+    if (self.type != ChatFileCellTypeWaitingConfirmation &&
+        self.type != ChatFileCellTypeDownloading)
     {
         return;
     }
@@ -377,10 +377,10 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     CGRect frame = self.noButton.frame;
     frame.origin.y = [self startingOriginY] + (kCellHeight - frame.size.height) / 2;
 
-    if (self.type == ChatFileCellTypeIncomingWaitingConfirmation) {
+    if (self.type == ChatFileCellTypeWaitingConfirmation) {
         frame.origin.x = CGRectGetMinX(self.yesButton.frame) - frame.size.width - 20.0;
     }
-    else if (self.type == ChatFileCellTypeIncomingDownloading) {
+    else if (self.type == ChatFileCellTypeDownloading) {
         frame.origin.x = self.frame.size.width - frame.size.width - 20.0;
     }
 
@@ -391,14 +391,14 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 {
     self.titleLabel.text = self.fileName;
 
-    if (self.type == ChatFileCellTypeIncomingWaitingConfirmation ||
-        self.type == ChatFileCellTypeIncomingDownloading ||
-        self.type == ChatFileCellTypeIncomingDeleted ||
-        self.type == ChatFileCellTypeIncomingCanceled)
+    if (self.type == ChatFileCellTypeWaitingConfirmation ||
+        self.type == ChatFileCellTypeDownloading ||
+        self.type == ChatFileCellTypeDeleted ||
+        self.type == ChatFileCellTypeCanceled)
     {
         self.titleLabel.textColor = [UIColor blackColor];
     }
-    else if (self.type == ChatFileCellTypeIncomingLoaded) {
+    else if (self.type == ChatFileCellTypeLoaded) {
         self.titleLabel.textColor = [AppearanceManager textMainColor];
     }
 
@@ -406,19 +406,19 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     CGRect frame = self.titleLabel.frame;
     frame.origin.x = CGRectGetMaxX(self.typeImageView.frame) + 5.0;
 
-    if (self.type == ChatFileCellTypeIncomingWaitingConfirmation ||
-        self.type == ChatFileCellTypeIncomingDownloading)
+    if (self.type == ChatFileCellTypeWaitingConfirmation ||
+        self.type == ChatFileCellTypeDownloading)
     {
         frame.origin.y = self.typeImageView.frame.origin.y;
         frame.size.width = CGRectGetMinX(self.noButton.frame) - frame.origin.x - 5.0;
     }
-    else if (self.type == ChatFileCellTypeIncomingDeleted ||
-            self.type == ChatFileCellTypeIncomingCanceled)
+    else if (self.type == ChatFileCellTypeDeleted ||
+            self.type == ChatFileCellTypeCanceled)
     {
         frame.origin.y = self.typeImageView.frame.origin.y;
         frame.size.width = self.contentView.frame.size.width - frame.origin.x - 5.0;
     }
-    else if (self.type == ChatFileCellTypeIncomingLoaded) {
+    else if (self.type == ChatFileCellTypeLoaded) {
         frame.origin.y = [self startingOriginY] + (kCellHeight - frame.size.height) / 2;
         frame.size.width = self.contentView.frame.size.width - frame.origin.x - 5.0;
     }
@@ -428,25 +428,25 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)updateDescriptionLabel
 {
-    if (self.type != ChatFileCellTypeIncomingWaitingConfirmation &&
-        self.type != ChatFileCellTypeIncomingDownloading &&
-        self.type != ChatFileCellTypeIncomingDeleted &&
-        self.type != ChatFileCellTypeIncomingCanceled)
+    if (self.type != ChatFileCellTypeWaitingConfirmation &&
+        self.type != ChatFileCellTypeDownloading &&
+        self.type != ChatFileCellTypeDeleted &&
+        self.type != ChatFileCellTypeCanceled)
     {
         return;
     }
 
-    if (self.type == ChatFileCellTypeIncomingWaitingConfirmation) {
+    if (self.type == ChatFileCellTypeWaitingConfirmation) {
         self.descriptionLabel.text = self.fileSize;
 
     }
-    else if (self.type == ChatFileCellTypeIncomingDownloading) {
+    else if (self.type == ChatFileCellTypeDownloading) {
         self.descriptionLabel.text = [NSString stringWithFormat:@"%d%%", (int) (self.loadedPercent * 100)];
     }
-    else if (self.type == ChatFileCellTypeIncomingDeleted) {
+    else if (self.type == ChatFileCellTypeDeleted) {
         self.descriptionLabel.text = NSLocalizedString(@"Deleted", @"Chat");
     }
-    else if (self.type == ChatFileCellTypeIncomingCanceled) {
+    else if (self.type == ChatFileCellTypeCanceled) {
         self.descriptionLabel.text = NSLocalizedString(@"Canceled", @"Chat");
     }
 
@@ -454,13 +454,13 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     CGRect frame = self.descriptionLabel.frame;
     frame.origin.y = CGRectGetMaxY(self.typeImageView.frame) - frame.size.height;
 
-    if (self.type == ChatFileCellTypeIncomingWaitingConfirmation ||
-        self.type == ChatFileCellTypeIncomingDeleted ||
-        self.type == ChatFileCellTypeIncomingCanceled)
+    if (self.type == ChatFileCellTypeWaitingConfirmation ||
+        self.type == ChatFileCellTypeDeleted ||
+        self.type == ChatFileCellTypeCanceled)
     {
         frame.origin.x = self.titleLabel.frame.origin.x;
     }
-    else if (self.type == ChatFileCellTypeIncomingDownloading) {
+    else if (self.type == ChatFileCellTypeDownloading) {
         frame.origin.x = CGRectGetMinX(self.noButton.frame) - self.descriptionLabel.frame.size.width - 5.0;
     }
 
@@ -469,7 +469,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)updatePlayPauseButton
 {
-    if (self.type != ChatFileCellTypeIncomingDownloading) {
+    if (self.type != ChatFileCellTypeDownloading) {
         return;
     }
 
@@ -484,7 +484,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 
 - (void)updateProgressViewAnimated:(BOOL)animated
 {
-    if (self.type != ChatFileCellTypeIncomingDownloading) {
+    if (self.type != ChatFileCellTypeDownloading) {
         return;
     }
 
