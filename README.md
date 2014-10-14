@@ -25,7 +25,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 -  emoticons
 -  spell check
 -  reading/scanning Tox ID via QR code
--  receiving files
+-  file transfer
 -  read receipts
 -  multiple profiles
 -  tox_save import/export
@@ -33,14 +33,13 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 #### In progress
 
--  sending files
 -  UI polishing
 -  Fixing bugs
+-  audio calls
 
 #### Then
 
 -  group chats *(as soon as group chats will be rewritten in toxcore)*
--  audio calls
 -  video calls
 
 #### Future
