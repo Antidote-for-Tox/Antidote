@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, ChatFileCellType) {
 @property (assign, nonatomic) CGFloat loadedPercent;
 @property (assign, nonatomic) BOOL isPaused;
 
+@property (assign, nonatomic) BOOL isOutgoing;
+
 - (void)redrawAnimated;
 - (void)redrawLoadingPercentOnlyAnimated:(BOOL)animated;
 

@@ -754,6 +754,7 @@ typedef NS_ENUM(NSInteger, Section) {
     cell.delegate = self;
     cell.fileName = message.file.originalFileName;
     cell.fileUTI = message.file.fileUTI;
+    cell.isOutgoing = [Helper isOutgoingMessage:message];
 
     if (message.file.fileNameOnDisk) {
         cell.type = ChatFileCellTypeLoaded;
@@ -773,6 +774,7 @@ typedef NS_ENUM(NSInteger, Section) {
     cell.delegate = self;
     cell.fileName = message.pendingFile.originalFileName;
     cell.fileUTI = message.pendingFile.fileUTI;
+    cell.isOutgoing = [Helper isOutgoingMessage:message];
 
     if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
         cell.type = ChatFileCellTypeWaitingConfirmation;
