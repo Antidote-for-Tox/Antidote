@@ -18,6 +18,7 @@
 #import "ToxUploadingFile.h"
 #import "ProfileManager.h"
 #import "CDUser.h"
+#import "Helper.h"
 
 void fileSendRequestCallback(Tox *, int32_t, uint8_t, uint64_t, const uint8_t *, uint16_t, void *);
 void fileControlCallback(Tox *, int32_t, uint8_t, uint8_t, uint8_t, const uint8_t *, uint16_t, void *);
@@ -75,9 +76,17 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     DDLogInfo(@"ToxManager: accept or refuse pending file %d...", accept);
 
-    if (message.pendingFile.state != CDMessagePendingFileStateWaitingConfirmation) {
-        DDLogError(@"ToxManager: accept or refuse... wrong state %@", message.pendingFile);
+    BOOL isOutgoingMessage = [Helper isOutgoingMessage:message];
 
+    if (isOutgoingMessage && accept) {
+        DDLogError(@"ToxManager: cannot accept outgoing message %@", message.pendingFile);
+        return;
+    }
+
+    if (message.pendingFile.state != CDMessagePendingFileStateWaitingConfirmation &&
+        message.pendingFile.state != CDMessagePendingFileStateActive)
+    {
+        DDLogError(@"ToxManager: accept or refuse... wrong state %@", message.pendingFile);
         return;
     }
 
@@ -108,7 +117,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     tox_file_send_control(
             self.tox,
             message.pendingFile.friendNumber,
-            1,
+            isOutgoingMessage ? 0 : 1,
             message.pendingFile.fileNumber,
             messageId,
             NULL,
