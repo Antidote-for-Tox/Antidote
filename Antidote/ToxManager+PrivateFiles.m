@@ -252,26 +252,6 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }];
 }
 
-- (void)qFriendStatusChangedToOfflineWithFriendNumber:(uint32_t)friendNumber
-{
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
-
-    NSMutableArray *keys = [NSMutableArray new];
-    NSString *prefix = [NSString stringWithFormat:@"%d-", friendNumber];
-    NSString *suffix = [NSString stringWithFormat:@"-%d", NO];
-
-    for (NSString *key in [self.privateFiles_uploadingFiles allKeys]) {
-        if ([key hasPrefix:prefix] && [key hasSuffix:suffix]) {
-            [keys addObject:key];
-        }
-    }
-
-    DDLogInfo(@"ToxManager+PrivateFiles: friend has gone offline %d, canceling all uploading files %@",
-            friendNumber, keys);
-
-    [self.privateFiles_uploadingFiles removeObjectsForKeys:keys];
-}
-
 #pragma mark -  Private
 
 - (void)qIncomingFileFromFriend:(ToxFriend *)friend
@@ -432,6 +412,22 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     if (result == 0) {
         // successfully sended, switching to next chunk
         [file goForwardOnLength:length];
+        file.numberOfFailuresInARow = 0;
+    }
+    else {
+        file.numberOfFailuresInARow++;
+
+        if (file.numberOfFailuresInARow > kToxUploadingFilesMaxNumberOfFailures) {
+            DDLogWarn(@"ToxManager+PrivateFiles: too many failures in a row while uploading file %@, removing it",
+                    key);
+
+            [self.privateFiles_uploadingFiles removeObjectForKey:key];
+            [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStateCanceled
+                                    withFriendNumber:friendNumber
+                                          fileNumber:fileNumber];
+
+            return;
+        }
     }
 
     uint32_t interval = tox_do_interval(self.tox);

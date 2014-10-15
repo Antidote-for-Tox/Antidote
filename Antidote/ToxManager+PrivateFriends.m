@@ -365,10 +365,6 @@ void userStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, void *us
         {
             friend.status = friendStatus;
         }];
-
-        if (friendStatus == ToxFriendStatusOffline) {
-            [[ToxManager sharedInstance] qFriendStatusChangedToOfflineWithFriendNumber:friendnumber];
-        }
     });
 }
 
@@ -394,8 +390,6 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
             {
                 friend.status = ToxFriendStatusOffline;
             }];
-
-            [[ToxManager sharedInstance] qFriendStatusChangedToOfflineWithFriendNumber:friendnumber];
         }
 
         [[ToxManager sharedInstance] qSaveTox];

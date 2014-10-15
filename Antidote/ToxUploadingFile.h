@@ -8,12 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+static const NSUInteger kToxUploadingFilesMaxNumberOfFailures = 500;
+
 @interface ToxUploadingFile : NSObject
 
 @property (assign, nonatomic, readonly) uint64_t fileSize;
 @property (assign, nonatomic, readonly) uint16_t portionSize;
 
 @property (assign, nonatomic) BOOL paused;
+@property (assign, nonatomic) NSUInteger numberOfFailuresInARow;
 
 - (instancetype)initWithFilePath:(NSString *)filePath portionSize:(uint16_t)portionSize;
 

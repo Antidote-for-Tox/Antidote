@@ -19,7 +19,5 @@
 
 - (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber;
 
-- (void)qFriendStatusChangedToOfflineWithFriendNumber:(uint32_t)friendNumber;
-
 @end
 
