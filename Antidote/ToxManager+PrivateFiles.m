@@ -112,6 +112,14 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     else {
         messageId = TOX_FILECONTROL_KILL;
         state = CDMessagePendingFileStateCanceled;
+
+        if (isOutgoingMessage) {
+            NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:message.pendingFile.friendNumber
+                                                                  fileNumber:message.pendingFile.fileNumber
+                                                                 downloading:NO];
+
+            [self.privateFiles_uploadingFiles removeObjectForKey:key];
+        }
     }
 
     tox_file_send_control(
@@ -407,31 +415,34 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         return;
     }
 
-    int result = tox_file_send_data(self.tox, friendNumber, fileNumber, buffer, length);
+    const uint32_t toxDoInterval = tox_do_interval(self.tox);
+    NSDate *startDate = [NSDate date];
 
-    if (result == 0) {
-        // successfully sended, switching to next chunk
-        [file goForwardOnLength:length];
+    while (tox_file_send_data(self.tox, friendNumber, fileNumber, buffer, length) == 0) {
         file.numberOfFailuresInARow = 0;
-    }
-    else {
-        file.numberOfFailuresInARow++;
+        [file goForwardOnLength:length];
 
-        if (file.numberOfFailuresInARow > kToxUploadingFilesMaxNumberOfFailures) {
-            DDLogWarn(@"ToxManager+PrivateFiles: too many failures in a row while uploading file %@, removing it",
-                    key);
-
-            [self.privateFiles_uploadingFiles removeObjectForKey:key];
-            [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStateCanceled
-                                    withFriendNumber:friendNumber
-                                          fileNumber:fileNumber];
-
-            return;
+        // letting tox_do run
+        if ([[NSDate date] timeIntervalSinceDate:startDate] >= toxDoInterval) {
+            break;
         }
     }
 
-    uint32_t interval = tox_do_interval(self.tox);
-    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, interval * USEC_PER_SEC);
+    file.numberOfFailuresInARow++;
+
+    if (file.numberOfFailuresInARow > kToxUploadingFilesMaxNumberOfFailures) {
+        DDLogWarn(@"ToxManager+PrivateFiles: too many failures in a row while uploading file %@, removing it",
+                key);
+
+        [self.privateFiles_uploadingFiles removeObjectForKey:key];
+        [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStateCanceled
+                                withFriendNumber:friendNumber
+                                      fileNumber:fileNumber];
+
+        return;
+    }
+
+    dispatch_time_t time = dispatch_time(DISPATCH_TIME_NOW, toxDoInterval * USEC_PER_SEC);
 
     dispatch_after(time, self.queue, ^{
         [self qUploadNextFileChunkWithFriendNumber:friendNumber fileNumber:fileNumber];

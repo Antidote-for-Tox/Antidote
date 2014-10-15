@@ -53,6 +53,11 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self finishUploading];
+}
+
 #pragma mark -  Public
 
 - (uint16_t)nextPortionOfBytes:(void *)buffer
