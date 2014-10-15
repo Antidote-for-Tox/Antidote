@@ -46,6 +46,8 @@
         self.fileSize = [self.fileHandle offsetInFile];
         [self.fileHandle seekToFileOffset:0];
 
+        self.lastUIUpdateDate = [NSDate dateWithTimeIntervalSince1970:0];
+
         DDLogInfo(@"ToxUploadingFile: %@ inited with portionSize %u, fileSize %llu",
                 self, self.portionSize, self.fileSize);
     }
@@ -94,6 +96,11 @@
         self.cachedData = nil;
         self.offsetInCachedData = 0;
     }
+}
+
+- (uint64_t)uploadedLength
+{
+    return self.fileHandle.offsetInFile - self.cachedData.length + self.offsetInCachedData;
 }
 
 - (void)finishUploading

@@ -118,7 +118,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                                   fileNumber:message.pendingFile.fileNumber
                                                                  downloading:NO];
 
-            [self.privateFiles_uploadingFiles removeObjectForKey:key];
+            @synchronized(self.privateFiles_uploadingFiles) {
+                [self.privateFiles_uploadingFiles removeObjectForKey:key];
+            }
         }
     }
 
@@ -139,18 +141,31 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     DDLogInfo(@"ToxManager: accept or refuse... success");
 }
 
-- (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint8_t)fileNumber
+- (CGFloat)synchronizedProgressForFileWithFriendNumber:(uint32_t)friendNumber
+                                            fileNumber:(uint8_t)fileNumber
+                                            isOutgoing:(BOOL)isOutgoing
 {
-    @synchronized([ToxManager sharedInstance].privateFiles_downloadingFiles) {
-        NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
-                                                              fileNumber:fileNumber
-                                                             downloading:YES];
+    NSString *key = [[ToxManager sharedInstance] keyFromFriendNumber:friendNumber
+                                                          fileNumber:fileNumber
+                                                         downloading:!isOutgoing];
 
-        ToxDownloadingFile *file = [ToxManager sharedInstance].privateFiles_downloadingFiles[key];
+    if (isOutgoing) {
+        @synchronized(self.privateFiles_uploadingFiles) {
+            ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
 
-        return [self progressFromDownloadingFile:file
-                                    friendNumber:friendNumber
-                                      fileNumber:fileNumber];
+            return [self progressFromUploadingFile:file
+                                      friendNumber:friendNumber
+                                        fileNumber:fileNumber];
+        }
+    }
+    else {
+        @synchronized(self.privateFiles_downloadingFiles) {
+            ToxDownloadingFile *file = self.privateFiles_downloadingFiles[key];
+
+            return [self progressFromDownloadingFile:file
+                                        friendNumber:friendNumber
+                                          fileNumber:fileNumber];
+        }
     }
 }
 
@@ -243,8 +258,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                          downloading:NO];
 
     int portionSize = tox_file_data_size(self.tox, friend.id);
-    self.privateFiles_uploadingFiles[key] = [[ToxUploadingFile alloc] initWithFilePath:filePath
-                                                                           portionSize:portionSize];
+
+    @synchronized(self.privateFiles_uploadingFiles) {
+        self.privateFiles_uploadingFiles[key] = [[ToxUploadingFile alloc] initWithFilePath:filePath
+                                                                               portionSize:portionSize];
+    }
 
     [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
@@ -378,8 +396,10 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
-    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
-    file.paused = NO;
+    @synchronized(self.privateFiles_uploadingFiles) {
+        ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+        file.paused = NO;
+    }
 
     [self qUploadNextFileChunkWithFriendNumber:friendNumber fileNumber:fileNumber];
 }
@@ -392,7 +412,10 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
-    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+    ToxUploadingFile *file;
+    @synchronized(self.privateFiles_uploadingFiles) {
+        file = self.privateFiles_uploadingFiles[key];
+    }
 
     if (! file) {
         DDLogInfo(@"ToxManager+PrivateFiles: no file with key %@ found, quiting", key);
@@ -441,13 +464,29 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
         }
     }
 
+    NSDate *now = [NSDate date];
+    if ([now timeIntervalSinceDate:file.lastUIUpdateDate] > kToxUploadingFilesUIUpdateInterval) {
+        file.lastUIUpdateDate = now;
+
+        CGFloat progress = [[ToxManager sharedInstance] progressFromUploadingFile:file
+                                                                     friendNumber:friendNumber
+                                                                       fileNumber:fileNumber];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[ToxManager sharedInstance].fileProgressDelegate toxManagerProgressChanged:progress
+                                                           forPendingFileWithFileNumber:fileNumber
+                                                                           friendNumber:friendNumber];
+        });
+    }
+
     file.numberOfFailuresInARow++;
 
     if (file.numberOfFailuresInARow > kToxUploadingFilesMaxNumberOfFailures) {
         DDLogWarn(@"ToxManager+PrivateFiles: too many failures in a row while uploading file %@, removing it",
                 key);
 
-        [self.privateFiles_uploadingFiles removeObjectForKey:key];
+        @synchronized(self.privateFiles_uploadingFiles) {
+            [self.privateFiles_uploadingFiles removeObjectForKey:key];
+        }
         [self qChangeUploadingPendingFileStateTo:CDMessagePendingFileStateCanceled
                                 withFriendNumber:friendNumber
                                       fileNumber:fileNumber];
@@ -470,10 +509,13 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
-    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+    ToxUploadingFile *file;
+    @synchronized(self.privateFiles_uploadingFiles) {
+        file = self.privateFiles_uploadingFiles[key];
 
-    [file finishUploading];
-    [self.privateFiles_uploadingFiles removeObjectForKey:key];
+        [file finishUploading];
+        [self.privateFiles_uploadingFiles removeObjectForKey:key];
+    }
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:
         @"pendingFile.fileNumber == %d AND pendingFile.friendNumber == %d", fileNumber, friendNumber];
@@ -501,8 +543,10 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
-    ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
-    file.paused = YES;
+    @synchronized(self.privateFiles_uploadingFiles) {
+        ToxUploadingFile *file = self.privateFiles_uploadingFiles[key];
+        file.paused = YES;
+    }
 }
 
 - (void)qUploadKilledWithFriendNumber:(uint32_t)friendNumber fileNumber:(uint16_t)fileNumber
@@ -517,7 +561,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                           fileNumber:fileNumber
                                                          downloading:NO];
 
-    [self.privateFiles_uploadingFiles removeObjectForKey:key];
+    @synchronized(self.privateFiles_uploadingFiles) {
+        [self.privateFiles_uploadingFiles removeObjectForKey:key];
+    }
 }
 
 - (void)qChangeUploadingPendingFileStateTo:(CDMessagePendingFileState)state
@@ -603,14 +649,22 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                           friendNumber:(uint32_t)friendNumber
                             fileNumber:(uint8_t)fileNumber
 {
-    CGFloat saved = file.savedLength;
-    CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendNumber, fileNumber, 1);
+    const CGFloat saved = file.savedLength;
+    const CGFloat remaining = tox_file_data_remaining([ToxManager sharedInstance].tox, friendNumber, fileNumber, 1);
 
-    CGFloat total = saved + remaining;
+    const CGFloat total = saved + remaining;
 
-    CGFloat progress = total ? saved/total : 0.0;
+    return total ? saved/total : 0.0;
+}
 
-    return progress;
+- (CGFloat)progressFromUploadingFile:(ToxUploadingFile *)file
+                        friendNumber:(uint32_t)friendNumber
+                          fileNumber:(uint8_t)fileNumber
+{
+    const CGFloat uploaded = [file uploadedLength];
+    const CGFloat total = file.fileSize;
+
+    return total ? uploaded/total : 0.0;
 }
 
 @end

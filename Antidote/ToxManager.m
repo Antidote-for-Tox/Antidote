@@ -15,6 +15,7 @@
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
 #import "ProfileManager.h"
+#import "Helper.h"
 
 static NSString *const kToxSaveName = @"tox_save";
 
@@ -256,7 +257,8 @@ static dispatch_once_t __onceToken;
     }
 
     return [self synchronizedProgressForFileWithFriendNumber:message.pendingFile.friendNumber
-                                                  fileNumber:message.pendingFile.fileNumber];
+                                                  fileNumber:message.pendingFile.fileNumber
+                                                  isOutgoing:[Helper isOutgoingMessage:message]];
 }
 
 - (void)togglePauseForPendingFileInMessage:(CDMessage *)message
