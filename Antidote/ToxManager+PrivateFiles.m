@@ -405,13 +405,21 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     }
 
     uint8_t buffer[file.portionSize];
+
+    BOOL (^checkLength)(uint16_t) = ^(uint16_t length) {
+        if (! length) {
+            tox_file_send_control(self.tox, friendNumber, 0, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
+
+            DDLogInfo(@"ToxManager+PrivateFiles: file successfully sended with key %@", key);
+
+            return NO;
+        }
+
+        return YES;
+    };
+
     uint16_t length = [file nextPortionOfBytes:&buffer];
-
-    if (! length) {
-        tox_file_send_control(self.tox, friendNumber, 0, fileNumber, TOX_FILECONTROL_FINISHED, NULL, 0);
-
-        DDLogInfo(@"ToxManager+PrivateFiles: file successfully sended with key %@", key);
-
+    if (! checkLength(length)) {
         return;
     }
 
@@ -421,6 +429,11 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     while (tox_file_send_data(self.tox, friendNumber, fileNumber, buffer, length) == 0) {
         file.numberOfFailuresInARow = 0;
         [file goForwardOnLength:length];
+
+        length = [file nextPortionOfBytes:&buffer];
+        if (! checkLength(length)) {
+            return;
+        }
 
         // letting tox_do run
         if ([[NSDate date] timeIntervalSinceDate:startDate] >= toxDoInterval) {
