@@ -218,7 +218,7 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 {
     NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: upload data with fileName %@, size %lu", originalFileName, data.length);
+    DDLogInfo(@"ToxManager: upload data with fileName %@, size %lu", originalFileName, (unsigned long)data.length);
 
     if (chat.users.count > 1) {
         DDLogError(@"ToxManager: send message... group chats aren't supported yet");

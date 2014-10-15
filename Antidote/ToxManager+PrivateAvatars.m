@@ -38,7 +38,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
         const uint8_t *bytes = [data bytes];
 
-        DDLogInfo(@"ToxManager+PrivateAvatars: found avatar, setting it. Length = %lu", data.length);
+        DDLogInfo(@"ToxManager+PrivateAvatars: found avatar, setting it. Length = %lu", (unsigned long)data.length);
 
         tox_set_avatar(self.tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
     }
