@@ -12,7 +12,7 @@
 
 #### Cydia
 
-You can install [0.1](https://github.com/dvor/Antidote/releases/tag/0.1) version of Antidote from Cydia repo `http://dvor.me/cydia/`
+You can install [0.2](https://github.com/dvor/Antidote/releases/tag/0.2) version of Antidote from Cydia repo `http://dvor.me/cydia/`
 
 #### Downloads
 
