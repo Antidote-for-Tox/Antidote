@@ -542,14 +542,14 @@ typedef NS_ENUM(NSInteger, Section) {
         NSString *fileName = [representation filename];
 
         if (! fileName) {
-            fileName = @"photo.png";
+            fileName = @"photo.jpg";
         }
 
         UIImage *image = info[UIImagePickerControllerOriginalImage];
         NSData *data = nil;
 
-        if ([fileUTI isEqualToString:(NSString *)kUTTypeJPEG]) {
-            data = UIImageJPEGRepresentation(image, 1.0);
+        if (! fileUTI || [fileUTI isEqualToString:(NSString *)kUTTypeJPEG]) {
+            data = UIImageJPEGRepresentation(image, 0.9);
         }
         else {
             data = UIImagePNGRepresentation(image);
