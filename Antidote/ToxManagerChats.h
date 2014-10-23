@@ -1,16 +1,18 @@
 //
-//  ToxManager+PrivateChat.h
+//  ToxManagerChats.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 15.08.14.
+//  Created by Dmitry Vorobyov on 23.10.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #import "ToxManager.h"
 
-@interface ToxManager (PrivateChat)
+@interface ToxManagerChats : NSObject
 
-- (void)qRegisterChatsCallbacks;
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
 
 - (void)qChangeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping;
 - (void)qSendMessage:(NSString *)message toChat:(CDChat *)chat;
@@ -19,4 +21,3 @@
 - (void)qChatWithUser:(CDUser *)user completionBlock:(void (^)(CDChat *chat))completionBlock;
 
 @end
-

@@ -11,13 +11,13 @@
 		110B8B8419C8DB25000E4334 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 110B8B8319C8DB25000E4334 /* ProfileManager.m */; };
 		110B8B8719C8DCF5000E4334 /* CoreDataManager+Profile.m in Sources */ = {isa = PBXBuildFile; fileRef = 110B8B8619C8DCF5000E4334 /* CoreDataManager+Profile.m */; };
 		110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */; };
-		111EC716199E985900A27A0E /* ToxManager+PrivateChat.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC715199E985900A27A0E /* ToxManager+PrivateChat.m */; };
 		111EC719199E99B700A27A0E /* ToxManager+PrivateFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC718199E99B700A27A0E /* ToxManager+PrivateFiles.m */; };
 		111EC732199FD6DA00A27A0E /* CDMessagePendingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC731199FD6DA00A27A0E /* CDMessagePendingFile.m */; };
 		111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC734199FD6DB00A27A0E /* CDMessageFile.m */; };
 		111EC73919A097A900A27A0E /* ToxDownloadingFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 111EC73819A097A900A27A0E /* ToxDownloadingFile.m */; };
 		1122E84619F8F469002907B3 /* ToxManagerFriends.m in Sources */ = {isa = PBXBuildFile; fileRef = 1122E84519F8F469002907B3 /* ToxManagerFriends.m */; };
 		1122E84919F92BC2002907B3 /* ToxManagerAvatars.m in Sources */ = {isa = PBXBuildFile; fileRef = 1122E84819F92BC2002907B3 /* ToxManagerAvatars.m */; };
+		1122E84F19F93225002907B3 /* ToxManagerChats.m in Sources */ = {isa = PBXBuildFile; fileRef = 1122E84E19F93225002907B3 /* ToxManagerChats.m */; };
 		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
 		1146308C19842D360075DA16 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146308B19842D360075DA16 /* CoreDataManager.m */; };
 		1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309219842F490075DA16 /* CoreDataManager+Message.m */; };
@@ -116,8 +116,6 @@
 		110B8B8919C8E3FE000E4334 /* ProfilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfilesViewController.h; sourceTree = "<group>"; };
 		110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfilesViewController.m; sourceTree = "<group>"; };
 		111EC70B199E92F300A27A0E /* ToxManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxManager+Private.h"; sourceTree = "<group>"; };
-		111EC714199E985900A27A0E /* ToxManager+PrivateChat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxManager+PrivateChat.h"; sourceTree = "<group>"; };
-		111EC715199E985900A27A0E /* ToxManager+PrivateChat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToxManager+PrivateChat.m"; sourceTree = "<group>"; };
 		111EC717199E99B700A27A0E /* ToxManager+PrivateFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ToxManager+PrivateFiles.h"; sourceTree = "<group>"; };
 		111EC718199E99B700A27A0E /* ToxManager+PrivateFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ToxManager+PrivateFiles.m"; sourceTree = "<group>"; };
 		111EC730199FD6DA00A27A0E /* CDMessagePendingFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDMessagePendingFile.h; sourceTree = "<group>"; };
@@ -131,6 +129,8 @@
 		1122E84519F8F469002907B3 /* ToxManagerFriends.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManagerFriends.m; sourceTree = "<group>"; };
 		1122E84719F92BC2002907B3 /* ToxManagerAvatars.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxManagerAvatars.h; sourceTree = "<group>"; };
 		1122E84819F92BC2002907B3 /* ToxManagerAvatars.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManagerAvatars.m; sourceTree = "<group>"; };
+		1122E84D19F93225002907B3 /* ToxManagerChats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxManagerChats.h; sourceTree = "<group>"; };
+		1122E84E19F93225002907B3 /* ToxManagerChats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManagerChats.m; sourceTree = "<group>"; };
 		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		1146308A19842D360075DA16 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		1146308B19842D360075DA16 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
@@ -760,14 +760,14 @@
 			children = (
 				11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */,
 				111EC70B199E92F300A27A0E /* ToxManager+Private.h */,
-				111EC714199E985900A27A0E /* ToxManager+PrivateChat.h */,
-				111EC715199E985900A27A0E /* ToxManager+PrivateChat.m */,
 				111EC717199E99B700A27A0E /* ToxManager+PrivateFiles.h */,
 				111EC718199E99B700A27A0E /* ToxManager+PrivateFiles.m */,
 				1122E84419F8F469002907B3 /* ToxManagerFriends.h */,
 				1122E84519F8F469002907B3 /* ToxManagerFriends.m */,
 				1122E84719F92BC2002907B3 /* ToxManagerAvatars.h */,
 				1122E84819F92BC2002907B3 /* ToxManagerAvatars.m */,
+				1122E84D19F93225002907B3 /* ToxManagerChats.h */,
+				1122E84E19F93225002907B3 /* ToxManagerChats.m */,
 			);
 			name = Private;
 			sourceTree = "<group>";
@@ -955,6 +955,7 @@
 				11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */,
 				117A5B4519D8A0040067D10F /* onion_client.c in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
+				1122E84F19F93225002907B3 /* ToxManagerChats.m in Sources */,
 				117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */,
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,
 				111EC719199E99B700A27A0E /* ToxManager+PrivateFiles.m in Sources */,
@@ -962,7 +963,6 @@
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				1122E84919F92BC2002907B3 /* ToxManagerAvatars.m in Sources */,
 				1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */,
-				111EC716199E985900A27A0E /* ToxManager+PrivateChat.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				111EC73919A097A900A27A0E /* ToxDownloadingFile.m in Sources */,

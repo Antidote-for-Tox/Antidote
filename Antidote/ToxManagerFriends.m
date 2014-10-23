@@ -8,7 +8,7 @@
 
 #import "ToxManagerFriends.h"
 #import "ToxManager+Private.h"
-#import "ToxManager+PrivateChat.h"
+#import "ToxManagerChats.h"
 #import "ToxManager+PrivateFiles.h"
 #import "ToxFriend+Private.h"
 #import "ToxFunctions.h"
@@ -184,7 +184,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         friend.nickname = name;
 
         if (name.length) {
-            [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+            [[ToxManager sharedInstance].managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
                 [CoreDataManager editCDObjectWithBlock:^{
                     user.nickname = name;
                 } completionQueue:nil completionBlock:nil];
@@ -247,7 +247,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         if (friend.clientId) {
             __weak ToxManagerFriends *weakSelf = self;
 
-            [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+            [[ToxManager sharedInstance].managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
                 friend.nickname = user.nickname;
 
                 [weakSelf qMaybeCreateNicknameForFriend:friend];
@@ -278,7 +278,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         return;
     }
 
-    [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+    [[ToxManager sharedInstance].managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [CoreDataManager editCDObjectWithBlock:^{
             user.nickname = friend.realName;
         } completionQueue:nil completionBlock:nil];

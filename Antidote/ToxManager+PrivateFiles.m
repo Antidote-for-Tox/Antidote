@@ -10,7 +10,7 @@
 
 #import "ToxManager+PrivateFiles.h"
 #import "ToxManager+Private.h"
-#import "ToxManager+PrivateChat.h"
+#import "ToxManagerChats.h"
 #import "CoreDataManager+Message.h"
 #import "EventsManager.h"
 #import "AppDelegate.h"
@@ -264,8 +264,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
                                                                                portionSize:portionSize];
     }
 
-    [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
-        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
+    [self.managerChats qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
+        [weakSelf.managerChats qChatWithUser:user completionBlock:^(CDChat *chat) {
             [weakSelf qAddPendingFileToChat:chat
                                    fromUser:currentUser
                                  fileNumber:fileNumber
@@ -291,8 +291,8 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
     __weak ToxManager *weakSelf = self;
 
-    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
-        [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
+    [self.managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [weakSelf.managerChats qChatWithUser:user completionBlock:^(CDChat *chat) {
             NSString *fileNameOnDisk = [weakSelf uniqueFileNameOnDiskWithExtension:[originalFileName pathExtension]];
 
             DDLogInfo(@"ToxManager: creating new document with fileNameOnDisk %@", fileNameOnDisk);

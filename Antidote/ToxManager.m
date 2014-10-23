@@ -9,8 +9,8 @@
 #import "ToxManager.h"
 #import "ToxManager+Private.h"
 #import "ToxManagerAvatars.h"
+#import "ToxManagerChats.h"
 #import "ToxManagerFriends.h"
-#import "ToxManager+PrivateChat.h"
 #import "ToxManager+PrivateFiles.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
@@ -62,9 +62,9 @@ static dispatch_once_t __onceToken;
             [self qCreateTox];
 
             _managerAvatars = [[ToxManagerAvatars alloc] initOnToxQueueWithToxManager:self];
+            _managerChats = [[ToxManagerChats alloc]  initOnToxQueueWithToxManager:self];
             _managerFriends = [[ToxManagerFriends alloc] initOnToxQueueWithToxManager:self];
 
-            [self qRegisterChatsCallbacks];
             [self qRegisterFilesCallbacksAndSetup];
 
             DDLogInfo(@"ToxManager: created");
@@ -213,14 +213,14 @@ static dispatch_once_t __onceToken;
 - (void)changeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping
 {
     dispatch_async(self.queue, ^{
-        [self qChangeIsTypingInChat:chat to:isTyping];
+        [self.managerChats qChangeIsTypingInChat:chat to:isTyping];
     });
 }
 
 - (void)sendMessage:(NSString *)message toChat:(CDChat *)chat
 {
     dispatch_async(self.queue, ^{
-        [self qSendMessage:message toChat:chat];
+        [self.managerChats qSendMessage:message toChat:chat];
     });
 }
 
@@ -235,7 +235,7 @@ static dispatch_once_t __onceToken;
     }
 
     dispatch_async(self.queue, ^{
-        [self qChatWithToxFriend:friend completionBlock:^(CDChat *chat) {
+        [self.managerChats qChatWithToxFriend:friend completionBlock:^(CDChat *chat) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 completionBlock(chat);
             });

@@ -8,7 +8,7 @@
 
 #import "ToxManagerAvatars.h"
 #import "ToxManager+Private.h"
-#import "ToxManager+PrivateChat.h"
+#import "ToxManagerChats.h"
 #import "CDUser.h"
 #import "ProfileManager.h"
 #import "CoreDataManager+User.h"
@@ -129,7 +129,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
             [fileManager removeItemAtPath:path error:nil];
         }
 
-        [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [[ToxManager sharedInstance].managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
             [CoreDataManager editCDObjectWithBlock:^{
                 user.avatarHash = nil;
             } completionQueue:nil completionBlock:nil];
@@ -141,7 +141,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 {
     NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+    [[ToxManager sharedInstance].managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         if (user.avatarHash && [user.avatarHash isEqualToData:hash]) {
             DDLogInfo(@"ToxManagerAvatars: already have this avatar");
             return;
@@ -176,7 +176,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
         [data writeToFile:path atomically:NO];
 
-        [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [[ToxManager sharedInstance].managerChats qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
             [CoreDataManager editCDObjectWithBlock:^{
                 user.avatarHash = hash;
             } completionQueue:nil completionBlock:nil];

@@ -1,12 +1,12 @@
 //
-//  ToxManager+PrivateChat.m
+//  ToxManagerChats.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 15.08.14.
+//  Created by Dmitry Vorobyov on 23.10.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ToxManager+PrivateChat.h"
+#import "ToxManagerChats.h"
 #import "ToxManager+Private.h"
 #import "ToxManager+Private.h"
 #import "CoreDataManager+User.h"
@@ -18,78 +18,86 @@
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata);
 void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata);
 
-@implementation ToxManager (PrivateChat)
+@implementation ToxManagerChats
 
 #pragma mark -  Public
 
-- (void)qRegisterChatsCallbacks
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager+PrivateChat: registering callbacks");
+    self = [super init];
 
-    tox_callback_friend_message (self.tox, friendMessageCallback, NULL);
-    tox_callback_read_receipt   (self.tox, readReceiptCallback,   NULL);
+    if (! self) {
+        return nil;
+    }
+
+    DDLogInfo(@"ToxManagerChats: registering callbacks");
+
+    tox_callback_friend_message (manager.tox, friendMessageCallback, NULL);
+    tox_callback_read_receipt   (manager.tox, readReceiptCallback,   NULL);
+
+    return self;
 }
 
 - (void)qChangeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     if (! chat) {
         return;
     }
 
     CDUser *user = [chat.users anyObject];
-    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
+    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
 
     uint8_t typing = isTyping ? 1 : 0;
-    tox_set_user_is_typing(self.tox, friend.id, typing);
+    tox_set_user_is_typing([ToxManager sharedInstance].tox, friend.id, typing);
 }
 
 - (void)qSendMessage:(NSString *)message toChat:(CDChat *)chat
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: send message with length %lu to chat %@...", (unsigned long)message.length, chat);
+    DDLogInfo(@"ToxManagerChats: send message with length %lu to chat %@...", (unsigned long)message.length, chat);
 
     if (! message.length || ! chat) {
-        DDLogError(@"ToxManager: send message... empty message or no chat");
+        DDLogError(@"ToxManagerChats: send message... empty message or no chat");
 
         return;
     }
 
     if (chat.users.count > 1) {
-        DDLogError(@"ToxManager: send message... group chats aren't supported yet");
+        DDLogError(@"ToxManagerChats: send message... group chats aren't supported yet");
         return;
     }
 
     CDUser *user = [chat.users anyObject];
 
-    ToxFriend *friend = [self.friendsContainer friendWithClientId:user.clientId];
+    ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
 
     const char *cMessage = [message cStringUsingEncoding:NSUTF8StringEncoding];
 
     uint32_t messageId = tox_send_message(
-            self.tox,
+            [ToxManager sharedInstance].tox,
             friend.id,
             (uint8_t *)cMessage,
             (uint32_t)[message lengthOfBytesUsingEncoding:NSUTF8StringEncoding]);
 
-    __weak ToxManager *weakSelf = self;
+    __weak ToxManagerChats *weakSelf = self;
 
-    [self qUserFromClientId:[self qClientId] completionBlock:^(CDUser *currentUser) {
+    [self qUserFromClientId:[[ToxManager sharedInstance] qClientId] completionBlock:^(CDUser *currentUser) {
         [weakSelf qAddMessage:message messageId:messageId toChat:chat fromUser:currentUser completionBlock:nil];
     }];
 
-    DDLogInfo(@"ToxManager: send message... success");
+    DDLogInfo(@"ToxManagerChats: send message... success");
 }
 
 - (void)qChatWithToxFriend:(ToxFriend *)friend completionBlock:(void (^)(CDChat *chat))completionBlock
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    __weak ToxManager *weakSelf = self;
+    __weak ToxManagerChats *weakSelf = self;
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
 
@@ -99,37 +107,38 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
 - (void)qUserFromClientId:(NSString *)clientId completionBlock:(void (^)(CDUser *user))completionBlock
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"clientId == %@", clientId];
 
     [CoreDataManager getOrInsertUserWithPredicateInCurrentProfile:predicate configBlock:^(CDUser *u) {
         u.clientId = clientId;
 
-    } completionQueue:self.queue completionBlock:completionBlock];
+    } completionQueue:[ToxManager sharedInstance].queue completionBlock:completionBlock];
 }
 
 - (void)qChatWithUser:(CDUser *)user completionBlock:(void (^)(CDChat *chat))completionBlock
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"users.@count == 1 AND ANY users == %@", user];
 
     [CoreDataManager getOrInsertChatWithPredicateInCurrentProfile:predicate configBlock:^(CDChat *c) {
         [c addUsersObject:user];
 
-    } completionQueue:self.queue completionBlock:completionBlock];
+    } completionQueue:[ToxManager sharedInstance].queue completionBlock:completionBlock];
 }
 
 #pragma mark -  Private
 
 - (void)qIncomingMessage:(NSString *)message fromFriend:(ToxFriend *)friend
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: incoming message with length %lu from friend id %d", (unsigned long)message.length, friend.id);
+    DDLogInfo(@"ToxManagerChats: incoming message with length %lu from friend id %d",
+            (unsigned long)message.length, friend.id);
 
-    __weak ToxManager *weakSelf = self;
+    __weak ToxManagerChats *weakSelf = self;
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
@@ -151,10 +160,9 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
 - (void)qReadReceipt:(uint32_t)receipt fromFriend:(ToxFriend *)friend
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-
-    __weak ToxManager *weakSelf = self;
+    __weak ToxManagerChats *weakSelf = self;
 
     [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         [weakSelf qChatWithUser:user completionBlock:^(CDChat *chat) {
@@ -162,7 +170,9 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
             NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@ AND text.id == %d",
                 chat, receipt];
 
-            [CoreDataManager messagesWithPredicate:predicate completionQueue:self.queue completionBlock:^(NSArray *array) {
+            [CoreDataManager messagesWithPredicate:predicate completionQueue:[ToxManager sharedInstance].queue
+                                   completionBlock:^(NSArray *array)
+            {
                 CDMessage *message = [array lastObject];
 
                 if (! message.text) {
@@ -183,9 +193,9 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
            fromUser:(CDUser *)user
     completionBlock:(void (^)(CDMessage *message))completionBlock
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager: adding message to CoreData");
+    DDLogInfo(@"ToxManagerChats: adding message to CoreData");
 
     [CoreDataManager insertMessageWithType:CDMessageTypeText configBlock:^(CDMessage *m) {
         m.text.id = messageId;
@@ -198,7 +208,7 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
             m.chatForLastMessageInverse = chat;
         }
 
-    } completionQueue:self.queue completionBlock:completionBlock];
+    } completionQueue:[ToxManager sharedInstance].queue completionBlock:completionBlock];
 }
 
 @end
@@ -207,24 +217,24 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
 void friendMessageCallback(Tox *tox, int32_t friendnumber, const uint8_t *message, uint16_t length, void *userdata)
 {
-    DDLogCVerbose(@"ToxManager+PrivateChat: friendMessageCallback with friendnumber %d", friendnumber);
+    DDLogCVerbose(@"ToxManagerChats: friendMessageCallback with friendnumber %d", friendnumber);
 
     NSString *messageString = [[NSString alloc] initWithBytes:message length:length encoding:NSUTF8StringEncoding];
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
-        [[ToxManager sharedInstance] qIncomingMessage:messageString fromFriend:friend];
+        [[ToxManager sharedInstance].managerChats qIncomingMessage:messageString fromFriend:friend];
     });
 }
 
 void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void *userdata)
 {
-    DDLogCVerbose(@"ToxManager+PrivateChat: readReceiptCallback with friendnumber %d receipt %d", friendnumber, receipt);
+    DDLogCVerbose(@"ToxManagerChats: readReceiptCallback with friendnumber %d receipt %d", friendnumber, receipt);
 
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
-        [[ToxManager sharedInstance] qReadReceipt:receipt fromFriend:friend];
+        [[ToxManager sharedInstance].managerChats qReadReceipt:receipt fromFriend:friend];
     });
 }
 
