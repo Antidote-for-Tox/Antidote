@@ -247,6 +247,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
 {
     [ToxManager sharedInstance].userName = newName;
+
+    if (! [[ToxManager sharedInstance] userHasAvatar]) {
+        NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
+        [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    }
 }
 
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell
