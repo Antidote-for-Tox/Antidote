@@ -348,6 +348,21 @@
 			name = Files;
 			sourceTree = "<group>";
 		};
+		1122E85319F9403B002907B3 /* Submanagers */ = {
+			isa = PBXGroup;
+			children = (
+				1122E84719F92BC2002907B3 /* ToxManagerAvatars.h */,
+				1122E84819F92BC2002907B3 /* ToxManagerAvatars.m */,
+				1122E84D19F93225002907B3 /* ToxManagerChats.h */,
+				1122E84E19F93225002907B3 /* ToxManagerChats.m */,
+				1122E85019F9348F002907B3 /* ToxManagerFiles.h */,
+				1122E85119F9348F002907B3 /* ToxManagerFiles.m */,
+				1122E84419F8F469002907B3 /* ToxManagerFriends.h */,
+				1122E84519F8F469002907B3 /* ToxManagerFriends.m */,
+			);
+			name = Submanagers;
+			sourceTree = "<group>";
+		};
 		1146308919842D220075DA16 /* CoreDataManager */ = {
 			isa = PBXGroup;
 			children = (
@@ -591,15 +606,16 @@
 		118352A01979BD350048CA64 /* ToxManager */ = {
 			isa = PBXGroup;
 			children = (
-				111EC73619A0979900A27A0E /* Files */,
-				118352CA197A8C950048CA64 /* Friends */,
-				84F9E6E719B61D3E005F3889 /* Node */,
-				11C3A750198CFBD60029A7A0 /* Private */,
 				119BB119198AC1B300380557 /* ToxFunctions.h */,
 				11835293197994050048CA64 /* ToxManager.h */,
 				111EC73A19A0FBFE00A27A0E /* ToxManagerFileProgressDelegate.h */,
 				119BB11A198AC1B300380557 /* ToxFunctions.m */,
 				11835294197994050048CA64 /* ToxManager.m */,
+				111EC73619A0979900A27A0E /* Files */,
+				118352CA197A8C950048CA64 /* Friends */,
+				84F9E6E719B61D3E005F3889 /* Node */,
+				11C3A750198CFBD60029A7A0 /* Private */,
+				1122E85319F9403B002907B3 /* Submanagers */,
 			);
 			name = ToxManager;
 			sourceTree = "<group>";
@@ -760,14 +776,6 @@
 			children = (
 				11C3A751198CFBE60029A7A0 /* ToxFriend+Private.h */,
 				111EC70B199E92F300A27A0E /* ToxManager+Private.h */,
-				1122E84419F8F469002907B3 /* ToxManagerFriends.h */,
-				1122E84519F8F469002907B3 /* ToxManagerFriends.m */,
-				1122E84719F92BC2002907B3 /* ToxManagerAvatars.h */,
-				1122E84819F92BC2002907B3 /* ToxManagerAvatars.m */,
-				1122E84D19F93225002907B3 /* ToxManagerChats.h */,
-				1122E84E19F93225002907B3 /* ToxManagerChats.m */,
-				1122E85019F9348F002907B3 /* ToxManagerFiles.h */,
-				1122E85119F9348F002907B3 /* ToxManagerFiles.m */,
 			);
 			name = Private;
 			sourceTree = "<group>";
