@@ -29,9 +29,15 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 #pragma mark -  Public
 
-- (void)qSetupWithToxManager:(ToxManager *)manager
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
 {
     NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
+
+    self = [super init];
+
+    if (! self) {
+        return nil;
+    }
 
     DDLogInfo(@"ToxManagerFriends: registering callbacks");
 
@@ -63,6 +69,8 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [[ToxFriendsContainer alloc] initWithFriendsArray:[friendsArray copy]];
 
     free(friendsList);
+
+    return self;
 }
 
 - (void)qSendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString

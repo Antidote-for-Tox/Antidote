@@ -7,6 +7,7 @@
 //
 
 #import "ToxManager.h"
+#import "ToxManagerAvatars.h"
 #import "ToxManagerFriends.h"
 
 @interface ToxManager()
@@ -24,6 +25,7 @@
 
 @property (assign, nonatomic) BOOL isConnected;
 
+@property (strong, nonatomic, readonly) ToxManagerAvatars *managerAvatars;
 @property (strong, nonatomic, readonly) ToxManagerFriends *managerFriends;
 
 @property (strong, nonatomic, readwrite) ToxFriendsContainer *friendsContainer;

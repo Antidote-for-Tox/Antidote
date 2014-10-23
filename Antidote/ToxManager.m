@@ -8,7 +8,7 @@
 
 #import "ToxManager.h"
 #import "ToxManager+Private.h"
-#import "ToxManager+PrivateAvatars.h"
+#import "ToxManagerAvatars.h"
 #import "ToxManagerFriends.h"
 #import "ToxManager+PrivateChat.h"
 #import "ToxManager+PrivateFiles.h"
@@ -61,12 +61,11 @@ static dispatch_once_t __onceToken;
         dispatch_sync(self.queue, ^{
             [self qCreateTox];
 
-            _managerFriends = [ToxManagerFriends new];
-            [self.managerFriends qSetupWithToxManager:self];
+            _managerAvatars = [[ToxManagerAvatars alloc] initOnToxQueueWithToxManager:self];
+            _managerFriends = [[ToxManagerFriends alloc] initOnToxQueueWithToxManager:self];
 
             [self qRegisterChatsCallbacks];
             [self qRegisterFilesCallbacksAndSetup];
-            [self qRegisterAvatarCallbacksAndSetup];
 
             DDLogInfo(@"ToxManager: created");
         });
@@ -279,18 +278,18 @@ static dispatch_once_t __onceToken;
 - (void)updateAvatar:(UIImage *)image
 {
     dispatch_async(self.queue, ^{
-        [self qUpdateAvatar:image];
+        [self.managerAvatars qUpdateAvatar:image];
     });
 }
 
 - (BOOL)userHasAvatar
 {
-    return [self synchronizedUserHasAvatar];
+    return [self.managerAvatars synchronizedUserHasAvatar];
 }
 
 - (UIImage *)userAvatar
 {
-    return [self synchronizedUserAvatar];
+    return [self.managerAvatars synchronizedUserAvatar];
 }
 
 #pragma mark -  Notifications

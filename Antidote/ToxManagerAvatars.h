@@ -1,16 +1,19 @@
 //
-//  ToxManager+PrivateAvatars.h
+//  ToxManagerAvatars.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 27.09.14.
+//  Created by Dmitry Vorobyov on 23.10.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #import "ToxManager.h"
 
-@interface ToxManager (PrivateAvatars)
+@interface ToxManagerAvatars : NSObject
 
-- (void)qRegisterAvatarCallbacksAndSetup;
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
+
 - (void)qUpdateAvatar:(UIImage *)image;
 
 - (BOOL)synchronizedUserHasAvatar;

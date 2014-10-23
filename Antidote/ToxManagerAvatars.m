@@ -1,12 +1,12 @@
 //
-//  ToxManager+PrivateAvatars.m
+//  ToxManagerAvatars.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 27.09.14.
+//  Created by Dmitry Vorobyov on 23.10.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ToxManager+PrivateAvatars.h"
+#import "ToxManagerAvatars.h"
 #import "ToxManager+Private.h"
 #import "ToxManager+PrivateChat.h"
 #import "CDUser.h"
@@ -18,18 +18,24 @@ static NSString *const kUserAvatarFileName = @"user_avatar";
 void avatarInfoCallback(Tox *tox, int32_t, uint8_t, uint8_t *, void *);
 void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32_t, void *);
 
-@implementation ToxManager (PrivateAvatars)
+@implementation ToxManagerAvatars
 
 #pragma mark -  Public
 
-- (void)qRegisterAvatarCallbacksAndSetup
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager+PrivateAvatars: registering callbacks");
+    self = [super init];
 
-    tox_callback_avatar_info(self.tox, avatarInfoCallback, NULL);
-    tox_callback_avatar_data(self.tox, avatarDataCallback, NULL);
+    if (! self) {
+        return nil;
+    }
+
+    DDLogInfo(@"ToxManagerAvatars: registering callbacks");
+
+    tox_callback_avatar_info(manager.tox, avatarInfoCallback, NULL);
+    tox_callback_avatar_data(manager.tox, avatarDataCallback, NULL);
 
     NSString *path = [[ProfileManager sharedInstance] pathInAvatarDirectoryForFileName:kUserAvatarFileName];
 
@@ -38,29 +44,31 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
         const uint8_t *bytes = [data bytes];
 
-        DDLogInfo(@"ToxManager+PrivateAvatars: found avatar, setting it. Length = %lu", (unsigned long)data.length);
+        DDLogInfo(@"ToxManagerAvatars: found avatar, setting it. Length = %lu", (unsigned long)data.length);
 
-        tox_set_avatar(self.tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
+        tox_set_avatar(manager.tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
     }
+
+    return self;
 }
 
 - (void)qUpdateAvatar:(UIImage *)image
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    DDLogInfo(@"ToxManager+PrivateAvatars: update avatar with image %@", image);
+    DDLogInfo(@"ToxManagerAvatars: update avatar with image %@", image);
 
     NSString *path = [[ProfileManager sharedInstance] pathInAvatarDirectoryForFileName:kUserAvatarFileName];
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
     if ([fileManager fileExistsAtPath:path]) {
-        DDLogInfo(@"ToxManager+PrivateAvatars: old avatar exists, removing it");
+        DDLogInfo(@"ToxManagerAvatars: old avatar exists, removing it");
 
         [fileManager removeItemAtPath:path error:nil];
     }
 
     if (image) {
-        DDLogInfo(@"ToxManager+PrivateAvatars: setting new avatar...");
+        DDLogInfo(@"ToxManagerAvatars: setting new avatar...");
 
         NSData *data = [self pngDataFromImage:image];
 
@@ -73,14 +81,14 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
         const uint8_t *bytes = [data bytes];
 
-        tox_set_avatar(self.tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
+        tox_set_avatar([ToxManager sharedInstance].tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
 
-        DDLogInfo(@"ToxManager+PrivateAvatars: setting new avatar... done");
+        DDLogInfo(@"ToxManagerAvatars: setting new avatar... done");
     }
     else {
-        DDLogInfo(@"ToxManager+PrivateAvatars: unsetting avatar");
+        DDLogInfo(@"ToxManagerAvatars: unsetting avatar");
 
-        tox_unset_avatar(self.tox);
+        tox_unset_avatar([ToxManager sharedInstance].tox);
     }
 }
 
@@ -106,21 +114,22 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
 - (void)qRemoveAvatarForFriend:(ToxFriend *)theFriend
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    __weak ToxManager *weakSelf = self;
 
-    [self.friendsContainer private_updateFriendWithId:theFriend.id updateBlock:^(ToxFriend *friend) {
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:theFriend.id
+                                                                 updateBlock:^(ToxFriend *friend)
+    {
         NSString *path = [[ProfileManager sharedInstance] pathInAvatarDirectoryForFileName:friend.clientId];
 
         if ([fileManager fileExistsAtPath:path]) {
-            DDLogInfo(@"ToxManager+PrivateAvatars: removing avatar for friend %d", friend.id);
+            DDLogInfo(@"ToxManagerAvatars: removing avatar for friend %d", friend.id);
 
             [fileManager removeItemAtPath:path error:nil];
         }
 
-        [weakSelf qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
             [CoreDataManager editCDObjectWithBlock:^{
                 user.avatarHash = nil;
             } completionQueue:nil completionBlock:nil];
@@ -130,33 +139,32 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
 - (void)qIncomingAvatarInfoForFriend:(ToxFriend *)friend hash:(NSData *)hash
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
-    __weak ToxManager *weakSelf = self;
-
-    [self qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+    [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
         if (user.avatarHash && [user.avatarHash isEqualToData:hash]) {
-            DDLogInfo(@"ToxManager+PrivateAvatars: already have this avatar");
+            DDLogInfo(@"ToxManagerAvatars: already have this avatar");
             return;
         }
 
-        DDLogInfo(@"ToxManager+PrivateAvatars: requesting avatar data for friend %d", friend.id);
-        tox_request_avatar_data(weakSelf.tox, friend.id);
+        DDLogInfo(@"ToxManagerAvatars: requesting avatar data for friend %d", friend.id);
+        tox_request_avatar_data([ToxManager sharedInstance].tox, friend.id);
     }];
 }
 
 - (void)qIncomingAvatarData:(NSData *)data hash:(NSData *)hash forFriend:(ToxFriend *)theFriend
 {
-    NSAssert(dispatch_get_specific(kIsOnToxManagerQueue), @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    __weak ToxManager *weakSelf = self;
 
-    [self.friendsContainer private_updateFriendWithId:theFriend.id updateBlock:^(ToxFriend *friend) {
+    [[ToxManager sharedInstance].friendsContainer private_updateFriendWithId:theFriend.id
+                                                                 updateBlock:^(ToxFriend *friend)
+    {
         NSString *path = [[ProfileManager sharedInstance] pathInAvatarDirectoryForFileName:friend.clientId];
 
         if ([fileManager fileExistsAtPath:path]) {
-            DDLogInfo(@"ToxManager+PrivateAvatars: old avatar exists, removing it");
+            DDLogInfo(@"ToxManagerAvatars: old avatar exists, removing it");
 
             [fileManager removeItemAtPath:path error:nil];
         }
@@ -168,7 +176,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
         [data writeToFile:path atomically:NO];
 
-        [weakSelf qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
+        [[ToxManager sharedInstance] qUserFromClientId:friend.clientId completionBlock:^(CDUser *user) {
             [CoreDataManager editCDObjectWithBlock:^{
                 user.avatarHash = hash;
             } completionQueue:nil completionBlock:nil];
@@ -180,7 +188,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 {
     CGSize imageSize = image.size;
 
-    DDLogInfo(@"ToxManager+PrivateAvatars: image size is %@", NSStringFromCGSize(imageSize));
+    DDLogInfo(@"ToxManagerAvatars: image size is %@", NSStringFromCGSize(imageSize));
 
     // Maximum png size will be (4 * width * height)
     // * 1.5 to get as big avatar size as possible
@@ -191,12 +199,12 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
     imageSize.width = (int)imageSize.width;
     imageSize.height = (int)imageSize.height;
-    DDLogInfo(@"ToxManager+PrivateAvatars: image size after resizing %@", NSStringFromCGSize(imageSize));
+    DDLogInfo(@"ToxManagerAvatars: image size after resizing %@", NSStringFromCGSize(imageSize));
 
     NSData *data = nil;
 
     do {
-        DDLogInfo(@"ToxManager+PrivateAvatars: setting new avatar... avatar is too big, resizing");
+        DDLogInfo(@"ToxManagerAvatars: setting new avatar... avatar is too big, resizing");
 
         UIGraphicsBeginImageContext(imageSize);
         [image drawInRect:CGRectMake(0, 0, imageSize.width, imageSize.height)];
@@ -218,7 +226,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
 void avatarInfoCallback(Tox *tox, int32_t friendnumber, uint8_t format, uint8_t *hash, void *userdata)
 {
-    DDLogCVerbose(@"ToxManager+PrivateAvatars: avatarInfoCallback with friendnumber %d format %d hash %s",
+    DDLogCVerbose(@"ToxManagerAvatars: avatarInfoCallback with friendnumber %d format %d hash %s",
             friendnumber, format, hash);
 
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
@@ -226,10 +234,10 @@ void avatarInfoCallback(Tox *tox, int32_t friendnumber, uint8_t format, uint8_t 
 
     dispatch_async([ToxManager sharedInstance].queue, ^{
         if (format == TOX_AVATAR_FORMAT_NONE) {
-            [[ToxManager sharedInstance] qRemoveAvatarForFriend:friend];
+            [[ToxManager sharedInstance].managerAvatars qRemoveAvatarForFriend:friend];
         }
         else if (format == TOX_AVATAR_FORMAT_PNG) {
-            [[ToxManager sharedInstance] qIncomingAvatarInfoForFriend:friend hash:data];
+            [[ToxManager sharedInstance].managerAvatars qIncomingAvatarInfoForFriend:friend hash:data];
         }
     });
 }
@@ -242,7 +250,7 @@ void avatarDataCallback(Tox *tox,
         uint32_t datalen,
         void *userdata)
 {
-    DDLogCVerbose(@"ToxManager+PrivateAvatars: avatarData with friendnumber %d format %d hash %s",
+    DDLogCVerbose(@"ToxManagerAvatars: avatarData with friendnumber %d format %d hash %s",
             friendnumber, format, hash);
 
     ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithId:friendnumber];
@@ -252,7 +260,8 @@ void avatarDataCallback(Tox *tox,
 
     if (format == TOX_AVATAR_FORMAT_PNG) {
         dispatch_async([ToxManager sharedInstance].queue, ^{
-            [[ToxManager sharedInstance] qIncomingAvatarData:nsData hash:nsHash forFriend:friend];
+            [[ToxManager sharedInstance].managerAvatars qIncomingAvatarData:nsData hash:nsHash forFriend:friend];
         });
     }
 }
+

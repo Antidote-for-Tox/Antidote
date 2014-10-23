@@ -14,7 +14,7 @@
 
 @interface ToxManagerFriends : NSObject
 
-- (void)qSetupWithToxManager:(ToxManager *)manager;
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
 
 - (void)qSendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString;
 - (void)qApproveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block;
