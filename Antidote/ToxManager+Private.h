@@ -9,6 +9,7 @@
 #import "ToxManager.h"
 #import "ToxManagerAvatars.h"
 #import "ToxManagerChats.h"
+#import "ToxManagerFiles.h"
 #import "ToxManagerFriends.h"
 
 @interface ToxManager()
@@ -28,12 +29,10 @@
 
 @property (strong, nonatomic, readonly) ToxManagerAvatars *managerAvatars;
 @property (strong, nonatomic, readonly) ToxManagerChats *managerChats;
+@property (strong, nonatomic, readonly) ToxManagerFiles *managerFiles;
 @property (strong, nonatomic, readonly) ToxManagerFriends *managerFriends;
 
 @property (strong, nonatomic, readwrite) ToxFriendsContainer *friendsContainer;
-
-@property (strong, nonatomic) NSMutableDictionary *privateFiles_downloadingFiles;
-@property (strong, nonatomic) NSMutableDictionary *privateFiles_uploadingFiles;
 
 - (void)qSaveTox;
 - (NSString *)qClientId;

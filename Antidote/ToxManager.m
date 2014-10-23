@@ -10,8 +10,8 @@
 #import "ToxManager+Private.h"
 #import "ToxManagerAvatars.h"
 #import "ToxManagerChats.h"
+#import "ToxManagerFiles.h"
 #import "ToxManagerFriends.h"
-#import "ToxManager+PrivateFiles.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"
 #import "ProfileManager.h"
@@ -63,9 +63,8 @@ static dispatch_once_t __onceToken;
 
             _managerAvatars = [[ToxManagerAvatars alloc] initOnToxQueueWithToxManager:self];
             _managerChats = [[ToxManagerChats alloc]  initOnToxQueueWithToxManager:self];
+            _managerFiles = [[ToxManagerFiles alloc] initOnToxQueueWithToxManager:self];
             _managerFriends = [[ToxManagerFriends alloc] initOnToxQueueWithToxManager:self];
-
-            [self qRegisterFilesCallbacksAndSetup];
 
             DDLogInfo(@"ToxManager: created");
         });
@@ -246,7 +245,7 @@ static dispatch_once_t __onceToken;
 - (void)acceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept
 {
     dispatch_async(self.queue, ^{
-        [self qAcceptOrRefusePendingFileInMessage:message accept:accept];
+        [self.managerFiles qAcceptOrRefusePendingFileInMessage:message accept:accept];
     });
 }
 
@@ -256,7 +255,7 @@ static dispatch_once_t __onceToken;
         return 0.0;
     }
 
-    return [self synchronizedProgressForFileWithFriendNumber:message.pendingFile.friendNumber
+    return [self.managerFiles synchronizedProgressForFileWithFriendNumber:message.pendingFile.friendNumber
                                                   fileNumber:message.pendingFile.fileNumber
                                                   isOutgoing:[Helper isOutgoingMessage:message]];
 }
@@ -264,14 +263,14 @@ static dispatch_once_t __onceToken;
 - (void)togglePauseForPendingFileInMessage:(CDMessage *)message
 {
     dispatch_async(self.queue, ^{
-        [self qTogglePauseForPendingFileInMessage:message];
+        [self.managerFiles qTogglePauseForPendingFileInMessage:message];
     });
 }
 
 - (void)uploadData:(NSData *)data withFileName:(NSString *)fileName toChat:(CDChat *)chat
 {
     dispatch_async(self.queue, ^{
-        [self qUploadData:data withFileName:fileName toChat:chat];
+        [self.managerFiles qUploadData:data withFileName:fileName toChat:chat];
     });
 }
 

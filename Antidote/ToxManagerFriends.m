@@ -9,7 +9,7 @@
 #import "ToxManagerFriends.h"
 #import "ToxManager+Private.h"
 #import "ToxManagerChats.h"
-#import "ToxManager+PrivateFiles.h"
+#import "ToxManagerFiles.h"
 #import "ToxFriend+Private.h"
 #import "ToxFunctions.h"
 #import "UserInfoManager.h"

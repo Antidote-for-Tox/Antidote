@@ -1,16 +1,18 @@
 //
-//  ToxManager+PrivateFiles.h
+//  ToxManagerFiles.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 15.08.14.
+//  Created by Dmitry Vorobyov on 23.10.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+
 #import "ToxManager.h"
 
-@interface ToxManager (PrivateFiles)
+@interface ToxManagerFiles : NSObject
 
-- (void)qRegisterFilesCallbacksAndSetup;
+- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
 
 - (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 - (void)qTogglePauseForPendingFileInMessage:(CDMessage *)message;
@@ -21,5 +23,5 @@
                                             fileNumber:(uint8_t)fileNumber
                                             isOutgoing:(BOOL)isOutgoing;
 
-@end
 
+@end
