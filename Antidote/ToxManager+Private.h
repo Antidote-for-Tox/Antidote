@@ -7,6 +7,7 @@
 //
 
 #import "ToxManager.h"
+#import "ToxManagerFriends.h"
 
 @interface ToxManager()
 {
@@ -23,6 +24,8 @@
 
 @property (assign, nonatomic) BOOL isConnected;
 
+@property (strong, nonatomic, readonly) ToxManagerFriends *managerFriends;
+
 @property (strong, nonatomic, readwrite) ToxFriendsContainer *friendsContainer;
 
 @property (strong, nonatomic) NSMutableDictionary *privateFiles_downloadingFiles;
@@ -30,6 +33,8 @@
 
 - (void)qSaveTox;
 - (NSString *)qClientId;
+
+- (BOOL)isOnToxManagerQueue;
 
 @end
 

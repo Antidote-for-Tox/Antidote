@@ -9,7 +9,7 @@
 #import "ToxManager.h"
 #import "ToxManager+Private.h"
 #import "ToxManager+PrivateAvatars.h"
-#import "ToxManager+PrivateFriends.h"
+#import "ToxManagerFriends.h"
 #import "ToxManager+PrivateChat.h"
 #import "ToxManager+PrivateFiles.h"
 #import "ToxFunctions.h"
@@ -60,12 +60,13 @@ static dispatch_once_t __onceToken;
 
         dispatch_sync(self.queue, ^{
             [self qCreateTox];
-            [self qRegisterFriendsCallbacks];
+
+            _managerFriends = [ToxManagerFriends new];
+            [self.managerFriends qSetupWithToxManager:self];
+
             [self qRegisterChatsCallbacks];
             [self qRegisterFilesCallbacksAndSetup];
             [self qRegisterAvatarCallbacksAndSetup];
-
-            [self qLoadFriendsAndCreateContainer];
 
             DDLogInfo(@"ToxManager: created");
         });
@@ -178,35 +179,35 @@ static dispatch_once_t __onceToken;
 - (void)sendFriendRequestWithAddress:(NSString *)addressString message:(NSString *)messageString
 {
     dispatch_async(self.queue, ^{
-        [self qSendFriendRequestWithAddress:addressString message:messageString];
+        [self.managerFriends qSendFriendRequestWithAddress:addressString message:messageString];
     });
 }
 
 - (void)approveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block
 {
     dispatch_async(self.queue, ^{
-        [self qApproveFriendRequest:request withBlock:block];
+        [self.managerFriends qApproveFriendRequest:request withBlock:block];
     });
 }
 
 - (void)removeFriendRequest:(ToxFriendRequest *)request
 {
     dispatch_async(self.queue, ^{
-        [self qRemoveFriendRequest:request];
+        [self.managerFriends qRemoveFriendRequest:request];
     });
 }
 
 - (void)removeFriend:(ToxFriend *)friend
 {
     dispatch_async(self.queue, ^{
-        [self qRemoveFriend:friend];
+        [self.managerFriends qRemoveFriend:friend];
     });
 }
 
 - (void)changeNicknameTo:(NSString *)name forFriend:(ToxFriend *)friendToChange
 {
     dispatch_async(self.queue, ^{
-        [self qChangeNicknameTo:name forFriend:friendToChange];
+        [self.managerFriends qChangeNicknameTo:name forFriend:friendToChange];
     });
 }
 
@@ -522,6 +523,11 @@ static dispatch_once_t __onceToken;
     if (result == 0) {
         [self qSaveTox];
     }
+}
+
+- (BOOL)isOnToxManagerQueue
+{
+    return dispatch_get_specific(kIsOnToxManagerQueue);
 }
 
 @end
