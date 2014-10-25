@@ -10,6 +10,13 @@
 
 ##Usage
 
+#### TestFlight beta testing
+
+Antidote is available for beta testing via TestFlight. If you wish to participate, you have to:
+- be on iOS 8+
+- install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore
+- give me your AppleID email (you can send it to [antidote@dvor.me](mailto:antidote@dvor.me?subject=Beta%20testing))
+
 #### Cydia
 
 You can install [0.2](https://github.com/dvor/Antidote/releases/tag/0.2) version of Antidote from Cydia repo `http://dvor.me/cydia/`
