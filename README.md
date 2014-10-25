@@ -12,10 +12,10 @@
 
 #### TestFlight beta testing
 
-Antidote is available for beta testing via TestFlight. If you wish to participate, you have to:
+Antidote is available for beta testing via TestFlight. If you wish to participate, you must:
 - be on iOS 8+
 - install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore
-- give me your AppleID email (you can send it to [antidote@dvor.me](mailto:antidote@dvor.me?subject=Beta%20testing))
+- give [dvor](https://github.com/dvor) your Apple ID email (you can send it to [antidote@dvor.me](mailto:antidote@dvor.me?subject=Beta%20testing), PGP key is [0x95714DFB28AFC4DC](https://pgp.mit.edu/pks/lookup?op=get&search=0x95714DFB28AFC4DC)).
 
 #### Cydia
 
@@ -82,3 +82,4 @@ Antidote is available under the MIT license. See the [COPYING](COPYING) file for
 - [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
 - [ZBarSDK](http://zbar.sourceforge.net/)
 - [libsodium-ios](https://github.com/mochtu/libsodium-ios)
+
