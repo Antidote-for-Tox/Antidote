@@ -58,17 +58,6 @@ static dispatch_once_t __onceToken;
             dispatch_queue_set_specific(_queue, kIsOnToxManagerQueue, nonNullUnusedPointer, NULL);
         }
 
-        dispatch_sync(self.queue, ^{
-            [self qCreateTox];
-
-            _managerAvatars = [[ToxManagerAvatars alloc] initOnToxQueueWithToxManager:self];
-            _managerChats = [[ToxManagerChats alloc]  initOnToxQueueWithToxManager:self];
-            _managerFiles = [[ToxManagerFiles alloc] initOnToxQueueWithToxManager:self];
-            _managerFriends = [[ToxManagerFriends alloc] initOnToxQueueWithToxManager:self];
-
-            DDLogInfo(@"ToxManager: created");
-        });
-
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillTerminateNotification:)
                                                      name:UIApplicationWillTerminateNotification
@@ -167,9 +156,18 @@ static dispatch_once_t __onceToken;
     __onceToken = 0;
 }
 
-- (void)bootstrapWithNodes:(NSArray *)nodes
+- (void)configureSelfAndBootstrapWithNodes:(NSArray *)nodes
 {
-    dispatch_async(self.queue, ^{
+    dispatch_sync(self.queue, ^{
+        [self qCreateTox];
+
+        _managerAvatars = [[ToxManagerAvatars alloc] initOnToxQueue];
+        _managerChats = [[ToxManagerChats alloc]  initOnToxQueue];
+        _managerFiles = [[ToxManagerFiles alloc] initOnToxQueue];
+        _managerFriends = [[ToxManagerFriends alloc] initOnToxQueue];
+
+        DDLogInfo(@"ToxManager: configured");
+
         [self qBootstrapWithNodes:nodes];
     });
 }

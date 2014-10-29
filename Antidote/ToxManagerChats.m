@@ -22,9 +22,9 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
 #pragma mark -  Public
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
+- (instancetype)initOnToxQueue
 {
-    NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     self = [super init];
 
@@ -34,8 +34,8 @@ void readReceiptCallback(Tox *tox, int32_t friendnumber, uint32_t receipt, void 
 
     DDLogInfo(@"ToxManagerChats: registering callbacks");
 
-    tox_callback_friend_message (manager.tox, friendMessageCallback, NULL);
-    tox_callback_read_receipt   (manager.tox, readReceiptCallback,   NULL);
+    tox_callback_friend_message ([ToxManager sharedInstance].tox, friendMessageCallback, NULL);
+    tox_callback_read_receipt   ([ToxManager sharedInstance].tox, readReceiptCallback,   NULL);
 
     return self;
 }

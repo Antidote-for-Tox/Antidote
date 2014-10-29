@@ -12,7 +12,7 @@
 
 @interface ToxManagerFiles : NSObject
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
+- (instancetype)initOnToxQueue;
 
 - (void)qAcceptOrRefusePendingFileInMessage:(CDMessage *)message accept:(BOOL)accept;
 - (void)qTogglePauseForPendingFileInMessage:(CDMessage *)message;

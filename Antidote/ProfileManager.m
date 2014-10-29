@@ -194,7 +194,7 @@ static NSString *const kToxSaveName = @"tox_save";
 
 - (void)loadToxManagerForCurrentProfile
 {
-    [[ToxManager sharedInstance] bootstrapWithNodes:@[
+    [[ToxManager sharedInstance] configureSelfAndBootstrapWithNodes:@[
         [ToxNode nodeWithAddress:@"192.254.75.98"
                             port:33445
                        publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"],

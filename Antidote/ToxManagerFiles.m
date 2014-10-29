@@ -35,9 +35,9 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
 
 #pragma mark -  Public
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
+- (instancetype)initOnToxQueue
 {
-    NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     self = [super init];
 
@@ -50,15 +50,18 @@ void fileDataCallback(Tox *, int32_t, uint8_t, const uint8_t *, uint16_t, void *
     self.downloadingFiles = [NSMutableDictionary new];
     self.uploadingFiles = [NSMutableDictionary new];
 
-    tox_callback_file_send_request (manager.tox, fileSendRequestCallback, NULL);
-    tox_callback_file_control      (manager.tox, fileControlCallback,     NULL);
-    tox_callback_file_data         (manager.tox, fileDataCallback,        NULL);
+    tox_callback_file_send_request ([ToxManager sharedInstance].tox, fileSendRequestCallback, NULL);
+    tox_callback_file_control      ([ToxManager sharedInstance].tox, fileControlCallback,     NULL);
+    tox_callback_file_data         ([ToxManager sharedInstance].tox, fileDataCallback,        NULL);
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"pendingFile.state != %d",
                 CDMessagePendingFileStateCanceled];
 
     // mark all pending messages as canceled
-    [CoreDataManager messagesWithPredicate:predicate completionQueue:manager.queue completionBlock:^(NSArray *array) {
+    [CoreDataManager messagesWithPredicate:predicate
+                           completionQueue:[ToxManager sharedInstance].queue
+                           completionBlock:^(NSArray *array)
+    {
         for (CDMessage *message in array) {
 
             [CoreDataManager editCDMessageAndSendNotificationsWithMessage:message block:^{

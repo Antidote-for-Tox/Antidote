@@ -12,7 +12,7 @@
 
 @interface ToxManagerChats : NSObject
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
+- (instancetype)initOnToxQueue;
 
 - (void)qChangeIsTypingInChat:(CDChat *)chat to:(BOOL)isTyping;
 - (void)qSendMessage:(NSString *)message toChat:(CDChat *)chat;

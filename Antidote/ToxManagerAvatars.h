@@ -12,7 +12,7 @@
 
 @interface ToxManagerAvatars : NSObject
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager;
+- (instancetype)initOnToxQueue;
 
 - (void)qUpdateAvatar:(UIImage *)image;
 

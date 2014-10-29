@@ -29,9 +29,9 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
 #pragma mark -  Public
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
+- (instancetype)initOnToxQueue
 {
-    NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     self = [super init];
 
@@ -41,21 +41,21 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
 
     DDLogInfo(@"ToxManagerFriends: registering callbacks");
 
-    tox_callback_friend_request    (manager.tox, friendRequestCallback,    NULL);
-    tox_callback_name_change       (manager.tox, nameChangeCallback,       NULL);
-    tox_callback_status_message    (manager.tox, statusMessageCallback,    NULL);
-    tox_callback_user_status       (manager.tox, userStatusCallback,       NULL);
-    tox_callback_typing_change     (manager.tox, typingChangeCallback,     NULL);
-    tox_callback_connection_status (manager.tox, connectionStatusCallback, NULL);
+    tox_callback_friend_request    ([ToxManager sharedInstance].tox, friendRequestCallback,    NULL);
+    tox_callback_name_change       ([ToxManager sharedInstance].tox, nameChangeCallback,       NULL);
+    tox_callback_status_message    ([ToxManager sharedInstance].tox, statusMessageCallback,    NULL);
+    tox_callback_user_status       ([ToxManager sharedInstance].tox, userStatusCallback,       NULL);
+    tox_callback_typing_change     ([ToxManager sharedInstance].tox, typingChangeCallback,     NULL);
+    tox_callback_connection_status ([ToxManager sharedInstance].tox, connectionStatusCallback, NULL);
 
     DDLogInfo(@"ToxManagerFriends: creating friends container...");
 
-    uint32_t friendsCount = tox_count_friendlist(manager.tox);
+    uint32_t friendsCount = tox_count_friendlist([ToxManager sharedInstance].tox);
     uint32_t listSize = friendsCount * sizeof(int32_t);
 
     int32_t *friendsList = malloc(listSize);
 
-    tox_get_friendlist(manager.tox, friendsList, listSize);
+    tox_get_friendlist([ToxManager sharedInstance].tox, friendsList, listSize);
 
     NSMutableArray *friendsArray = [NSMutableArray new];
 
@@ -65,7 +65,7 @@ void connectionStatusCallback(Tox *tox, int32_t friendnumber, uint8_t status, vo
         [friendsArray addObject:[self qCreateFriendWithId:friendId]];
     }
 
-    manager.friendsContainer =
+    [ToxManager sharedInstance].friendsContainer =
         [[ToxFriendsContainer alloc] initWithFriendsArray:[friendsArray copy]];
 
     free(friendsList);

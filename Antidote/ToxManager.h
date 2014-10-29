@@ -29,7 +29,7 @@
 + (instancetype)sharedInstance;
 - (void)killSharedInstance;
 
-- (void)bootstrapWithNodes:(NSArray *)nodes;
+- (void)configureSelfAndBootstrapWithNodes:(NSArray *)nodes;
 
 - (void)sendFriendRequestWithAddress:(NSString *)address message:(NSString *)message;
 - (void)approveFriendRequest:(ToxFriendRequest *)request withBlock:(void (^)(BOOL wasError))block;

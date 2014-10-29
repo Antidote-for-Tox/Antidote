@@ -22,9 +22,9 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
 #pragma mark -  Public
 
-- (instancetype)initOnToxQueueWithToxManager:(ToxManager *)manager
+- (instancetype)initOnToxQueue
 {
-    NSAssert([manager isOnToxManagerQueue], @"Must be on ToxManager queue");
+    NSAssert([[ToxManager sharedInstance] isOnToxManagerQueue], @"Must be on ToxManager queue");
 
     self = [super init];
 
@@ -34,8 +34,8 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
     DDLogInfo(@"ToxManagerAvatars: registering callbacks");
 
-    tox_callback_avatar_info(manager.tox, avatarInfoCallback, NULL);
-    tox_callback_avatar_data(manager.tox, avatarDataCallback, NULL);
+    tox_callback_avatar_info([ToxManager sharedInstance].tox, avatarInfoCallback, NULL);
+    tox_callback_avatar_data([ToxManager sharedInstance].tox, avatarDataCallback, NULL);
 
     NSString *path = [[ProfileManager sharedInstance] pathInAvatarDirectoryForFileName:kUserAvatarFileName];
 
@@ -46,7 +46,7 @@ void avatarDataCallback(Tox *tox, int32_t, uint8_t, uint8_t *, uint8_t *, uint32
 
         DDLogInfo(@"ToxManagerAvatars: found avatar, setting it. Length = %lu", (unsigned long)data.length);
 
-        tox_set_avatar(manager.tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
+        tox_set_avatar([ToxManager sharedInstance].tox, TOX_AVATAR_FORMAT_PNG, bytes, (uint32_t)data.length);
     }
 
     return self;
