@@ -613,9 +613,19 @@ typedef NS_ENUM(NSInteger, Section) {
     @synchronized(self.tableView) {
         NSIndexPath *path = [NSIndexPath indexPathForRow:info.numberOfObjects inSection:SectionMessages];
 
-        [self.tableView beginUpdates];
-        [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView endUpdates];
+        id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
+
+        if (info.numberOfObjects == [self.tableView numberOfRowsInSection:SectionMessages] + 1) {
+            [self.tableView beginUpdates];
+            [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView endUpdates];
+        }
+        else {
+            // For some reason there is inconsistent dataModel. In case of spamming there can be problems with
+            // multithreading.
+            // We just reaload data to deal with it.
+            [self.tableView reloadData];
+        }
     }
 
     [self changeIsTypingTo:NO];
