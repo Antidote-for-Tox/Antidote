@@ -17,8 +17,6 @@
 #import "ProfileManager.h"
 #import "Helper.h"
 
-static NSString *const kToxSaveName = @"tox_save";
-
 static ToxManager *__instance;
 static dispatch_once_t __onceToken;
 

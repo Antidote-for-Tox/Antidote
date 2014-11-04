@@ -615,7 +615,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
         id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
 
-        if (info.numberOfObjects == [self.tableView numberOfRowsInSection:SectionMessages] + 1) {
+        if ((NSInteger)info.numberOfObjects == [self.tableView numberOfRowsInSection:SectionMessages] + 1) {
             [self.tableView beginUpdates];
             [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self.tableView endUpdates];
