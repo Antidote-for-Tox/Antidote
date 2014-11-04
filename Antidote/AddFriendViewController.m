@@ -10,11 +10,9 @@
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
 #import "ToxManager.h"
-#import "ZBarReaderViewController.h"
-#import "ZBarReaderView.h"
 #import "ToxFunctions.h"
 
-@interface AddFriendViewController () <UITextViewDelegate, ZBarReaderDelegate>
+@interface AddFriendViewController () <UITextViewDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
@@ -65,13 +63,7 @@
 
 - (void)toxIdQRButtonPressed
 {
-    ZBarReaderViewController *vc = [ZBarReaderViewController new];
-    vc.readerDelegate = self;
-
-    [vc.scanner setSymbology:ZBAR_QRCODE config:ZBAR_CFG_ENABLE to:1];
-    vc.readerView.zoom = 1.0;
-
-    [self presentViewController:vc animated:YES completion:nil];
+    // TODO scan QR code
 }
 
 - (void)sendRequestButtonPressed
@@ -147,40 +139,41 @@
 }
 
 #pragma mark -  ZBarReaderDelegate
+#warning - outdated
 
-- (void)imagePickerController:(UIImagePickerController*) reader didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    ZBarSymbolSet *set = [info objectForKey: ZBarReaderControllerResults];
+// - (void)imagePickerController:(UIImagePickerController*) reader didFinishPickingMediaWithInfo:(NSDictionary *)info
+// {
+//     ZBarSymbolSet *set = [info objectForKey: ZBarReaderControllerResults];
 
-    for (ZBarSymbol *symbol in set) {
-        NSString *string = [symbol.data uppercaseString];
+//     for (ZBarSymbol *symbol in set) {
+//         NSString *string = [symbol.data uppercaseString];
 
-        string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+//         string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 
-        NSString *toxPrefix = @"TOX:";
+//         NSString *toxPrefix = @"TOX:";
 
-        if ([string hasPrefix:toxPrefix] && string.length > toxPrefix.length) {
-            string = [string substringFromIndex:toxPrefix.length];
-        }
+//         if ([string hasPrefix:toxPrefix] && string.length > toxPrefix.length) {
+//             string = [string substringFromIndex:toxPrefix.length];
+//         }
 
-        if ([ToxFunctions isAddressString:string]) {
-            self.toxIdTextView.text = string;
+//         if ([ToxFunctions isAddressString:string]) {
+//             self.toxIdTextView.text = string;
 
-            [self dismissViewControllerAnimated:YES completion:nil];
-        }
-        else {
-            NSString *message = [NSString stringWithFormat:
-                NSLocalizedString(@"Wrong code. It should contain Tox ID, but contains %@", @"Error"),
-                symbol.data];
+//             [self dismissViewControllerAnimated:YES completion:nil];
+//         }
+//         else {
+//             NSString *message = [NSString stringWithFormat:
+//                 NSLocalizedString(@"Wrong code. It should contain Tox ID, but contains %@", @"Error"),
+//                 symbol.data];
 
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
-                                        message:message
-                                       delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
-                              otherButtonTitles:nil] show];
-        }
-    }
-}
+//             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
+//                                         message:message
+//                                        delegate:nil
+//                               cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
+//                               otherButtonTitles:nil] show];
+//         }
+//     }
+// }
 
 #pragma mark -  Private
 
