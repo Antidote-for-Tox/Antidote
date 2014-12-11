@@ -92,6 +92,10 @@ typedef NS_ENUM(NSInteger, Section) {
                                                  selector:@selector(friendUpdateNotification:)
                                                      name:kToxFriendsContainerUpdateSpecificFriendNotification
                                                    object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillEnterForeground:)
+                                                     name:UIApplicationWillEnterForegroundNotification
+                                                   object:nil];
     }
 
     return self;
@@ -595,7 +599,10 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    if (self.isViewLoaded && self.view.window) {
+    if (self.isViewLoaded &&
+        self.view.window  &&
+        [UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+    {
         // is visible
         [self updateLastReadDateAndChatsBadge];
     }
@@ -680,6 +687,14 @@ typedef NS_ENUM(NSInteger, Section) {
     [self updateTitleView];
     [self updateIsTypingSection];
     [self updateInputButtons];
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)notification
+{
+    if (self.isViewLoaded && self.view.window) {
+        // is visible
+        [self updateLastReadDateAndChatsBadge];
+    }
 }
 
 #pragma mark -  Private

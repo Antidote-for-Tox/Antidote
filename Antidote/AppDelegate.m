@@ -26,6 +26,7 @@
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
 #import "ProfileManager.h"
+#import "EventsManager.h"
 
 @interface AppDelegate()
 
@@ -49,6 +50,17 @@
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
     [[ProfileManager sharedInstance] configureCurrentProfileAndLoadTox];
+
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+        UIUserNotificationType types =
+            UIUserNotificationTypeAlert |
+            UIUserNotificationTypeBadge |
+            UIUserNotificationTypeSound;
+
+        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+
+        [application registerUserNotificationSettings:settings];
+    }
 
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
@@ -150,21 +162,28 @@
 
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
 {
+    __weak AppDelegate *weakSelf = self;
+
+    void (^updateApplicationBadge)() = ^() {
+        [UIApplication sharedApplication].applicationIconBadgeNumber =
+            [self.friendsBadge.value integerValue] + [self.chatsBadge.value integerValue];
+    };
+
     if (tabIndex == AppDelegateTabIndexFriends) {
         NSUInteger number = [[ToxManager sharedInstance].friendsContainer requestsCount];
 
         self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
+        updateApplicationBadge();
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
-
-        __weak AppDelegate *weakSelf = self;
 
         [CoreDataManager currentProfileChatsWithPredicateSortedByDate:predicate
                                                       completionQueue:dispatch_get_main_queue()
                                                       completionBlock:^(NSArray *array)
         {
             weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
+            updateApplicationBadge();
         }];
     }
 }
@@ -241,6 +260,11 @@
     }
 }
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    [[EventsManager sharedInstance] handleLocalNotification:notification];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -269,6 +293,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

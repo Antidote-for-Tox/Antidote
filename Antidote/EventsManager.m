@@ -75,6 +75,11 @@
     [self performSelectorOnMainThread:@selector(addObjectOnMainThread:) withObject:object waitUntilDone:NO];
 }
 
+- (void)handleLocalNotification:(UILocalNotification *)notification
+{
+    // TODO
+}
+
 #pragma mark -  Private
 
 - (void)addObjectOnMainThread:(EventObject *)object
@@ -127,11 +132,35 @@
         return;
     }
 
+    UIApplication *application = [UIApplication sharedApplication];
+
+    if (application.applicationState == UIApplicationStateActive) {
+        [self handleObjectWithWindow:object];
+    }
+    else {
+        [self showLocalNotificationForObject:object];
+    }
+}
+
+- (void)handleObjectWithWindow:(EventObject *)object
+{
     if (self.window.hidden) {
         [self.window makeKeyAndVisible];
     }
 
     [self showEventViewWith:object];
+}
+
+- (void)showLocalNotificationForObject:(EventObject *)object
+{
+    UILocalNotification *notification = [UILocalNotification new];
+
+    notification.alertBody = [self localNotificationTextForObject:object];
+    notification.soundName = UILocalNotificationDefaultSoundName;
+
+    [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
+
+    [self dequeueAndShowNextObject];
 }
 
 - (void)showEventViewWith:(EventObject *)object
@@ -276,8 +305,10 @@
         CDMessage *message = object.object;
 
         if (message.chat && [chatVC.chat isEqual:message.chat]) {
-            // Chat is already visible, don't show alert window
-            return NO;
+            if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+                // Chat is already visible, don't show alert
+                return NO;
+            }
         }
     }
 
@@ -322,6 +353,23 @@
         ToxFriendRequest *request = object.object;
 
         text = request.message;
+    }
+
+    return text;
+}
+
+- (NSString *)localNotificationTextForObject:(EventObject *)object
+{
+    NSString *text;
+
+    if (object.type == EventObjectTypeChatIncomingMessage) {
+        text = NSLocalizedString(@"New message", @"Events");
+    }
+    else if (object.type == EventObjectTypeChatIncomingFile) {
+        text = NSLocalizedString(@"Incoming file", @"Events");
+    }
+    else if (object.type == EventObjectTypeFriendRequest) {
+        text = NSLocalizedString(@"Incoming friend request", @"Events");
     }
 
     return text;

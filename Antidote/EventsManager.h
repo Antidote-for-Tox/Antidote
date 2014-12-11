@@ -16,4 +16,6 @@
 
 - (void)addObject:(EventObject *)object;
 
+- (void)handleLocalNotification:(UILocalNotification *)notification;
+
 @end
