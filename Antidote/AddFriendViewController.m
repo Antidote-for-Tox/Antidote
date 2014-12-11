@@ -11,6 +11,8 @@
 #import "UIView+Utilities.h"
 #import "ToxManager.h"
 #import "ToxFunctions.h"
+#import "QRScannerController.h"
+#import "UIAlertView+BlocksKit.h"
 
 @interface AddFriendViewController () <UITextViewDelegate>
 
@@ -63,7 +65,17 @@
 
 - (void)toxIdQRButtonPressed
 {
-    // TODO scan QR code
+    UINavigationController *navCon = [QRScannerController navigationWithScannerControllerWithSuccess:
+        ^(QRScannerController *controller, NSArray *stringValues)
+    {
+        [self processQRStringValues:stringValues fromController:controller];
+
+    } cancelBlock:^(QRScannerController *controller) {
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+
+    [self presentViewController:navCon animated:YES completion:nil];
 }
 
 - (void)sendRequestButtonPressed
@@ -137,43 +149,6 @@
 
     return YES;
 }
-
-#pragma mark -  ZBarReaderDelegate
-#warning - outdated
-
-// - (void)imagePickerController:(UIImagePickerController*) reader didFinishPickingMediaWithInfo:(NSDictionary *)info
-// {
-//     ZBarSymbolSet *set = [info objectForKey: ZBarReaderControllerResults];
-
-//     for (ZBarSymbol *symbol in set) {
-//         NSString *string = [symbol.data uppercaseString];
-
-//         string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-//         NSString *toxPrefix = @"TOX:";
-
-//         if ([string hasPrefix:toxPrefix] && string.length > toxPrefix.length) {
-//             string = [string substringFromIndex:toxPrefix.length];
-//         }
-
-//         if ([ToxFunctions isAddressString:string]) {
-//             self.toxIdTextView.text = string;
-
-//             [self dismissViewControllerAnimated:YES completion:nil];
-//         }
-//         else {
-//             NSString *message = [NSString stringWithFormat:
-//                 NSLocalizedString(@"Wrong code. It should contain Tox ID, but contains %@", @"Error"),
-//                 symbol.data];
-
-//             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
-//                                         message:message
-//                                        delegate:nil
-//                               cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
-//                               otherButtonTitles:nil] show];
-//         }
-//     }
-// }
 
 #pragma mark -  Private
 
@@ -299,6 +274,48 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
+}
+
+- (void)processQRStringValues:(NSArray *)stringValues fromController:(QRScannerController *)controller
+{
+    NSString *goodString = nil;
+
+    for (NSString *originalString in stringValues) {
+        NSString *string = [originalString uppercaseString];
+        string = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+        NSString *toxPrefix = @"TOX:";
+
+        if ([string hasPrefix:toxPrefix] && string.length > toxPrefix.length) {
+            string = [string substringFromIndex:toxPrefix.length];
+        }
+
+        if ([ToxFunctions isAddressString:string]) {
+            goodString = string;
+            break;
+        }
+    }
+
+    if (goodString) {
+        self.toxIdTextView.text = goodString;
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+    else {
+        NSString *message = [NSString stringWithFormat:
+            NSLocalizedString(@"Wrong code. It should contain Tox ID, but contains %@", @"Error"),
+            [stringValues firstObject]];
+
+        controller.pauseScanning = YES;
+
+        [UIAlertView bk_showAlertViewWithTitle:NSLocalizedString(@"Oops", @"Error")
+                                       message:message
+                             cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
+                             otherButtonTitles:nil
+                                       handler:^(UIAlertView *_, NSInteger __) {
+                                           controller.pauseScanning = NO;
+                                       }];
+    }
 }
 
 @end
