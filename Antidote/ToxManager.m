@@ -521,7 +521,7 @@ static dispatch_once_t __onceToken;
 
 - (BOOL)isOnToxManagerQueue
 {
-    return dispatch_get_specific(kIsOnToxManagerQueue);
+    return dispatch_get_specific(kIsOnToxManagerQueue) != NULL;
 }
 
 @end
