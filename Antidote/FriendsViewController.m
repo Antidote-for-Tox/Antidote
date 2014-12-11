@@ -249,29 +249,41 @@
         return;
     }
 
+    if (! self.tableView) {
+        return;
+    }
+
     NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
     NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
     NSIndexSet *updated = notification.userInfo[kToxFriendsContainerUpdateKeyUpdatedSet];
 
     @synchronized(self.tableView) {
-        [self.tableView beginUpdates];
+        NSInteger newNumberOfRows = [self.tableView numberOfRowsInSection:0] + inserted.count - removed.count;
 
-        if (inserted.count) {
-            [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+        if (newNumberOfRows != [self tableView:self.tableView numberOfRowsInSection:0]) {
+            DDLogWarn(@"FriendsViewController: inconsistent data, reloding table view");
+            [self.tableView reloadData];
         }
+        else {
+            [self.tableView beginUpdates];
 
-        if (removed.count) {
-            [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
+            if (inserted.count) {
+                [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+
+            if (removed.count) {
+                [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+
+            if (updated.count) {
+                [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+
+            [self.tableView endUpdates];
         }
-
-        if (updated.count) {
-            [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
-
-        [self.tableView endUpdates];
     }
 }
 
