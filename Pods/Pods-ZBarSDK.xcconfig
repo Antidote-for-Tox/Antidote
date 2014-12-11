@@ -1,4 +1,0 @@
-PODS_ZBARSDK_EXCLUDED_SOURCE_FILE_NAMES[sdk=iphoneos*][arch=*] = ZBarReaderViewImpl_Simulator.m
-PODS_ZBARSDK_EXCLUDED_SOURCE_FILE_NAMES[sdk=iphonesimulator*][arch=*] = ZBarReaderViewImpl_Capture.m ZBarCaptureReader.m
-PODS_ZBARSDK_GCC_PREPROCESSOR_DEFINITIONS = NDEBUG=1
-PODS_ZBARSDK_OTHER_LDFLAGS = -liconv -framework AVFoundation -framework CoreGraphics -framework CoreMedia -framework CoreVideo -framework QuartzCore

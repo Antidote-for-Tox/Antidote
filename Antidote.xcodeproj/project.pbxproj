@@ -18,6 +18,7 @@
 		1122E84919F92BC2002907B3 /* ToxManagerAvatars.m in Sources */ = {isa = PBXBuildFile; fileRef = 1122E84819F92BC2002907B3 /* ToxManagerAvatars.m */; };
 		1122E84F19F93225002907B3 /* ToxManagerChats.m in Sources */ = {isa = PBXBuildFile; fileRef = 1122E84E19F93225002907B3 /* ToxManagerChats.m */; };
 		1122E85219F9348F002907B3 /* ToxManagerFiles.m in Sources */ = {isa = PBXBuildFile; fileRef = 1122E85119F9348F002907B3 /* ToxManagerFiles.m */; };
+		114100781A3A3A3700054859 /* QRScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114100771A3A3A3700054859 /* QRScannerController.m */; };
 		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
 		1146308C19842D360075DA16 /* CoreDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146308B19842D360075DA16 /* CoreDataManager.m */; };
 		1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309219842F490075DA16 /* CoreDataManager+Message.m */; };
@@ -131,6 +132,8 @@
 		1122E84E19F93225002907B3 /* ToxManagerChats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManagerChats.m; sourceTree = "<group>"; };
 		1122E85019F9348F002907B3 /* ToxManagerFiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxManagerFiles.h; sourceTree = "<group>"; };
 		1122E85119F9348F002907B3 /* ToxManagerFiles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxManagerFiles.m; sourceTree = "<group>"; };
+		114100761A3A3A3700054859 /* QRScannerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerController.h; sourceTree = "<group>"; };
+		114100771A3A3A3700054859 /* QRScannerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerController.m; sourceTree = "<group>"; };
 		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		1146308A19842D360075DA16 /* CoreDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreDataManager.h; sourceTree = "<group>"; };
 		1146308B19842D360075DA16 /* CoreDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataManager.m; sourceTree = "<group>"; };
@@ -296,12 +299,13 @@
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
 		11F5642E19E1296400B7A5BE /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		11F5642F19E1296400B7A5BE /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
-		68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
 		84F9E6E819B61D49005F3889 /* ToxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxNode.h; sourceTree = "<group>"; };
 		84F9E6E919B61D49005F3889 /* ToxNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxNode.m; sourceTree = "<group>"; };
+		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,6 +365,15 @@
 				1122E84519F8F469002907B3 /* ToxManagerFriends.m */,
 			);
 			name = Submanagers;
+			sourceTree = "<group>";
+		};
+		114100751A3A3A1B00054859 /* QRScanner */ = {
+			isa = PBXGroup;
+			children = (
+				114100761A3A3A3700054859 /* QRScannerController.h */,
+				114100771A3A3A3700054859 /* QRScannerController.m */,
+			);
+			name = QRScanner;
 			sourceTree = "<group>";
 		};
 		1146308919842D220075DA16 /* CoreDataManager */ = {
@@ -463,7 +476,7 @@
 				1164763819794D3300DB20B8 /* Antidote */,
 				1164763119794D3300DB20B8 /* Frameworks */,
 				1164763019794D3300DB20B8 /* Products */,
-				68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */,
+				454BE7B91D6EF3C677425911 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -638,6 +651,7 @@
 				11C3A74C198CF4870029A7A0 /* FriendCard */,
 				118352B6197A7AF60048CA64 /* Friends */,
 				110B8B8819C8E3F1000E4334 /* Profiles */,
+				114100751A3A3A1B00054859 /* QRScanner */,
 				118352B2197A72DE0048CA64 /* QRViewer */,
 				118352B1197A72D90048CA64 /* Settings */,
 			);
@@ -822,6 +836,15 @@
 			name = AvatarManager;
 			sourceTree = "<group>";
 		};
+		454BE7B91D6EF3C677425911 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */,
+				4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		84B6628A19A250FF00328874 /* CustomLogFormatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -928,7 +951,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -943,6 +966,7 @@
 				119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */,
 				117A5B3919D8A0040067D10F /* crypto_core.c in Sources */,
 				117A5B4219D8A0040067D10F /* net_crypto.c in Sources */,
+				114100781A3A3A3700054859 /* QRScannerController.m in Sources */,
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */,
 				118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */,
@@ -1116,7 +1140,7 @@
 		};
 		1164765C19794D3300DB20B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */;
+			baseConfigurationReference = B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -1134,7 +1158,7 @@
 		};
 		1164765D19794D3300DB20B8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 68BCD19387BD4EBBB6B48E72 /* Pods.xcconfig */;
+			baseConfigurationReference = 4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;

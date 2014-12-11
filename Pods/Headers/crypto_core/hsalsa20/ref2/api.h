@@ -1,1 +1,0 @@
-../../../../libsodium-ios/src/libsodium/crypto_core/hsalsa20/ref2/api.h

@@ -80,6 +80,5 @@ Antidote is available under the MIT license. See the [COPYING](COPYING) file for
 - [CocoaLumberjack](https://github.com/CocoaLumberjack/CocoaLumberjack)
 - [JSQMessagesViewController](http://www.jessesquires.com/JSQMessagesViewController/)
 - [MagicalRecord](https://github.com/magicalpanda/MagicalRecord)
-- [ZBarSDK](http://zbar.sourceforge.net/)
 - [libsodium-ios](https://github.com/mochtu/libsodium-ios)
 
