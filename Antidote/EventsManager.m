@@ -17,6 +17,10 @@
 #import "CDMessage.h"
 #import "CDChat.h"
 #import "CDUser.h"
+#import "CoreDataManager+Chat.h"
+
+static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
+static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNotificationChatURIRepresentationKey";
 
 @interface EventsManager()
 
@@ -77,7 +81,28 @@
 
 - (void)handleLocalNotification:(UILocalNotification *)notification
 {
-    // TODO
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    EventObjectType type = [notification.userInfo[kLocalNotificationTypeKey] unsignedIntegerValue];
+
+    if (type == EventObjectTypeChatIncomingMessage ||
+        type == EventObjectTypeChatIncomingFile)
+    {
+        NSString *uriString = notification.userInfo[kLocalNotificationChatURIRepresentationKey];
+
+        if (! uriString) {
+            return;
+        }
+
+        [CoreDataManager chatWithURIRepresentation:[NSURL URLWithString:uriString]
+                                   completionQueue:dispatch_get_main_queue()
+                                   completionBlock:^(CDChat *chat)
+        {
+            [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
+        }];
+    }
+    else if (type == EventObjectTypeFriendRequest) {
+        [delegate switchToFriendsTabAndShowFriendRequests];
+    }
 }
 
 #pragma mark -  Private
@@ -153,8 +178,23 @@
 
 - (void)showLocalNotificationForObject:(EventObject *)object
 {
+    NSMutableDictionary *userInfo = [NSMutableDictionary new];
+    userInfo[kLocalNotificationTypeKey] = @(object.type);
+
+    if (object.type == EventObjectTypeChatIncomingMessage ||
+        object.type == EventObjectTypeChatIncomingFile)
+    {
+        CDMessage *message = object.object;
+
+        NSURL *uriRepresentation = [message.chat.objectID URIRepresentation];
+        if (uriRepresentation) {
+            userInfo[kLocalNotificationChatURIRepresentationKey] = [uriRepresentation absoluteString];
+        }
+    }
+
     UILocalNotification *notification = [UILocalNotification new];
 
+    notification.userInfo = [userInfo copy];
     notification.alertBody = [self localNotificationTextForObject:object];
     notification.soundName = UILocalNotificationDefaultSoundName;
 
@@ -380,7 +420,8 @@
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     if (object.type == EventObjectTypeChatIncomingMessage ||
-        object.type == EventObjectTypeChatIncomingFile) {
+        object.type == EventObjectTypeChatIncomingFile)
+    {
         CDMessage *message = object.object;
 
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];

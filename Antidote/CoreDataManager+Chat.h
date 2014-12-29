@@ -19,6 +19,10 @@
                                             completionQueue:(dispatch_queue_t)queue
                                             completionBlock:(void (^)(NSFetchedResultsController *controller))completionBlock;
 
++ (void)chatWithURIRepresentation:(NSURL *)uriRepresentation
+                  completionQueue:(dispatch_queue_t)queue
+                  completionBlock:(void (^)(CDChat *chat))completionBlock;
+
 + (void)getOrInsertChatWithPredicateInCurrentProfile:(NSPredicate *)predicate
                                          configBlock:(void (^)(CDChat *theChat))configBlock
                                      completionQueue:(dispatch_queue_t)queue

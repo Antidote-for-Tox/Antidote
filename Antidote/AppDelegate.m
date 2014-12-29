@@ -64,6 +64,12 @@
 
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
+    if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+        UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+
+        [[EventsManager sharedInstance] handleLocalNotification:notification];
+    }
+
     [self.window makeKeyAndVisible];
     return YES;
 }

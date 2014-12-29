@@ -58,6 +58,28 @@
     });
 }
 
++ (void)chatWithURIRepresentation:(NSURL *)uriRepresentation
+                  completionQueue:(dispatch_queue_t)queue
+                  completionBlock:(void (^)(CDChat *chat))completionBlock
+{
+    if (! completionBlock) {
+        return;
+    }
+
+    dispatch_async([self private_queue], ^{
+        NSManagedObjectContext *context = [self private_context];
+        NSPersistentStoreCoordinator *coordinator = context.persistentStoreCoordinator;
+
+        NSManagedObjectID *objectId = [coordinator managedObjectIDForURIRepresentation:uriRepresentation];
+
+        CDChat *chat = (CDChat *) [context objectWithID:objectId];
+
+        [self private_performBlockOnQueueOrMain:queue block:^{
+            completionBlock(chat);
+        }];
+    });
+}
+
 + (void)getOrInsertChatWithPredicateInCurrentProfile:(NSPredicate *)predicate
                                          configBlock:(void (^)(CDChat *theChat))configBlock
                                      completionQueue:(dispatch_queue_t)queue
