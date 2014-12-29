@@ -18,6 +18,7 @@
 #import "CDChat.h"
 #import "CDUser.h"
 #import "CoreDataManager+Chat.h"
+#import "UserInfoManager.h"
 
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
 static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNotificationChatURIRepresentationKey";
@@ -402,11 +403,32 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
 {
     NSString *text;
 
-    if (object.type == EventObjectTypeChatIncomingMessage) {
-        text = NSLocalizedString(@"New message", @"Events");
-    }
-    else if (object.type == EventObjectTypeChatIncomingFile) {
-        text = NSLocalizedString(@"Incoming file", @"Events");
+    if (object.type == EventObjectTypeChatIncomingMessage ||
+        object.type == EventObjectTypeChatIncomingFile)
+    {
+        CDMessage *message = object.object;
+        ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
+
+        text = [friend nameToShow];
+        const NSUInteger maxNameLength = 15;
+
+        if (text.length > maxNameLength) {
+            text = [text substringToIndex:maxNameLength];
+        }
+
+        text = [text stringByAppendingString:@": "];
+
+        if (object.type == EventObjectTypeChatIncomingMessage) {
+            if ([UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue) {
+                text = [text stringByAppendingString:message.text.text];
+            }
+            else {
+                text = [text stringByAppendingString:NSLocalizedString(@"incoming message", @"Events")];
+            }
+        }
+        else if (object.type == EventObjectTypeChatIncomingFile) {
+            text = [text stringByAppendingString:NSLocalizedString(@"incoming file", @"Events")];
+        }
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         text = NSLocalizedString(@"Incoming friend request", @"Events");

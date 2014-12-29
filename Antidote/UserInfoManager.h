@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) NSString *uCurrentProfileFileName;
 
+@property (strong, nonatomic) NSNumber *uShowMessageInLocalNotification;
+
 + (instancetype)sharedInstance;
 
 @end

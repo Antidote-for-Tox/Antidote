@@ -65,9 +65,10 @@
     } \
 }
 
-GENERATE_OBJECT(PendingFriendRequests,  @"pending-friend-requests",  NSArray *)
-GENERATE_OBJECT(CurrentColorscheme,     @"current-colorscheme",      NSNumber *)
-GENERATE_OBJECT(FriendsSort,            @"friends-sort",             NSNumber *)
-GENERATE_OBJECT(CurrentProfileFileName, @"current-profile-filename", NSString *)
+GENERATE_OBJECT(PendingFriendRequests,           @"pending-friend-requests",             NSArray *)
+GENERATE_OBJECT(CurrentColorscheme,              @"current-colorscheme",                 NSNumber *)
+GENERATE_OBJECT(FriendsSort,                     @"friends-sort",                        NSNumber *)
+GENERATE_OBJECT(CurrentProfileFileName,          @"current-profile-filename",            NSString *)
+GENERATE_OBJECT(ShowMessageInLocalNotification,  @"show-message-in-local-notification",  NSNumber *)
 
 @end
