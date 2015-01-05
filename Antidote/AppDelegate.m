@@ -27,6 +27,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "ProfileManager.h"
 #import "EventsManager.h"
+#import "UserInfoManager.h"
 
 @interface AppDelegate()
 
@@ -49,6 +50,7 @@
     [self configureLoggingStuff];
 
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
+    [[UserInfoManager sharedInstance] createDefaultValuesIfNeeded];
     [[ProfileManager sharedInstance] configureCurrentProfileAndLoadTox];
 
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){

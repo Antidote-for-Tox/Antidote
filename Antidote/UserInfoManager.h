@@ -22,4 +22,6 @@
 
 + (instancetype)sharedInstance;
 
+- (void)createDefaultValuesIfNeeded;
+
 @end

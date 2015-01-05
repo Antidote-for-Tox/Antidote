@@ -102,6 +102,7 @@
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F5642F19E1296400B7A5BE /* AvatarManager.m */; };
+		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -299,6 +300,8 @@
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
 		11F5642E19E1296400B7A5BE /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
 		11F5642F19E1296400B7A5BE /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
+		11FCD3481A5B283D00DE10CC /* CellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithSwitch.h; sourceTree = "<group>"; };
+		11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithSwitch.m; sourceTree = "<group>"; };
 		4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
@@ -812,6 +815,8 @@
 				11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */,
 				11E57F4419C23D1F00C8ACB8 /* CellWithNameStatusAvatar.h */,
 				11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */,
+				11FCD3481A5B283D00DE10CC /* CellWithSwitch.h */,
+				11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */,
 				11C2AA0119C48F31003BE161 /* CellWithToxId.h */,
 				11C2AA0219C48F31003BE161 /* CellWithToxId.m */,
 			);
@@ -962,6 +967,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */,
+				11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */,
 				117A5B4019D8A0040067D10F /* logger.c in Sources */,
 				119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */,
 				117A5B3919D8A0040067D10F /* crypto_core.c in Sources */,

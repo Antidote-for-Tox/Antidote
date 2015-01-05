@@ -38,6 +38,15 @@
     return instance;
 }
 
+#pragma mark -  Methods
+
+- (void)createDefaultValuesIfNeeded
+{
+    if (! self.uShowMessageInLocalNotification) {
+        self.uShowMessageInLocalNotification = @(YES);
+    }
+}
+
 #pragma mark - Properties
 
 /**

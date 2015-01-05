@@ -21,16 +21,19 @@
 #import "CellWithNameStatusAvatar.h"
 #import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
+#import "CellWithSwitch.h"
 #import "ProfilesViewController.h"
 #import "ProfileManager.h"
+#import "UserInfoManager.h"
 
 typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeNameStatusAvatar,
     CellTypeToxId,
     CellTypeColorscheme,
     CellTypeFeedback,
+    CellTypeTitleNotifications,
+    CellTypeShowMessageInLocalNotification,
     CellTypeProfile,
-    __CellTypeTotalCount,
 };
 
 static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
@@ -38,7 +41,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 @interface SettingsViewController () <UITableViewDataSource, UITableViewDelegate,
     SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate, CellWithColorschemeDelegate,
-    UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+    CellWithSwitchDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -67,6 +70,10 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
             ],
             @[
                 @(CellTypeProfile),
+            ],
+            @[
+                @(CellTypeTitleNotifications),
+                @(CellTypeShowMessageInLocalNotification),
             ],
             @[
                 @(CellTypeFeedback),
@@ -106,8 +113,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [self cellWithColorschemeIdAtIndexPath:indexPath];
     }
-    else if (type == CellTypeProfile) {
-        return [self profileCellAtIndexPath:indexPath];
+    else if (type == CellTypeTitleNotifications) {
+        return [self cellWithTitleAtIndexPath:indexPath withType:CellTypeTitleNotifications];
+    }
+    else if (type == CellTypeShowMessageInLocalNotification) {
+        return [self cellWithSwitchAtIndexPath:indexPath];
     }
     else if (type == CellTypeProfile) {
         return [self profileCellAtIndexPath:indexPath];
@@ -145,10 +155,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [CellWithColorscheme height];
     }
-    else if (type == CellTypeProfile) {
-        return 44.0;
-    }
-    else if (type == CellTypeFeedback) {
+    else if (type == CellTypeTitleNotifications ||
+             type == CellTypeShowMessageInLocalNotification ||
+             type == CellTypeProfile ||
+             type == CellTypeFeedback)
+    {
         return 44.0;
     }
 
@@ -269,7 +280,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     [self presentViewController:qrVC animated:YES completion:nil];
 }
 
-#pragma mark -  CellWithColorscheme
+#pragma mark -  CellWithColorschemeDelegate
 
 - (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
 {
@@ -278,6 +289,13 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
     [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+}
+
+#pragma mark -  CellWithSwitchDelegate
+
+- (void)cellWithSwitchStateChanged:(CellWithSwitch *)cell
+{
+    [UserInfoManager sharedInstance].uShowMessageInLocalNotification = @(cell.on);
 }
 
 #pragma mark -  UIImagePickerControllerDelegate
@@ -318,6 +336,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     [self.tableView registerClass:[CellWithColorscheme class]
            forCellReuseIdentifier:[CellWithColorscheme reuseIdentifier]];
+
+    [self.tableView registerClass:[CellWithSwitch class] forCellReuseIdentifier:[CellWithSwitch reuseIdentifier]];
 
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kProfileReuseIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kFeedbackReuseIdentifier];
@@ -423,6 +443,33 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.delegate = self;
 
     [cell redraw];
+
+    return cell;
+}
+
+- (UITableViewCell *)cellWithTitleAtIndexPath:(NSIndexPath *)indexPath withType:(CellType)type
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
+                                                                 forIndexPath:indexPath];
+
+    if (type == CellTypeTitleNotifications) {
+        cell.textLabel.text = NSLocalizedString(@"Notifications", @"Settings");
+    }
+
+    cell.textLabel.textAlignment = NSTextAlignmentLeft;
+    cell.textLabel.textColor = [UIColor blackColor];
+
+    return cell;
+}
+
+- (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath
+{
+    CellWithSwitch *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithSwitch reuseIdentifier]
+                                                                forIndexPath:indexPath];
+    cell.delegate = self;
+
+    cell.title = NSLocalizedString(@"Message preview", @"Settings");
+    cell.on = [UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue;
 
     return cell;
 }
