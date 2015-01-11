@@ -34,6 +34,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeTitleNotifications,
     CellTypeShowMessageInLocalNotification,
     CellTypeProfile,
+    CellTypeChatBackgroundImage,
+    CellTypeChatBackgroundBlured
 };
 
 static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
@@ -66,7 +68,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
             ],
             @[
                 @(CellTypeToxId),
+            ],
+            @[
                 @(CellTypeColorscheme),
+                @(CellTypeChatBackgroundImage),
+                @(CellTypeChatBackgroundBlured)
             ],
             @[
                 @(CellTypeProfile),
@@ -113,11 +119,17 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [self cellWithColorschemeIdAtIndexPath:indexPath];
     }
+    else if (type == CellTypeChatBackgroundImage) {
+        return [self chatBackgroundImageCellAtIndexPath:indexPath];
+    }
+    else if (type == CellTypeChatBackgroundBlured) {
+        return [self cellWithSwitchAtIndexPath:indexPath withType:CellTypeChatBackgroundBlured];
+    }
     else if (type == CellTypeTitleNotifications) {
         return [self cellWithTitleAtIndexPath:indexPath withType:CellTypeTitleNotifications];
     }
     else if (type == CellTypeShowMessageInLocalNotification) {
-        return [self cellWithSwitchAtIndexPath:indexPath];
+        return [self cellWithSwitchAtIndexPath:indexPath withType:CellTypeShowMessageInLocalNotification];
     }
     else if (type == CellTypeProfile) {
         return [self profileCellAtIndexPath:indexPath];
@@ -158,7 +170,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeTitleNotifications ||
              type == CellTypeShowMessageInLocalNotification ||
              type == CellTypeProfile ||
-             type == CellTypeFeedback)
+             type == CellTypeFeedback ||
+             type == CellTypeChatBackgroundImage ||
+             type == CellTypeChatBackgroundBlured)
     {
         return 44.0;
     }
@@ -462,15 +476,22 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     return cell;
 }
 
-- (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath
+- (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath withType:(CellType)type
 {
     CellWithSwitch *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithSwitch reuseIdentifier]
                                                                 forIndexPath:indexPath];
     cell.delegate = self;
-
-    cell.title = NSLocalizedString(@"Message preview", @"Settings");
-    cell.on = [UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue;
-
+    
+    if (type == CellTypeShowMessageInLocalNotification) {
+        cell.title = NSLocalizedString(@"Message preview", @"Settings");
+        cell.on = [UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue;
+    }
+    else if (type == CellTypeChatBackgroundBlured) {
+        cell.title = NSLocalizedString(@"Chat background blur", @"Settings");
+#warning todo
+        cell.on = YES;
+    }
+    
     return cell;
 }
 
@@ -495,6 +516,16 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.textLabel.text = NSLocalizedString(@"Feedback", @"Settings");
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [AppearanceManager textMainColor];
+
+    return cell;
+}
+
+- (UITableViewCell *)chatBackgroundImageCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kFeedbackReuseIdentifier
+                                                                 forIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = NSLocalizedString(@"Chat background image", @"Settings");
 
     return cell;
 }
