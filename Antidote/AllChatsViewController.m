@@ -54,7 +54,7 @@
 - (void)loadView
 {
     [self loadWhiteView];
-
+    [self setupNavBarAppearance];
     [self createTableView];
 }
 

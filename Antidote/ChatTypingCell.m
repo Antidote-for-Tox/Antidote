@@ -60,8 +60,11 @@ static const UIEdgeInsets kBubbleInsets = { 16.0, 15.0, 16.0, 10.0 };
 
 - (void)createSubviews
 {
+    self.backgroundColor = [UIColor clearColor];
+    
     UIColor *color = [AppearanceManager bubbleIncomingColor];
     self.bubbleImageView = [JSQMessagesBubbleImageFactory incomingMessageBubbleImageViewWithColor:color];
+    self.bubbleImageView.backgroundColor = [UIColor clearColor];
     [self.contentView addSubview:self.bubbleImageView];
 
     UIImage *image = [UIImage imageNamed:@"typing"];

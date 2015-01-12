@@ -12,4 +12,6 @@
 
 - (void)loadWhiteView;
 
+- (void)setupNavBarAppearance;
+
 @end

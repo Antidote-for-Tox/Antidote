@@ -93,7 +93,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (void)loadView
 {
     [self loadWhiteView];
-
+    [self setupNavBarAppearance];
     [self createTableView];
 }
 
@@ -300,16 +300,31 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     [AppearanceManager changeColorschemeTo:scheme];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+    [self recreateControllers];
 }
+
+
 
 #pragma mark -  CellWithSwitchDelegate
 
 - (void)cellWithSwitchStateChanged:(CellWithSwitch *)cell
 {
-    [UserInfoManager sharedInstance].uShowMessageInLocalNotification = @(cell.on);
+    __weak typeof (self) weakSelf = self;
+    
+    NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+    CellType cellType = [self cellTypeForIndexPath:cellIndexPath];
+    
+    if (cellType == CellTypeShowMessageInLocalNotification) {
+        [UserInfoManager sharedInstance].uShowMessageInLocalNotification = @(cell.on);
+    }
+    else if (cellType == CellTypeChatBackgroundBlured) {
+        [UserInfoManager sharedInstance].uChatBackgroundImageBlurEnable = @(cell.on);
+        [self.view setUserInteractionEnabled:NO];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [weakSelf recreateControllers];
+            [weakSelf.view setUserInteractionEnabled:YES];
+        });
+    }
 }
 
 #pragma mark -  UIImagePickerControllerDelegate
@@ -488,8 +503,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     }
     else if (type == CellTypeChatBackgroundBlured) {
         cell.title = NSLocalizedString(@"Chat background blur", @"Settings");
-#warning todo
-        cell.on = YES;
+        cell.on = [UserInfoManager sharedInstance].uChatBackgroundImageBlurEnable.boolValue;
     }
     
     return cell;
@@ -528,6 +542,14 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.textLabel.text = NSLocalizedString(@"Chat background image", @"Settings");
 
     return cell;
+}
+
+#pragma mark - Utilities
+
+- (void)recreateControllers
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
 }
 
 @end
