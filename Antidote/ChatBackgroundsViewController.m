@@ -15,6 +15,7 @@ static const CGFloat kCellInsets = 4.5f;
 
 @interface ChatBackgroundsViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
+@property (strong, nonatomic) UICollectionViewFlowLayout *flowLayout;
 @property (strong, nonatomic) UICollectionView *collectionView;
 @property (strong, nonatomic) NSIndexPath *lastSelectedImageIndexPath;
 @property (assign, nonatomic) NSUInteger selectedBackgroundNumber;
@@ -36,6 +37,8 @@ static const CGFloat kCellInsets = 4.5f;
 {
     [super viewDidLayoutSubviews];
     [self commonDidLayoutSubviews];
+    
+    [self.flowLayout setItemSize:CGSizeMake([self cellWidthHeight], [self cellWidthHeight])];
 }
 
 #pragma mark - Action
@@ -68,6 +71,7 @@ static const CGFloat kCellInsets = 4.5f;
                                                              style:UIBarButtonItemStylePlain
                                                              target:self
                                                              action:@selector(selectButtonPressed)];
+    imageViewController.view.backgroundColor = [UIColor whiteColor];
     [self.navigationController pushViewController:imageViewController animated:YES];
 }
 
@@ -102,13 +106,13 @@ static const CGFloat kCellInsets = 4.5f;
     
     self.view.backgroundColor = [UIColor whiteColor];
    
-    UICollectionViewFlowLayout *flowLayout = [UICollectionViewFlowLayout new];
-    [flowLayout setMinimumLineSpacing:kCellInsets];
-    [flowLayout setMinimumInteritemSpacing:kCellInsets];
-    [flowLayout setSectionInset:UIEdgeInsetsMake(kCellInsets, kCellInsets, kCellInsets, kCellInsets)];
-    [flowLayout setItemSize:CGSizeMake([self cellWidthHeight], [self cellWidthHeight])];
+    self.flowLayout = [UICollectionViewFlowLayout new];
+    [self.flowLayout setMinimumLineSpacing:kCellInsets];
+    [self.flowLayout setMinimumInteritemSpacing:kCellInsets];
+    [self.flowLayout setSectionInset:UIEdgeInsetsMake(kCellInsets, kCellInsets, kCellInsets, kCellInsets)];
     
-    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:flowLayout];
+    self.collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:self.flowLayout];
+    self.collectionView.showsHorizontalScrollIndicator = self.collectionView.showsVerticalScrollIndicator = NO;
     self.collectionView.delegate = self;
     self.collectionView.dataSource = self;
     self.collectionView.backgroundColor = [UIColor clearColor];
@@ -135,7 +139,9 @@ static const CGFloat kCellInsets = 4.5f;
 
 - (CGFloat)cellWidthHeight
 {
-    return floorf((self.view.bounds.size.width - kCellInsets * 4) / 3);
+    NSUInteger numberOfCells = [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait ? 3 : 5;
+    NSUInteger numberOfInstes = [UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait ? 4 : 6;
+    return floorf((self.view.bounds.size.width - kCellInsets * numberOfInstes) / numberOfCells);
 }
 
 @end
