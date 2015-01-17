@@ -85,6 +85,8 @@
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F9663EEF1A6347C60024B142 /* ChatBackgroundsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9663EEE1A6347C60024B142 /* ChatBackgroundsViewController.m */; };
+		F9663EF31A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F9663EF21A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.m */; };
 		F9EBE1931A62D87F00DB0B21 /* assoc.c in Sources */ = {isa = PBXBuildFile; fileRef = F9EBE1671A62D87F00DB0B21 /* assoc.c */; };
 		F9EBE1941A62D87F00DB0B21 /* crypto_core.c in Sources */ = {isa = PBXBuildFile; fileRef = F9EBE1691A62D87F00DB0B21 /* crypto_core.c */; };
 		F9EBE1951A62D87F00DB0B21 /* DHT.c in Sources */ = {isa = PBXBuildFile; fileRef = F9EBE16B1A62D87F00DB0B21 /* DHT.c */; };
@@ -267,6 +269,10 @@
 		84F9E6E819B61D49005F3889 /* ToxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxNode.h; sourceTree = "<group>"; };
 		84F9E6E919B61D49005F3889 /* ToxNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxNode.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F9663EED1A6347C60024B142 /* ChatBackgroundsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBackgroundsViewController.h; sourceTree = "<group>"; };
+		F9663EEE1A6347C60024B142 /* ChatBackgroundsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBackgroundsViewController.m; sourceTree = "<group>"; };
+		F9663EF11A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBackgroundsCollectionvViewCell.h; sourceTree = "<group>"; };
+		F9663EF21A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBackgroundsCollectionvViewCell.m; sourceTree = "<group>"; };
 		F9EBE1671A62D87F00DB0B21 /* assoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = assoc.c; sourceTree = "<group>"; };
 		F9EBE1681A62D87F00DB0B21 /* assoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = assoc.h; sourceTree = "<group>"; };
 		F9EBE1691A62D87F00DB0B21 /* crypto_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crypto_core.c; sourceTree = "<group>"; };
@@ -706,6 +712,8 @@
 		118352B1197A72D90048CA64 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F9663EF01A634C320024B142 /* Views */,
+				F9663EEC1A6347AB0024B142 /* ViewControllers */,
 				118352A6197A64B70048CA64 /* SettingsViewController.h */,
 				118352A7197A64B70048CA64 /* SettingsViewController.m */,
 			);
@@ -871,6 +879,24 @@
 			name = Node;
 			sourceTree = "<group>";
 		};
+		F9663EEC1A6347AB0024B142 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F9663EED1A6347C60024B142 /* ChatBackgroundsViewController.h */,
+				F9663EEE1A6347C60024B142 /* ChatBackgroundsViewController.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		F9663EF01A634C320024B142 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F9663EF11A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.h */,
+				F9663EF21A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1000,6 +1026,7 @@
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,
 				11B6C301199A9B4C00A48FBC /* ChatTypingCell.m in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
+				F9663EF31A634C4F0024B142 /* ChatBackgroundsCollectionvViewCell.m in Sources */,
 				1122E84919F92BC2002907B3 /* ToxManagerAvatars.m in Sources */,
 				1146309319842F490075DA16 /* CoreDataManager+Message.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
@@ -1036,6 +1063,7 @@
 				F9EBE1A51A62D87F00DB0B21 /* TCP_client.c in Sources */,
 				F9EBE1A01A62D87F00DB0B21 /* onion_announce.c in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
+				F9663EEF1A6347C60024B142 /* ChatBackgroundsViewController.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				F9EBE19D1A62D87F00DB0B21 /* Messenger.c in Sources */,
 				F9EBE1961A62D87F00DB0B21 /* friend_connection.c in Sources */,

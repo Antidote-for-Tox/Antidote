@@ -705,8 +705,9 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)createBackgroundView
 {
-#warning hardcode
-    UIImage *backgroundImage = [UIImage imageNamed:@"Drawing"];
+    NSUInteger selectedBackgroundIndex = [UserInfoManager sharedInstance].uChatSelectedBackgroundIndex.integerValue;
+    NSString *imageName = [NSString stringWithFormat:@"background-%lu", (unsigned long)selectedBackgroundIndex];
+    UIImage *backgroundImage = [UIImage imageNamed:imageName];
     
     self.backgroundImageView = [UIImageView new];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -714,7 +715,6 @@ typedef NS_ENUM(NSInteger, Section) {
     
     self.blurEffectView = [[UIVisualEffectView alloc]
                            initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    self.blurEffectView.alpha = 0.9f;
     self.blurEffectView.hidden = ![UserInfoManager sharedInstance].uChatBackgroundImageBlurEnable.boolValue;
     
     [self.backgroundImageView addSubview:self.blurEffectView];

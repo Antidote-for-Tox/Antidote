@@ -20,6 +20,7 @@
 
 @property (strong, nonatomic) NSNumber *uShowMessageInLocalNotification;
 @property (strong, nonatomic) NSNumber *uChatBackgroundImageBlurEnable;
+@property (strong, nonatomic) NSNumber *uChatSelectedBackgroundIndex;
 
 + (instancetype)sharedInstance;
 

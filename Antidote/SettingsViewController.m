@@ -7,23 +7,24 @@
 //
 
 #import "SettingsViewController.h"
-#import "ToxManager.h"
-#import "QRViewerController.h"
-#import "UIViewController+Utilities.h"
-#import "UIView+Utilities.h"
 #import "AppDelegate.h"
-#import "MFMailComposeViewController+BlocksKit.h"
-#import "UIAlertView+BlocksKit.h"
-#import "UIActionSheet+BlocksKit.h"
-#import "DDFileLogger.h"
-#import "UITableViewCell+Utilities.h"
 #import "AvatarManager.h"
-#import "CellWithNameStatusAvatar.h"
-#import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
+#import "CellWithNameStatusAvatar.h"
 #import "CellWithSwitch.h"
-#import "ProfilesViewController.h"
+#import "CellWithToxId.h"
+#import "ChatBackgroundsViewController.h"
+#import "DDFileLogger.h"
+#import "MFMailComposeViewController+BlocksKit.h"
 #import "ProfileManager.h"
+#import "ProfilesViewController.h"
+#import "QRViewerController.h"
+#import "ToxManager.h"
+#import "UIActionSheet+BlocksKit.h"
+#import "UIAlertView+BlocksKit.h"
+#import "UITableViewCell+Utilities.h"
+#import "UIView+Utilities.h"
+#import "UIViewController+Utilities.h"
 #import "UserInfoManager.h"
 
 typedef NS_ENUM(NSUInteger, CellType) {
@@ -213,6 +214,10 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
         }];
 
         [alertView show];
+    }
+    else if (type == CellTypeChatBackgroundImage) {
+        ChatBackgroundsViewController *backgroundViewController = [ChatBackgroundsViewController new];
+        [self.navigationController pushViewController:backgroundViewController animated:YES];
     }
 }
 
