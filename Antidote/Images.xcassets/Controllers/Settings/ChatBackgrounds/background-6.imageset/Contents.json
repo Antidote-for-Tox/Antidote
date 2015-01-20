@@ -6,12 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "background-6@2x.jpg"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "Spaceman@3x.jpg"
+      "filename" : "background-6@3x.jpg"
     }
   ],
   "info" : {

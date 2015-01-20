@@ -6,12 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "background-5@2x.jpg"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "Mountains@3x.jpg"
+      "filename" : "background-5@3x.jpg"
     }
   ],
   "info" : {

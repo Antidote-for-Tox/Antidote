@@ -95,7 +95,7 @@ static const CGFloat kCellInsets = 4.5f;
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 10;
+    return 11;
 }
 
 #pragma mark - Private Logic

@@ -308,8 +308,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     [self recreateControllers];
 }
 
-
-
 #pragma mark -  CellWithSwitchDelegate
 
 - (void)cellWithSwitchStateChanged:(CellWithSwitch *)cell

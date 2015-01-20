@@ -6,12 +6,13 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "2x"
+      "scale" : "2x",
+      "filename" : "background-7@2x.jpg"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "Spring@3x.jpg"
+      "filename" : "background-7@3x.jpg"
     }
   ],
   "info" : {
