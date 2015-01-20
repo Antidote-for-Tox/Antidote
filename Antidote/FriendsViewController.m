@@ -7,21 +7,21 @@
 //
 
 #import "FriendsViewController.h"
-#import "UIViewController+Utilities.h"
-#import "FriendsCell.h"
-#import "FriendRequestsCell.h"
-#import "ToxManager.h"
-#import "NSIndexSet+Utilities.h"
-#import "Helper.h"
-#import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
-#import "FriendCardViewController.h"
-#import "UIAlertView+BlocksKit.h"
-#import "CoreDataManager+Chat.h"
-#import "TimeFormatter.h"
+#import "AppDelegate+Utilities.h"
 #import "AvatarManager.h"
+#import "CoreDataManager+Chat.h"
+#import "FriendCardViewController.h"
+#import "FriendRequestsCell.h"
+#import "FriendsCell.h"
+#import "Helper.h"
+#import "NSIndexSet+Utilities.h"
+#import "TimeFormatter.h"
+#import "ToxManager.h"
+#import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
+#import "UIViewController+Utilities.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
@@ -71,6 +71,7 @@
 
     [self createSegmentedControl];
     [self createTableView];
+    [self setupNavBarAppearance];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -80,17 +81,6 @@
     [self updateBarButtonItem];
 
     [self updateSegmentedControlRequestTitle];
-
-    UIImageView *hairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-    hairlineImageView.hidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    UIImageView *hairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-    hairlineImageView.hidden = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -341,7 +331,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
-
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView registerClass:[FriendsCell class] forCellReuseIdentifier:[FriendsCell reuseIdentifier]];
     [self.tableView registerClass:[FriendRequestsCell class]
            forCellReuseIdentifier:[FriendRequestsCell reuseIdentifier]];
@@ -356,23 +346,6 @@
     self.segmentedControl.frame = frame;
 
     self.tableView.frame = self.view.bounds;
-}
-
-- (UIImageView *)findHairlineImageViewUnder:(UIView *)view
-{
-    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
-        return (UIImageView *)view;
-    }
-
-    for (UIView *subview in view.subviews) {
-        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
-
-        if (imageView) {
-            return imageView;
-        }
-    }
-
-    return nil;
 }
 
 - (void)updateBarButtonItem

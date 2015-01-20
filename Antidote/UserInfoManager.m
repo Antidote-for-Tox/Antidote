@@ -45,6 +45,10 @@
     if (! self.uShowMessageInLocalNotification) {
         self.uShowMessageInLocalNotification = @(YES);
     }
+
+    if (! self.uChatBackgroundImageBlurEnable) {
+        self.uChatBackgroundImageBlurEnable = @(YES);
+    }
 }
 
 #pragma mark - Properties
@@ -79,5 +83,7 @@ GENERATE_OBJECT(CurrentColorscheme,              @"current-colorscheme",        
 GENERATE_OBJECT(FriendsSort,                     @"friends-sort",                        NSNumber *)
 GENERATE_OBJECT(CurrentProfileFileName,          @"current-profile-filename",            NSString *)
 GENERATE_OBJECT(ShowMessageInLocalNotification,  @"show-message-in-local-notification",  NSNumber *)
+GENERATE_OBJECT(ChatBackgroundImageBlurEnable,   @"chat-background-view-enable",         NSNumber *)
+GENERATE_OBJECT(ChatSelectedBackgroundIndex,     @"chat-selected-background-index",      NSNumber *)
 
 @end

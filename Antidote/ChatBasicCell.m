@@ -72,6 +72,8 @@
 
 - (void)createChatBasicCellSubviews
 {
+    self.backgroundColor = [UIColor clearColor];
+    
     self.fullDateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
                                                      bgColor:[UIColor clearColor]];
     self.fullDateLabel.font = [[self class] fullDateLabelFont];

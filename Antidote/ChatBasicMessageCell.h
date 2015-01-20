@@ -8,6 +8,9 @@
 
 #import "ChatBasicCell.h"
 
+static const CGFloat kChatCellMaxWidthCoefficient = 0.75;
+static const CGFloat kChatCellBubleLeftRightOffset = 20.0f;
+
 @interface ChatBasicMessageCell : ChatBasicCell
 
 @property (strong, nonatomic) UILabel *messageLabel;

@@ -20,13 +20,22 @@
 
 @implementation CellWithToxId
 
+#pragma mark - Lifecycle
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         [self createSubviews];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self adjustSubviews];
 }
 
 #pragma mark -  Actions
@@ -72,7 +81,7 @@
 
 - (void)adjustSubviews
 {
-    const CGFloat viewWidth = 320.0;
+    const CGFloat viewWidth = self.bounds.size.width;
     CGRect frame = CGRectZero;
 
     {
@@ -86,7 +95,7 @@
     {
         [self.qrButton sizeToFit];
         frame = self.qrButton.frame;
-        frame.origin.x = viewWidth - frame.size.width - 20.0;
+        frame.origin.x = viewWidth - frame.size.width - self.titleLabel.frame.origin.x;
         frame.origin.y = self.titleLabel.frame.origin.y +
             (self.titleLabel.frame.size.height - frame.size.height) / 2;
         self.qrButton.frame = frame;

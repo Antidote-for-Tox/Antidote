@@ -27,6 +27,7 @@
 #import "ProfileManager.h"
 #import "PreviewItem.h"
 #import "UIActionSheet+BlocksKit.h"
+#import "UserInfoManager.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,
@@ -37,6 +38,8 @@ typedef NS_ENUM(NSInteger, Section) {
     UIGestureRecognizerDelegate, ChatFileCellDelegate, ToxManagerFileProgressDelegate,
     QLPreviewControllerDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
+@property (strong, nonatomic) UIImageView *backgroundImageView;
+@property (strong, nonatomic) UIVisualEffectView *blurEffectView;
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
 
@@ -109,7 +112,8 @@ typedef NS_ENUM(NSInteger, Section) {
 - (void)loadView
 {
     [self loadWhiteView];
-
+    
+    [self createBackgroundView];
     [self createTableView];
     [self createRecognizers];
     [self createInputView];
@@ -699,6 +703,24 @@ typedef NS_ENUM(NSInteger, Section) {
 
 #pragma mark -  Private
 
+- (void)createBackgroundView
+{
+    NSUInteger selectedBackgroundIndex = [UserInfoManager sharedInstance].uChatSelectedBackgroundIndex.integerValue;
+    NSString *imageName = [NSString stringWithFormat:@"background-%lu", (unsigned long)selectedBackgroundIndex];
+    UIImage *backgroundImage = [UIImage imageNamed:imageName];
+    
+    self.backgroundImageView = [UIImageView new];
+    self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
+    self.backgroundImageView.image = backgroundImage;
+    
+    self.blurEffectView = [[UIVisualEffectView alloc]
+                           initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    self.blurEffectView.hidden = ![UserInfoManager sharedInstance].uChatBackgroundImageBlurEnable.boolValue;
+    
+    [self.backgroundImageView addSubview:self.blurEffectView];
+    [self.view addSubview:self.backgroundImageView];
+}
+
 - (void)createTableView
 {
     self.tableView = [UITableView new];
@@ -706,6 +728,7 @@ typedef NS_ENUM(NSInteger, Section) {
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.showsVerticalScrollIndicator = YES;
 
     [self.tableView registerClass:[ChatIncomingCell class] forCellReuseIdentifier:[ChatIncomingCell reuseIdentifier]];
     [self.tableView registerClass:[ChatOutgoingCell class] forCellReuseIdentifier:[ChatOutgoingCell reuseIdentifier]];
@@ -741,7 +764,9 @@ typedef NS_ENUM(NSInteger, Section) {
     const CGFloat inputViewHeight = [self.inputView heightWithCurrentTextAndWidth:inputViewWidth];
 
     self.tableView.frame = self.view.bounds;
-
+    self.backgroundImageView.frame = self.view.bounds;
+    self.blurEffectView.frame = self.view.bounds;
+    
     {
         CGRect frame = CGRectZero;
         frame.size.width = inputViewWidth;

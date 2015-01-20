@@ -7,23 +7,24 @@
 //
 
 #import "SettingsViewController.h"
-#import "ToxManager.h"
-#import "QRViewerController.h"
-#import "UIViewController+Utilities.h"
-#import "UIView+Utilities.h"
 #import "AppDelegate.h"
-#import "MFMailComposeViewController+BlocksKit.h"
-#import "UIAlertView+BlocksKit.h"
-#import "UIActionSheet+BlocksKit.h"
-#import "DDFileLogger.h"
-#import "UITableViewCell+Utilities.h"
 #import "AvatarManager.h"
-#import "CellWithNameStatusAvatar.h"
-#import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
+#import "CellWithNameStatusAvatar.h"
 #import "CellWithSwitch.h"
-#import "ProfilesViewController.h"
+#import "CellWithToxId.h"
+#import "ChatBackgroundsViewController.h"
+#import "DDFileLogger.h"
+#import "MFMailComposeViewController+BlocksKit.h"
 #import "ProfileManager.h"
+#import "ProfilesViewController.h"
+#import "QRViewerController.h"
+#import "ToxManager.h"
+#import "UIActionSheet+BlocksKit.h"
+#import "UIAlertView+BlocksKit.h"
+#import "UITableViewCell+Utilities.h"
+#import "UIView+Utilities.h"
+#import "UIViewController+Utilities.h"
 #import "UserInfoManager.h"
 
 typedef NS_ENUM(NSUInteger, CellType) {
@@ -34,6 +35,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeTitleNotifications,
     CellTypeShowMessageInLocalNotification,
     CellTypeProfile,
+    CellTypeChatBackgroundImage,
+    CellTypeChatBackgroundBlured
 };
 
 static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
@@ -66,7 +69,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
             ],
             @[
                 @(CellTypeToxId),
+            ],
+            @[
                 @(CellTypeColorscheme),
+                @(CellTypeChatBackgroundImage),
+                @(CellTypeChatBackgroundBlured)
             ],
             @[
                 @(CellTypeProfile),
@@ -87,8 +94,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (void)loadView
 {
     [self loadWhiteView];
-
     [self createTableView];
+    [self setupNavBarAppearance];
 }
 
 - (void)viewDidLayoutSubviews
@@ -113,11 +120,17 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [self cellWithColorschemeIdAtIndexPath:indexPath];
     }
+    else if (type == CellTypeChatBackgroundImage) {
+        return [self chatBackgroundImageCellAtIndexPath:indexPath];
+    }
+    else if (type == CellTypeChatBackgroundBlured) {
+        return [self cellWithSwitchAtIndexPath:indexPath withType:CellTypeChatBackgroundBlured];
+    }
     else if (type == CellTypeTitleNotifications) {
         return [self cellWithTitleAtIndexPath:indexPath withType:CellTypeTitleNotifications];
     }
     else if (type == CellTypeShowMessageInLocalNotification) {
-        return [self cellWithSwitchAtIndexPath:indexPath];
+        return [self cellWithSwitchAtIndexPath:indexPath withType:CellTypeShowMessageInLocalNotification];
     }
     else if (type == CellTypeProfile) {
         return [self profileCellAtIndexPath:indexPath];
@@ -158,7 +171,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeTitleNotifications ||
              type == CellTypeShowMessageInLocalNotification ||
              type == CellTypeProfile ||
-             type == CellTypeFeedback)
+             type == CellTypeFeedback ||
+             type == CellTypeChatBackgroundImage ||
+             type == CellTypeChatBackgroundBlured)
     {
         return 44.0;
     }
@@ -200,17 +215,16 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
         [alertView show];
     }
+    else if (type == CellTypeChatBackgroundImage) {
+        ChatBackgroundsViewController *backgroundViewController = [ChatBackgroundsViewController new];
+        [self.navigationController pushViewController:backgroundViewController animated:YES];
+    }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return (section == 0) ? 20.0 : 1.0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 10.0;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return
+//}
 
 #pragma mark -  SettingsNameStatusAvatarCellDelegate
 
@@ -286,16 +300,29 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     [AppearanceManager changeColorschemeTo:scheme];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+    [self recreateControllers];
 }
 
 #pragma mark -  CellWithSwitchDelegate
 
 - (void)cellWithSwitchStateChanged:(CellWithSwitch *)cell
 {
-    [UserInfoManager sharedInstance].uShowMessageInLocalNotification = @(cell.on);
+    __weak typeof (self) weakSelf = self;
+    
+    NSIndexPath *cellIndexPath = [self.tableView indexPathForCell:cell];
+    CellType cellType = [self cellTypeForIndexPath:cellIndexPath];
+    
+    if (cellType == CellTypeShowMessageInLocalNotification) {
+        [UserInfoManager sharedInstance].uShowMessageInLocalNotification = @(cell.on);
+    }
+    else if (cellType == CellTypeChatBackgroundBlured) {
+        [UserInfoManager sharedInstance].uChatBackgroundImageBlurEnable = @(cell.on);
+        [self.view setUserInteractionEnabled:NO];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [weakSelf recreateControllers];
+            [weakSelf.view setUserInteractionEnabled:YES];
+        });
+    }
 }
 
 #pragma mark -  UIImagePickerControllerDelegate
@@ -462,15 +489,21 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     return cell;
 }
 
-- (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath
+- (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath withType:(CellType)type
 {
     CellWithSwitch *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithSwitch reuseIdentifier]
                                                                 forIndexPath:indexPath];
     cell.delegate = self;
-
-    cell.title = NSLocalizedString(@"Message preview", @"Settings");
-    cell.on = [UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue;
-
+    
+    if (type == CellTypeShowMessageInLocalNotification) {
+        cell.title = NSLocalizedString(@"Message preview", @"Settings");
+        cell.on = [UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue;
+    }
+    else if (type == CellTypeChatBackgroundBlured) {
+        cell.title = NSLocalizedString(@"Chat background blur", @"Settings");
+        cell.on = [UserInfoManager sharedInstance].uChatBackgroundImageBlurEnable.boolValue;
+    }
+    
     return cell;
 }
 
@@ -497,6 +530,24 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.textLabel.textColor = [AppearanceManager textMainColor];
 
     return cell;
+}
+
+- (UITableViewCell *)chatBackgroundImageCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kFeedbackReuseIdentifier
+                                                                 forIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.textLabel.text = NSLocalizedString(@"Chat background image", @"Settings");
+
+    return cell;
+}
+
+#pragma mark - Utilities
+
+- (void)recreateControllers
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
 }
 
 @end
