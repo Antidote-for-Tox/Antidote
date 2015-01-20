@@ -24,6 +24,9 @@
 {
     self.navigationController.navigationBar.translucent = NO;
     self.navigationController.navigationBar.barTintColor = [UIColor uColorWithWhite:248 alpha:1.0f];
+    
+    self.tabBarController.tabBar.translucent = NO;
+    self.tabBarController.tabBar.barTintColor = [UIColor uColorWithWhite:248 alpha:1.0f];
 }
 
 @end

@@ -94,8 +94,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (void)loadView
 {
     [self loadWhiteView];
-    [self setupNavBarAppearance];
     [self createTableView];
+    [self setupNavBarAppearance];
 }
 
 - (void)viewDidLayoutSubviews
