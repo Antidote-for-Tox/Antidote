@@ -221,15 +221,10 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return (section == 0) ? 20.0 : 1.0;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 10.0;
-}
+//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+//{
+//    return
+//}
 
 #pragma mark -  SettingsNameStatusAvatarCellDelegate
 
