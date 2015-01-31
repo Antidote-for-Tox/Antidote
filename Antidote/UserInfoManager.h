@@ -19,6 +19,8 @@
 @property (strong, nonatomic) NSString *uCurrentProfileFileName;
 
 @property (strong, nonatomic) NSNumber *uShowMessageInLocalNotification;
+@property (strong, nonatomic) NSNumber *uIpv6Enabled;
+@property (strong, nonatomic) NSNumber *uUdpDisabled;
 
 + (instancetype)sharedInstance;
 

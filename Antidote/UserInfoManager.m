@@ -45,6 +45,14 @@
     if (! self.uShowMessageInLocalNotification) {
         self.uShowMessageInLocalNotification = @(YES);
     }
+
+    if (! self.uIpv6Enabled) {
+        self.uIpv6Enabled = @(1);
+    }
+
+    if (! self.uUdpDisabled) {
+        self.uUdpDisabled = @(1);
+    }
 }
 
 #pragma mark - Properties
@@ -79,5 +87,7 @@ GENERATE_OBJECT(CurrentColorscheme,              @"current-colorscheme",        
 GENERATE_OBJECT(FriendsSort,                     @"friends-sort",                        NSNumber *)
 GENERATE_OBJECT(CurrentProfileFileName,          @"current-profile-filename",            NSString *)
 GENERATE_OBJECT(ShowMessageInLocalNotification,  @"show-message-in-local-notification",  NSNumber *)
+GENERATE_OBJECT(Ipv6Enabled,                     @"ipv6-enabled",                        NSNumber *)
+GENERATE_OBJECT(UdpDisabled,                     @"udp-disabled",                        NSNumber *)
 
 @end

@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BasicSettingsViewController.h"
 
-@interface SettingsViewController : UIViewController
+@interface SettingsViewController : BasicSettingsViewController
 
 @end

@@ -103,6 +103,8 @@
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F5642F19E1296400B7A5BE /* AvatarManager.m */; };
 		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
+		11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFB1A7D8C5C00E19766 /* AdvancedSettingsViewController.m */; };
+		11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -302,6 +304,10 @@
 		11F5642F19E1296400B7A5BE /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		11FCD3481A5B283D00DE10CC /* CellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithSwitch.h; sourceTree = "<group>"; };
 		11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithSwitch.m; sourceTree = "<group>"; };
+		11FE3FFA1A7D8C5C00E19766 /* AdvancedSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedSettingsViewController.h; sourceTree = "<group>"; };
+		11FE3FFB1A7D8C5C00E19766 /* AdvancedSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedSettingsViewController.m; sourceTree = "<group>"; };
+		11FE3FFD1A7D8E2800E19766 /* BasicSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicSettingsViewController.h; sourceTree = "<group>"; };
+		11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicSettingsViewController.m; sourceTree = "<group>"; };
 		4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
@@ -703,6 +709,10 @@
 		118352B1197A72D90048CA64 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				11FE3FFA1A7D8C5C00E19766 /* AdvancedSettingsViewController.h */,
+				11FE3FFB1A7D8C5C00E19766 /* AdvancedSettingsViewController.m */,
+				11FE3FFD1A7D8E2800E19766 /* BasicSettingsViewController.h */,
+				11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */,
 				118352A6197A64B70048CA64 /* SettingsViewController.h */,
 				118352A7197A64B70048CA64 /* SettingsViewController.m */,
 			);
@@ -986,6 +996,7 @@
 				110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */,
 				117A5B4719D8A0040067D10F /* ping_array.c in Sources */,
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
+				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
@@ -1011,6 +1022,7 @@
 				117A5B4819D8A0040067D10F /* ping.c in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
 				117A5B4119D8A0040067D10F /* Messenger.c in Sources */,
+				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
 				11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */,
 				118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */,
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,

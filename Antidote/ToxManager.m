@@ -309,7 +309,15 @@ static dispatch_once_t __onceToken;
 
     DDLogInfo(@"ToxManager: creating tox...");
 
-    _tox = tox_new(NULL);
+    Tox_Options options;
+    options.ipv6enabled = [[UserInfoManager sharedInstance].uIpv6Enabled unsignedIntegerValue];
+    options.udp_disabled = [[UserInfoManager sharedInstance].uUdpDisabled unsignedIntegerValue];
+    options.proxy_type = TOX_PROXY_NONE;
+
+    DDLogInfo(@"ToxManager: creating tox... options: ipv6enabled %d, udp_disabled %d",
+            options.ipv6enabled, options.udp_disabled);
+
+    _tox = tox_new(&options);
 
     NSData *toxData = [[ProfileManager sharedInstance] toxDataForCurrentProfile];
 
