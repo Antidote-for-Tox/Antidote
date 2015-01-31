@@ -10,11 +10,15 @@
 #import "UITableViewCell+Utilities.h"
 #import "CellWithSwitch.h"
 #import "UserInfoManager.h"
+#import "ProfileManager.h"
 
-typedef NS_ENUM(NSUInteger, CellType) {
+typedef NS_ENUM(NSInteger, CellType) {
     CellTypeIpv6Enabled,
     CellTypeUdpEnabled,
+    CellTypeRestoreDefault,
 };
+
+static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseIdentifier";
 
 @interface AdvancedSettingsViewController () <CellWithSwitchDelegate>
 
@@ -31,6 +35,9 @@ typedef NS_ENUM(NSUInteger, CellType) {
             @(CellTypeIpv6Enabled),
             @(CellTypeUdpEnabled),
         ],
+        @[
+            @(CellTypeRestoreDefault),
+        ]
     ]];
 }
 
@@ -39,6 +46,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
 - (void)registerCellsForTableView
 {
     [self.tableView registerClass:[CellWithSwitch class] forCellReuseIdentifier:[CellWithSwitch reuseIdentifier]];
+
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kRestoreDefaultReuseIdentifier];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -46,12 +55,35 @@ typedef NS_ENUM(NSUInteger, CellType) {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     if (type == CellTypeIpv6Enabled ||
-             type == CellTypeUdpEnabled)
+        type == CellTypeUdpEnabled)
     {
         return [self cellWithSwitchAtIndexPath:indexPath type:type];
     }
+    else if (type == CellTypeRestoreDefault) {
+        return [self restoreDefaultCellAtIndexPath:indexPath];
+    }
 
     return [UITableViewCell new];
+}
+
+#pragma mark -  UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    if (type == CellTypeRestoreDefault) {
+        [UserInfoManager sharedInstance].uIpv6Enabled = nil;
+        [UserInfoManager sharedInstance].uUdpDisabled = nil;
+
+        [[UserInfoManager sharedInstance] createDefaultValuesIfNeeded];
+
+        [self.tableView reloadData];
+
+        [self reloadTox];
+    }
 }
 
 #pragma mark -  CellWithSwitchDelegate
@@ -67,6 +99,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
     else if (type == CellTypeUdpEnabled) {
         [UserInfoManager sharedInstance].uUdpDisabled = cell.on ? @(0) : @(1);
     }
+
+    [self reloadTox];
 }
 
 #pragma mark -  Private
@@ -87,6 +121,27 @@ typedef NS_ENUM(NSUInteger, CellType) {
     }
 
     return cell;
+}
+
+- (UITableViewCell *)restoreDefaultCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kRestoreDefaultReuseIdentifier
+                                                                 forIndexPath:indexPath];
+    cell.textLabel.text = NSLocalizedString(@"Restore default", @"Settings");
+
+    cell.textLabel.textAlignment = NSTextAlignmentCenter;
+    cell.textLabel.textColor = [AppearanceManager textMainColor];
+
+    return cell;
+}
+
+- (void)reloadTox
+{
+    DDLogInfo(@"Settings: reloading Tox");
+
+    ProfileManager *manager = [ProfileManager sharedInstance];
+
+    [manager switchToProfile:manager.currentProfile];
 }
 
 @end

@@ -26,7 +26,7 @@
 #import "UserInfoManager.h"
 #import "AdvancedSettingsViewController.h"
 
-typedef NS_ENUM(NSUInteger, CellType) {
+typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameStatusAvatar,
     CellTypeToxId,
     CellTypeColorscheme,
