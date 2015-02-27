@@ -195,21 +195,21 @@ static NSString *const kToxSaveName = @"tox_save";
 - (void)loadToxManagerForCurrentProfile
 {
     [[ToxManager sharedInstance] configureSelfAndBootstrapWithNodes:@[
-        [ToxNode nodeWithAddress:@"192.254.75.98"
+        [ToxNode nodeWithAddress:@"192.254.75.102"
                             port:33445
                        publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"],
 
-        [ToxNode nodeWithAddress:@"107.161.17.51"
+        [ToxNode nodeWithAddress:@"178.62.125.224"
                             port:33445
-                       publicKey:@"7BE3951B97CA4B9ECDDA768E8C52BA19E9E2690AB584787BF4C90E04DBB75111"],
+                       publicKey:@"10B20C49ACBD968D7C80F2E8438F92EA51F189F4E70CFBBB2C2C8C799E97F03E"],
 
         [ToxNode nodeWithAddress:@"23.226.230.47"
                             port:33445
                        publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"],
 
-        [ToxNode nodeWithAddress:@"37.59.102.176"
+        [ToxNode nodeWithAddress:@"178.62.250.138"
                             port:33445
-                       publicKey:@"B98A2CEAA6C6A2FADC2C3632D284318B60FE5375CCB41EFA081AB67F500C1B0B"],
+                       publicKey:@"788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B"],
     ]];
 }
 
