@@ -1,6 +1,6 @@
 PODS:
   - BlocksKit (2.2.5):
-    - BlocksKit/All
+    - BlocksKit/All (= 2.2.5)
   - BlocksKit/All (2.2.5):
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
@@ -15,36 +15,35 @@ PODS:
     - BlocksKit/Core
     - BlocksKit/DynamicDelegate
   - CocoaLumberjack (1.9.2):
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/Extensions (= 1.9.2)
   - CocoaLumberjack/Core (1.9.2)
   - CocoaLumberjack/Extensions (1.9.2):
     - CocoaLumberjack/Core
   - JSQMessagesViewController (5.3.1):
     - JSQSystemSoundPlayer
   - JSQSystemSoundPlayer (1.5.2)
-  - libsodium-ios (0.7)
+  - libsodium (1.0.1)
   - MagicalRecord (2.2):
-    - MagicalRecord/Core
+    - MagicalRecord/Core (= 2.2)
   - MagicalRecord/Core (2.2)
+  - toxcore-ios (0.1.0):
+    - libsodium (~> 1.0.1)
 
 DEPENDENCIES:
   - BlocksKit (~> 2.2.5)
   - CocoaLumberjack (~> 1.9.2)
   - JSQMessagesViewController (~> 5.3.1)
   - JSQSystemSoundPlayer (~> 1.5.2)
-  - libsodium-ios (from `libsodium-ios.podspec.json`)
   - MagicalRecord (~> 2.2)
-
-EXTERNAL SOURCES:
-  libsodium-ios:
-    :podspec: libsodium-ios.podspec.json
+  - toxcore-ios (~> 0.1.0)
 
 SPEC CHECKSUMS:
   BlocksKit: 4439e7f30a9f90743462ca63545a15c1f4304cef
   CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
   JSQMessagesViewController: d1f9dcf8f768aab54dc59ac9f042a69623057658
   JSQSystemSoundPlayer: c24914bc96ff5365b5d28b59d7ecffd60d1c5587
-  libsodium-ios: d3a76625dcb63a293c0cabe1c868bc733c5ab93e
+  libsodium: ac34cc59b942350fb1377380cfb31f05c3d6170e
   MagicalRecord: 2b471584fc9e3137f3d0a56967917baa4979e224
+  toxcore-ios: 9edc10e2a4a3b7987524e44c26777d85ab808eec
 
-COCOAPODS: 0.34.2
+COCOAPODS: 0.35.0

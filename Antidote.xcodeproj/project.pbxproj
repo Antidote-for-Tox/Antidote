@@ -37,27 +37,6 @@
 		1164763F19794D3300DB20B8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1164763E19794D3300DB20B8 /* main.m */; };
 		1164764319794D3300DB20B8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1164764219794D3300DB20B8 /* AppDelegate.m */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
-		117A5B3819D8A0040067D10F /* assoc.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B0D19D8A0040067D10F /* assoc.c */; };
-		117A5B3919D8A0040067D10F /* crypto_core.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B0F19D8A0040067D10F /* crypto_core.c */; };
-		117A5B3A19D8A0040067D10F /* DHT.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1119D8A0040067D10F /* DHT.c */; };
-		117A5B3B19D8A0040067D10F /* friend_connection.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1319D8A0040067D10F /* friend_connection.c */; };
-		117A5B3C19D8A0040067D10F /* friend_requests.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1519D8A0040067D10F /* friend_requests.c */; };
-		117A5B3D19D8A0040067D10F /* group.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1719D8A0040067D10F /* group.c */; };
-		117A5B3E19D8A0040067D10F /* LAN_discovery.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1919D8A0040067D10F /* LAN_discovery.c */; };
-		117A5B3F19D8A0040067D10F /* list.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1B19D8A0040067D10F /* list.c */; };
-		117A5B4019D8A0040067D10F /* logger.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1D19D8A0040067D10F /* logger.c */; };
-		117A5B4119D8A0040067D10F /* Messenger.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B1F19D8A0040067D10F /* Messenger.c */; };
-		117A5B4219D8A0040067D10F /* net_crypto.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2219D8A0040067D10F /* net_crypto.c */; };
-		117A5B4319D8A0040067D10F /* network.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2419D8A0040067D10F /* network.c */; };
-		117A5B4419D8A0040067D10F /* onion_announce.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2619D8A0040067D10F /* onion_announce.c */; };
-		117A5B4519D8A0040067D10F /* onion_client.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2819D8A0040067D10F /* onion_client.c */; };
-		117A5B4619D8A0040067D10F /* onion.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2A19D8A0040067D10F /* onion.c */; };
-		117A5B4719D8A0040067D10F /* ping_array.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2C19D8A0040067D10F /* ping_array.c */; };
-		117A5B4819D8A0040067D10F /* ping.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B2E19D8A0040067D10F /* ping.c */; };
-		117A5B4919D8A0040067D10F /* TCP_client.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3019D8A0040067D10F /* TCP_client.c */; };
-		117A5B4A19D8A0040067D10F /* TCP_server.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3219D8A0040067D10F /* TCP_server.c */; };
-		117A5B4B19D8A0040067D10F /* tox.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3419D8A0040067D10F /* tox.c */; };
-		117A5B4C19D8A0040067D10F /* util.c in Sources */ = {isa = PBXBuildFile; fileRef = 117A5B3619D8A0040067D10F /* util.c */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */; };
 		11835295197994050048CA64 /* ToxManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11835294197994050048CA64 /* ToxManager.m */; };
@@ -170,49 +149,6 @@
 		1164764219794D3300DB20B8 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		1164764419794D3300DB20B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		117A5B0D19D8A0040067D10F /* assoc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = assoc.c; path = toxcore/toxcore/assoc.c; sourceTree = "<group>"; };
-		117A5B0E19D8A0040067D10F /* assoc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = assoc.h; path = toxcore/toxcore/assoc.h; sourceTree = "<group>"; };
-		117A5B0F19D8A0040067D10F /* crypto_core.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = crypto_core.c; path = toxcore/toxcore/crypto_core.c; sourceTree = "<group>"; };
-		117A5B1019D8A0040067D10F /* crypto_core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = crypto_core.h; path = toxcore/toxcore/crypto_core.h; sourceTree = "<group>"; };
-		117A5B1119D8A0040067D10F /* DHT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DHT.c; path = toxcore/toxcore/DHT.c; sourceTree = "<group>"; };
-		117A5B1219D8A0040067D10F /* DHT.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DHT.h; path = toxcore/toxcore/DHT.h; sourceTree = "<group>"; };
-		117A5B1319D8A0040067D10F /* friend_connection.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = friend_connection.c; path = toxcore/toxcore/friend_connection.c; sourceTree = "<group>"; };
-		117A5B1419D8A0040067D10F /* friend_connection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = friend_connection.h; path = toxcore/toxcore/friend_connection.h; sourceTree = "<group>"; };
-		117A5B1519D8A0040067D10F /* friend_requests.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = friend_requests.c; path = toxcore/toxcore/friend_requests.c; sourceTree = "<group>"; };
-		117A5B1619D8A0040067D10F /* friend_requests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = friend_requests.h; path = toxcore/toxcore/friend_requests.h; sourceTree = "<group>"; };
-		117A5B1719D8A0040067D10F /* group.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = group.c; path = toxcore/toxcore/group.c; sourceTree = "<group>"; };
-		117A5B1819D8A0040067D10F /* group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = group.h; path = toxcore/toxcore/group.h; sourceTree = "<group>"; };
-		117A5B1919D8A0040067D10F /* LAN_discovery.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LAN_discovery.c; path = toxcore/toxcore/LAN_discovery.c; sourceTree = "<group>"; };
-		117A5B1A19D8A0040067D10F /* LAN_discovery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LAN_discovery.h; path = toxcore/toxcore/LAN_discovery.h; sourceTree = "<group>"; };
-		117A5B1B19D8A0040067D10F /* list.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = list.c; path = toxcore/toxcore/list.c; sourceTree = "<group>"; };
-		117A5B1C19D8A0040067D10F /* list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = list.h; path = toxcore/toxcore/list.h; sourceTree = "<group>"; };
-		117A5B1D19D8A0040067D10F /* logger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = logger.c; path = toxcore/toxcore/logger.c; sourceTree = "<group>"; };
-		117A5B1E19D8A0040067D10F /* logger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = logger.h; path = toxcore/toxcore/logger.h; sourceTree = "<group>"; };
-		117A5B1F19D8A0040067D10F /* Messenger.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Messenger.c; path = toxcore/toxcore/Messenger.c; sourceTree = "<group>"; };
-		117A5B2019D8A0040067D10F /* Messenger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Messenger.h; path = toxcore/toxcore/Messenger.h; sourceTree = "<group>"; };
-		117A5B2119D8A0040067D10F /* misc_tools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = misc_tools.h; path = toxcore/toxcore/misc_tools.h; sourceTree = "<group>"; };
-		117A5B2219D8A0040067D10F /* net_crypto.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_crypto.c; path = toxcore/toxcore/net_crypto.c; sourceTree = "<group>"; };
-		117A5B2319D8A0040067D10F /* net_crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_crypto.h; path = toxcore/toxcore/net_crypto.h; sourceTree = "<group>"; };
-		117A5B2419D8A0040067D10F /* network.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = network.c; path = toxcore/toxcore/network.c; sourceTree = "<group>"; };
-		117A5B2519D8A0040067D10F /* network.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = network.h; path = toxcore/toxcore/network.h; sourceTree = "<group>"; };
-		117A5B2619D8A0040067D10F /* onion_announce.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = onion_announce.c; path = toxcore/toxcore/onion_announce.c; sourceTree = "<group>"; };
-		117A5B2719D8A0040067D10F /* onion_announce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = onion_announce.h; path = toxcore/toxcore/onion_announce.h; sourceTree = "<group>"; };
-		117A5B2819D8A0040067D10F /* onion_client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = onion_client.c; path = toxcore/toxcore/onion_client.c; sourceTree = "<group>"; };
-		117A5B2919D8A0040067D10F /* onion_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = onion_client.h; path = toxcore/toxcore/onion_client.h; sourceTree = "<group>"; };
-		117A5B2A19D8A0040067D10F /* onion.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = onion.c; path = toxcore/toxcore/onion.c; sourceTree = "<group>"; };
-		117A5B2B19D8A0040067D10F /* onion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = onion.h; path = toxcore/toxcore/onion.h; sourceTree = "<group>"; };
-		117A5B2C19D8A0040067D10F /* ping_array.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ping_array.c; path = toxcore/toxcore/ping_array.c; sourceTree = "<group>"; };
-		117A5B2D19D8A0040067D10F /* ping_array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ping_array.h; path = toxcore/toxcore/ping_array.h; sourceTree = "<group>"; };
-		117A5B2E19D8A0040067D10F /* ping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ping.c; path = toxcore/toxcore/ping.c; sourceTree = "<group>"; };
-		117A5B2F19D8A0040067D10F /* ping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ping.h; path = toxcore/toxcore/ping.h; sourceTree = "<group>"; };
-		117A5B3019D8A0040067D10F /* TCP_client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = TCP_client.c; path = toxcore/toxcore/TCP_client.c; sourceTree = "<group>"; };
-		117A5B3119D8A0040067D10F /* TCP_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCP_client.h; path = toxcore/toxcore/TCP_client.h; sourceTree = "<group>"; };
-		117A5B3219D8A0040067D10F /* TCP_server.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = TCP_server.c; path = toxcore/toxcore/TCP_server.c; sourceTree = "<group>"; };
-		117A5B3319D8A0040067D10F /* TCP_server.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TCP_server.h; path = toxcore/toxcore/TCP_server.h; sourceTree = "<group>"; };
-		117A5B3419D8A0040067D10F /* tox.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tox.c; path = toxcore/toxcore/tox.c; sourceTree = "<group>"; };
-		117A5B3519D8A0040067D10F /* tox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tox.h; path = toxcore/toxcore/tox.h; sourceTree = "<group>"; };
-		117A5B3619D8A0040067D10F /* util.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = util.c; path = toxcore/toxcore/util.c; sourceTree = "<group>"; };
-		117A5B3719D8A0040067D10F /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = toxcore/toxcore/util.h; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		117FCFB619BCC1990026C13B /* ChatBasicMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicMessageCell.h; sourceTree = "<group>"; };
@@ -481,7 +417,6 @@
 		1164762619794D3300DB20B8 = {
 			isa = PBXGroup;
 			children = (
-				1164766119794E4B00DB20B8 /* toxcore */,
 				1164763819794D3300DB20B8 /* Antidote */,
 				1164763119794D3300DB20B8 /* Frameworks */,
 				1164763019794D3300DB20B8 /* Products */,
@@ -534,56 +469,6 @@
 				1164764019794D3300DB20B8 /* Antidote-Prefix.pch */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		1164766119794E4B00DB20B8 /* toxcore */ = {
-			isa = PBXGroup;
-			children = (
-				117A5B0D19D8A0040067D10F /* assoc.c */,
-				117A5B0E19D8A0040067D10F /* assoc.h */,
-				117A5B0F19D8A0040067D10F /* crypto_core.c */,
-				117A5B1019D8A0040067D10F /* crypto_core.h */,
-				117A5B1119D8A0040067D10F /* DHT.c */,
-				117A5B1219D8A0040067D10F /* DHT.h */,
-				117A5B1319D8A0040067D10F /* friend_connection.c */,
-				117A5B1419D8A0040067D10F /* friend_connection.h */,
-				117A5B1519D8A0040067D10F /* friend_requests.c */,
-				117A5B1619D8A0040067D10F /* friend_requests.h */,
-				117A5B1719D8A0040067D10F /* group.c */,
-				117A5B1819D8A0040067D10F /* group.h */,
-				117A5B1919D8A0040067D10F /* LAN_discovery.c */,
-				117A5B1A19D8A0040067D10F /* LAN_discovery.h */,
-				117A5B1B19D8A0040067D10F /* list.c */,
-				117A5B1C19D8A0040067D10F /* list.h */,
-				117A5B1D19D8A0040067D10F /* logger.c */,
-				117A5B1E19D8A0040067D10F /* logger.h */,
-				117A5B1F19D8A0040067D10F /* Messenger.c */,
-				117A5B2019D8A0040067D10F /* Messenger.h */,
-				117A5B2119D8A0040067D10F /* misc_tools.h */,
-				117A5B2219D8A0040067D10F /* net_crypto.c */,
-				117A5B2319D8A0040067D10F /* net_crypto.h */,
-				117A5B2419D8A0040067D10F /* network.c */,
-				117A5B2519D8A0040067D10F /* network.h */,
-				117A5B2619D8A0040067D10F /* onion_announce.c */,
-				117A5B2719D8A0040067D10F /* onion_announce.h */,
-				117A5B2819D8A0040067D10F /* onion_client.c */,
-				117A5B2919D8A0040067D10F /* onion_client.h */,
-				117A5B2A19D8A0040067D10F /* onion.c */,
-				117A5B2B19D8A0040067D10F /* onion.h */,
-				117A5B2C19D8A0040067D10F /* ping_array.c */,
-				117A5B2D19D8A0040067D10F /* ping_array.h */,
-				117A5B2E19D8A0040067D10F /* ping.c */,
-				117A5B2F19D8A0040067D10F /* ping.h */,
-				117A5B3019D8A0040067D10F /* TCP_client.c */,
-				117A5B3119D8A0040067D10F /* TCP_client.h */,
-				117A5B3219D8A0040067D10F /* TCP_server.c */,
-				117A5B3319D8A0040067D10F /* TCP_server.h */,
-				117A5B3419D8A0040067D10F /* tox.c */,
-				117A5B3519D8A0040067D10F /* tox.h */,
-				117A5B3619D8A0040067D10F /* util.c */,
-				117A5B3719D8A0040067D10F /* util.h */,
-			);
-			name = toxcore;
 			sourceTree = "<group>";
 		};
 		117FCFB319BCC1750026C13B /* Message */ = {
@@ -978,23 +863,17 @@
 			files = (
 				11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */,
 				11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */,
-				117A5B4019D8A0040067D10F /* logger.c in Sources */,
 				119BB11B198AC1B300380557 /* ToxFunctions.m in Sources */,
-				117A5B3919D8A0040067D10F /* crypto_core.c in Sources */,
-				117A5B4219D8A0040067D10F /* net_crypto.c in Sources */,
 				114100781A3A3A3700054859 /* QRScannerController.m in Sources */,
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				118352D0197A8D5C0048CA64 /* ToxFriend.m in Sources */,
 				118352D9197AC1CC0048CA64 /* ToxFriendRequest.m in Sources */,
-				117A5B3E19D8A0040067D10F /* LAN_discovery.c in Sources */,
-				117A5B3A19D8A0040067D10F /* DHT.c in Sources */,
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				11B9E60D19929DAE00FB20A6 /* ChatBasicCell.m in Sources */,
 				114630EF1986C4BF0075DA16 /* ChatInputView.m in Sources */,
 				11B6C31B199D2CCE00A48FBC /* CDMessageCall.m in Sources */,
 				110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */,
-				117A5B4719D8A0040067D10F /* ping_array.c in Sources */,
 				11835295197994050048CA64 /* ToxManager.m in Sources */,
 				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
@@ -1002,7 +881,6 @@
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */,
 				11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */,
-				117A5B4519D8A0040067D10F /* onion_client.c in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
 				1122E84F19F93225002907B3 /* ToxManagerChats.m in Sources */,
 				117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */,
@@ -1014,14 +892,11 @@
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				111EC73919A097A900A27A0E /* ToxDownloadingFile.m in Sources */,
-				117A5B4C19D8A0040067D10F /* util.c in Sources */,
 				11C3A785199008760029A7A0 /* ChatViewController.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				111EC732199FD6DA00A27A0E /* CDMessagePendingFile.m in Sources */,
 				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,
-				117A5B4819D8A0040067D10F /* ping.c in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
-				117A5B4119D8A0040067D10F /* Messenger.c in Sources */,
 				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
 				11C7C6B51983FB42001B849B /* ToxFriendsContainer.m in Sources */,
 				118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */,
@@ -1031,7 +906,6 @@
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				111EC735199FD6DB00A27A0E /* CDMessageFile.m in Sources */,
-				117A5B4A19D8A0040067D10F /* TCP_server.c in Sources */,
 				110B8B8719C8DCF5000E4334 /* CoreDataManager+Profile.m in Sources */,
 				84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */,
 				11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */,
@@ -1039,36 +913,26 @@
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */,
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
-				117A5B4B19D8A0040067D10F /* tox.c in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
-				117A5B4419D8A0040067D10F /* onion_announce.c in Sources */,
-				117A5B3D19D8A0040067D10F /* group.c in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
-				117A5B4619D8A0040067D10F /* onion.c in Sources */,
-				117A5B3B19D8A0040067D10F /* friend_connection.c in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
-				117A5B3819D8A0040067D10F /* assoc.c in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				1146308C19842D360075DA16 /* CoreDataManager.m in Sources */,
 				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
 				11B6C312199D2CCE00A48FBC /* CDMessage.m in Sources */,
 				11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */,
 				11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */,
-				117A5B4319D8A0040067D10F /* network.c in Sources */,
-				117A5B3C19D8A0040067D10F /* friend_requests.c in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				1122E85219F9348F002907B3 /* ToxManagerFiles.m in Sources */,
-				117A5B4919D8A0040067D10F /* TCP_client.c in Sources */,
 				110B8B8019C8DAFE000E4334 /* CDProfile.m in Sources */,
 				11925BB519B3077A00349651 /* ToxUploadingFile.m in Sources */,
-				117A5B3F19D8A0040067D10F /* list.c in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
 			);

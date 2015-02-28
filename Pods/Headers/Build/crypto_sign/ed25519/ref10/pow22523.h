@@ -1,1 +1,1 @@
-../../../../../libsodium-ios/src/libsodium/crypto_sign/ed25519/ref10/pow22523.h
+../../../../../libsodium/src/libsodium/crypto_sign/ed25519/ref10/pow22523.h

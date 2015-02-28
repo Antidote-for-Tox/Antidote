@@ -1,1 +1,1 @@
-../../../../../libsodium-ios/src/libsodium/crypto_sign/ed25519/ref10/ge_sub.h
+../../../../../libsodium/src/libsodium/crypto_sign/ed25519/ref10/ge_sub.h

@@ -1,1 +1,1 @@
-../../../../../libsodium-ios/src/libsodium/crypto_shorthash/siphash24/ref/api.h
+../../../../../libsodium/src/libsodium/crypto_shorthash/siphash24/ref/api.h
