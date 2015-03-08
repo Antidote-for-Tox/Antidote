@@ -40,13 +40,14 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 #### In progress
 
+-  refactoring tox wrapper, moving it to [separate project](https://github.com/dvor/objcTox)
 -  UI polishing
--  Fixing bugs
--  audio calls
+-  fixing bugs
 
 #### Then
 
 -  group chats *(as soon as group chats will be rewritten in toxcore)*
+-  audio calls
 -  video calls
 
 #### Future
