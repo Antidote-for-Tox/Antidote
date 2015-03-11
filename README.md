@@ -69,7 +69,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 ## License
 
-Antidote is available under the MIT license. See the [COPYING](COPYING) file for more info.
+Antidote is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
 
 ## Links
 
