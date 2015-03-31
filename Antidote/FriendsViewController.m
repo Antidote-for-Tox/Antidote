@@ -80,17 +80,6 @@
     [self updateBarButtonItem];
 
     [self updateSegmentedControlRequestTitle];
-
-    UIImageView *hairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-    hairlineImageView.hidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    UIImageView *hairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-    hairlineImageView.hidden = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -341,6 +330,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self.tableView registerClass:[FriendsCell class] forCellReuseIdentifier:[FriendsCell reuseIdentifier]];
     [self.tableView registerClass:[FriendRequestsCell class]
