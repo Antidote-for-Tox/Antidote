@@ -87,6 +87,7 @@
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -251,6 +252,8 @@
 		84F9E6E819B61D49005F3889 /* ToxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxNode.h; sourceTree = "<group>"; };
 		84F9E6E919B61D49005F3889 /* ToxNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxNode.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerAimView.h; sourceTree = "<group>"; };
+		F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerAimView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -562,6 +565,8 @@
 				118352AB197A6C410048CA64 /* CopyLabel.m */,
 				118352C1197A7D390048CA64 /* StatusCircleView.h */,
 				118352C2197A7D3A0048CA64 /* StatusCircleView.m */,
+				F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */,
+				F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -882,6 +887,7 @@
 				114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */,
 				11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
+				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				1122E84F19F93225002907B3 /* ToxManagerChats.m in Sources */,
 				117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */,
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,

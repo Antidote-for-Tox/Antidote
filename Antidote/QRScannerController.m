@@ -8,9 +8,9 @@
 
 #import <AVFoundation/AVFoundation.h>
 
+#import "QRScannerAimView.h"
 #import "QRScannerController.h"
 #import "UIViewController+Utilities.h"
-#import "AppearanceManager.h"
 
 @interface QRScannerController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -18,6 +18,8 @@
 
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 @property (strong, nonatomic) NSMutableArray *codeObjects;
+
+@property (strong, nonatomic) QRScannerAimView *aimView;
 
 @property (copy, nonatomic) QRScannerControllerSuccessBlock successBlock;
 @property (copy, nonatomic) QRScannerControllerCancelBlock cancelBlock;
@@ -58,6 +60,7 @@
 {
     [self loadWhiteView];
     [self createLayers];
+    [self createSubviews];
 }
 
 - (void)viewDidLayoutSubviews
@@ -67,10 +70,10 @@
     self.previewLayer.frame = self.view.bounds;
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-
+    [super viewWillAppear:animated];
+    
     [self.captureSession startRunning];
 }
 
@@ -144,12 +147,15 @@
 
     for (AVMetadataObject *object in metadataObjects) {
         if ([object isKindOfClass:[AVMetadataMachineReadableCodeObject class]]) {
-            AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)object;
-
+            AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)
+                [self.previewLayer transformedMetadataObjectForMetadataObject:(AVMetadataMachineReadableCodeObject *)object];
+            
+            self.aimView.frame = readableObject.bounds;
+            
             [stringValues addObject:readableObject.stringValue];
         }
     }
-
+    
     self.successBlock(self, [stringValues copy]);
 }
 
@@ -207,6 +213,13 @@
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [self.view.layer addSublayer:self.previewLayer];
+}
+
+- (void)createSubviews
+{
+    self.aimView = [QRScannerAimView new];
+    [self.view addSubview:self.aimView];
+    [self.view bringSubviewToFront:self.aimView];
 }
 
 @end
