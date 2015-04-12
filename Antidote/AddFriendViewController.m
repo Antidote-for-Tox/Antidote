@@ -173,9 +173,11 @@
 
     self.toxIdTextView = [UITextView new];
     self.toxIdTextView.delegate = self;
-    self.toxIdTextView.backgroundColor = [UIColor lightGrayColor];
     self.toxIdTextView.returnKeyType = UIReturnKeyDone;
     self.toxIdTextView.keyboardType = UIKeyboardTypeNamePhonePad;
+    self.toxIdTextView.layer.cornerRadius = 5.0f;
+    self.toxIdTextView.layer.borderWidth = 0.5f;
+    self.toxIdTextView.layer.borderColor = [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
     [self.scrollView addSubview:self.toxIdTextView];
 }
 
@@ -187,7 +189,9 @@
 
     self.messageTextView = [UITextView new];
     self.messageTextView.delegate = self;
-    self.messageTextView.backgroundColor = [UIColor lightGrayColor];
+    self.messageTextView.layer.cornerRadius = 5.0f;
+    self.messageTextView.layer.borderWidth = 0.5f;
+    self.messageTextView.layer.borderColor= [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
     self.messageTextView.returnKeyType = UIReturnKeyDefault;
     [self.scrollView addSubview:self.messageTextView];
 }
