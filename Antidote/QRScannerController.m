@@ -10,6 +10,7 @@
 
 #import "QRScannerController.h"
 #import "UIViewController+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface QRScannerController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -56,7 +57,6 @@
 - (void)loadView
 {
     [self loadWhiteView];
-
     [self createLayers];
 }
 
@@ -179,10 +179,14 @@
 
 - (void)createBarButtonItems
 {
-    self.navigationItem.leftBarButtonItem =
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                      target:self
-                                                      action:@selector(cancelButtonPressed)];
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton.titleLabel setTextColor:[UIColor yellowColor]];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[AppearanceManager textMainColor] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton sizeToFit];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
 }
 
 - (AVCaptureDeviceInput *)captureSessionInput
