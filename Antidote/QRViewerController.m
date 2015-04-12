@@ -18,13 +18,14 @@
 
 @property (strong, nonatomic) UIButton *closeButton;
 @property (strong, nonatomic) UIImageView *imageView;
-@property (strong, nonatomic) CopyLabel *label;
 
 @property (strong, nonatomic) NSString *text;
 
 @end
 
 @implementation QRViewerController
+
+#pragma mark - Lifecycle
 
 - (instancetype)initWithToxId:(NSString *)toxId
 {
@@ -47,10 +48,8 @@
 {
     [self loadWhiteView];
 
-
     [self createCloseButton];
     [self createImageView];
-    [self createLabel];
 }
 
 - (void)viewDidLayoutSubviews
@@ -105,13 +104,6 @@
     [self.view addSubview:self.imageView];
 }
 
-- (void)createLabel
-{
-    self.label = [self.view addCopyLabelWithTextColor:[UIColor grayColor] bgColor:[UIColor clearColor]];
-    self.label.numberOfLines = 0;
-    self.label.text = self.text;
-}
-
 - (void)adjustSubviews
 {
     CGRect frame = CGRectZero;
@@ -122,7 +114,8 @@
 
         frame = CGRectZero;
         frame.size = [title stringSizeWithFont:font];
-        frame.origin.x = self.view.bounds.size.width - frame.size.width - 15.0;
+        frame.size.height = frame.size.width;
+        frame.origin.x = self.view.bounds.size.width - frame.size.width - 10.0;
         frame.origin.y = 30.0;
         self.closeButton.frame = frame;
     }
@@ -134,18 +127,6 @@
         self.imageView.frame = frame;
 
         self.imageView.image = [self resizeImage:self.imageView.image newSize:frame.size];
-    }
-
-    {
-        CGFloat xIndentation = 10.0;
-        CGFloat maxWidth = self.view.bounds.size.width - 2 * xIndentation;
-
-        frame = CGRectZero;
-        frame.size = [self.label.text stringSizeWithFont:self.label.font
-                                       constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
-        frame.origin.x = xIndentation;
-        frame.origin.y = CGRectGetMaxY(self.imageView.frame) + 10.0;
-        self.label.frame = frame;
     }
 }
 
@@ -161,6 +142,21 @@
     UIGraphicsEndImageContext();
 
     return resized;
+}
+
+- (BOOL)shouldAutorotate
+{
+    return NO;
+}
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationPortrait;
 }
 
 @end
