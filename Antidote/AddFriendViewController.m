@@ -13,8 +13,11 @@
 #import "ToxFunctions.h"
 #import "QRScannerController.h"
 #import "UIAlertView+BlocksKit.h"
+#import "UIColor+Utilities.h"
 
 @interface AddFriendViewController () <UITextViewDelegate>
+
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
@@ -48,10 +51,14 @@
 {
     [self loadWhiteView];
 
+    [self subscribeNotifications];
+    
     [self createScrollView];
     [self createToxIdViews];
     [self createMessageViews];
     [self createSendRequestButton];
+    
+    self.view.backgroundColor = [UIColor uColorOpaqueWithRed:239 green:239 blue:244];
 }
 
 - (void)viewDidLayoutSubviews
@@ -61,7 +68,44 @@
     [self adjustSubviews];
 }
 
+- (void)dealloc
+{
+    [self unsubscribeNotifications];
+}
+
+#pragma mark -  Notifications
+
+- (void)subscribeNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)unsubscribeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark -  Actions
+
+- (void)keyboardWillShow
+{
+    self.scrollView.scrollEnabled = NO;
+}
+
+- (void)keyboardWillHide
+{
+    self.scrollView.scrollEnabled = YES;
+    
+    [self finishEditingButtonPressed];
+}
 
 - (void)toxIdQRButtonPressed
 {
@@ -103,7 +147,18 @@
 {
     if ([textView isEqual:self.messageTextView]) {
         CGPoint offset = CGPointZero;
-        offset.y = 60.0;
+        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
+            offset.y = 60.0;
+        }
+        else {
+            if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+                offset.y = 70.0;
+            }
+            else {
+                offset.y = 90.0;
+            }
+        }
+        
         [self.scrollView setContentOffset:offset animated:YES];
 
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -225,10 +280,12 @@
     currentOriginY = CGRectGetMaxY(frame);
 
     {
+        const CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
+        
         [self.toxIdQRButton sizeToFit];
         frame = self.toxIdQRButton.frame;
-        frame.origin.x = self.view.bounds.size.width - frame.size.width - 20.0;
-        frame.origin.y = self.toxIdTitleLabel.frame.origin.y;
+        frame.origin.x = self.view.bounds.size.width - xIndentation - frame.size.width;
+        frame.origin.y = CGRectGetMidY(self.toxIdTitleLabel.frame) - frame.size.height / 2;
         self.toxIdQRButton.frame = frame;
     }
 
@@ -263,8 +320,12 @@
         frame.origin.x = xIndentation;
         frame.origin.y = currentOriginY + yIndentation;
         frame.size.width = self.view.bounds.size.width - 2 * xIndentation;
-        frame.size.height = self.scrollView.bounds.size.height - self.scrollView.contentInset.top -
+        CGFloat height = self.scrollView.bounds.size.height - self.scrollView.contentInset.top -
             self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * yIndentation;
+        if (height < self.toxIdTextView.frame.size.height) {
+            height = roundf(self.toxIdTextView.frame.size.height * 0.7f);
+        }
+        frame.size.height = height;
         self.messageTextView.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
