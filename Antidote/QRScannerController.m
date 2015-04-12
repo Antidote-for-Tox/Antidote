@@ -11,6 +11,7 @@
 #import "QRScannerAimView.h"
 #import "QRScannerController.h"
 #import "UIViewController+Utilities.h"
+#import "UINavigationController+PortraitModeOnly.h"
 
 @interface QRScannerController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -67,7 +68,11 @@
 {
     [super viewDidLayoutSubviews];
 
-    self.previewLayer.frame = self.view.bounds;
+    CGRect frame = self.view.bounds;
+    frame.origin.y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+    frame.size.height -= frame.origin.y;
+    
+    self.previewLayer.frame = frame;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -149,8 +154,10 @@
         if ([object isKindOfClass:[AVMetadataMachineReadableCodeObject class]]) {
             AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)
                 [self.previewLayer transformedMetadataObjectForMetadataObject:(AVMetadataMachineReadableCodeObject *)object];
-            
-            self.aimView.frame = readableObject.bounds;
+           
+            CGRect aimFrame = readableObject.bounds;
+            aimFrame.origin.y += CGRectGetMaxY(self.navigationController.navigationBar.frame);
+            self.aimView.frame = aimFrame;
             
             [stringValues addObject:readableObject.stringValue];
         }

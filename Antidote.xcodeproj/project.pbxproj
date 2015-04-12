@@ -88,6 +88,7 @@
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */; };
+		F970DEAF1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEAE1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -254,6 +255,8 @@
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerAimView.h; sourceTree = "<group>"; };
 		F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerAimView.m; sourceTree = "<group>"; };
+		F970DEAD1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+PortraitModeOnly.h"; sourceTree = "<group>"; };
+		F970DEAE1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+PortraitModeOnly.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -592,6 +595,8 @@
 				118352C5197A802D0048CA64 /* UIView+Utilities.m */,
 				118352BA197A7B960048CA64 /* UIViewController+Utilities.h */,
 				118352BB197A7B960048CA64 /* UIViewController+Utilities.m */,
+				F970DEAD1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.h */,
+				F970DEAE1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -927,6 +932,7 @@
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
+				F970DEAF1ADA51BF00EE2EE4 /* UINavigationController+PortraitModeOnly.m in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				1146308C19842D360075DA16 /* CoreDataManager.m in Sources */,
 				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
