@@ -6,12 +6,11 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import <AVFoundation/AVFoundation.h>
-
-#import "QRScannerAimView.h"
 #import "QRScannerController.h"
+#import "PortraitNavigationController.h"
+#import "QRScannerAimView.h"
 #import "UIViewController+Utilities.h"
-#import "UINavigationController+PortraitModeOnly.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface QRScannerController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -121,7 +120,7 @@
     sc.successBlock = success;
     sc.cancelBlock = cancel;
 
-    return [[UINavigationController alloc] initWithRootViewController:sc];
+    return [[PortraitNavigationController alloc] initWithRootViewController:sc];
 }
 
 #pragma mark -  Notificatoins

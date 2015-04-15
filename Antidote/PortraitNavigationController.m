@@ -1,14 +1,14 @@
 //
-//  UINavigationController+PortraitModeOnly.m
+//  PortraitViewController.m
 //  Antidote
 //
-//  Created by Nikolay Palamar on 12/04/15.
+//  Created by Nicholas Palamar on 4/15/15.
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import "UINavigationController+PortraitModeOnly.h"
+#import "PortraitNavigationController.h"
 
-@implementation UINavigationController (PortraitModeOnly)
+@implementation PortraitNavigationController
 
 - (BOOL)shouldAutorotate
 {
