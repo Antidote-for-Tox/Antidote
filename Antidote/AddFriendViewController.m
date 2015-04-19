@@ -19,8 +19,6 @@ static const CGFloat kYIndentation = 10.0;
 
 @interface AddFriendViewController () <UITextViewDelegate>
 
-#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
-
 @property (strong, nonatomic) UIScrollView *scrollView;
 
 @property (strong, nonatomic) UILabel *toxIdTitleLabel;
