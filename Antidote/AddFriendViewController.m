@@ -13,6 +13,9 @@
 #import "ToxFunctions.h"
 #import "QRScannerController.h"
 #import "UIAlertView+BlocksKit.h"
+#import "UIColor+Utilities.h"
+
+static const CGFloat kYIndentation = 10.0;
 
 @interface AddFriendViewController () <UITextViewDelegate>
 
@@ -48,10 +51,14 @@
 {
     [self loadWhiteView];
 
+    [self subscribeNotifications];
+    
     [self createScrollView];
     [self createToxIdViews];
     [self createMessageViews];
     [self createSendRequestButton];
+    
+    self.view.backgroundColor = [UIColor uColorOpaqueWithRed:239 green:239 blue:244];
 }
 
 - (void)viewDidLayoutSubviews
@@ -61,7 +68,44 @@
     [self adjustSubviews];
 }
 
+- (void)dealloc
+{
+    [self unsubscribeNotifications];
+}
+
+#pragma mark -  Notifications
+
+- (void)subscribeNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
+- (void)unsubscribeNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark -  Actions
+
+- (void)keyboardWillShow
+{
+    self.scrollView.scrollEnabled = NO;
+}
+
+- (void)keyboardWillHide
+{
+    self.scrollView.scrollEnabled = YES;
+    
+    [self resignTextViewResponders];
+}
 
 - (void)toxIdQRButtonPressed
 {
@@ -88,13 +132,7 @@
 
 - (void)finishEditingButtonPressed
 {
-    if (self.toxIdTextView.isFirstResponder) {
-        [self.toxIdTextView resignFirstResponder];
-    }
-
-    if (self.messageTextView.isFirstResponder) {
-        [self.messageTextView resignFirstResponder];
-    }
+    [self resignTextViewResponders];
 }
 
 #pragma mark -  UITextViewDelegate
@@ -103,7 +141,8 @@
 {
     if ([textView isEqual:self.messageTextView]) {
         CGPoint offset = CGPointZero;
-        offset.y = 60.0;
+        offset.y = CGRectGetMinY(self.messageTitleLabel.frame) - CGRectGetMaxY(self.navigationController.navigationBar.frame)
+                                                               - kYIndentation;
         [self.scrollView setContentOffset:offset animated:YES];
 
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -173,9 +212,11 @@
 
     self.toxIdTextView = [UITextView new];
     self.toxIdTextView.delegate = self;
-    self.toxIdTextView.backgroundColor = [UIColor lightGrayColor];
     self.toxIdTextView.returnKeyType = UIReturnKeyDone;
     self.toxIdTextView.keyboardType = UIKeyboardTypeNamePhonePad;
+    self.toxIdTextView.layer.cornerRadius = 5.0f;
+    self.toxIdTextView.layer.borderWidth = 0.5f;
+    self.toxIdTextView.layer.borderColor = [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
     [self.scrollView addSubview:self.toxIdTextView];
 }
 
@@ -187,7 +228,9 @@
 
     self.messageTextView = [UITextView new];
     self.messageTextView.delegate = self;
-    self.messageTextView.backgroundColor = [UIColor lightGrayColor];
+    self.messageTextView.layer.cornerRadius = 5.0f;
+    self.messageTextView.layer.borderWidth = 0.5f;
+    self.messageTextView.layer.borderColor= [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
     self.messageTextView.returnKeyType = UIReturnKeyDefault;
     [self.scrollView addSubview:self.messageTextView];
 }
@@ -202,12 +245,22 @@
     [self.scrollView addSubview:self.sendRequestButton];
 }
 
+- (void)resignTextViewResponders
+{
+    if (self.toxIdTextView.isFirstResponder) {
+        [self.toxIdTextView resignFirstResponder];
+    }
+
+    if (self.messageTextView.isFirstResponder) {
+        [self.messageTextView resignFirstResponder];
+    } 
+}
+
 - (void)adjustSubviews
 {
     self.scrollView.frame = self.view.bounds;
 
     CGFloat currentOriginY = 0.0;
-    const CGFloat yIndentation = 10.0;
 
     CGRect frame = CGRectZero;
 
@@ -215,16 +268,18 @@
         [self.toxIdTitleLabel sizeToFit];
         frame = self.toxIdTitleLabel.frame;
         frame.origin.x = 10.0;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         self.toxIdTitleLabel.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
     {
+        const CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
+        
         [self.toxIdQRButton sizeToFit];
         frame = self.toxIdQRButton.frame;
-        frame.origin.x = self.view.bounds.size.width - frame.size.width - 20.0;
-        frame.origin.y = self.toxIdTitleLabel.frame.origin.y;
+        frame.origin.x = self.view.bounds.size.width - xIndentation - frame.size.width;
+        frame.origin.y = CGRectGetMidY(self.toxIdTitleLabel.frame) - frame.size.height / 2;
         self.toxIdQRButton.frame = frame;
     }
 
@@ -233,7 +288,7 @@
 
         frame = CGRectZero;
         frame.origin.x = xIndentation;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         frame.size.width = self.view.bounds.size.width - 2 * xIndentation;
         frame.size.height = 80.0;
         self.toxIdTextView.frame = frame;
@@ -244,7 +299,7 @@
         [self.messageTitleLabel sizeToFit];
         frame = self.messageTitleLabel.frame;
         frame.origin.x = self.toxIdTitleLabel.frame.origin.x;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         self.messageTitleLabel.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
@@ -257,10 +312,14 @@
 
         frame = CGRectZero;
         frame.origin.x = xIndentation;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         frame.size.width = self.view.bounds.size.width - 2 * xIndentation;
-        frame.size.height = self.scrollView.bounds.size.height - self.scrollView.contentInset.top -
-            self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * yIndentation;
+        CGFloat height = self.scrollView.bounds.size.height - self.scrollView.contentInset.top -
+            self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * kYIndentation;
+        if (height < self.toxIdTextView.frame.size.height) {
+            height = roundf(self.toxIdTextView.frame.size.height * 0.7f);
+        }
+        frame.size.height = height;
         self.messageTextView.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
@@ -268,12 +327,12 @@
     {
         frame = self.sendRequestButton.frame;
         frame.origin.x = (self.view.bounds.size.width - frame.size.width) / 2;
-        frame.origin.y = currentOriginY + yIndentation;;
+        frame.origin.y = currentOriginY + kYIndentation;
         self.sendRequestButton.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + kYIndentation);
 }
 
 - (void)processQRStringValues:(NSArray *)stringValues fromController:(QRScannerController *)controller

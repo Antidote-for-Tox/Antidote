@@ -20,6 +20,8 @@
 
 @implementation CellWithToxId
 
+#pragma mark - Lifecycle
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -27,6 +29,12 @@
         [self createSubviews];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self  adjustSubviews];
 }
 
 #pragma mark -  Actions
@@ -48,13 +56,15 @@
 
 + (CGFloat)height
 {
-    return 100.0;
+    return 102.0;
 }
 
 #pragma mark -  Private
 
 - (void)createSubviews
 {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     self.titleLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor]
                                                       bgColor:[UIColor clearColor]];
 
@@ -72,7 +82,7 @@
 
 - (void)adjustSubviews
 {
-    const CGFloat viewWidth = 320.0;
+    const CGFloat viewWidth = self.bounds.size.width;
     CGRect frame = CGRectZero;
 
     {
@@ -84,15 +94,6 @@
     }
 
     {
-        [self.qrButton sizeToFit];
-        frame = self.qrButton.frame;
-        frame.origin.x = viewWidth - frame.size.width - 20.0;
-        frame.origin.y = self.titleLabel.frame.origin.y +
-            (self.titleLabel.frame.size.height - frame.size.height) / 2;
-        self.qrButton.frame = frame;
-    }
-
-    {
         const CGFloat xIndentation = self.titleLabel.frame.origin.x;
         const CGFloat maxWidth = viewWidth - 2 * xIndentation;
 
@@ -101,7 +102,17 @@
                                             constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
         frame.origin.x = xIndentation;
         frame.origin.y = CGRectGetMaxY(self.titleLabel.frame) + 10.0;
+        
         self.valueLabel.frame = frame;
+    }
+
+    {
+        [self.qrButton sizeToFit];
+        frame = self.qrButton.frame;
+        frame.origin.x = CGRectGetMaxX(self.valueLabel.frame) - frame.size.width;
+        frame.origin.y = self.titleLabel.frame.origin.y +
+            (self.titleLabel.frame.size.height - frame.size.height) / 2;
+        self.qrButton.frame = frame;
     }
 }
 

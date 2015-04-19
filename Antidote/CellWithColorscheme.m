@@ -22,16 +22,25 @@ static const CGFloat kButtonIndentation = 15.0;
 
 @implementation CellWithColorscheme
 
+#pragma mark - Lifecycle
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
         self.label = [self.contentView addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
         self.label.text = NSLocalizedString(@"Colorscheme", @"CellWithColorscheme");
 
         [self createButtons];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self adjustSubviews];
 }
 
 #pragma mark -  Actions
@@ -52,7 +61,7 @@ static const CGFloat kButtonIndentation = 15.0;
 
 + (CGFloat)height
 {
-    return 70.0;
+    return 76.0;
 }
 
 #pragma mark -  Private
@@ -105,6 +114,7 @@ static const CGFloat kButtonIndentation = 15.0;
 
     CGRect frame = self.label.frame;
     frame.origin.x = (self.bounds.size.width - frame.size.width) / 2;
+    frame.origin.y = 3.0f;
     self.label.frame = frame;
 
     const CGFloat buttonsWidth = self.buttonsArray.count * kButtonSide +

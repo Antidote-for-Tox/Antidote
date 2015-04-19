@@ -87,6 +87,8 @@
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		84F9E6EA19B61D49005F3889 /* ToxNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F9E6E919B61D49005F3889 /* ToxNode.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */; };
+		F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FB7D591ADED01A004FA894 /* PortraitNavigationController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -251,6 +253,10 @@
 		84F9E6E819B61D49005F3889 /* ToxNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxNode.h; sourceTree = "<group>"; };
 		84F9E6E919B61D49005F3889 /* ToxNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxNode.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerAimView.h; sourceTree = "<group>"; };
+		F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerAimView.m; sourceTree = "<group>"; };
+		F9FB7D581ADED01A004FA894 /* PortraitNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortraitNavigationController.h; sourceTree = "<group>"; };
+		F9FB7D591ADED01A004FA894 /* PortraitNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PortraitNavigationController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -447,13 +453,11 @@
 		1164763819794D3300DB20B8 /* Antidote */ = {
 			isa = PBXGroup;
 			children = (
-				1164764119794D3300DB20B8 /* AppDelegate.h */,
-				1164764219794D3300DB20B8 /* AppDelegate.m */,
-				1146308619842C730075DA16 /* Model.xcdatamodeld */,
-				1164764419794D3300DB20B8 /* Images.xcassets */,
+				F902D28D1ADED27A0070A3F5 /* Application */,
+				1164763919794D3300DB20B8 /* Supporting Files */,
 				11835292197993F90048CA64 /* Classes */,
 				118352A5197A3DB50048CA64 /* Controllers */,
-				1164763919794D3300DB20B8 /* Supporting Files */,
+				F902D28E1ADED2850070A3F5 /* Categories */,
 				118352AD197A6F5B0048CA64 /* Utilities */,
 				118352A9197A6C210048CA64 /* Views */,
 			);
@@ -556,12 +560,10 @@
 			isa = PBXGroup;
 			children = (
 				11E57F4319C23CF100C8ACB8 /* Cells */,
-				11B5A364199626920005C1E7 /* BadgeWithText.h */,
-				11B5A365199626920005C1E7 /* BadgeWithText.m */,
-				118352AA197A6C410048CA64 /* CopyLabel.h */,
-				118352AB197A6C410048CA64 /* CopyLabel.m */,
-				118352C1197A7D390048CA64 /* StatusCircleView.h */,
-				118352C2197A7D3A0048CA64 /* StatusCircleView.m */,
+				F902D2991ADED3000070A3F5 /* BadgeWithText */,
+				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
+				F902D29B1ADED3170070A3F5 /* StatusCircleView */,
+				F902D29C1ADED31E0070A3F5 /* QRScannerAimView */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -569,24 +571,8 @@
 		118352AD197A6F5B0048CA64 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				119BB11C198B536300380557 /* AppDelegate+Utilities.h */,
-				119BB11D198B536300380557 /* AppDelegate+Utilities.m */,
-				119BB115198A05A600380557 /* Helper.h */,
-				119BB116198A05A600380557 /* Helper.m */,
-				11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */,
-				11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */,
-				118352AE197A6F7F0048CA64 /* NSString+Utilities.h */,
-				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
-				118352C7197A867A0048CA64 /* UIColor+Utilities.h */,
-				118352C8197A867A0048CA64 /* UIColor+Utilities.m */,
-				11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */,
-				11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */,
-				117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */,
-				117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */,
-				118352C4197A802D0048CA64 /* UIView+Utilities.h */,
-				118352C5197A802D0048CA64 /* UIView+Utilities.m */,
-				118352BA197A7B960048CA64 /* UIViewController+Utilities.h */,
-				118352BB197A7B960048CA64 /* UIViewController+Utilities.m */,
+				F902D2921ADED2AD0070A3F5 /* Helper */,
+				F902D2981ADED2E60070A3F5 /* PortraitNavigationController */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -763,6 +749,158 @@
 			name = Node;
 			sourceTree = "<group>";
 		};
+		F902D28D1ADED27A0070A3F5 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				1164764119794D3300DB20B8 /* AppDelegate.h */,
+				1164764219794D3300DB20B8 /* AppDelegate.m */,
+				1146308619842C730075DA16 /* Model.xcdatamodeld */,
+				1164764419794D3300DB20B8 /* Images.xcassets */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		F902D28E1ADED2850070A3F5 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F902D2931ADED2BC0070A3F5 /* UIColor+Utilities */,
+				F902D2941ADED2C90070A3F5 /* UIImage+Utilities */,
+				F902D2951ADED2D00070A3F5 /* UITableViewCell+Utilities */,
+				F902D2961ADED2D50070A3F5 /* UIView+Utilities */,
+				F902D2971ADED2E00070A3F5 /* UIViewController+Utilities */,
+				F902D2911ADED2A00070A3F5 /* NSString+Utilities */,
+				F902D2901ADED2970070A3F5 /* NSIndexSet+Utilities */,
+				F902D28F1ADED28D0070A3F5 /* AppDelegate+Utilities */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		F902D28F1ADED28D0070A3F5 /* AppDelegate+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				119BB11C198B536300380557 /* AppDelegate+Utilities.h */,
+				119BB11D198B536300380557 /* AppDelegate+Utilities.m */,
+			);
+			name = "AppDelegate+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2901ADED2970070A3F5 /* NSIndexSet+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */,
+				11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */,
+			);
+			name = "NSIndexSet+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2911ADED2A00070A3F5 /* NSString+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				118352AE197A6F7F0048CA64 /* NSString+Utilities.h */,
+				118352AF197A6F7F0048CA64 /* NSString+Utilities.m */,
+			);
+			name = "NSString+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2921ADED2AD0070A3F5 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				119BB115198A05A600380557 /* Helper.h */,
+				119BB116198A05A600380557 /* Helper.m */,
+			);
+			name = Helper;
+			sourceTree = "<group>";
+		};
+		F902D2931ADED2BC0070A3F5 /* UIColor+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				118352C7197A867A0048CA64 /* UIColor+Utilities.h */,
+				118352C8197A867A0048CA64 /* UIColor+Utilities.m */,
+			);
+			name = "UIColor+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2941ADED2C90070A3F5 /* UIImage+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */,
+				11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */,
+			);
+			name = "UIImage+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2951ADED2D00070A3F5 /* UITableViewCell+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */,
+				117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */,
+			);
+			name = "UITableViewCell+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2961ADED2D50070A3F5 /* UIView+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				118352C4197A802D0048CA64 /* UIView+Utilities.h */,
+				118352C5197A802D0048CA64 /* UIView+Utilities.m */,
+			);
+			name = "UIView+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2971ADED2E00070A3F5 /* UIViewController+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				118352BA197A7B960048CA64 /* UIViewController+Utilities.h */,
+				118352BB197A7B960048CA64 /* UIViewController+Utilities.m */,
+			);
+			name = "UIViewController+Utilities";
+			sourceTree = "<group>";
+		};
+		F902D2981ADED2E60070A3F5 /* PortraitNavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				F9FB7D581ADED01A004FA894 /* PortraitNavigationController.h */,
+				F9FB7D591ADED01A004FA894 /* PortraitNavigationController.m */,
+			);
+			name = PortraitNavigationController;
+			sourceTree = "<group>";
+		};
+		F902D2991ADED3000070A3F5 /* BadgeWithText */ = {
+			isa = PBXGroup;
+			children = (
+				11B5A364199626920005C1E7 /* BadgeWithText.h */,
+				11B5A365199626920005C1E7 /* BadgeWithText.m */,
+			);
+			name = BadgeWithText;
+			sourceTree = "<group>";
+		};
+		F902D29A1ADED30B0070A3F5 /* CopyLabel */ = {
+			isa = PBXGroup;
+			children = (
+				118352AA197A6C410048CA64 /* CopyLabel.h */,
+				118352AB197A6C410048CA64 /* CopyLabel.m */,
+			);
+			name = CopyLabel;
+			sourceTree = "<group>";
+		};
+		F902D29B1ADED3170070A3F5 /* StatusCircleView */ = {
+			isa = PBXGroup;
+			children = (
+				118352C1197A7D390048CA64 /* StatusCircleView.h */,
+				118352C2197A7D3A0048CA64 /* StatusCircleView.m */,
+			);
+			name = StatusCircleView;
+			sourceTree = "<group>";
+		};
+		F902D29C1ADED31E0070A3F5 /* QRScannerAimView */ = {
+			isa = PBXGroup;
+			children = (
+				F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */,
+				F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */,
+			);
+			name = QRScannerAimView;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -882,6 +1020,7 @@
 				114630EB19857CF70075DA16 /* ChatIncomingCell.m in Sources */,
 				11B6C315199D2CCE00A48FBC /* CDMessageText.m in Sources */,
 				114630DC198554B70075DA16 /* CDChat.m in Sources */,
+				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				1122E84F19F93225002907B3 /* ToxManagerChats.m in Sources */,
 				117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */,
 				114630C719854C0A0075DA16 /* CoreDataManager+User.m in Sources */,
@@ -919,6 +1058,7 @@
 				114630CA19854F450075DA16 /* CoreDataManager+Chat.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
+				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
@@ -1027,12 +1167,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_STATIC_ANALYZER_MODE = deep;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
 				GCC_WARN_SIGN_COMPARE = YES;
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
@@ -1046,12 +1188,14 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_STATIC_ANALYZER_MODE = deep;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
 				GCC_WARN_SIGN_COMPARE = YES;
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;

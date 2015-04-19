@@ -6,10 +6,11 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import <AVFoundation/AVFoundation.h>
-
 #import "QRScannerController.h"
+#import "PortraitNavigationController.h"
+#import "QRScannerAimView.h"
 #import "UIViewController+Utilities.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface QRScannerController () <AVCaptureMetadataOutputObjectsDelegate>
 
@@ -17,6 +18,8 @@
 
 @property (strong, nonatomic) AVCaptureSession *captureSession;
 @property (strong, nonatomic) NSMutableArray *codeObjects;
+
+@property (strong, nonatomic) QRScannerAimView *aimView;
 
 @property (copy, nonatomic) QRScannerControllerSuccessBlock successBlock;
 @property (copy, nonatomic) QRScannerControllerCancelBlock cancelBlock;
@@ -56,21 +59,25 @@
 - (void)loadView
 {
     [self loadWhiteView];
-
     [self createLayers];
+    [self createSubviews];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
 
-    self.previewLayer.frame = self.view.bounds;
+    CGRect frame = self.view.bounds;
+    frame.origin.y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
+    frame.size.height -= frame.origin.y;
+    
+    self.previewLayer.frame = frame;
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-
+    [super viewWillAppear:animated];
+    
     [self.captureSession startRunning];
 }
 
@@ -113,7 +120,7 @@
     sc.successBlock = success;
     sc.cancelBlock = cancel;
 
-    return [[UINavigationController alloc] initWithRootViewController:sc];
+    return [[PortraitNavigationController alloc] initWithRootViewController:sc];
 }
 
 #pragma mark -  Notificatoins
@@ -144,12 +151,17 @@
 
     for (AVMetadataObject *object in metadataObjects) {
         if ([object isKindOfClass:[AVMetadataMachineReadableCodeObject class]]) {
-            AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)object;
-
+            AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)
+                [self.previewLayer transformedMetadataObjectForMetadataObject:(AVMetadataMachineReadableCodeObject *)object];
+           
+            CGRect aimFrame = readableObject.bounds;
+            aimFrame.origin.y += CGRectGetMaxY(self.navigationController.navigationBar.frame);
+            self.aimView.frame = aimFrame;
+            
             [stringValues addObject:readableObject.stringValue];
         }
     }
-
+    
     self.successBlock(self, [stringValues copy]);
 }
 
@@ -179,10 +191,14 @@
 
 - (void)createBarButtonItems
 {
-    self.navigationItem.leftBarButtonItem =
-        [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                      target:self
-                                                      action:@selector(cancelButtonPressed)];
+    UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [cancelButton.titleLabel setTextColor:[UIColor yellowColor]];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel", @"QR Scanner") forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[AppearanceManager textMainColor] forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton sizeToFit];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
 }
 
 - (AVCaptureDeviceInput *)captureSessionInput
@@ -203,6 +219,13 @@
     self.previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:self.captureSession];
     self.previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill;
     [self.view.layer addSublayer:self.previewLayer];
+}
+
+- (void)createSubviews
+{
+    self.aimView = [QRScannerAimView new];
+    [self.view addSubview:self.aimView];
+    [self.view bringSubviewToFront:self.aimView];
 }
 
 @end

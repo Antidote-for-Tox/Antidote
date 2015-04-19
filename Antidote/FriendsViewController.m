@@ -80,17 +80,6 @@
     [self updateBarButtonItem];
 
     [self updateSegmentedControlRequestTitle];
-
-    UIImageView *hairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-    hairlineImageView.hidden = YES;
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    UIImageView *hairlineImageView = [self findHairlineImageViewUnder:self.navigationController.navigationBar];
-    hairlineImageView.hidden = NO;
 }
 
 - (void)viewDidLayoutSubviews
@@ -341,6 +330,7 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self.tableView registerClass:[FriendsCell class] forCellReuseIdentifier:[FriendsCell reuseIdentifier]];
     [self.tableView registerClass:[FriendRequestsCell class]
@@ -356,23 +346,6 @@
     self.segmentedControl.frame = frame;
 
     self.tableView.frame = self.view.bounds;
-}
-
-- (UIImageView *)findHairlineImageViewUnder:(UIView *)view
-{
-    if ([view isKindOfClass:UIImageView.class] && view.bounds.size.height <= 1.0) {
-        return (UIImageView *)view;
-    }
-
-    for (UIView *subview in view.subviews) {
-        UIImageView *imageView = [self findHairlineImageViewUnder:subview];
-
-        if (imageView) {
-            return imageView;
-        }
-    }
-
-    return nil;
 }
 
 - (void)updateBarButtonItem
