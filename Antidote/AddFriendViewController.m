@@ -15,6 +15,8 @@
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"
 
+static const CGFloat kYIndentation = 10.0;
+
 @interface AddFriendViewController () <UITextViewDelegate>
 
 #define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
@@ -104,7 +106,7 @@
 {
     self.scrollView.scrollEnabled = YES;
     
-    [self finishEditingButtonPressed];
+    [self resignTextViewResponders];
 }
 
 - (void)toxIdQRButtonPressed
@@ -132,13 +134,7 @@
 
 - (void)finishEditingButtonPressed
 {
-    if (self.toxIdTextView.isFirstResponder) {
-        [self.toxIdTextView resignFirstResponder];
-    }
-
-    if (self.messageTextView.isFirstResponder) {
-        [self.messageTextView resignFirstResponder];
-    }
+    [self resignTextViewResponders];
 }
 
 #pragma mark -  UITextViewDelegate
@@ -147,18 +143,8 @@
 {
     if ([textView isEqual:self.messageTextView]) {
         CGPoint offset = CGPointZero;
-        if ([UIApplication sharedApplication].statusBarOrientation == UIInterfaceOrientationPortrait) {
-            offset.y = 60.0;
-        }
-        else {
-            if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
-                offset.y = 70.0;
-            }
-            else {
-                offset.y = 90.0;
-            }
-        }
-        
+        offset.y = CGRectGetMinY(self.messageTitleLabel.frame) - CGRectGetMaxY(self.navigationController.navigationBar.frame)
+                                                               - kYIndentation;
         [self.scrollView setContentOffset:offset animated:YES];
 
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
@@ -261,12 +247,22 @@
     [self.scrollView addSubview:self.sendRequestButton];
 }
 
+- (void)resignTextViewResponders
+{
+    if (self.toxIdTextView.isFirstResponder) {
+        [self.toxIdTextView resignFirstResponder];
+    }
+
+    if (self.messageTextView.isFirstResponder) {
+        [self.messageTextView resignFirstResponder];
+    } 
+}
+
 - (void)adjustSubviews
 {
     self.scrollView.frame = self.view.bounds;
 
     CGFloat currentOriginY = 0.0;
-    const CGFloat yIndentation = 10.0;
 
     CGRect frame = CGRectZero;
 
@@ -274,7 +270,7 @@
         [self.toxIdTitleLabel sizeToFit];
         frame = self.toxIdTitleLabel.frame;
         frame.origin.x = 10.0;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         self.toxIdTitleLabel.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
@@ -294,7 +290,7 @@
 
         frame = CGRectZero;
         frame.origin.x = xIndentation;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         frame.size.width = self.view.bounds.size.width - 2 * xIndentation;
         frame.size.height = 80.0;
         self.toxIdTextView.frame = frame;
@@ -305,7 +301,7 @@
         [self.messageTitleLabel sizeToFit];
         frame = self.messageTitleLabel.frame;
         frame.origin.x = self.toxIdTitleLabel.frame.origin.x;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         self.messageTitleLabel.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
@@ -318,10 +314,10 @@
 
         frame = CGRectZero;
         frame.origin.x = xIndentation;
-        frame.origin.y = currentOriginY + yIndentation;
+        frame.origin.y = currentOriginY + kYIndentation;
         frame.size.width = self.view.bounds.size.width - 2 * xIndentation;
         CGFloat height = self.scrollView.bounds.size.height - self.scrollView.contentInset.top -
-            self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * yIndentation;
+            self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * kYIndentation;
         if (height < self.toxIdTextView.frame.size.height) {
             height = roundf(self.toxIdTextView.frame.size.height * 0.7f);
         }
@@ -333,12 +329,12 @@
     {
         frame = self.sendRequestButton.frame;
         frame.origin.x = (self.view.bounds.size.width - frame.size.width) / 2;
-        frame.origin.y = currentOriginY + yIndentation;;
+        frame.origin.y = currentOriginY + kYIndentation;
         self.sendRequestButton.frame = frame;
     }
     currentOriginY = CGRectGetMaxY(frame);
 
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
+    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + kYIndentation);
 }
 
 - (void)processQRStringValues:(NSArray *)stringValues fromController:(QRScannerController *)controller

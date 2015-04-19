@@ -193,7 +193,7 @@
 {
     UIButton *cancelButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton.titleLabel setTextColor:[UIColor yellowColor]];
-    [cancelButton setTitle:NSLocalizedString(@"Cancel", @"") forState:UIControlStateNormal];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel", @"QR Scanner") forState:UIControlStateNormal];
     [cancelButton setTitleColor:[AppearanceManager textMainColor] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton sizeToFit];
