@@ -72,27 +72,33 @@
 #define COCOAPODS_VERSION_MINOR_JSQSystemSoundPlayer 5
 #define COCOAPODS_VERSION_PATCH_JSQSystemSoundPlayer 2
 
-// MagicalRecord
-#define COCOAPODS_POD_AVAILABLE_MagicalRecord
-#define COCOAPODS_VERSION_MAJOR_MagicalRecord 2
-#define COCOAPODS_VERSION_MINOR_MagicalRecord 2
-#define COCOAPODS_VERSION_PATCH_MagicalRecord 0
+// libopus
+#define COCOAPODS_POD_AVAILABLE_libopus
+#define COCOAPODS_VERSION_MAJOR_libopus 1
+#define COCOAPODS_VERSION_MINOR_libopus 1
+#define COCOAPODS_VERSION_PATCH_libopus 0
 
-// MagicalRecord/Core
-#define COCOAPODS_POD_AVAILABLE_MagicalRecord_Core
-#define COCOAPODS_VERSION_MAJOR_MagicalRecord_Core 2
-#define COCOAPODS_VERSION_MINOR_MagicalRecord_Core 2
-#define COCOAPODS_VERSION_PATCH_MagicalRecord_Core 0
+// libopus/float
+#define COCOAPODS_POD_AVAILABLE_libopus_float
+#define COCOAPODS_VERSION_MAJOR_libopus_float 1
+#define COCOAPODS_VERSION_MINOR_libopus_float 1
+#define COCOAPODS_VERSION_PATCH_libopus_float 0
 
 // libsodium
 #define COCOAPODS_POD_AVAILABLE_libsodium
 #define COCOAPODS_VERSION_MAJOR_libsodium 1
 #define COCOAPODS_VERSION_MINOR_libsodium 0
-#define COCOAPODS_VERSION_PATCH_libsodium 1
+#define COCOAPODS_VERSION_PATCH_libsodium 2
+
+// objcTox
+#define COCOAPODS_POD_AVAILABLE_objcTox
+#define COCOAPODS_VERSION_MAJOR_objcTox 0
+#define COCOAPODS_VERSION_MINOR_objcTox 0
+#define COCOAPODS_VERSION_PATCH_objcTox 1
 
 // toxcore-ios
 #define COCOAPODS_POD_AVAILABLE_toxcore_ios
 #define COCOAPODS_VERSION_MAJOR_toxcore_ios 0
 #define COCOAPODS_VERSION_MINOR_toxcore_ios 1
-#define COCOAPODS_VERSION_PATCH_toxcore_ios 0
+#define COCOAPODS_VERSION_PATCH_toxcore_ios 5
 

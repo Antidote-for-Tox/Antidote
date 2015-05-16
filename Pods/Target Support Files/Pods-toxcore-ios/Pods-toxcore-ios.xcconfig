@@ -1,0 +1,2 @@
+PODS_TOXCORE_IOS_FRAMEWORK_SEARCH_PATHS = "${PODS_ROOT}" "$(PODS_ROOT)/toxcore-ios"
+PODS_TOXCORE_IOS_OTHER_LDFLAGS = -read_only_relocs suppress -framework "VPX"

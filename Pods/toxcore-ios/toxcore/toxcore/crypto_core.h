@@ -40,10 +40,10 @@
 
 #define crypto_box_KEYBYTES (crypto_box_BEFORENMBYTES)
 
-/* Use this instead of memcmp; not vulnerable to timing attacks.
+/* compare 2 public keys of length crypto_box_PUBLICKEYBYTES, not vulnerable to timing attacks.
    returns 0 if both mem locations of length are equal,
    return -1 if they are not. */
-int crypto_cmp(const uint8_t *mem1, const uint8_t *mem2, size_t length);
+int public_key_cmp(const uint8_t *pk1, const uint8_t *pk2);
 
 /*  return a random number.
  *
@@ -122,7 +122,7 @@ void new_nonce(uint8_t *nonce);
 
 #define CRYPTO_PACKET_FRIEND_REQ    32  /* Friend request crypto packet ID. */
 #define CRYPTO_PACKET_HARDENING     48  /* Hardening crypto packet ID. */
-#define CRYPTO_PACKET_FAKEID        156
+#define CRYPTO_PACKET_DHTPK         156
 #define CRYPTO_PACKET_NAT_PING      254 /* NAT ping crypto packet ID. */
 
 /* Create a request to peer.

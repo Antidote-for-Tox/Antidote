@@ -10,5 +10,4 @@ pod 'CocoaLumberjack', '~> 1.9.2'
 # JSQMessagesViewController dependency
 pod 'JSQSystemSoundPlayer', '~> 1.5.2'
 pod 'JSQMessagesViewController', '~> 5.3.1'
-pod 'MagicalRecord', '~> 2.2'
-pod 'toxcore-ios', '~> 0.1.0'
+pod 'objcTox', :podspec => 'https://raw.githubusercontent.com/dvor/objcTox/master/objcTox.podspec'
