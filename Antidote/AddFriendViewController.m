@@ -12,6 +12,7 @@
 #import "QRScannerController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"
+#import "OCTManager.h"
 
 static const CGFloat kYIndentation = 10.0;
 
@@ -122,8 +123,9 @@ static const CGFloat kYIndentation = 10.0;
 
 - (void)sendRequestButtonPressed
 {
-    [[ToxManager sharedInstance] sendFriendRequestWithAddress:self.toxIdTextView.text
-                                                      message:self.messageTextView.text];
+    [[AppContext sharedContext].toxManager.friends sendFriendRequestToAddress:self.toxIdTextView.text
+                                                                      message:self.messageTextView.text
+                                                                        error:nil];
 
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -347,7 +349,9 @@ static const CGFloat kYIndentation = 10.0;
             string = [string substringFromIndex:toxPrefix.length];
         }
 
-        if ([ToxFunctions isAddressString:string]) {
+        // FIXME
+        if (YES) {
+        // if ([ToxFunctions isAddressString:string]) {
             goodString = string;
             break;
         }
