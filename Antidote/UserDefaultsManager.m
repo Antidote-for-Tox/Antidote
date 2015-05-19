@@ -1,59 +1,14 @@
 //
-//  UserInfoManager.m
+//  UserDefaultsManager.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 19.07.14.
-//  Copyright (c) 2014 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 19.05.15.
+//  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import "UserInfoManager.h"
+#import "UserDefaultsManager.h"
 
-@implementation UserInfoManager
-
-#pragma mark -  Lifecycle
-
-- (id)init
-{
-    return nil;
-}
-
-- (id)initPrivate
-{
-    if (self = [super init]) {
-
-    }
-
-    return self;
-}
-
-+ (instancetype)sharedInstance
-{
-    static UserInfoManager *instance;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        instance = [[UserInfoManager alloc] initPrivate];
-    });
-
-    return instance;
-}
-
-#pragma mark -  Methods
-
-- (void)createDefaultValuesIfNeeded
-{
-    if (! self.uShowMessageInLocalNotification) {
-        self.uShowMessageInLocalNotification = @(YES);
-    }
-
-    if (! self.uIpv6Enabled) {
-        self.uIpv6Enabled = @(1);
-    }
-
-    if (! self.uUdpDisabled) {
-        self.uUdpDisabled = @(1);
-    }
-}
+@implementation UserDefaultsManager
 
 #pragma mark - Properties
 

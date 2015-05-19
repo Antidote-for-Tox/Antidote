@@ -49,6 +49,9 @@
 
     [self configureLoggingStuff];
 
+    // initialize context
+    [AppContext sharedInstance];
+
     [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
     [[UserInfoManager sharedInstance] createDefaultValuesIfNeeded];
     [[ProfileManager sharedInstance] configureCurrentProfileAndLoadTox];

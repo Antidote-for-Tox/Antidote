@@ -39,19 +39,23 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
 
 - (id)init
 {
-    return nil;
-}
+    self = [super init];
 
-- (id)initPrivate
-{
-    if (self = [super init]) {
-        [self performSelectorOnMainThread:@selector(createWindow) withObject:nil waitUntilDone:YES];
-
-        _queue = [NSMutableArray new];
-        _isActive = NO;
+    if (! self) {
+        return nil;
     }
 
+    [self performSelectorOnMainThread:@selector(createWindow) withObject:nil waitUntilDone:YES];
+
+    _queue = [NSMutableArray new];
+    _isActive = NO;
+
     return self;
+}
+
+- (void)dealloc
+{
+
 }
 
 - (void)createWindow
@@ -59,18 +63,6 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     _window = [[UIWindow alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
     _window.windowLevel = UIWindowLevelStatusBar + 1;
     _window.backgroundColor = [UIColor clearColor];
-}
-
-+ (instancetype)sharedInstance
-{
-    static EventsManager *instance;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        instance = [[EventsManager alloc] initPrivate];
-    });
-
-    return instance;
 }
 
 #pragma mark -  Public

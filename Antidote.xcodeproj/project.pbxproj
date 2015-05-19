@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		110B8B8419C8DB25000E4334 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 110B8B8319C8DB25000E4334 /* ProfileManager.m */; };
 		110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */; };
 		114100781A3A3A3700054859 /* QRScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114100771A3A3A3700054859 /* QRScannerController.m */; };
 		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
@@ -24,7 +23,6 @@
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		117FCFB819BCC1990026C13B /* ChatBasicMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */; };
-		118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A31979BD4C0048CA64 /* UserInfoManager.m */; };
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
 		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
 		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
@@ -39,6 +37,8 @@
 		119BB117198A05A600380557 /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB116198A05A600380557 /* Helper.m */; };
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
+		11A757471B0BB50F005DAD82 /* AppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A757461B0BB50F005DAD82 /* AppContext.m */; };
+		11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */; };
 		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
 		11B6C301199A9B4C00A48FBC /* ChatTypingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C300199A9B4C00A48FBC /* ChatTypingCell.m */; };
 		11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B6C321199D499800A48FBC /* ChatFileCell.m */; };
@@ -56,7 +56,6 @@
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
-		11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11F5642F19E1296400B7A5BE /* AvatarManager.m */; };
 		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
 		11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFB1A7D8C5C00E19766 /* AdvancedSettingsViewController.m */; };
 		11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */; };
@@ -67,8 +66,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		110B8B8219C8DB25000E4334 /* ProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileManager.h; sourceTree = "<group>"; };
-		110B8B8319C8DB25000E4334 /* ProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileManager.m; sourceTree = "<group>"; };
 		110B8B8919C8E3FE000E4334 /* ProfilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfilesViewController.h; sourceTree = "<group>"; };
 		110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfilesViewController.m; sourceTree = "<group>"; };
 		114100761A3A3A3700054859 /* QRScannerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerController.h; sourceTree = "<group>"; };
@@ -98,8 +95,6 @@
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		117FCFB619BCC1990026C13B /* ChatBasicMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicMessageCell.h; sourceTree = "<group>"; };
 		117FCFB719BCC1990026C13B /* ChatBasicMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicMessageCell.m; sourceTree = "<group>"; };
-		118352A21979BD4C0048CA64 /* UserInfoManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoManager.h; sourceTree = "<group>"; };
-		118352A31979BD4C0048CA64 /* UserInfoManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoManager.m; sourceTree = "<group>"; };
 		118352A6197A64B70048CA64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		118352A7197A64B70048CA64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		118352AA197A6C410048CA64 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
@@ -128,6 +123,10 @@
 		119BB11D198B536300380557 /* AppDelegate+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Utilities.m"; sourceTree = "<group>"; };
 		119BB120198BE77900380557 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
 		119BB121198BE77900380557 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
+		11A757451B0BB50F005DAD82 /* AppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppContext.h; sourceTree = "<group>"; };
+		11A757461B0BB50F005DAD82 /* AppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppContext.m; sourceTree = "<group>"; };
+		11A757491B0BB74C005DAD82 /* UserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultsManager.h; sourceTree = "<group>"; };
+		11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaultsManager.m; sourceTree = "<group>"; };
 		11B5A364199626920005C1E7 /* BadgeWithText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeWithText.h; sourceTree = "<group>"; };
 		11B5A365199626920005C1E7 /* BadgeWithText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeWithText.m; sourceTree = "<group>"; };
 		11B6C2FF199A9B4C00A48FBC /* ChatTypingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatTypingCell.h; sourceTree = "<group>"; };
@@ -162,8 +161,6 @@
 		11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithNameStatusAvatar.m; sourceTree = "<group>"; };
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
-		11F5642E19E1296400B7A5BE /* AvatarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarManager.h; sourceTree = "<group>"; };
-		11F5642F19E1296400B7A5BE /* AvatarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarManager.m; sourceTree = "<group>"; };
 		11FCD3481A5B283D00DE10CC /* CellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithSwitch.h; sourceTree = "<group>"; };
 		11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithSwitch.m; sourceTree = "<group>"; };
 		11FE3FFA1A7D8C5C00E19766 /* AdvancedSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedSettingsViewController.h; sourceTree = "<group>"; };
@@ -196,15 +193,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		110B8B8119C8DB12000E4334 /* ProfileManager */ = {
-			isa = PBXGroup;
-			children = (
-				110B8B8219C8DB25000E4334 /* ProfileManager.h */,
-				110B8B8319C8DB25000E4334 /* ProfileManager.m */,
-			);
-			name = ProfileManager;
-			sourceTree = "<group>";
-		};
 		110B8B8819C8E3F1000E4334 /* Profiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -355,25 +343,15 @@
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				11A757441B0BB501005DAD82 /* AppContext */,
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
-				11F5642D19E1294A00B7A5BE /* AvatarManager */,
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11E82A9F19CD72B1001561CA /* PreviewItem */,
-				110B8B8119C8DB12000E4334 /* ProfileManager */,
 				11B9E6141993EBCC00FB20A6 /* TimeFormatter */,
-				118352A11979BD3E0048CA64 /* UserInfoManager */,
+				11A757481B0BB73B005DAD82 /* UserDefaults */,
 			);
 			name = Classes;
-			sourceTree = "<group>";
-		};
-		118352A11979BD3E0048CA64 /* UserInfoManager */ = {
-			isa = PBXGroup;
-			children = (
-				118352A21979BD4C0048CA64 /* UserInfoManager.h */,
-				118352A31979BD4C0048CA64 /* UserInfoManager.m */,
-			);
-			name = UserInfoManager;
 			sourceTree = "<group>";
 		};
 		118352A5197A3DB50048CA64 /* Controllers */ = {
@@ -465,6 +443,24 @@
 			name = AddFriend;
 			sourceTree = "<group>";
 		};
+		11A757441B0BB501005DAD82 /* AppContext */ = {
+			isa = PBXGroup;
+			children = (
+				11A757451B0BB50F005DAD82 /* AppContext.h */,
+				11A757461B0BB50F005DAD82 /* AppContext.m */,
+			);
+			name = AppContext;
+			sourceTree = "<group>";
+		};
+		11A757481B0BB73B005DAD82 /* UserDefaults */ = {
+			isa = PBXGroup;
+			children = (
+				11A757491B0BB74C005DAD82 /* UserDefaultsManager.h */,
+				11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */,
+			);
+			name = UserDefaults;
+			sourceTree = "<group>";
+		};
 		11B9E6141993EBCC00FB20A6 /* TimeFormatter */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,15 +521,6 @@
 				11E82AA119CD72E6001561CA /* PreviewItem.m */,
 			);
 			name = PreviewItem;
-			sourceTree = "<group>";
-		};
-		11F5642D19E1294A00B7A5BE /* AvatarManager */ = {
-			isa = PBXGroup;
-			children = (
-				11F5642E19E1296400B7A5BE /* AvatarManager.h */,
-				11F5642F19E1296400B7A5BE /* AvatarManager.m */,
-			);
-			name = AvatarManager;
 			sourceTree = "<group>";
 		};
 		454BE7B91D6EF3C677425911 /* Pods */ = {
@@ -805,6 +792,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */,
+				11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */,
 				11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */,
 				114100781A3A3A3700054859 /* QRScannerController.m in Sources */,
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
@@ -829,18 +817,17 @@
 				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
 				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
-				118352A41979BD4C0048CA64 /* UserInfoManager.m in Sources */,
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */,
-				110B8B8419C8DB25000E4334 /* ProfileManager.m in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */,
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
+				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				119BB117198A05A600380557 /* Helper.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
@@ -851,7 +838,6 @@
 				11B9E61019929DBA00FB20A6 /* ChatOutgoingCell.m in Sources */,
 				11B6C322199D499800A48FBC /* ChatFileCell.m in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
-				11F5643019E1296400B7A5BE /* AvatarManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,

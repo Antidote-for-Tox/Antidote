@@ -17,6 +17,6 @@
     #import "DDLog.h"
     static int ddLogLevel = LOG_LEVEL_VERBOSE;
 
-    #import "AppearanceManager.h"
+    #import "AppContext.h"
 #endif
 

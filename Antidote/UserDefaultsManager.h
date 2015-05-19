@@ -1,14 +1,14 @@
 //
-//  UserInfoManager.h
+//  UserDefaultsManager.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 19.07.14.
-//  Copyright (c) 2014 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 19.05.15.
+//  Copyright (c) 2015 dvor. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface UserInfoManager : NSObject
+@interface UserDefaultsManager : NSObject
 
 // array with ToxFriendRequest's NSDictionaries
 @property (strong, nonatomic) NSArray *uPendingFriendRequests;
@@ -21,9 +21,5 @@
 @property (strong, nonatomic) NSNumber *uShowMessageInLocalNotification;
 @property (strong, nonatomic) NSNumber *uIpv6Enabled;
 @property (strong, nonatomic) NSNumber *uUdpDisabled;
-
-+ (instancetype)sharedInstance;
-
-- (void)createDefaultValuesIfNeeded;
 
 @end

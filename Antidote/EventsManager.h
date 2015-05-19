@@ -12,8 +12,6 @@
 
 @interface EventsManager : NSObject
 
-+ (instancetype)sharedInstance;
-
 - (void)addObject:(EventObject *)object;
 
 - (void)handleLocalNotification:(UILocalNotification *)notification;
