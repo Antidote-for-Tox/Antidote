@@ -100,10 +100,10 @@
     cell.textLabel.text = profile.name;
 
     if ([profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
-        cell.textLabel.font = [AppearanceManager fontHelveticaNeueBoldWithSize:16.0];
+        cell.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:16.0];
     }
     else {
-        cell.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
+        cell.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
     }
 
     return cell;

@@ -36,7 +36,7 @@
 
 + (UIFont *)messageLabelFont
 {
-    return [AppearanceManager fontHelveticaNeueWithSize:16.0];
+    return [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
 }
 
 #pragma mark -  Private

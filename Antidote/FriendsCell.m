@@ -27,7 +27,7 @@
     if (self) {
         [self adjustSubviews];
 
-        self.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:18];
+        self.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:18];
         self.detailTextLabel.textColor = [UIColor uColorOpaqueWithWhite:140];
         self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
 

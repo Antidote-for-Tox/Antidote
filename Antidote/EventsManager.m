@@ -287,7 +287,7 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
         }
 
         topLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        topLabel.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
+        topLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
         topLabel.frame = frame;
         topLabel.text = topText;
     }
@@ -298,7 +298,7 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
         frame.size.height = 20.0;
 
         UILabel *bottomLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        bottomLabel.font = [AppearanceManager fontHelveticaNeueWithSize:14.0];
+        bottomLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:14.0];
         bottomLabel.frame = frame;
         bottomLabel.text = bottomText;
     }

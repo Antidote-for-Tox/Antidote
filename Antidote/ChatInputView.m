@@ -171,7 +171,7 @@ static const CGFloat kTextViewIndentationRight = 60.0;
     self.textView.delegate = self;
     self.textView.textColor = [UIColor blackColor];
     self.textView.backgroundColor = [UIColor whiteColor];
-    self.textView.font = [AppearanceManager fontHelveticaNeueWithSize:16];
+    self.textView.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16];
     self.textView.layer.cornerRadius = 3.0;
 
     [self addSubview:self.textView];

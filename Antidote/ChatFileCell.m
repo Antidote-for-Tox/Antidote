@@ -121,11 +121,11 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
 - (void)createLabels
 {
     self.titleLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
-    self.titleLabel.font = [AppearanceManager fontHelveticaNeueWithSize:14];
+    self.titleLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:14];
 
     self.descriptionLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
     self.descriptionLabel.textColor = [UIColor uColorOpaqueWithWhite:160];
-    self.descriptionLabel.font = [AppearanceManager fontHelveticaNeueLightWithSize:12];
+    self.descriptionLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:12];
 }
 
 - (void)createYesNoButtons
@@ -142,7 +142,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     self.yesButton = [[UIButton alloc] initWithFrame:frame];
     [self.yesButton setImage:yesImage forState:UIControlStateNormal];
     [self.yesButton addTarget:self action:@selector(yesButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.yesButton.tintColor = [AppearanceManager statusOnlineColor];
+    self.yesButton.tintColor = [[AppContext sharedContext].appearance statusOnlineColor];
     [self.contentView addSubview:self.yesButton];
 
     frame.size = noImage.size;
@@ -150,19 +150,19 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
     self.noButton = [[UIButton alloc] initWithFrame:frame];
     [self.noButton setImage:noImage forState:UIControlStateNormal];
     [self.noButton addTarget:self action:@selector(noButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.noButton.tintColor = [AppearanceManager statusBusyColor];
+    self.noButton.tintColor = [[AppContext sharedContext].appearance statusBusyColor];
     [self.contentView addSubview:self.noButton];
 }
 
 - (void)createProgressViews
 {
     self.progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-    self.progressView.progressTintColor = [AppearanceManager textMainColor];
+    self.progressView.progressTintColor = [[AppContext sharedContext].appearance textMainColor];
     self.progressView.trackTintColor = [UIColor uColorOpaqueWithWhite:160];
     [self.contentView addSubview:self.progressView];
 
     self.playPauseButton = [UIButton new];
-    self.playPauseButton.tintColor = [AppearanceManager textMainColor];
+    self.playPauseButton.tintColor = [[AppContext sharedContext].appearance textMainColor];
     [self.playPauseButton addTarget:self
                              action:@selector(playPauseButtonPressed)
                    forControlEvents:UIControlEventTouchUpInside];
@@ -414,7 +414,7 @@ typedef NS_ENUM(NSUInteger, PlayPauseImageType) {
         self.titleLabel.textColor = [UIColor blackColor];
     }
     else if (self.type == ChatFileCellTypeLoaded) {
-        self.titleLabel.textColor = [AppearanceManager textMainColor];
+        self.titleLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
     }
 
     [self.titleLabel sizeToFit];

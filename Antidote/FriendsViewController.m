@@ -312,7 +312,7 @@
         NSLocalizedString(@"Friends", @"Friends"),
         @"Requests",
     ]];
-    self.segmentedControl.tintColor = [AppearanceManager textMainColor];
+    self.segmentedControl.tintColor = [[AppContext sharedContext].appearance textMainColor];
     self.segmentedControl.selectedSegmentIndex = FriendsViewControllerTabFriends;
 
     [self.segmentedControl addTarget:self

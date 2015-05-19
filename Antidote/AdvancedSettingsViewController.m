@@ -130,7 +130,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     cell.textLabel.text = NSLocalizedString(@"Restore default", @"Settings");
 
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [AppearanceManager textMainColor];
+    cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
 
     return cell;
 }

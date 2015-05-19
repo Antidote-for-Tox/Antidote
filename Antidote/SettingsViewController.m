@@ -264,7 +264,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
 {
-    [AppearanceManager changeColorschemeTo:scheme];
+    [[AppContext sharedContext].appearance changeColorschemeTo:scheme];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
@@ -311,7 +311,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (void)showMailControllerWithLogs:(BOOL)withLogs
 {
     MFMailComposeViewController *vc = [MFMailComposeViewController new];
-    vc.navigationBar.tintColor = [AppearanceManager textMainColor];
+    vc.navigationBar.tintColor = [[AppContext sharedContext].appearance textMainColor];
     [vc setSubject:@"Feedback"];
     [vc setToRecipients:@[@"antidote@dvor.me"]];
 
@@ -434,7 +434,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
         [ProfileManager sharedInstance].currentProfile.name];
 
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [AppearanceManager textMainColor];
+    cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
 
     return cell;
 }
@@ -445,7 +445,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
                                                                  forIndexPath:indexPath];
     cell.textLabel.text = NSLocalizedString(@"Feedback", @"Settings");
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [AppearanceManager textMainColor];
+    cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
 
     return cell;
 }

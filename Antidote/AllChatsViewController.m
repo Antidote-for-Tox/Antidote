@@ -127,7 +127,7 @@
     }
 
     cell.backgroundColor = (chat.lastMessage.date < chat.lastReadDate) ? [UIColor whiteColor] :
-        [AppearanceManager unreadChatCellBackground];
+        [[AppContext sharedContext].appearance unreadChatCellBackground];
 
     return cell;
 }

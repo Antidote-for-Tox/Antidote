@@ -31,7 +31,7 @@
         self.backgroundView.backgroundColor = [UIColor redColor];
 
         self.label = [self addLabelWithTextColor:nil bgColor:[UIColor clearColor]];
-        self.label.font = [AppearanceManager fontHelveticaNeueWithSize:14];
+        self.label.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:14];
 
         self.textColor = [UIColor whiteColor];
     }

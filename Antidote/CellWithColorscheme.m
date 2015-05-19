@@ -69,7 +69,7 @@ static const CGFloat kButtonIndentation = 15.0;
 - (void)createButtons
 {
     NSMutableArray *array = [NSMutableArray new];
-    AppearanceManagerColorscheme currentScheme = [AppearanceManager colorscheme];
+    AppearanceManagerColorscheme currentScheme = [[AppContext sharedContext].appearance colorscheme];
 
     for (NSUInteger index = 0; index < __AppearanceManagerColorschemeCount; index++) {
         CGRect frame = CGRectZero;
@@ -92,13 +92,13 @@ static const CGFloat kButtonIndentation = 15.0;
         frame.size.width /= 2;
 
         UIView *left = [[UIView alloc] initWithFrame:frame];
-        left.backgroundColor = [AppearanceManager textMainColorForScheme:index];
+        left.backgroundColor = [[AppContext sharedContext].appearance textMainColorForScheme:index];
         left.userInteractionEnabled = NO;
 
         frame.origin.x = frame.size.width;
 
         UIView *right = [[UIView alloc] initWithFrame:frame];
-        right.backgroundColor = [AppearanceManager bubbleIncomingColorForScheme:index];
+        right.backgroundColor = [[AppContext sharedContext].appearance bubbleIncomingColorForScheme:index];
         right.userInteractionEnabled = NO;
 
         [button addSubview:left];

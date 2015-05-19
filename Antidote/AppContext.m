@@ -51,7 +51,7 @@
     return self;
 }
 
-+ (instancetype)sharedInstance
++ (instancetype)sharedContext
 {
     static AppContext *instance;
     static dispatch_once_t onceToken;

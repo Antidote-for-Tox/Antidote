@@ -15,7 +15,7 @@
 
 @interface AppContext : NSObject
 
-+ (instancetype)sharedInstance;
++ (instancetype)sharedContext;
 
 @property (strong, nonatomic, readonly) AppearanceManager *appearance;
 @property (strong, nonatomic, readonly) EventsManager *events;

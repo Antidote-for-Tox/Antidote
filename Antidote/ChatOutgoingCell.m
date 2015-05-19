@@ -86,7 +86,7 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 10.0, 10.0, 15.0 };
 
 - (void)createSubviews
 {
-    UIColor *color = [AppearanceManager bubbleOutgoingColor];
+    UIColor *color = [[AppContext sharedContext].appearance bubbleOutgoingColor];
     self.bubbleImageView = [JSQMessagesBubbleImageFactory outgoingMessageBubbleImageViewWithColor:color];
     [self.contentView addSubview:self.bubbleImageView];
 

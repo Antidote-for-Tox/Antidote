@@ -26,7 +26,7 @@
     if (self) {
         [self adjustSubviews];
 
-        self.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:20];
+        self.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:20];
         self.detailTextLabel.numberOfLines = 2;
         self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 

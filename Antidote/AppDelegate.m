@@ -126,7 +126,7 @@
     friends.navigationBar.tintColor  =
     allChats.navigationBar.tintColor =
     settings.navigationBar.tintColor =
-    tabBar.tabBar.tintColor          = [AppearanceManager textMainColor];
+    tabBar.tabBar.tintColor          = [[AppContext sharedContext].appearance textMainColor];
 
     friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
                                                        image:[UIImage imageNamed:@"tab-bar-friends"]
@@ -165,7 +165,7 @@
     frame.origin.y = 3.0;
 
     BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
-    badge.backgroundColor = [AppearanceManager statusBusyColor];
+    badge.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
     [tabBarController.tabBar addSubview:badge];
 
     return badge;
