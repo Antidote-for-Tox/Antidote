@@ -8,6 +8,7 @@
 
 #import "ChatTypingCell.h"
 #import "JSQMessagesBubbleImageFactory.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kCellWhitespaceTop = 3.0;
 static const UIEdgeInsets kBubbleInsets = { 16.0, 15.0, 16.0, 10.0 };

@@ -8,6 +8,7 @@
 
 #import "BadgeWithText.h"
 #import "UIView+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface BadgeWithText()
 

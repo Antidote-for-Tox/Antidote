@@ -9,6 +9,7 @@
 #import "ChatIncomingCell.h"
 #import "JSQMessagesBubbleImageFactory.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kMaxMessageWidth = 240.0;
 

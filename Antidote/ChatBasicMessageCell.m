@@ -8,6 +8,7 @@
 
 #import "ChatBasicMessageCell.h"
 #import "UIView+Utilities.h"
+#import "AppearanceManager.h"
 
 @implementation ChatBasicMessageCell
 

@@ -8,6 +8,7 @@
 
 #import "StatusCircleView.h"
 #import "UIColor+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface StatusCircleView()
 

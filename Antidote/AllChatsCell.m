@@ -8,6 +8,7 @@
 
 #import "AllChatsCell.h"
 #import "UIColor+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface AllChatsCell()
 

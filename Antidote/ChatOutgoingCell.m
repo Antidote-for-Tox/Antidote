@@ -11,6 +11,7 @@
 #import "NSString+Utilities.h"
 #import "UIColor+Utilities.h"
 #import "UIView+Utilities.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kMaxMessageWidth = 240.0;
 

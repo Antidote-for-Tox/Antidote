@@ -16,15 +16,11 @@
 #import "ChatTypingCell.h"
 #import "ChatFileCell.h"
 #import "ChatInputView.h"
-#import "CoreDataManager+Message.h"
-#import "CDUser.h"
-#import "ToxManager.h"
 #import "UIView+Utilities.h"
 #import "Helper.h"
 #import "TimeFormatter.h"
 #import "AppDelegate.h"
 #import "UITableViewCell+Utilities.h"
-#import "ProfileManager.h"
 #import "PreviewItem.h"
 #import "UIActionSheet+BlocksKit.h"
 
@@ -42,7 +38,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
 @property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
-@property (strong, nonatomic) CDChat *chat;
+@property (strong, nonatomic) OCTChat *chat;
 @property (strong, nonatomic) ToxFriend *friend;
 
 @property (assign, nonatomic) CGFloat visibleKeyboardHeight;
@@ -57,7 +53,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
 #pragma mark -  Lifecycle
 
-- (instancetype)initWithChat:(CDChat *)chat;
+- (instancetype)initWithChat:(OCTChat *)chat
 {
     self = [super init];
 

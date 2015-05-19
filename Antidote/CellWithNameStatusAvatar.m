@@ -8,6 +8,7 @@
 
 #import "CellWithNameStatusAvatar.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface CellWithNameStatusAvatar() <UITextFieldDelegate>
 

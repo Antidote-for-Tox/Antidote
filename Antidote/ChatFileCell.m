@@ -11,6 +11,7 @@
 #import "ChatFileCell.h"
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kCellHeight = 50.0;
 static const NSTimeInterval kAnimationDuration = 0.5;

@@ -7,8 +7,6 @@
 //
 
 #import "Helper.h"
-#import "ToxManager.h"
-#import "CDUser.h"
 
 @implementation Helper
 

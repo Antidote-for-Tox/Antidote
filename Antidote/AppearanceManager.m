@@ -7,7 +7,6 @@
 //
 
 #import "AppearanceManager.h"
-#import "UserInfoManager.h"
 #import "UIColor+Utilities.h"
 
 @interface AppearanceManager()

@@ -9,6 +9,7 @@
 #import "CellWithColorscheme.h"
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kButtonSide = 40.0;
 static const CGFloat kButtonIndentation = 15.0;

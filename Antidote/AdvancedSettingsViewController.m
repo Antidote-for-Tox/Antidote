@@ -9,8 +9,6 @@
 #import "AdvancedSettingsViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "CellWithSwitch.h"
-#import "UserInfoManager.h"
-#import "ProfileManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeIpv6Enabled,

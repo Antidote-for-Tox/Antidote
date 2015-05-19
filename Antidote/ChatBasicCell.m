@@ -10,6 +10,7 @@
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface ChatBasicCell()
 

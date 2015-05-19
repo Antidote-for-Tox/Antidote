@@ -9,7 +9,6 @@
 #import "FriendCardViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
-#import "ToxManager.h"
 
 @interface FriendCardViewController () <UITextFieldDelegate>
 
@@ -18,7 +17,7 @@
 @property (strong, nonatomic) UITextField *nicknameField;
 @property (strong, nonatomic) UILabel *realNameLabel;
 
-@property (strong, nonatomic) ToxFriend *friend;
+@property (strong, nonatomic) OCTFriend *friend;
 
 @end
 
@@ -26,17 +25,18 @@
 
 #pragma mark -  Lifecycle
 
-- (instancetype)initWithToxFriend:(ToxFriend *)friend;
+- (instancetype)initWithToxFriend:(OCTFriend *)friend
 {
     self = [super init];
 
     if (self) {
         self.friend = friend;
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(friendUpdateNotification:)
-                                                     name:kToxFriendsContainerUpdateSpecificFriendNotification
-                                                   object:nil];
+        // FIXME
+        // [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                          selector:@selector(friendUpdateNotification:)
+        //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
+        //                                            object:nil];
     }
     return self;
 }
@@ -77,23 +77,25 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([textField isEqual:self.nicknameField]) {
-        [[ToxManager sharedInstance] changeNicknameTo:textField.text forFriend:self.friend];
+        // FIXME
+        // [[ToxManager sharedInstance] changeNicknameTo:textField.text forFriend:self.friend];
     }
 }
 
 #pragma mark -  Notifications
 
-- (void)friendUpdateNotification:(NSNotification *)notification
-{
-    ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+// FIXME
+// - (void)friendUpdateNotification:(NSNotification *)notification
+// {
+//     ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
 
-    if (! [self.friend isEqual:updatedFriend]) {
-        return;
-    }
+//     if (! [self.friend isEqual:updatedFriend]) {
+//         return;
+//     }
 
-    self.friend = updatedFriend;
-    [self redrawTitleAndViews];
-}
+//     self.friend = updatedFriend;
+//     [self redrawTitleAndViews];
+// }
 
 #pragma mark -  Private
 
@@ -151,12 +153,14 @@
 
 - (void)redrawTitleAndViews
 {
-    self.title = self.friend.nickname;
+    // FIXME
+    // self.title = self.friend.nickname;
+    self.title = self.friend.name;
 
-    self.nicknameField.text = self.friend.nickname;
+    // FIXME
+    // self.nicknameField.text = self.friend.nickname;
 
-    self.realNameLabel.text = self.friend.realName.length ?
-        [NSString stringWithFormat:@"(%@)", self.friend.realName] : nil;
+    self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat:@"(%@)", self.friend.name] : nil;
 
     [self adjustSubviews];
 }

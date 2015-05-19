@@ -9,9 +9,7 @@
 #import "ProfilesViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UITableViewCell+Utilities.h"
-#import "CoreDataManager+Profile.h"
 #import "UIAlertView+BlocksKit.h"
-#import "ProfileManager.h"
 #import "AppDelegate.h"
 #import "UIActionSheet+BlocksKit.h"
 

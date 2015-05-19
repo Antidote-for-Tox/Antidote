@@ -7,7 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import "CDChat.h"
 
 @interface AppDelegate (Utilities)
 

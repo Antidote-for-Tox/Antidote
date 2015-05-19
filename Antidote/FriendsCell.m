@@ -9,6 +9,7 @@
 #import "FriendsCell.h"
 #import "NSString+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface FriendsCell()
 

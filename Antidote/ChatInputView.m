@@ -9,7 +9,6 @@
 #import "ChatInputView.h"
 #import "UIColor+Utilities.h"
 #import "NSString+Utilities.h"
-#import "ToxManager.h"
 
 static const CGFloat kTypingTimerInterval = 5.0;
 

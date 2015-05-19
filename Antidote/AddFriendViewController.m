@@ -9,8 +9,6 @@
 #import "AddFriendViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
-#import "ToxManager.h"
-#import "ToxFunctions.h"
 #import "QRScannerController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"

@@ -7,6 +7,8 @@
 //
 
 #import "QRScannerAimView.h"
+#import "AppearanceManager.h"
+#import "AppearanceManager.h"
 
 @interface QRScannerAimView ()
 

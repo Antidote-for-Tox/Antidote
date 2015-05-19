@@ -11,6 +11,7 @@
 #import "QRScannerAimView.h"
 #import "UIViewController+Utilities.h"
 #import <AVFoundation/AVFoundation.h>
+#import "AppearanceManager.h"
 
 @interface QRScannerController () <AVCaptureMetadataOutputObjectsDelegate>
 

@@ -16,18 +16,12 @@
 #import "DDFileLogger.h"
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
-#import "ToxManager.h"
 #import "AllChatsViewController.h"
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
-#import "CoreData+MagicalRecord.h"
-#import "CoreDataManager+Chat.h"
-#import "CoreDataManager+Message.h"
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
-#import "ProfileManager.h"
 #import "EventsManager.h"
-#import "UserInfoManager.h"
 
 @interface AppDelegate()
 

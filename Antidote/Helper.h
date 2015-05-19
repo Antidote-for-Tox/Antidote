@@ -8,9 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ToxFriend.h"
 #import "StatusCircleView.h"
-#import "CDMessage.h"
 
 @interface Helper : NSObject
 

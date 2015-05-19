@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-#import "CDChat.h"
+#import "OCTChat.h"
 
 @interface ChatViewController : UIViewController
 
-@property (strong, nonatomic, readonly) CDChat *chat;
+@property (strong, nonatomic, readonly) OCTChat *chat;
 
-- (instancetype)initWithChat:(CDChat *)chat;
+- (instancetype)initWithChat:(OCTChat *)chat;
 
 @end

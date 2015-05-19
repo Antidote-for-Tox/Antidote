@@ -7,7 +7,6 @@
 //
 
 #import "SettingsViewController.h"
-#import "ToxManager.h"
 #import "QRViewerController.h"
 #import "UIView+Utilities.h"
 #import "AppDelegate.h"
@@ -16,14 +15,11 @@
 #import "UIActionSheet+BlocksKit.h"
 #import "DDFileLogger.h"
 #import "UITableViewCell+Utilities.h"
-#import "AvatarManager.h"
 #import "CellWithNameStatusAvatar.h"
 #import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
 #import "CellWithSwitch.h"
 #import "ProfilesViewController.h"
-#import "ProfileManager.h"
-#import "UserInfoManager.h"
 #import "AdvancedSettingsViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
