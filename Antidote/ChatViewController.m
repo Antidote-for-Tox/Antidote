@@ -22,23 +22,28 @@
 #import "UITableViewCell+Utilities.h"
 #import "PreviewItem.h"
 #import "UIActionSheet+BlocksKit.h"
+#import "OCTArray.h"
+#import "OCTManager.h"
+#import "OCTMessageFile.h"
+#import "StatusCircleView.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,
     SectionTyping,
 };
 
-@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate, ChatInputViewDelegate,
-    UIGestureRecognizerDelegate, ChatFileCellDelegate, ToxManagerFileProgressDelegate,
-    QLPreviewControllerDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ChatViewController () <UITableViewDataSource, UITableViewDelegate,
+    ChatInputViewDelegate, UIGestureRecognizerDelegate, ChatFileCellDelegate,
+    QLPreviewControllerDataSource, UIImagePickerControllerDelegate,
+    UINavigationControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) OCTArray *allMessages;
 
 @property (strong, nonatomic) OCTChat *chat;
-@property (strong, nonatomic) ToxFriend *friend;
+@property (strong, nonatomic) OCTFriend *friend;
 
 @property (assign, nonatomic) CGFloat visibleKeyboardHeight;
 
@@ -61,9 +66,7 @@ typedef NS_ENUM(NSInteger, Section) {
         self.visibleKeyboardHeight = 0.0;
 
         self.chat = chat;
-
-        NSString *clientId = [[chat.users anyObject] clientId];
-        self.friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:clientId];
+        self.friend = [chat.friends lastObject];
 
         [self updateTitleView];
 
@@ -75,18 +78,19 @@ typedef NS_ENUM(NSInteger, Section) {
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(newMessageNotification:)
-                                                     name:kCoreDataManagerNewMessageNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(messageUpdateNotification:)
-                                                     name:kCoreDataManagerMessageUpdateNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(friendUpdateNotification:)
-                                                     name:kToxFriendsContainerUpdateSpecificFriendNotification
-                                                   object:nil];
+        // FIXME
+        // [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                          selector:@selector(newMessageNotification:)
+        //                                              name:kCoreDataManagerNewMessageNotification
+        //                                            object:nil];
+        // [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                          selector:@selector(messageUpdateNotification:)
+        //                                              name:kCoreDataManagerMessageUpdateNotification
+        //                                            object:nil];
+        // [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                          selector:@selector(friendUpdateNotification:)
+        //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
+        //                                            object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillEnterForeground:)
                                                      name:UIApplicationWillEnterForegroundNotification
@@ -114,17 +118,8 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [super viewDidLoad];
 
-    __weak ChatViewController *weakSelf = self;
-
-    [CoreDataManager fetchedControllerForMessagesFromChat:self.chat
-                     completionQueue:dispatch_get_main_queue()
-                     completionBlock:^(NSFetchedResultsController *controller)
-    {
-        weakSelf.fetchedResultsController = controller;
-        [weakSelf.tableView reloadData];
-
-        [weakSelf scrollToBottomAnimated:NO];
-    }];
+    self.allMessages = [[AppContext sharedContext].toxManager.chats allMessagesInChat:self.chat];
+    [self scrollToBottomAnimated:NO];
 
     [self updateIsTypingSection];
     [self updateInputButtons];
@@ -136,24 +131,22 @@ typedef NS_ENUM(NSInteger, Section) {
 
     [self updateLastReadDateAndChatsBadge];
 
-    self.inputView.text = self.chat.enteredMessage;
+    self.inputView.text = self.chat.enteredText;
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
-    [CoreDataManager editCDObjectWithBlock:^{
-        self.chat.enteredMessage = self.inputView.text;
-
-    } completionQueue:nil completionBlock:nil];
+    self.chat.enteredText = self.inputView.text;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
-    [ToxManager sharedInstance].fileProgressDelegate = self;
+    // FIXME
+    // [ToxManager sharedInstance].fileProgressDelegate = self;
 
     if (self.inputView.text.length) {
         [self.inputView becomeFirstResponder];
@@ -221,24 +214,19 @@ typedef NS_ENUM(NSInteger, Section) {
 
     if (indexPath.section == SectionMessages) {
         ChatBasicCell *basicCell;
-        CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        OCTMessageAbstract *message = [self.allMessages objectAtIndex:indexPath.row];
 
-        if (message.text) {
-            basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
+        if ([message isKindOfClass:[OCTMessageText class]]) {
+            basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:(OCTMessageText *)message];
         }
-        else if (message.file) {
-            basicCell = [self messageFileCellForRowAtIndexPath:indexPath message:message];
+        else if ([message isKindOfClass:[OCTMessageFile class]]) {
+            basicCell = [self messageFileCellForRowAtIndexPath:indexPath message:(OCTMessageFile *)message];
         }
-        else if (message.pendingFile) {
-            basicCell = [self messagePendingFileCellForRowAtIndexPath:indexPath message:message];
-        }
-
-        NSDate *date = [NSDate dateWithTimeIntervalSince1970:message.date];
 
         basicCell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
-            [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime] : nil;
+            [[TimeFormatter sharedInstance] stringFromDate:message.date type:TimeFormatterTypeRelativeDateAndTime] : nil;
 
-        basicCell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeTime];
+        basicCell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:message.date type:TimeFormatterTypeTime];
 
         [basicCell redraw];
 
@@ -263,9 +251,7 @@ typedef NS_ENUM(NSInteger, Section) {
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == SectionMessages) {
-        id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[section];
-
-        return info.numberOfObjects;
+        return self.allMessages.count;
     }
     else if (section == SectionTyping) {
         return 1;
@@ -281,19 +267,20 @@ typedef NS_ENUM(NSInteger, Section) {
     CGFloat height = 0.0;
 
     if (indexPath.section == SectionMessages) {
-        CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        OCTMessageAbstract *message = [self.allMessages objectAtIndex:indexPath.row];
 
         NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
 
-        if (message.text) {
-            if ([Helper isOutgoingMessage:message]) {
-                height = [ChatOutgoingCell heightWithMessage:message.text.text fullDateString:fullDateString];
+        if ([message isKindOfClass:[OCTMessageText class]]) {
+            OCTMessageText *messageText = (OCTMessageText *)message;
+            if ([messageText isOutgoing]) {
+                height = [ChatOutgoingCell heightWithMessage:messageText.text fullDateString:fullDateString];
             }
             else {
-                height = [ChatIncomingCell heightWithMessage:message.text.text fullDateString:fullDateString];
+                height = [ChatIncomingCell heightWithMessage:messageText.text fullDateString:fullDateString];
             }
         }
-        else if (message.file || message.pendingFile) {
+        else if ([message isKindOfClass:[OCTMessageFile class]]) {
             height = [ChatFileCell heightWithFullDateString:fullDateString];
         }
     }
@@ -308,41 +295,43 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    OCTMessageAbstract *message = [self.allMessages objectAtIndex:indexPath.row];
 
-    if (message.file) {
-        __weak ChatViewController *weakSelf = self;
+    if ([message isKindOfClass:[OCTMessageFile class]]) {
+        OCTMessageFile *messageFile = (OCTMessageFile *)message;
 
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@ AND file != nil", self.chat];
+        // FIXME
+        // __weak ChatViewController *weakSelf = self;
+        // NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@ AND file != nil", self.chat];
 
-        [CoreDataManager messagesWithPredicate:predicate
-                               completionQueue:dispatch_get_main_queue()
-                               completionBlock:^(NSArray *messagesArray)
-        {
-            ChatViewController *strongSelf = weakSelf;
+        // [CoreDataManager messagesWithPredicate:predicate
+        //                        completionQueue:dispatch_get_main_queue()
+        //                        completionBlock:^(NSArray *messagesArray)
+        // {
+        //     ChatViewController *strongSelf = weakSelf;
 
-            if (! strongSelf) {
-                return;
-            }
+        //     if (! strongSelf) {
+        //         return;
+        //     }
 
-            strongSelf.qlMessagesWithFiles = messagesArray;
+        //     strongSelf.qlMessagesWithFiles = messagesArray;
 
-            NSUInteger currentIndex = 0;
+        //     NSUInteger currentIndex = 0;
 
-            for (NSUInteger index = 0; index < messagesArray.count; index++) {
-                CDMessage *m = messagesArray[index];
+        //     for (NSUInteger index = 0; index < messagesArray.count; index++) {
+        //         CDMessage *m = messagesArray[index];
 
-                if ([m isEqual:message]) {
-                    currentIndex = index;
-                }
-            }
+        //         if ([m isEqual:message]) {
+        //             currentIndex = index;
+        //         }
+        //     }
 
-            QLPreviewController *pc = [QLPreviewController new];
-            pc.dataSource = strongSelf;
-            pc.currentPreviewItemIndex = currentIndex;
+        //     QLPreviewController *pc = [QLPreviewController new];
+        //     pc.dataSource = strongSelf;
+        //     pc.currentPreviewItemIndex = currentIndex;
 
-            [strongSelf.navigationController pushViewController:pc animated:YES];
-        }];
+        //     [strongSelf.navigationController pushViewController:pc animated:YES];
+        // }];
     }
 }
 
@@ -394,14 +383,17 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
 {
-    [[ToxManager sharedInstance] sendMessage:text toChat:self.chat];
+    [[AppContext sharedContext].toxManager.chats sendMessageToChat:self.chat
+                                                              text:text
+                                                              type:OCTToxMessageTypeNormal
+                                                             error:nil];
 
     [view setText:nil];
 }
 
 - (void)chatInputView:(ChatInputView *)view typingChangedTo:(BOOL)isTyping
 {
-    [[ToxManager sharedInstance] changeIsTypingInChat:self.chat to:isTyping];
+    [[AppContext sharedContext].toxManager.chats setIsTyping:isTyping inChat:self.chat error:nil];
 }
 
 #pragma mark -  UIGestureRecognizerDelegate
@@ -414,7 +406,7 @@ typedef NS_ENUM(NSInteger, Section) {
         CGPoint translation = [panGR translationInView:self.tableView];
 
         // Check for horizontal gesture
-        if (fabsf(translation.x) > fabsf(translation.y)) {
+        if (fabs(translation.x) > fabs(translation.y)) {
             return YES;
         }
     }
@@ -436,18 +428,19 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
+    // FIXME
+    // OCTMessageAbstract *message = [self.allMessages objectAtIndex:path.row];
 
-    [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
+    // [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
 
-    if (answer) {
-        cell.type = ChatFileCellTypeDownloading;
-    }
-    else {
-        cell.type = ChatFileCellTypeCanceled;
-    }
+    // if (answer) {
+    //     cell.type = ChatFileCellTypeDownloading;
+    // }
+    // else {
+    //     cell.type = ChatFileCellTypeCanceled;
+    // }
 
-    [cell redrawAnimated];
+    // [cell redrawAnimated];
 }
 
 - (void)chatFileCellPausePlayButtonPressed:(ChatFileCell *)cell
@@ -462,13 +455,14 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
+    // FIXME
+    // CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
-    [[ToxManager sharedInstance] togglePauseForPendingFileInMessage:message];
+    // [[ToxManager sharedInstance] togglePauseForPendingFileInMessage:message];
 
-    cell.isPaused = ! cell.isPaused;
+    // cell.isPaused = ! cell.isPaused;
 
-    [cell redraw];
+    // [cell redraw];
 }
 
 #pragma mark -  ToxManagerFileProgressDelegate
@@ -482,23 +476,24 @@ typedef NS_ENUM(NSInteger, Section) {
             continue;
         }
 
-        CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
+        // FIXME
+        // CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
-        if (! message.pendingFile) {
-            continue;
-        }
+        // if (! message.pendingFile) {
+        //     continue;
+        // }
 
-        if (message.pendingFile.state != CDMessagePendingFileStateActive) {
-            continue;
-        }
+        // if (message.pendingFile.state != CDMessagePendingFileStateActive) {
+        //     continue;
+        // }
 
-        if (message.pendingFile.fileNumber == fileNumber && message.pendingFile.friendNumber == friendNumber) {
-            ChatFileCell *cell = (ChatFileCell *)[self.tableView cellForRowAtIndexPath:path];
-            cell.loadedPercent = progress;
-            [cell redrawLoadingPercentOnlyAnimated:YES];
+        // if (message.pendingFile.fileNumber == fileNumber && message.pendingFile.friendNumber == friendNumber) {
+        //     ChatFileCell *cell = (ChatFileCell *)[self.tableView cellForRowAtIndexPath:path];
+        //     cell.loadedPercent = progress;
+        //     [cell redrawLoadingPercentOnlyAnimated:YES];
 
-            break;
-        }
+        //     break;
+        // }
     }
 }
 
@@ -511,17 +506,19 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
 {
-    CDMessage *message = self.qlMessagesWithFiles[index];
-    NSString *fileName = message.file.fileNameOnDisk;
+    return nil;
+    // FIXME
+    // CDMessage *message = self.qlMessagesWithFiles[index];
+    // NSString *fileName = message.file.fileNameOnDisk;
 
-    NSString *path = [[ProfileManager sharedInstance] pathInFilesForCurrentProfileFromFileName:fileName
-                                                                                     temporary:NO];
+    // NSString *path = [[ProfileManager sharedInstance] pathInFilesForCurrentProfileFromFileName:fileName
+    //                                                                                  temporary:NO];
 
-    PreviewItem *item = [PreviewItem new];
-    item.previewItemURL = [NSURL fileURLWithPath:path];
-    item.previewItemTitle = message.file.originalFileName;
+    // PreviewItem *item = [PreviewItem new];
+    // item.previewItemURL = [NSURL fileURLWithPath:path];
+    // item.previewItemTitle = message.file.originalFileName;
 
-    return item;
+    // return item;
 }
 
 #pragma mark -  UIImagePickerControllerDelegate
@@ -554,7 +551,8 @@ typedef NS_ENUM(NSInteger, Section) {
             data = UIImagePNGRepresentation(image);
         }
 
-        [[ToxManager sharedInstance] uploadData:data withFileName:fileName toChat:self.chat];
+        // FIXME
+        // [[ToxManager sharedInstance] uploadData:data withFileName:fileName toChat:self.chat];
     } failureBlock:nil];
 }
 
@@ -588,100 +586,103 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)newMessageNotification:(NSNotification *)notification
 {
-    CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
+    // FIXME
+    // CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
 
-    if (! [message.chat isEqual:self.chat]) {
-        return;
-    }
+    // if (! [message.chat isEqual:self.chat]) {
+    //     return;
+    // }
 
-    if (self.isViewLoaded &&
-        self.view.window  &&
-        [UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    {
-        // is visible
-        [self updateLastReadDateAndChatsBadge];
-    }
+    // if (self.isViewLoaded &&
+    //     self.view.window  &&
+    //     [UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+    // {
+    //     // is visible
+    //     [self updateLastReadDateAndChatsBadge];
+    // }
 
-    NSIndexPath *lastMessagePath;
+    // NSIndexPath *lastMessagePath;
 
-    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
+    // id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
 
-    if (info.numberOfObjects) {
-        lastMessagePath = [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:SectionMessages];
-    }
+    // if (info.numberOfObjects) {
+    //     lastMessagePath = [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:SectionMessages];
+    // }
 
-    [self.fetchedResultsController performFetch:nil];
+    // [self.fetchedResultsController performFetch:nil];
 
-    @synchronized(self.tableView) {
-        NSIndexPath *path = [NSIndexPath indexPathForRow:info.numberOfObjects inSection:SectionMessages];
+    // @synchronized(self.tableView) {
+    //     NSIndexPath *path = [NSIndexPath indexPathForRow:info.numberOfObjects inSection:SectionMessages];
 
-        id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
+    //     id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
 
-        if ((NSInteger)info.numberOfObjects == [self.tableView numberOfRowsInSection:SectionMessages] + 1) {
-            [self.tableView beginUpdates];
-            [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.tableView endUpdates];
-        }
-        else {
-            // For some reason there is inconsistent dataModel. In case of spamming there can be problems with
-            // multithreading.
-            // We just reaload data to deal with it.
-            [self.tableView reloadData];
-        }
-    }
+    //     if ((NSInteger)info.numberOfObjects == [self.tableView numberOfRowsInSection:SectionMessages] + 1) {
+    //         [self.tableView beginUpdates];
+    //         [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+    //         [self.tableView endUpdates];
+    //     }
+    //     else {
+    //         // For some reason there is inconsistent dataModel. In case of spamming there can be problems with
+    //         // multithreading.
+    //         // We just reaload data to deal with it.
+    //         [self.tableView reloadData];
+    //     }
+    // }
 
-    [self changeIsTypingTo:NO];
+    // [self changeIsTypingTo:NO];
 
-    // scroll to bottom only if last message was visible
-    if (lastMessagePath) {
-        CGRect rect = CGRectZero;
-        rect.origin = self.tableView.contentOffset;
-        rect.size = self.tableView.frame.size;
-        rect.size.height -= self.tableView.contentInset.bottom;
+    // // scroll to bottom only if last message was visible
+    // if (lastMessagePath) {
+    //     CGRect rect = CGRectZero;
+    //     rect.origin = self.tableView.contentOffset;
+    //     rect.size = self.tableView.frame.size;
+    //     rect.size.height -= self.tableView.contentInset.bottom;
 
-        NSArray *visiblePathes = [self.tableView indexPathsForRowsInRect:rect];
+    //     NSArray *visiblePathes = [self.tableView indexPathsForRowsInRect:rect];
 
-        if ([visiblePathes containsObject:lastMessagePath]) {
-            [self scrollToBottomAnimated:YES];
-        }
-    }
+    //     if ([visiblePathes containsObject:lastMessagePath]) {
+    //         [self scrollToBottomAnimated:YES];
+    //     }
+    // }
 }
 
 - (void)messageUpdateNotification:(NSNotification *)notification
 {
-    CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
+    // FIXME
+    // CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
 
-    if (! [message.chat isEqual:self.chat]) {
-        return;
-    }
+    // if (! [message.chat isEqual:self.chat]) {
+    //     return;
+    // }
 
-    @synchronized(self.tableView) {
-        for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
-            if (path.section == SectionMessages) {
-                CDMessage *m = [self.fetchedResultsController objectAtIndexPath:path];
+    // @synchronized(self.tableView) {
+    //     for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
+    //         if (path.section == SectionMessages) {
+    //             CDMessage *m = [self.fetchedResultsController objectAtIndexPath:path];
 
-                if ([m isEqual:message]) {
-                    [self.tableView reloadRowsAtIndexPaths:@[path]
-                                          withRowAnimation:UITableViewRowAnimationNone];
-                    return;
-                }
-            }
-        }
-    }
+    //             if ([m isEqual:message]) {
+    //                 [self.tableView reloadRowsAtIndexPaths:@[path]
+    //                                       withRowAnimation:UITableViewRowAnimationNone];
+    //                 return;
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 - (void)friendUpdateNotification:(NSNotification *)notification
 {
-    ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+    // FIXME
+    // ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
 
-    if (! [self.friend isEqual:updatedFriend]) {
-        return;
-    }
+    // if (! [self.friend isEqual:updatedFriend]) {
+    //     return;
+    // }
 
-    self.friend = updatedFriend;
-    [self updateTitleView];
-    [self updateIsTypingSection];
-    [self updateInputButtons];
+    // self.friend = updatedFriend;
+    // [self updateTitleView];
+    // [self updateIsTypingSection];
+    // [self updateInputButtons];
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification
@@ -747,71 +748,64 @@ typedef NS_ENUM(NSInteger, Section) {
     [self updateTableViewInsetAndInputViewWithDuration:0.0 curve:0];
 }
 
-- (ChatBasicCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+- (ChatBasicCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(OCTMessageText *)message
 {
     ChatBasicMessageCell *cell;
 
-    if ([Helper isOutgoingMessage:message]) {
+    if ([message isOutgoing]) {
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
                                                     forIndexPath:indexPath];
 
-        ((ChatOutgoingCell *)cell).isDelivered = message.text.isDelivered;
+        ((ChatOutgoingCell *)cell).isDelivered = message.isDelivered;
     }
     else {
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
                                                     forIndexPath:indexPath];
     }
 
-    cell.message = message.text.text;
+    cell.message = message.text;
 
     return cell;
 }
 
-- (ChatBasicCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
+- (ChatBasicCell *)messageFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(OCTMessageFile *)message
 {
     ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
                                                               forIndexPath:indexPath];
     cell.delegate = self;
-    cell.fileName = message.file.originalFileName;
-    cell.fileUTI = message.file.fileUTI;
-    cell.isOutgoing = [Helper isOutgoingMessage:message];
+    cell.fileName = message.fileName;
+    cell.fileUTI = message.fileUTI;
+    cell.isOutgoing = [message isOutgoing];
 
-    if (message.file.fileNameOnDisk) {
-        cell.type = ChatFileCellTypeLoaded;
-    }
-    else {
-        cell.type = ChatFileCellTypeDeleted;
-    }
+    switch(message.fileType) {
+        case OCTMessageFileTypeWaitingConfirmation:
+            cell.type = ChatFileCellTypeWaitingConfirmation;
+            cell.fileSize = [NSByteCountFormatter stringFromByteCount:message.fileSize
+                                                           countStyle:NSByteCountFormatterCountStyleFile];
+            break;
 
-    return cell;
-}
+        case OCTMessageFileTypeLoading:
+        case OCTMessageFileTypePaused:
+            cell.type = ChatFileCellTypeDownloading;
+            cell.isPaused = (message.fileType == OCTMessageFileTypePaused);
+            // FIXME
+            // cell.loadedPercent = [[ToxManager sharedInstance] progressForPendingFileInMessage:message];
+            break;
 
-- (ChatBasicCell *)messagePendingFileCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(CDMessage *)message
-{
-    ChatFileCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatFileCell reuseIdentifier]
-                                                              forIndexPath:indexPath];
-
-    cell.delegate = self;
-    cell.fileName = message.pendingFile.originalFileName;
-    cell.fileUTI = message.pendingFile.fileUTI;
-    cell.isOutgoing = [Helper isOutgoingMessage:message];
-
-    if (message.pendingFile.state == CDMessagePendingFileStateWaitingConfirmation) {
-        cell.type = ChatFileCellTypeWaitingConfirmation;
-        cell.fileSize = [NSByteCountFormatter stringFromByteCount:message.pendingFile.fileSize
-                                                       countStyle:NSByteCountFormatterCountStyleFile];
-    }
-    else if (message.pendingFile.state == CDMessagePendingFileStateActive ||
-             message.pendingFile.state == CDMessagePendingFileStatePaused)
-    {
-        cell.type = ChatFileCellTypeDownloading;
-        cell.loadedPercent = [[ToxManager sharedInstance] progressForPendingFileInMessage:message];
-
-        cell.isPaused = (message.pendingFile.state == CDMessagePendingFileStatePaused);
-    }
-    else if (message.pendingFile.state == CDMessagePendingFileStateCanceled) {
+        case OCTMessageFileTypeCanceled:
         cell.type = ChatFileCellTypeCanceled;
+            break;
+
+        case OCTMessageFileTypeReady:
+            cell.type = ChatFileCellTypeLoaded;
+            break;
     }
+    // FIXME
+    // if (message.file.fileNameOnDisk) {
+    // }
+    // else {
+    //     cell.type = ChatFileCellTypeDeleted;
+    // }
 
     return cell;
 }
@@ -822,11 +816,12 @@ typedef NS_ENUM(NSInteger, Section) {
     view.backgroundColor = [UIColor clearColor];
 
     UILabel *label = [view addLabelWithTextColor:[UIColor blackColor] bgColor:[UIColor clearColor]];
-    label.text = [self.friend nameToShow];
+    label.text = self.friend.name;
     [label sizeToFit];
 
     StatusCircleView *statusView = [StatusCircleView new];
-    statusView.status = [Helper toxFriendStatusToCircleStatus:self.friend.status];
+    // FIXME
+    // statusView.status = [Helper toxFriendStatusToCircleStatus:self.friend.status];
     [statusView redraw];
     [view addSubview:statusView];
 
@@ -851,14 +846,14 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)scrollToBottomAnimated:(BOOL)animated
 {
-    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
-
-    if (! info.numberOfObjects) {
+    NSUInteger count = self.allMessages.count;
+    if (! count) {
         return;
     }
+
     NSIndexPath *path = self.showTypingSection ?
         [NSIndexPath indexPathForRow:0 inSection:SectionTyping] :
-        [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:SectionMessages];
+        [NSIndexPath indexPathForRow:count-1 inSection:SectionMessages];
 
     // tableView animation may cause lags (in case if there will be too many messages). When using default UIView
     // animation, there's no lags for some reason
@@ -957,26 +952,22 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)updateInputButtons
 {
-    self.inputView.buttonsEnabled = (self.friend.status != ToxFriendStatusOffline);
+    self.inputView.buttonsEnabled = (self.friend.connectionStatus != OCTToxConnectionStatusNone);
 }
 
-- (BOOL)showFullDateForMessage:(CDMessage *)message atIndexPath:(NSIndexPath *)path
+- (BOOL)showFullDateForMessage:(OCTMessageAbstract *)message atIndexPath:(NSIndexPath *)path
 {
     if (path.row == 0) {
         return YES;
     }
 
-    NSIndexPath *previousPath = [NSIndexPath indexPathForRow:path.row-1 inSection:path.section];
-    CDMessage *previous = [self.fetchedResultsController objectAtIndexPath:previousPath];
+    OCTMessageAbstract *previous = [self.allMessages objectAtIndex:path.row-1];
 
-    NSDate *messageDate  = [NSDate dateWithTimeIntervalSince1970:message.date];
-    NSDate *previousDate = [NSDate dateWithTimeIntervalSince1970:previous.date];
-
-    if (! [[TimeFormatter sharedInstance] areSameDays:messageDate and:previousDate]) {
+    if (! [[TimeFormatter sharedInstance] areSameDays:message.date and:previous.date]) {
         return YES;
     }
 
-    NSTimeInterval delta = message.date - previous.date;
+    NSTimeInterval delta = [message.date timeIntervalSinceDate:previous.date];
 
     if (delta > 5 * 60 * 60) {
         return YES;
@@ -987,15 +978,9 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)updateLastReadDateAndChatsBadge
 {
-    NSDate *date = [NSDate date];
-
-    [CoreDataManager editCDObjectWithBlock:^{
-        self.chat.lastReadDate = [date timeIntervalSince1970];
-
-    } completionQueue:dispatch_get_main_queue() completionBlock:^{
-        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        [delegate updateBadgeForTab:AppDelegateTabIndexChats];
-    }];
+    self.chat.lastReadDate = [NSDate date];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 @end
