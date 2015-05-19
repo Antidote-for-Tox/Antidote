@@ -9,6 +9,8 @@
 #import "AdvancedSettingsViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "CellWithSwitch.h"
+#import "UserDefaultsManager.h"
+#import "AppearanceManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeIpv6Enabled,
@@ -73,14 +75,11 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     if (type == CellTypeRestoreDefault) {
-        [UserInfoManager sharedInstance].uIpv6Enabled = nil;
-        [UserInfoManager sharedInstance].uUdpDisabled = nil;
-
-        [[UserInfoManager sharedInstance] createDefaultValuesIfNeeded];
+        [[AppContext sharedContext] restoreDefaultSettings];
 
         [self.tableView reloadData];
 
-        [self reloadTox];
+        [[AppContext sharedContext] reloadToxManager];
     }
 }
 
@@ -92,13 +91,13 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     CellType type = [self cellTypeForIndexPath:path];
 
     if (type == CellTypeIpv6Enabled) {
-        [UserInfoManager sharedInstance].uIpv6Enabled = cell.on ? @(1) : @(0);
+        [AppContext sharedContext].userDefaults.uIpv6Enabled = cell.on ? @(1) : @(0);
     }
     else if (type == CellTypeUdpEnabled) {
-        [UserInfoManager sharedInstance].uUdpDisabled = cell.on ? @(0) : @(1);
+        [AppContext sharedContext].userDefaults.uUdpDisabled = cell.on ? @(0) : @(1);
     }
 
-    [self reloadTox];
+    [[AppContext sharedContext] reloadToxManager];
 }
 
 #pragma mark -  Private
@@ -111,11 +110,11 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 
     if (type == CellTypeIpv6Enabled) {
         cell.title = NSLocalizedString(@"IPv6 enabled", @"Settings");
-        cell.on = [UserInfoManager sharedInstance].uIpv6Enabled.unsignedIntegerValue > 0;
+        cell.on = [AppContext sharedContext].userDefaults.uIpv6Enabled.unsignedIntegerValue > 0;
     }
     else if (type == CellTypeUdpEnabled) {
         cell.title = NSLocalizedString(@"UDP enabled", @"Settings");
-        cell.on = [UserInfoManager sharedInstance].uUdpDisabled.unsignedIntegerValue == 0;
+        cell.on = [AppContext sharedContext].userDefaults.uUdpDisabled.unsignedIntegerValue == 0;
     }
 
     return cell;
@@ -131,15 +130,6 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
 
     return cell;
-}
-
-- (void)reloadTox
-{
-    DDLogInfo(@"Settings: reloading Tox");
-
-    ProfileManager *manager = [ProfileManager sharedInstance];
-
-    [manager switchToProfile:manager.currentProfile];
 }
 
 @end

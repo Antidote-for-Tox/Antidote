@@ -39,7 +39,7 @@
     }
 
     _userDefaults = [UserDefaultsManager new];
-    [self createUserDefaultsValuesIfNeeded];
+    [self createUserDefaultsValuesAndRewrite:NO];
 
     AppearanceManagerColorscheme colorscheme = _userDefaults.uCurrentColorscheme.unsignedIntegerValue;
     _appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
@@ -63,23 +63,36 @@
     return instance;
 }
 
+#pragma mark -  Public
+
+- (void)restoreDefaultSettings
+{
+    [self createUserDefaultsValuesAndRewrite:YES];
+}
+
+- (void)reloadToxManager
+{
+    self.toxManager = nil;
+    [self createToxManager];
+}
+
 #pragma mark -  Private
 
-- (void)createUserDefaultsValuesIfNeeded
+- (void)createUserDefaultsValuesAndRewrite:(BOOL)rewrite
 {
-    if (! self.userDefaults.uShowMessageInLocalNotification) {
+    if (rewrite || ! self.userDefaults.uShowMessageInLocalNotification) {
         self.userDefaults.uShowMessageInLocalNotification = @(YES);
     }
 
-    if (! self.userDefaults.uIpv6Enabled) {
+    if (rewrite || ! self.userDefaults.uIpv6Enabled) {
         self.userDefaults.uIpv6Enabled = @(1);
     }
 
-    if (! self.userDefaults.uUdpDisabled) {
+    if (rewrite || ! self.userDefaults.uUdpDisabled) {
         self.userDefaults.uUdpDisabled = @(1);
     }
 
-    if (! self.userDefaults.uCurrentColorscheme) {
+    if (rewrite || ! self.userDefaults.uCurrentColorscheme) {
         self.userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeRed);
     }
 }

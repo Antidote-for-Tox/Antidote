@@ -22,4 +22,7 @@
 @property (strong, nonatomic, readonly) OCTManager *toxManager;
 @property (strong, nonatomic, readonly) UserDefaultsManager *userDefaults;
 
+- (void)restoreDefaultSettings;
+- (void)reloadToxManager;
+
 @end
