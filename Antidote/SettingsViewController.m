@@ -21,6 +21,8 @@
 #import "CellWithSwitch.h"
 #import "ProfilesViewController.h"
 #import "AdvancedSettingsViewController.h"
+#import "OCTManager.h"
+#import "UserDefaultsManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameStatusAvatar,
@@ -217,14 +219,15 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
         }];
     }
 
-    if ([[ToxManager sharedInstance] userHasAvatar]) {
-        [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Settings") handler:^{
-            [[ToxManager sharedInstance] updateAvatar:nil];
+    // FIXME
+    // if ([[ToxManager sharedInstance] userHasAvatar]) {
+    //     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Settings") handler:^{
+    //         [[ToxManager sharedInstance] updateAvatar:nil];
 
-            NSIndexPath *path = [weakSelf indexPathForCellType:CellTypeNameStatusAvatar];
-            [weakSelf.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-        }];
-    }
+    //         NSIndexPath *path = [weakSelf indexPathForCellType:CellTypeNameStatusAvatar];
+    //         [weakSelf.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    //     }];
+    // }
 
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Settings") handler:nil];
 
@@ -233,18 +236,18 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
 {
-    [ToxManager sharedInstance].userName = newName;
+    [[AppContext sharedContext].toxManager.user setUserName:newName error:nil];
 
-    if (! [[ToxManager sharedInstance] userHasAvatar]) {
-        NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
-        [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-    }
+    // FIXME
+    // if (! [[ToxManager sharedInstance] userHasAvatar]) {
+    //     NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
+    //     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    // }
 }
 
-- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell
-          statusMessageChangedTo:(NSString *)newStatusMessage
+- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell statusMessageChangedTo:(NSString *)newStatusMessage
 {
-    [ToxManager sharedInstance].userStatusMessage = newStatusMessage;
+    [[AppContext sharedContext].toxManager.user setUserStatusMessage:newStatusMessage error:nil];
 }
 
 #pragma mark -  CellWithToxIdDelegate
@@ -260,7 +263,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
 {
-    [[AppContext sharedContext].appearance changeColorschemeTo:scheme];
+    [AppContext sharedContext].userDefaults.uCurrentColorscheme = @(scheme);
+    [[AppContext sharedContext] recreateAppearance];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
@@ -275,7 +279,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     CellType type = [self cellTypeForIndexPath:path];
 
     if (type == CellTypeShowMessageInLocalNotification) {
-        [UserInfoManager sharedInstance].uShowMessageInLocalNotification = @(cell.on);
+        [AppContext sharedContext].userDefaults.uShowMessageInLocalNotification = @(cell.on);
     }
 }
 
@@ -291,7 +295,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
         return;
     }
 
-    [[ToxManager sharedInstance] updateAvatar:image];
+    // FIXME
+    // [[ToxManager sharedInstance] updateAvatar:image];
 
     NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
@@ -337,17 +342,19 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     CellWithNameStatusAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier
                                                                           forIndexPath:indexPath];
 
-    NSString *userName = [ToxManager sharedInstance].userName;
+    NSString *userName = [AppContext sharedContext].toxManager.user.userName;
 
-    UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
-        [AvatarManager avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
+    // FIXME
+    // UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
+    //     [AvatarManager avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
+    UIImage *avatar = nil;
 
     cell.delegate = self;
     cell.avatarImage = avatar;
     cell.name = userName;
-    cell.statusMessage = [ToxManager sharedInstance].userStatusMessage;
-    cell.maxNameLength = TOX_MAX_NAME_LENGTH;
-    cell.maxStatusMessageLength = TOX_MAX_STATUSMESSAGE_LENGTH;
+    cell.statusMessage = [AppContext sharedContext].toxManager.user.userStatusMessage;
+    cell.maxNameLength = kOCTToxMaxNameLength;
+    cell.maxStatusMessageLength = kOCTToxMaxStatusMessageLength;
 
     [cell redraw];
 
@@ -360,7 +367,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
                                                                forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Settings");
-    cell.toxId = [ToxManager sharedInstance].toxId;
+    cell.toxId = [AppContext sharedContext].toxManager.user.userAddress;
 
     [cell redraw];
 
@@ -401,7 +408,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     if (type == CellTypeShowMessageInLocalNotification) {
         cell.title = NSLocalizedString(@"Message preview", @"Settings");
-        cell.on = [UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue;
+        cell.on = [AppContext sharedContext].userDefaults.uShowMessageInLocalNotification.boolValue;
     }
 
     return cell;
@@ -425,9 +432,10 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
                                                                  forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
-        NSLocalizedString(@"Profile", @"Settings"),
-        [ProfileManager sharedInstance].currentProfile.name];
+    // FIXME
+    // cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
+    //     NSLocalizedString(@"Profile", @"Settings"),
+    //     [ProfileManager sharedInstance].currentProfile.name];
 
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
