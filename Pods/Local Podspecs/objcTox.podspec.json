@@ -16,7 +16,7 @@
     "ios": "7.0"
   },
   "requires_arc": true,
-  "source_files": "Classes/**/*.{c,h}",
+  "source_files": "Classes/**/*.{m,h}",
   "public_header_files": "Classes/Public/**/*.h",
   "dependencies": {
     "toxcore-ios": [
