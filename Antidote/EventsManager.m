@@ -14,9 +14,11 @@
 #import "UIView+Utilities.h"
 #import "ChatViewController.h"
 #import "AppearanceManager.h"
+#import "OCTManager.h"
+#import "OCTMessageFile.h"
 
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
-static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNotificationChatURIRepresentationKey";
+static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotificationChatUniqueIdentifierKey";
 
 @interface EventsManager()
 
@@ -75,18 +77,14 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (type == EventObjectTypeChatIncomingMessage ||
         type == EventObjectTypeChatIncomingFile)
     {
-        NSString *uriString = notification.userInfo[kLocalNotificationChatURIRepresentationKey];
+        NSString *identifier = notification.userInfo[kLocalNotificationChatUniqueIdentifierKey];
 
-        if (! uriString) {
+        if (! identifier) {
             return;
         }
 
-        [CoreDataManager chatWithURIRepresentation:[NSURL URLWithString:uriString]
-                                   completionQueue:dispatch_get_main_queue()
-                                   completionBlock:^(CDChat *chat)
-        {
-            [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
-        }];
+        OCTChat *chat = [[AppContext sharedContext].toxManager.chats chatWithUniqueIdentifier:identifier];
+        [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
     }
     else if (type == EventObjectTypeFriendRequest) {
         [delegate switchToFriendsTabAndShowFriendRequests];
@@ -172,12 +170,13 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
+        // FIXME
+        // OCTMessageAbstract *message = object.object;
 
-        NSURL *uriRepresentation = [message.chat.objectID URIRepresentation];
-        if (uriRepresentation) {
-            userInfo[kLocalNotificationChatURIRepresentationKey] = [uriRepresentation absoluteString];
-        }
+        // NSURL *uriRepresentation = [message.chat.objectID URIRepresentation];
+        // if (uriRepresentation) {
+        //     userInfo[kLocalNotificationChatURIRepresentationKey] = [uriRepresentation absoluteString];
+        // }
     }
 
     UILocalNotification *notification = [UILocalNotification new];
@@ -329,15 +328,16 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
             return YES;
         }
 
-        ChatViewController *chatVC = (ChatViewController *)visibleVC;
-        CDMessage *message = object.object;
+        // ChatViewController *chatVC = (ChatViewController *)visibleVC;
+        // OCTMessageAbstract *message = object.object;
 
-        if (message.chat && [chatVC.chat isEqual:message.chat]) {
-            if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
-                // Chat is already visible, don't show alert
-                return NO;
-            }
-        }
+        // FIXME
+        // if (message.chat && [chatVC.chat isEqual:message.chat]) {
+        //     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
+        //         // Chat is already visible, don't show alert
+        //         return NO;
+        //     }
+        // }
     }
 
     return YES;
@@ -350,10 +350,11 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
-        ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
+        // FIXME
+        // CDMessage *message = object.object;
+        // ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
-        text = [friend nameToShow];
+        // text = [friend nameToShow];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         text = NSLocalizedString(@"Incoming friend request", @"Events");
@@ -367,18 +368,18 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     NSString *text;
 
     if (object.type == EventObjectTypeChatIncomingMessage) {
-        CDMessage *message = object.object;
+        OCTMessageText *message = object.object;
 
-        text = message.text.text;
+        text = message.text;
     }
     else if (object.type == EventObjectTypeChatIncomingFile) {
-        CDMessage *message = object.object;
+        OCTMessageFile *message = object.object;
 
         text = [NSString stringWithFormat:NSLocalizedString(@"Incoming file: %@", @"Events"),
-            message.pendingFile.originalFileName];
+            message.fileName];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
-        ToxFriendRequest *request = object.object;
+        OCTFriendRequest *request = object.object;
 
         text = request.message;
     }
@@ -393,29 +394,30 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
-        ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
+        // FIXME
+        // CDMessage *message = object.object;
+        // ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
-        text = [friend nameToShow];
-        const NSUInteger maxNameLength = 15;
+        // text = [friend nameToShow];
+        // const NSUInteger maxNameLength = 15;
 
-        if (text.length > maxNameLength) {
-            text = [text substringToIndex:maxNameLength];
-        }
+        // if (text.length > maxNameLength) {
+        //     text = [text substringToIndex:maxNameLength];
+        // }
 
-        text = [text stringByAppendingString:@": "];
+        // text = [text stringByAppendingString:@": "];
 
-        if (object.type == EventObjectTypeChatIncomingMessage) {
-            if ([UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue) {
-                text = [text stringByAppendingString:message.text.text];
-            }
-            else {
-                text = [text stringByAppendingString:NSLocalizedString(@"incoming message", @"Events")];
-            }
-        }
-        else if (object.type == EventObjectTypeChatIncomingFile) {
-            text = [text stringByAppendingString:NSLocalizedString(@"incoming file", @"Events")];
-        }
+        // if (object.type == EventObjectTypeChatIncomingMessage) {
+        //     if ([UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue) {
+        //         text = [text stringByAppendingString:message.text.text];
+        //     }
+        //     else {
+        //         text = [text stringByAppendingString:NSLocalizedString(@"incoming message", @"Events")];
+        //     }
+        // }
+        // else if (object.type == EventObjectTypeChatIncomingFile) {
+        //     text = [text stringByAppendingString:NSLocalizedString(@"incoming file", @"Events")];
+        // }
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         text = NSLocalizedString(@"Incoming friend request", @"Events");
@@ -431,9 +433,10 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
+        // FIXME
+        // CDMessage *message = object.object;
 
-        [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];
+        // [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         [delegate switchToFriendsTabAndShowFriendRequests];
