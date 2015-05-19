@@ -24,7 +24,7 @@
     return [navCon topViewController];
 }
 
-- (void)switchToChatsTabAndShowChatViewControllerWithChat:(CDChat *)chat
+- (void)switchToChatsTabAndShowChatViewControllerWithChat:(OCTChat *)chat
 {
     UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexChats];
 
@@ -34,13 +34,9 @@
                                         resultController:&chatVC
                                              searchBlock:^BOOL (ChatViewController *cvc)
     {
-        NSManagedObjectID *id1 = chat.objectID;
-        NSManagedObjectID *id2 = cvc.chat.objectID;
+        OCTChat *c = cvc.chat;
 
-        if (id1 && id2 && [id1 isEqual:id2]) {
-            return YES;
-        }
-        return NO;
+        return [cvc.chat.uniqueIdentifier isEqualToString:chat.uniqueIdentifier];
     }];
 
     if (index != NSNotFound) {

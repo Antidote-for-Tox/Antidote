@@ -9,6 +9,8 @@
 #import "ChatInputView.h"
 #import "UIColor+Utilities.h"
 #import "NSString+Utilities.h"
+#import "OCTToxConstants.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kTypingTimerInterval = 5.0;
 
@@ -142,9 +144,8 @@ static const CGFloat kTextViewIndentationRight = 60.0;
 
     NSString *result = [textView.text stringByReplacingCharactersInRange:range withString:text];
 
-    if ([result lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > TOX_MAX_MESSAGE_LENGTH) {
-        self.textView.text = [result substringToByteLength:TOX_MAX_MESSAGE_LENGTH
-                                             usingEncoding:NSUTF8StringEncoding];
+    if ([result lengthOfBytesUsingEncoding:NSUTF8StringEncoding] > kOCTToxMaxMessageLength) {
+        self.textView.text = [result substringToByteLength:kOCTToxMaxMessageLength usingEncoding:NSUTF8StringEncoding];
         answer = NO;
     }
 

@@ -7,11 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#import "OCTChat.h"
 
 @interface AppDelegate (Utilities)
 
 - (UIViewController *)visibleViewController;
-- (void)switchToChatsTabAndShowChatViewControllerWithChat:(CDChat *)chat;
+- (void)switchToChatsTabAndShowChatViewControllerWithChat:(OCTChat *)chat;
 - (void)switchToFriendsTabAndShowFriendRequests;
 - (void)switchToSettingsTabAndShowProfiles;
 

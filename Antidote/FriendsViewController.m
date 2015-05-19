@@ -11,7 +11,6 @@
 #import "FriendsCell.h"
 #import "FriendRequestsCell.h"
 #import "NSIndexSet+Utilities.h"
-#import "Helper.h"
 #import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
 #import "FriendCardViewController.h"

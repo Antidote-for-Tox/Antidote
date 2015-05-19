@@ -17,7 +17,6 @@
 #import "ChatFileCell.h"
 #import "ChatInputView.h"
 #import "UIView+Utilities.h"
-#import "Helper.h"
 #import "TimeFormatter.h"
 #import "AppDelegate.h"
 #import "UITableViewCell+Utilities.h"

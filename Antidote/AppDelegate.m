@@ -22,6 +22,8 @@
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
 #import "EventsManager.h"
+#import "AppearanceManager.h"
+#import "OCTManager.h"
 
 @interface AppDelegate()
 
@@ -44,11 +46,7 @@
     [self configureLoggingStuff];
 
     // initialize context
-    [AppContext sharedInstance];
-
-    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
-    [[UserInfoManager sharedInstance] createDefaultValuesIfNeeded];
-    [[ProfileManager sharedInstance] configureCurrentProfileAndLoadTox];
+    [AppContext sharedContext];
 
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
         UIUserNotificationType types =
@@ -66,7 +64,7 @@
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
         UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 
-        [[EventsManager sharedInstance] handleLocalNotification:notification];
+        [[AppContext sharedContext].events handleLocalNotification:notification];
     }
 
     [self.window makeKeyAndVisible];
@@ -175,21 +173,23 @@
     };
 
     if (tabIndex == AppDelegateTabIndexFriends) {
-        NSUInteger number = [[ToxManager sharedInstance].friendsContainer requestsCount];
+        OCTArray *array = [[AppContext sharedContext].toxManager.friends allFriendRequests];
+        NSUInteger number = array.count;
 
         self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
         updateApplicationBadge();
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
+        // FIXME
+        // NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
 
-        [CoreDataManager currentProfileChatsWithPredicateSortedByDate:predicate
-                                                      completionQueue:dispatch_get_main_queue()
-                                                      completionBlock:^(NSArray *array)
-        {
-            weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
-            updateApplicationBadge();
-        }];
+        // [CoreDataManager currentProfileChatsWithPredicateSortedByDate:predicate
+        //                                               completionQueue:dispatch_get_main_queue()
+        //                                               completionBlock:^(NSArray *array)
+        // {
+        //     weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
+        //     updateApplicationBadge();
+        // }];
     }
 }
 
@@ -247,7 +247,8 @@
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
                 NSString *name = [nameAlert textFieldAtIndex:0].text;
 
-                [[ProfileManager sharedInstance] addNewProfileWithName:name fromURL:url removeAfterAdding:YES];
+                // FIXME
+                // [[ProfileManager sharedInstance] addNewProfileWithName:name fromURL:url removeAfterAdding:YES];
 
                 [self switchToSettingsTabAndShowProfiles];
             }];
@@ -267,7 +268,7 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [[EventsManager sharedInstance] handleLocalNotification:notification];
+    [[AppContext sharedContext].events handleLocalNotification:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -304,7 +305,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [MagicalRecord cleanUp];
 }
 
 @end
