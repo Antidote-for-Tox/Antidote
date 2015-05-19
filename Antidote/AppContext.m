@@ -7,14 +7,16 @@
 //
 
 #import "AppContext.h"
-#import "EventsManager.h"
-#import "UserDefaultsManager.h"
 #import "AppearanceManager.h"
+#import "EventsManager.h"
+#import "OCTManager.h"
+#import "UserDefaultsManager.h"
 
 @interface AppContext()
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) EventsManager *events;
+@property (strong, nonatomic, readwrite) OCTManager *toxManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
 @end
@@ -43,6 +45,8 @@
     _appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
 
     _events = [EventsManager new];
+
+    [self createToxManager];
 
     return self;
 }
@@ -78,6 +82,13 @@
     if (! self.userDefaults.uCurrentColorscheme) {
         self.userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeRed);
     }
+}
+
+- (void)createToxManager
+{
+    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
+
+    _toxManager = [[OCTManager alloc] initWithConfiguration:configuration];
 }
 
 @end

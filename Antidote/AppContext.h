@@ -10,6 +10,7 @@
 
 @class AppearanceManager;
 @class EventsManager;
+@class OCTManager;
 @class UserDefaultsManager;
 
 @interface AppContext : NSObject
@@ -18,6 +19,7 @@
 
 @property (strong, nonatomic, readonly) AppearanceManager *appearance;
 @property (strong, nonatomic, readonly) EventsManager *events;
+@property (strong, nonatomic, readonly) OCTManager *toxManager;
 @property (strong, nonatomic, readonly) UserDefaultsManager *userDefaults;
 
 @end
