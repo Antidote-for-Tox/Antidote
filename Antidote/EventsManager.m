@@ -13,6 +13,7 @@
 #import "UIColor+Utilities.h"
 #import "UIView+Utilities.h"
 #import "ChatViewController.h"
+#import "AppearanceManager.h"
 
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
 static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNotificationChatURIRepresentationKey";

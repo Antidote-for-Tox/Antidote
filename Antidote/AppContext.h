@@ -24,5 +24,6 @@
 
 - (void)restoreDefaultSettings;
 - (void)reloadToxManager;
+- (void)recreateAppearance;
 
 @end

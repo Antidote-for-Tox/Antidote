@@ -41,11 +41,9 @@
     _userDefaults = [UserDefaultsManager new];
     [self createUserDefaultsValuesAndRewrite:NO];
 
-    AppearanceManagerColorscheme colorscheme = _userDefaults.uCurrentColorscheme.unsignedIntegerValue;
-    _appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
-
     _events = [EventsManager new];
 
+    [self createAppearance];
     [self createToxManager];
 
     return self;
@@ -76,6 +74,12 @@
     [self createToxManager];
 }
 
+- (void)recreateAppearance
+{
+    self.appearance = nil;
+    [self createAppearance];
+}
+
 #pragma mark -  Private
 
 - (void)createUserDefaultsValuesAndRewrite:(BOOL)rewrite
@@ -97,11 +101,17 @@
     }
 }
 
+- (void)createAppearance
+{
+    AppearanceManagerColorscheme colorscheme = _userDefaults.uCurrentColorscheme.unsignedIntegerValue;
+    self.appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
+}
+
 - (void)createToxManager
 {
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
 
-    _toxManager = [[OCTManager alloc] initWithConfiguration:configuration];
+    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration];
 }
 
 @end
