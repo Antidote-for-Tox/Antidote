@@ -18,13 +18,16 @@
 #import "TimeFormatter.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
+#import "OCTManager.h"
+#import "AppearanceManager.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) ToxFriendsContainer *friendsContainer;
+@property (strong, nonatomic) OCTFriendsContainer *friendsContainer;
+@property (strong, nonatomic) OCTArray *allFriendRequests;
 
 @end
 
@@ -40,16 +43,18 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
         self.title = NSLocalizedString(@"Friends", @"Friends");
 
-        self.friendsContainer = [ToxManager sharedInstance].friendsContainer;
+        self.friendsContainer = [AppContext sharedContext].toxManager.friends.friendsContainer;
+        self.allFriendRequests = [[AppContext sharedContext].toxManager.friends allFriendRequests];
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateFriendsNotification:)
-                                                     name:kToxFriendsContainerUpdateFriendsNotification
-                                                   object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateRequestsNotification:)
-                                                     name:kToxFriendsContainerUpdateRequestsNotification
-                                                   object:nil];
+        // FIXME
+        // [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                          selector:@selector(updateFriendsNotification:)
+        //                                              name:kToxFriendsContainerUpdateFriendsNotification
+        //                                            object:nil];
+        // [[NSNotificationCenter defaultCenter] addObserver:self
+        //                                          selector:@selector(updateRequestsNotification:)
+        //                                              name:kToxFriendsContainerUpdateRequestsNotification
+        //                                            object:nil];
     }
 
     return self;
@@ -145,7 +150,7 @@
         return self.friendsContainer.friendsCount;
     }
     else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
-        return self.friendsContainer.requestsCount;
+        return self.allFriendRequests.count;
     }
 
     return 0;
@@ -189,7 +194,7 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+        OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
         FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
         [self.navigationController pushViewController:fcvc animated:YES];
@@ -202,102 +207,96 @@
 {
     NSIndexPath *path = [self.tableView indexPathForCell:cell];
 
-    ToxFriendRequest *request = [self.friendsContainer requestAtIndex:path.row];
+    OCTFriendRequest *request = [self.allFriendRequests objectAtIndex:path.row];
 
-    BOOL wasLastRequest = (self.friendsContainer.requestsCount == 1);
+    BOOL wasLastRequest = (self.allFriendRequests.count == 1);
 
     __weak FriendsViewController *weakSelf = self;
 
-    [[ToxManager sharedInstance] approveFriendRequest:request withBlock:^(BOOL wasError) {
-        if (wasError) {
-            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Oops", @"Error")
-                                        message:NSLocalizedString(@"Something went wrong", @"Error")
-                                       delegate:nil
-                              cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
-                              otherButtonTitles:nil] show];
-        }
+    [[AppContext sharedContext].toxManager.friends approveFriendRequest:request error:nil];
 
-        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-        [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
 
-        if (wasLastRequest) {
-            [weakSelf switchToTab:FriendsViewControllerTabFriends];
-        }
-    }];
+    if (wasLastRequest) {
+        [weakSelf switchToTab:FriendsViewControllerTabFriends];
+    }
 }
 
 #pragma mark -  Notifications
 
 - (void)updateFriendsNotification:(NSNotification *)notification
 {
-    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
-        return;
-    }
+    // FIXME
+    // if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
+    //     return;
+    // }
 
-    if (! self.tableView) {
-        return;
-    }
+    // if (! self.tableView) {
+    //     return;
+    // }
 
-    NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
-    NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
-    NSIndexSet *updated = notification.userInfo[kToxFriendsContainerUpdateKeyUpdatedSet];
+    // NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
+    // NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
+    // NSIndexSet *updated = notification.userInfo[kToxFriendsContainerUpdateKeyUpdatedSet];
 
-    @synchronized(self.tableView) {
-        NSInteger newNumberOfRows = [self.tableView numberOfRowsInSection:0] + inserted.count - removed.count;
+    // @synchronized(self.tableView) {
+    //     NSInteger newNumberOfRows = [self.tableView numberOfRowsInSection:0] + inserted.count - removed.count;
 
-        if (newNumberOfRows != [self tableView:self.tableView numberOfRowsInSection:0]) {
-            DDLogWarn(@"FriendsViewController: inconsistent data, reloding table view");
-            [self.tableView reloadData];
-        }
-        else {
-            [self.tableView beginUpdates];
+    //     if (newNumberOfRows != [self tableView:self.tableView numberOfRowsInSection:0]) {
+    //         DDLogWarn(@"FriendsViewController: inconsistent data, reloding table view");
+    //         [self.tableView reloadData];
+    //     }
+    //     else {
+    //         [self.tableView beginUpdates];
 
-            if (inserted.count) {
-                [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
+    //         if (inserted.count) {
+    //             [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
+    //                                   withRowAnimation:UITableViewRowAnimationAutomatic];
+    //         }
 
-            if (removed.count) {
-                [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
+    //         if (removed.count) {
+    //             [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
+    //                                   withRowAnimation:UITableViewRowAnimationAutomatic];
+    //         }
 
-            if (updated.count) {
-                [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
+    //         if (updated.count) {
+    //             [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
+    //                                   withRowAnimation:UITableViewRowAnimationAutomatic];
+    //         }
 
-            [self.tableView endUpdates];
-        }
-    }
+    //         [self.tableView endUpdates];
+    //     }
+    // }
 }
 
 - (void)updateRequestsNotification:(NSNotification *)notification
 {
-    [self updateSegmentedControlRequestTitle];
+    // FIXME
+    // [self updateSegmentedControlRequestTitle];
 
-    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabRequests) {
-        return;
-    }
+    // if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabRequests) {
+    //     return;
+    // }
 
-    NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
-    NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
+    // NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
+    // NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
 
-    @synchronized(self.tableView) {
-        [self.tableView beginUpdates];
+    // @synchronized(self.tableView) {
+    //     [self.tableView beginUpdates];
 
-        if (inserted.count) {
-            [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
+    //     if (inserted.count) {
+    //         [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
+    //                               withRowAnimation:UITableViewRowAnimationAutomatic];
+    //     }
 
-        if (removed.count) {
-            [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
-                                  withRowAnimation:UITableViewRowAnimationAutomatic];
-        }
+    //     if (removed.count) {
+    //         [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
+    //                               withRowAnimation:UITableViewRowAnimationAutomatic];
+    //     }
 
-        [self.tableView endUpdates];
-    }
+    //     [self.tableView endUpdates];
+    // }
 }
 
 #pragma mark -  Private
@@ -355,10 +354,10 @@
 
     UIImage *image;
 
-    if (self.friendsContainer.friendsSort == ToxFriendsContainerSortByName) {
+    if (self.friendsContainer.friendsSort == OCTFriendsSortByName) {
         image = [UIImage imageNamed:@"friends-sort-alphabet"];
     }
-    else if (self.friendsContainer.friendsSort == ToxFriendsContainerSortByStatus) {
+    else if (self.friendsContainer.friendsSort == OCTFriendsSortByStatus) {
         image = [UIImage imageNamed:@"friends-sort-status"];
     }
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
@@ -380,15 +379,16 @@
     FriendsCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
                                                              forIndexPath:indexPath];
 
-    ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+    OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.textLabel.text = [friend nameToShow];
-    cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
-                                                    orCreateAvatarFromString:[friend nameToShow]
-                                                                    withSide:30.0];
-    cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
+    cell.textLabel.text = friend.name;
+    // FIXME
+    // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
+    //                                                 orCreateAvatarFromString:[friend nameToShow]
+    //                                                                 withSide:30.0];
+    // cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
-    if (friend.status == ToxFriendStatusOffline) {
+    if (friend.connectionStatus == OCTToxConnectionStatusNone) {
         if (friend.lastSeenOnline) {
             cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"last seen %@", @"Friends"),
                 [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline
@@ -414,7 +414,7 @@
                                                                     forIndexPath:indexPath];
     cell.delegate = self;
 
-    ToxFriendRequest *request = [self.friendsContainer requestAtIndex:indexPath.row];
+    OCTFriendRequest *request = [self.allFriendRequests objectAtIndex:indexPath.row];
 
     cell.title = request.publicKey;
     cell.subtitle = request.message;
@@ -436,21 +436,21 @@
         UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
 
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
-            ToxFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
+            OCTFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
 
-            [[ToxManager sharedInstance] chatWithToxFriend:friend completionBlock:^(CDChat *chat) {
-                UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
+            OCTChat *chat = [[AppContext sharedContext].toxManager.chats getOrCreateChatWithFriend:friend];
 
-                [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
-                    [CoreDataManager removeChatWithAllMessages:chat completionQueue:nil completionBlock:nil];
-                }];
+            [[AppContext sharedContext].toxManager.friends removeFriend:friend error:nil];
 
-                [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
+            UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
 
-                [chatAlert show];
+            [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
+                [[AppContext sharedContext].toxManager.chats removeChatWithAllMessages:chat];
             }];
 
-            [[ToxManager sharedInstance] removeFriend:friend];
+            [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
+
+            [chatAlert show];
         }];
 
         [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
@@ -472,9 +472,9 @@
         UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
 
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friend requestss") handler:^{
-            ToxFriendRequest *request = [weakSelf.friendsContainer requestAtIndex:indexPath.row];
+            OCTFriendRequest *request = [weakSelf.allFriendRequests objectAtIndex:indexPath.row];
 
-            [[ToxManager sharedInstance] removeFriendRequest:request];
+            [[AppContext sharedContext].toxManager.friends removeFriendRequest:request];
         }];
 
         [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friend requestss") handler:^{
@@ -487,18 +487,16 @@
 
 - (void)friendsDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ToxFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+    OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+    OCTChat *chat = [[AppContext sharedContext].toxManager.chats getOrCreateChatWithFriend:friend];
 
-    [[ToxManager sharedInstance] chatWithToxFriend:friend completionBlock:^(CDChat *chat) {
-        AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-
-        [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
-    }];
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
 }
 
 - (void)updateSegmentedControlRequestTitle
 {
-    NSUInteger number = [[ToxManager sharedInstance].friendsContainer requestsCount];
+    NSUInteger number = self.allFriendRequests.count;
 
     NSString *title = NSLocalizedString(@"Requests", @"Friends");
 
