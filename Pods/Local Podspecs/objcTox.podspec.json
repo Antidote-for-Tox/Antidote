@@ -28,5 +28,6 @@
   },
   "ios": {
     "vendored_frameworks": "Realm.framework"
-  }
+  },
+  "libraries": "c++"
 }

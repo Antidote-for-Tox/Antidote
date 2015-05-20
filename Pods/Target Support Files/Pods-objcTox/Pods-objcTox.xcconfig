@@ -1,2 +1,2 @@
 PODS_OBJCTOX_FRAMEWORK_SEARCH_PATHS = "$(PODS_ROOT)/objcTox"
-PODS_OBJCTOX_OTHER_LDFLAGS = -framework "Realm"
+PODS_OBJCTOX_OTHER_LDFLAGS = -l"c++" -framework "Realm"
