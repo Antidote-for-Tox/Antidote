@@ -1,1 +1,0 @@
-../../../objcTox/Classes/Public/Manager/Configuration/OCTSettingsStorageProtocol.h

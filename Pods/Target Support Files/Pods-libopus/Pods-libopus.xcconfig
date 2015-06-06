@@ -1,1 +1,0 @@
-PODS_LIBOPUS_HEADER_SEARCH_PATHS = "${PODS_ROOT}/libopus/silk" "${PODS_ROOT}/libopus/silk"

@@ -40,7 +40,7 @@ Clone repo `git clone --recursive https://github.com/dvor/Antidote.git` and open
 
 #### In progress
 
--  migrating to new tox API (see [objcTox](https://github.com/dvor/objcTox) for more details)
+-  migrating to new tox API (see [migrating-to-objcTox](https://github.com/dvor/Antidote/tree/migrating-to-objcTox) branch and [objcTox](https://github.com/dvor/objcTox) for more details)
 -  UI polishing
 -  fixing bugs
 
