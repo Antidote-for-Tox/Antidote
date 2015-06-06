@@ -1,1 +1,0 @@
-../../../toxcore-ios/toxcore/toxcore/ping.h
