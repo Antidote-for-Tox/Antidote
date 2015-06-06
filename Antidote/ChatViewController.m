@@ -35,7 +35,7 @@ typedef NS_ENUM(NSInteger, Section) {
 @interface ChatViewController () <UITableViewDataSource, UITableViewDelegate,
     ChatInputViewDelegate, UIGestureRecognizerDelegate, ChatFileCellDelegate,
     QLPreviewControllerDataSource, UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate>
+    UINavigationControllerDelegate, OCTArrayDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) ChatInputView *inputView;
@@ -80,14 +80,6 @@ typedef NS_ENUM(NSInteger, Section) {
                                                    object:nil];
         // FIXME
         // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(newMessageNotification:)
-        //                                              name:kCoreDataManagerNewMessageNotification
-        //                                            object:nil];
-        // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(messageUpdateNotification:)
-        //                                              name:kCoreDataManagerMessageUpdateNotification
-        //                                            object:nil];
-        // [[NSNotificationCenter defaultCenter] addObserver:self
         //                                          selector:@selector(friendUpdateNotification:)
         //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
         //                                            object:nil];
@@ -119,6 +111,7 @@ typedef NS_ENUM(NSInteger, Section) {
     [super viewDidLoad];
 
     self.allMessages = [[AppContext sharedContext].toxManager.chats allMessagesInChat:self.chat];
+    self.allMessages.delegate = self;
     [self scrollToBottomAnimated:NO];
 
     [self updateIsTypingSection];
@@ -561,6 +554,41 @@ typedef NS_ENUM(NSInteger, Section) {
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
+#pragma mark -  OCTArrayDelegate
+
+- (void)OCTArrayWasUpdated:(OCTArray *)array
+{
+    if (self.isViewLoaded &&
+        self.view.window  &&
+        [UIApplication sharedApplication].applicationState == UIApplicationStateActive)
+    {
+        // is visible
+        [self updateLastReadDateAndChatsBadge];
+    }
+
+    NSIndexPath *lastMessagePath;
+
+    if (array.count) {
+        lastMessagePath = [NSIndexPath indexPathForRow:array.count-1 inSection:SectionMessages];
+    }
+
+    [self.tableView reloadData];
+
+    // scroll to bottom only if last message was visible
+    if (lastMessagePath) {
+        CGRect rect = CGRectZero;
+        rect.origin = self.tableView.contentOffset;
+        rect.size = self.tableView.frame.size;
+        rect.size.height -= self.tableView.contentInset.bottom;
+
+        NSArray *visiblePathes = [self.tableView indexPathsForRowsInRect:rect];
+
+        if ([visiblePathes containsObject:lastMessagePath]) {
+            [self scrollToBottomAnimated:YES];
+        }
+    }
+}
+
 #pragma mark -  Notifications
 
 - (void)keyboardWillShow:(NSNotification *)notification
@@ -582,92 +610,6 @@ typedef NS_ENUM(NSInteger, Section) {
     UIViewAnimationCurve curve = [notification.userInfo[UIKeyboardAnimationCurveUserInfoKey] doubleValue];
 
     [self updateTableViewInsetAndInputViewWithDuration:duration curve:curve];
-}
-
-- (void)newMessageNotification:(NSNotification *)notification
-{
-    // FIXME
-    // CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
-
-    // if (! [message.chat isEqual:self.chat]) {
-    //     return;
-    // }
-
-    // if (self.isViewLoaded &&
-    //     self.view.window  &&
-    //     [UIApplication sharedApplication].applicationState == UIApplicationStateActive)
-    // {
-    //     // is visible
-    //     [self updateLastReadDateAndChatsBadge];
-    // }
-
-    // NSIndexPath *lastMessagePath;
-
-    // id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
-
-    // if (info.numberOfObjects) {
-    //     lastMessagePath = [NSIndexPath indexPathForRow:info.numberOfObjects-1 inSection:SectionMessages];
-    // }
-
-    // [self.fetchedResultsController performFetch:nil];
-
-    // @synchronized(self.tableView) {
-    //     NSIndexPath *path = [NSIndexPath indexPathForRow:info.numberOfObjects inSection:SectionMessages];
-
-    //     id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[SectionMessages];
-
-    //     if ((NSInteger)info.numberOfObjects == [self.tableView numberOfRowsInSection:SectionMessages] + 1) {
-    //         [self.tableView beginUpdates];
-    //         [self.tableView insertRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
-    //         [self.tableView endUpdates];
-    //     }
-    //     else {
-    //         // For some reason there is inconsistent dataModel. In case of spamming there can be problems with
-    //         // multithreading.
-    //         // We just reaload data to deal with it.
-    //         [self.tableView reloadData];
-    //     }
-    // }
-
-    // [self changeIsTypingTo:NO];
-
-    // // scroll to bottom only if last message was visible
-    // if (lastMessagePath) {
-    //     CGRect rect = CGRectZero;
-    //     rect.origin = self.tableView.contentOffset;
-    //     rect.size = self.tableView.frame.size;
-    //     rect.size.height -= self.tableView.contentInset.bottom;
-
-    //     NSArray *visiblePathes = [self.tableView indexPathsForRowsInRect:rect];
-
-    //     if ([visiblePathes containsObject:lastMessagePath]) {
-    //         [self scrollToBottomAnimated:YES];
-    //     }
-    // }
-}
-
-- (void)messageUpdateNotification:(NSNotification *)notification
-{
-    // FIXME
-    // CDMessage *message = notification.userInfo[kCoreDataManagerCDMessageKey];
-
-    // if (! [message.chat isEqual:self.chat]) {
-    //     return;
-    // }
-
-    // @synchronized(self.tableView) {
-    //     for (NSIndexPath *path in [self.tableView indexPathsForVisibleRows]) {
-    //         if (path.section == SectionMessages) {
-    //             CDMessage *m = [self.fetchedResultsController objectAtIndexPath:path];
-
-    //             if ([m isEqual:message]) {
-    //                 [self.tableView reloadRowsAtIndexPaths:@[path]
-    //                                       withRowAnimation:UITableViewRowAnimationNone];
-    //                 return;
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 - (void)friendUpdateNotification:(NSNotification *)notification
