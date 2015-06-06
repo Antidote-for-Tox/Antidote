@@ -1,6 +1,9 @@
 language: objective-c
-before_script:
+
+before_install:
     - brew update
     - brew unlink xctool
     - brew install xctool
+    - pod install
+
 script: xctool -workspace Antidote.xcworkspace -scheme Antidote -sdk iphonesimulator build
