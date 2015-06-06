@@ -34,8 +34,6 @@
                                         resultController:&chatVC
                                              searchBlock:^BOOL (ChatViewController *cvc)
     {
-        OCTChat *c = cvc.chat;
-
         return [cvc.chat.uniqueIdentifier isEqualToString:chat.uniqueIdentifier];
     }];
 

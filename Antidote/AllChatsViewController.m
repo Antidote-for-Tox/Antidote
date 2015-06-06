@@ -60,8 +60,6 @@
 {
     [super viewDidLoad];
 
-    __weak AllChatsViewController *weakSelf = self;
-
     self.allChats = [[AppContext sharedContext].toxManager.chats allChats];
     self.allChats.delegate = self;
 }
@@ -98,7 +96,6 @@
     //                                                                 withSide:cell.imageView.frame.size.width];
     // cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
 
-    NSString *message = nil;
     NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date
                                                                      type:TimeFormatterTypeRelativeDateAndTime];
 

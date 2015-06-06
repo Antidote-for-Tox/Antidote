@@ -291,7 +291,7 @@ typedef NS_ENUM(NSInteger, Section) {
     OCTMessageAbstract *message = [self.allMessages objectAtIndex:indexPath.row];
 
     if ([message isKindOfClass:[OCTMessageFile class]]) {
-        OCTMessageFile *messageFile = (OCTMessageFile *)message;
+//        OCTMessageFile *messageFile = (OCTMessageFile *)message;
 
         // FIXME
         // __weak ChatViewController *weakSelf = self;
@@ -520,33 +520,33 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 
-    NSURL *refURL = info[UIImagePickerControllerReferenceURL];
+    // FIXME
+    // NSURL *refURL = info[UIImagePickerControllerReferenceURL];
 
-    ALAssetsLibrary* assetslibrary = [ALAssetsLibrary new];
+    // ALAssetsLibrary* assetslibrary = [ALAssetsLibrary new];
 
-    [assetslibrary assetForURL:refURL resultBlock:^(ALAsset *imageAsset) {
-        ALAssetRepresentation *representation = [imageAsset defaultRepresentation];
+    // [assetslibrary assetForURL:refURL resultBlock:^(ALAsset *imageAsset) {
+    //     ALAssetRepresentation *representation = [imageAsset defaultRepresentation];
 
-        NSString *fileUTI = [representation UTI];
-        NSString *fileName = [representation filename];
+    //     NSString *fileUTI = [representation UTI];
+    //     NSString *fileName = [representation filename];
 
-        if (! fileName) {
-            fileName = @"photo.jpg";
-        }
+    //     if (! fileName) {
+    //         fileName = @"photo.jpg";
+    //     }
 
-        UIImage *image = info[UIImagePickerControllerOriginalImage];
-        NSData *data = nil;
+    //     UIImage *image = info[UIImagePickerControllerOriginalImage];
+    //     NSData *data = nil;
 
-        if (! fileUTI || [fileUTI isEqualToString:(NSString *)kUTTypeJPEG]) {
-            data = UIImageJPEGRepresentation(image, 0.9);
-        }
-        else {
-            data = UIImagePNGRepresentation(image);
-        }
+    //     if (! fileUTI || [fileUTI isEqualToString:(NSString *)kUTTypeJPEG]) {
+    //         data = UIImageJPEGRepresentation(image, 0.9);
+    //     }
+    //     else {
+    //         data = UIImagePNGRepresentation(image);
+    //     }
 
-        // FIXME
-        // [[ToxManager sharedInstance] uploadData:data withFileName:fileName toChat:self.chat];
-    } failureBlock:nil];
+    //     [[ToxManager sharedInstance] uploadData:data withFileName:fileName toChat:self.chat];
+    // } failureBlock:nil];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker

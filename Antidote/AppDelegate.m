@@ -165,7 +165,7 @@
 
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
 {
-    __weak AppDelegate *weakSelf = self;
+//    __weak AppDelegate *weakSelf = self;
 
     void (^updateApplicationBadge)() = ^() {
         [UIApplication sharedApplication].applicationIconBadgeNumber =
@@ -245,7 +245,7 @@
             [nameAlert textFieldAtIndex:0].text = [url lastPathComponent];
 
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
-                NSString *name = [nameAlert textFieldAtIndex:0].text;
+//                NSString *name = [nameAlert textFieldAtIndex:0].text;
 
                 // FIXME
                 // [[ProfileManager sharedInstance] addNewProfileWithName:name fromURL:url removeAfterAdding:YES];
