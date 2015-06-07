@@ -12,7 +12,7 @@
 #import "QRScannerController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 
 static const CGFloat kYIndentation = 10.0;
 
@@ -123,9 +123,9 @@ static const CGFloat kYIndentation = 10.0;
 
 - (void)sendRequestButtonPressed
 {
-    [[AppContext sharedContext].toxManager.friends sendFriendRequestToAddress:self.toxIdTextView.text
-                                                                      message:self.messageTextView.text
-                                                                        error:nil];
+    [[AppContext sharedContext].profileManager.toxManager.friends sendFriendRequestToAddress:self.toxIdTextView.text
+                                                                                     message:self.messageTextView.text
+                                                                                       error:nil];
 
     [self.navigationController popViewControllerAnimated:YES];
 }

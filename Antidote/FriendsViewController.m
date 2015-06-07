@@ -18,7 +18,7 @@
 #import "TimeFormatter.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 #import "AppearanceManager.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
@@ -43,8 +43,8 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
         self.title = NSLocalizedString(@"Friends", @"Friends");
 
-        self.friendsContainer = [AppContext sharedContext].toxManager.friends.friendsContainer;
-        self.allFriendRequests = [[AppContext sharedContext].toxManager.friends allFriendRequests];
+        self.friendsContainer = [AppContext sharedContext].profileManager.toxManager.friends.friendsContainer;
+        self.allFriendRequests = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
 
         // FIXME
         // [[NSNotificationCenter defaultCenter] addObserver:self
@@ -213,7 +213,7 @@
 
     __weak FriendsViewController *weakSelf = self;
 
-    [[AppContext sharedContext].toxManager.friends approveFriendRequest:request error:nil];
+    [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:request error:nil];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
@@ -438,14 +438,14 @@
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
             OCTFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
 
-            OCTChat *chat = [[AppContext sharedContext].toxManager.chats getOrCreateChatWithFriend:friend];
+            OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
-            [[AppContext sharedContext].toxManager.friends removeFriend:friend error:nil];
+            [[AppContext sharedContext].profileManager.toxManager.friends removeFriend:friend error:nil];
 
             UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
 
             [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
-                [[AppContext sharedContext].toxManager.chats removeChatWithAllMessages:chat];
+                [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
             }];
 
             [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
@@ -474,7 +474,7 @@
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friend requestss") handler:^{
             OCTFriendRequest *request = [weakSelf.allFriendRequests objectAtIndex:indexPath.row];
 
-            [[AppContext sharedContext].toxManager.friends removeFriendRequest:request];
+            [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:request];
         }];
 
         [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friend requestss") handler:^{
@@ -488,7 +488,7 @@
 - (void)friendsDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
-    OCTChat *chat = [[AppContext sharedContext].toxManager.chats getOrCreateChatWithFriend:friend];
+    OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];

@@ -14,7 +14,7 @@
 #import "UIView+Utilities.h"
 #import "ChatViewController.h"
 #import "AppearanceManager.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 #import "OCTMessageFile.h"
 
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
@@ -83,7 +83,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
             return;
         }
 
-        OCTChat *chat = [[AppContext sharedContext].toxManager.chats chatWithUniqueIdentifier:identifier];
+        OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats chatWithUniqueIdentifier:identifier];
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
     }
     else if (type == EventObjectTypeFriendRequest) {

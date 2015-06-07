@@ -11,6 +11,7 @@
 #import "CellWithSwitch.h"
 #import "UserDefaultsManager.h"
 #import "AppearanceManager.h"
+#import "ProfileManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeIpv6Enabled,
@@ -79,7 +80,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 
         [self.tableView reloadData];
 
-        [[AppContext sharedContext] reloadToxManager];
+        [self reloadToxManager];
     }
 }
 
@@ -97,10 +98,16 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
         [AppContext sharedContext].userDefaults.uUDPEnabled = cell.on ? @(1) : @(0);
     }
 
-    [[AppContext sharedContext] reloadToxManager];
+    [self reloadToxManager];
 }
 
 #pragma mark -  Private
+
+- (void)reloadToxManager
+{
+    ProfileManager *profileManager = [AppContext sharedContext].profileManager;
+    [profileManager switchToProfileWithName:profileManager.currentProfileName];
+}
 
 - (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath type:(CellType)type
 {

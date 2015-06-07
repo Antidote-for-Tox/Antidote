@@ -10,14 +10,12 @@
 #import "AppearanceManager.h"
 #import "EventsManager.h"
 #import "ProfileManager.h"
-#import "OCTManager.h"
 #import "UserDefaultsManager.h"
 
 @interface AppContext()
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) EventsManager *events;
-@property (strong, nonatomic, readwrite) OCTManager *toxManager;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
@@ -47,7 +45,6 @@
     _profileManager = [ProfileManager new];
 
     [self createAppearance];
-    [self createToxManager];
 
     return self;
 }
@@ -69,12 +66,6 @@
 - (void)restoreDefaultSettings
 {
     [self createUserDefaultsValuesAndRewrite:YES];
-}
-
-- (void)reloadToxManager
-{
-    self.toxManager = nil;
-    [self createToxManager];
 }
 
 - (void)recreateAppearance
@@ -108,13 +99,6 @@
 {
     AppearanceManagerColorscheme colorscheme = _userDefaults.uCurrentColorscheme.unsignedIntegerValue;
     self.appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
-}
-
-- (void)createToxManager
-{
-    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
-
-    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration];
 }
 
 @end

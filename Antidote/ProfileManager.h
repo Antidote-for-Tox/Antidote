@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "OCTManager.h"
+
 @interface ProfileManager : NSObject
 
 /**

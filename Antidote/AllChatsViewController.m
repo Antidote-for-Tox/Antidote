@@ -15,7 +15,7 @@
 #import "UIColor+Utilities.h"
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 #import "OCTMessageText.h"
 #import "OCTMessageFile.h"
 #import "AppearanceManager.h"
@@ -60,7 +60,7 @@
 {
     [super viewDidLoad];
 
-    self.allChats = [[AppContext sharedContext].toxManager.chats allChats];
+    self.allChats = [[AppContext sharedContext].profileManager.toxManager.chats allChats];
     self.allChats.delegate = self;
 }
 
@@ -144,7 +144,7 @@
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Chats") handler:^{
             OCTChat *chat = [weakSelf.allChats objectAtIndex:indexPath.row];
 
-            [[AppContext sharedContext].toxManager.chats removeChatWithAllMessages:chat];
+            [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Chats") handler:^{

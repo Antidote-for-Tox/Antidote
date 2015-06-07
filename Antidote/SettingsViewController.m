@@ -21,7 +21,7 @@
 #import "CellWithSwitch.h"
 #import "ProfilesViewController.h"
 #import "AdvancedSettingsViewController.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
@@ -236,7 +236,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
 {
-    [[AppContext sharedContext].toxManager.user setUserName:newName error:nil];
+    [[AppContext sharedContext].profileManager.toxManager.user setUserName:newName error:nil];
 
     // FIXME
     // if (! [[ToxManager sharedInstance] userHasAvatar]) {
@@ -247,7 +247,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell statusMessageChangedTo:(NSString *)newStatusMessage
 {
-    [[AppContext sharedContext].toxManager.user setUserStatusMessage:newStatusMessage error:nil];
+    [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:newStatusMessage error:nil];
 }
 
 #pragma mark -  CellWithToxIdDelegate
@@ -342,7 +342,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     CellWithNameStatusAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier
                                                                           forIndexPath:indexPath];
 
-    NSString *userName = [AppContext sharedContext].toxManager.user.userName;
+    NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
 
     // FIXME
     // UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
@@ -352,7 +352,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.delegate = self;
     cell.avatarImage = avatar;
     cell.name = userName;
-    cell.statusMessage = [AppContext sharedContext].toxManager.user.userStatusMessage;
+    cell.statusMessage = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
     cell.maxNameLength = kOCTToxMaxNameLength;
     cell.maxStatusMessageLength = kOCTToxMaxStatusMessageLength;
 
@@ -367,7 +367,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
                                                                forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Settings");
-    cell.toxId = [AppContext sharedContext].toxManager.user.userAddress;
+    cell.toxId = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
 
     [cell redraw];
 

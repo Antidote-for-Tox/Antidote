@@ -23,7 +23,7 @@
 #import "PreviewItem.h"
 #import "UIActionSheet+BlocksKit.h"
 #import "OCTArray.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 #import "OCTMessageFile.h"
 #import "StatusCircleView.h"
 
@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [super viewDidLoad];
 
-    self.allMessages = [[AppContext sharedContext].toxManager.chats allMessagesInChat:self.chat];
+    self.allMessages = [[AppContext sharedContext].profileManager.toxManager.chats allMessagesInChat:self.chat];
     self.allMessages.delegate = self;
     [self scrollToBottomAnimated:NO];
 
@@ -376,17 +376,17 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)chatInputView:(ChatInputView *)view sendButtonPressedWithText:(NSString *)text;
 {
-    [[AppContext sharedContext].toxManager.chats sendMessageToChat:self.chat
-                                                              text:text
-                                                              type:OCTToxMessageTypeNormal
-                                                             error:nil];
+    [[AppContext sharedContext].profileManager.toxManager.chats sendMessageToChat:self.chat
+                                                                             text:text
+                                                                             type:OCTToxMessageTypeNormal
+                                                                            error:nil];
 
     [view setText:nil];
 }
 
 - (void)chatInputView:(ChatInputView *)view typingChangedTo:(BOOL)isTyping
 {
-    [[AppContext sharedContext].toxManager.chats setIsTyping:isTyping inChat:self.chat error:nil];
+    [[AppContext sharedContext].profileManager.toxManager.chats setIsTyping:isTyping inChat:self.chat error:nil];
 }
 
 #pragma mark -  UIGestureRecognizerDelegate

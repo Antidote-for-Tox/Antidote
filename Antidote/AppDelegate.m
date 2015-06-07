@@ -23,7 +23,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "EventsManager.h"
 #import "AppearanceManager.h"
-#import "OCTManager.h"
+#import "ProfileManager.h"
 
 @interface AppDelegate()
 
@@ -173,7 +173,7 @@
     };
 
     if (tabIndex == AppDelegateTabIndexFriends) {
-        OCTArray *array = [[AppContext sharedContext].toxManager.friends allFriendRequests];
+        OCTArray *array = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
         NSUInteger number = array.count;
 
         self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
