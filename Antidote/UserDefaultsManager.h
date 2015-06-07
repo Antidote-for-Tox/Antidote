@@ -16,10 +16,10 @@
 @property (strong, nonatomic) NSNumber *uCurrentColorscheme;
 @property (strong, nonatomic) NSNumber *uFriendsSort;
 
-@property (strong, nonatomic) NSString *uCurrentProfileFileName;
+@property (strong, nonatomic) NSString *uCurrentProfileName;
 
 @property (strong, nonatomic) NSNumber *uShowMessageInLocalNotification;
 @property (strong, nonatomic) NSNumber *uIpv6Enabled;
-@property (strong, nonatomic) NSNumber *uUdpDisabled;
+@property (strong, nonatomic) NSNumber *uUDPEnabled;
 
 @end

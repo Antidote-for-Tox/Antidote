@@ -40,9 +40,9 @@
 GENERATE_OBJECT(PendingFriendRequests,           @"pending-friend-requests",             NSArray *)
 GENERATE_OBJECT(CurrentColorscheme,              @"current-colorscheme",                 NSNumber *)
 GENERATE_OBJECT(FriendsSort,                     @"friends-sort",                        NSNumber *)
-GENERATE_OBJECT(CurrentProfileFileName,          @"current-profile-filename",            NSString *)
+GENERATE_OBJECT(CurrentProfileName,              @"current-profile-name",                NSString *)
 GENERATE_OBJECT(ShowMessageInLocalNotification,  @"show-message-in-local-notification",  NSNumber *)
 GENERATE_OBJECT(Ipv6Enabled,                     @"ipv6-enabled",                        NSNumber *)
-GENERATE_OBJECT(UdpDisabled,                     @"udp-disabled",                        NSNumber *)
+GENERATE_OBJECT(UdpEnabled,                      @"udp-enabled",                         NSNumber *)
 
 @end

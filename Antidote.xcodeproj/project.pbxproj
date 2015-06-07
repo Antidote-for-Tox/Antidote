@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */; };
+		1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1137BDEA1B24438E00BA20C8 /* ProfileManager.m */; };
 		114100781A3A3A3700054859 /* QRScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114100771A3A3A3700054859 /* QRScannerController.m */; };
 		1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 1146308619842C730075DA16 /* Model.xcdatamodeld */; };
 		1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309A1984E1AF0075DA16 /* AllChatsViewController.m */; };
@@ -67,6 +68,8 @@
 /* Begin PBXFileReference section */
 		110B8B8919C8E3FE000E4334 /* ProfilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfilesViewController.h; sourceTree = "<group>"; };
 		110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfilesViewController.m; sourceTree = "<group>"; };
+		1137BDE91B24438E00BA20C8 /* ProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileManager.h; sourceTree = "<group>"; };
+		1137BDEA1B24438E00BA20C8 /* ProfileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileManager.m; sourceTree = "<group>"; };
 		114100761A3A3A3700054859 /* QRScannerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerController.h; sourceTree = "<group>"; };
 		114100771A3A3A3700054859 /* QRScannerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerController.m; sourceTree = "<group>"; };
 		1146308719842C730075DA16 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
@@ -197,6 +200,15 @@
 				110B8B8A19C8E3FE000E4334 /* ProfilesViewController.m */,
 			);
 			name = Profiles;
+			sourceTree = "<group>";
+		};
+		1137BDE81B24414100BA20C8 /* ProfileManager */ = {
+			isa = PBXGroup;
+			children = (
+				1137BDE91B24438E00BA20C8 /* ProfileManager.h */,
+				1137BDEA1B24438E00BA20C8 /* ProfileManager.m */,
+			);
+			name = ProfileManager;
 			sourceTree = "<group>";
 		};
 		114100751A3A3A1B00054859 /* QRScanner */ = {
@@ -345,6 +357,7 @@
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11E82A9F19CD72B1001561CA /* PreviewItem */,
+				1137BDE81B24414100BA20C8 /* ProfileManager */,
 				11B9E6141993EBCC00FB20A6 /* TimeFormatter */,
 				11A757481B0BB73B005DAD82 /* UserDefaults */,
 			);
@@ -817,6 +830,7 @@
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
+				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,

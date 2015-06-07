@@ -9,6 +9,7 @@
 #import "AppContext.h"
 #import "AppearanceManager.h"
 #import "EventsManager.h"
+#import "ProfileManager.h"
 #import "OCTManager.h"
 #import "UserDefaultsManager.h"
 
@@ -17,6 +18,7 @@
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) EventsManager *events;
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
+@property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
 @end
@@ -42,6 +44,7 @@
     [self createUserDefaultsValuesAndRewrite:NO];
 
     _events = [EventsManager new];
+    _profileManager = [ProfileManager new];
 
     [self createAppearance];
     [self createToxManager];
@@ -92,8 +95,8 @@
         self.userDefaults.uIpv6Enabled = @(1);
     }
 
-    if (rewrite || ! self.userDefaults.uUdpDisabled) {
-        self.userDefaults.uUdpDisabled = @(1);
+    if (rewrite || ! self.userDefaults.uUDPEnabled) {
+        self.userDefaults.uUDPEnabled = @(0);
     }
 
     if (rewrite || ! self.userDefaults.uCurrentColorscheme) {

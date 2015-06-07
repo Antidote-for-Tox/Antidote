@@ -94,7 +94,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
         [AppContext sharedContext].userDefaults.uIpv6Enabled = cell.on ? @(1) : @(0);
     }
     else if (type == CellTypeUdpEnabled) {
-        [AppContext sharedContext].userDefaults.uUdpDisabled = cell.on ? @(0) : @(1);
+        [AppContext sharedContext].userDefaults.uUDPEnabled = cell.on ? @(1) : @(0);
     }
 
     [[AppContext sharedContext] reloadToxManager];
@@ -114,7 +114,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     }
     else if (type == CellTypeUdpEnabled) {
         cell.title = NSLocalizedString(@"UDP enabled", @"Settings");
-        cell.on = [AppContext sharedContext].userDefaults.uUdpDisabled.unsignedIntegerValue == 0;
+        cell.on = [AppContext sharedContext].userDefaults.uUDPEnabled.unsignedIntegerValue > 0;
     }
 
     return cell;
