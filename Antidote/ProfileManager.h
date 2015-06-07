@@ -34,8 +34,25 @@
 - (void)switchToProfileWithName:(NSString *)name;
 
 /**
+ * Creates profile with given tox save file and name.
+ *
+ * In case if given name is already taken, create a new one with numeric suffix.
+ */
+- (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name;
+
+/**
  * Removes profile with given name.
  */
 - (void)deleteProfileWithName:(NSString *)name;
+
+/**
+ * Return YES if renamed successfully, NO if name if already taken.
+ */
+- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName;
+
+/**
+ * Return NSURL path with profile save file.
+ */
+- (NSURL *)exportProfileWithName:(NSString *)name;
 
 @end

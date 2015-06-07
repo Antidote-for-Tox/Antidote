@@ -15,6 +15,7 @@
 
 static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
+static NSString *const kSaveToxFileName = @"save.tox";
 
 @interface ProfileManager()
 
@@ -73,6 +74,26 @@ static NSString *const kDefaultProfileName = @"default";
     [self bootstrapToxManager:self.toxManager];
 }
 
+- (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
+{
+    NSParameterAssert(toxSaveURL);
+    NSAssert(name.length > 0, @"name cannot be empty");
+
+    if ([self.allProfiles containsObject:name]) {
+        name = [self createUniqueNameFromName:name];
+    }
+
+    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
+    [self createDirectoryAtPathIfNotExist:path];
+
+    path = [path stringByAppendingPathComponent:kSaveToxFileName];
+
+    // FIXME this is temporary solution, we need objcTox API for that
+    [[NSFileManager defaultManager] copyItemAtPath:toxSaveURL.path toPath:path error:nil];
+
+    [self switchToProfileWithName:name];
+}
+
 - (void)deleteProfileWithName:(NSString *)name
 {
     NSAssert(name.length > 0, @"name cannot be empty");
@@ -94,6 +115,48 @@ static NSString *const kDefaultProfileName = @"default";
         NSString *nameToSwitch = [self.allProfiles firstObject] ?: kDefaultProfileName;
         [self switchToProfileWithName:nameToSwitch];
     }
+}
+
+- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName
+{
+    NSAssert(name.length > 0, @"name cannot be empty");
+    NSAssert(toName.length > 0, @"toName cannot be empty");
+
+    if ([self.allProfiles containsObject:toName]) {
+        return NO;
+    }
+
+    BOOL isCurrent = [[self currentProfileName] isEqualToString:name];
+
+    if (isCurrent) {
+        self.toxManager = nil;
+    }
+
+    NSString *fromPath = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
+    NSString *toPath = [[self saveDirectoryPath] stringByAppendingPathComponent:toName];
+
+    [[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:nil];
+
+    [self reloadAllProfiles];
+
+    if (isCurrent) {
+        [AppContext sharedContext].userDefaults.uCurrentProfileName = toName;
+
+        self.toxManager = [self createToxManagerWithDirectoryPath:toPath name:toName];
+        [self bootstrapToxManager:self.toxManager];
+    }
+
+    return YES;
+}
+
+- (NSURL *)exportProfileWithName:(NSString *)name
+{
+    // FIXME this is temporary solution, we need objcTox API for that
+
+    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
+    path = [path stringByAppendingPathComponent:kSaveToxFileName];
+
+    return [NSURL fileURLWithPath:path];
 }
 
 #pragma mark -  Private
@@ -169,6 +232,19 @@ static NSString *const kDefaultProfileName = @"default";
                           port:33445
                      publicKey:@"F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"
                          error:nil];
+}
+
+- (NSString *)createUniqueNameFromName:(NSString *)name
+{
+    NSString *result = name;
+    NSUInteger count = 0;
+
+    while ([self.allProfiles containsObject:result]) {
+
+        result = [name stringByAppendingFormat:@"-%lu", count];
+    }
+
+    return result;
 }
 
 @end

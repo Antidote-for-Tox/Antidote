@@ -20,8 +20,7 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 
-// FIXME
-// @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 @end
 
@@ -206,32 +205,36 @@
 
 - (void)renameProfile:(NSString *)name
 {
-    // FIXME
-    // NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
-    // UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
-    // view.alertViewStyle = UIAlertViewStylePlainTextInput;
-    // [view textFieldAtIndex:0].text = profile.name;
+    NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
+    UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
+    view.alertViewStyle = UIAlertViewStylePlainTextInput;
+    [view textFieldAtIndex:0].text = name;
 
-    // [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
-    //     NSString *name = [view textFieldAtIndex:0].text;
+    [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
+        NSString *nName = [view textFieldAtIndex:0].text;
 
-    //     [[ProfileManager sharedInstance] renameProfile:profile to:name];
-    // }];
+        if (! nName.length) {
+            return;
+        }
 
-    // [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+        [[AppContext sharedContext].profileManager renameProfileWithName:name toName:nName];
+        [self.tableView reloadData];
+    }];
 
-    // [view show];
+    [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+
+    [view show];
 }
 
 - (void)exportProfile:(NSString *)name
 {
-    // NSURL *url = [[ProfileManager sharedInstance] toxDataURLForProfile:profile];
+    NSURL *url = [[AppContext sharedContext].profileManager exportProfileWithName:name];
 
-    // self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
-    // self.documentInteractionController.delegate = self;
-    // self.documentInteractionController.name = [url lastPathComponent];
+    self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+    self.documentInteractionController.delegate = self;
+    self.documentInteractionController.name = [url lastPathComponent];
 
-    // [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
+    [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
 }
 
 - (NSString *)nameAtIndexPath:(NSIndexPath *)indexPath
