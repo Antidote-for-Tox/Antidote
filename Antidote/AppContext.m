@@ -38,14 +38,6 @@
         return nil;
     }
 
-    _userDefaults = [UserDefaultsManager new];
-    [self createUserDefaultsValuesAndRewrite:NO];
-
-    _events = [EventsManager new];
-    _profileManager = [ProfileManager new];
-
-    [self createAppearance];
-
     return self;
 }
 
@@ -61,6 +53,52 @@
     return instance;
 }
 
+#pragma mark -  Properties
+
+- (AppearanceManager *)appearance
+{
+    if (_appearance) {
+        return _appearance;
+    }
+
+    AppearanceManagerColorscheme colorscheme = self.userDefaults.uCurrentColorscheme.unsignedIntegerValue;
+    _appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
+
+    return _appearance;
+}
+
+- (EventsManager *)events
+{
+    if (_events) {
+        return _events;
+    }
+
+    _events = [EventsManager new];
+    return _events;
+}
+
+- (ProfileManager *)profileManager
+{
+    if (_profileManager) {
+        return _profileManager;
+    }
+
+    _profileManager = [ProfileManager new];
+    return _profileManager;
+}
+
+- (UserDefaultsManager *)userDefaults
+{
+    if (_userDefaults) {
+        return _userDefaults;
+    }
+
+    _userDefaults = [UserDefaultsManager new];
+    [self createUserDefaultsValuesAndRewrite:NO];
+
+    return _userDefaults;
+}
+
 #pragma mark -  Public
 
 - (void)restoreDefaultSettings
@@ -71,7 +109,6 @@
 - (void)recreateAppearance
 {
     self.appearance = nil;
-    [self createAppearance];
 }
 
 #pragma mark -  Private
@@ -93,12 +130,6 @@
     if (rewrite || ! self.userDefaults.uCurrentColorscheme) {
         self.userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeRed);
     }
-}
-
-- (void)createAppearance
-{
-    AppearanceManagerColorscheme colorscheme = _userDefaults.uCurrentColorscheme.unsignedIntegerValue;
-    self.appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
 }
 
 @end
