@@ -432,10 +432,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
                                                                  forIndexPath:indexPath];
-    // FIXME
-    // cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
-    //     NSLocalizedString(@"Profile", @"Settings"),
-    //     [ProfileManager sharedInstance].currentProfile.name];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
+        NSLocalizedString(@"Profile", @"Settings"),
+        [AppContext sharedContext].profileManager.currentProfileName];
 
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
