@@ -20,6 +20,7 @@
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
 #import "AppearanceManager.h"
+#import "Helper.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
 
@@ -386,7 +387,7 @@
     // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
     //                                                 orCreateAvatarFromString:[friend nameToShow]
     //                                                                 withSide:30.0];
-    // cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
+    cell.status = [Helper circleStatusFromFriend:friend];
 
     if (friend.connectionStatus == OCTToxConnectionStatusNone) {
         if (friend.lastSeenOnline) {

@@ -19,6 +19,7 @@
 #import "OCTMessageText.h"
 #import "OCTMessageFile.h"
 #import "AppearanceManager.h"
+#import "Helper.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate, OCTArrayDelegate>
 
@@ -94,7 +95,7 @@
     // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
     //                                                 orCreateAvatarFromString:[friend nameToShow]
     //                                                                 withSide:cell.imageView.frame.size.width];
-    // cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
+    cell.status = [Helper circleStatusFromFriend:friend];
 
     NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date
                                                                      type:TimeFormatterTypeRelativeDateAndTime];

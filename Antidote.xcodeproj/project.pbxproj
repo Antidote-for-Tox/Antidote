@@ -53,6 +53,7 @@
 		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
 		11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77E198E948D0029A7A0 /* EventObject.m */; };
 		11C3A785199008760029A7A0 /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A784199008760029A7A0 /* ChatViewController.m */; };
+		11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C4B4D01B25F8DF00646A2E /* Helper.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
@@ -155,6 +156,8 @@
 		11C3A77E198E948D0029A7A0 /* EventObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventObject.m; sourceTree = "<group>"; };
 		11C3A783199008760029A7A0 /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		11C3A784199008760029A7A0 /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		11C4B4CF1B25F8DF00646A2E /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
+		11C4B4D01B25F8DF00646A2E /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
 		11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Utilities.m"; sourceTree = "<group>"; };
 		11E57F4419C23D1F00C8ACB8 /* CellWithNameStatusAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithNameStatusAvatar.h; sourceTree = "<group>"; };
@@ -356,6 +359,7 @@
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
+				11C4B4CE1B25F8D600646A2E /* Helper */,
 				11E82A9F19CD72B1001561CA /* PreviewItem */,
 				1137BDE81B24414100BA20C8 /* ProfileManager */,
 				11B9E6141993EBCC00FB20A6 /* TimeFormatter */,
@@ -506,6 +510,15 @@
 				11C3A77E198E948D0029A7A0 /* EventObject.m */,
 			);
 			name = EventsManager;
+			sourceTree = "<group>";
+		};
+		11C4B4CE1B25F8D600646A2E /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				11C4B4CF1B25F8DF00646A2E /* Helper.h */,
+				11C4B4D01B25F8DF00646A2E /* Helper.m */,
+			);
+			name = Helper;
 			sourceTree = "<group>";
 		};
 		11E57F4319C23CF100C8ACB8 /* Cells */ = {
@@ -813,6 +826,7 @@
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				11C3A785199008760029A7A0 /* ChatViewController.m in Sources */,
+				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,

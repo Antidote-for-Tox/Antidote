@@ -13,6 +13,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"
 #import "ProfileManager.h"
+#import "Helper.h"
 
 static const CGFloat kYIndentation = 10.0;
 
@@ -349,9 +350,7 @@ static const CGFloat kYIndentation = 10.0;
             string = [string substringFromIndex:toxPrefix.length];
         }
 
-        // FIXME
-        if (YES) {
-        // if ([ToxFunctions isAddressString:string]) {
+        if ([Helper isAddressString:string]) {
             goodString = string;
             break;
         }

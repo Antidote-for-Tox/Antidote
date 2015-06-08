@@ -26,6 +26,7 @@
 #import "ProfileManager.h"
 #import "OCTMessageFile.h"
 #import "StatusCircleView.h"
+#import "Helper.h"
 
 typedef NS_ENUM(NSInteger, Section) {
     SectionMessages = 0,
@@ -762,8 +763,7 @@ typedef NS_ENUM(NSInteger, Section) {
     [label sizeToFit];
 
     StatusCircleView *statusView = [StatusCircleView new];
-    // FIXME
-    // statusView.status = [Helper toxFriendStatusToCircleStatus:self.friend.status];
+    statusView.status = [Helper circleStatusFromFriend:self.friend];
     [statusView redraw];
     [view addSubview:statusView];
 
