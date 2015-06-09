@@ -90,7 +90,7 @@
     OCTChat *chat = [self.allChats objectAtIndex:indexPath.row];
     OCTFriend *friend = [chat.friends lastObject];
 
-    cell.textLabel.text = friend.name;
+    cell.textLabel.text = friend.nickname;
     // FIXME avatar
     // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
     //                                                 orCreateAvatarFromString:[friend nameToShow]

@@ -382,7 +382,7 @@
 
     OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
-    cell.textLabel.text = friend.name;
+    cell.textLabel.text = friend.nickname;
     // FIXME avatar
     // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
     //                                                 orCreateAvatarFromString:[friend nameToShow]

@@ -77,8 +77,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([textField isEqual:self.nicknameField]) {
-        // FIXME nickname
-        // [[ToxManager sharedInstance] changeNicknameTo:textField.text forFriend:self.friend];
+        self.friend.nickname = textField.text;
     }
 }
 
@@ -153,12 +152,9 @@
 
 - (void)redrawTitleAndViews
 {
-    // FIXME nickname
-    // self.title = self.friend.nickname;
-    self.title = self.friend.name;
+    self.title = self.friend.nickname;
 
-    // FIXME nickname
-    // self.nicknameField.text = self.friend.nickname;
+    self.nicknameField.text = self.friend.nickname;
 
     self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat:@"(%@)", self.friend.name] : nil;
 
