@@ -67,6 +67,11 @@
         [[AppContext sharedContext].events handleLocalNotification:notification];
     }
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(numberOfUnreadChatsUpdateNotification)
+                                                 name:kProfileManagerNotificationUpdateNumberOfUnreadChats
+                                               object:nil];
+
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -165,8 +170,6 @@
 
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
 {
-//    __weak AppDelegate *weakSelf = self;
-
     void (^updateApplicationBadge)() = ^() {
         [UIApplication sharedApplication].applicationIconBadgeNumber =
             [self.friendsBadge.value integerValue] + [self.chatsBadge.value integerValue];
@@ -180,17 +183,15 @@
         updateApplicationBadge();
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
-        // FIXME
-        // NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
-
-        // [CoreDataManager currentProfileChatsWithPredicateSortedByDate:predicate
-        //                                               completionQueue:dispatch_get_main_queue()
-        //                                               completionBlock:^(NSArray *array)
-        // {
-        //     weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
-        //     updateApplicationBadge();
-        // }];
+        NSUInteger number = [AppContext sharedContext].profileManager.numberOfUnreadChats;
+        self.chatsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
+        updateApplicationBadge();
     }
+}
+
+- (void)numberOfUnreadChatsUpdateNotification
+{
+    [self updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 - (NSArray *)getLogFilesPaths

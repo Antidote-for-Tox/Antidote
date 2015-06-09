@@ -13,14 +13,18 @@
 #import "OCTDefaultSettingsStorage.h"
 #import "OCTDefaultFileStorage.h"
 
+NSString *const kProfileManagerNotificationUpdateNumberOfUnreadChats = @"kProfileManagerNotificationUpdateNumberOfUnreadChats";
+
 static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
 static NSString *const kSaveToxFileName = @"save.tox";
 
-@interface ProfileManager()
+@interface ProfileManager() <OCTArrayDelegate>
 
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
 @property (strong, nonatomic, readwrite) NSArray *allProfiles;
+
+@property (strong, nonatomic, readwrite) OCTArray *allChats;
 
 @end
 
@@ -52,6 +56,19 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
 #pragma mark -  Properties
 
+- (NSUInteger)numberOfUnreadChats
+{
+    __block NSUInteger number = 0;
+
+    [self.allChats enumerateObjectsUsingBlock:^(OCTChat *chat, NSUInteger idx, BOOL *stop) {
+        if ([chat hasUnreadMessages]) {
+            number++;
+        }
+    }];
+
+    return number;
+}
+
 - (NSString *)currentProfileName
 {
     return [AppContext sharedContext].userDefaults.uCurrentProfileName;
@@ -70,8 +87,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
     [self createDirectoryAtPathIfNotExist:path];
     [self reloadAllProfiles];
 
-    self.toxManager = [self createToxManagerWithDirectoryPath:path name:name];
-    [self bootstrapToxManager:self.toxManager];
+    [self createToxManagerWithDirectoryPath:path name:name];
 }
 
 - (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
@@ -87,8 +103,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
     [self createDirectoryAtPathIfNotExist:path];
     [self reloadAllProfiles];
 
-    self.toxManager = [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:toxSaveURL.path];
-    [self bootstrapToxManager:self.toxManager];
+    [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:toxSaveURL.path];
 }
 
 - (void)deleteProfileWithName:(NSString *)name
@@ -139,8 +154,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
     if (isCurrent) {
         [AppContext sharedContext].userDefaults.uCurrentProfileName = toName;
 
-        self.toxManager = [self createToxManagerWithDirectoryPath:toPath name:toName];
-        [self bootstrapToxManager:self.toxManager];
+        [self createToxManagerWithDirectoryPath:toPath name:toName];
     }
 
     return YES;
@@ -151,6 +165,14 @@ static NSString *const kSaveToxFileName = @"save.tox";
     NSString *path = [self.toxManager exportToxSaveFile:nil];
 
     return [NSURL fileURLWithPath:path];
+}
+
+#pragma mark -  OCTArrayDelegate
+
+- (void)OCTArrayWasUpdated:(OCTArray *)array
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerNotificationUpdateNumberOfUnreadChats
+                                                        object:nil];
 }
 
 #pragma mark -  Private
@@ -194,14 +216,14 @@ static NSString *const kSaveToxFileName = @"save.tox";
     }];
 }
 
-- (OCTManager *)createToxManagerWithDirectoryPath:(NSString *)path name:(NSString *)name
+- (void)createToxManagerWithDirectoryPath:(NSString *)path name:(NSString *)name
 {
-    return [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:nil];
+    [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:nil];
 }
 
-- (OCTManager *)createToxManagerWithDirectoryPath:(NSString *)path
-                                             name:(NSString *)name
-                              loadToxSaveFilePath:(NSString *)toxSaveFilePath
+- (void)createToxManagerWithDirectoryPath:(NSString *)path
+                                     name:(NSString *)name
+                      loadToxSaveFilePath:(NSString *)toxSaveFilePath
 {
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
 
@@ -214,7 +236,12 @@ static NSString *const kSaveToxFileName = @"save.tox";
     configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
                                                                   temporaryDirectory:NSTemporaryDirectory()];
 
-    return [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
+    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
+
+    [self bootstrapToxManager:self.toxManager];
+
+    self.allChats = [self.toxManager.chats allChats];
+    self.allChats.delegate = self;
 }
 
 - (void)bootstrapToxManager:(OCTManager *)manager

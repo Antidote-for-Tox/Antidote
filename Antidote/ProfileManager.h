@@ -10,12 +10,23 @@
 
 #import "OCTManager.h"
 
+/**
+ * Notification send when numberOfUnreadChats gets update
+ */
+extern NSString *const kProfileManagerNotificationUpdateNumberOfUnreadChats;
+
+
 @interface ProfileManager : NSObject
 
 /**
  * Tox manager for active profile.
  */
 @property (strong, nonatomic, readonly) OCTManager *toxManager;
+
+/**
+ * Number of unread chats for active profile.
+ */
+@property (assign, nonatomic, readonly) NSUInteger numberOfUnreadChats;
 
 /**
  * Name of current profile. Is unique.
