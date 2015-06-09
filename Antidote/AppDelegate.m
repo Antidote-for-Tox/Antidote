@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
-
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "AppDelegate.h"

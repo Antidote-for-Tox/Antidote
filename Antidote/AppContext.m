@@ -115,20 +115,20 @@
 
 - (void)createUserDefaultsValuesAndRewrite:(BOOL)rewrite
 {
-    if (rewrite || ! self.userDefaults.uShowMessageInLocalNotification) {
-        self.userDefaults.uShowMessageInLocalNotification = @(YES);
+    if (rewrite || ! _userDefaults.uShowMessageInLocalNotification) {
+        _userDefaults.uShowMessageInLocalNotification = @(YES);
     }
 
-    if (rewrite || ! self.userDefaults.uIpv6Enabled) {
-        self.userDefaults.uIpv6Enabled = @(1);
+    if (rewrite || ! _userDefaults.uIpv6Enabled) {
+        _userDefaults.uIpv6Enabled = @(1);
     }
 
-    if (rewrite || ! self.userDefaults.uUDPEnabled) {
-        self.userDefaults.uUDPEnabled = @(0);
+    if (rewrite || ! _userDefaults.uUDPEnabled) {
+        _userDefaults.uUDPEnabled = @(0);
     }
 
-    if (rewrite || ! self.userDefaults.uCurrentColorscheme) {
-        self.userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeRed);
+    if (rewrite || ! _userDefaults.uCurrentColorscheme) {
+        _userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeRed);
     }
 }
 

@@ -37,12 +37,12 @@
     } \
 }
 
-GENERATE_OBJECT(PendingFriendRequests,           @"pending-friend-requests",             NSArray *)
-GENERATE_OBJECT(CurrentColorscheme,              @"current-colorscheme",                 NSNumber *)
-GENERATE_OBJECT(FriendsSort,                     @"friends-sort",                        NSNumber *)
-GENERATE_OBJECT(CurrentProfileName,              @"current-profile-name",                NSString *)
-GENERATE_OBJECT(ShowMessageInLocalNotification,  @"show-message-in-local-notification",  NSNumber *)
-GENERATE_OBJECT(Ipv6Enabled,                     @"ipv6-enabled",                        NSNumber *)
-GENERATE_OBJECT(UdpEnabled,                      @"udp-enabled",                         NSNumber *)
+GENERATE_OBJECT(PendingFriendRequests,           @"user-info/pending-friend-requests",             NSArray *)
+GENERATE_OBJECT(CurrentColorscheme,              @"user-info/current-colorscheme",                 NSNumber *)
+GENERATE_OBJECT(FriendsSort,                     @"user-info/friends-sort",                        NSNumber *)
+GENERATE_OBJECT(CurrentProfileName,              @"user-info/current-profile-name",                NSString *)
+GENERATE_OBJECT(ShowMessageInLocalNotification,  @"user-info/show-message-in-local-notification",  NSNumber *)
+GENERATE_OBJECT(Ipv6Enabled,                     @"user-info/ipv6-enabled",                        NSNumber *)
+GENERATE_OBJECT(UDPEnabled,                      @"user-info/udp-enabled",                         NSNumber *)
 
 @end

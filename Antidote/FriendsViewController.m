@@ -226,6 +226,7 @@
 - (void)OCTArrayWasUpdated:(OCTArray *)array
 {
     [self.tableView reloadData];
+    [self updateSegmentedControlRequestTitle];
 }
 
 #pragma mark -  Notifications
@@ -346,7 +347,6 @@
         initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                              target:self
                              action:@selector(addButtonPressed)];
-
 }
 
 - (FriendsCell *)friendsCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -480,6 +480,7 @@
     }
 
     [self.segmentedControl setTitle:title forSegmentAtIndex:FriendsViewControllerTabRequests];
+    [self.segmentedControl sizeToFit];
 }
 
 @end
