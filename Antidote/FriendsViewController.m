@@ -47,7 +47,7 @@
         self.friendsContainer = [AppContext sharedContext].profileManager.toxManager.friends.friendsContainer;
         self.allFriendRequests = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
 
-        // FIXME
+        // FIXME notification
         // [[NSNotificationCenter defaultCenter] addObserver:self
         //                                          selector:@selector(updateFriendsNotification:)
         //                                              name:kToxFriendsContainerUpdateFriendsNotification
@@ -228,7 +228,7 @@
 
 - (void)updateFriendsNotification:(NSNotification *)notification
 {
-    // FIXME
+    // FIXME notification
     // if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
     //     return;
     // }
@@ -273,7 +273,7 @@
 
 - (void)updateRequestsNotification:(NSNotification *)notification
 {
-    // FIXME
+    // FIXME notification
     // [self updateSegmentedControlRequestTitle];
 
     // if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabRequests) {
@@ -383,7 +383,7 @@
     OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
 
     cell.textLabel.text = friend.name;
-    // FIXME
+    // FIXME avatar
     // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
     //                                                 orCreateAvatarFromString:[friend nameToShow]
     //                                                                 withSide:30.0];

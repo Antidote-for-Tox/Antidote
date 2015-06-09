@@ -79,7 +79,7 @@ typedef NS_ENUM(NSInteger, Section) {
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-        // FIXME
+        // FIXME notification
         // [[NSNotificationCenter defaultCenter] addObserver:self
         //                                          selector:@selector(friendUpdateNotification:)
         //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
@@ -139,7 +139,7 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [super viewDidAppear:animated];
 
-    // FIXME
+    // FIXME file
     // [ToxManager sharedInstance].fileProgressDelegate = self;
 
     if (self.inputView.text.length) {
@@ -294,7 +294,7 @@ typedef NS_ENUM(NSInteger, Section) {
     if ([message isKindOfClass:[OCTMessageFile class]]) {
 //        OCTMessageFile *messageFile = (OCTMessageFile *)message;
 
-        // FIXME
+        // FIXME file
         // __weak ChatViewController *weakSelf = self;
         // NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat == %@ AND file != nil", self.chat];
 
@@ -422,7 +422,7 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    // FIXME
+    // FIXME file
     // OCTMessageAbstract *message = [self.allMessages objectAtIndex:path.row];
 
     // [[ToxManager sharedInstance] acceptOrRefusePendingFileInMessage:message accept:answer];
@@ -449,7 +449,7 @@ typedef NS_ENUM(NSInteger, Section) {
         return;
     }
 
-    // FIXME
+    // FIXME file
     // CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
     // [[ToxManager sharedInstance] togglePauseForPendingFileInMessage:message];
@@ -470,7 +470,7 @@ typedef NS_ENUM(NSInteger, Section) {
             continue;
         }
 
-        // FIXME
+        // FIXME file
         // CDMessage *message = [self.fetchedResultsController objectAtIndexPath:path];
 
         // if (! message.pendingFile) {
@@ -501,7 +501,7 @@ typedef NS_ENUM(NSInteger, Section) {
 - (id<QLPreviewItem>)previewController:(QLPreviewController *)controller previewItemAtIndex:(NSInteger)index
 {
     return nil;
-    // FIXME
+    // FIXME file
     // CDMessage *message = self.qlMessagesWithFiles[index];
     // NSString *fileName = message.file.fileNameOnDisk;
 
@@ -521,7 +521,7 @@ typedef NS_ENUM(NSInteger, Section) {
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
 
-    // FIXME
+    // FIXME file
     // NSURL *refURL = info[UIImagePickerControllerReferenceURL];
 
     // ALAssetsLibrary* assetslibrary = [ALAssetsLibrary new];
@@ -615,7 +615,7 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)friendUpdateNotification:(NSNotification *)notification
 {
-    // FIXME
+    // FIXME notification
     // ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
 
     // if (! [self.friend isEqual:updatedFriend]) {
@@ -731,7 +731,7 @@ typedef NS_ENUM(NSInteger, Section) {
         case OCTMessageFileTypePaused:
             cell.type = ChatFileCellTypeDownloading;
             cell.isPaused = (message.fileType == OCTMessageFileTypePaused);
-            // FIXME
+            // FIXME file
             // cell.loadedPercent = [[ToxManager sharedInstance] progressForPendingFileInMessage:message];
             break;
 
@@ -743,7 +743,7 @@ typedef NS_ENUM(NSInteger, Section) {
             cell.type = ChatFileCellTypeLoaded;
             break;
     }
-    // FIXME
+    // FIXME file
     // if (message.file.fileNameOnDisk) {
     // }
     // else {

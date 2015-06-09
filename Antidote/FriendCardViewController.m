@@ -32,7 +32,7 @@
     if (self) {
         self.friend = friend;
 
-        // FIXME
+        // FIXME notification
         // [[NSNotificationCenter defaultCenter] addObserver:self
         //                                          selector:@selector(friendUpdateNotification:)
         //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
@@ -77,14 +77,14 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([textField isEqual:self.nicknameField]) {
-        // FIXME
+        // FIXME nickname
         // [[ToxManager sharedInstance] changeNicknameTo:textField.text forFriend:self.friend];
     }
 }
 
 #pragma mark -  Notifications
 
-// FIXME
+// FIXME notification
 // - (void)friendUpdateNotification:(NSNotification *)notification
 // {
 //     ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
@@ -153,11 +153,11 @@
 
 - (void)redrawTitleAndViews
 {
-    // FIXME
+    // FIXME nickname
     // self.title = self.friend.nickname;
     self.title = self.friend.name;
 
-    // FIXME
+    // FIXME nickname
     // self.nicknameField.text = self.friend.nickname;
 
     self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat:@"(%@)", self.friend.name] : nil;

@@ -40,7 +40,7 @@
     if (self) {
         self.title = NSLocalizedString(@"Chats", @"Chats");
 
-        // FIXME
+        // FIXME notification
         // [[NSNotificationCenter defaultCenter] addObserver:self
         //                                          selector:@selector(friendUpdateNotification:)
         //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
@@ -91,7 +91,7 @@
     OCTFriend *friend = [chat.friends lastObject];
 
     cell.textLabel.text = friend.name;
-    // FIXME
+    // FIXME avatar
     // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
     //                                                 orCreateAvatarFromString:[friend nameToShow]
     //                                                                 withSide:cell.imageView.frame.size.width];
@@ -181,7 +181,7 @@
     [self.tableView reloadData];
 }
 
-// FIXME
+// FIXME notification
 // #pragma mark -  Notifications
 
 // - (void)friendUpdateNotification:(NSNotification *)notification

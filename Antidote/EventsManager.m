@@ -170,7 +170,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        // FIXME
+        // FIXME uri
         // OCTMessageAbstract *message = object.object;
 
         // NSURL *uriRepresentation = [message.chat.objectID URIRepresentation];
@@ -331,7 +331,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
         // ChatViewController *chatVC = (ChatViewController *)visibleVC;
         // OCTMessageAbstract *message = object.object;
 
-        // FIXME
+        // FIXME chat
         // if (message.chat && [chatVC.chat isEqual:message.chat]) {
         //     if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
         //         // Chat is already visible, don't show alert
@@ -350,7 +350,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        // FIXME
+        // FIXME chat
         // CDMessage *message = object.object;
         // ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
@@ -394,7 +394,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        // FIXME
+        // FIXME chat
         // CDMessage *message = object.object;
         // ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
 
@@ -433,7 +433,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        // FIXME
+        // FIXME chat
         // CDMessage *message = object.object;
 
         // [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];

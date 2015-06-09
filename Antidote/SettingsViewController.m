@@ -219,7 +219,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
         }];
     }
 
-    // FIXME
+    // FIXME avatar
     // if ([[ToxManager sharedInstance] userHasAvatar]) {
     //     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Settings") handler:^{
     //         [[ToxManager sharedInstance] updateAvatar:nil];
@@ -238,7 +238,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     [[AppContext sharedContext].profileManager.toxManager.user setUserName:newName error:nil];
 
-    // FIXME
+    // FIXME avatar
     // if (! [[ToxManager sharedInstance] userHasAvatar]) {
     //     NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
     //     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
@@ -295,7 +295,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
         return;
     }
 
-    // FIXME
+    // FIXME avatar
     // [[ToxManager sharedInstance] updateAvatar:image];
 
     NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
@@ -344,7 +344,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
 
-    // FIXME
+    // FIXME avatar
     // UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
     //     [AvatarManager avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
     UIImage *avatar = nil;
