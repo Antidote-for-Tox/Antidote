@@ -79,11 +79,10 @@ typedef NS_ENUM(NSInteger, Section) {
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-        // FIXME notification
-        // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(friendUpdateNotification:)
-        //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
-        //                                            object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(friendUpdateNotification:)
+                                                     name:kProfileManagerFriendUpdateNotification
+                                                   object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(applicationWillEnterForeground:)
                                                      name:UIApplicationWillEnterForegroundNotification
@@ -615,17 +614,16 @@ typedef NS_ENUM(NSInteger, Section) {
 
 - (void)friendUpdateNotification:(NSNotification *)notification
 {
-    // FIXME notification
-    // ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
 
-    // if (! [self.friend isEqual:updatedFriend]) {
-    //     return;
-    // }
+    if (! [self.friend isEqual:updatedFriend]) {
+        return;
+    }
 
-    // self.friend = updatedFriend;
-    // [self updateTitleView];
-    // [self updateIsTypingSection];
-    // [self updateInputButtons];
+    self.friend = updatedFriend;
+    [self updateTitleView];
+    [self updateIsTypingSection];
+    [self updateInputButtons];
 }
 
 - (void)applicationWillEnterForeground:(NSNotification *)notification

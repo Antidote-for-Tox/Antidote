@@ -69,7 +69,7 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(numberOfUnreadChatsUpdateNotification)
-                                                 name:kProfileManagerNotificationUpdateNumberOfUnreadChats
+                                                 name:kProfileManagerUpdateNumberOfUnreadChatsNotification
                                                object:nil];
 
     [self.window makeKeyAndVisible];

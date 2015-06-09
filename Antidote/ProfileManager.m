@@ -13,18 +13,25 @@
 #import "OCTDefaultSettingsStorage.h"
 #import "OCTDefaultFileStorage.h"
 
-NSString *const kProfileManagerNotificationUpdateNumberOfUnreadChats = @"kProfileManagerNotificationUpdateNumberOfUnreadChats";
+NSString *const kProfileManagerUpdateNumberOfUnreadChatsNotification = @"kProfileManagerUpdateNumberOfUnreadChatsNotification";
+NSString *const kProfileManagerFriendUpdateNotification = @"kProfileManagerFriendUpdateNotification";
+NSString *const kProfileManagerFriendUpdateKey = @"kProfileManagerFriendUpdateKey";
+NSString *const kProfileManagerFriendsContainerUpdateNotification = @"kProfileManagerFriendsContainerUpdateNotification";
+NSString *const kProfileManagerFriendsContainerUpdateInsertedKey = @"kProfileManagerFriendsContainerUpdateInsertedKey";
+NSString *const kProfileManagerFriendsContainerUpdateRemovedKey = @"kProfileManagerFriendsContainerUpdateRemovedKey";
+NSString *const kProfileManagerFriendsContainerUpdateUpdatedKey = @"kProfileManagerFriendsContainerUpdateUpdatedKey";
 
 static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
 static NSString *const kSaveToxFileName = @"save.tox";
 
-@interface ProfileManager() <OCTArrayDelegate>
+@interface ProfileManager() <OCTArrayDelegate, OCTFriendsContainerDelegate>
 
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
 @property (strong, nonatomic, readwrite) NSArray *allProfiles;
 
 @property (strong, nonatomic, readwrite) OCTArray *allChats;
+@property (strong, nonatomic, readwrite) OCTFriendsContainer *friendsContainer;
 
 @end
 
@@ -171,8 +178,43 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
 - (void)OCTArrayWasUpdated:(OCTArray *)array
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerNotificationUpdateNumberOfUnreadChats
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerUpdateNumberOfUnreadChatsNotification
                                                         object:nil];
+}
+
+#pragma mark -  OCTFriendsContainerDelegate
+
+- (void)friendsContainerUpdate:(OCTFriendsContainer *)container
+                   insertedSet:(NSIndexSet *)inserted
+                    removedSet:(NSIndexSet *)removed
+                    updatedSet:(NSIndexSet *)updated
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary new];
+
+    if (inserted) {
+        userInfo[kProfileManagerFriendsContainerUpdateInsertedKey] = inserted;
+    }
+    if (removed) {
+        userInfo[kProfileManagerFriendsContainerUpdateRemovedKey] = removed;
+    }
+    if (updated) {
+        userInfo[kProfileManagerFriendsContainerUpdateUpdatedKey] = updated;
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendsContainerUpdateNotification
+                                                        object:nil
+                                                      userInfo:[userInfo copy]];
+}
+
+- (void)friendsContainer:(OCTFriendsContainer *)container friendUpdated:(OCTFriend *)friend
+{
+    NSDictionary *userInfo = @{
+        kProfileManagerFriendUpdateKey: friend,
+    };
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendUpdateNotification
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 #pragma mark -  Private
@@ -242,6 +284,9 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
     self.allChats = [self.toxManager.chats allChats];
     self.allChats.delegate = self;
+
+    self.friendsContainer = self.toxManager.friends.friendsContainer;
+    self.friendsContainer.delegate = self;
 }
 
 - (void)bootstrapToxManager:(OCTManager *)manager

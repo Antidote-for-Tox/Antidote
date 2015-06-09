@@ -40,11 +40,10 @@
     if (self) {
         self.title = NSLocalizedString(@"Chats", @"Chats");
 
-        // FIXME notification
-        // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(friendUpdateNotification:)
-        //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
-        //                                            object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(friendUpdateNotification:)
+                                                     name:kProfileManagerFriendUpdateNotification
+                                                   object:nil];
     }
 
     return self;
@@ -181,22 +180,22 @@
     [self.tableView reloadData];
 }
 
-// FIXME notification
-// #pragma mark -  Notifications
+#pragma mark -  Notifications
 
-// - (void)friendUpdateNotification:(NSNotification *)notification
-// {
-//     ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+- (void)friendUpdateNotification:(NSNotification *)notification
+{
+    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
 
-//     for (NSIndexPath *path in self.tableView.indexPathsForVisibleRows) {
-//         ToxFriend *friend = [self friendForIndexPath:path];
+    for (NSIndexPath *path in self.tableView.indexPathsForVisibleRows) {
+        OCTChat *chat = [self.allChats objectAtIndex:path.row];
+        OCTFriend *friend = [chat.friends lastObject];
 
-//         if ([friend isEqual:updatedFriend]) {
-//             [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-//             return;
-//         }
-//     }
-// }
+        if ([friend isEqual:updatedFriend]) {
+            [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+            return;
+        }
+    }
+}
 
 #pragma mark -  Private
 

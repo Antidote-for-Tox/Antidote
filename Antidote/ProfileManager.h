@@ -11,10 +11,30 @@
 #import "OCTManager.h"
 
 /**
- * Notification send when numberOfUnreadChats gets update
+ * Notification send when numberOfUnreadChats gets updated.
  */
-extern NSString *const kProfileManagerNotificationUpdateNumberOfUnreadChats;
+extern NSString *const kProfileManagerUpdateNumberOfUnreadChatsNotification;
 
+/**
+ * Notification send when any friend was updated.
+ *
+ * userInfo contains updated OCTFriend for kProfileManagerFriendUpdateKey key.
+ */
+extern NSString *const kProfileManagerFriendUpdateNotification;
+extern NSString *const kProfileManagerFriendUpdateKey;
+
+/**
+ * Notification send when friends array gets updated.
+ *
+ * userInfo contains updated following keys and objects:
+ * - kProfileManagerFriendsContainerUpdateInsertedKey NSIndexSet with indexes of friends that were inserted
+ * - kProfileManagerFriendsContainerUpdateRemovedKey NSIndexSet with indexes of friends that were removed
+ * - kProfileManagerFriendsContainerUpdateUpdatedKey NSIndexSet with indexes of friends that were updated.
+ */
+extern NSString *const kProfileManagerFriendsContainerUpdateNotification;
+extern NSString *const kProfileManagerFriendsContainerUpdateInsertedKey;
+extern NSString *const kProfileManagerFriendsContainerUpdateRemovedKey;
+extern NSString *const kProfileManagerFriendsContainerUpdateUpdatedKey;
 
 @interface ProfileManager : NSObject
 

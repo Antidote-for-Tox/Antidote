@@ -22,7 +22,8 @@
 #import "AppearanceManager.h"
 #import "Helper.h"
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate>
+@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate,
+    OCTArrayDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
@@ -46,16 +47,12 @@
 
         self.friendsContainer = [AppContext sharedContext].profileManager.toxManager.friends.friendsContainer;
         self.allFriendRequests = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
+        self.allFriendRequests.delegate = self;
 
-        // FIXME notification
-        // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(updateFriendsNotification:)
-        //                                              name:kToxFriendsContainerUpdateFriendsNotification
-        //                                            object:nil];
-        // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(updateRequestsNotification:)
-        //                                              name:kToxFriendsContainerUpdateRequestsNotification
-        //                                            object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(updateFriendsNotification:)
+                                                     name:kProfileManagerFriendsContainerUpdateNotification
+                                                   object:nil];
     }
 
     return self;
@@ -224,80 +221,57 @@
     }
 }
 
+#pragma mark -  OCTArrayDelegate
+
+- (void)OCTArrayWasUpdated:(OCTArray *)array
+{
+    [self.tableView reloadData];
+}
+
 #pragma mark -  Notifications
 
 - (void)updateFriendsNotification:(NSNotification *)notification
 {
-    // FIXME notification
-    // if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
-    //     return;
-    // }
+    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
+        return;
+    }
 
-    // if (! self.tableView) {
-    //     return;
-    // }
+    if (! self.tableView) {
+        return;
+    }
 
-    // NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
-    // NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
-    // NSIndexSet *updated = notification.userInfo[kToxFriendsContainerUpdateKeyUpdatedSet];
+    NSIndexSet *inserted = notification.userInfo[kProfileManagerFriendsContainerUpdateInsertedKey];
+    NSIndexSet *removed = notification.userInfo[kProfileManagerFriendsContainerUpdateRemovedKey];
+    NSIndexSet *updated = notification.userInfo[kProfileManagerFriendsContainerUpdateUpdatedKey];
 
-    // @synchronized(self.tableView) {
-    //     NSInteger newNumberOfRows = [self.tableView numberOfRowsInSection:0] + inserted.count - removed.count;
+    @synchronized(self.tableView) {
+        NSInteger newNumberOfRows = [self.tableView numberOfRowsInSection:0] + inserted.count - removed.count;
 
-    //     if (newNumberOfRows != [self tableView:self.tableView numberOfRowsInSection:0]) {
-    //         DDLogWarn(@"FriendsViewController: inconsistent data, reloding table view");
-    //         [self.tableView reloadData];
-    //     }
-    //     else {
-    //         [self.tableView beginUpdates];
+        if (newNumberOfRows != [self tableView:self.tableView numberOfRowsInSection:0]) {
+            DDLogWarn(@"FriendsViewController: inconsistent data, reloding table view");
+            [self.tableView reloadData];
+        }
+        else {
+            [self.tableView beginUpdates];
 
-    //         if (inserted.count) {
-    //             [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
-    //                                   withRowAnimation:UITableViewRowAnimationAutomatic];
-    //         }
+            if (inserted.count) {
+                [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
 
-    //         if (removed.count) {
-    //             [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
-    //                                   withRowAnimation:UITableViewRowAnimationAutomatic];
-    //         }
+            if (removed.count) {
+                [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
 
-    //         if (updated.count) {
-    //             [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
-    //                                   withRowAnimation:UITableViewRowAnimationAutomatic];
-    //         }
+            if (updated.count) {
+                [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
+                                      withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
 
-    //         [self.tableView endUpdates];
-    //     }
-    // }
-}
-
-- (void)updateRequestsNotification:(NSNotification *)notification
-{
-    // FIXME notification
-    // [self updateSegmentedControlRequestTitle];
-
-    // if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabRequests) {
-    //     return;
-    // }
-
-    // NSIndexSet *inserted = notification.userInfo[kToxFriendsContainerUpdateKeyInsertedSet];
-    // NSIndexSet *removed = notification.userInfo[kToxFriendsContainerUpdateKeyRemovedSet];
-
-    // @synchronized(self.tableView) {
-    //     [self.tableView beginUpdates];
-
-    //     if (inserted.count) {
-    //         [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
-    //                               withRowAnimation:UITableViewRowAnimationAutomatic];
-    //     }
-
-    //     if (removed.count) {
-    //         [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
-    //                               withRowAnimation:UITableViewRowAnimationAutomatic];
-    //     }
-
-    //     [self.tableView endUpdates];
-    // }
+            [self.tableView endUpdates];
+        }
+    }
 }
 
 #pragma mark -  Private

@@ -9,6 +9,7 @@
 #import "FriendCardViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
+#import "ProfileManager.h"
 
 @interface FriendCardViewController () <UITextFieldDelegate>
 
@@ -32,11 +33,10 @@
     if (self) {
         self.friend = friend;
 
-        // FIXME notification
-        // [[NSNotificationCenter defaultCenter] addObserver:self
-        //                                          selector:@selector(friendUpdateNotification:)
-        //                                              name:kToxFriendsContainerUpdateSpecificFriendNotification
-        //                                            object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(friendUpdateNotification:)
+                                                     name:kProfileManagerFriendUpdateNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -83,18 +83,17 @@
 
 #pragma mark -  Notifications
 
-// FIXME notification
-// - (void)friendUpdateNotification:(NSNotification *)notification
-// {
-//     ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+- (void)friendUpdateNotification:(NSNotification *)notification
+{
+    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
 
-//     if (! [self.friend isEqual:updatedFriend]) {
-//         return;
-//     }
+    if (! [self.friend isEqual:updatedFriend]) {
+        return;
+    }
 
-//     self.friend = updatedFriend;
-//     [self redrawTitleAndViews];
-// }
+    self.friend = updatedFriend;
+    [self redrawTitleAndViews];
+}
 
 #pragma mark -  Private
 
