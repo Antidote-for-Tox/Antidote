@@ -85,13 +85,10 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
     [self createDirectoryAtPathIfNotExist:path];
+    [self reloadAllProfiles];
 
-    path = [path stringByAppendingPathComponent:kSaveToxFileName];
-
-    // FIXME this is temporary solution, we need objcTox API for that
-    [[NSFileManager defaultManager] copyItemAtPath:toxSaveURL.path toPath:path error:nil];
-
-    [self switchToProfileWithName:name];
+    self.toxManager = [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:toxSaveURL.path];
+    [self bootstrapToxManager:self.toxManager];
 }
 
 - (void)deleteProfileWithName:(NSString *)name
@@ -151,10 +148,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
 - (NSURL *)exportProfileWithName:(NSString *)name
 {
-    // FIXME this is temporary solution, we need objcTox API for that
-
-    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
-    path = [path stringByAppendingPathComponent:kSaveToxFileName];
+    NSString *path = [self.toxManager exportToxSaveFile:nil];
 
     return [NSURL fileURLWithPath:path];
 }
@@ -202,6 +196,13 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
 - (OCTManager *)createToxManagerWithDirectoryPath:(NSString *)path name:(NSString *)name
 {
+    return [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:nil];
+}
+
+- (OCTManager *)createToxManagerWithDirectoryPath:(NSString *)path
+                                             name:(NSString *)name
+                              loadToxSaveFilePath:(NSString *)toxSaveFilePath
+{
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
 
     configuration.options.IPv6Enabled = [AppContext sharedContext].userDefaults.uIpv6Enabled.boolValue;
@@ -213,7 +214,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
     configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
                                                                   temporaryDirectory:NSTemporaryDirectory()];
 
-    return [[OCTManager alloc] initWithConfiguration:configuration];
+    return [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
 }
 
 - (void)bootstrapToxManager:(OCTManager *)manager
