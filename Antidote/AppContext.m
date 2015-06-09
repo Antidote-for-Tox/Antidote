@@ -124,7 +124,7 @@
     }
 
     if (rewrite || ! _userDefaults.uUDPEnabled) {
-        _userDefaults.uUDPEnabled = @(0);
+        _userDefaults.uUDPEnabled = @(1);
     }
 
     if (rewrite || ! _userDefaults.uCurrentColorscheme) {
