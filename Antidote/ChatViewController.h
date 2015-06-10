@@ -2,15 +2,15 @@
 //  ChatViewController.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 27.07.14.
-//  Copyright (c) 2014 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 10.06.15.
+//  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "SLKTextViewController.h"
 
 #import "OCTChat.h"
 
-@interface ChatViewController : UIViewController
+@interface ChatViewController : SLKTextViewController
 
 @property (strong, nonatomic, readonly) OCTChat *chat;
 
