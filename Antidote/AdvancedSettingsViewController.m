@@ -32,14 +32,14 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 - (instancetype)init
 {
     return [super initWithTitle:NSLocalizedString(@"Advanced Settings", @"Settings") tableStructure:@[
-        @[
-            @(CellTypeIpv6Enabled),
-            @(CellTypeUdpEnabled),
-        ],
-        @[
-            @(CellTypeRestoreDefault),
-        ]
-    ]];
+                @[
+                    @(CellTypeIpv6Enabled),
+                    @(CellTypeUdpEnabled),
+                ],
+                @[
+                    @(CellTypeRestoreDefault),
+                ]
+            ]];
 }
 
 #pragma mark -  Overridden methods
@@ -55,9 +55,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeIpv6Enabled ||
-        type == CellTypeUdpEnabled)
-    {
+    if ((type == CellTypeIpv6Enabled) || (type == CellTypeUdpEnabled)) {
         return [self cellWithSwitchAtIndexPath:indexPath type:type];
     }
     else if (type == CellTypeRestoreDefault) {

@@ -52,12 +52,12 @@ static const CGFloat kYIndentation = 10.0;
     [self loadWhiteView];
 
     [self subscribeNotifications];
-    
+
     [self createScrollView];
     [self createToxIdViews];
     [self createMessageViews];
     [self createSendRequestButton];
-    
+
     self.view.backgroundColor = [UIColor uColorOpaqueWithRed:239 green:239 blue:244];
 }
 
@@ -81,7 +81,7 @@ static const CGFloat kYIndentation = 10.0;
                                              selector:@selector(keyboardWillShow)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide)
                                                  name:UIKeyboardWillHideNotification
@@ -103,15 +103,14 @@ static const CGFloat kYIndentation = 10.0;
 - (void)keyboardWillHide
 {
     self.scrollView.scrollEnabled = YES;
-    
+
     [self resignTextViewResponders];
 }
 
 - (void)toxIdQRButtonPressed
 {
-    UINavigationController *navCon = [QRScannerController navigationWithScannerControllerWithSuccess:
-        ^(QRScannerController *controller, NSArray *stringValues)
-    {
+    UINavigationController *navCon =
+        [QRScannerController navigationWithScannerControllerWithSuccess:^(QRScannerController *controller, NSArray *stringValues) {
         [self processQRStringValues:stringValues fromController:controller];
 
     } cancelBlock:^(QRScannerController *controller) {
@@ -143,13 +142,13 @@ static const CGFloat kYIndentation = 10.0;
     if ([textView isEqual:self.messageTextView]) {
         CGPoint offset = CGPointZero;
         offset.y = CGRectGetMinY(self.messageTitleLabel.frame) - CGRectGetMaxY(self.navigationController.navigationBar.frame)
-                                                               - kYIndentation;
+                   - kYIndentation;
         [self.scrollView setContentOffset:offset animated:YES];
 
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-            initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                 target:self
-                                 action:@selector(finishEditingButtonPressed)];
+                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                       target:self
+                                                                       action:@selector(finishEditingButtonPressed)];
     }
 
     return YES;
@@ -159,7 +158,7 @@ static const CGFloat kYIndentation = 10.0;
 {
     if ([textView isEqual:self.messageTextView]) {
         CGPoint offset = CGPointZero;
-        offset.y = - self.scrollView.contentInset.top;
+        offset.y = -self.scrollView.contentInset.top;
         [self.scrollView setContentOffset:offset animated:YES];
 
         self.navigationItem.rightBarButtonItem = nil;
@@ -224,14 +223,14 @@ static const CGFloat kYIndentation = 10.0;
 - (void)createMessageViews
 {
     self.messageTitleLabel = [self.scrollView addLabelWithTextColor:[UIColor blackColor]
-                                                          bgColor:[UIColor clearColor]];
+                                                            bgColor:[UIColor clearColor]];
     self.messageTitleLabel.text = NSLocalizedString(@"Message", @"Add friend");
 
     self.messageTextView = [UITextView new];
     self.messageTextView.delegate = self;
     self.messageTextView.layer.cornerRadius = 5.0f;
     self.messageTextView.layer.borderWidth = 0.5f;
-    self.messageTextView.layer.borderColor= [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
+    self.messageTextView.layer.borderColor = [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
     self.messageTextView.returnKeyType = UIReturnKeyDefault;
     [self.scrollView addSubview:self.messageTextView];
 }
@@ -241,8 +240,8 @@ static const CGFloat kYIndentation = 10.0;
     self.sendRequestButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.sendRequestButton setTitle:NSLocalizedString(@"Send request", @"Add friend") forState:UIControlStateNormal];
     [self.sendRequestButton addTarget:self
-                           action:@selector(sendRequestButtonPressed)
-                 forControlEvents:UIControlEventTouchUpInside];
+                               action:@selector(sendRequestButtonPressed)
+                     forControlEvents:UIControlEventTouchUpInside];
     [self.scrollView addSubview:self.sendRequestButton];
 }
 
@@ -254,7 +253,7 @@ static const CGFloat kYIndentation = 10.0;
 
     if (self.messageTextView.isFirstResponder) {
         [self.messageTextView resignFirstResponder];
-    } 
+    }
 }
 
 - (void)adjustSubviews
@@ -276,7 +275,7 @@ static const CGFloat kYIndentation = 10.0;
 
     {
         const CGFloat xIndentation = self.toxIdTitleLabel.frame.origin.x;
-        
+
         [self.toxIdQRButton sizeToFit];
         frame = self.toxIdQRButton.frame;
         frame.origin.x = self.view.bounds.size.width - xIndentation - frame.size.width;
@@ -316,7 +315,7 @@ static const CGFloat kYIndentation = 10.0;
         frame.origin.y = currentOriginY + kYIndentation;
         frame.size.width = self.view.bounds.size.width - 2 * xIndentation;
         CGFloat height = self.scrollView.bounds.size.height - self.scrollView.contentInset.top -
-            self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * kYIndentation;
+                         self.scrollView.contentInset.bottom - frame.origin.y - sendRequestButtonHeight - 2 * kYIndentation;
         if (height < self.toxIdTextView.frame.size.height) {
             height = roundf(self.toxIdTextView.frame.size.height * 0.7f);
         }
@@ -346,7 +345,7 @@ static const CGFloat kYIndentation = 10.0;
 
         NSString *toxPrefix = @"TOX:";
 
-        if ([string hasPrefix:toxPrefix] && string.length > toxPrefix.length) {
+        if ([string hasPrefix:toxPrefix] && (string.length > toxPrefix.length)) {
             string = [string substringFromIndex:toxPrefix.length];
         }
 
@@ -363,8 +362,8 @@ static const CGFloat kYIndentation = 10.0;
     }
     else {
         NSString *message = [NSString stringWithFormat:
-            NSLocalizedString(@"Wrong code. It should contain Tox ID, but contains %@", @"Error"),
-            [stringValues firstObject]];
+                             NSLocalizedString(@"Wrong code. It should contain Tox ID, but contains %@", @"Error"),
+                             [stringValues firstObject]];
 
         controller.pauseScanning = YES;
 
@@ -373,8 +372,8 @@ static const CGFloat kYIndentation = 10.0;
                              cancelButtonTitle:NSLocalizedString(@"Ok", @"Error")
                              otherButtonTitles:nil
                                        handler:^(UIAlertView *_, NSInteger __) {
-                                           controller.pauseScanning = NO;
-                                       }];
+            controller.pauseScanning = NO;
+        }];
     }
 }
 

@@ -10,7 +10,7 @@
 #import "UIColor+Utilities.h"
 #import "AppearanceManager.h"
 
-@interface AllChatsCell()
+@interface AllChatsCell ()
 
 @property (strong, nonatomic) StatusCircleView *statusView;
 
@@ -83,15 +83,15 @@
 - (void)setMessage:(NSString *)message andDate:(NSString *)date
 {
     NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithString:
-        [NSString stringWithFormat:@"%@\n%@", date ?: @"", message ?: @""]];
+                                       [NSString stringWithFormat:@"%@\n%@", date ?: @"", message ?: @""]];
 
     [text setAttributes:@{
-        NSForegroundColorAttributeName : [UIColor uColorOpaqueWithWhite:160],
-    } range:NSMakeRange(0, date.length)];
+         NSForegroundColorAttributeName : [UIColor uColorOpaqueWithWhite:160],
+     } range:NSMakeRange(0, date.length)];
 
     [text setAttributes:@{
-        NSForegroundColorAttributeName : [UIColor uColorOpaqueWithWhite:40],
-    } range:NSMakeRange(date.length, text.length - date.length)];
+         NSForegroundColorAttributeName : [UIColor uColorOpaqueWithWhite:40],
+     } range:NSMakeRange(date.length, text.length - date.length)];
 
     self.detailTextLabel.attributedText = text;
 }

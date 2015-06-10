@@ -9,7 +9,7 @@
 #import "AppearanceManager.h"
 #import "UIColor+Utilities.h"
 
-@interface AppearanceManager()
+@interface AppearanceManager ()
 
 @property (assign, nonatomic, readwrite) AppearanceManagerColorscheme colorscheme;
 
@@ -61,7 +61,7 @@
 
 - (UIColor *)statusOnlineColor;
 {
-    switch(self.colorscheme) {
+    switch (self.colorscheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorOpaqueWithRed:56 green:130 blue:87];
 
@@ -82,7 +82,7 @@
 
 - (UIColor *)statusAwayColor;
 {
-    switch(self.colorscheme) {
+    switch (self.colorscheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorOpaqueWithRed:233 green:225 blue:129];
 
@@ -103,7 +103,7 @@
 
 - (UIColor *)statusBusyColor;
 {
-    switch(self.colorscheme) {
+    switch (self.colorscheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorOpaqueWithRed:233 green:225 blue:129];
 
@@ -129,7 +129,7 @@
 
 - (UIColor *)bubbleOutgoingColor
 {
-    switch(self.colorscheme) {
+    switch (self.colorscheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorOpaqueWithRed:236 green:244 blue:248];
 
@@ -155,7 +155,7 @@
 
 - (UIColor *)unreadChatCellBackgroundWithAlpha:(CGFloat)alpha
 {
-    switch(self.colorscheme) {
+    switch (self.colorscheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorWithRed:249 green:244 blue:244 alpha:alpha];
 
@@ -176,7 +176,7 @@
 
 - (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme
 {
-    switch(scheme) {
+    switch (scheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorOpaqueWithRed:229 green:84 blue:81];
 
@@ -197,7 +197,7 @@
 
 - (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme
 {
-    switch(scheme) {
+    switch (scheme) {
         case AppearanceManagerColorschemeRed:
             return [UIColor uColorOpaqueWithRed:204 green:217 blue:230];
 

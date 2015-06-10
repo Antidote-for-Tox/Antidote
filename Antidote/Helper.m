@@ -34,7 +34,7 @@
         return StatusCircleStatusOffline;
     }
 
-    switch(friend.status) {
+    switch (friend.status) {
         case OCTToxUserStatusNone:
             return StatusCircleStatusOnline;
         case OCTToxUserStatusAway:

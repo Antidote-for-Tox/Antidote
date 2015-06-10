@@ -10,7 +10,7 @@
 #import "NSString+Utilities.h"
 #import "AppearanceManager.h"
 
-@interface CellWithNameStatusAvatar() <UITextFieldDelegate>
+@interface CellWithNameStatusAvatar () <UITextFieldDelegate>
 
 @property (strong, nonatomic) UIButton *avatarButton;
 @property (strong, nonatomic) UITextField *nameField;
@@ -69,9 +69,9 @@
 
 #pragma mark -  UITextFieldDelegate
 
-- (BOOL)             textField:(UITextField *)textField
- shouldChangeCharactersInRange:(NSRange)range
-             replacementString:(NSString *)string
+- (BOOL)                textField:(UITextField *)textField
+    shouldChangeCharactersInRange:(NSRange)range
+                replacementString:(NSString *)string
 {
     NSString *resultText = [textField.text stringByReplacingCharactersInRange:range withString:string];
     NSUInteger maxLength = NSUIntegerMax;

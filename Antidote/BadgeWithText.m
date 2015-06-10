@@ -10,7 +10,7 @@
 #import "UIView+Utilities.h"
 #import "AppearanceManager.h"
 
-@interface BadgeWithText()
+@interface BadgeWithText ()
 
 @property (strong, nonatomic) UIView *backgroundView;
 @property (strong, nonatomic) UILabel *label;

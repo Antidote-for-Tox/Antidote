@@ -155,7 +155,7 @@
 
     self.nicknameField.text = self.friend.nickname;
 
-    self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat:@"(%@)", self.friend.name] : nil;
+    self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat : @"(%@)", self.friend.name] : nil;
 
     [self adjustSubviews];
 }

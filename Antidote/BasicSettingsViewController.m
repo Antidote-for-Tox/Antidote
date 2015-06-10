@@ -10,9 +10,9 @@
 #import "UIViewController+Utilities.h"
 
 #define OVERRIDE_METHOD @throw \
-    [NSException exceptionWithName:NSInternalInconsistencyException \
-                            reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)] \
-                          userInfo:nil];
+        [NSException exceptionWithName:NSInternalInconsistencyException \
+                                reason:[NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)] \
+                              userInfo:nil];
 
 @interface BasicSettingsViewController ()
 @end

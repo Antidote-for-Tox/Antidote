@@ -10,7 +10,7 @@
 #import "NSString+Utilities.h"
 #import "UIView+Utilities.h"
 
-@interface FriendRequestsCell()
+@interface FriendRequestsCell ()
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *subtitleLabel;
@@ -74,8 +74,8 @@
     self.checkboxButton = [UIButton buttonWithType:UIButtonTypeSystem];
     [self.checkboxButton setTitle:NSLocalizedString(@"Add", @"Friend requests") forState:UIControlStateNormal];
     [self.checkboxButton addTarget:self
-                           action:@selector(checkboxButtonPressed)
-                 forControlEvents:UIControlEventTouchUpInside];
+                            action:@selector(checkboxButtonPressed)
+                  forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:self.checkboxButton];
 }
 

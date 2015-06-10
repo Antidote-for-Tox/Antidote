@@ -23,7 +23,7 @@
 #import "Helper.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate,
-    OCTArrayDelegate>
+                                     OCTArrayDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
@@ -154,9 +154,9 @@
     return 0;
 }
 
-- (void)  tableView:(UITableView *)tableView
- commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-  forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)     tableView:(UITableView *)tableView
+    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+     forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
         [self friendsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
@@ -278,9 +278,9 @@
 - (void)createSegmentedControl
 {
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[
-        NSLocalizedString(@"Friends", @"Friends"),
-        @"Requests",
-    ]];
+                                 NSLocalizedString(@"Friends", @"Friends"),
+                                 @"Requests",
+                             ]];
     self.segmentedControl.tintColor = [[AppContext sharedContext].appearance textMainColor];
     self.segmentedControl.selectedSegmentIndex = FriendsViewControllerTabFriends;
 
@@ -342,9 +342,9 @@
                                                                             action:@selector(sortButtonPressed)];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-        initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                             target:self
-                             action:@selector(addButtonPressed)];
+                                              initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                   target:self
+                                                                   action:@selector(addButtonPressed)];
 }
 
 - (FriendsCell *)friendsCellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -364,8 +364,8 @@
     if (friend.connectionStatus == OCTToxConnectionStatusNone) {
         if (friend.lastSeenOnline) {
             cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"last seen %@", @"Friends"),
-                [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline
-                                                          type:TimeFormatterTypeRelativeDateAndTime]];
+                                         [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline
+                                                                                   type:TimeFormatterTypeRelativeDateAndTime]];
         }
     }
     else {

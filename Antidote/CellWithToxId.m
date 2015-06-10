@@ -10,7 +10,7 @@
 #import "UIView+Utilities.h"
 #import "NSString+Utilities.h"
 
-@interface CellWithToxId()
+@interface CellWithToxId ()
 
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UIButton *qrButton;
@@ -64,7 +64,7 @@
 - (void)createSubviews
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
     self.titleLabel = [self.contentView addLabelWithTextColor:[UIColor blackColor]
                                                       bgColor:[UIColor clearColor]];
 
@@ -102,7 +102,7 @@
                                             constrainedToSize:CGSizeMake(maxWidth, CGFLOAT_MAX)];
         frame.origin.x = xIndentation;
         frame.origin.y = CGRectGetMaxY(self.titleLabel.frame) + 10.0;
-        
+
         self.valueLabel.frame = frame;
     }
 
@@ -111,7 +111,7 @@
         frame = self.qrButton.frame;
         frame.origin.x = CGRectGetMaxX(self.valueLabel.frame) - frame.size.width;
         frame.origin.y = self.titleLabel.frame.origin.y +
-            (self.titleLabel.frame.size.height - frame.size.height) / 2;
+                         (self.titleLabel.frame.size.height - frame.size.height) / 2;
         self.qrButton.frame = frame;
     }
 }

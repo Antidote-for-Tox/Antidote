@@ -10,7 +10,7 @@
 #import "UIColor+Utilities.h"
 #import "AppearanceManager.h"
 
-@interface StatusCircleView()
+@interface StatusCircleView ()
 
 @property (strong, nonatomic) UIView *colorView;
 

@@ -71,14 +71,14 @@
     CGRect frame = self.view.bounds;
     frame.origin.y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
     frame.size.height -= frame.origin.y;
-    
+
     self.previewLayer.frame = frame;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+
     [self.captureSession startRunning];
 }
 
@@ -140,9 +140,9 @@
 
 #pragma mark -  AVCaptureMetadataOutputObjectsDelegate
 
-- (void)    captureOutput:(AVCaptureOutput *)captureOutput
- didOutputMetadataObjects:(NSArray *)metadataObjects
-           fromConnection:(AVCaptureConnection *)connection
+- (void)       captureOutput:(AVCaptureOutput *)captureOutput
+    didOutputMetadataObjects:(NSArray *)metadataObjects
+              fromConnection:(AVCaptureConnection *)connection
 {
     if (! self.successBlock) {
         return;
@@ -153,16 +153,16 @@
     for (AVMetadataObject *object in metadataObjects) {
         if ([object isKindOfClass:[AVMetadataMachineReadableCodeObject class]]) {
             AVMetadataMachineReadableCodeObject *readableObject = (AVMetadataMachineReadableCodeObject *)
-                [self.previewLayer transformedMetadataObjectForMetadataObject:(AVMetadataMachineReadableCodeObject *)object];
-           
+                                                                  [self.previewLayer transformedMetadataObjectForMetadataObject:(AVMetadataMachineReadableCodeObject *)object];
+
             CGRect aimFrame = readableObject.bounds;
             aimFrame.origin.y += CGRectGetMaxY(self.navigationController.navigationBar.frame);
             self.aimView.frame = aimFrame;
-            
+
             [stringValues addObject:readableObject.stringValue];
         }
     }
-    
+
     self.successBlock(self, [stringValues copy]);
 }
 
@@ -198,7 +198,7 @@
     [cancelButton setTitleColor:[[AppContext sharedContext].appearance textMainColor] forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton sizeToFit];
-    
+
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
 }
 

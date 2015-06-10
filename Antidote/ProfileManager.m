@@ -25,7 +25,7 @@ static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
 static NSString *const kSaveToxFileName = @"save.tox";
 
-@interface ProfileManager() <OCTArrayDelegate, OCTFriendsContainerDelegate>
+@interface ProfileManager () <OCTArrayDelegate, OCTFriendsContainerDelegate>
 
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
 @property (strong, nonatomic, readwrite) NSArray *allProfiles;
@@ -209,7 +209,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
 - (void)friendsContainer:(OCTFriendsContainer *)container friendUpdated:(OCTFriend *)friend
 {
     NSDictionary *userInfo = @{
-        kProfileManagerFriendUpdateKey: friend,
+        kProfileManagerFriendUpdateKey : friend,
     };
 
     [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendUpdateNotification

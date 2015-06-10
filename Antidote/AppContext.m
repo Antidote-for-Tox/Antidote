@@ -12,7 +12,7 @@
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 
-@interface AppContext()
+@interface AppContext ()
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) EventsManager *events;

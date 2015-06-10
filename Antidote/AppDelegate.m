@@ -23,7 +23,7 @@
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
 
-@interface AppDelegate()
+@interface AppDelegate ()
 
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
@@ -46,7 +46,7 @@
     // initialize context
     [AppContext sharedContext];
 
-    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationType types =
             UIUserNotificationTypeAlert |
             UIUserNotificationTypeBadge |
@@ -74,10 +74,10 @@
     return YES;
 }
 
-- (BOOL)application:(UIApplication *)application
-            openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication
-         annotation:(id)annotation
+- (BOOL)  application:(UIApplication *)application
+              openURL:(NSURL *)url
+    sourceApplication:(NSString *)sourceApplication
+           annotation:(id)annotation
 {
     if ([url isFileURL]) {
         NSURLRequest *fileUrlRequest = [[NSURLRequest alloc] initWithURL:url
@@ -87,7 +87,7 @@
         NSURLResponse *response = nil;
         [NSURLConnection sendSynchronousRequest:fileUrlRequest returningResponse:&response error:nil];
 
-        NSString* mimeType = [response MIMEType];
+        NSString *mimeType = [response MIMEType];
 
         CFStringRef mimeTypeRef = (__bridge CFStringRef)mimeType;
         CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeTypeRef, NULL);
@@ -118,10 +118,11 @@
     UITabBarController *tabBar = [UITabBarController new];
     tabBar.viewControllers = @[friends, allChats, settings];
 
-    friends.navigationBar.tintColor  =
-    allChats.navigationBar.tintColor =
-    settings.navigationBar.tintColor =
-    tabBar.tabBar.tintColor          = [[AppContext sharedContext].appearance textMainColor];
+    UIColor *textMainColor = [[AppContext sharedContext].appearance textMainColor];
+    friends.navigationBar.tintColor = textMainColor;
+    allChats.navigationBar.tintColor = textMainColor;
+    settings.navigationBar.tintColor = textMainColor;
+    tabBar.tabBar.tintColor = textMainColor;
 
     friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
                                                        image:[UIImage imageNamed:@"tab-bar-friends"]
@@ -156,7 +157,7 @@
 
     CGRect frame = CGRectZero;
     frame.origin.x = index * (tabBarController.tabBar.frame.size.width / 3) +
-        tabBarController.tabBar.frame.size.width / 6;
+                     tabBarController.tabBar.frame.size.width / 6;
     frame.origin.y = 3.0;
 
     BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
@@ -177,12 +178,12 @@
         OCTArray *array = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
         NSUInteger number = array.count;
 
-        self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
+        self.friendsBadge.value = number ? [NSString stringWithFormat : @"%lu", (unsigned long)number] : nil;
         updateApplicationBadge();
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
         NSUInteger number = [AppContext sharedContext].profileManager.numberOfUnreadChats;
-        self.chatsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
+        self.chatsBadge.value = number ? [NSString stringWithFormat : @"%lu", (unsigned long)number] : nil;
         updateApplicationBadge();
     }
 }
@@ -218,9 +219,9 @@
 
     DDLogInfo(@"\n\n\n\t\t\t\t\t\t***** Application started *****\n\n\n");
     DDLogInfo(@"Device:\n\tname = %@\n\tmodel = %@\n\tsystemVersion = %@\n\n",
-            [UIDevice currentDevice].name,
-            [UIDevice currentDevice].model,
-            [UIDevice currentDevice].systemVersion);
+              [UIDevice currentDevice].name,
+              [UIDevice currentDevice].model,
+              [UIDevice currentDevice].systemVersion);
 }
 
 - (void)handleIncomingFileAtUrl:(NSURL *)url isDataFile:(BOOL)isDataFile
@@ -231,8 +232,8 @@
 
     if (isDataFile) {
         NSString *message = [NSString stringWithFormat:
-            NSLocalizedString(@"Use \"%@\" file as tox save file?", @"Incoming file"),
-            [url lastPathComponent]];
+                             NSLocalizedString(@"Use \"%@\" file as tox save file?", @"Incoming file"),
+                             [url lastPathComponent]];
 
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
 
@@ -244,10 +245,10 @@
             [nameAlert textFieldAtIndex:0].text = [url lastPathComponent];
 
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
-               NSString *name = [nameAlert textFieldAtIndex:0].text;
+                NSString *name = [nameAlert textFieldAtIndex:0].text;
 
-               [[AppContext sharedContext].profileManager createProfileWithToxSave:url name:name];
-               removeFile();
+                [[AppContext sharedContext].profileManager createProfileWithToxSave:url name:name];
+                removeFile();
 
                 [self switchToSettingsTabAndShowProfiles];
             }];
@@ -278,7 +279,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 
     DDLogInfo(@"AppDelegate: starting background task...");

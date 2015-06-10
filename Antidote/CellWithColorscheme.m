@@ -14,7 +14,7 @@
 static const CGFloat kButtonSide = 40.0;
 static const CGFloat kButtonIndentation = 15.0;
 
-@interface CellWithColorscheme()
+@interface CellWithColorscheme ()
 
 @property (strong, nonatomic) UILabel *label;
 @property (strong, nonatomic) NSArray *buttonsArray;
@@ -119,7 +119,7 @@ static const CGFloat kButtonIndentation = 15.0;
     self.label.frame = frame;
 
     const CGFloat buttonsWidth = self.buttonsArray.count * kButtonSide +
-        (self.buttonsArray.count - 1) * kButtonIndentation;
+                                 (self.buttonsArray.count - 1) * kButtonIndentation;
     CGFloat originX = (self.bounds.size.width - buttonsWidth) / 2;
 
     for (NSUInteger index = 0; index < self.buttonsArray.count; index++) {

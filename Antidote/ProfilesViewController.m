@@ -16,7 +16,7 @@
 #import "AppearanceManager.h"
 
 @interface ProfilesViewController () <UITableViewDataSource, UITableViewDelegate,
-    UIDocumentInteractionControllerDelegate>
+                                      UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -33,9 +33,9 @@
     self = [super init];
     if (self) {
         self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-            initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                 target:self
-                                 action:@selector(addButtonPressed)];
+                                                  initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                       target:self
+                                                                       action:@selector(addButtonPressed)];
     }
 
     return self;
@@ -121,16 +121,16 @@
         [self exportProfile:name];
     }];
 
-    //FIXME add delete option
+    // FIXME add delete option
 
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
 
     [sheet showFromTabBar:self.tabBarController.tabBar];
 }
 
-- (void)  tableView:(UITableView *)tableView
- commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-  forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)     tableView:(UITableView *)tableView
+    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+     forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *name = [self nameAtIndexPath:indexPath];
@@ -199,7 +199,7 @@
 {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
-         [nav pushViewController:[ProfilesViewController new] animated:NO];
+        [nav pushViewController:[ProfilesViewController new] animated:NO];
     }];
 }
 

@@ -21,7 +21,7 @@
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
 static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotificationChatUniqueIdentifierKey";
 
-@interface EventsManager()
+@interface EventsManager ()
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -52,9 +52,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
 }
 
 - (void)dealloc
-{
-
-}
+{}
 
 - (void)createWindow
 {
@@ -75,9 +73,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     EventObjectType type = [notification.userInfo[kLocalNotificationTypeKey] unsignedIntegerValue];
 
-    if (type == EventObjectTypeChatIncomingMessage ||
-        type == EventObjectTypeChatIncomingFile)
-    {
+    if ((type == EventObjectTypeChatIncomingMessage) ||
+        (type == EventObjectTypeChatIncomingFile) ) {
         NSString *identifier = notification.userInfo[kLocalNotificationChatUniqueIdentifierKey];
 
         if (! identifier) {
@@ -168,9 +165,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     NSMutableDictionary *userInfo = [NSMutableDictionary new];
     userInfo[kLocalNotificationTypeKey] = @(object.type);
 
-    if (object.type == EventObjectTypeChatIncomingMessage ||
-        object.type == EventObjectTypeChatIncomingFile)
-    {
+    if ((object.type == EventObjectTypeChatIncomingMessage) ||
+        (object.type == EventObjectTypeChatIncomingFile) ) {
         OCTMessageAbstract *message = object.object;
 
         userInfo[kLocalNotificationChatUniqueIdentifierKey] = message.chat.uniqueIdentifier;
@@ -229,7 +225,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     const CGRect originalFrame = activeView.frame;
 
     CGRect frame = originalFrame;
-    frame.origin.y = - frame.size.height;
+    frame.origin.y = -frame.size.height;
     activeView.frame = frame;
 
     [UIView animateWithDuration:0.3 animations:^{
@@ -315,9 +311,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
 
 - (BOOL)shouldShowAlertWindowFor:(EventObject *)object
 {
-    if (object.type == EventObjectTypeChatIncomingMessage ||
-        object.type == EventObjectTypeChatIncomingFile)
-    {
+    if ((object.type == EventObjectTypeChatIncomingMessage) ||
+        (object.type == EventObjectTypeChatIncomingFile) ) {
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
         UIViewController *visibleVC = [delegate visibleViewController];
 
@@ -343,9 +338,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
 {
     NSString *text;
 
-    if (object.type == EventObjectTypeChatIncomingMessage ||
-        object.type == EventObjectTypeChatIncomingFile)
-    {
+    if ((object.type == EventObjectTypeChatIncomingMessage) ||
+        (object.type == EventObjectTypeChatIncomingFile) ) {
         OCTMessageAbstract *message = object.object;
         OCTFriend *friend = [message.chat.friends lastObject];
 
@@ -371,7 +365,7 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
         OCTMessageFile *message = object.object;
 
         text = [NSString stringWithFormat:NSLocalizedString(@"Incoming file: %@", @"Events"),
-            message.fileName];
+                message.fileName];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         OCTFriendRequest *request = object.object;
@@ -386,9 +380,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
 {
     NSString *text;
 
-    if (object.type == EventObjectTypeChatIncomingMessage ||
-        object.type == EventObjectTypeChatIncomingFile)
-    {
+    if ((object.type == EventObjectTypeChatIncomingMessage) ||
+        (object.type == EventObjectTypeChatIncomingFile) ) {
         OCTMessageAbstract *message = object.object;
         OCTFriend *friend = [message.chat.friends lastObject];
 
@@ -425,9 +418,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
 {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
 
-    if (object.type == EventObjectTypeChatIncomingMessage ||
-        object.type == EventObjectTypeChatIncomingFile)
-    {
+    if ((object.type == EventObjectTypeChatIncomingMessage) ||
+        (object.type == EventObjectTypeChatIncomingFile) ) {
         OCTMessageAbstract *message = object.object;
 
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];

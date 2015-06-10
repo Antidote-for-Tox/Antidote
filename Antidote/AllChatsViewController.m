@@ -121,8 +121,8 @@
     }
 
     cell.backgroundColor = [chat hasUnreadMessages] ?
-        [[AppContext sharedContext].appearance unreadChatCellBackground] :
-        [UIColor whiteColor];
+                           [[AppContext sharedContext].appearance unreadChatCellBackground] :
+                           [UIColor whiteColor];
 
     return cell;
 }
@@ -132,9 +132,9 @@
     return self.allChats.count;
 }
 
-- (void)  tableView:(UITableView *)tableView
- commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-  forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)     tableView:(UITableView *)tableView
+    commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
+     forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         __weak AllChatsViewController *weakSelf = self;

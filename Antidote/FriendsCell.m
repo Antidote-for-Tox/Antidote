@@ -11,7 +11,7 @@
 #import "UIColor+Utilities.h"
 #import "AppearanceManager.h"
 
-@interface FriendsCell()
+@interface FriendsCell ()
 
 @property (strong, nonatomic) StatusCircleView *statusView;
 

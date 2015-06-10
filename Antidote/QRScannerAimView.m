@@ -25,14 +25,14 @@
     if (self = [super initWithFrame:frame]) {
         [self commonInit];
     }
-    
+
     return self;
 }
 
 - (void)setFrame:(CGRect)frame
 {
     [super setFrame:frame];
-    
+
     self.dashLayer.path = [UIBezierPath bezierPathWithRect:self.bounds].CGPath;
     self.dashLayer.frame = self.bounds;
 }
@@ -43,7 +43,7 @@
 {
     CGColorRef strokeColor = [[[AppContext sharedContext].appearance textMainColor] CGColor];
     CGColorRef fillColor = [[[[AppContext sharedContext].appearance bubbleIncomingColor] colorWithAlphaComponent:0.5f] CGColor];
-    
+
     self.dashLayer = [CAShapeLayer layer];
     self.dashLayer.strokeColor = strokeColor;
     self.dashLayer.fillColor = fillColor;

@@ -8,7 +8,7 @@
 
 #import "TimeFormatter.h"
 
-@interface TimeFormatter()
+@interface TimeFormatter ()
 
 @property (strong, nonatomic, readonly) NSDateFormatter *messageTimeFormatter;
 @property (strong, nonatomic, readonly) NSDateFormatter *messageRelativeDateAndTimeFormatter;
@@ -32,9 +32,7 @@
 
 - (id)initPrivate
 {
-    if (self = [super init]) {
-
-    }
+    if (self = [super init]) {}
 
     return self;
 }

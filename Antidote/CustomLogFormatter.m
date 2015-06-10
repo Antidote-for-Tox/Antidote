@@ -8,7 +8,7 @@
 
 #import "CustomLogFormatter.h"
 
-@interface CustomLogFormatter()
+@interface CustomLogFormatter ()
 
 @property (atomic, strong) NSDateFormatter *dateFormatter;
 
@@ -29,12 +29,15 @@
 - (NSString *)formatLogMessage:(DDLogMessage *)logMessage
 {
     NSString *logLevel;
-    switch (logMessage->logFlag)
-    {
-        case LOG_FLAG_ERROR : logLevel = @"[ERROR]"; break;
-        case LOG_FLAG_WARN  : logLevel = @"[WARN] "; break;
-        case LOG_FLAG_INFO  : logLevel = @" INFO  "; break;
-        default             : logLevel = @" VERB  "; break;
+    switch (logMessage->logFlag) {
+        case LOG_FLAG_ERROR: logLevel = @"[ERROR]";
+            break;
+        case LOG_FLAG_WARN: logLevel = @"[WARN] ";
+            break;
+        case LOG_FLAG_INFO: logLevel = @" INFO  ";
+            break;
+        default: logLevel = @" VERB  ";
+            break;
     }
 
     NSString *date = [self.dateFormatter stringFromDate:logMessage->timestamp];

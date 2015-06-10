@@ -39,8 +39,8 @@ static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
 static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 @interface SettingsViewController () <SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate,
-    CellWithColorschemeDelegate, CellWithSwitchDelegate, UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate>
+                                      CellWithColorschemeDelegate, CellWithSwitchDelegate, UIImagePickerControllerDelegate,
+                                      UINavigationControllerDelegate>
 
 @end
 
@@ -51,27 +51,27 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (instancetype)init
 {
     return [super initWithTitle:NSLocalizedString(@"Settings", @"Settings") tableStructure:@[
-        @[
-            @(CellTypeNameStatusAvatar),
-        ],
-        @[
-            @(CellTypeToxId),
-            @(CellTypeColorscheme),
-        ],
-        @[
-            @(CellTypeProfile),
-        ],
-        @[
-            @(CellTypeTitleNotifications),
-            @(CellTypeShowMessageInLocalNotification),
-        ],
-        @[
-            @(CellTypeAdvancedSettings),
-        ],
-        @[
-            @(CellTypeFeedback),
-        ],
-    ]];
+                @[
+                    @(CellTypeNameStatusAvatar),
+                ],
+                @[
+                    @(CellTypeToxId),
+                    @(CellTypeColorscheme),
+                ],
+                @[
+                    @(CellTypeProfile),
+                ],
+                @[
+                    @(CellTypeTitleNotifications),
+                    @(CellTypeShowMessageInLocalNotification),
+                ],
+                @[
+                    @(CellTypeAdvancedSettings),
+                ],
+                @[
+                    @(CellTypeFeedback),
+                ],
+            ]];
 }
 
 #pragma mark -  Overridden methods
@@ -139,12 +139,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeColorscheme) {
         return [CellWithColorscheme height];
     }
-    else if (type == CellTypeTitleNotifications ||
-             type == CellTypeShowMessageInLocalNotification ||
-             type == CellTypeAdvancedSettings ||
-             type == CellTypeProfile ||
-             type == CellTypeFeedback)
-    {
+    else if ((type == CellTypeTitleNotifications) ||
+             (type == CellTypeShowMessageInLocalNotification) ||
+             (type == CellTypeAdvancedSettings) ||
+             (type == CellTypeProfile) ||
+             (type == CellTypeFeedback) ) {
         return 44.0;
     }
 
@@ -433,8 +432,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
                                                                  forIndexPath:indexPath];
     cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
-        NSLocalizedString(@"Profile", @"Settings"),
-        [AppContext sharedContext].profileManager.currentProfileName];
+                           NSLocalizedString(@"Profile", @"Settings"),
+                           [AppContext sharedContext].profileManager.currentProfileName];
 
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];

@@ -21,21 +21,21 @@
  * GENERATE_OBJECT(MyString, kMyStringKey, NSString *)
  */
 #define GENERATE_OBJECT(theProperty, theKey, theType) \
-- (void)setU##theProperty:(theType)object \
-{ \
-    @synchronized(self) { \
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; \
-        [defaults setObject:object forKey:theKey]; \
-        [defaults synchronize]; \
+    - (void)setU ## theProperty:(theType)object \
+    { \
+        @synchronized(self) { \
+            NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; \
+            [defaults setObject:object forKey:theKey]; \
+            [defaults synchronize]; \
+        } \
     } \
-} \
 \
-- (theType)u##theProperty \
-{ \
-    @synchronized(self) { \
-        return [[NSUserDefaults standardUserDefaults] objectForKey:theKey]; \
-    } \
-}
+    - (theType)u ## theProperty \
+    { \
+        @synchronized(self) { \
+            return [[NSUserDefaults standardUserDefaults] objectForKey:theKey]; \
+        } \
+    }
 
 GENERATE_OBJECT(PendingFriendRequests,           @"user-info/pending-friend-requests",             NSArray *)
 GENERATE_OBJECT(CurrentColorscheme,              @"user-info/current-colorscheme",                 NSNumber *)

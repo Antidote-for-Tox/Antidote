@@ -8,7 +8,7 @@
 
 #import "CellWithSwitch.h"
 
-@interface CellWithSwitch()
+@interface CellWithSwitch ()
 
 @property (strong, nonatomic) UISwitch *theSwitch;
 
@@ -23,7 +23,7 @@
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseIdentifier];
     if (self) {
         self.selectionStyle = UITableViewCellSelectionStyleNone;
-        
+
         self.theSwitch = [UISwitch new];
         [self.theSwitch addTarget:self
                            action:@selector(valueChanged)
