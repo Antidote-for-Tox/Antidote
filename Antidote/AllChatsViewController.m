@@ -120,8 +120,9 @@
                  andDate:dateString];
     }
 
-    cell.backgroundColor = [chat hasUnreadMessages] ? [UIColor whiteColor] :
-        [[AppContext sharedContext].appearance unreadChatCellBackground];
+    cell.backgroundColor = [chat hasUnreadMessages] ?
+        [[AppContext sharedContext].appearance unreadChatCellBackground] :
+        [UIColor whiteColor];
 
     return cell;
 }
