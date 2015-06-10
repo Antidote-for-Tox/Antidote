@@ -5,6 +5,9 @@ before_install:
     - brew update
     - brew unlink xctool
     - brew install xctool
+    - brew install uncrustify
     - pod install
 
-script: xctool -workspace Antidote.xcworkspace -scheme Antidote -sdk iphonesimulator build
+script:
+    - xctool -workspace Antidote.xcworkspace -scheme Antidote -sdk iphonesimulator build
+    - ./run-uncrustify.sh --check
