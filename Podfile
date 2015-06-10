@@ -7,7 +7,6 @@ inhibit_all_warnings!
 
 pod 'BlocksKit', '~> 2.2.5'
 pod 'CocoaLumberjack', '~> 1.9.2'
-# JSQMessagesViewController dependency
-pod 'JSQSystemSoundPlayer', '~> 1.5.2'
-pod 'JSQMessagesViewController', '~> 5.3.1'
+pod 'SlackTextViewController', '~> 1.5.2'
+pod 'Masonry', '~> 0.6.1'
 pod 'objcTox', :podspec => 'https://raw.githubusercontent.com/dvor/objcTox/adding-podspec/objcTox.podspec'
