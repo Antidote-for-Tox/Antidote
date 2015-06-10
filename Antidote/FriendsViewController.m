@@ -209,15 +209,13 @@
 
     BOOL wasLastRequest = (self.allFriendRequests.count == 1);
 
-    __weak FriendsViewController *weakSelf = self;
-
     [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:request error:nil];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
 
     if (wasLastRequest) {
-        [weakSelf switchToTab:FriendsViewControllerTabFriends];
+        [self switchToTab:FriendsViewControllerTabFriends];
     }
 }
 
