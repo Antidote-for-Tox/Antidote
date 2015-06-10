@@ -7,6 +7,8 @@
 //
 
 #import "QRScannerAimView.h"
+#import "AppearanceManager.h"
+#import "AppearanceManager.h"
 
 @interface QRScannerAimView ()
 
@@ -39,8 +41,8 @@
 
 - (void)commonInit
 {
-    CGColorRef strokeColor = [[AppearanceManager textMainColor] CGColor];
-    CGColorRef fillColor = [[[AppearanceManager bubbleIncomingColor] colorWithAlphaComponent:0.5f] CGColor];
+    CGColorRef strokeColor = [[[AppContext sharedContext].appearance textMainColor] CGColor];
+    CGColorRef fillColor = [[[[AppContext sharedContext].appearance bubbleIncomingColor] colorWithAlphaComponent:0.5f] CGColor];
     
     self.dashLayer = [CAShapeLayer layer];
     self.dashLayer.strokeColor = strokeColor;

@@ -8,6 +8,7 @@
 
 #import "CellWithNameStatusAvatar.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface CellWithNameStatusAvatar() <UITextFieldDelegate>
 
@@ -137,7 +138,7 @@
     self.nameField.placeholder = NSLocalizedString(@"Name", @"Settings");
     self.nameField.borderStyle = UITextBorderStyleRoundedRect;
     self.nameField.returnKeyType = UIReturnKeyDone;
-    self.nameField.font = [AppearanceManager fontHelveticaNeueWithSize:18];
+    self.nameField.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:18];
     [self.contentView addSubview:self.nameField];
 
     self.statusMessageField = [UITextField new];
@@ -145,7 +146,7 @@
     self.statusMessageField.placeholder = NSLocalizedString(@"Status", @"Settings");
     self.statusMessageField.borderStyle = UITextBorderStyleRoundedRect;
     self.statusMessageField.returnKeyType = UIReturnKeyDone;
-    self.statusMessageField.font = [AppearanceManager fontHelveticaNeueWithSize:16];
+    self.statusMessageField.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16];
     [self.contentView addSubview:self.statusMessageField];
 }
 

@@ -13,15 +13,13 @@
 #import "UIColor+Utilities.h"
 #import "UIView+Utilities.h"
 #import "ChatViewController.h"
-#import "ToxManager.h"
-#import "CDMessage.h"
-#import "CDChat.h"
-#import "CDUser.h"
-#import "CoreDataManager+Chat.h"
-#import "UserInfoManager.h"
+#import "AppearanceManager.h"
+#import "ProfileManager.h"
+#import "OCTMessageFile.h"
+#import "UserDefaultsManager.h"
 
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
-static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNotificationChatURIRepresentationKey";
+static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotificationChatUniqueIdentifierKey";
 
 @interface EventsManager()
 
@@ -39,19 +37,23 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
 
 - (id)init
 {
-    return nil;
-}
+    self = [super init];
 
-- (id)initPrivate
-{
-    if (self = [super init]) {
-        [self performSelectorOnMainThread:@selector(createWindow) withObject:nil waitUntilDone:YES];
-
-        _queue = [NSMutableArray new];
-        _isActive = NO;
+    if (! self) {
+        return nil;
     }
 
+    [self performSelectorOnMainThread:@selector(createWindow) withObject:nil waitUntilDone:YES];
+
+    _queue = [NSMutableArray new];
+    _isActive = NO;
+
     return self;
+}
+
+- (void)dealloc
+{
+
 }
 
 - (void)createWindow
@@ -59,18 +61,6 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     _window = [[UIWindow alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 44.0)];
     _window.windowLevel = UIWindowLevelStatusBar + 1;
     _window.backgroundColor = [UIColor clearColor];
-}
-
-+ (instancetype)sharedInstance
-{
-    static EventsManager *instance;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        instance = [[EventsManager alloc] initPrivate];
-    });
-
-    return instance;
 }
 
 #pragma mark -  Public
@@ -88,18 +78,14 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (type == EventObjectTypeChatIncomingMessage ||
         type == EventObjectTypeChatIncomingFile)
     {
-        NSString *uriString = notification.userInfo[kLocalNotificationChatURIRepresentationKey];
+        NSString *identifier = notification.userInfo[kLocalNotificationChatUniqueIdentifierKey];
 
-        if (! uriString) {
+        if (! identifier) {
             return;
         }
 
-        [CoreDataManager chatWithURIRepresentation:[NSURL URLWithString:uriString]
-                                   completionQueue:dispatch_get_main_queue()
-                                   completionBlock:^(CDChat *chat)
-        {
-            [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
-        }];
+        OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats chatWithUniqueIdentifier:identifier];
+        [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
     }
     else if (type == EventObjectTypeFriendRequest) {
         [delegate switchToFriendsTabAndShowFriendRequests];
@@ -185,12 +171,9 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
+        OCTMessageAbstract *message = object.object;
 
-        NSURL *uriRepresentation = [message.chat.objectID URIRepresentation];
-        if (uriRepresentation) {
-            userInfo[kLocalNotificationChatURIRepresentationKey] = [uriRepresentation absoluteString];
-        }
+        userInfo[kLocalNotificationChatUniqueIdentifierKey] = message.chat.uniqueIdentifier;
     }
 
     UILocalNotification *notification = [UILocalNotification new];
@@ -295,7 +278,7 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
         }
 
         topLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        topLabel.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
+        topLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
         topLabel.frame = frame;
         topLabel.text = topText;
     }
@@ -306,7 +289,7 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
         frame.size.height = 20.0;
 
         UILabel *bottomLabel = [view addLabelWithTextColor:[UIColor whiteColor] bgColor:[UIColor clearColor]];
-        bottomLabel.font = [AppearanceManager fontHelveticaNeueWithSize:14.0];
+        bottomLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:14.0];
         bottomLabel.frame = frame;
         bottomLabel.text = bottomText;
     }
@@ -343,7 +326,7 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
         }
 
         ChatViewController *chatVC = (ChatViewController *)visibleVC;
-        CDMessage *message = object.object;
+        OCTMessageAbstract *message = object.object;
 
         if (message.chat && [chatVC.chat isEqual:message.chat]) {
             if ([UIApplication sharedApplication].applicationState == UIApplicationStateActive) {
@@ -363,10 +346,10 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
-        ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
+        OCTMessageAbstract *message = object.object;
+        OCTFriend *friend = [message.chat.friends lastObject];
 
-        text = [friend nameToShow];
+        text = friend.nickname;
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         text = NSLocalizedString(@"Incoming friend request", @"Events");
@@ -380,18 +363,18 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     NSString *text;
 
     if (object.type == EventObjectTypeChatIncomingMessage) {
-        CDMessage *message = object.object;
+        OCTMessageText *message = object.object;
 
-        text = message.text.text;
+        text = message.text;
     }
     else if (object.type == EventObjectTypeChatIncomingFile) {
-        CDMessage *message = object.object;
+        OCTMessageFile *message = object.object;
 
         text = [NSString stringWithFormat:NSLocalizedString(@"Incoming file: %@", @"Events"),
-            message.pendingFile.originalFileName];
+            message.fileName];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
-        ToxFriendRequest *request = object.object;
+        OCTFriendRequest *request = object.object;
 
         text = request.message;
     }
@@ -406,10 +389,10 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
-        ToxFriend *friend = [[ToxManager sharedInstance].friendsContainer friendWithClientId:message.user.clientId];
+        OCTMessageAbstract *message = object.object;
+        OCTFriend *friend = [message.chat.friends lastObject];
 
-        text = [friend nameToShow];
+        text = friend.nickname;
         const NSUInteger maxNameLength = 15;
 
         if (text.length > maxNameLength) {
@@ -418,15 +401,16 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
 
         text = [text stringByAppendingString:@": "];
 
-        if (object.type == EventObjectTypeChatIncomingMessage) {
-            if ([UserInfoManager sharedInstance].uShowMessageInLocalNotification.boolValue) {
-                text = [text stringByAppendingString:message.text.text];
+        if ([object isKindOfClass:[OCTMessageText class]]) {
+            if ([AppContext sharedContext].userDefaults.uShowMessageInLocalNotification.boolValue) {
+                OCTMessageText *messageText = (OCTMessageText *)message;
+                text = [text stringByAppendingString:messageText.text];
             }
             else {
                 text = [text stringByAppendingString:NSLocalizedString(@"incoming message", @"Events")];
             }
         }
-        else if (object.type == EventObjectTypeChatIncomingFile) {
+        if ([object isKindOfClass:[OCTMessageFile class]]) {
             text = [text stringByAppendingString:NSLocalizedString(@"incoming file", @"Events")];
         }
     }
@@ -444,7 +428,7 @@ static NSString *const kLocalNotificationChatURIRepresentationKey = @"kLocalNoti
     if (object.type == EventObjectTypeChatIncomingMessage ||
         object.type == EventObjectTypeChatIncomingFile)
     {
-        CDMessage *message = object.object;
+        OCTMessageAbstract *message = object.object;
 
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:message.chat];
     }

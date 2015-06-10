@@ -2,21 +2,36 @@
 //  ProfileManager.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 17.09.14.
-//  Copyright (c) 2014 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 07.06.15.
+//  Copyright (c) 2015 dvor. All rights reserved.
 //
 
 #import "ProfileManager.h"
-#import "CoreDataManager+Profile.h"
-#import "UserInfoManager.h"
-#import "ToxManager.h"
-#import "AvatarManager.h"
+#import "NSArray+BlocksKit.h"
+#import "UserDefaultsManager.h"
+#import "OCTManager.h"
+#import "OCTDefaultSettingsStorage.h"
+#import "OCTDefaultFileStorage.h"
 
-static NSString *const kToxSaveName = @"tox_save";
+NSString *const kProfileManagerUpdateNumberOfUnreadChatsNotification = @"kProfileManagerUpdateNumberOfUnreadChatsNotification";
+NSString *const kProfileManagerFriendUpdateNotification = @"kProfileManagerFriendUpdateNotification";
+NSString *const kProfileManagerFriendUpdateKey = @"kProfileManagerFriendUpdateKey";
+NSString *const kProfileManagerFriendsContainerUpdateNotification = @"kProfileManagerFriendsContainerUpdateNotification";
+NSString *const kProfileManagerFriendsContainerUpdateInsertedKey = @"kProfileManagerFriendsContainerUpdateInsertedKey";
+NSString *const kProfileManagerFriendsContainerUpdateRemovedKey = @"kProfileManagerFriendsContainerUpdateRemovedKey";
+NSString *const kProfileManagerFriendsContainerUpdateUpdatedKey = @"kProfileManagerFriendsContainerUpdateUpdatedKey";
 
-@interface ProfileManager()
+static NSString *const kSaveDirectoryPath = @"saves";
+static NSString *const kDefaultProfileName = @"default";
+static NSString *const kSaveToxFileName = @"save.tox";
 
-@property (strong, nonatomic, readwrite) CDProfile *currentProfile;
+@interface ProfileManager() <OCTArrayDelegate, OCTFriendsContainerDelegate>
+
+@property (strong, nonatomic, readwrite) OCTManager *toxManager;
+@property (strong, nonatomic, readwrite) NSArray *allProfiles;
+
+@property (strong, nonatomic, readwrite) OCTArray *allChats;
+@property (strong, nonatomic, readwrite) OCTFriendsContainer *friendsContainer;
 
 @end
 
@@ -24,226 +39,285 @@ static NSString *const kToxSaveName = @"tox_save";
 
 #pragma mark -  Lifecycle
 
-- (id)init
+- (instancetype)init
 {
-    return nil;
-}
+    self = [super init];
 
-- (id)initPrivate
-{
-    if (self = [super init]) {
+    if (! self) {
+        return nil;
+    }
 
+    [self createDirectoryAtPathIfNotExist:[self saveDirectoryPath]];
+    [self reloadAllProfiles];
+
+    if (self.allProfiles.count) {
+        NSString *name = [AppContext sharedContext].userDefaults.uCurrentProfileName;
+        [self switchToProfileWithName:name];
+    }
+    else {
+        [self switchToProfileWithName:kDefaultProfileName];
     }
 
     return self;
 }
 
-+ (instancetype)sharedInstance
+#pragma mark -  Properties
+
+- (NSUInteger)numberOfUnreadChats
 {
-    static ProfileManager *instance;
-    static dispatch_once_t onceToken;
+    __block NSUInteger number = 0;
 
-    dispatch_once(&onceToken, ^{
-        instance = [[ProfileManager alloc] initPrivate];
-    });
-
-    return instance;
-}
-
-#pragma mark -  Public
-
-- (void)configureCurrentProfileAndLoadTox
-{
-    NSString *fileName = [UserInfoManager sharedInstance].uCurrentProfileFileName;
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"fileName == %@", fileName];
-
-    self.currentProfile = [CoreDataManager syncProfileWithPredicate:predicate];
-
-    if (self.currentProfile) {
-        [self loadToxManagerForCurrentProfile];
-        return;
-    }
-
-    self.currentProfile = [CoreDataManager syncAddProfileWithConfigBlock:^(CDProfile *profile) {
-        // default name
-        profile.name = NSLocalizedString(@"Main", @"Main profile name");
-        profile.fileName = [[NSUUID UUID] UUIDString];
-    }];
-
-    [UserInfoManager sharedInstance].uCurrentProfileFileName = self.currentProfile.fileName;
-
-    [self loadToxManagerForCurrentProfile];
-}
-
-- (NSData *)toxDataForCurrentProfile
-{
-    NSString *path = [self toxDataPathForProfile:self.currentProfile];
-
-    return [NSData dataWithContentsOfFile:path];
-}
-
-- (void)saveToxDataForCurrentProfile:(NSData *)data
-{
-    NSString *path = [self toxDataPathForProfile:self.currentProfile];
-
-    [data writeToFile:path atomically:NO];
-}
-
-- (void)addNewProfileWithName:(NSString *)name
-{
-    [CoreDataManager addProfileWithConfigBlock:^(CDProfile *profile) {
-        profile.name = name;
-        profile.fileName = [[NSUUID UUID] UUIDString];
-
-    } completionQueue:nil completionBlock:nil];
-}
-
-- (void)addNewProfileWithName:(NSString *)name fromURL:(NSURL *)url removeAfterAdding:(BOOL)removeAfterAdding
-{
-    [CoreDataManager addProfileWithConfigBlock:^(CDProfile *profile) {
-        profile.name = name;
-        profile.fileName = [[NSUUID UUID] UUIDString];
-
-    } completionQueue:dispatch_get_main_queue() completionBlock:^(CDProfile *profile) {
-        NSString *path = [self profileDirectoryWithFileName:profile.fileName];
-
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-
-        [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-
-        NSURL *newURL = [[NSURL fileURLWithPath:path] URLByAppendingPathComponent:kToxSaveName];
-
-        if (removeAfterAdding) {
-            [fileManager moveItemAtURL:url toURL:newURL error:nil];
-        }
-        else {
-            [fileManager copyItemAtURL:url toURL:newURL error:nil];
+    [self.allChats enumerateObjectsUsingBlock:^(OCTChat *chat, NSUInteger idx, BOOL *stop) {
+        if ([chat hasUnreadMessages]) {
+            number++;
         }
     }];
+
+    return number;
 }
 
-- (void)switchToProfile:(CDProfile *)profile
+- (NSString *)currentProfileName
 {
-    [[ToxManager sharedInstance] killSharedInstance];
-    [AvatarManager clearCache];
-
-    [UserInfoManager sharedInstance].uCurrentProfileFileName = profile.fileName;
-    self.currentProfile = profile;
-
-    [self loadToxManagerForCurrentProfile];
+    return [AppContext sharedContext].userDefaults.uCurrentProfileName;
 }
 
-- (void)renameProfile:(CDProfile *)profile to:(NSString *)name
+#pragma mark -  Methods
+
+- (void)switchToProfileWithName:(NSString *)name
 {
-    [CoreDataManager editCDObjectWithBlock:^{
-        profile.name = name;
-    } completionQueue:nil completionBlock:nil];
+    NSAssert(name.length > 0, @"name cannot be empty");
+
+    [AppContext sharedContext].userDefaults.uCurrentProfileName = name;
+
+    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
+
+    [self createDirectoryAtPathIfNotExist:path];
+    [self reloadAllProfiles];
+
+    [self createToxManagerWithDirectoryPath:path name:name];
 }
 
-- (void)deleteProfile:(CDProfile *)profile
+- (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
 {
-    if ([profile.fileName isEqual:[UserInfoManager sharedInstance].uCurrentProfileFileName]) {
-        return;
+    NSParameterAssert(toxSaveURL);
+    NSAssert(name.length > 0, @"name cannot be empty");
+
+    if ([self.allProfiles containsObject:name]) {
+        name = [self createUniqueNameFromName:name];
     }
 
-    NSString *path = [self profileDirectoryWithFileName:profile.fileName];
+    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
+    [self createDirectoryAtPathIfNotExist:path];
+    [self reloadAllProfiles];
 
-    if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+    [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:toxSaveURL.path];
+}
+
+- (void)deleteProfileWithName:(NSString *)name
+{
+    NSAssert(name.length > 0, @"name cannot be empty");
+
+    BOOL isCurrent = [[self currentProfileName] isEqualToString:name];
+
+    if (isCurrent) {
+        self.toxManager = nil;
     }
 
-    [CoreDataManager removeProfileWithAllRelatedCDObjects:profile completionQueue:nil completionBlock:nil];
-}
+    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
-- (NSURL *)toxDataURLForProfile:(CDProfile *)profile
-{
-    NSString *path = [self toxDataPathForProfile:profile];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    [fileManager removeItemAtPath:path error:nil];
 
-    return [NSURL fileURLWithPath:path isDirectory:NO];
-}
+    [self reloadAllProfiles];
 
-- (NSString *)pathInFilesForCurrentProfileFromFileName:(NSString *)fileName temporary:(BOOL)temporary
-{
-    NSString *path = [self fileDirectoryPathForCurrentProfileIsTemporary:temporary];
-
-    return [path stringByAppendingPathComponent:fileName];
-}
-
-- (NSString *)fileDirectoryPathForCurrentProfileIsTemporary:(BOOL)temporary
-{
-    NSString *path = nil;
-
-    if (temporary) {
-        path = NSTemporaryDirectory();
+    if (isCurrent) {
+        NSString *nameToSwitch = [self.allProfiles firstObject] ?: kDefaultProfileName;
+        [self switchToProfileWithName:nameToSwitch];
     }
-    else {
-        path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
+}
+
+- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName
+{
+    NSAssert(name.length > 0, @"name cannot be empty");
+    NSAssert(toName.length > 0, @"toName cannot be empty");
+
+    if ([self.allProfiles containsObject:toName]) {
+        return NO;
     }
 
-    return [path stringByAppendingPathComponent:@"Files"];
+    BOOL isCurrent = [[self currentProfileName] isEqualToString:name];
+
+    if (isCurrent) {
+        self.toxManager = nil;
+    }
+
+    NSString *fromPath = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
+    NSString *toPath = [[self saveDirectoryPath] stringByAppendingPathComponent:toName];
+
+    [[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:nil];
+
+    [self reloadAllProfiles];
+
+    if (isCurrent) {
+        [AppContext sharedContext].userDefaults.uCurrentProfileName = toName;
+
+        [self createToxManagerWithDirectoryPath:toPath name:toName];
+    }
+
+    return YES;
 }
 
-- (NSString *)pathInAvatarDirectoryForFileName:(NSString *)avatarHash
+- (NSURL *)exportProfileWithName:(NSString *)name
 {
-    NSString *path = [self profileDirectoryWithFileName:self.currentProfile.fileName];
+    NSString *path = [self.toxManager exportToxSaveFile:nil];
 
-    return [[path stringByAppendingPathComponent:@"Avatars"] stringByAppendingPathComponent:avatarHash];
+    return [NSURL fileURLWithPath:path];
+}
+
+#pragma mark -  OCTArrayDelegate
+
+- (void)OCTArrayWasUpdated:(OCTArray *)array
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerUpdateNumberOfUnreadChatsNotification
+                                                        object:nil];
+}
+
+#pragma mark -  OCTFriendsContainerDelegate
+
+- (void)friendsContainerUpdate:(OCTFriendsContainer *)container
+                   insertedSet:(NSIndexSet *)inserted
+                    removedSet:(NSIndexSet *)removed
+                    updatedSet:(NSIndexSet *)updated
+{
+    NSMutableDictionary *userInfo = [NSMutableDictionary new];
+
+    if (inserted) {
+        userInfo[kProfileManagerFriendsContainerUpdateInsertedKey] = inserted;
+    }
+    if (removed) {
+        userInfo[kProfileManagerFriendsContainerUpdateRemovedKey] = removed;
+    }
+    if (updated) {
+        userInfo[kProfileManagerFriendsContainerUpdateUpdatedKey] = updated;
+    }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendsContainerUpdateNotification
+                                                        object:nil
+                                                      userInfo:[userInfo copy]];
+}
+
+- (void)friendsContainer:(OCTFriendsContainer *)container friendUpdated:(OCTFriend *)friend
+{
+    NSDictionary *userInfo = @{
+        kProfileManagerFriendUpdateKey: friend,
+    };
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendUpdateNotification
+                                                        object:nil
+                                                      userInfo:userInfo];
 }
 
 #pragma mark -  Private
 
-- (void)loadToxManagerForCurrentProfile
-{
-    [[ToxManager sharedInstance] configureSelfAndBootstrapWithNodes:@[
-        [ToxNode nodeWithAddress:@"192.254.75.102"
-                            port:33445
-                       publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"],
-
-        [ToxNode nodeWithAddress:@"178.62.125.224"
-                            port:33445
-                       publicKey:@"10B20C49ACBD968D7C80F2E8438F92EA51F189F4E70CFBBB2C2C8C799E97F03E"],
-
-        [ToxNode nodeWithAddress:@"23.226.230.47"
-                            port:33445
-                       publicKey:@"A09162D68618E742FFBCA1C2C70385E6679604B2D80EA6E84AD0996A1AC8A074"],
-
-        [ToxNode nodeWithAddress:@"178.62.250.138"
-                            port:33445
-                       publicKey:@"788236D34978D1D5BD822F0A5BEBD2C53C64CC31CD3149350EE27D4D9A2F9B6B"],
-    ]];
-}
-
-- (NSString *)directoryWithToxSaves
+- (NSString *)saveDirectoryPath
 {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-
-    return [path stringByAppendingPathComponent:@"ToxSaves"];
+    return [path stringByAppendingPathComponent:kSaveDirectoryPath];
 }
 
-- (NSString *)profileDirectoryWithFileName:(NSString *)fileName
+- (void)createDirectoryAtPathIfNotExist:(NSString *)path
 {
-    NSString *path = [self directoryWithToxSaves];
-    return [path stringByAppendingPathComponent:fileName];
-}
-
-- (NSString *)toxDataPathForProfile:(CDProfile *)profile
-{
-    NSString *path = [self profileDirectoryWithFileName:profile.fileName];
-
-    path = [path stringByAppendingPathComponent:kToxSaveName];
-
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    if (! [fileManager fileExistsAtPath:path]) {
-         [fileManager createDirectoryAtPath:[path stringByDeletingLastPathComponent]
-                withIntermediateDirectories:YES
-                                 attributes:nil
-                                      error:nil];
+    BOOL isDirectory;
+    BOOL exists = [fileManager fileExistsAtPath:path isDirectory:&isDirectory];
 
-         [fileManager createFileAtPath:path contents:nil attributes:nil];
+    if (exists && ! isDirectory) {
+        [fileManager removeItemAtPath:path error:nil];
+        exists = NO;
     }
 
-    return path;
+    if (! exists) {
+        [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+}
+
+- (void)reloadAllProfiles
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *savePath = [self saveDirectoryPath];
+    NSArray *contents = [fileManager contentsOfDirectoryAtPath:savePath error:nil];
+
+    self.allProfiles = [contents bk_select:^BOOL (NSString *name) {
+        NSString *path = [savePath stringByAppendingPathComponent:name];
+        BOOL isDirectory;
+
+        [fileManager fileExistsAtPath:path isDirectory:&isDirectory];
+
+        return isDirectory;
+    }];
+}
+
+- (void)createToxManagerWithDirectoryPath:(NSString *)path name:(NSString *)name
+{
+    [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:nil];
+}
+
+- (void)createToxManagerWithDirectoryPath:(NSString *)path
+                                     name:(NSString *)name
+                      loadToxSaveFilePath:(NSString *)toxSaveFilePath
+{
+    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
+
+    configuration.options.IPv6Enabled = [AppContext sharedContext].userDefaults.uIpv6Enabled.boolValue;
+    configuration.options.UDPEnabled = [AppContext sharedContext].userDefaults.uUDPEnabled.boolValue;
+
+    NSString *key = [NSString stringWithFormat:@"settingsStorage/%@", name];
+    configuration.settingsStorage = [[OCTDefaultSettingsStorage alloc] initWithUserDefaultsKey:key];
+
+    configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
+                                                                  temporaryDirectory:NSTemporaryDirectory()];
+
+    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
+
+    [self bootstrapToxManager:self.toxManager];
+
+    self.allChats = [self.toxManager.chats allChats];
+    self.allChats.delegate = self;
+
+    self.friendsContainer = self.toxManager.friends.friendsContainer;
+    self.friendsContainer.delegate = self;
+}
+
+- (void)bootstrapToxManager:(OCTManager *)manager
+{
+    [manager bootstrapFromHost:@"192.254.75.102"
+                          port:33445
+                     publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"
+                         error:nil];
+
+    [manager bootstrapFromHost:@"178.62.125.224"
+                          port:33445
+                     publicKey:@"10B20C49ACBD968D7C80F2E8438F92EA51F189F4E70CFBBB2C2C8C799E97F03E"
+                         error:nil];
+
+    [manager bootstrapFromHost:@"192.210.149.121"
+                          port:33445
+                     publicKey:@"F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"
+                         error:nil];
+}
+
+- (NSString *)createUniqueNameFromName:(NSString *)name
+{
+    NSString *result = name;
+    NSUInteger count = 0;
+
+    while ([self.allProfiles containsObject:result]) {
+
+        result = [name stringByAppendingFormat:@"-%lu", count];
+    }
+
+    return result;
 }
 
 @end

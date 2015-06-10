@@ -2,20 +2,19 @@
 //  Helper.h
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 31.07.14.
-//  Copyright (c) 2014 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 08.06.15.
+//  Copyright (c) 2015 dvor. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-#import "ToxFriend.h"
 #import "StatusCircleView.h"
-#import "CDMessage.h"
+#import "OCTFriend.h"
 
 @interface Helper : NSObject
 
-+ (StatusCircleStatus)toxFriendStatusToCircleStatus:(ToxFriendStatus)toxFriendStatus;
++ (BOOL)isAddressString:(NSString *)string;
 
-+ (BOOL)isOutgoingMessage:(CDMessage *)message;
++ (StatusCircleStatus)circleStatusFromFriend:(OCTFriend *)friend;
 
 @end

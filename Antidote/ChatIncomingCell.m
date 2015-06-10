@@ -9,6 +9,7 @@
 #import "ChatIncomingCell.h"
 #import "JSQMessagesBubbleImageFactory.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kMaxMessageWidth = 240.0;
 
@@ -71,7 +72,7 @@ static const UIEdgeInsets kBubbleInsets = { 10.0, 15.0, 10.0, 10.0 };
 
 - (void)createSubviews
 {
-    UIColor *color = [AppearanceManager bubbleIncomingColor];
+    UIColor *color = [[AppContext sharedContext].appearance bubbleIncomingColor];
     self.bubbleImageView = [JSQMessagesBubbleImageFactory incomingMessageBubbleImageViewWithColor:color];
     [self.contentView addSubview:self.bubbleImageView];
 

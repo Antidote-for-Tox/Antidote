@@ -8,6 +8,7 @@
 
 #import "ChatBasicMessageCell.h"
 #import "UIView+Utilities.h"
+#import "AppearanceManager.h"
 
 @implementation ChatBasicMessageCell
 
@@ -36,7 +37,7 @@
 
 + (UIFont *)messageLabelFont
 {
-    return [AppearanceManager fontHelveticaNeueWithSize:16.0];
+    return [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
 }
 
 #pragma mark -  Private

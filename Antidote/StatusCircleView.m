@@ -8,6 +8,7 @@
 
 #import "StatusCircleView.h"
 #import "UIColor+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface StatusCircleView()
 
@@ -53,16 +54,16 @@
     self.backgroundColor = [UIColor whiteColor];
 
     if (self.status == StatusCircleStatusOffline) {
-        self.colorView.backgroundColor = [AppearanceManager statusOfflineColor];
+        self.colorView.backgroundColor = [[AppContext sharedContext].appearance statusOfflineColor];
     }
     else if (self.status == StatusCircleStatusOnline) {
-        self.colorView.backgroundColor = [AppearanceManager statusOnlineColor];
+        self.colorView.backgroundColor = [[AppContext sharedContext].appearance statusOnlineColor];
     }
     else if (self.status == StatusCircleStatusAway) {
-        self.colorView.backgroundColor = [AppearanceManager statusAwayColor];
+        self.colorView.backgroundColor = [[AppContext sharedContext].appearance statusAwayColor];
     }
     else if (self.status == StatusCircleStatusBusy) {
-        self.colorView.backgroundColor = [AppearanceManager statusBusyColor];
+        self.colorView.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
     }
 }
 

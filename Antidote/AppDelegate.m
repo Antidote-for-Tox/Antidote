@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#define MR_ENABLE_ACTIVE_RECORD_LOGGING 0
-
 #import <MobileCoreServices/MobileCoreServices.h>
 
 #import "AppDelegate.h"
@@ -16,18 +14,14 @@
 #import "DDFileLogger.h"
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
-#import "ToxManager.h"
 #import "AllChatsViewController.h"
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
-#import "CoreData+MagicalRecord.h"
-#import "CoreDataManager+Chat.h"
-#import "CoreDataManager+Message.h"
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
-#import "ProfileManager.h"
 #import "EventsManager.h"
-#import "UserInfoManager.h"
+#import "AppearanceManager.h"
+#import "ProfileManager.h"
 
 @interface AppDelegate()
 
@@ -49,9 +43,8 @@
 
     [self configureLoggingStuff];
 
-    [MagicalRecord setupCoreDataStackWithAutoMigratingSqliteStoreNamed:@"DataStore.sqlite"];
-    [[UserInfoManager sharedInstance] createDefaultValuesIfNeeded];
-    [[ProfileManager sharedInstance] configureCurrentProfileAndLoadTox];
+    // initialize context
+    [AppContext sharedContext];
 
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]){
         UIUserNotificationType types =
@@ -69,8 +62,13 @@
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
         UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 
-        [[EventsManager sharedInstance] handleLocalNotification:notification];
+        [[AppContext sharedContext].events handleLocalNotification:notification];
     }
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(numberOfUnreadChatsUpdateNotification)
+                                                 name:kProfileManagerUpdateNumberOfUnreadChatsNotification
+                                               object:nil];
 
     [self.window makeKeyAndVisible];
     return YES;
@@ -123,7 +121,7 @@
     friends.navigationBar.tintColor  =
     allChats.navigationBar.tintColor =
     settings.navigationBar.tintColor =
-    tabBar.tabBar.tintColor          = [AppearanceManager textMainColor];
+    tabBar.tabBar.tintColor          = [[AppContext sharedContext].appearance textMainColor];
 
     friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
                                                        image:[UIImage imageNamed:@"tab-bar-friends"]
@@ -162,7 +160,7 @@
     frame.origin.y = 3.0;
 
     BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
-    badge.backgroundColor = [AppearanceManager statusBusyColor];
+    badge.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
     [tabBarController.tabBar addSubview:badge];
 
     return badge;
@@ -170,30 +168,28 @@
 
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
 {
-    __weak AppDelegate *weakSelf = self;
-
     void (^updateApplicationBadge)() = ^() {
         [UIApplication sharedApplication].applicationIconBadgeNumber =
             [self.friendsBadge.value integerValue] + [self.chatsBadge.value integerValue];
     };
 
     if (tabIndex == AppDelegateTabIndexFriends) {
-        NSUInteger number = [[ToxManager sharedInstance].friendsContainer requestsCount];
+        OCTArray *array = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
+        NSUInteger number = array.count;
 
         self.friendsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
         updateApplicationBadge();
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"lastMessage.date > lastReadDate"];
-
-        [CoreDataManager currentProfileChatsWithPredicateSortedByDate:predicate
-                                                      completionQueue:dispatch_get_main_queue()
-                                                      completionBlock:^(NSArray *array)
-        {
-            weakSelf.chatsBadge.value = array.count ? [NSString stringWithFormat:@"%lu", (unsigned long)array.count] : nil;
-            updateApplicationBadge();
-        }];
+        NSUInteger number = [AppContext sharedContext].profileManager.numberOfUnreadChats;
+        self.chatsBadge.value = number ? [NSString stringWithFormat:@"%lu", (unsigned long)number] : nil;
+        updateApplicationBadge();
     }
+}
+
+- (void)numberOfUnreadChatsUpdateNotification
+{
+    [self updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 - (NSArray *)getLogFilesPaths
@@ -248,9 +244,10 @@
             [nameAlert textFieldAtIndex:0].text = [url lastPathComponent];
 
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
-                NSString *name = [nameAlert textFieldAtIndex:0].text;
+               NSString *name = [nameAlert textFieldAtIndex:0].text;
 
-                [[ProfileManager sharedInstance] addNewProfileWithName:name fromURL:url removeAfterAdding:YES];
+               [[AppContext sharedContext].profileManager createProfileWithToxSave:url name:name];
+               removeFile();
 
                 [self switchToSettingsTabAndShowProfiles];
             }];
@@ -270,7 +267,7 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [[EventsManager sharedInstance] handleLocalNotification:notification];
+    [[AppContext sharedContext].events handleLocalNotification:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -307,7 +304,6 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-    [MagicalRecord cleanUp];
 }
 
 @end

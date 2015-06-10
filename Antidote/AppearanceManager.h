@@ -18,27 +18,28 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 
 @interface AppearanceManager : NSObject
 
-+ (UIFont *)fontHelveticaNeueWithSize:(CGFloat)size;
-+ (UIFont *)fontHelveticaNeueLightWithSize:(CGFloat)size;
-+ (UIFont *)fontHelveticaNeueBoldWithSize:(CGFloat)size;
+@property (assign, nonatomic, readonly) AppearanceManagerColorscheme colorscheme;
 
-+ (AppearanceManagerColorscheme)colorscheme;
-+ (void)changeColorschemeTo:(AppearanceManagerColorscheme)newColorscheme;
+- (instancetype)initWithColorscheme:(AppearanceManagerColorscheme)colorscheme;
 
-+ (UIColor *)textMainColor;
+- (UIFont *)fontHelveticaNeueWithSize:(CGFloat)size;
+- (UIFont *)fontHelveticaNeueLightWithSize:(CGFloat)size;
+- (UIFont *)fontHelveticaNeueBoldWithSize:(CGFloat)size;
 
-+ (UIColor *)statusOfflineColor;
-+ (UIColor *)statusOnlineColor;
-+ (UIColor *)statusAwayColor;
-+ (UIColor *)statusBusyColor;
+- (UIColor *)textMainColor;
 
-+ (UIColor *)bubbleIncomingColor;
-+ (UIColor *)bubbleOutgoingColor;
+- (UIColor *)statusOfflineColor;
+- (UIColor *)statusOnlineColor;
+- (UIColor *)statusAwayColor;
+- (UIColor *)statusBusyColor;
 
-+ (UIColor *)unreadChatCellBackground;
-+ (UIColor *)unreadChatCellBackgroundWithAlpha:(CGFloat)alpha;
+- (UIColor *)bubbleIncomingColor;
+- (UIColor *)bubbleOutgoingColor;
 
-+ (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme;
-+ (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
+- (UIColor *)unreadChatCellBackground;
+- (UIColor *)unreadChatCellBackgroundWithAlpha:(CGFloat)alpha;
+
+- (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme;
+- (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
 
 @end

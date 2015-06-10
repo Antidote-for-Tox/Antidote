@@ -10,6 +10,7 @@
 #import "UIView+Utilities.h"
 #import "UIColor+Utilities.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 
 @interface ChatBasicCell()
 
@@ -65,7 +66,7 @@
 
 + (UIFont *)fullDateLabelFont
 {
-    return [AppearanceManager fontHelveticaNeueWithSize:12.0];
+    return [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:12.0];
 }
 
 #pragma mark -  Private
@@ -78,7 +79,7 @@
 
     self.hiddenDateLabel = [self.contentView addLabelWithTextColor:[UIColor uColorOpaqueWithWhite:182]
                                                      bgColor:[UIColor clearColor]];
-    self.hiddenDateLabel.font = [AppearanceManager fontHelveticaNeueWithSize:12.0];
+    self.hiddenDateLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:12.0];
 }
 
 @end

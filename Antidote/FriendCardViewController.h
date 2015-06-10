@@ -8,10 +8,10 @@
 
 #import <UIKit/UIKit.h>
 
-#import "ToxFriend.h"
+#import "OCTFriend.h"
 
 @interface FriendCardViewController : UIViewController
 
-- (instancetype)initWithToxFriend:(ToxFriend *)friend;
+- (instancetype)initWithToxFriend:(OCTFriend *)friend;
 
 @end

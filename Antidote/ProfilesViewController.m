@@ -9,18 +9,16 @@
 #import "ProfilesViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UITableViewCell+Utilities.h"
-#import "CoreDataManager+Profile.h"
 #import "UIAlertView+BlocksKit.h"
-#import "ProfileManager.h"
 #import "AppDelegate.h"
 #import "UIActionSheet+BlocksKit.h"
+#import "ProfileManager.h"
+#import "AppearanceManager.h"
 
 @interface ProfilesViewController () <UITableViewDataSource, UITableViewDelegate,
-    NSFetchedResultsControllerDelegate, UIDocumentInteractionControllerDelegate>
+    UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
-
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
 
 @property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
@@ -50,19 +48,6 @@
     [self createTableView];
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    [CoreDataManager fetchedControllerWithDelegate:self completionQueue:dispatch_get_main_queue() completionBlock:
-        ^(NSFetchedResultsController *controller)
-    {
-        self.fetchedResultsController = controller;
-
-        [self.tableView reloadData];
-    }];
-}
-
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
@@ -81,7 +66,7 @@
     [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
         NSString *name = [view textFieldAtIndex:0].text;
 
-        [[ProfileManager sharedInstance] addNewProfileWithName:name];
+        [self selectProfile:name];
     }];
 
     [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
@@ -93,17 +78,15 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CDProfile *profile = [self.fetchedResultsController objectAtIndexPath:indexPath];
-
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[UITableViewCell reuseIdentifier]
                                                                  forIndexPath:indexPath];
-    cell.textLabel.text = profile.name;
+    cell.textLabel.text = [self nameAtIndexPath:indexPath];
 
-    if ([profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
-        cell.textLabel.font = [AppearanceManager fontHelveticaNeueBoldWithSize:16.0];
+    if ([self isCurrentProfile:cell.textLabel.text]) {
+        cell.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:16.0];
     }
     else {
-        cell.textLabel.font = [AppearanceManager fontHelveticaNeueWithSize:16.0];
+        cell.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
     }
 
     return cell;
@@ -111,9 +94,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[section];
-
-    return info.numberOfObjects;
+    return [AppContext sharedContext].profileManager.allProfiles.count;
 }
 
 #pragma mark -  UITableViewDelegate
@@ -122,23 +103,25 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    CDProfile *profile = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSString *name = [self nameAtIndexPath:indexPath];
 
     UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
 
-    if (! [profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
+    if (! [self isCurrentProfile:name]) {
         [sheet bk_addButtonWithTitle:NSLocalizedString(@"Select", @"Profiles") handler:^{
-            [self selectProfile:profile];
+            [self selectProfile:name];
         }];
     }
 
     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Rename", @"Profiles") handler:^{
-        [self renameProfile:profile];
+        [self renameProfile:name];
     }];
 
     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Export", @"Profiles") handler:^{
-        [self exportProfile:profile];
+        [self exportProfile:name];
     }];
+
+    //FIXME add delete option
 
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
 
@@ -150,68 +133,24 @@
   forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        CDProfile *profile = [self.fetchedResultsController objectAtIndexPath:indexPath];
+        NSString *name = [self nameAtIndexPath:indexPath];
 
-        if ([profile isEqual:[ProfileManager sharedInstance].currentProfile]) {
-            tableView.editing = NO;
-
-            NSString *title = NSLocalizedString(@"Cannot delete active profile", @"Profiles");
-            UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
-
-            [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:nil];
-
-            [alert show];
-
-            return;
-        }
-
-        NSString *title = [NSString stringWithFormat:
-            NSLocalizedString(@"Delete profile %@?", @"Profiles"), profile.name];
+        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Delete profile %@?", @"Profiles"), name];
 
         NSString *message = NSLocalizedString(@"This operation cannot be undone", @"Profiles");
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title message:message];
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Profiles") handler:^{
-            [[ProfileManager sharedInstance] deleteProfile:profile];
+            BOOL isCurrent = [self isCurrentProfile:name];
+            [[AppContext sharedContext].profileManager deleteProfileWithName:name];
+
+            isCurrent ?  [self recreateControllers] : [self.tableView reloadData];
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Profiles") handler:nil];
 
         [alert show];
     }
-}
-
-#pragma mark -  NSFetchedResultsControllerDelegate
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    if (type == NSFetchedResultsChangeInsert) {
-        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeMove) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeUpdate) {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
 }
 
 #pragma mark -  UIDocumentInteractionControllerDelegate
@@ -249,27 +188,37 @@
     self.tableView.frame = self.view.bounds;
 }
 
-- (void)selectProfile:(CDProfile *)profile
+- (void)selectProfile:(NSString *)name
 {
-    [[ProfileManager sharedInstance] switchToProfile:profile];
+    [[AppContext sharedContext].profileManager switchToProfileWithName:name];
 
+    [self recreateControllers];
+}
+
+- (void)recreateControllers
+{
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
          [nav pushViewController:[ProfilesViewController new] animated:NO];
     }];
 }
 
-- (void)renameProfile:(CDProfile *)profile
+- (void)renameProfile:(NSString *)name
 {
     NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
     UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
     view.alertViewStyle = UIAlertViewStylePlainTextInput;
-    [view textFieldAtIndex:0].text = profile.name;
+    [view textFieldAtIndex:0].text = name;
 
     [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
-        NSString *name = [view textFieldAtIndex:0].text;
+        NSString *nName = [view textFieldAtIndex:0].text;
 
-        [[ProfileManager sharedInstance] renameProfile:profile to:name];
+        if (! nName.length) {
+            return;
+        }
+
+        [[AppContext sharedContext].profileManager renameProfileWithName:name toName:nName];
+        [self.tableView reloadData];
     }];
 
     [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
@@ -277,15 +226,29 @@
     [view show];
 }
 
-- (void)exportProfile:(CDProfile *)profile
+- (void)exportProfile:(NSString *)name
 {
-    NSURL *url = [[ProfileManager sharedInstance] toxDataURLForProfile:profile];
+    NSURL *url = [[AppContext sharedContext].profileManager exportProfileWithName:name];
 
     self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
     self.documentInteractionController.delegate = self;
     self.documentInteractionController.name = [url lastPathComponent];
 
     [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
+}
+
+- (NSString *)nameAtIndexPath:(NSIndexPath *)indexPath
+{
+    return [AppContext sharedContext].profileManager.allProfiles[indexPath.row];
+}
+
+- (BOOL)isCurrentProfile:(NSString *)name
+{
+    NSParameterAssert(name);
+
+    NSString *currentName = [AppContext sharedContext].profileManager.currentProfileName;
+
+    return [name isEqualToString:currentName];
 }
 
 @end

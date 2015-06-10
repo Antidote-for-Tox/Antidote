@@ -9,11 +9,11 @@
 #import "AddFriendViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
-#import "ToxManager.h"
-#import "ToxFunctions.h"
 #import "QRScannerController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Utilities.h"
+#import "ProfileManager.h"
+#import "Helper.h"
 
 static const CGFloat kYIndentation = 10.0;
 
@@ -124,8 +124,9 @@ static const CGFloat kYIndentation = 10.0;
 
 - (void)sendRequestButtonPressed
 {
-    [[ToxManager sharedInstance] sendFriendRequestWithAddress:self.toxIdTextView.text
-                                                      message:self.messageTextView.text];
+    [[AppContext sharedContext].profileManager.toxManager.friends sendFriendRequestToAddress:self.toxIdTextView.text
+                                                                                     message:self.messageTextView.text
+                                                                                       error:nil];
 
     [self.navigationController popViewControllerAnimated:YES];
 }
@@ -349,7 +350,7 @@ static const CGFloat kYIndentation = 10.0;
             string = [string substringFromIndex:toxPrefix.length];
         }
 
-        if ([ToxFunctions isAddressString:string]) {
+        if ([Helper isAddressString:string]) {
             goodString = string;
             break;
         }

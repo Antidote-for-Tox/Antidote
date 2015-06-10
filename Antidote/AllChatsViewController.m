@@ -9,25 +9,23 @@
 #import "AllChatsViewController.h"
 #import "AllChatsCell.h"
 #import "UIViewController+Utilities.h"
-#import "CoreDataManager+Chat.h"
-#import "CDMessage.h"
-#import "CDUser.h"
 #import "ChatViewController.h"
 #import "UIAlertView+BlocksKit.h"
-#import "ToxManager.h"
 #import "UIImage+Utilities.h"
-#import "AvatarManager.h"
 #import "UIColor+Utilities.h"
-#import "Helper.h"
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
+#import "ProfileManager.h"
+#import "OCTMessageText.h"
+#import "OCTMessageFile.h"
+#import "AppearanceManager.h"
+#import "Helper.h"
 
-@interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate,
-    NSFetchedResultsControllerDelegate>
+@interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate, OCTArrayDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) NSFetchedResultsController *fetchedResultsController;
+@property (strong, nonatomic) OCTArray *allChats;
 
 @end
 
@@ -44,7 +42,7 @@
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(friendUpdateNotification:)
-                                                     name:kToxFriendsContainerUpdateSpecificFriendNotification
+                                                     name:kProfileManagerFriendUpdateNotification
                                                    object:nil];
     }
 
@@ -62,15 +60,8 @@
 {
     [super viewDidLoad];
 
-    __weak AllChatsViewController *weakSelf = self;
-
-    [CoreDataManager currentProfileAllChatsFetchedControllerWithDelegate:self
-                                                         completionQueue:dispatch_get_main_queue()
-                                                         completionBlock:^(NSFetchedResultsController *controller)
-    {
-        weakSelf.fetchedResultsController = controller;
-        [weakSelf.tableView reloadData];
-    }];
+    self.allChats = [[AppContext sharedContext].profileManager.toxManager.chats allChats];
+    self.allChats.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -95,48 +86,50 @@
     AllChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:[AllChatsCell reuseIdentifier]
                                                          forIndexPath:indexPath];
 
-    CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    ToxFriend *friend = [self friendForIndexPath:indexPath];
+    OCTChat *chat = [self.allChats objectAtIndex:indexPath.row];
+    OCTFriend *friend = [chat.friends lastObject];
 
-    cell.textLabel.text = [friend nameToShow];
-    cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
-                                                    orCreateAvatarFromString:[friend nameToShow]
-                                                                    withSide:cell.imageView.frame.size.width];
-    cell.status = [Helper toxFriendStatusToCircleStatus:friend.status];
+    cell.textLabel.text = friend.nickname;
+    // FIXME avatar
+    // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
+    //                                                 orCreateAvatarFromString:[friend nameToShow]
+    //                                                                 withSide:cell.imageView.frame.size.width];
+    cell.status = [Helper circleStatusFromFriend:friend];
 
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:chat.lastMessage.date];
-    NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:date type:TimeFormatterTypeRelativeDateAndTime];
+    NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date
+                                                                     type:TimeFormatterTypeRelativeDateAndTime];
 
-    if (chat.lastMessage.text) {
-        [cell setMessage:chat.lastMessage.text.text andDate:dateString];
+    if ([chat.lastMessage isKindOfClass:[OCTMessageText class]]) {
+        OCTMessageText *messageText = (OCTMessageText *)chat.lastMessage;
+
+        [cell setMessage:messageText.text andDate:dateString];
     }
-    else if (chat.lastMessage.file || chat.lastMessage.pendingFile) {
+    else if ([chat.lastMessage isKindOfClass:[OCTMessageFile class]]) {
         NSString *format;
 
-        if ([Helper isOutgoingMessage:chat.lastMessage]) {
+        if ([chat.lastMessage isOutgoing]) {
             format = NSLocalizedString(@"Outgoing file: %@", @"Chats");
         }
         else {
             format = NSLocalizedString(@"Incoming file: %@", @"Chats");
         }
 
-        NSString *fileName = chat.lastMessage.file.originalFileName ?: chat.lastMessage.pendingFile.originalFileName;
+        OCTMessageFile *messageFile = (OCTMessageFile *)chat.lastMessage;
 
-        [cell setMessage:[NSString stringWithFormat:format, fileName]
+        [cell setMessage:[NSString stringWithFormat:format, messageFile.fileName]
                  andDate:dateString];
     }
 
-    cell.backgroundColor = (chat.lastMessage.date < chat.lastReadDate) ? [UIColor whiteColor] :
-        [AppearanceManager unreadChatCellBackground];
+    cell.backgroundColor = [chat hasUnreadMessages] ?
+        [[AppContext sharedContext].appearance unreadChatCellBackground] :
+        [UIColor whiteColor];
 
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> info = self.fetchedResultsController.sections[section];
-
-    return info.numberOfObjects;
+    return self.allChats.count;
 }
 
 - (void)  tableView:(UITableView *)tableView
@@ -150,9 +143,9 @@
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Chats") handler:^{
-            CDChat *chat = [weakSelf.fetchedResultsController objectAtIndexPath:indexPath];
+            OCTChat *chat = [weakSelf.allChats objectAtIndex:indexPath.row];
 
-            [CoreDataManager removeChatWithAllMessages:chat completionQueue:nil completionBlock:nil];
+            [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Chats") handler:^{
@@ -174,54 +167,29 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    CDChat *chat = [self.fetchedResultsController objectAtIndexPath:indexPath];
+    OCTChat *chat = [self.allChats objectAtIndex:indexPath.row];
 
     ChatViewController *cvc = [[ChatViewController alloc] initWithChat:chat];
 
     [self.navigationController pushViewController:cvc animated:YES];
 }
 
-#pragma mark -  NSFetchedResultsControllerDelegate
+#pragma mark -  OCTArrayDelegate
 
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+- (void)OCTArrayWasUpdated:(OCTArray *)array
 {
-    [self.tableView beginUpdates];
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-    if (type == NSFetchedResultsChangeInsert) {
-        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeDelete) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeMove) {
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
-    else if (type == NSFetchedResultsChangeUpdate) {
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    }
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableView endUpdates];
+    [self.tableView reloadData];
 }
 
 #pragma mark -  Notifications
 
 - (void)friendUpdateNotification:(NSNotification *)notification
 {
-    ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
 
     for (NSIndexPath *path in self.tableView.indexPathsForVisibleRows) {
-        ToxFriend *friend = [self friendForIndexPath:path];
+        OCTChat *chat = [self.allChats objectAtIndex:path.row];
+        OCTFriend *friend = [chat.friends lastObject];
 
         if ([friend isEqual:updatedFriend]) {
             [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
@@ -246,14 +214,6 @@
 - (void)adjustSubviews
 {
     self.tableView.frame = self.view.bounds;
-}
-
-- (ToxFriend *)friendForIndexPath:(NSIndexPath *)path
-{
-    CDChat *chat = [self.fetchedResultsController objectAtIndexPath:path];
-    CDUser *user = [chat.users anyObject];
-
-    return [[ToxManager sharedInstance].friendsContainer friendWithClientId:user.clientId];
 }
 
 @end

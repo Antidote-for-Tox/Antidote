@@ -9,7 +9,7 @@
 #import "FriendCardViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
-#import "ToxManager.h"
+#import "ProfileManager.h"
 
 @interface FriendCardViewController () <UITextFieldDelegate>
 
@@ -18,7 +18,7 @@
 @property (strong, nonatomic) UITextField *nicknameField;
 @property (strong, nonatomic) UILabel *realNameLabel;
 
-@property (strong, nonatomic) ToxFriend *friend;
+@property (strong, nonatomic) OCTFriend *friend;
 
 @end
 
@@ -26,7 +26,7 @@
 
 #pragma mark -  Lifecycle
 
-- (instancetype)initWithToxFriend:(ToxFriend *)friend;
+- (instancetype)initWithToxFriend:(OCTFriend *)friend
 {
     self = [super init];
 
@@ -35,7 +35,7 @@
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(friendUpdateNotification:)
-                                                     name:kToxFriendsContainerUpdateSpecificFriendNotification
+                                                     name:kProfileManagerFriendUpdateNotification
                                                    object:nil];
     }
     return self;
@@ -77,7 +77,7 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([textField isEqual:self.nicknameField]) {
-        [[ToxManager sharedInstance] changeNicknameTo:textField.text forFriend:self.friend];
+        self.friend.nickname = textField.text;
     }
 }
 
@@ -85,7 +85,7 @@
 
 - (void)friendUpdateNotification:(NSNotification *)notification
 {
-    ToxFriend *updatedFriend = notification.userInfo[kToxFriendsContainerUpdateKeyFriend];
+    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
 
     if (! [self.friend isEqual:updatedFriend]) {
         return;
@@ -155,8 +155,7 @@
 
     self.nicknameField.text = self.friend.nickname;
 
-    self.realNameLabel.text = self.friend.realName.length ?
-        [NSString stringWithFormat:@"(%@)", self.friend.realName] : nil;
+    self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat:@"(%@)", self.friend.name] : nil;
 
     [self adjustSubviews];
 }

@@ -2,37 +2,46 @@
 //  Helper.m
 //  Antidote
 //
-//  Created by Dmitry Vorobyov on 31.07.14.
-//  Copyright (c) 2014 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 08.06.15.
+//  Copyright (c) 2015 dvor. All rights reserved.
 //
 
 #import "Helper.h"
-#import "ToxManager.h"
-#import "CDUser.h"
+#import "OCTToxConstants.h"
 
 @implementation Helper
 
-+ (StatusCircleStatus)toxFriendStatusToCircleStatus:(ToxFriendStatus)toxFriendStatus
+#pragma mark -  Public
+
++ (BOOL)isAddressString:(NSString *)string
 {
-    if (toxFriendStatus == ToxFriendStatusOffline) {
-        return StatusCircleStatusOffline;
-    }
-    else if (toxFriendStatus == ToxFriendStatusOnline) {
-        return StatusCircleStatusOnline;
-    }
-    else if (toxFriendStatus == ToxFriendStatusAway) {
-        return StatusCircleStatusAway;
-    }
-    else if (toxFriendStatus == ToxFriendStatusBusy) {
-        return StatusCircleStatusBusy;
+    if (string.length != kOCTToxAddressLength) {
+        return NO;
     }
 
-    return StatusCircleStatusOffline;
+    NSCharacterSet *validChars = [NSCharacterSet characterSetWithCharactersInString:@"1234567890abcdefABCDEF"];
+
+    NSArray *components = [string componentsSeparatedByCharactersInSet:validChars];
+
+    NSString *leftChars = [components componentsJoinedByString:@""];
+
+    return (leftChars.length == 0);
 }
 
-+ (BOOL)isOutgoingMessage:(CDMessage *)message
++ (StatusCircleStatus)circleStatusFromFriend:(OCTFriend *)friend
 {
-    return [message.user.clientId isEqual:[ToxManager sharedInstance].clientId];
+    if (friend.connectionStatus == OCTToxConnectionStatusNone) {
+        return StatusCircleStatusOffline;
+    }
+
+    switch(friend.status) {
+        case OCTToxUserStatusNone:
+            return StatusCircleStatusOnline;
+        case OCTToxUserStatusAway:
+            return StatusCircleStatusAway;
+        case OCTToxUserStatusBusy:
+            return StatusCircleStatusBusy;
+    }
 }
 
 @end
