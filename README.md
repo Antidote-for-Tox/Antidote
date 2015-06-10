@@ -43,7 +43,7 @@ open Antidote.xcworkspace
 
 #### In progress
 
--  audio calls groundwork [see (objcTox/audio)](https://github.com/dvor/objcTox/tree/audio)
+-  audio calls groundwork see [(objcTox/audio)](https://github.com/dvor/objcTox/tree/audio)
 -  getting back file transfers and avatars
 -  designing UX
 -  UI polishing
