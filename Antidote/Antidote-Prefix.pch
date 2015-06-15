@@ -18,5 +18,8 @@
     static int ddLogLevel = LOG_LEVEL_VERBOSE;
 
     #import "AppContext.h"
+
+    #define MAS_SHORTHAND
+    #define MAS_SHORTHAND_GLOBALS
 #endif
 
