@@ -1,4 +1,4 @@
-[![Build Status](http://img.shields.io/travis/dvor/Antidote/master.svg?style=flat)](https://travis-ci.org/dvor/Antidote)
+[![Build Status](https://img.shields.io/travis/Antidote-for-Tox/Antidote/master.svg?style=flat)](https://travis-ci.org/Antidote-for-Tox/Antidote)
 
 [Tox](https://tox.im/) client for iOS 7.0+;
 
@@ -22,7 +22,7 @@ Antidote is available for beta testing via TestFlight. If you wish to participat
 Clone repo, install [CocoaPods](https://cocoapods.org/) and open `Antidote.xcworkspace` file with Xcode 5+.
 
 ```
-git clone https://github.com/dvor/Antidote.git
+git clone https://github.com/Antidote-for-Tox/Antidote.git
 cd Antidote
 pod install
 open Antidote.xcworkspace
@@ -43,7 +43,7 @@ open Antidote.xcworkspace
 
 #### In progress
 
--  audio calls groundwork see [(objcTox/audio)](https://github.com/dvor/objcTox/tree/audio)
+-  audio calls groundwork see [(objcTox/audio)](https://github.com/Antidote-for-Tox/objcTox/tree/audio)
 -  getting back file transfers and avatars
 -  designing UX
 -  UI polishing
