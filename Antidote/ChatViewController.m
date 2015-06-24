@@ -13,19 +13,21 @@
 #import "StatusCircleView.h"
 #import "Helper.h"
 #import "UIView+Utilities.h"
-#import "OCTArray.h"
 #import "ProfileManager.h"
 #import "AppDelegate.h"
 #import "ChatIncomingCell.h"
 #import "ChatOutgoingCell.h"
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
+#import "OCTMessageAbstract.h"
+#import "OCTMessageText.h"
 
-@interface ChatViewController () <OCTArrayDelegate>
+@interface ChatViewController () <RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic, readwrite) OCTChat *chat;
 @property (strong, nonatomic, readwrite) OCTFriend *friend;
-@property (strong, nonatomic, readwrite) OCTArray *allMessages;
+
+@property (strong, nonatomic, readwrite) RBQFetchedResultsController *messagesController;
 
 @end
 
@@ -47,15 +49,13 @@
     self.chat = chat;
     self.friend = [chat.friends lastObject];
 
-    self.allMessages = [[AppContext sharedContext].profileManager.toxManager.chats allMessagesInChat:self.chat];
-    self.allMessages.delegate = self;
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat.uniqueIdentifier == %@", chat.uniqueIdentifier];
+    self.messagesController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeMessageAbstract
+                                                                  predicate:predicate
+                                                                   delegate:self];
 
     [self updateTitleView];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(friendUpdateNotification:)
-                                                 name:kProfileManagerFriendUpdateNotification
-                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWillEnterForeground:)
                                                  name:UIApplicationWillEnterForegroundNotification
@@ -94,7 +94,8 @@
 {
     [super viewWillDisappear:animated];
 
-    self.chat.enteredText = self.textView.text;
+    OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+    [submanager changeChat:self.chat enteredText:self.textView.text];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -126,11 +127,45 @@
     [super didPressRightButton:sender];
 }
 
-#pragma mark -  OCTArrayDelegate
+#pragma mark -  RBQFetchedResultsControllerDelegate
 
-- (void)OCTArrayWasUpdated:(OCTArray *)array
+- (void)controllerWillChangeContent:(RBQFetchedResultsController *)controller
 {
-    [self.tableView reloadData];
+    [self.tableView beginUpdates];
+}
+
+- (void) controller:(RBQFetchedResultsController *)controller
+    didChangeObject:(RBQSafeRealmObject *)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath
+{
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
+{
+    @try {
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *ex) {
+        [controller reset];
+        [self.tableView reloadData];
+    }
 }
 
 #pragma mark -  UITableViewDataSource
@@ -138,10 +173,10 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ChatBasicCell *basicCell;
-    OCTMessageAbstract *message = [self.allMessages objectAtIndex:indexPath.row];
+    OCTMessageAbstract *message = [self.messagesController objectAtIndexPath:indexPath];
 
-    if ([message isKindOfClass:[OCTMessageText class]]) {
-        basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:(OCTMessageText *)message];
+    if (message.messageText) {
+        basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
     }
 
     basicCell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
@@ -156,7 +191,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.allMessages.count;
+    return [self.messagesController numberOfRowsForSectionIndex:section];
 }
 
 #pragma mark -  UITableViewDelegate
@@ -165,17 +200,16 @@
 {
     CGFloat height = 0.0;
 
-    OCTMessageAbstract *message = [self.allMessages objectAtIndex:indexPath.row];
+    OCTMessageAbstract *message = [self.messagesController objectAtIndexPath:indexPath];
 
     NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
 
-    if ([message isKindOfClass:[OCTMessageText class]]) {
-        OCTMessageText *messageText = (OCTMessageText *)message;
-        if ([messageText isOutgoing]) {
-            height = [ChatOutgoingCell heightWithMessage:messageText.text fullDateString:fullDateString];
+    if (message.messageText) {
+        if ([message isOutgoing]) {
+            height = [ChatOutgoingCell heightWithMessage:message.messageText.text fullDateString:fullDateString];
         }
         else {
-            height = [ChatIncomingCell heightWithMessage:messageText.text fullDateString:fullDateString];
+            height = [ChatIncomingCell heightWithMessage:message.messageText.text fullDateString:fullDateString];
         }
     }
 
@@ -219,12 +253,14 @@
 
 - (void)updateLastReadDateAndChatsBadge
 {
-    self.chat.lastReadDate = [NSDate date];
+    NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
+    [[AppContext sharedContext].profileManager.toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
+
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
-- (ChatBasicCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(OCTMessageText *)message
+- (ChatBasicCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(OCTMessageAbstract *)message
 {
     ChatBasicMessageCell *cell;
 
@@ -232,14 +268,14 @@
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
                                                     forIndexPath:indexPath];
 
-        ((ChatOutgoingCell *)cell).isDelivered = message.isDelivered;
+        ((ChatOutgoingCell *)cell).isDelivered = message.messageText.isDelivered;
     }
     else {
         cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
                                                     forIndexPath:indexPath];
     }
 
-    cell.message = message.text;
+    cell.message = message.messageText.text;
 
     return cell;
 }
@@ -250,7 +286,8 @@
         return YES;
     }
 
-    OCTMessageAbstract *previous = [self.allMessages objectAtIndex:path.row-1];
+    NSIndexPath *previousPath = [NSIndexPath indexPathForRow:path.row-1 inSection:path.section];
+    OCTMessageAbstract *previous = [self.messagesController objectAtIndexPath:previousPath];
 
     if (! [[TimeFormatter sharedInstance] areSameDays:message.date and:previous.date]) {
         return YES;

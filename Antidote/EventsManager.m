@@ -17,6 +17,10 @@
 #import "ProfileManager.h"
 #import "OCTMessageFile.h"
 #import "UserDefaultsManager.h"
+#import "OCTMessageAbstract.h"
+#import "OCTMessageText.h"
+#import "OCTMessageFile.h"
+#import "OCTFriendRequest.h"
 
 static NSString *const kLocalNotificationTypeKey = @"kLocalNotificationTypeKey";
 static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotificationChatUniqueIdentifierKey";
@@ -81,7 +85,8 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
             return;
         }
 
-        OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats chatWithUniqueIdentifier:identifier];
+        OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+        OCTChat *chat = (OCTChat *)[submanager objectWithUniqueIdentifier:identifier forType:OCTFetchRequestTypeChat];
         [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
     }
     else if (type == EventObjectTypeFriendRequest) {
@@ -357,15 +362,15 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
     NSString *text;
 
     if (object.type == EventObjectTypeChatIncomingMessage) {
-        OCTMessageText *message = object.object;
+        OCTMessageAbstract *message = object.object;
 
-        text = message.text;
+        text = message.messageText.text;
     }
     else if (object.type == EventObjectTypeChatIncomingFile) {
-        OCTMessageFile *message = object.object;
+        OCTMessageAbstract *message = object.object;
 
         text = [NSString stringWithFormat:NSLocalizedString(@"Incoming file: %@", @"Events"),
-                message.fileName];
+                message.messageFile.fileName];
     }
     else if (object.type == EventObjectTypeFriendRequest) {
         OCTFriendRequest *request = object.object;
@@ -394,16 +399,15 @@ static NSString *const kLocalNotificationChatUniqueIdentifierKey = @"kLocalNotif
 
         text = [text stringByAppendingString:@": "];
 
-        if ([object isKindOfClass:[OCTMessageText class]]) {
+        if (message.messageText) {
             if ([AppContext sharedContext].userDefaults.uShowMessageInLocalNotification.boolValue) {
-                OCTMessageText *messageText = (OCTMessageText *)message;
-                text = [text stringByAppendingString:messageText.text];
+                text = [text stringByAppendingString:message.messageText.text];
             }
             else {
                 text = [text stringByAppendingString:NSLocalizedString(@"incoming message", @"Events")];
             }
         }
-        if ([object isKindOfClass:[OCTMessageFile class]]) {
+        else if (message.messageFile) {
             text = [text stringByAppendingString:NSLocalizedString(@"incoming file", @"Events")];
         }
     }

@@ -10,8 +10,9 @@
 #import "UIViewController+Utilities.h"
 #import "UIView+Utilities.h"
 #import "ProfileManager.h"
+#import "Helper.h"
 
-@interface FriendCardViewController () <UITextFieldDelegate>
+@interface FriendCardViewController () <UITextFieldDelegate, RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) UIScrollView *scrollView;
 
@@ -19,6 +20,8 @@
 @property (strong, nonatomic) UILabel *realNameLabel;
 
 @property (strong, nonatomic) OCTFriend *friend;
+
+@property (strong, nonatomic) RBQFetchedResultsController *friendController;
 
 @end
 
@@ -33,17 +36,12 @@
     if (self) {
         self.friend = friend;
 
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(friendUpdateNotification:)
-                                                     name:kProfileManagerFriendUpdateNotification
-                                                   object:nil];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@", friend.uniqueIdentifier];
+        self.friendController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend
+                                                                    predicate:predicate
+                                                                     delegate:self];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
@@ -77,22 +75,23 @@
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
     if ([textField isEqual:self.nicknameField]) {
-        self.friend.nickname = textField.text;
+        OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+        [submanager changeFriend:self.friend nickname:textField.text];
     }
 }
 
-#pragma mark -  Notifications
+#pragma mark -  RBQFetchedResultsControllerDelegate
 
-- (void)friendUpdateNotification:(NSNotification *)notification
+- (void) controller:(RBQFetchedResultsController *)controller
+    didChangeObject:(RBQSafeRealmObject *)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
-
-    if (! [self.friend isEqual:updatedFriend]) {
-        return;
+    if (type == NSFetchedResultsChangeUpdate) {
+        self.friend = [self.friendController objectAtIndexPath:indexPath];
+        [self redrawTitleAndViews];
     }
-
-    self.friend = updatedFriend;
-    [self redrawTitleAndViews];
 }
 
 #pragma mark -  Private

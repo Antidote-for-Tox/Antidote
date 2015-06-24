@@ -21,15 +21,16 @@
 #import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
+#import "OCTFriendRequest.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate,
-                                     OCTArrayDelegate>
+                                     RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) OCTFriendsContainer *friendsContainer;
-@property (strong, nonatomic) OCTArray *allFriendRequests;
+@property (strong, nonatomic) RBQFetchedResultsController *friendsController;
+@property (strong, nonatomic) RBQFetchedResultsController *friendRequestsController;
 
 @end
 
@@ -45,14 +46,9 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
         self.title = NSLocalizedString(@"Friends", @"Friends");
 
-        self.friendsContainer = [AppContext sharedContext].profileManager.toxManager.friends.friendsContainer;
-        self.allFriendRequests = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
-        self.allFriendRequests.delegate = self;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(updateFriendsNotification:)
-                                                     name:kProfileManagerFriendsContainerUpdateNotification
-                                                   object:nil];
+        self.friendsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:self];
+        self.friendRequestsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
+                                                                             delegate:self];
     }
 
     return self;
@@ -92,8 +88,7 @@
 
 - (void)sortButtonPressed
 {
-    self.friendsContainer.friendsSort = (self.friendsContainer.friendsSort + 1) % 2;
-
+    // FIXME
     [self updateBarButtonItem];
 }
 
@@ -145,10 +140,10 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        return self.friendsContainer.friendsCount;
+        return [self.friendsController numberOfRowsForSectionIndex:section];
     }
     else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
-        return self.allFriendRequests.count;
+        return [self.friendRequestsController numberOfRowsForSectionIndex:section];
     }
 
     return 0;
@@ -192,7 +187,7 @@
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+        OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
 
         FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
         [self.navigationController pushViewController:fcvc animated:YES];
@@ -205,9 +200,9 @@
 {
     NSIndexPath *path = [self.tableView indexPathForCell:cell];
 
-    OCTFriendRequest *request = [self.allFriendRequests objectAtIndex:path.row];
+    OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:path];
 
-    BOOL wasLastRequest = (self.allFriendRequests.count == 1);
+    BOOL wasLastRequest = ([self.friendRequestsController numberOfRowsForSectionIndex:0] == 1);
 
     [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:request error:nil];
 
@@ -219,57 +214,56 @@
     }
 }
 
-#pragma mark -  OCTArrayDelegate
+#pragma mark -  RBQFetchedResultsControllerDelegate
 
-- (void)OCTArrayWasUpdated:(OCTArray *)array
+- (void)controllerWillChangeContent:(RBQFetchedResultsController *)controller
 {
-    [self.tableView reloadData];
-    [self updateSegmentedControlRequestTitle];
+    if (! [self isCurrentFetchedRequestController:controller]) {
+        return;
+    }
+
+    [self.tableView beginUpdates];
 }
 
-#pragma mark -  Notifications
-
-- (void)updateFriendsNotification:(NSNotification *)notification
+- (void) controller:(RBQFetchedResultsController *)controller
+    didChangeObject:(RBQSafeRealmObject *)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
+    if (! [self isCurrentFetchedRequestController:controller]) {
         return;
     }
 
-    if (! self.tableView) {
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
+
+- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
+{
+    if (! [self isCurrentFetchedRequestController:controller]) {
         return;
     }
 
-    NSIndexSet *inserted = notification.userInfo[kProfileManagerFriendsContainerUpdateInsertedKey];
-    NSIndexSet *removed = notification.userInfo[kProfileManagerFriendsContainerUpdateRemovedKey];
-    NSIndexSet *updated = notification.userInfo[kProfileManagerFriendsContainerUpdateUpdatedKey];
-
-    @synchronized(self.tableView) {
-        NSInteger newNumberOfRows = [self.tableView numberOfRowsInSection:0] + inserted.count - removed.count;
-
-        if (newNumberOfRows != [self tableView:self.tableView numberOfRowsInSection:0]) {
-            DDLogWarn(@"FriendsViewController: inconsistent data, reloding table view");
-            [self.tableView reloadData];
-        }
-        else {
-            [self.tableView beginUpdates];
-
-            if (inserted.count) {
-                [self.tableView insertRowsAtIndexPaths:[inserted arrayWithIndexPaths]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-
-            if (removed.count) {
-                [self.tableView deleteRowsAtIndexPaths:[removed arrayWithIndexPaths]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-
-            if (updated.count) {
-                [self.tableView reloadRowsAtIndexPaths:[updated arrayWithIndexPaths]
-                                      withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
-
-            [self.tableView endUpdates];
-        }
+    @try {
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *ex) {
+        [controller reset];
+        [self.tableView reloadData];
     }
 }
 
@@ -328,12 +322,13 @@
 
     UIImage *image;
 
-    if (self.friendsContainer.friendsSort == OCTFriendsSortByName) {
-        image = [UIImage imageNamed:@"friends-sort-alphabet"];
-    }
-    else if (self.friendsContainer.friendsSort == OCTFriendsSortByStatus) {
-        image = [UIImage imageNamed:@"friends-sort-status"];
-    }
+    // FIXME
+    // if (self.friendsContainer.friendsSort == OCTFriendsSortByName) {
+    image = [UIImage imageNamed:@"friends-sort-alphabet"];
+    // }
+    // else if (self.friendsContainer.friendsSort == OCTFriendsSortByStatus) {
+    //     image = [UIImage imageNamed:@"friends-sort-status"];
+    // }
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
@@ -352,7 +347,7 @@
     FriendsCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
                                                              forIndexPath:indexPath];
 
-    OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+    OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
 
     cell.textLabel.text = friend.nickname;
     // FIXME avatar
@@ -387,7 +382,7 @@
                                                                     forIndexPath:indexPath];
     cell.delegate = self;
 
-    OCTFriendRequest *request = [self.allFriendRequests objectAtIndex:indexPath.row];
+    OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
 
     cell.title = request.publicKey;
     cell.subtitle = request.message;
@@ -409,7 +404,7 @@
         UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
 
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
-            OCTFriend *friend = [weakSelf.friendsContainer friendAtIndex:indexPath.row];
+            OCTFriend *friend = [weakSelf.friendsController objectAtIndexPath:indexPath];
 
             OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
@@ -445,7 +440,7 @@
         UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
 
         [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friend requestss") handler:^{
-            OCTFriendRequest *request = [weakSelf.allFriendRequests objectAtIndex:indexPath.row];
+            OCTFriendRequest *request = [weakSelf.friendRequestsController objectAtIndexPath:indexPath];
 
             [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:request];
         }];
@@ -460,7 +455,7 @@
 
 - (void)friendsDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    OCTFriend *friend = [self.friendsContainer friendAtIndex:indexPath.row];
+    OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
     OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
@@ -469,7 +464,7 @@
 
 - (void)updateSegmentedControlRequestTitle
 {
-    NSUInteger number = self.allFriendRequests.count;
+    NSUInteger number = [self.friendRequestsController numberOfRowsForSectionIndex:0];
 
     NSString *title = NSLocalizedString(@"Requests", @"Friends");
 
@@ -479,6 +474,22 @@
 
     [self.segmentedControl setTitle:title forSegmentAtIndex:FriendsViewControllerTabRequests];
     [self.segmentedControl sizeToFit];
+}
+
+- (BOOL)isCurrentFetchedRequestController:(RBQFetchedResultsController *)controller
+{
+    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
+        if (! [controller isEqual:self.friendsController]) {
+            return NO;
+        }
+    }
+    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
+        if (! [controller isEqual:self.friendRequestsController]) {
+            return NO;
+        }
+    }
+
+    return YES;
 }
 
 @end

@@ -16,16 +16,17 @@
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
+#import "OCTMessageAbstract.h"
 #import "OCTMessageText.h"
 #import "OCTMessageFile.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 
-@interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate, OCTArrayDelegate>
+@interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate, RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) OCTArray *allChats;
+@property (strong, nonatomic) RBQFetchedResultsController *chatsController;
 
 @end
 
@@ -39,11 +40,6 @@
 
     if (self) {
         self.title = NSLocalizedString(@"Chats", @"Chats");
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(friendUpdateNotification:)
-                                                     name:kProfileManagerFriendUpdateNotification
-                                                   object:nil];
     }
 
     return self;
@@ -60,8 +56,7 @@
 {
     [super viewDidLoad];
 
-    self.allChats = [[AppContext sharedContext].profileManager.toxManager.chats allChats];
-    self.allChats.delegate = self;
+    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -86,7 +81,7 @@
     AllChatsCell *cell = [tableView dequeueReusableCellWithIdentifier:[AllChatsCell reuseIdentifier]
                                                          forIndexPath:indexPath];
 
-    OCTChat *chat = [self.allChats objectAtIndex:indexPath.row];
+    OCTChat *chat = [self.chatsController objectAtIndexPath:indexPath];
     OCTFriend *friend = [chat.friends lastObject];
 
     cell.textLabel.text = friend.nickname;
@@ -129,7 +124,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.allChats.count;
+    return [self.chatsController numberOfRowsForSectionIndex:section];
 }
 
 - (void)     tableView:(UITableView *)tableView
@@ -143,7 +138,7 @@
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Chats") handler:^{
-            OCTChat *chat = [weakSelf.allChats objectAtIndex:indexPath.row];
+            OCTChat *chat = [weakSelf.chatsController objectAtIndexPath:indexPath];
 
             [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
         }];
@@ -167,34 +162,51 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    OCTChat *chat = [self.allChats objectAtIndex:indexPath.row];
+    OCTChat *chat = [self.chatsController objectAtIndexPath:indexPath];
 
     ChatViewController *cvc = [[ChatViewController alloc] initWithChat:chat];
 
     [self.navigationController pushViewController:cvc animated:YES];
 }
 
-#pragma mark -  OCTArrayDelegate
+#pragma mark -  RBQFetchedResultsControllerDelegate
 
-- (void)OCTArrayWasUpdated:(OCTArray *)array
+- (void)controllerWillChangeContent:(RBQFetchedResultsController *)controller
 {
-    [self.tableView reloadData];
+    [self.tableView beginUpdates];
 }
 
-#pragma mark -  Notifications
-
-- (void)friendUpdateNotification:(NSNotification *)notification
+- (void) controller:(RBQFetchedResultsController *)controller
+    didChangeObject:(RBQSafeRealmObject *)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    OCTFriend *updatedFriend = notification.userInfo[kProfileManagerFriendUpdateKey];
+    switch (type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
 
-    for (NSIndexPath *path in self.tableView.indexPathsForVisibleRows) {
-        OCTChat *chat = [self.allChats objectAtIndex:path.row];
-        OCTFriend *friend = [chat.friends lastObject];
-
-        if ([friend isEqual:updatedFriend]) {
-            [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-            return;
-        }
+- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
+{
+    @try {
+        [self.tableView endUpdates];
+    }
+    @catch (NSException *ex) {
+        [controller reset];
+        [self.tableView reloadData];
     }
 }
 

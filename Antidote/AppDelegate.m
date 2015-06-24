@@ -22,8 +22,9 @@
 #import "EventsManager.h"
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
+#import "Helper.h"
 
-@interface AppDelegate ()
+@interface AppDelegate () <RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
@@ -32,9 +33,14 @@
 
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTask;
 
+@property (strong, nonatomic) RBQFetchedResultsController *friendRequestController;
+@property (strong, nonatomic) RBQFetchedResultsController *chatsController;
+
 @end
 
 @implementation AppDelegate
+
+#pragma mark -  UIApplicationDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -65,10 +71,9 @@
         [[AppContext sharedContext].events handleLocalNotification:notification];
     }
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(numberOfUnreadChatsUpdateNotification)
-                                                 name:kProfileManagerUpdateNumberOfUnreadChatsNotification
-                                               object:nil];
+    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
+    self.friendRequestController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
+                                                                        delegate:self];
 
     [self.window makeKeyAndVisible];
     return YES;
@@ -102,6 +107,62 @@
 
     return YES;
 }
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    [[AppContext sharedContext].events handleLocalNotification:notification];
+}
+
+- (void)applicationWillResignActive:(UIApplication *)application
+{
+    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
+    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+}
+
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
+    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+    DDLogInfo(@"AppDelegate: starting background task...");
+    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+        DDLogInfo(@"AppDelegate: starting background task... time is up, stopping it");
+
+        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
+        self.backgroundTask = UIBackgroundTaskInvalid;
+    }];
+}
+
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
+    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark -  RBQFetchedResultsControllerDelegate
+
+- (void) controller:(RBQFetchedResultsController *)controller
+    didChangeObject:(RBQSafeRealmObject *)anObject
+        atIndexPath:(NSIndexPath *)indexPath
+      forChangeType:(NSFetchedResultsChangeType)type
+       newIndexPath:(NSIndexPath *)newIndexPath
+{
+    if (type == NSFetchedResultsChangeUpdate) {
+        [self updateBadgeForTab:AppDelegateTabIndexChats];
+    }
+}
+
+#pragma mark -  Private
 
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
 {
@@ -175,22 +236,23 @@
     };
 
     if (tabIndex == AppDelegateTabIndexFriends) {
-        OCTArray *array = [[AppContext sharedContext].profileManager.toxManager.friends allFriendRequests];
-        NSUInteger number = array.count;
+        NSUInteger number = [self.friendRequestController numberOfRowsForSectionIndex:0];
 
         self.friendsBadge.value = number ? [NSString stringWithFormat : @"%lu", (unsigned long)number] : nil;
         updateApplicationBadge();
     }
     else if (tabIndex == AppDelegateTabIndexChats) {
-        NSUInteger number = [AppContext sharedContext].profileManager.numberOfUnreadChats;
+        NSInteger number = 0;
+
+        for (OCTChat *chat in self.chatsController.fetchedObjects) {
+            if ([chat hasUnreadMessages]) {
+                number++;
+            }
+        }
+
         self.chatsBadge.value = number ? [NSString stringWithFormat : @"%lu", (unsigned long)number] : nil;
         updateApplicationBadge();
     }
-}
-
-- (void)numberOfUnreadChatsUpdateNotification
-{
-    [self updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 - (NSArray *)getLogFilesPaths
@@ -264,47 +326,6 @@
     else {
         removeFile();
     }
-}
-
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
-{
-    [[AppContext sharedContext].events handleLocalNotification:notification];
-}
-
-- (void)applicationWillResignActive:(UIApplication *)application
-{
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
-}
-
-- (void)applicationDidEnterBackground:(UIApplication *)application
-{
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
-    DDLogInfo(@"AppDelegate: starting background task...");
-    self.backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-        DDLogInfo(@"AppDelegate: starting background task... time is up, stopping it");
-
-        [[UIApplication sharedApplication] endBackgroundTask:self.backgroundTask];
-        self.backgroundTask = UIBackgroundTaskInvalid;
-    }];
-}
-
-- (void)applicationWillEnterForeground:(UIApplication *)application
-{
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [[UIApplication sharedApplication] cancelAllLocalNotifications];
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application
-{
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 @end

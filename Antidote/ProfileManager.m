@@ -13,25 +13,14 @@
 #import "OCTDefaultSettingsStorage.h"
 #import "OCTDefaultFileStorage.h"
 
-NSString *const kProfileManagerUpdateNumberOfUnreadChatsNotification = @"kProfileManagerUpdateNumberOfUnreadChatsNotification";
-NSString *const kProfileManagerFriendUpdateNotification = @"kProfileManagerFriendUpdateNotification";
-NSString *const kProfileManagerFriendUpdateKey = @"kProfileManagerFriendUpdateKey";
-NSString *const kProfileManagerFriendsContainerUpdateNotification = @"kProfileManagerFriendsContainerUpdateNotification";
-NSString *const kProfileManagerFriendsContainerUpdateInsertedKey = @"kProfileManagerFriendsContainerUpdateInsertedKey";
-NSString *const kProfileManagerFriendsContainerUpdateRemovedKey = @"kProfileManagerFriendsContainerUpdateRemovedKey";
-NSString *const kProfileManagerFriendsContainerUpdateUpdatedKey = @"kProfileManagerFriendsContainerUpdateUpdatedKey";
-
 static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
 static NSString *const kSaveToxFileName = @"save.tox";
 
-@interface ProfileManager () <OCTArrayDelegate, OCTFriendsContainerDelegate>
+@interface ProfileManager ()
 
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
 @property (strong, nonatomic, readwrite) NSArray *allProfiles;
-
-@property (strong, nonatomic, readwrite) OCTArray *allChats;
-@property (strong, nonatomic, readwrite) OCTFriendsContainer *friendsContainer;
 
 @end
 
@@ -62,19 +51,6 @@ static NSString *const kSaveToxFileName = @"save.tox";
 }
 
 #pragma mark -  Properties
-
-- (NSUInteger)numberOfUnreadChats
-{
-    __block NSUInteger number = 0;
-
-    [self.allChats enumerateObjectsUsingBlock:^(OCTChat *chat, NSUInteger idx, BOOL *stop) {
-        if ([chat hasUnreadMessages]) {
-            number++;
-        }
-    }];
-
-    return number;
-}
 
 - (NSString *)currentProfileName
 {
@@ -174,49 +150,6 @@ static NSString *const kSaveToxFileName = @"save.tox";
     return [NSURL fileURLWithPath:path];
 }
 
-#pragma mark -  OCTArrayDelegate
-
-- (void)OCTArrayWasUpdated:(OCTArray *)array
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerUpdateNumberOfUnreadChatsNotification
-                                                        object:nil];
-}
-
-#pragma mark -  OCTFriendsContainerDelegate
-
-- (void)friendsContainerUpdate:(OCTFriendsContainer *)container
-                   insertedSet:(NSIndexSet *)inserted
-                    removedSet:(NSIndexSet *)removed
-                    updatedSet:(NSIndexSet *)updated
-{
-    NSMutableDictionary *userInfo = [NSMutableDictionary new];
-
-    if (inserted) {
-        userInfo[kProfileManagerFriendsContainerUpdateInsertedKey] = inserted;
-    }
-    if (removed) {
-        userInfo[kProfileManagerFriendsContainerUpdateRemovedKey] = removed;
-    }
-    if (updated) {
-        userInfo[kProfileManagerFriendsContainerUpdateUpdatedKey] = updated;
-    }
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendsContainerUpdateNotification
-                                                        object:nil
-                                                      userInfo:[userInfo copy]];
-}
-
-- (void)friendsContainer:(OCTFriendsContainer *)container friendUpdated:(OCTFriend *)friend
-{
-    NSDictionary *userInfo = @{
-        kProfileManagerFriendUpdateKey : friend,
-    };
-
-    [[NSNotificationCenter defaultCenter] postNotificationName:kProfileManagerFriendUpdateNotification
-                                                        object:nil
-                                                      userInfo:userInfo];
-}
-
 #pragma mark -  Private
 
 - (NSString *)saveDirectoryPath
@@ -281,12 +214,6 @@ static NSString *const kSaveToxFileName = @"save.tox";
     self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
 
     [self bootstrapToxManager:self.toxManager];
-
-    self.allChats = [self.toxManager.chats allChats];
-    self.allChats.delegate = self;
-
-    self.friendsContainer = self.toxManager.friends.friendsContainer;
-    self.friendsContainer.delegate = self;
 }
 
 - (void)bootstrapToxManager:(OCTManager *)manager
