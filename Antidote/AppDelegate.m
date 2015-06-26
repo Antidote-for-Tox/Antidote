@@ -63,6 +63,10 @@
         [application registerUserNotificationSettings:settings];
     }
 
+    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
+    self.friendRequestController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
+                                                                        delegate:self];
+
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
@@ -70,10 +74,6 @@
 
         [[AppContext sharedContext].events handleLocalNotification:notification];
     }
-
-    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
-    self.friendRequestController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
-                                                                        delegate:self];
 
     [self.window makeKeyAndVisible];
     return YES;
@@ -151,13 +151,12 @@
 
 #pragma mark -  RBQFetchedResultsControllerDelegate
 
-- (void) controller:(RBQFetchedResultsController *)controller
-    didChangeObject:(RBQSafeRealmObject *)anObject
-        atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
-       newIndexPath:(NSIndexPath *)newIndexPath
+- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    if (type == NSFetchedResultsChangeUpdate) {
+    if ([controller isEqual:self.friendRequestController]) {
+        [self updateBadgeForTab:AppDelegateTabIndexFriends];
+    }
+    else if ([controller isEqual:self.chatsController]) {
         [self updateBadgeForTab:AppDelegateTabIndexChats];
     }
 }

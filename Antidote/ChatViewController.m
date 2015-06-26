@@ -15,7 +15,6 @@
 #import "Helper.h"
 #import "UIView+Utilities.h"
 #import "ProfileManager.h"
-#import "AppDelegate.h"
 #import "TimeFormatter.h"
 #import "OCTMessageAbstract.h"
 #import "OCTMessageText.h"
@@ -90,7 +89,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 {
     [super viewWillAppear:animated];
 
-    [self updateLastReadDateAndChatsBadge];
+    [self updateLastReadDate];
 
     // no files for now
     self.inputToolbar.contentView.leftBarButtonItem = nil;
@@ -300,13 +299,10 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     self.navigationItem.titleView = view;
 }
 
-- (void)updateLastReadDateAndChatsBadge
+- (void)updateLastReadDate
 {
     NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
     [[AppContext sharedContext].profileManager.toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
-
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexChats];
 }
 
 @end
