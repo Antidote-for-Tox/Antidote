@@ -29,10 +29,12 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 @property (strong, nonatomic) OCTFriend *friend;
 
 @property (strong, nonatomic) RBQFetchedResultsController *messagesController;
+@property (strong, nonatomic) RBQFetchedResultsController *friendController;
 
 @property (strong, nonatomic) JSQMessagesBubbleImage *incomingBubble;
 @property (strong, nonatomic) JSQMessagesBubbleImage *outgoingBubble;
 
+// TODO move this to separate class
 @property (strong, nonatomic) NSMutableArray *pathsToInsert;
 @property (strong, nonatomic) NSMutableArray *pathsToDelete;
 @property (strong, nonatomic) NSMutableArray *pathsToUpdate;
@@ -63,6 +65,11 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     self.messagesController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeMessageAbstract
                                                                   predicate:predicate
                                                                    delegate:self];
+
+    predicate = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@", self.friend.uniqueIdentifier];
+    self.friendController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend
+                                                                predicate:predicate
+                                                                 delegate:self];
 
     [self createBubbleImages];
     [self updateTitleView];
@@ -127,9 +134,11 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 - (void)controllerWillChangeContent:(RBQFetchedResultsController *)controller
 {
-    self.pathsToInsert = [NSMutableArray new];
-    self.pathsToDelete = [NSMutableArray new];
-    self.pathsToUpdate = [NSMutableArray new];
+    if ([controller isEqual:self.messagesController]) {
+        self.pathsToInsert = [NSMutableArray new];
+        self.pathsToDelete = [NSMutableArray new];
+        self.pathsToUpdate = [NSMutableArray new];
+    }
 }
 
 - (void) controller:(RBQFetchedResultsController *)controller
@@ -138,66 +147,73 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
       forChangeType:(NSFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.pathsToInsert addObject:newIndexPath];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.pathsToDelete addObject:indexPath];
-            break;
-        case NSFetchedResultsChangeUpdate:
-            [self.pathsToUpdate addObject:indexPath];
-            break;
-        case NSFetchedResultsChangeMove:
-            [self.pathsToDelete addObject:indexPath];
-            [self.pathsToInsert addObject:newIndexPath];
-            break;
+    if ([controller isEqual:self.messagesController]) {
+        switch (type) {
+            case NSFetchedResultsChangeInsert:
+                [self.pathsToInsert addObject:newIndexPath];
+                break;
+            case NSFetchedResultsChangeDelete:
+                [self.pathsToDelete addObject:indexPath];
+                break;
+            case NSFetchedResultsChangeUpdate:
+                [self.pathsToUpdate addObject:indexPath];
+                break;
+            case NSFetchedResultsChangeMove:
+                [self.pathsToDelete addObject:indexPath];
+                [self.pathsToInsert addObject:newIndexPath];
+                break;
+        }
     }
 }
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    if (self.pathsToInsert.count == 1) {
-        NSIndexPath *path = [self.pathsToInsert firstObject];
-        NSInteger number = [self.messagesController numberOfRowsForSectionIndex:0];
+    if ([controller isEqual:self.messagesController]) {
+        if (self.pathsToInsert.count == 1) {
+            NSIndexPath *path = [self.pathsToInsert firstObject];
+            NSInteger number = [self.messagesController numberOfRowsForSectionIndex:0];
 
-        if (path.row == (number - 1)) {
-            // Inserted new message
-            [self.pathsToInsert removeObjectAtIndex:0];
+            if (path.row == (number - 1)) {
+                // Inserted new message
+                [self.pathsToInsert removeObjectAtIndex:0];
 
-            OCTMessageAbstract *message = [controller objectAtIndexPath:path];
+                OCTMessageAbstract *message = [controller objectAtIndexPath:path];
 
-            if ([message isOutgoing]) {
-                [self finishSendingMessageAnimated:YES];
-            }
-            else {
-                [self finishReceivingMessageAnimated:YES];
+                if ([message isOutgoing]) {
+                    [self finishSendingMessageAnimated:YES];
+                }
+                else {
+                    [self finishReceivingMessageAnimated:YES];
+                }
             }
         }
+
+        __weak ChatViewController *weakSelf = self;
+
+        [self.collectionView performBatchUpdates:^{
+            if (self.pathsToUpdate.count) {
+                [weakSelf.collectionView reloadItemsAtIndexPaths:[self.pathsToUpdate copy]];
+            }
+
+            if (self.pathsToDelete.count) {
+                [weakSelf.collectionView deleteItemsAtIndexPaths:[self.pathsToDelete copy]];
+            }
+
+            if (self.pathsToInsert.count) {
+                [weakSelf.collectionView insertItemsAtIndexPaths:[self.pathsToInsert copy]];
+            }
+        } completion:nil];
+
+        self.pathsToInsert = nil;
+        self.pathsToDelete = nil;
+        self.pathsToUpdate = nil;
+
+        // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
+        [self performSelector:@selector(updateLastReadDate) withObject:nil afterDelay:0];
     }
-
-    __weak ChatViewController *weakSelf = self;
-
-    [self.collectionView performBatchUpdates:^{
-        if (self.pathsToUpdate.count) {
-            [weakSelf.collectionView reloadItemsAtIndexPaths:[self.pathsToUpdate copy]];
-        }
-
-        if (self.pathsToDelete.count) {
-            [weakSelf.collectionView deleteItemsAtIndexPaths:[self.pathsToDelete copy]];
-        }
-
-        if (self.pathsToInsert.count) {
-            [weakSelf.collectionView insertItemsAtIndexPaths:[self.pathsToInsert copy]];
-        }
-    } completion:nil];
-
-    self.pathsToInsert = nil;
-    self.pathsToDelete = nil;
-    self.pathsToUpdate = nil;
-
-    // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
-    [self performSelector:@selector(updateLastReadDate) withObject:nil afterDelay:0];
+    else if ([controller isEqual:self.friendController]) {
+        [self updateTitleView];
+    }
 }
 
 #pragma mark -  JSQMessagesCollectionViewDataSource
