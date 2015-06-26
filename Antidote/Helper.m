@@ -55,9 +55,21 @@
                                                              predicate:(NSPredicate *)predicate
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate
 {
+    return [self createFetchedResultsControllerForType:type
+                                             predicate:predicate
+                                       sortDescriptors:nil
+                                              delegate:delegate];
+}
+
++ (RBQFetchedResultsController *)createFetchedResultsControllerForType:(OCTFetchRequestType)type
+                                                             predicate:(NSPredicate *)predicate
+                                                       sortDescriptors:(NSArray *)sortDescriptors
+                                                              delegate:(id<RBQFetchedResultsControllerDelegate>)delegate
+{
     OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
 
     RBQFetchRequest *fetchRequest = [submanager fetchRequestForType:type withPredicate:predicate];
+    fetchRequest.sortDescriptors = sortDescriptors;
     RBQFetchedResultsController *controller = [[RBQFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                                      sectionNameKeyPath:nil
                                                                                               cacheName:nil];

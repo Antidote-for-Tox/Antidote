@@ -26,4 +26,9 @@
                                                              predicate:(NSPredicate *)predicate
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate;
 
++ (RBQFetchedResultsController *)createFetchedResultsControllerForType:(OCTFetchRequestType)type
+                                                             predicate:(NSPredicate *)predicate
+                                                       sortDescriptors:(NSArray *)sortDescriptors
+                                                              delegate:(id<RBQFetchedResultsControllerDelegate>)delegate;
+
 @end
