@@ -25,6 +25,8 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 @interface ChatViewController () <RBQFetchedResultsControllerDelegate>
 
+@property (strong, nonatomic) UILabel *friendIsOfflineLabel;
+
 @property (strong, nonatomic, readwrite) OCTChat *chat;
 @property (strong, nonatomic) OCTFriend *friend;
 
@@ -71,15 +73,20 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
                                                                 predicate:predicate
                                                                  delegate:self];
 
-    [self createBubbleImages];
-    [self updateTitleView];
-
     return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
+    [self createFriendIsOfflineLabel];
+    [self createBubbleImages];
+
+    self.inputToolbar.contentView.textView.text = self.chat.enteredText;
+    [self.inputToolbar toggleSendButtonEnabled];
+
+    [self updateFriendRelatedInformation];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,12 +94,6 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [super viewWillAppear:animated];
 
     [self updateLastReadDate];
-
-    // no files for now
-    self.inputToolbar.contentView.leftBarButtonItem = nil;
-
-    self.inputToolbar.contentView.textView.text = self.chat.enteredText;
-    [self.inputToolbar toggleSendButtonEnabled];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -101,6 +102,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
     NSString *text = self.inputToolbar.contentView.textView.text;
 
+    // TODO move this to textView did change callback
     OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
     [submanager changeChat:self.chat enteredText:text];
 }
@@ -212,7 +214,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
         [self performSelector:@selector(updateLastReadDate) withObject:nil afterDelay:0];
     }
     else if ([controller isEqual:self.friendController]) {
-        [self updateTitleView];
+        [self updateFriendRelatedInformation];
     }
 }
 
@@ -273,6 +275,46 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
     self.incomingBubble = [bubbleFactory incomingMessagesBubbleImageWithColor:incoming];
     self.outgoingBubble = [bubbleFactory outgoingMessagesBubbleImageWithColor:outgoing];
+}
+
+- (void)createFriendIsOfflineLabel
+{
+    self.friendIsOfflineLabel = [UILabel new];
+    self.friendIsOfflineLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
+    self.friendIsOfflineLabel.backgroundColor = [UIColor clearColor];
+    self.friendIsOfflineLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:16.0];
+    self.friendIsOfflineLabel.text = NSLocalizedString(@"Friend is offline", @"Chat");
+
+    [self.inputToolbar addSubview:self.friendIsOfflineLabel];
+
+    [self.friendIsOfflineLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(0);
+    }];
+}
+
+- (void)updateFriendRelatedInformation
+{
+    [self updateInputToolbar];
+    [self updateTitleView];
+}
+
+- (void)updateInputToolbar
+{
+    // files are disabled for now
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
+
+    if (self.friend.connectionStatus == OCTToxConnectionStatusNone) {
+        self.inputToolbar.contentView.textView.hidden = YES;
+        self.inputToolbar.contentView.textView.editable = NO;
+        self.inputToolbar.contentView.rightBarButtonItem.hidden = YES;
+        self.friendIsOfflineLabel.hidden = NO;
+    }
+    else {
+        self.inputToolbar.contentView.textView.hidden = NO;
+        self.inputToolbar.contentView.textView.editable = YES;
+        self.inputToolbar.contentView.rightBarButtonItem.hidden = NO;
+        self.friendIsOfflineLabel.hidden = YES;
+    }
 }
 
 - (void)updateTitleView
