@@ -93,12 +93,10 @@
     NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date
                                                                      type:TimeFormatterTypeRelativeDateAndTime];
 
-    if ([chat.lastMessage isKindOfClass:[OCTMessageText class]]) {
-        OCTMessageText *messageText = (OCTMessageText *)chat.lastMessage;
-
-        [cell setMessage:messageText.text andDate:dateString];
+    if (chat.lastMessage.messageText) {
+        [cell setMessage:chat.lastMessage.messageText.text andDate:dateString];
     }
-    else if ([chat.lastMessage isKindOfClass:[OCTMessageFile class]]) {
+    else if (chat.lastMessage.messageFile) {
         NSString *format;
 
         if ([chat.lastMessage isOutgoing]) {
@@ -108,9 +106,7 @@
             format = NSLocalizedString(@"Incoming file: %@", @"Chats");
         }
 
-        OCTMessageFile *messageFile = (OCTMessageFile *)chat.lastMessage;
-
-        [cell setMessage:[NSString stringWithFormat:format, messageFile.fileName]
+        [cell setMessage:[NSString stringWithFormat:format, chat.lastMessage.messageFile.fileName]
                  andDate:dateString];
     }
 
