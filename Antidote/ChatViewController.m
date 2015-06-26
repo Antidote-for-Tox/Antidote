@@ -67,17 +67,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self createBubbleImages];
     [self updateTitleView];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationWillEnterForeground:)
-                                                 name:UIApplicationWillEnterForegroundNotification
-                                               object:nil];
-
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -205,6 +195,9 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     self.pathsToInsert = nil;
     self.pathsToDelete = nil;
     self.pathsToUpdate = nil;
+
+    // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
+    [self performSelector:@selector(updateLastReadDate) withObject:nil afterDelay:0];
 }
 
 #pragma mark -  JSQMessagesCollectionViewDataSource
