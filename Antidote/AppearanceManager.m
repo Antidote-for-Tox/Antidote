@@ -105,7 +105,7 @@
 {
     switch (self.colorscheme) {
         case AppearanceManagerColorschemeRed:
-            return [UIColor uColorOpaqueWithRed:233 green:225 blue:129];
+            return [UIColor uColorOpaqueWithRed:180 green:83 blue:81];
 
         case AppearanceManagerColorschemeIce:
             return [UIColor uColorOpaqueWithRed:197 green:98 blue:88];
