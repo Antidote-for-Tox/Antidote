@@ -17,6 +17,8 @@ static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
 static NSString *const kSaveToxFileName = @"save.tox";
 
+static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
+
 @interface ProfileManager ()
 
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
@@ -67,10 +69,10 @@ static NSString *const kSaveToxFileName = @"save.tox";
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
-    [self createDirectoryAtPathIfNotExist:path];
+    BOOL isNewDirectory = [self createDirectoryAtPathIfNotExist:path];
     [self reloadAllProfiles];
 
-    [self createToxManagerWithDirectoryPath:path name:name];
+    [self createToxManagerWithDirectoryPath:path name:name initializeWithDefaultValues:isNewDirectory];
 }
 
 - (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
@@ -83,10 +85,12 @@ static NSString *const kSaveToxFileName = @"save.tox";
     }
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
-    [self createDirectoryAtPathIfNotExist:path];
+    BOOL isNewDirectory = [self createDirectoryAtPathIfNotExist:path];
     [self reloadAllProfiles];
 
-    [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:toxSaveURL.path];
+    [self createToxManagerWithDirectoryPath:path name:name
+                        loadToxSaveFilePath:toxSaveURL.path
+                initializeWithDefaultValues:isNewDirectory];
 }
 
 - (void)deleteProfileWithName:(NSString *)name
@@ -137,7 +141,7 @@ static NSString *const kSaveToxFileName = @"save.tox";
     if (isCurrent) {
         [AppContext sharedContext].userDefaults.uCurrentProfileName = toName;
 
-        [self createToxManagerWithDirectoryPath:toPath name:toName];
+        [self createToxManagerWithDirectoryPath:toPath name:toName initializeWithDefaultValues:NO];
     }
 
     return YES;
@@ -158,7 +162,8 @@ static NSString *const kSaveToxFileName = @"save.tox";
     return [path stringByAppendingPathComponent:kSaveDirectoryPath];
 }
 
-- (void)createDirectoryAtPathIfNotExist:(NSString *)path
+// returns YES if directory was created, NO if it already existed
+- (BOOL)createDirectoryAtPathIfNotExist:(NSString *)path
 {
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
@@ -170,9 +175,12 @@ static NSString *const kSaveToxFileName = @"save.tox";
         exists = NO;
     }
 
-    if (! exists) {
-        [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    if (exists) {
+        return NO;
     }
+
+    [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+    return YES;
 }
 
 - (void)reloadAllProfiles
@@ -191,14 +199,20 @@ static NSString *const kSaveToxFileName = @"save.tox";
     }];
 }
 
-- (void)createToxManagerWithDirectoryPath:(NSString *)path name:(NSString *)name
+- (void)createToxManagerWithDirectoryPath:(NSString *)path
+                                     name:(NSString *)name
+              initializeWithDefaultValues:(BOOL)initializeWithDefaultValues
 {
-    [self createToxManagerWithDirectoryPath:path name:name loadToxSaveFilePath:nil];
+    [self createToxManagerWithDirectoryPath:path
+                                       name:name
+                        loadToxSaveFilePath:nil
+                initializeWithDefaultValues:initializeWithDefaultValues];
 }
 
 - (void)createToxManagerWithDirectoryPath:(NSString *)path
                                      name:(NSString *)name
                       loadToxSaveFilePath:(NSString *)toxSaveFilePath
+              initializeWithDefaultValues:(BOOL)initializeWithDefaultValues
 {
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
 
@@ -212,6 +226,13 @@ static NSString *const kSaveToxFileName = @"save.tox";
                                                                   temporaryDirectory:NSTemporaryDirectory()];
 
     self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
+
+    if (initializeWithDefaultValues) {
+        NSString *name = [UIDevice currentDevice].name;
+
+        [self.toxManager.user setUserName:name error:nil];
+        [self.toxManager.user setUserStatusMessage:kDefaultUserStatusMessage error:nil];
+    }
 
     [self bootstrapToxManager:self.toxManager];
 }
