@@ -295,6 +295,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 {
     UIColor *color = [[AppContext sharedContext].appearance textMainColor];
     [self.inputToolbar.contentView.rightBarButtonItem setTitleColor:color forState:UIControlStateNormal];
+    [self.inputToolbar.contentView.rightBarButtonItem setTitleColor:color forState:UIControlStateHighlighted];
 
     self.inputToolbar.contentView.textView.text = self.chat.enteredText;
     [self.inputToolbar toggleSendButtonEnabled];
