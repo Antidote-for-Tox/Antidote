@@ -23,6 +23,7 @@
 #import "AdvancedSettingsViewController.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
+#import "AvatarsManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameStatusAvatar,
@@ -239,8 +240,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     // FIXME avatar
     // if (! [[ToxManager sharedInstance] userHasAvatar]) {
-    //     NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
-    //     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
+    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
     // }
 }
 
@@ -343,13 +344,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
 
-    // FIXME avatar
-    // UIImage *avatar = [[ToxManager sharedInstance] userAvatar] ?:
-    //     [AvatarManager avatarFromString:userName side:[CellWithNameStatusAvatar avatarHeight]];
-    UIImage *avatar = nil;
-
     cell.delegate = self;
-    cell.avatarImage = avatar;
+    cell.avatarImage = [[AppContext sharedContext].avatars avatarFromString:userName
+                                                                   diameter:[CellWithNameStatusAvatar avatarHeight]];
     cell.name = userName;
     cell.statusMessage = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
     cell.maxNameLength = kOCTToxMaxNameLength;

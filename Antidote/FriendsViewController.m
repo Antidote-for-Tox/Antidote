@@ -22,6 +22,7 @@
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "OCTFriendRequest.h"
+#import "AvatarsManager.h"
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate,
                                      RBQFetchedResultsControllerDelegate>
@@ -350,10 +351,7 @@
     OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
 
     cell.textLabel.text = friend.nickname;
-    // FIXME avatar
-    // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
-    //                                                 orCreateAvatarFromString:[friend nameToShow]
-    //                                                                 withSide:30.0];
+    cell.imageView.image = [[AppContext sharedContext].avatars avatarFromString:friend.nickname diameter:30.0];
     cell.status = [Helper circleStatusFromFriend:friend];
 
     if (friend.connectionStatus == OCTToxConnectionStatusNone) {
