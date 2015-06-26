@@ -6,11 +6,13 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIAlertView+BlocksKit.h>
+#import <BlocksKit/NSArray+BlocksKit.h>
+
 #import "AllChatsViewController.h"
 #import "AllChatsCell.h"
 #import "UIViewController+Utilities.h"
 #import "ChatViewController.h"
-#import "UIAlertView+BlocksKit.h"
 #import "UIImage+Utilities.h"
 #import "UIColor+Utilities.h"
 #import "TimeFormatter.h"
@@ -28,6 +30,7 @@
 @property (strong, nonatomic) UITableView *tableView;
 
 @property (strong, nonatomic) RBQFetchedResultsController *chatsController;
+@property (strong, nonatomic) RBQFetchedResultsController *friendsController;
 
 @end
 
@@ -58,6 +61,7 @@
     [super viewDidLoad];
 
     self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
+    self.friendsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -93,12 +97,10 @@
     NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date
                                                                      type:TimeFormatterTypeRelativeDateAndTime];
 
-    if ([chat.lastMessage isKindOfClass:[OCTMessageText class]]) {
-        OCTMessageText *messageText = (OCTMessageText *)chat.lastMessage;
-
-        [cell setMessage:messageText.text andDate:dateString];
+    if (chat.lastMessage.messageText) {
+        [cell setMessage:chat.lastMessage.messageText.text andDate:dateString];
     }
-    else if ([chat.lastMessage isKindOfClass:[OCTMessageFile class]]) {
+    else if (chat.lastMessage.messageFile) {
         NSString *format;
 
         if ([chat.lastMessage isOutgoing]) {
@@ -108,9 +110,7 @@
             format = NSLocalizedString(@"Incoming file: %@", @"Chats");
         }
 
-        OCTMessageFile *messageFile = (OCTMessageFile *)chat.lastMessage;
-
-        [cell setMessage:[NSString stringWithFormat:format, messageFile.fileName]
+        [cell setMessage:[NSString stringWithFormat:format, chat.lastMessage.messageFile.fileName]
                  andDate:dateString];
     }
 
@@ -181,20 +181,38 @@
       forChangeType:(NSFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
-    switch (type) {
-        case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            break;
-        case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            break;
-        case NSFetchedResultsChangeUpdate:
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            break;
-        case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            break;
+    if ([controller isEqual:self.chatsController]) {
+        switch (type) {
+            case NSFetchedResultsChangeInsert:
+                [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            case NSFetchedResultsChangeDelete:
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            case NSFetchedResultsChangeUpdate:
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+            case NSFetchedResultsChangeMove:
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                break;
+        }
+    }
+    else if ([controller isEqual:self.friendsController]) {
+        if (type != NSFetchedResultsChangeUpdate) {
+            return;
+        }
+
+        OCTFriend *updatedFriend = (OCTFriend *)[anObject RLMObject];
+
+        __weak AllChatsViewController *weakSelf = self;
+        NSArray *pathsToUpdate = [[self.tableView indexPathsForVisibleRows] bk_select:^BOOL (NSIndexPath *path) {
+            OCTChat *chat = [weakSelf.chatsController objectAtIndexPath:path];
+
+            return ([chat.friends indexOfObject:updatedFriend] != NSNotFound);
+        }];
+
+        [self.tableView reloadRowsAtIndexPaths:pathsToUpdate withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 

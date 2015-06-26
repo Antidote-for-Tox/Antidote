@@ -207,9 +207,6 @@
 
     [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:request error:nil];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate updateBadgeForTab:AppDelegateTabIndexFriends];
-
     if (wasLastRequest) {
         [self switchToTab:FriendsViewControllerTabFriends];
     }
@@ -255,6 +252,8 @@
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
+    [self updateSegmentedControlRequestTitle];
+
     if (! [self isCurrentFetchedRequestController:controller]) {
         return;
     }
