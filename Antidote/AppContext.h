@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class AppearanceManager;
+@class AvatarsManager;
 @class EventsManager;
 @class ProfileManager;
 @class UserDefaultsManager;
@@ -18,6 +19,7 @@
 + (instancetype)sharedContext;
 
 @property (strong, nonatomic, readonly) AppearanceManager *appearance;
+@property (strong, nonatomic, readonly) AvatarsManager *avatars;
 @property (strong, nonatomic, readonly) EventsManager *events;
 @property (strong, nonatomic, readonly) ProfileManager *profileManager;
 @property (strong, nonatomic, readonly) UserDefaultsManager *userDefaults;

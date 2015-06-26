@@ -8,6 +8,7 @@
 
 #import "AppContext.h"
 #import "AppearanceManager.h"
+#import "AvatarsManager.h"
 #import "EventsManager.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
@@ -15,6 +16,7 @@
 @interface AppContext ()
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
+@property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) EventsManager *events;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
@@ -67,6 +69,17 @@
     return _appearance;
 }
 
+- (AvatarsManager *)avatars
+{
+    if (_avatars) {
+        return _avatars;
+    }
+
+    _avatars = [AvatarsManager new];
+
+    return _avatars;
+}
+
 - (EventsManager *)events
 {
     if (_events) {
@@ -104,11 +117,13 @@
 - (void)restoreDefaultSettings
 {
     [self createUserDefaultsValuesAndRewrite:YES];
+    [self recreateAppearance];
 }
 
 - (void)recreateAppearance
 {
     self.appearance = nil;
+    self.avatars = nil;
 }
 
 #pragma mark -  Private

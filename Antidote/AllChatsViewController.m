@@ -21,6 +21,7 @@
 #import "OCTMessageFile.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
+#import "AvatarsManager.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate, RBQFetchedResultsControllerDelegate>
 
@@ -85,10 +86,8 @@
     OCTFriend *friend = [chat.friends lastObject];
 
     cell.textLabel.text = friend.nickname;
-    // FIXME avatar
-    // cell.imageView.image = [AvatarManager avatarInCurrentProfileWithClientId:friend.clientId
-    //                                                 orCreateAvatarFromString:[friend nameToShow]
-    //                                                                 withSide:cell.imageView.frame.size.width];
+    cell.imageView.image = [[AppContext sharedContext].avatars avatarFromString:friend.nickname
+                                                                       diameter:cell.imageView.frame.size.width];
     cell.status = [Helper circleStatusFromFriend:friend];
 
     NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date

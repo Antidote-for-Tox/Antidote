@@ -36,6 +36,7 @@
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
 		119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC11B3D4D75008CA975 /* ChatMessage.m */; };
+		119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC51B3DDFFE008CA975 /* AvatarsManager.m */; };
 		11A757471B0BB50F005DAD82 /* AppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A757461B0BB50F005DAD82 /* AppContext.m */; };
 		11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */; };
 		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
@@ -116,6 +117,8 @@
 		119BB121198BE77900380557 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
 		119DFAC01B3D4D75008CA975 /* ChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessage.h; sourceTree = "<group>"; };
 		119DFAC11B3D4D75008CA975 /* ChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessage.m; sourceTree = "<group>"; };
+		119DFAC41B3DDFFE008CA975 /* AvatarsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarsManager.h; sourceTree = "<group>"; };
+		119DFAC51B3DDFFE008CA975 /* AvatarsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarsManager.m; sourceTree = "<group>"; };
 		11A757451B0BB50F005DAD82 /* AppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppContext.h; sourceTree = "<group>"; };
 		11A757461B0BB50F005DAD82 /* AppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppContext.m; sourceTree = "<group>"; };
 		11A757491B0BB74C005DAD82 /* UserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultsManager.h; sourceTree = "<group>"; };
@@ -295,6 +298,7 @@
 			children = (
 				11A757441B0BB501005DAD82 /* AppContext */,
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
+				119DFAC31B3DDFF2008CA975 /* AvatarsManager */,
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11C4B4CE1B25F8D600646A2E /* Helper */,
@@ -392,6 +396,15 @@
 				119BB121198BE77900380557 /* AddFriendViewController.m */,
 			);
 			name = AddFriend;
+			sourceTree = "<group>";
+		};
+		119DFAC31B3DDFF2008CA975 /* AvatarsManager */ = {
+			isa = PBXGroup;
+			children = (
+				119DFAC41B3DDFFE008CA975 /* AvatarsManager.h */,
+				119DFAC51B3DDFFE008CA975 /* AvatarsManager.m */,
+			);
+			name = AvatarsManager;
 			sourceTree = "<group>";
 		};
 		11A757441B0BB501005DAD82 /* AppContext */ = {
@@ -778,6 +791,7 @@
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
+				119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
