@@ -83,8 +83,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self createFriendIsOfflineLabel];
     [self createBubbleImages];
 
-    self.inputToolbar.contentView.textView.text = self.chat.enteredText;
-    [self.inputToolbar toggleSendButtonEnabled];
+    [self configureInputToolbar];
 
     [self updateFriendRelatedInformation];
 }
@@ -290,6 +289,15 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self.friendIsOfflineLabel makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.centerY.equalTo(0);
     }];
+}
+
+- (void)configureInputToolbar
+{
+    UIColor *color = [[AppContext sharedContext].appearance textMainColor];
+    [self.inputToolbar.contentView.rightBarButtonItem setTitleColor:color forState:UIControlStateNormal];
+
+    self.inputToolbar.contentView.textView.text = self.chat.enteredText;
+    [self.inputToolbar toggleSendButtonEnabled];
 }
 
 - (void)updateFriendRelatedInformation
