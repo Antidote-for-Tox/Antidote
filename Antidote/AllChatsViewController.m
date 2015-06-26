@@ -60,7 +60,14 @@
 {
     [super viewDidLoad];
 
-    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
+    NSArray *descriptors = @[
+        [RLMSortDescriptor sortDescriptorWithProperty:@"lastActivityDateInterval" ascending:NO],
+    ];
+
+    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat
+                                                               predicate:nil
+                                                         sortDescriptors:descriptors
+                                                                delegate:self];
     self.friendsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:self];
 }
 
@@ -94,11 +101,12 @@
                                                                        diameter:cell.imageView.frame.size.width];
     cell.status = [Helper circleStatusFromFriend:friend];
 
-    NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:chat.lastMessage.date
+    NSString *message = @"";
+    NSString *dateString = [[TimeFormatter sharedInstance] stringFromDate:[chat lastActivityDate]
                                                                      type:TimeFormatterTypeRelativeDateAndTime];
 
     if (chat.lastMessage.messageText) {
-        [cell setMessage:chat.lastMessage.messageText.text andDate:dateString];
+        message = chat.lastMessage.messageText.text;
     }
     else if (chat.lastMessage.messageFile) {
         NSString *format;
@@ -110,9 +118,10 @@
             format = NSLocalizedString(@"Incoming file: %@", @"Chats");
         }
 
-        [cell setMessage:[NSString stringWithFormat:format, chat.lastMessage.messageFile.fileName]
-                 andDate:dateString];
+        message = [NSString stringWithFormat:format, chat.lastMessage.messageFile.fileName];
     }
+
+    [cell setMessage:message andDate:dateString];
 
     cell.backgroundColor = [chat hasUnreadMessages] ?
                            [[AppContext sharedContext].appearance unreadChatCellBackground] :
