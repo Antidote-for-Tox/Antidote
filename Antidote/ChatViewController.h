@@ -6,11 +6,13 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import "SLKTextViewController.h"
+#import "JSQMessagesViewController.h"
 
 #import "OCTChat.h"
 
-@interface ChatViewController : SLKTextViewController
+extern NSString *const kChatViewControllerUserIdentifier;
+
+@interface ChatViewController : JSQMessagesViewController
 
 @property (strong, nonatomic, readonly) OCTChat *chat;
 

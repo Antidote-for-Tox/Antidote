@@ -7,6 +7,6 @@ inhibit_all_warnings!
 
 pod 'BlocksKit', '~> 2.2.5'
 pod 'CocoaLumberjack', '~> 1.9.2'
-pod 'SlackTextViewController', '~> 1.5.2'
+pod 'JSQMessagesViewController', '~> 7.1.0'
 pod 'Masonry', '~> 0.6.1'
 pod 'objcTox', :podspec => 'https://raw.githubusercontent.com/dvor/objcTox/adding-podspec/objcTox.podspec'

@@ -7,6 +7,7 @@
 //
 
 #import <Masonry/Masonry.h>
+#import <JSQMessagesViewController/JSQMessages.h>
 
 #import "ChatViewController.h"
 #import "OCTFriend.h"
@@ -15,19 +16,27 @@
 #import "UIView+Utilities.h"
 #import "ProfileManager.h"
 #import "AppDelegate.h"
-#import "ChatIncomingCell.h"
-#import "ChatOutgoingCell.h"
 #import "TimeFormatter.h"
-#import "UITableViewCell+Utilities.h"
 #import "OCTMessageAbstract.h"
 #import "OCTMessageText.h"
+#import "ChatMessage.h"
+#import "AppearanceManager.h"
+
+NSString *const kChatViewControllerUserIdentifier = @"user";
 
 @interface ChatViewController () <RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic, readwrite) OCTChat *chat;
-@property (strong, nonatomic, readwrite) OCTFriend *friend;
+@property (strong, nonatomic) OCTFriend *friend;
 
-@property (strong, nonatomic, readwrite) RBQFetchedResultsController *messagesController;
+@property (strong, nonatomic) RBQFetchedResultsController *messagesController;
+
+@property (strong, nonatomic) JSQMessagesBubbleImage *incomingBubble;
+@property (strong, nonatomic) JSQMessagesBubbleImage *outgoingBubble;
+
+@property (strong, nonatomic) NSMutableArray *pathsToInsert;
+@property (strong, nonatomic) NSMutableArray *pathsToDelete;
+@property (strong, nonatomic) NSMutableArray *pathsToUpdate;
 
 @end
 
@@ -37,14 +46,16 @@
 
 - (instancetype)initWithChat:(OCTChat *)chat
 {
-    self = [super initWithTableViewStyle:UITableViewStylePlain];
+    self = [super init];
 
     if (! self) {
         return nil;
     }
 
     self.hidesBottomBarWhenPushed = YES;
-    self.shakeToClearEnabled = NO;
+
+    self.senderId = @"user";
+    self.senderDisplayName = @"user";
 
     self.chat = chat;
     self.friend = [chat.friends lastObject];
@@ -54,6 +65,7 @@
                                                                   predicate:predicate
                                                                    delegate:self];
 
+    [self createBubbleImages];
     [self updateTitleView];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -72,13 +84,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    self.inverted = NO;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.tableView registerClass:[ChatIncomingCell class] forCellReuseIdentifier:[ChatIncomingCell reuseIdentifier]];
-    [self.tableView registerClass:[ChatOutgoingCell class] forCellReuseIdentifier:[ChatOutgoingCell reuseIdentifier]];
-
-    [self.tableView slk_scrollToBottomAnimated:NO];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -87,51 +92,55 @@
 
     [self updateLastReadDateAndChatsBadge];
 
-    self.textView.text = self.chat.enteredText;
+    // no files for now
+    self.inputToolbar.contentView.leftBarButtonItem = nil;
+
+    self.inputToolbar.contentView.textView.text = self.chat.enteredText;
+    [self.inputToolbar toggleSendButtonEnabled];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
 
+    NSString *text = self.inputToolbar.contentView.textView.text;
+
     OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
-    [submanager changeChat:self.chat enteredText:self.textView.text];
+    [submanager changeChat:self.chat enteredText:text];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
 
-    if (self.textView.text.length) {
-        [self.textView becomeFirstResponder];
+    if (self.inputToolbar.contentView.textView.text.length) {
+        [self.inputToolbar.contentView.textView becomeFirstResponder];
     }
 }
 
 #pragma mark -  Override
 
-- (void)textDidUpdate:(BOOL)animated
-{
-    [super textDidUpdate:animated];
+- (void)didPressSendButton:(UIButton *)button
+           withMessageText:(NSString *)text
+                  senderId:(NSString *)senderId
+         senderDisplayName:(NSString *)senderDisplayName
+                      date:(NSDate *)date
 
-    BOOL isTyping = self.textView.text.length > 0;
-    [[AppContext sharedContext].profileManager.toxManager.chats setIsTyping:isTyping inChat:self.chat error:nil];
-}
-
-- (void)didPressRightButton:(id)sender
 {
     [[AppContext sharedContext].profileManager.toxManager.chats sendMessageToChat:self.chat
-                                                                             text:self.textView.text
+                                                                             text:text
                                                                              type:OCTToxMessageTypeNormal
                                                                             error:nil];
-
-    [super didPressRightButton:sender];
+    // [self finishSendingMessageAnimated:YES];
 }
 
 #pragma mark -  RBQFetchedResultsControllerDelegate
 
 - (void)controllerWillChangeContent:(RBQFetchedResultsController *)controller
 {
-    [self.tableView beginUpdates];
+    self.pathsToInsert = [NSMutableArray new];
+    self.pathsToDelete = [NSMutableArray new];
+    self.pathsToUpdate = [NSMutableArray new];
 }
 
 - (void) controller:(RBQFetchedResultsController *)controller
@@ -142,81 +151,121 @@
 {
     switch (type) {
         case NSFetchedResultsChangeInsert:
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.pathsToInsert addObject:newIndexPath];
             break;
         case NSFetchedResultsChangeDelete:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.pathsToDelete addObject:indexPath];
             break;
         case NSFetchedResultsChangeUpdate:
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.pathsToUpdate addObject:indexPath];
             break;
         case NSFetchedResultsChangeMove:
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [self.pathsToDelete addObject:indexPath];
+            [self.pathsToInsert addObject:newIndexPath];
             break;
     }
 }
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    @try {
-        [self.tableView endUpdates];
+    if (self.pathsToInsert.count == 1) {
+        NSIndexPath *path = [self.pathsToInsert firstObject];
+        NSInteger number = [self.messagesController numberOfRowsForSectionIndex:0];
+
+        if (path.row == (number - 1)) {
+            // Inserted new message
+            [self.pathsToInsert removeObjectAtIndex:0];
+
+            OCTMessageAbstract *message = [controller objectAtIndexPath:path];
+
+            if ([message isOutgoing]) {
+                [self finishSendingMessageAnimated:YES];
+            }
+            else {
+                [self finishReceivingMessageAnimated:YES];
+            }
+        }
     }
-    @catch (NSException *ex) {
-        [controller reset];
-        [self.tableView reloadData];
-    }
+
+    __weak ChatViewController *weakSelf = self;
+
+    [self.collectionView performBatchUpdates:^{
+        if (self.pathsToUpdate.count) {
+            [weakSelf.collectionView reloadItemsAtIndexPaths:[self.pathsToUpdate copy]];
+        }
+
+        if (self.pathsToDelete.count) {
+            [weakSelf.collectionView deleteItemsAtIndexPaths:[self.pathsToDelete copy]];
+        }
+
+        if (self.pathsToInsert.count) {
+            [weakSelf.collectionView insertItemsAtIndexPaths:[self.pathsToInsert copy]];
+        }
+    } completion:nil];
+
+    self.pathsToInsert = nil;
+    self.pathsToDelete = nil;
+    self.pathsToUpdate = nil;
 }
 
-#pragma mark -  UITableViewDataSource
+#pragma mark -  JSQMessagesCollectionViewDataSource
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (id<JSQMessageData>)collectionView:(JSQMessagesCollectionView *)collectionView
+       messageDataForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    ChatBasicCell *basicCell;
     OCTMessageAbstract *message = [self.messagesController objectAtIndexPath:indexPath];
 
-    if (message.messageText) {
-        basicCell = [self messageTextCellForRowAtIndexPath:indexPath message:message];
-    }
-
-    basicCell.fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ?
-                               [[TimeFormatter sharedInstance] stringFromDate : message.date type:TimeFormatterTypeRelativeDateAndTime] : nil;
-
-    basicCell.hiddenDateString = [[TimeFormatter sharedInstance] stringFromDate:message.date type:TimeFormatterTypeTime];
-
-    [basicCell redraw];
-
-    return basicCell;
+    return [[ChatMessage alloc] initWithMessage:message];
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (id<JSQMessageBubbleImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView
+             messageBubbleImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    OCTMessageAbstract *message = [self.messagesController objectAtIndexPath:indexPath];
+
+    if ([message isOutgoing]) {
+        return self.outgoingBubble;
+    }
+
+    return self.incomingBubble;
+}
+
+- (id<JSQMessageAvatarImageDataSource>)collectionView:(JSQMessagesCollectionView *)collectionView
+                    avatarImageDataForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return nil;
+}
+
+#pragma mark -  UICollectionViewDataSource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     return [self.messagesController numberOfRowsForSectionIndex:section];
 }
 
-#pragma mark -  UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UICollectionViewCell *)collectionView:(JSQMessagesCollectionView *)collectionView
+                  cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat height = 0.0;
+    JSQMessagesCollectionViewCell *cell = (JSQMessagesCollectionViewCell *)
+                                          [super collectionView:collectionView cellForItemAtIndexPath:indexPath];
 
-    OCTMessageAbstract *message = [self.messagesController objectAtIndexPath:indexPath];
+    cell.textView.textColor = [UIColor blackColor];
 
-    NSString *fullDateString = [self showFullDateForMessage:message atIndexPath:indexPath] ? @"placeholder" : nil;
-
-    if (message.messageText) {
-        if ([message isOutgoing]) {
-            height = [ChatOutgoingCell heightWithMessage:message.messageText.text fullDateString:fullDateString];
-        }
-        else {
-            height = [ChatIncomingCell heightWithMessage:message.messageText.text fullDateString:fullDateString];
-        }
-    }
-
-    return height;
+    return cell;
 }
 
 #pragma mark -  Private
+
+- (void)createBubbleImages
+{
+    JSQMessagesBubbleImageFactory *bubbleFactory = [JSQMessagesBubbleImageFactory new];
+
+    UIColor *incoming = [[AppContext sharedContext].appearance bubbleIncomingColor];
+    UIColor *outgoing = [[AppContext sharedContext].appearance bubbleOutgoingColor];
+
+    self.incomingBubble = [bubbleFactory incomingMessagesBubbleImageWithColor:incoming];
+    self.outgoingBubble = [bubbleFactory outgoingMessagesBubbleImageWithColor:outgoing];
+}
 
 - (void)updateTitleView
 {
@@ -258,48 +307,6 @@
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate updateBadgeForTab:AppDelegateTabIndexChats];
-}
-
-- (ChatBasicCell *)messageTextCellForRowAtIndexPath:(NSIndexPath *)indexPath message:(OCTMessageAbstract *)message
-{
-    ChatBasicMessageCell *cell;
-
-    if ([message isOutgoing]) {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatOutgoingCell reuseIdentifier]
-                                                    forIndexPath:indexPath];
-
-        ((ChatOutgoingCell *)cell).isDelivered = message.messageText.isDelivered;
-    }
-    else {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:[ChatIncomingCell reuseIdentifier]
-                                                    forIndexPath:indexPath];
-    }
-
-    cell.message = message.messageText.text;
-
-    return cell;
-}
-
-- (BOOL)showFullDateForMessage:(OCTMessageAbstract *)message atIndexPath:(NSIndexPath *)path
-{
-    if (path.row == 0) {
-        return YES;
-    }
-
-    NSIndexPath *previousPath = [NSIndexPath indexPathForRow:path.row-1 inSection:path.section];
-    OCTMessageAbstract *previous = [self.messagesController objectAtIndexPath:previousPath];
-
-    if (! [[TimeFormatter sharedInstance] areSameDays:message.date and:previous.date]) {
-        return YES;
-    }
-
-    NSTimeInterval delta = [message.date timeIntervalSinceDate:previous.date];
-
-    if (delta > 5 * 60 * 60) {
-        return YES;
-    }
-
-    return NO;
 }
 
 @end

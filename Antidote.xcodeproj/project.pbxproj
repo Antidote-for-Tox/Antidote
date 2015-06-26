@@ -33,13 +33,9 @@
 		118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C8197A867A0048CA64 /* UIColor+Utilities.m */; };
 		118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352DC197AEB010048CA64 /* FriendRequestsCell.m */; };
 		1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D6001B28C2D6004E59FD /* ChatViewController.m */; };
-		1195D6201B28E29D004E59FD /* ChatBasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D6171B28E29D004E59FD /* ChatBasicCell.m */; };
-		1195D6211B28E29D004E59FD /* ChatBasicMessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D6191B28E29D004E59FD /* ChatBasicMessageCell.m */; };
-		1195D6221B28E29D004E59FD /* ChatFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D61B1B28E29D004E59FD /* ChatFileCell.m */; };
-		1195D6231B28E29D004E59FD /* ChatIncomingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D61D1B28E29D004E59FD /* ChatIncomingCell.m */; };
-		1195D6241B28E29D004E59FD /* ChatOutgoingCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D61F1B28E29D004E59FD /* ChatOutgoingCell.m */; };
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
+		119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC11B3D4D75008CA975 /* ChatMessage.m */; };
 		11A757471B0BB50F005DAD82 /* AppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A757461B0BB50F005DAD82 /* AppContext.m */; };
 		11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */; };
 		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
@@ -114,20 +110,12 @@
 		118352DC197AEB010048CA64 /* FriendRequestsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestsCell.m; sourceTree = "<group>"; };
 		1195D5FF1B28C2D6004E59FD /* ChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		1195D6001B28C2D6004E59FD /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
-		1195D6161B28E29D004E59FD /* ChatBasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicCell.h; sourceTree = "<group>"; };
-		1195D6171B28E29D004E59FD /* ChatBasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicCell.m; sourceTree = "<group>"; };
-		1195D6181B28E29D004E59FD /* ChatBasicMessageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatBasicMessageCell.h; sourceTree = "<group>"; };
-		1195D6191B28E29D004E59FD /* ChatBasicMessageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatBasicMessageCell.m; sourceTree = "<group>"; };
-		1195D61A1B28E29D004E59FD /* ChatFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatFileCell.h; sourceTree = "<group>"; };
-		1195D61B1B28E29D004E59FD /* ChatFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatFileCell.m; sourceTree = "<group>"; };
-		1195D61C1B28E29D004E59FD /* ChatIncomingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatIncomingCell.h; sourceTree = "<group>"; };
-		1195D61D1B28E29D004E59FD /* ChatIncomingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatIncomingCell.m; sourceTree = "<group>"; };
-		1195D61E1B28E29D004E59FD /* ChatOutgoingCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatOutgoingCell.h; sourceTree = "<group>"; };
-		1195D61F1B28E29D004E59FD /* ChatOutgoingCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatOutgoingCell.m; sourceTree = "<group>"; };
 		119BB11C198B536300380557 /* AppDelegate+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Utilities.h"; sourceTree = "<group>"; };
 		119BB11D198B536300380557 /* AppDelegate+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Utilities.m"; sourceTree = "<group>"; };
 		119BB120198BE77900380557 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
 		119BB121198BE77900380557 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
+		119DFAC01B3D4D75008CA975 /* ChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessage.h; sourceTree = "<group>"; };
+		119DFAC11B3D4D75008CA975 /* ChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessage.m; sourceTree = "<group>"; };
 		11A757451B0BB50F005DAD82 /* AppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppContext.h; sourceTree = "<group>"; };
 		11A757461B0BB50F005DAD82 /* AppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppContext.m; sourceTree = "<group>"; };
 		11A757491B0BB74C005DAD82 /* UserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultsManager.h; sourceTree = "<group>"; };
@@ -239,9 +227,10 @@
 		114630E119857C5D0075DA16 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				1195D6121B28E205004E59FD /* Cells */,
 				1195D5FF1B28C2D6004E59FD /* ChatViewController.h */,
 				1195D6001B28C2D6004E59FD /* ChatViewController.m */,
+				119DFAC01B3D4D75008CA975 /* ChatMessage.h */,
+				119DFAC11B3D4D75008CA975 /* ChatMessage.m */,
 			);
 			name = Chat;
 			sourceTree = "<group>";
@@ -392,23 +381,6 @@
 				118352DC197AEB010048CA64 /* FriendRequestsCell.m */,
 				118352BE197A7CE80048CA64 /* FriendsCell.h */,
 				118352BF197A7CE80048CA64 /* FriendsCell.m */,
-			);
-			name = Cells;
-			sourceTree = "<group>";
-		};
-		1195D6121B28E205004E59FD /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				1195D6161B28E29D004E59FD /* ChatBasicCell.h */,
-				1195D6171B28E29D004E59FD /* ChatBasicCell.m */,
-				1195D6181B28E29D004E59FD /* ChatBasicMessageCell.h */,
-				1195D6191B28E29D004E59FD /* ChatBasicMessageCell.m */,
-				1195D61A1B28E29D004E59FD /* ChatFileCell.h */,
-				1195D61B1B28E29D004E59FD /* ChatFileCell.m */,
-				1195D61C1B28E29D004E59FD /* ChatIncomingCell.h */,
-				1195D61D1B28E29D004E59FD /* ChatIncomingCell.m */,
-				1195D61E1B28E29D004E59FD /* ChatOutgoingCell.h */,
-				1195D61F1B28E29D004E59FD /* ChatOutgoingCell.m */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -770,7 +742,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1195D6201B28E29D004E59FD /* ChatBasicCell.m in Sources */,
 				11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */,
 				11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */,
 				11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */,
@@ -778,7 +749,6 @@
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
-				1195D6241B28E29D004E59FD /* ChatOutgoingCell.m in Sources */,
 				110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */,
 				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
@@ -788,7 +758,6 @@
 				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
-				1195D6231B28E29D004E59FD /* ChatIncomingCell.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
@@ -799,6 +768,7 @@
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */,
+				119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				118352DD197AEB010048CA64 /* FriendRequestsCell.m in Sources */,
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
@@ -808,7 +778,6 @@
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
-				1195D6211B28E29D004E59FD /* ChatBasicMessageCell.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
@@ -817,7 +786,6 @@
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
-				1195D6221B28E29D004E59FD /* ChatFileCell.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
