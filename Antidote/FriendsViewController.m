@@ -23,6 +23,13 @@
 #import "Helper.h"
 #import "OCTFriendRequest.h"
 #import "AvatarsManager.h"
+#import "UserDefaultsManager.h"
+
+typedef NS_ENUM(NSInteger, FriendsSort) {
+    FriendsSortByNickname = 0,
+    FriendsSortByStatus,
+    __FriendsSortCount,
+};
 
 @interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate,
                                      RBQFetchedResultsControllerDelegate>
@@ -47,9 +54,14 @@
         self.edgesForExtendedLayout = UIRectEdgeNone;
         self.title = NSLocalizedString(@"Friends", @"Friends");
 
-        self.friendsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:self];
+        self.friendsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend
+                                                                     predicate:nil
+                                                                      delegate:self];
+
         self.friendRequestsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
                                                                              delegate:self];
+
+        [self updateFriendsControllerWithCurrentFriendsSort];
     }
 
     return self;
@@ -89,7 +101,14 @@
 
 - (void)sortButtonPressed
 {
-    // FIXME
+    FriendsSort sort = [AppContext sharedContext].userDefaults.uFriendsSort.integerValue;
+    if (++sort >= __FriendsSortCount) {
+        sort = 0;
+    }
+
+    [AppContext sharedContext].userDefaults.uFriendsSort = @(sort);
+
+    [self updateFriendsControllerWithCurrentFriendsSort];
     [self updateBarButtonItem];
 }
 
@@ -269,6 +288,32 @@
 
 #pragma mark -  Private
 
+- (void)updateFriendsControllerWithCurrentFriendsSort
+{
+    FriendsSort sort = [AppContext sharedContext].userDefaults.uFriendsSort.integerValue;
+
+    switch (sort) {
+        case FriendsSortByNickname:
+            self.friendsController.fetchRequest.sortDescriptors = @[
+                [RLMSortDescriptor sortDescriptorWithProperty:@"nickname" ascending:YES],
+            ];
+            break;
+        case FriendsSortByStatus:
+            self.friendsController.fetchRequest.sortDescriptors = @[
+                [RLMSortDescriptor sortDescriptorWithProperty:@"isConnected" ascending:NO],
+                [RLMSortDescriptor sortDescriptorWithProperty:@"status" ascending:NO],
+                [RLMSortDescriptor sortDescriptorWithProperty:@"nickname" ascending:YES],
+            ];
+            break;
+        case __FriendsSortCount:
+            // nop
+            break;
+    }
+    [self.friendsController performFetch];
+    [self.tableView reloadData];
+
+}
+
 - (void)createSegmentedControl
 {
     self.segmentedControl = [[UISegmentedControl alloc] initWithItems:@[
@@ -322,13 +367,19 @@
 
     UIImage *image;
 
-    // FIXME
-    // if (self.friendsContainer.friendsSort == OCTFriendsSortByName) {
-    image = [UIImage imageNamed:@"friends-sort-alphabet"];
-    // }
-    // else if (self.friendsContainer.friendsSort == OCTFriendsSortByStatus) {
-    //     image = [UIImage imageNamed:@"friends-sort-status"];
-    // }
+    FriendsSort sort = [AppContext sharedContext].userDefaults.uFriendsSort.integerValue;
+
+    switch (sort) {
+        case FriendsSortByNickname:
+            image = [UIImage imageNamed:@"friends-sort-alphabet"];
+            break;
+        case FriendsSortByStatus:
+            image = [UIImage imageNamed:@"friends-sort-status"];
+            break;
+        case __FriendsSortCount:
+            // nop
+            break;
+    }
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
