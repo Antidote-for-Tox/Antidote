@@ -63,9 +63,14 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     self.chat = chat;
     self.friend = [chat.friends lastObject];
 
+    NSArray *descriptors = @[
+        [RLMSortDescriptor sortDescriptorWithProperty:@"dateInterval" ascending:YES],
+    ];
+
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"chat.uniqueIdentifier == %@", chat.uniqueIdentifier];
     self.messagesController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeMessageAbstract
                                                                   predicate:predicate
+                                                            sortDescriptors:descriptors
                                                                    delegate:self];
 
     predicate = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@", self.friend.uniqueIdentifier];
