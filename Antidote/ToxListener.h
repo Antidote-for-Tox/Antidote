@@ -10,9 +10,14 @@
 
 #import "OCTManager.h"
 
+extern NSString *const kToxListenerGroupIdentifierFriendRequest;
+
 /**
  * ToxListener subscribes to different OCTManager updates and send notifications,
  * shows connecting status, etc.
+ *
+ * For friend request update group identifier is kToxListenerGroupIdentifierFriendRequest.
+ * For messages friend identifier is chat uniqueIdentifier.
  */
 @interface ToxListener : NSObject
 
