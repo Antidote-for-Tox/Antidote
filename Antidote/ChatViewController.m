@@ -22,6 +22,7 @@
 #import "ChatMessage.h"
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
+#import "NotificationManager.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -97,6 +98,8 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [super viewWillAppear:animated];
 
     [self updateLastReadDate];
+
+    [[AppContext sharedContext].notification removeNotificationsFromQueueWithGroupIdentifier:self.chat.uniqueIdentifier];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
