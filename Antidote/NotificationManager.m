@@ -15,7 +15,6 @@
 #import "WindowPassingGestures.h"
 #import "ViewPassingGestures.h"
 
-static const CGFloat kNotificationHeight = 40.0;
 static const NSTimeInterval kAnimationDuration = 0.3;
 static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 
@@ -55,7 +54,7 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 - (void)addNotificationToQueue:(NotificationObject *)notification
 {
     @synchronized(self) {
-        [self.queue addObject:notification];
+        [self.queue addObject:[notification copy]];
 
         if (self.isActive) {
             return;
@@ -86,19 +85,19 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
     }
 
     self.notificationContentView = [UIView new];
-    self.notificationContentView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:1 alpha:0.1];
+    self.notificationContentView.backgroundColor = [UIColor clearColor];
     self.notificationContentView.clipsToBounds = YES;
     self.notificationContentView.hidden = YES;
 
     UIViewController *controller = [UIViewController new];
     controller.view = [ViewPassingGestures new];
-    controller.view.backgroundColor = [UIColor colorWithRed:0 green:1 blue:1 alpha:0.1];
+    controller.view.backgroundColor = [UIColor clearColor];
     [controller.view addSubview:self.notificationContentView];
     self.window.rootViewController = controller;
 
     [self.notificationContentView makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(0);
-        make.height.equalTo(kNotificationHeight);
+        make.height.equalTo(kNotificationViewHeight);
     }];
 }
 
@@ -117,7 +116,7 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
         [self.queue removeObjectAtIndex:0];
     }
 
-    NotificationView *view = [NotificationView new];
+    NotificationView *view = [[NotificationView alloc] initWithObject:object];
     [self.notificationContentView addSubview:view];
 
     __weak NotificationManager *weakSelf = self;
@@ -142,8 +141,8 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
     __block MASConstraint *topConstraint;
 
     [view makeConstraints:^(MASConstraintMaker *make) {
-        topConstraint = make.top.equalTo(-kNotificationHeight);
-        make.height.equalTo(kNotificationHeight);
+        topConstraint = make.top.equalTo(-kNotificationViewHeight);
+        make.height.equalTo(kNotificationViewHeight);
         make.left.right.equalTo(0);
     }];
 
@@ -165,7 +164,7 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 {
     [self.notificationContentView layoutIfNeeded];
 
-    topConstraint.equalTo(kNotificationHeight);
+    topConstraint.equalTo(kNotificationViewHeight);
     [UIView animateWithDuration:kAnimationDuration animations:^{
         [self.notificationContentView layoutIfNeeded];
 

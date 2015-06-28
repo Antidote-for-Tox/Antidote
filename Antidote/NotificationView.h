@@ -8,6 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
+#import "NotificationObject.h"
+
+extern const CGFloat kNotificationViewHeight;
+
 @interface NotificationView : UIView
+
+- (instancetype)init NS_UNAVAILABLE;
++ (instancetype)new NS_UNAVAILABLE;
+
+- (instancetype)initWithObject:(NotificationObject *)object;
 
 @end

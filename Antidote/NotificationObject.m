@@ -8,6 +8,8 @@
 
 #import "NotificationObject.h"
 
+CGFloat kNotificationObjectImageSize = 30.0;
+
 @implementation NotificationObject
 
 #pragma mark -  NSCopying

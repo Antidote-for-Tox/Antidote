@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern CGFloat kNotificationObjectImageSize;
+
 @interface NotificationObject : NSObject <NSCopying>
 
 /**
