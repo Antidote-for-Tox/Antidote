@@ -23,6 +23,7 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 
 static const CGFloat kConnectingViewHeight = 30.0;
+static const CGFloat kConnectingLabelBlinkPeriod = 1.0;
 
 @interface NotificationManager () <NotificationViewControllerDelegate>
 
@@ -212,36 +213,24 @@ static const CGFloat kConnectingViewHeight = 30.0;
     }
 
     {
-        UIView *container = [UIView new];
-        container.backgroundColor = [UIColor clearColor];
-        [self.connectingView addSubview:container];
-
-        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
-                                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-        [spinner startAnimating];
-        [container addSubview:spinner];
-
         UILabel *label = [UILabel new];
         label.text = NSLocalizedString(@"Connecting...", @"NotificationManager");
         label.textColor = [UIColor whiteColor];
         label.backgroundColor = [UIColor clearColor];
         label.font = [[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:16.0];
-        [container addSubview:label];
+        [self.connectingView addSubview:label];
 
-        [container makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.connectingView);
-            make.centerY.equalTo(self.connectingView);
-        }];
-
-        [spinner makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(0);
-            make.centerY.equalTo(container);
-        }];
+        label.alpha = 0.0;
+        [UIView animateWithDuration:kConnectingLabelBlinkPeriod
+                              delay:0.0
+                            options:UIViewAnimationOptionRepeat | UIViewAnimationOptionAutoreverse
+                         animations:^{
+            label.alpha = 1.0;
+        } completion:nil];
 
         [label makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(spinner.right).offset(10.0);
-            make.right.equalTo(container);
-            make.centerY.equalTo(container);
+            make.centerX.equalTo(self.connectingView);
+            make.centerY.equalTo(self.connectingView);
         }];
     }
 }
