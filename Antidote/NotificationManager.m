@@ -326,7 +326,11 @@ static const CGFloat kConnectingLabelBlinkPeriod = 1.0;
 
 - (CGFloat)connectionViewTop
 {
-    CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat top = 0.0;
+
+    if (! [UIApplication sharedApplication].statusBarHidden) {
+        top += [UIApplication sharedApplication].statusBarFrame.size.height;
+    }
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIViewController *controller = delegate.window.rootViewController;
