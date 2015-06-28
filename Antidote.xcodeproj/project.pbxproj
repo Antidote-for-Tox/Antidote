@@ -55,6 +55,7 @@
 		11CFD0B61B3F526E002C59DB /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0B51B3F526E002C59DB /* NotificationView.m */; };
 		11CFD0BA1B401385002C59DB /* ViewPassingGestures.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0B91B401385002C59DB /* ViewPassingGestures.m */; };
 		11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0BC1B401394002C59DB /* WindowPassingGestures.m */; };
+		11CFD0C31B406A96002C59DB /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0C21B406A96002C59DB /* NotificationViewController.m */; };
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
@@ -160,6 +161,8 @@
 		11CFD0B91B401385002C59DB /* ViewPassingGestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPassingGestures.m; sourceTree = "<group>"; };
 		11CFD0BB1B401394002C59DB /* WindowPassingGestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowPassingGestures.h; sourceTree = "<group>"; };
 		11CFD0BC1B401394002C59DB /* WindowPassingGestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowPassingGestures.m; sourceTree = "<group>"; };
+		11CFD0C11B406A96002C59DB /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		11CFD0C21B406A96002C59DB /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
 		11E57F4419C23D1F00C8ACB8 /* CellWithNameStatusAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithNameStatusAvatar.h; sourceTree = "<group>"; };
 		11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithNameStatusAvatar.m; sourceTree = "<group>"; };
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
@@ -433,6 +436,8 @@
 				119DFAD01B3EA462008CA975 /* NotificationObject.m */,
 				11CFD0B41B3F526E002C59DB /* NotificationView.h */,
 				11CFD0B51B3F526E002C59DB /* NotificationView.m */,
+				11CFD0C11B406A96002C59DB /* NotificationViewController.h */,
+				11CFD0C21B406A96002C59DB /* NotificationViewController.m */,
 			);
 			name = NotificationManager;
 			sourceTree = "<group>";
@@ -801,6 +806,7 @@
 				11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */,
 				11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */,
 				114100781A3A3A3700054859 /* QRScannerController.m in Sources */,
+				11CFD0C31B406A96002C59DB /* NotificationViewController.m in Sources */,
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,

@@ -15,18 +15,28 @@
 #import "NotificationView.h"
 #import "WindowPassingGestures.h"
 #import "ViewPassingGestures.h"
+#import "AppearanceManager.h"
+#import "AppDelegate.h"
+#import "NotificationViewController.h"
 
 static const NSTimeInterval kAnimationDuration = 0.3;
 static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 
-@interface NotificationManager ()
+static const CGFloat kConnectingViewHeight = 30.0;
+
+@interface NotificationManager () <NotificationViewControllerDelegate>
 
 @property (strong, nonatomic) WindowPassingGestures *window;
 @property (strong, nonatomic) UIView *notificationContentView;
 
-@property (strong, nonatomic) NSMutableArray *queue;
+@property (strong, nonatomic) NSMutableArray *notificationQueue;
+@property (assign, nonatomic) BOOL areNotificationsActive;
 
-@property (assign, nonatomic) BOOL isActive;
+@property (strong, nonatomic) UIView *connectingContentView;
+@property (strong, nonatomic) UIView *connectingView;
+@property (strong, nonatomic) MASConstraint *connectingContentViewTopConstraint;
+@property (strong, nonatomic) MASConstraint *connectingViewTopConstraint;
+@property (assign, nonatomic) BOOL isConnectingViewActive;
 
 @end
 
@@ -43,9 +53,11 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
     }
 
     [self performSelectorOnMainThread:@selector(createWindow) withObject:nil waitUntilDone:YES];
+    [self createNotificationView];
+    [self createConnectingView];
 
-    _queue = [NSMutableArray new];
-    _isActive = NO;
+    _notificationQueue = [NSMutableArray new];
+    _areNotificationsActive = NO;
 
     return self;
 }
@@ -56,13 +68,13 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 {
     NSParameterAssert(notification);
 
-    @synchronized(self.queue) {
-        [self.queue addObject:[notification copy]];
+    @synchronized(self.notificationQueue) {
+        [self.notificationQueue addObject:[notification copy]];
 
-        if (self.isActive) {
+        if (self.areNotificationsActive) {
             return;
         }
-        self.isActive = YES;
+        self.areNotificationsActive = YES;
         self.notificationContentView.hidden = NO;
 
         [self performSelectorOnMainThread:@selector(dequeueAndShowNextObject) withObject:nil waitUntilDone:NO];
@@ -73,18 +85,56 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 {
     NSParameterAssert(groupIdentifier);
 
-    @synchronized(self.queue) {
-        [self.queue bk_performReject:^BOOL (NotificationObject *object) {
+    @synchronized(self.notificationQueue) {
+        [self.notificationQueue bk_performReject:^BOOL (NotificationObject *object) {
             return [object.groupIdentifier isEqualToString:groupIdentifier];
         }];
     }
 }
 
 - (void)showConnectingView
-{}
+{
+    @synchronized(self.connectingContentView) {
+        self.isConnectingViewActive = YES;
+
+        self.connectingViewTopConstraint.equalTo(-kConnectingViewHeight);
+        [self.connectingContentView layoutIfNeeded];
+
+        self.connectingContentView.hidden = NO;
+
+        self.connectingViewTopConstraint.equalTo(0);
+        [UIView animateWithDuration:kAnimationDuration animations:^{
+            [self.connectingContentView layoutIfNeeded];
+        }];
+    }
+}
 
 - (void)hideConnectingView
-{}
+{
+    @synchronized(self.connectingContentView) {
+        self.isConnectingViewActive = NO;
+
+        self.connectingViewTopConstraint.equalTo(0);
+        [self.connectingContentView layoutIfNeeded];
+
+        self.connectingViewTopConstraint.equalTo(-kConnectingViewHeight);
+        [UIView animateWithDuration:kAnimationDuration animations:^{
+            [self.connectingContentView layoutIfNeeded];
+        } completion:^(BOOL f) {
+            if (! self.isConnectingViewActive) {
+                self.connectingContentView.hidden = YES;
+            }
+        }];
+    }
+}
+
+#pragma mark -  NotificationViewControllerDelegate
+
+- (void)viewWillLayoutSubviews
+{
+    self.connectingContentViewTopConstraint.equalTo([self connectionViewTop]);
+    [self.window.rootViewController.view layoutIfNeeded];
+}
 
 #pragma mark -  Private
 
@@ -98,16 +148,21 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
         [self.window makeKeyAndVisible];
     }
 
+    NotificationViewController *controller = [NotificationViewController new];
+    controller.delegate = self;
+    controller.view = [ViewPassingGestures new];
+    controller.view.backgroundColor = [UIColor clearColor];
+    self.window.rootViewController = controller;
+}
+
+- (void)createNotificationView
+{
     self.notificationContentView = [UIView new];
     self.notificationContentView.backgroundColor = [UIColor clearColor];
     self.notificationContentView.clipsToBounds = YES;
     self.notificationContentView.hidden = YES;
 
-    UIViewController *controller = [UIViewController new];
-    controller.view = [ViewPassingGestures new];
-    controller.view.backgroundColor = [UIColor clearColor];
-    [controller.view addSubview:self.notificationContentView];
-    self.window.rootViewController = controller;
+    [self.window.rootViewController.view addSubview:self.notificationContentView];
 
     [self.notificationContentView makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(0);
@@ -115,19 +170,83 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
     }];
 }
 
+- (void)createConnectingView
+{
+    {
+        self.connectingContentView = [UIView new];
+        self.connectingContentView.backgroundColor = [UIColor clearColor];
+        self.connectingContentView.clipsToBounds = YES;
+        self.connectingContentView.hidden = YES;
+
+        [self.window.rootViewController.view addSubview:self.connectingContentView];
+
+        [self.connectingContentView makeConstraints:^(MASConstraintMaker *make) {
+            self.connectingContentViewTopConstraint = make.top.equalTo([self connectionViewTop]);
+            make.left.right.equalTo(0);
+            make.height.equalTo(kConnectingViewHeight);
+        }];
+    }
+
+    {
+        self.connectingView = [UIView new];
+        self.connectingView.backgroundColor = [[AppContext sharedContext].appearance textMainColor];
+        [self.connectingContentView addSubview:self.connectingView];
+
+        [self.connectingView makeConstraints:^(MASConstraintMaker *make) {
+            self.connectingViewTopConstraint = make.top.equalTo(0);
+            make.left.right.equalTo(0);
+            make.height.equalTo(kConnectingViewHeight);
+        }];
+    }
+
+    {
+        UIView *container = [UIView new];
+        container.backgroundColor = [UIColor clearColor];
+        [self.connectingView addSubview:container];
+
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
+                                            initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+        [spinner startAnimating];
+        [container addSubview:spinner];
+
+        UILabel *label = [UILabel new];
+        label.text = NSLocalizedString(@"Connecting...", @"NotificationManager");
+        label.textColor = [UIColor whiteColor];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:16.0];
+        [container addSubview:label];
+
+        [container makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.connectingView);
+            make.centerY.equalTo(self.connectingView);
+        }];
+
+        [spinner makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(0);
+            make.centerY.equalTo(container);
+        }];
+
+        [label makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(spinner.right).offset(10.0);
+            make.right.equalTo(container);
+            make.centerY.equalTo(container);
+        }];
+    }
+}
+
 - (void)dequeueAndShowNextObject
 {
     NotificationObject *object;
 
-    @synchronized(self.queue) {
-        object = [self.queue firstObject];
+    @synchronized(self.notificationQueue) {
+        object = [self.notificationQueue firstObject];
 
         if (! object) {
-            self.isActive = NO;
+            self.areNotificationsActive = NO;
             return;
         }
 
-        [self.queue removeObjectAtIndex:0];
+        [self.notificationQueue removeObjectAtIndex:0];
     }
 
     NotificationView *view = [[NotificationView alloc] initWithObject:object];
@@ -202,6 +321,26 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
             completion();
         }
     }];
+}
+
+- (CGFloat)connectionViewTop
+{
+    CGFloat top = [UIApplication sharedApplication].statusBarFrame.size.height;
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UIViewController *controller = delegate.window.rootViewController;
+
+    if ([controller isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *tabBar = (UITabBarController *)controller;
+        controller = tabBar.selectedViewController;
+
+        if ([controller isKindOfClass:[UINavigationController class]]) {
+            UINavigationController *navigation = (UINavigationController *)controller;
+            top += navigation.navigationBar.frame.size.height;
+        }
+    }
+
+    return top;
 }
 
 @end
