@@ -19,6 +19,7 @@
 #import "OCTMessageText.h"
 #import "OCTMessageFile.h"
 #import "AvatarsManager.h"
+#import "ChatViewController.h"
 
 NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupIdentifierFriendRequest";
 
@@ -116,7 +117,10 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
         else if ([controller isEqual:self.messagesController]) {
             notification = [self messageNotificationWithPath:object.path];
         }
-        [[AppContext sharedContext].notification addNotificationToQueue:notification];
+
+        if (notification) {
+            [[AppContext sharedContext].notification addNotificationToQueue:notification];
+        }
     }
 }
 
@@ -165,6 +169,10 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 {
     OCTMessageAbstract *message = [self.messagesController objectAtIndexPath:path];
 
+    if (! [self shouldShowNotificationForMessage:message]) {
+        return nil;
+    }
+
     NotificationObject *object = [NotificationObject new];
     object.image = [[AppContext sharedContext].avatars avatarFromString:message.sender.nickname
                                                                diameter:kNotificationObjectImageSize];
@@ -183,6 +191,24 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     }
 
     return object;
+}
+
+- (BOOL)shouldShowNotificationForMessage:(OCTMessageAbstract *)message
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UIViewController *visibleVC = [delegate visibleViewController];
+
+    if (! [visibleVC isKindOfClass:[ChatViewController class]]) {
+        return YES;
+    }
+
+    ChatViewController *chatVC = (ChatViewController *)visibleVC;
+
+    if ([chatVC.chat isEqual:message.chat]) {
+        return NO;
+    }
+
+    return YES;
 }
 
 @end
