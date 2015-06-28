@@ -11,7 +11,7 @@
 @implementation UpdatesQueueObject
 @end
 
-@interface UpdatesQueue()
+@interface UpdatesQueue ()
 
 @property (strong, nonatomic) NSMutableArray *queue;
 

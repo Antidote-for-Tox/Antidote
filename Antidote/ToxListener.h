@@ -10,6 +10,8 @@
 
 #import "OCTManager.h"
 
+extern NSString *const kToxListenerGroupIdentifierFriendRequest;
+
 /**
  * ToxListener subscribes to different OCTManager updates and send notifications,
  * shows connecting status, etc.
