@@ -128,6 +128,18 @@ static const CGFloat kConnectingViewHeight = 30.0;
     }
 }
 
+- (void)resetAppearance
+{
+    [self.connectingContentView removeFromSuperview];
+    self.connectingContentView = nil;
+
+    [self createConnectingView];
+
+    if (self.isConnectingViewActive) {
+        [self showConnectingView];
+    }
+}
+
 #pragma mark -  NotificationViewControllerDelegate
 
 - (void)viewWillLayoutSubviews

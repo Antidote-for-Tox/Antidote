@@ -33,4 +33,9 @@
 - (void)showConnectingView;
 - (void)hideConnectingView;
 
+/**
+ * Resets views to use new appearance.
+ */
+- (void)resetAppearance;
+
 @end

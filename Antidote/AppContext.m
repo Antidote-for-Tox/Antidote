@@ -136,6 +136,8 @@
 {
     self.appearance = nil;
     self.avatars = nil;
+
+    [self.notification resetAppearance];
 }
 
 #pragma mark -  Private
