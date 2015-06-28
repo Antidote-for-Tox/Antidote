@@ -136,7 +136,7 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
     __weak NotificationManager *weakSelf = self;
 
     [self showNotificationViewAnimated:view completion:^(MASConstraint *topConstraint) {
-        [NSTimer bk_scheduledTimerWithTimeInterval:kNotificationVisibleInterval block:^(NSTimer *timer) {
+        void (^hideNotification)() = ^() {
             [weakSelf dequeueAndShowNextObject];
 
             [weakSelf hideNotificationViewAnimated:view topConstraint:topConstraint completion:^{
@@ -146,7 +146,20 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
                     weakSelf.notificationContentView.hidden = YES;
                 }
             }];
+        };
+
+        NSTimer *timer = [NSTimer bk_scheduledTimerWithTimeInterval:kNotificationVisibleInterval block:^(NSTimer *timer) {
+            hideNotification();
         } repeats:NO];
+
+        view.tapHandler = ^{
+            if (object.tapHandler) {
+                object.tapHandler(object);
+            }
+
+            [timer invalidate];
+            hideNotification();
+        };
     }];
 }
 

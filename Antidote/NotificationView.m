@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIControl+BlocksKit.h>
 #import <Masonry/Masonry.h>
 
 #import "NotificationView.h"
@@ -24,6 +25,8 @@ static const CGFloat kLabelsIndentation = -5.0;
 @property (strong, nonatomic) UIImageView *imageView;
 @property (strong, nonatomic) UILabel *topLabel;
 @property (strong, nonatomic) UILabel *bottomLabel;
+
+@property (strong, nonatomic) UIButton *button;
 
 @end
 
@@ -72,6 +75,15 @@ static const CGFloat kLabelsIndentation = -5.0;
     self.bottomLabel.backgroundColor = [UIColor clearColor];
     self.bottomLabel.font = [appearance fontHelveticaNeueLightWithSize:16.0];
     [self addSubview:self.bottomLabel];
+
+    self.button = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.button.backgroundColor = [UIColor clearColor];
+    [self.button bk_addEventHandler:^(id sender) {
+        if (self.tapHandler) {
+            self.tapHandler();
+        }
+    } forControlEvents:UIControlEventTouchUpInside];
+    [self addSubview:self.button];
 }
 
 - (void)installConstraints
@@ -95,6 +107,10 @@ static const CGFloat kLabelsIndentation = -5.0;
         make.right.equalTo(self.right).offset(-kIndentation);
         make.bottom.equalTo(self.bottom);
         make.height.equalTo(self.topLabel.height);
+    }];
+
+    [self.button makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.left.right.equalTo(0);
     }];
 }
 

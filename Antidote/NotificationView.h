@@ -14,6 +14,8 @@ extern const CGFloat kNotificationViewHeight;
 
 @interface NotificationView : UIView
 
+@property (copy, nonatomic) void (^tapHandler)();
+
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;
 
