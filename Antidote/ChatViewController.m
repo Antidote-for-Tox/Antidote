@@ -6,8 +6,9 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import <Masonry/Masonry.h>
+#import <BlocksKit/NSArray+BlocksKit.h>
 #import <JSQMessagesViewController/JSQMessages.h>
+#import <Masonry/Masonry.h>
 
 #import "ChatViewController.h"
 #import "OCTFriend.h"
@@ -20,6 +21,7 @@
 #import "OCTMessageText.h"
 #import "ChatMessage.h"
 #import "AppearanceManager.h"
+#import "UpdatesQueue.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -36,10 +38,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 @property (strong, nonatomic) JSQMessagesBubbleImage *incomingBubble;
 @property (strong, nonatomic) JSQMessagesBubbleImage *outgoingBubble;
 
-// TODO move this to separate class
-@property (strong, nonatomic) NSMutableArray *pathsToInsert;
-@property (strong, nonatomic) NSMutableArray *pathsToDelete;
-@property (strong, nonatomic) NSMutableArray *pathsToUpdate;
+@property (strong, nonatomic) UpdatesQueue *updatesQueue;
 
 @end
 
@@ -141,9 +140,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 - (void)controllerWillChangeContent:(RBQFetchedResultsController *)controller
 {
     if ([controller isEqual:self.messagesController]) {
-        self.pathsToInsert = [NSMutableArray new];
-        self.pathsToDelete = [NSMutableArray new];
-        self.pathsToUpdate = [NSMutableArray new];
+        self.updatesQueue = [UpdatesQueue new];
     }
 }
 
@@ -156,17 +153,17 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     if ([controller isEqual:self.messagesController]) {
         switch (type) {
             case NSFetchedResultsChangeInsert:
-                [self.pathsToInsert addObject:newIndexPath];
+                [self.updatesQueue enqueuePath:newIndexPath type:UpdatesQueueObjectTypeInsert];
                 break;
             case NSFetchedResultsChangeDelete:
-                [self.pathsToDelete addObject:indexPath];
+                [self.updatesQueue enqueuePath:indexPath type:UpdatesQueueObjectTypeDelete];
                 break;
             case NSFetchedResultsChangeUpdate:
-                [self.pathsToUpdate addObject:indexPath];
+                [self.updatesQueue enqueuePath:indexPath type:UpdatesQueueObjectTypeUpdate];
                 break;
             case NSFetchedResultsChangeMove:
-                [self.pathsToDelete addObject:indexPath];
-                [self.pathsToInsert addObject:newIndexPath];
+                [self.updatesQueue enqueuePath:indexPath type:UpdatesQueueObjectTypeDelete];
+                [self.updatesQueue enqueuePath:newIndexPath type:UpdatesQueueObjectTypeInsert];
                 break;
         }
     }
@@ -175,44 +172,47 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
     if ([controller isEqual:self.messagesController]) {
-        if (self.pathsToInsert.count == 1) {
-            NSIndexPath *path = [self.pathsToInsert firstObject];
-            NSInteger number = [self.messagesController numberOfRowsForSectionIndex:0];
+        NSArray *insertedObjects = [[self.updatesQueue getQueue] bk_select:^BOOL (UpdatesQueueObject *obj) {
+            return (obj.type == UpdatesQueueObjectTypeInsert);
+        }];
 
-            if (path.row == (number - 1)) {
-                // Inserted new message
-                [self.pathsToInsert removeObjectAtIndex:0];
+        if (insertedObjects.count == 1) {
+            UpdatesQueueObject *object = [insertedObjects firstObject];
 
-                OCTMessageAbstract *message = [controller objectAtIndexPath:path];
+            [self.updatesQueue removeObject:object];
 
-                if ([message isOutgoing]) {
-                    [self finishSendingMessageAnimated:YES];
-                }
-                else {
-                    [self finishReceivingMessageAnimated:YES];
-                }
+            OCTMessageAbstract *message = [controller objectAtIndexPath:object.path];
+
+            if ([message isOutgoing]) {
+                [self finishSendingMessageAnimated:YES];
+            }
+            else {
+                [self finishReceivingMessageAnimated:YES];
             }
         }
 
         __weak ChatViewController *weakSelf = self;
 
         [self.collectionView performBatchUpdates:^{
-            if (self.pathsToUpdate.count) {
-                [weakSelf.collectionView reloadItemsAtIndexPaths:[self.pathsToUpdate copy]];
-            }
+            while (YES) {
+                UpdatesQueueObject *object = [weakSelf.updatesQueue dequeue];
+                if (! object) {
+                    break;
+                }
 
-            if (self.pathsToDelete.count) {
-                [weakSelf.collectionView deleteItemsAtIndexPaths:[self.pathsToDelete copy]];
-            }
-
-            if (self.pathsToInsert.count) {
-                [weakSelf.collectionView insertItemsAtIndexPaths:[self.pathsToInsert copy]];
+                switch (object.type) {
+                    case UpdatesQueueObjectTypeInsert:
+                        [weakSelf.collectionView insertItemsAtIndexPaths:@[object.path]];
+                        break;
+                    case UpdatesQueueObjectTypeDelete:
+                        [weakSelf.collectionView deleteItemsAtIndexPaths:@[object.path]];
+                        break;
+                    case UpdatesQueueObjectTypeUpdate:
+                        [weakSelf.collectionView reloadItemsAtIndexPaths:@[object.path]];
+                        break;
+                }
             }
         } completion:nil];
-
-        self.pathsToInsert = nil;
-        self.pathsToDelete = nil;
-        self.pathsToUpdate = nil;
 
         // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
         [self performSelector:@selector(updateLastReadDate) withObject:nil afterDelay:0];
