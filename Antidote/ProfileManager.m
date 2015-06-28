@@ -12,6 +12,7 @@
 #import "OCTManager.h"
 #import "OCTDefaultSettingsStorage.h"
 #import "OCTDefaultFileStorage.h"
+#import "ToxListener.h"
 
 static NSString *const kSaveDirectoryPath = @"saves";
 static NSString *const kDefaultProfileName = @"default";
@@ -22,6 +23,8 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 @interface ProfileManager ()
 
 @property (strong, nonatomic, readwrite) OCTManager *toxManager;
+@property (strong, nonatomic, readwrite) ToxListener *toxListener;
+
 @property (strong, nonatomic, readwrite) NSArray *allProfiles;
 
 @end
@@ -101,6 +104,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 
     if (isCurrent) {
         self.toxManager = nil;
+        self.toxListener = nil;
     }
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
@@ -129,6 +133,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 
     if (isCurrent) {
         self.toxManager = nil;
+        self.toxListener = nil;
     }
 
     NSString *fromPath = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
@@ -226,6 +231,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
                                                                   temporaryDirectory:NSTemporaryDirectory()];
 
     self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
+    self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
 
     if (initializeWithDefaultValues) {
         NSString *name = [UIDevice currentDevice].name;

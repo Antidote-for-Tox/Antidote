@@ -11,6 +11,7 @@
 @class AppearanceManager;
 @class AvatarsManager;
 @class EventsManager;
+@class NotificationManager;
 @class ProfileManager;
 @class UserDefaultsManager;
 
@@ -21,6 +22,7 @@
 @property (strong, nonatomic, readonly) AppearanceManager *appearance;
 @property (strong, nonatomic, readonly) AvatarsManager *avatars;
 @property (strong, nonatomic, readonly) EventsManager *events;
+@property (strong, nonatomic, readonly) NotificationManager *notification;
 @property (strong, nonatomic, readonly) ProfileManager *profileManager;
 @property (strong, nonatomic, readonly) UserDefaultsManager *userDefaults;
 

@@ -123,7 +123,7 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
 
 - (UIImage *)imageWithView:(UIView *)view
 {
-    UIGraphicsBeginImageContextWithOptions(view.bounds.size, view.opaque, 0.0);
+    UIGraphicsBeginImageContextWithOptions(view.bounds.size, NO, 0.0);
     [view.layer renderInContext:UIGraphicsGetCurrentContext()];
 
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();

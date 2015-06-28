@@ -37,6 +37,8 @@
 		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
 		119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC11B3D4D75008CA975 /* ChatMessage.m */; };
 		119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC51B3DDFFE008CA975 /* AvatarsManager.m */; };
+		119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFACD1B3EA34F008CA975 /* NotificationManager.m */; };
+		119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAD01B3EA462008CA975 /* NotificationObject.m */; };
 		11A757471B0BB50F005DAD82 /* AppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A757461B0BB50F005DAD82 /* AppContext.m */; };
 		11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */; };
 		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
@@ -50,6 +52,11 @@
 		11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77E198E948D0029A7A0 /* EventObject.m */; };
 		11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C4B4D01B25F8DF00646A2E /* Helper.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
+		11CFD0B61B3F526E002C59DB /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0B51B3F526E002C59DB /* NotificationView.m */; };
+		11CFD0BA1B401385002C59DB /* ViewPassingGestures.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0B91B401385002C59DB /* ViewPassingGestures.m */; };
+		11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0BC1B401394002C59DB /* WindowPassingGestures.m */; };
+		11CFD0C31B406A96002C59DB /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0C21B406A96002C59DB /* NotificationViewController.m */; };
+		11CFD0C71B40745E002C59DB /* ToxListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0C61B40745E002C59DB /* ToxListener.m */; };
 		11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
@@ -119,6 +126,10 @@
 		119DFAC11B3D4D75008CA975 /* ChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessage.m; sourceTree = "<group>"; };
 		119DFAC41B3DDFFE008CA975 /* AvatarsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarsManager.h; sourceTree = "<group>"; };
 		119DFAC51B3DDFFE008CA975 /* AvatarsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AvatarsManager.m; sourceTree = "<group>"; };
+		119DFACC1B3EA34F008CA975 /* NotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationManager.h; sourceTree = "<group>"; };
+		119DFACD1B3EA34F008CA975 /* NotificationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationManager.m; sourceTree = "<group>"; };
+		119DFACF1B3EA462008CA975 /* NotificationObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationObject.h; sourceTree = "<group>"; };
+		119DFAD01B3EA462008CA975 /* NotificationObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationObject.m; sourceTree = "<group>"; };
 		11A757451B0BB50F005DAD82 /* AppContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppContext.h; sourceTree = "<group>"; };
 		11A757461B0BB50F005DAD82 /* AppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppContext.m; sourceTree = "<group>"; };
 		11A757491B0BB74C005DAD82 /* UserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultsManager.h; sourceTree = "<group>"; };
@@ -145,6 +156,16 @@
 		11C4B4D01B25F8DF00646A2E /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
 		11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSIndexSet+Utilities.m"; sourceTree = "<group>"; };
+		11CFD0B41B3F526E002C59DB /* NotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationView.h; sourceTree = "<group>"; };
+		11CFD0B51B3F526E002C59DB /* NotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationView.m; sourceTree = "<group>"; };
+		11CFD0B81B401385002C59DB /* ViewPassingGestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewPassingGestures.h; sourceTree = "<group>"; };
+		11CFD0B91B401385002C59DB /* ViewPassingGestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewPassingGestures.m; sourceTree = "<group>"; };
+		11CFD0BB1B401394002C59DB /* WindowPassingGestures.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowPassingGestures.h; sourceTree = "<group>"; };
+		11CFD0BC1B401394002C59DB /* WindowPassingGestures.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WindowPassingGestures.m; sourceTree = "<group>"; };
+		11CFD0C11B406A96002C59DB /* NotificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationViewController.h; sourceTree = "<group>"; };
+		11CFD0C21B406A96002C59DB /* NotificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationViewController.m; sourceTree = "<group>"; };
+		11CFD0C51B40745E002C59DB /* ToxListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToxListener.h; sourceTree = "<group>"; };
+		11CFD0C61B40745E002C59DB /* ToxListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxListener.m; sourceTree = "<group>"; };
 		11E57F4419C23D1F00C8ACB8 /* CellWithNameStatusAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithNameStatusAvatar.h; sourceTree = "<group>"; };
 		11E57F4519C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithNameStatusAvatar.m; sourceTree = "<group>"; };
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
@@ -302,9 +323,11 @@
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11C4B4CE1B25F8D600646A2E /* Helper */,
+				119DFACB1B3EA331008CA975 /* NotificationManager */,
 				11E82A9F19CD72B1001561CA /* PreviewItem */,
 				1137BDE81B24414100BA20C8 /* ProfileManager */,
 				11B9E6141993EBCC00FB20A6 /* TimeFormatter */,
+				11CFD0C41B40744A002C59DB /* ToxListener */,
 				11A757481B0BB73B005DAD82 /* UserDefaults */,
 			);
 			name = Classes;
@@ -329,6 +352,7 @@
 		118352A9197A6C210048CA64 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11CFD0B71B401375002C59DB /* PassingGestures */,
 				11E57F4319C23CF100C8ACB8 /* Cells */,
 				F902D2991ADED3000070A3F5 /* BadgeWithText */,
 				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
@@ -407,6 +431,21 @@
 			name = AvatarsManager;
 			sourceTree = "<group>";
 		};
+		119DFACB1B3EA331008CA975 /* NotificationManager */ = {
+			isa = PBXGroup;
+			children = (
+				119DFACC1B3EA34F008CA975 /* NotificationManager.h */,
+				119DFACD1B3EA34F008CA975 /* NotificationManager.m */,
+				119DFACF1B3EA462008CA975 /* NotificationObject.h */,
+				119DFAD01B3EA462008CA975 /* NotificationObject.m */,
+				11CFD0B41B3F526E002C59DB /* NotificationView.h */,
+				11CFD0B51B3F526E002C59DB /* NotificationView.m */,
+				11CFD0C11B406A96002C59DB /* NotificationViewController.h */,
+				11CFD0C21B406A96002C59DB /* NotificationViewController.m */,
+			);
+			name = NotificationManager;
+			sourceTree = "<group>";
+		};
 		11A757441B0BB501005DAD82 /* AppContext */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,6 +509,26 @@
 				11C4B4D01B25F8DF00646A2E /* Helper.m */,
 			);
 			name = Helper;
+			sourceTree = "<group>";
+		};
+		11CFD0B71B401375002C59DB /* PassingGestures */ = {
+			isa = PBXGroup;
+			children = (
+				11CFD0B81B401385002C59DB /* ViewPassingGestures.h */,
+				11CFD0B91B401385002C59DB /* ViewPassingGestures.m */,
+				11CFD0BB1B401394002C59DB /* WindowPassingGestures.h */,
+				11CFD0BC1B401394002C59DB /* WindowPassingGestures.m */,
+			);
+			name = PassingGestures;
+			sourceTree = "<group>";
+		};
+		11CFD0C41B40744A002C59DB /* ToxListener */ = {
+			isa = PBXGroup;
+			children = (
+				11CFD0C51B40745E002C59DB /* ToxListener.h */,
+				11CFD0C61B40745E002C59DB /* ToxListener.m */,
+			);
+			name = ToxListener;
 			sourceTree = "<group>";
 		};
 		11E57F4319C23CF100C8ACB8 /* Cells */ = {
@@ -756,13 +815,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */,
+				11CFD0B61B3F526E002C59DB /* NotificationView.m in Sources */,
 				11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */,
 				11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */,
 				114100781A3A3A3700054859 /* QRScannerController.m in Sources */,
+				11CFD0C31B406A96002C59DB /* NotificationViewController.m in Sources */,
 				118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */,
 				1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */,
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				110B8B8B19C8E3FE000E4334 /* ProfilesViewController.m in Sources */,
+				11CFD0C71B40745E002C59DB /* ToxListener.m in Sources */,
 				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
@@ -780,6 +842,7 @@
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
+				11CFD0BA1B401385002C59DB /* ViewPassingGestures.m in Sources */,
 				11E57F4619C23D1F00C8ACB8 /* CellWithNameStatusAvatar.m in Sources */,
 				119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
@@ -800,6 +863,9 @@
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
+				119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */,
+				11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */,
+				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

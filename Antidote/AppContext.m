@@ -10,6 +10,7 @@
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
 #import "EventsManager.h"
+#import "NotificationManager.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 
@@ -18,6 +19,7 @@
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) EventsManager *events;
+@property (strong, nonatomic, readwrite) NotificationManager *notification;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
@@ -90,6 +92,16 @@
     return _events;
 }
 
+- (NotificationManager *)notification
+{
+    if (_notification) {
+        return _notification;
+    }
+
+    _notification = [NotificationManager new];
+    return _notification;
+}
+
 - (ProfileManager *)profileManager
 {
     if (_profileManager) {
@@ -124,6 +136,8 @@
 {
     self.appearance = nil;
     self.avatars = nil;
+
+    [self.notification resetAppearance];
 }
 
 #pragma mark -  Private
