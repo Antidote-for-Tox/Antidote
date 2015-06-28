@@ -25,6 +25,14 @@ extern CGFloat kNotificationObjectImageSize;
  */
 @property (copy, nonatomic) void (^tapHandler)(NotificationObject *object);
 
+/**
+ * Identifier that can be used to remove group of notifications from queue.
+ */
+@property (copy, nonatomic) NSString *groupIdentifier;
+
+/**
+ * Custom user info for the notification.
+ */
 @property (strong, nonatomic) NSDictionary *userInfo;
 
 @end

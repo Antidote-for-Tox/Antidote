@@ -22,6 +22,12 @@
 - (void)addNotificationToQueue:(NotificationObject *)notification;
 
 /**
+ * Removes group of NotificationObject with groupIdentifier from queue.
+ * This will NOT remove visible notification.
+ */
+- (void)removeNotificationsFromQueueWithGroupIdentifier:(NSString *)groupIdentifier;
+
+/**
  * Shows/hides connecting view from under navigation.
  */
 - (void)showConnectingView;

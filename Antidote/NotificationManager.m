@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <BlocksKit/NSMutableArray+BlocksKit.h>
 #import <BlocksKit/NSTimer+BlocksKit.h>
 #import <Masonry/Masonry.h>
 
@@ -53,7 +54,9 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 
 - (void)addNotificationToQueue:(NotificationObject *)notification
 {
-    @synchronized(self) {
+    NSParameterAssert(notification);
+
+    @synchronized(self.queue) {
         [self.queue addObject:[notification copy]];
 
         if (self.isActive) {
@@ -63,6 +66,17 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
         self.notificationContentView.hidden = NO;
 
         [self performSelectorOnMainThread:@selector(dequeueAndShowNextObject) withObject:nil waitUntilDone:NO];
+    }
+}
+
+- (void)removeNotificationsFromQueueWithGroupIdentifier:(NSString *)groupIdentifier
+{
+    NSParameterAssert(groupIdentifier);
+
+    @synchronized(self.queue) {
+        [self.queue bk_performReject:^BOOL (NotificationObject *object) {
+            return [object.groupIdentifier isEqualToString:groupIdentifier];
+        }];
     }
 }
 
@@ -105,7 +119,7 @@ static const NSTimeInterval kNotificationVisibleInterval = 3.0;
 {
     NotificationObject *object;
 
-    @synchronized(self) {
+    @synchronized(self.queue) {
         object = [self.queue firstObject];
 
         if (! object) {

@@ -22,6 +22,7 @@ CGFloat kNotificationObjectImageSize = 30.0;
     object.topText = self.topText;
     object.bottomText = self.bottomText;
     object.tapHandler = self.tapHandler;
+    object.groupIdentifier = self.groupIdentifier;
     object.userInfo = self.userInfo;
 
     return object;
