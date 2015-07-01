@@ -65,6 +65,7 @@
 		11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F0D127DD1B445B2700E2E7B8 /* CallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D127DC1B445B2700E2E7B8 /* CallViewController.m */; };
 		F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */; };
 		F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FB7D591ADED01A004FA894 /* PortraitNavigationController.m */; };
 /* End PBXBuildFile section */
@@ -184,6 +185,8 @@
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F0D127DB1B445B2700E2E7B8 /* CallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallViewController.h; sourceTree = "<group>"; };
+		F0D127DC1B445B2700E2E7B8 /* CallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallViewController.m; sourceTree = "<group>"; };
 		F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerAimView.h; sourceTree = "<group>"; };
 		F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerAimView.m; sourceTree = "<group>"; };
 		F9FB7D581ADED01A004FA894 /* PortraitNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortraitNavigationController.h; sourceTree = "<group>"; };
@@ -340,6 +343,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F0D127DA1B445AC800E2E7B8 /* Call */,
 				119BB11F198BE76600380557 /* AddFriend */,
 				114630981984E19A0075DA16 /* AllChats */,
 				114630E119857C5D0075DA16 /* Chat */,
@@ -584,6 +588,15 @@
 				84B6628C19A2510A00328874 /* CustomLogFormatter.m */,
 			);
 			name = CustomLogFormatter;
+			sourceTree = "<group>";
+		};
+		F0D127DA1B445AC800E2E7B8 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				F0D127DB1B445B2700E2E7B8 /* CallViewController.h */,
+				F0D127DC1B445B2700E2E7B8 /* CallViewController.m */,
+			);
+			name = Call;
 			sourceTree = "<group>";
 		};
 		F902D28D1ADED27A0070A3F5 /* Application */ = {
@@ -847,6 +860,7 @@
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
+				F0D127DD1B445B2700E2E7B8 /* CallViewController.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,

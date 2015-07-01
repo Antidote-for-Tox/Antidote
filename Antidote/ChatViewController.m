@@ -23,6 +23,7 @@
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
+#import "CallViewController.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -91,6 +92,8 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self configureInputToolbar];
 
     [self updateFriendRelatedInformation];
+
+    [self createPhoneCallBarButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -315,6 +318,14 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self updateTitleView];
 }
 
+- (void)createPhoneCallBarButton
+{
+    UIImage *phoneImage = [UIImage imageNamed:@"phone"];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:phoneImage
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(startCall)];
+}
 - (void)updateInputToolbar
 {
     // files are disabled for now
@@ -371,6 +382,20 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 {
     NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
     [[AppContext sharedContext].profileManager.toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
+}
+
+- (void)startCall
+{
+    OCTCall *call = [[AppContext sharedContext].profileManager.toxManager.calls callToChat:self.chat enableAudio:YES enableVideo:NO error:nil];
+
+    if (! call) {
+        return;
+    }
+
+    CallViewController *callViewController = [[CallViewController alloc] initWithChat:self.chat];
+    callViewController.modalInPopover = YES;
+    callViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    [self presentViewController:callViewController animated:YES completion:nil];
 }
 
 @end
