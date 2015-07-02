@@ -394,7 +394,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
     CallViewController *callViewController = [[CallViewController alloc] initWithChat:self.chat];
     callViewController.modalInPopover = YES;
-    callViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    callViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     [self presentViewController:callViewController animated:YES completion:nil];
 }
 

@@ -86,9 +86,11 @@ NSString *const kCallViewControllerUserIdentifier = @"callViewController";
 
 - (void)setupBlurredView
 {
+    self.view.backgroundColor = [UIColor clearColor];
+
     UIView *darkView = [[UIView alloc] initWithFrame:self.view.bounds];
     darkView.backgroundColor = [UIColor blackColor];
-    darkView.alpha = 0.7;
+    darkView.alpha = 0.5;
 
     [self.view addSubview:darkView];
 
