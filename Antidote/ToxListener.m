@@ -20,7 +20,7 @@
 #import "OCTMessageFile.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
-#import "CallViewController.h"
+#import "DialingCallViewController.h"
 #import "OCTCall.h"
 
 NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupIdentifierFriendRequest";
@@ -132,13 +132,13 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIViewController *visibleVC = [delegate visibleViewController];
 
-    if ([visibleVC isKindOfClass:[CallViewController class]]) {
+    if ([visibleVC isKindOfClass:[DialingCallViewController class]]) {
         // User is in a middle of call, send some kind of notification?
         [callSubmanager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
         return;
     }
 
-    CallViewController *callViewController = [[CallViewController alloc] initWithChat:call.chat submanagerCalls:callSubmanager];
+    DialingCallViewController *callViewController = [[DialingCallViewController alloc] initWithChat:call.chat submanagerCalls:callSubmanager];
     callViewController.modalInPopover = YES;
     callViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [visibleVC presentViewController:callViewController animated:YES completion:nil];

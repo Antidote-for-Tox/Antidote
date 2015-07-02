@@ -23,7 +23,7 @@
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
-#import "CallViewController.h"
+#import "DialingCallViewController.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -324,7 +324,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:phoneImage
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
-                                                                             action:@selector(startCall)];
+                                                                             action:@selector(startCallButtonPressed)];
 }
 - (void)updateInputToolbar
 {
@@ -384,7 +384,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [[AppContext sharedContext].profileManager.toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
 }
 
-- (void)startCall
+- (void)startCallButtonPressed
 {
     OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
@@ -394,11 +394,11 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
         return;
     }
 
-    CallViewController *callViewController = [[CallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
+    DialingCallViewController *dailingCallViewController = [[DialingCallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
 
-    callViewController.modalInPopover = YES;
-    callViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [self presentViewController:callViewController animated:YES completion:nil];
+    dailingCallViewController.modalInPopover = YES;
+    dailingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    [self presentViewController:dailingCallViewController animated:YES completion:nil];
 }
 
 @end

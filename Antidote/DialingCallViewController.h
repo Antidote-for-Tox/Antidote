@@ -1,5 +1,5 @@
 //
-//  CallViewController.h
+//  DialingCallViewController.h
 //  Antidote
 //
 //  Created by Chuong Vu on 7/1/15.
@@ -11,14 +11,12 @@
 @class OCTSubmanagerCalls;
 @class OCTChat;
 
-extern NSString *const kCallViewControllerUserIdentifier;
-
 /**
  * This call viewcontroller will be responsible for handling calls
  * through the user interface. This will be used for presenting the incoming call
  * and active call sessions.
  */
-@interface CallViewController : UIViewController
+@interface DialingCallViewController : UIViewController
 
 @property (strong, nonatomic, readonly) OCTChat *chat;
 
