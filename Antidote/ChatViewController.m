@@ -386,13 +386,13 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 - (void)startCall
 {
-    OCTCall *call = [[AppContext sharedContext].profileManager.toxManager.calls callToChat:self.chat enableAudio:YES enableVideo:NO error:nil];
+    OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
+
+    OCTCall *call = [manager callToChat:self.chat enableAudio:YES enableVideo:NO error:nil];
 
     if (! call) {
         return;
     }
-
-    OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
     CallViewController *callViewController = [[CallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
 
