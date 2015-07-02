@@ -320,7 +320,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 - (void)createPhoneCallBarButton
 {
-    UIImage *phoneImage = [UIImage imageNamed:@"phone"];
+    UIImage *phoneImage = [UIImage imageNamed:@"call-phone"];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:phoneImage
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
@@ -388,17 +388,15 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 {
     OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
-    OCTCall *call = [manager callToChat:self.chat enableAudio:YES enableVideo:NO error:nil];
-
-    if (! call) {
-        return;
-    }
-
     DialingCallViewController *dailingCallViewController = [[DialingCallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
 
     dailingCallViewController.modalInPopover = YES;
     dailingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [self presentViewController:dailingCallViewController animated:YES completion:nil];
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:dailingCallViewController];
+    navigationController.navigationBarHidden = YES;
+
+    [self presentViewController:navigationController animated:YES completion:nil];
 }
 
 @end

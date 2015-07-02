@@ -20,7 +20,7 @@
 #import "OCTMessageFile.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
-#import "DialingCallViewController.h"
+#import "RingingCallViewController.h"
 #import "OCTCall.h"
 
 NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupIdentifierFriendRequest";
@@ -132,16 +132,20 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIViewController *visibleVC = [delegate visibleViewController];
 
-    if ([visibleVC isKindOfClass:[DialingCallViewController class]]) {
+    if ([visibleVC isKindOfClass:[AbstractCallViewController class]]) {
         // User is in a middle of call, send some kind of notification?
         [callSubmanager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
         return;
     }
 
-    DialingCallViewController *callViewController = [[DialingCallViewController alloc] initWithChat:call.chat submanagerCalls:callSubmanager];
-    callViewController.modalInPopover = YES;
-    callViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    [visibleVC presentViewController:callViewController animated:YES completion:nil];
+    RingingCallViewController *ringingViewController = [[RingingCallViewController alloc] initWithCall:call submanagerCalls:callSubmanager];
+    ringingViewController.modalInPopover = YES;
+    ringingViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:ringingViewController];
+    navigationController.navigationBarHidden = YES;
+
+    [visibleVC presentViewController:navigationController animated:YES completion:nil];
 }
 
 #pragma mark -  Private

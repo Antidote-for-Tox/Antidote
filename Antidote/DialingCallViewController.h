@@ -7,24 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "AbstractCallViewController.h"
 
 @class OCTSubmanagerCalls;
 @class OCTChat;
 
 /**
- * This call viewcontroller will be responsible for handling calls
- * through the user interface. This will be used for presenting the incoming call
- * and active call sessions.
+ * This class will be responsible for dialing a friend
+ * through the user interface.
  */
-@interface DialingCallViewController : UIViewController
+@interface DialingCallViewController : AbstractCallViewController
 
-@property (strong, nonatomic, readonly) OCTChat *chat;
-
-/**
- * Create an instance of the CallViewController
- * @param chat Appropriate chat for the call.
- * @param manager The call maanger for the application.
- */
 - (instancetype)initWithChat:(OCTChat *)chat submanagerCalls:(OCTSubmanagerCalls *)manager;
+
+- (instancetype)initWithCall:(OCTCall *)call submanagerCalls:(OCTSubmanagerCalls *)manager NS_UNAVAILABLE;
 
 @end
