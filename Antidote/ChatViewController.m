@@ -392,9 +392,12 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
         return;
     }
 
-    CallViewController *callViewController = [[CallViewController alloc] initWithChat:self.chat];
+    OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
+
+    CallViewController *callViewController = [[CallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
+
     callViewController.modalInPopover = YES;
-    callViewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+    callViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
     [self presentViewController:callViewController animated:YES completion:nil];
 }
 

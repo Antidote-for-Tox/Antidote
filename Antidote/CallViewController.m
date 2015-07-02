@@ -10,11 +10,14 @@
 #import "Masonry.h"
 #import "Helper.h"
 #import "OCTCall.h"
+#import "OCTChat.h"
+#import "OCTSubmanagerCalls.h"
 
 NSString *const kCallViewControllerUserIdentifier = @"callViewController";
 
 @interface CallViewController () <RBQFetchedResultsControllerDelegate>
 
+@property (strong, nonatomic) OCTSubmanagerCalls *manager;
 @property (strong, nonatomic, readwrite) OCTChat *chat;
 @property (strong, nonatomic) OCTCall *call;
 @property (strong, nonatomic) RBQFetchedResultsController *callController;
@@ -28,7 +31,8 @@ NSString *const kCallViewControllerUserIdentifier = @"callViewController";
 @implementation CallViewController
 
 #pragma mark - Life cycle
-- (instancetype)initWithChat:(OCTChat *)chat
+
+- (instancetype)initWithChat:(OCTChat *)chat submanagerCalls:(OCTSubmanagerCalls *)manager
 {
     self = [super init];
     if (! self) {
@@ -45,6 +49,8 @@ NSString *const kCallViewControllerUserIdentifier = @"callViewController";
     if (! _call) {
         return nil;
     }
+
+    _manager = manager;
 
     return self;
 }

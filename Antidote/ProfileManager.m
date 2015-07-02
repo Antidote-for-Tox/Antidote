@@ -233,6 +233,8 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
     self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
 
+    self.toxManager.calls.delegate = self.toxListener;
+
     if (initializeWithDefaultValues) {
         NSString *name = [UIDevice currentDevice].name;
 
