@@ -9,6 +9,7 @@
 #import "ActiveCallViewController.h"
 #import "Masonry.h"
 #import "OCTCall.h"
+#import "OCTSubmanagerCalls.h"
 
 static const CGFloat kIndent = 50.0;
 
@@ -79,7 +80,9 @@ static const CGFloat kIndent = 50.0;
 }
 
 - (void)endCall
-{}
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
+}
 
 - (void)updateTimerLabel
 {

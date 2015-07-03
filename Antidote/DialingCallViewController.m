@@ -12,6 +12,7 @@
 #import "OCTCall.h"
 #import "OCTChat.h"
 #import "OCTSubmanagerCalls.h"
+#import "ActiveCallViewController.h"
 
 static const CGFloat kIndent = 50.0;
 
@@ -73,10 +74,26 @@ static const CGFloat kIndent = 50.0;
     }];
 }
 
+#pragma mark - Call methods
+
+- (void)didUpdateCall
+{
+    [super didUpdateCall];
+
+    if (self.call.status == OCTCallStatusActive) {
+        [self pushToActiveCallController];
+    }
+}
 - (void)endCall
 {
-    // do animation stuff
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
+}
+
+- (void)pushToActiveCallController
+{
+    ActiveCallViewController *activeCallViewController = [[ActiveCallViewController alloc] initWithCall:self.call submanagerCalls:self.manager];
+
+    [self.navigationController pushViewController:activeCallViewController animated:YES];
 }
 
 @end

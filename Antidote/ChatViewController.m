@@ -388,12 +388,12 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 {
     OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
-    DialingCallViewController *dailingCallViewController = [[DialingCallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
+    DialingCallViewController *dialingCallViewController = [[DialingCallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
 
-    dailingCallViewController.modalInPopover = YES;
-    dailingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    dialingCallViewController.modalInPopover = YES;
+    dialingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:dailingCallViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:dialingCallViewController];
     navigationController.navigationBarHidden = YES;
 
     [self presentViewController:navigationController animated:YES completion:nil];

@@ -67,11 +67,13 @@ static const CGFloat kButtonsize = 50.0;
 
 - (void)acceptCallButtonPressed
 {
-    [self.manager answerCall:self.call enableAudio:YES enableVideo:NO error:nil];
+    if (! [self.manager answerCall:self.call enableAudio:YES enableVideo:NO error:nil]) {
+        return;
+    }
 
     ActiveCallViewController *activeViewController = [[ActiveCallViewController alloc] initWithCall:self.call submanagerCalls:self.manager];
 
-    [self.navigationController pushViewController:activeViewController animated:NO];
+    [self.navigationController pushViewController:activeViewController animated:YES];
 }
 
 - (void)declineCallButtonPressed
