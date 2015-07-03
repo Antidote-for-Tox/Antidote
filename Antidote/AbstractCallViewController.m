@@ -119,7 +119,7 @@ static const CGFloat kIndent = 50.0;
     self.call = [[self.callController fetchedObjects] firstObject];
 
     if (! self.call) {
-        [self.navigationController popToRootViewControllerAnimated:NO];
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
 
     [self didUpdateCall];
