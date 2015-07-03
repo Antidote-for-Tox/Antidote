@@ -15,12 +15,14 @@
 #import "ChatViewController.h"
 #import "UIImage+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "NSString+Utilities.h"
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
 #import "OCTMessageAbstract.h"
 #import "OCTMessageText.h"
 #import "OCTMessageFile.h"
+#import "OCTMessageCall.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "AvatarsManager.h"
@@ -119,6 +121,22 @@
         }
 
         message = [NSString stringWithFormat:format, chat.lastMessage.messageFile.fileName];
+    }
+
+    else if  (chat.lastMessage.messageCall) {
+
+        OCTMessageCall *messageCall = chat.lastMessage.messageCall;
+        NSString *timeString = [NSString stringFromTimeInterval:messageCall.callDuration];
+
+        switch (messageCall.callEvent) {
+            case OCTMessageCallEventAnswered:
+                message = [NSString stringWithFormat:NSLocalizedString(@"Call finished - %@", @"Calls"),
+                           timeString];
+                break;
+            case OCTMessageCallEventUnanswered:
+                message = NSLocalizedString(@"Unanswered call", @"Calls");
+                break;
+        }
     }
 
     [cell setMessage:message andDate:dateString];
