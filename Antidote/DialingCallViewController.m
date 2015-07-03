@@ -19,7 +19,7 @@ static const CGFloat kIndent = 50.0;
 @interface DialingCallViewController ()
 
 @property (strong, nonatomic) UIButton *cancelCallButton;
-@property (nonatomic, assign) BOOL pushed;
+@property (assign, nonatomic) dispatch_once_t becameActiveToken;
 
 @end
 
@@ -80,11 +80,10 @@ static const CGFloat kIndent = 50.0;
 {
     [super didUpdateCall];
 
-    if ((self.call.status == OCTCallStatusActive) && (! self.pushed)) {
-        self.pushed = YES;
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self pushToActiveCallController];
+    if (self.call.status == OCTCallStatusActive) {
+        // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
+        dispatch_once(&_becameActiveToken, ^{
+            [self performSelector:@selector(pushToActiveCallController) withObject:nil afterDelay:0];
         });
     }
 }
