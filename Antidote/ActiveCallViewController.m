@@ -88,13 +88,9 @@ static const CGFloat kIndent = 50.0;
 
 - (NSString *)stringFromTimeInterval:(NSTimeInterval)interval
 {
-    // See https://github.com/Antidote-for-Tox/objcTox/issues/55
-    NSDate *date = [NSDate dateWithTimeIntervalSince1970:interval];
+    int minutes = (int)interval / 60;
+    int seconds = interval - (minutes * 60);
 
-    NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-    [dateFormatter setDateFormat:@"HH:mm:ss"];
-
-    return [dateFormatter stringFromDate:date];
+    return [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
 }
 @end
