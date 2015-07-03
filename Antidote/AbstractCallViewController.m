@@ -71,7 +71,7 @@ static const CGFloat kIndent = 50.0;
 
     [self.view addSubview:darkView];
 
-    [darkView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [darkView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
 
@@ -104,10 +104,8 @@ static const CGFloat kIndent = 50.0;
 - (void)installConstraints
 {
     [self.nameLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).with.offset(kIndent);
-        make.left.equalTo(self.view.mas_left).with.offset(kIndent);
-        make.right.equalTo(self.view.mas_right).with.offset(-kIndent);
-        make.centerX.equalTo(self.view.mas_centerX);
+        make.top.equalTo(self.view.top).with.offset(kIndent);
+        make.centerX.equalTo(self.view.centerX);
         make.height.equalTo(30);
     }];
 }

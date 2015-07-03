@@ -37,8 +37,7 @@ static const CGFloat kIndent = 50.0;
 {
     self.endCallButton = [UIButton new];
     self.endCallButton.backgroundColor = [UIColor redColor];
-    [self.endCallButton setImage:[UIImage imageWithContentsOfFile:@"phone"] forState:UIControlStateNormal];
-    [self.endCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.endCallButton addTarget:self action:@selector(endCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.endCallButton];
 }
@@ -57,17 +56,14 @@ static const CGFloat kIndent = 50.0;
     [super installConstraints];
 
     [self.timerLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.mas_bottom).with.offset(kIndent);
-        make.left.equalTo(self.nameLabel.mas_left);
-        make.right.equalTo(self.nameLabel.mas_right);
+        make.top.equalTo(self.nameLabel.bottom).with.offset(kIndent);
         make.centerX.equalTo(self.nameLabel.centerX);
     }];
 
     [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).with.offset(-kIndent);
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.left.equalTo(self.view.mas_left).with.offset(kIndent);
-        make.right.equalTo(self.view.mas_right).with.offset(-kIndent);
+        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
+        make.left.equalTo(self.view.left).with.offset(kIndent);
+        make.right.equalTo(self.view.right).with.offset(-kIndent);
     }];
 }
 
@@ -79,7 +75,7 @@ static const CGFloat kIndent = 50.0;
     [self updateTimerLabel];
 }
 
-- (void)endCall
+- (void)endCallButtonPressed
 {
     [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
 }
@@ -92,12 +88,13 @@ static const CGFloat kIndent = 50.0;
 
 - (NSString *)stringFromTimeInterval:(NSTimeInterval)interval
 {
-    int minutes = (int)interval / 60;
-    int seconds = interval - (minutes * 60);
+    // See https://github.com/Antidote-for-Tox/objcTox/issues/55
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:interval];
 
     NSDateFormatter *dateFormatter = [NSDateFormatter new];
-    dateFormatter.timeStyle = NSDateFormatterNoStyle;
+    [dateFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+    [dateFormatter setDateFormat:@"HH:mm:ss"];
 
-    return [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+    return [dateFormatter stringFromDate:date];
 }
 @end

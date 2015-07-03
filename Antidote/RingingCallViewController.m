@@ -12,7 +12,7 @@
 #import "Masonry.h"
 
 static const CGFloat kIndent = 50.0;
-static const CGFloat kButtonsize = 50.0;
+static const CGFloat kButtonSize = 50.0;
 
 @interface RingingCallViewController ()
 
@@ -50,15 +50,15 @@ static const CGFloat kButtonsize = 50.0;
 
     [self.acceptCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(kIndent);
-        make.height.equalTo(kButtonsize);
-        make.width.equalTo(kButtonsize);
+        make.height.equalTo(kButtonSize);
+        make.width.equalTo(kButtonSize);
         make.centerY.equalTo(self.view.centerY).with.offset(kIndent);
     }];
 
     [self.declineCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view.right).with.offset(-kIndent);
-        make.height.equalTo(kButtonsize);
-        make.width.equalTo(kButtonsize);
+        make.height.equalTo(kButtonSize);
+        make.width.equalTo(kButtonSize);
         make.centerY.equalTo(self.view.centerY).with.offset(kIndent);
     }];
 }

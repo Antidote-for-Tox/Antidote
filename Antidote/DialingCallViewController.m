@@ -56,7 +56,6 @@ static const CGFloat kIndent = 50.0;
 {
     self.cancelCallButton = [UIButton new];
     self.cancelCallButton.backgroundColor = [UIColor redColor];
-    [self.cancelCallButton setImage:[UIImage imageWithContentsOfFile:@"phone"] forState:UIControlStateNormal];
     [self.cancelCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
 
     [self.view addSubview:self.cancelCallButton];
@@ -67,10 +66,9 @@ static const CGFloat kIndent = 50.0;
     [super installConstraints];
 
     [self.cancelCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.mas_bottom).with.offset(-kIndent);
-        make.centerX.equalTo(self.view.mas_centerX);
-        make.left.equalTo(self.view.mas_left).with.offset(kIndent);
-        make.right.equalTo(self.view.mas_right).with.offset(-kIndent);
+        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
+        make.left.equalTo(self.view.left).with.offset(kIndent);
+        make.right.equalTo(self.view.right).with.offset(-kIndent);
     }];
 }
 
