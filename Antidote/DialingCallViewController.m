@@ -19,7 +19,7 @@ static const CGFloat kIndent = 50.0;
 @interface DialingCallViewController ()
 
 @property (strong, nonatomic) UIButton *cancelCallButton;
-
+@property (nonatomic, assign) BOOL pushed;
 
 @end
 
@@ -80,8 +80,12 @@ static const CGFloat kIndent = 50.0;
 {
     [super didUpdateCall];
 
-    if (self.call.status == OCTCallStatusActive) {
-        [self pushToActiveCallController];
+    if ((self.call.status == OCTCallStatusActive) && (! self.pushed)) {
+        self.pushed = YES;
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self pushToActiveCallController];
+        });
     }
 }
 - (void)endCall
