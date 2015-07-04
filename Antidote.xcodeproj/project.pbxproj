@@ -65,6 +65,10 @@
 		11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */; };
+		F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */; };
+		F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */; };
+		F0D127DD1B445B2700E2E7B8 /* DialingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */; };
 		F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */; };
 		F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FB7D591ADED01A004FA894 /* PortraitNavigationController.m */; };
 /* End PBXBuildFile section */
@@ -184,6 +188,14 @@
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingingCallViewController.h; sourceTree = "<group>"; };
+		F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingingCallViewController.m; sourceTree = "<group>"; };
+		F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveCallViewController.h; sourceTree = "<group>"; };
+		F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveCallViewController.m; sourceTree = "<group>"; };
+		F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractCallViewController.h; sourceTree = "<group>"; };
+		F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractCallViewController.m; sourceTree = "<group>"; };
+		F0D127DB1B445B2700E2E7B8 /* DialingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialingCallViewController.h; sourceTree = "<group>"; };
+		F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialingCallViewController.m; sourceTree = "<group>"; };
 		F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerAimView.h; sourceTree = "<group>"; };
 		F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerAimView.m; sourceTree = "<group>"; };
 		F9FB7D581ADED01A004FA894 /* PortraitNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortraitNavigationController.h; sourceTree = "<group>"; };
@@ -340,6 +352,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F0D127DA1B445AC800E2E7B8 /* Call */,
 				119BB11F198BE76600380557 /* AddFriend */,
 				114630981984E19A0075DA16 /* AllChats */,
 				114630E119857C5D0075DA16 /* Chat */,
@@ -584,6 +597,21 @@
 				84B6628C19A2510A00328874 /* CustomLogFormatter.m */,
 			);
 			name = CustomLogFormatter;
+			sourceTree = "<group>";
+		};
+		F0D127DA1B445AC800E2E7B8 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				F0D127DB1B445B2700E2E7B8 /* DialingCallViewController.h */,
+				F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */,
+				F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */,
+				F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */,
+				F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */,
+				F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */,
+				F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */,
+				F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */,
+			);
+			name = Call;
 			sourceTree = "<group>";
 		};
 		F902D28D1ADED27A0070A3F5 /* Application */ = {
@@ -843,10 +871,12 @@
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
+				F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */,
 				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
+				F0D127DD1B445B2700E2E7B8 /* DialingCallViewController.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,
@@ -865,6 +895,7 @@
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
+				F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */,
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
@@ -877,6 +908,7 @@
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
+				F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */,
 				119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */,
 				11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */,
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
