@@ -38,7 +38,7 @@ static const CGFloat kButtonSize = 50.0;
     self.declineCallButton = [UIButton new];
     self.declineCallButton.backgroundColor = [UIColor redColor];
     [self.declineCallButton setImage:[UIImage imageNamed:@"call-decline"] forState:UIControlStateNormal];
-    [self.declineCallButton addTarget:self action:@selector(declineCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [self.declineCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:self.declineCallButton];
 
     [self installConstraints];
@@ -74,11 +74,6 @@ static const CGFloat kButtonSize = 50.0;
     ActiveCallViewController *activeViewController = [[ActiveCallViewController alloc] initWithCall:self.call submanagerCalls:self.manager];
 
     [self.navigationController pushViewController:activeViewController animated:YES];
-}
-
-- (void)declineCallButtonPressed
-{
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
 }
 
 @end

@@ -48,4 +48,11 @@
  */
 - (void)installConstraints NS_REQUIRES_SUPER;
 
+/**
+ * End the call.
+ * This can be used to cancel a call, end an active one or reject a call.
+ * Note, ending the call will dismiss the view controller itself.
+ */
+- (void)endCall;
+
 @end

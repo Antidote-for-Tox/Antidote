@@ -126,4 +126,9 @@ static const CGFloat kIndent = 50.0;
 #pragma mark - Public
 - (void)didUpdateCall
 {}
+
+- (void)endCall
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
+}
 @end
