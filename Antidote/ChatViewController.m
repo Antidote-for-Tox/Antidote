@@ -91,9 +91,9 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
     [self configureInputToolbar];
 
-    [self updateFriendRelatedInformation];
-
     [self createPhoneCallBarButton];
+
+    [self updateFriendRelatedInformation];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -321,6 +321,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 - (void)createPhoneCallBarButton
 {
     UIImage *phoneImage = [UIImage imageNamed:@"call-phone"];
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:phoneImage
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
@@ -336,12 +337,15 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
         self.inputToolbar.contentView.textView.editable = NO;
         self.inputToolbar.contentView.rightBarButtonItem.hidden = YES;
         self.friendIsOfflineLabel.hidden = NO;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+
     }
     else {
         self.inputToolbar.contentView.textView.hidden = NO;
         self.inputToolbar.contentView.textView.editable = YES;
         self.inputToolbar.contentView.rightBarButtonItem.hidden = NO;
         self.friendIsOfflineLabel.hidden = YES;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }
 
@@ -389,6 +393,10 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
     DialingCallViewController *dialingCallViewController = [[DialingCallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
+
+    if (! dialingCallViewController) {
+        return;
+    }
 
     dialingCallViewController.modalInPopover = YES;
     dialingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
