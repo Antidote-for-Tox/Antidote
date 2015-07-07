@@ -787,6 +787,15 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = dvor;
+				TargetAttributes = {
+					1164762E19794D3300DB20B8 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 1164762A19794D3300DB20B8 /* Build configuration list for PBXProject "Antidote" */;
 			compatibilityVersion = "Xcode 3.2";
