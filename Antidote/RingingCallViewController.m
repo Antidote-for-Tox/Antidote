@@ -88,7 +88,7 @@ static const CGFloat kIndentBelowNameLabel = 10.0;
 - (void)createIncomingCallLabel
 {
     self.incomingCallLabel = [UILabel new];
-    self.incomingCallLabel.text = @"incoming call";
+    self.incomingCallLabel.text = NSLocalizedString(@"incoming call", @"Calls");
     self.incomingCallLabel.textColor = [UIColor whiteColor];
 
     [self.view addSubview:self.incomingCallLabel];

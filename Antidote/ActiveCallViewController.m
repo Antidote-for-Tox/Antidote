@@ -17,12 +17,14 @@ static const CGFloat kIndentBetweenNameLabelTimer = 20.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
+static const CGFloat k3ButtonGap = 30.0;
 
 @interface ActiveCallViewController ()
 
 @property (strong, nonatomic) UILabel *timerLabel;
 @property (strong, nonatomic) UIButton *endCallButton;
 @property (strong, nonatomic) UIButton *videoButton;
+@property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIButton *microphoneButton;
 @property (strong, nonatomic) UIButton *muteButton;
 
@@ -40,6 +42,7 @@ static const CGFloat kButtonBorderWidth = 1.5f;
     [self createEndCallButton];
     [self createCallTimer];
     [self createVideoButton];
+    [self createContainerView];
     [self createMicrophoneButton];
     [self createMuteButton];
 
@@ -75,57 +78,35 @@ static const CGFloat kButtonBorderWidth = 1.5f;
 
 - (void)createVideoButton
 {
-    self.videoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *image = [UIImage imageNamed:@"call-video"];
-    [self.videoButton setImage:image forState:UIControlStateNormal];
-
-    self.videoButton.tintColor = [UIColor whiteColor];
-
-    self.videoButton.contentMode = UIViewContentModeScaleAspectFill;
-    self.videoButton.layer.cornerRadius = kButtonSide / 2.0f;
-    self.videoButton.layer.masksToBounds = YES;
-    self.videoButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.videoButton.layer.borderWidth = kButtonBorderWidth;
+    self.videoButton = [self createButtonWithImageName:@"call-video" action:nil];
 
     [self.view addSubview:self.videoButton];
 }
 
+- (void)createContainerView
+{
+    self.containerView = [UIView new];
+    [self.view addSubview:self.containerView];
+}
+
 - (void)createMicrophoneButton
 {
-    self.microphoneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *image = [UIImage imageNamed:@"call-microphone-enable"];
-    [self.microphoneButton setImage:image forState:UIControlStateNormal];
+    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-enable" action:@selector(toggleMicrophone)];
 
-    self.microphoneButton.tintColor = [UIColor whiteColor];
+    UIImage *selectedImage = [UIImage imageNamed:@"call-microphone-disable"];
+    [self.microphoneButton setImage:selectedImage forState:UIControlStateSelected];
 
-    self.microphoneButton.contentMode = UIViewContentModeScaleAspectFill;
-    self.microphoneButton.layer.cornerRadius = kButtonSide / 2.0f;
-    self.microphoneButton.layer.masksToBounds = YES;
-    self.microphoneButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.microphoneButton.layer.borderWidth = kButtonBorderWidth;
-
-    [self.microphoneButton addTarget:self action:@selector(toggleMicrophone) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.view addSubview:self.microphoneButton];
+    [self.containerView addSubview:self.microphoneButton];
 }
 
 - (void)createMuteButton
 {
-    self.muteButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *image = [UIImage imageNamed:@"call-audio-enable"];
-    [self.muteButton setImage:image forState:UIControlStateNormal];
+    self.muteButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(toggleMute)];
 
-    self.muteButton.tintColor = [UIColor whiteColor];
+    UIImage *selectedImage = [UIImage imageNamed:@"call-audio-disable"];
+    [self.muteButton setImage:selectedImage forState:UIControlStateSelected];
 
-    self.muteButton.contentMode = UIViewContentModeScaleAspectFill;
-    self.muteButton.layer.cornerRadius = kButtonSide / 2.0f;
-    self.muteButton.layer.masksToBounds = YES;
-    self.muteButton.layer.borderColor = [UIColor whiteColor].CGColor;
-    self.muteButton.layer.borderWidth = kButtonBorderWidth;
-
-    [self.muteButton addTarget:self action:@selector(toggleMute) forControlEvents:UIControlEventTouchUpInside];
-
-    [self.view addSubview:self.muteButton];
+    [self.containerView addSubview:self.muteButton];
 }
 
 - (void)installConstraints
@@ -151,19 +132,27 @@ static const CGFloat kButtonBorderWidth = 1.5f;
         make.height.equalTo(kButtonSide);
     }];
 
-    [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.videoButton.bottom).with.offset((1.0 / 6.0) * self.view.center.x);
-        make.centerX.equalTo(self.view).with.offset(-(1.0/ 3.0) * self.view.center.x);
-        make.width.equalTo(kButtonSide);
+    [self.containerView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.videoButton.bottom).with.offset(k3ButtonGap);
+        make.centerX.equalTo(self.view);
         make.height.equalTo(kButtonSide);
     }];
 
-    [self.muteButton makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.microphoneButton);
-        make.centerX.equalTo(self.view).with.offset((1.0 / 3.0) * self.view.center.x);
+    [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.containerView.left);
+        make.right.equalTo(self.muteButton.left).with.offset(-k3ButtonGap);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
+        make.centerY.equalTo(self.containerView);
     }];
+
+    [self.muteButton makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.containerView.right);
+        make.width.equalTo(kButtonSide);
+        make.height.equalTo(kButtonSide);
+        make.centerY.equalTo(self.containerView);
+    }];
+
 }
 
 #pragma mark - Private
@@ -180,6 +169,25 @@ static const CGFloat kButtonBorderWidth = 1.5f;
     [self.timerLabel setNeedsDisplay];
 }
 
+- (UIButton *)createButtonWithImageName:(NSString *)imageName action:(SEL)action
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *image = [UIImage imageNamed:imageName];
+    [button setImage:image forState:UIControlStateNormal];
+
+    button.tintColor = [UIColor whiteColor];
+
+    button.contentMode = UIViewContentModeScaleAspectFill;
+    button.layer.cornerRadius = kButtonSide / 2.0f;
+    button.layer.masksToBounds = YES;
+    button.layer.borderColor = [UIColor whiteColor].CGColor;
+    button.layer.borderWidth = kButtonBorderWidth;
+
+    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+
+    return button;
+}
+
 - (NSString *)stringFromTimeInterval:(NSTimeInterval)interval
 {
     int minutes = (int)interval / 60;
@@ -190,37 +198,29 @@ static const CGFloat kButtonBorderWidth = 1.5f;
 
 - (void)toggleMicrophone
 {
-    if (self.manager.enableMicrophone) {
-        self.manager.enableMicrophone = NO;
-
-        UIImage *image = [UIImage imageNamed:@"call-microphone-disable"];
-        [self.microphoneButton setImage:image forState:UIControlStateNormal];
-    }
-    else {
-        self.manager.enableMicrophone = YES;
-        UIImage *image = [UIImage imageNamed:@"call-microphone-enable"];
-        [self.microphoneButton setImage:image forState:UIControlStateNormal];
-    }
+    BOOL enabled = ! self.manager.enableMicrophone;
+    self.manager.enableMicrophone = enabled;
+    self.microphoneButton.selected = ! enabled;
 }
 
 - (void)toggleMute
 {
     NSError *error;
 
-    if (self.audioIsMuted) {
+    if (self.muteButton.selected) {
         if ([self.manager sendCallControl:OCTToxAVCallControlUnmuteAudio toCall:self.call error:&error]) {
-            self.audioIsMuted = NO;
+            self.muteButton.selected = NO;
         }
         else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            self.audioIsMuted = YES;
+            self.muteButton.selected = YES;
         }
     }
     else {
         if ([self.manager sendCallControl:OCTToxAVCallControlMuteAudio toCall:self.call error:&error]) {
-            self.audioIsMuted = YES;
+            self.muteButton.selected = YES;
         }
         else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            self.audioIsMuted = NO;
+            self.muteButton.selected = NO;
         }
     }
 }
