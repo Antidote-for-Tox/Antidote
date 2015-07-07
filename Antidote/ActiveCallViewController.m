@@ -114,7 +114,7 @@ static const CGFloat kButtonBorderWidth = 1.5f;
     self.muteButton = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *image = [UIImage imageNamed:@"call-audio-enable"];
     [self.muteButton setImage:image forState:UIControlStateNormal];
-    
+
     self.muteButton.tintColor = [UIColor whiteColor];
 
     self.muteButton.contentMode = UIViewContentModeScaleAspectFill;
