@@ -24,6 +24,7 @@
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
 #import "DialingCallViewController.h"
+#import "CallNavigationViewController.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -398,13 +399,12 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
         return;
     }
 
-    dialingCallViewController.modalInPopover = YES;
-    dialingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    CallNavigationViewController *callNav = [[CallNavigationViewController alloc] initWithRootViewController:dialingCallViewController];
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:dialingCallViewController];
-    navigationController.navigationBarHidden = YES;
+    callNav.modalInPopover = YES;
+    callNav.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self presentViewController:callNav animated:YES completion:nil];
 }
 
 @end

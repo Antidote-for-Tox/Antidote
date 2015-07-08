@@ -21,6 +21,7 @@
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
 #import "RingingCallViewController.h"
+#import "CallNavigationViewController.h"
 #import "OCTCall.h"
 
 NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupIdentifierFriendRequest";
@@ -139,13 +140,13 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     }
 
     RingingCallViewController *ringingViewController = [[RingingCallViewController alloc] initWithCall:call submanagerCalls:callSubmanager];
-    ringingViewController.modalInPopover = YES;
-    ringingViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
 
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:ringingViewController];
-    navigationController.navigationBarHidden = YES;
+    UINavigationController *callNav = [[CallNavigationViewController alloc] initWithRootViewController:ringingViewController];
 
-    [visibleVC presentViewController:navigationController animated:YES completion:nil];
+    callNav.modalInPopover = YES;
+    callNav.modalPresentationStyle = UIModalPresentationOverFullScreen;
+
+    [visibleVC presentViewController:callNav animated:YES completion:nil];
 }
 
 #pragma mark -  Private
