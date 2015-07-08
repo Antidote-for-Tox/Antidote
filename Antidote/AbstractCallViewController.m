@@ -93,7 +93,7 @@ static const CGFloat kIndent = 50.0;
 
         self.nameLabel = [UILabel new];
         self.nameLabel.text = friend.nickname;
-        self.nameLabel.font = [self.appearanceManager fontHelveticaNeueWithSize:30.0];
+        self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:30.0];
         self.nameLabel.textColor = [UIColor whiteColor];
         self.nameLabel.textAlignment = NSTextAlignmentCenter;
         [self.nameLabel sizeToFit];

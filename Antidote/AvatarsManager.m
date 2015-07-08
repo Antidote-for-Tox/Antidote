@@ -63,43 +63,15 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
 
 - (UIImage *)createAvatarFromString:(NSString *)string diameter:(CGFloat)diameter
 {
-    string = [self avatarsStringFromString:string];
-
-    UILabel *label = [UILabel new];
-    label.backgroundColor = [[AppContext sharedContext].appearance bubbleOutgoingColor];
-    label.layer.borderColor = [[AppContext sharedContext].appearance textMainColor].CGColor;
-    label.layer.borderWidth = 1.0;
-    label.layer.masksToBounds = YES;
-    label.textColor = [[AppContext sharedContext].appearance textMainColor];
-    label.textAlignment = NSTextAlignmentCenter;
-    label.text = string;
-
-    CGFloat fontSize = 51;
-    CGSize size;
-
-    do {
-        fontSize--;
-
-        // PL - placeholder in case if avatar text is nil
-        NSString *str = string ?: @"PL";
-
-        size = [str stringSizeWithFont:[[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:fontSize]];
-
-    }
-    while (MAX(size.width, size.height) > diameter);
-
-    CGRect frame = CGRectZero;
-    frame.size.width = frame.size.height = diameter;
-
-    label.font = [[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:(int) (fontSize * 0.6)];
-    label.layer.cornerRadius = frame.size.width / 2;
-    label.frame = frame;
-
-    return [self imageWithView:label];
+    return [self createAvatarFromString:string
+                               diameter:diameter
+                              textColor:[[AppContext sharedContext].appearance textMainColor]
+                        backgroundColor:[[AppContext sharedContext].appearance bubbleOutgoingColor]];
 }
 
 - (UIImage *)createAvatarFromString:(NSString *)string diameter:(CGFloat)diameter
-                          textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor
+                          textColor:(UIColor *)textColor
+                    backgroundColor:(UIColor *)backgroundColor
 {
     string = [self avatarsStringFromString:string];
 

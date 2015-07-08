@@ -141,7 +141,6 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     RingingCallViewController *ringingViewController = [[RingingCallViewController alloc] initWithCall:call submanagerCalls:callSubmanager];
     ringingViewController.modalInPopover = YES;
     ringingViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
-    ringingViewController.appearanceManager = [AppContext sharedContext].appearance;
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:ringingViewController];
     navigationController.navigationBarHidden = YES;

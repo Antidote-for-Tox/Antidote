@@ -15,6 +15,7 @@
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSize = 50.0;
+static const CGFloat kAvatarDiameter = 180.0;
 
 @interface RingingCallViewController ()
 
@@ -51,12 +52,12 @@ static const CGFloat kButtonSize = 50.0;
 
 - (void)createFriendAvatar
 {
-    AvatarsManager *avatars = [[AvatarsManager alloc] init];
-
-    CGFloat diameter = (1.0 / 2.0) * self.view.bounds.size.width;
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
 
     OCTFriend *friend = [self.call.chat.friends firstObject];
-    UIImage *image = [avatars createAvatarFromString:friend.name diameter:diameter
+
+    UIImage *image = [avatars createAvatarFromString:friend.nickname
+                                            diameter:kAvatarDiameter
                                            textColor:[UIColor whiteColor] backgroundColor:[UIColor clearColor]];
 
     self.friendAvatar = [[UIImageView alloc] initWithImage:image];
