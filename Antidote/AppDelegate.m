@@ -19,7 +19,6 @@
 #import "SettingsViewController.h"
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
-#import "EventsManager.h"
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
 #import "Helper.h"
@@ -70,9 +69,10 @@
     [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
-        UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+        // FIXME
+        // UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 
-        [[AppContext sharedContext].events handleLocalNotification:notification];
+        // [[AppContext sharedContext].events handleLocalNotification:notification];
     }
 
     [self.window makeKeyAndVisible];
@@ -110,7 +110,8 @@
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
 {
-    [[AppContext sharedContext].events handleLocalNotification:notification];
+    // FIXME
+    // [[AppContext sharedContext].events handleLocalNotification:notification];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

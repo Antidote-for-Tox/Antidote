@@ -9,7 +9,6 @@
 #import "AppContext.h"
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
-#import "EventsManager.h"
 #import "NotificationManager.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
@@ -18,7 +17,6 @@
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
-@property (strong, nonatomic, readwrite) EventsManager *events;
 @property (strong, nonatomic, readwrite) NotificationManager *notification;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
@@ -80,16 +78,6 @@
     _avatars = [AvatarsManager new];
 
     return _avatars;
-}
-
-- (EventsManager *)events
-{
-    if (_events) {
-        return _events;
-    }
-
-    _events = [EventsManager new];
-    return _events;
 }
 
 - (NotificationManager *)notification

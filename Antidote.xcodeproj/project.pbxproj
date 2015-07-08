@@ -48,8 +48,6 @@
 		11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */; };
 		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
 		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
-		11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77B198E93FB0029A7A0 /* EventsManager.m */; };
-		11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A77E198E948D0029A7A0 /* EventObject.m */; };
 		11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C4B4D01B25F8DF00646A2E /* Helper.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
 		11CFD0B61B3F526E002C59DB /* NotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0B51B3F526E002C59DB /* NotificationView.m */; };
@@ -149,10 +147,6 @@
 		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utilities.h"; sourceTree = "<group>"; };
 		11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utilities.m"; sourceTree = "<group>"; };
-		11C3A77A198E93FB0029A7A0 /* EventsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsManager.h; sourceTree = "<group>"; };
-		11C3A77B198E93FB0029A7A0 /* EventsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventsManager.m; sourceTree = "<group>"; };
-		11C3A77D198E948D0029A7A0 /* EventObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventObject.h; sourceTree = "<group>"; };
-		11C3A77E198E948D0029A7A0 /* EventObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EventObject.m; sourceTree = "<group>"; };
 		11C4B4CF1B25F8DF00646A2E /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
 		11C4B4D01B25F8DF00646A2E /* Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Helper.m; sourceTree = "<group>"; };
 		11C7C6B619840C3E001B849B /* NSIndexSet+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSIndexSet+Utilities.h"; sourceTree = "<group>"; };
@@ -325,7 +319,6 @@
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
 				119DFAC31B3DDFF2008CA975 /* AvatarsManager */,
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
-				11C3A779198E93B10029A7A0 /* EventsManager */,
 				11C4B4CE1B25F8D600646A2E /* Helper */,
 				119DFACB1B3EA331008CA975 /* NotificationManager */,
 				11E82A9F19CD72B1001561CA /* PreviewItem */,
@@ -493,17 +486,6 @@
 				11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */,
 			);
 			name = FriendCard;
-			sourceTree = "<group>";
-		};
-		11C3A779198E93B10029A7A0 /* EventsManager */ = {
-			isa = PBXGroup;
-			children = (
-				11C3A77A198E93FB0029A7A0 /* EventsManager.h */,
-				11C3A77B198E93FB0029A7A0 /* EventsManager.m */,
-				11C3A77D198E948D0029A7A0 /* EventObject.h */,
-				11C3A77E198E948D0029A7A0 /* EventObject.m */,
-			);
-			name = EventsManager;
 			sourceTree = "<group>";
 		};
 		11C4B4CE1B25F8D600646A2E /* Helper */ = {
@@ -849,7 +831,6 @@
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
-				11C3A77F198E948D0029A7A0 /* EventObject.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
 				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
@@ -874,7 +855,6 @@
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
-				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
 				119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */,
