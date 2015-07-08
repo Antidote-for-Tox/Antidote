@@ -13,11 +13,14 @@
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSize = 50.0;
+static const CGFloat kIndentBelowNameLabel = 10.0;
 
 @interface RingingCallViewController ()
 
 @property (strong, nonatomic) UIButton *acceptCallButton;
 @property (strong, nonatomic) UIButton *declineCallButton;
+
+@property (strong, nonatomic) UILabel *incomingCallLabel;
 
 @end
 
@@ -29,17 +32,9 @@ static const CGFloat kButtonSize = 50.0;
 {
     [super viewDidLoad];
 
-    self.acceptCallButton = [UIButton new];
-    self.acceptCallButton.backgroundColor = [UIColor greenColor];
-    [self.acceptCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
-    [self.acceptCallButton addTarget:self action:@selector(acceptCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.acceptCallButton];
-
-    self.declineCallButton = [UIButton new];
-    self.declineCallButton.backgroundColor = [UIColor redColor];
-    [self.declineCallButton setImage:[UIImage imageNamed:@"call-decline"] forState:UIControlStateNormal];
-    [self.declineCallButton addTarget:self action:@selector(declineCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.declineCallButton];
+    [self createAcceptCallButton];
+    [self createDeclineCallButton];
+    [self createIncomingCallLabel];
 
     [self installConstraints];
 }
@@ -61,6 +56,42 @@ static const CGFloat kButtonSize = 50.0;
         make.width.equalTo(kButtonSize);
         make.centerY.equalTo(self.view.centerY).with.offset(kIndent);
     }];
+
+    [self.incomingCallLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.bottom).with.offset(kIndentBelowNameLabel);
+        make.centerX.equalTo(self.view.centerX);
+    }];
+}
+
+#pragma mark - View setup
+
+- (void)createAcceptCallButton
+{
+    self.acceptCallButton = [UIButton new];
+    self.acceptCallButton.backgroundColor = [UIColor greenColor];
+    [self.acceptCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
+    [self.acceptCallButton addTarget:self action:@selector(acceptCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:self.acceptCallButton];
+}
+
+- (void)createDeclineCallButton
+{
+    self.declineCallButton = [UIButton new];
+    self.declineCallButton.backgroundColor = [UIColor redColor];
+    [self.declineCallButton setImage:[UIImage imageNamed:@"call-decline"] forState:UIControlStateNormal];
+    [self.declineCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:self.declineCallButton];
+}
+
+- (void)createIncomingCallLabel
+{
+    self.incomingCallLabel = [UILabel new];
+    self.incomingCallLabel.text = NSLocalizedString(@"incoming call", @"Calls");
+    self.incomingCallLabel.textColor = [UIColor whiteColor];
+
+    [self.view addSubview:self.incomingCallLabel];
 }
 
 #pragma mark - Actions
@@ -76,9 +107,5 @@ static const CGFloat kButtonSize = 50.0;
     [self.navigationController pushViewController:activeViewController animated:YES];
 }
 
-- (void)declineCallButtonPressed
-{
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
-}
 
 @end
