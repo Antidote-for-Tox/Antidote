@@ -28,8 +28,6 @@ static const CGFloat k3ButtonGap = 30.0;
 @property (strong, nonatomic) UIButton *microphoneButton;
 @property (strong, nonatomic) UIButton *muteButton;
 
-@property (nonatomic, assign) BOOL audioIsMuted;
-
 @end
 
 @implementation ActiveCallViewController
@@ -225,17 +223,4 @@ static const CGFloat k3ButtonGap = 30.0;
     }
 }
 
-- (void)setAudioIsMuted:(BOOL)audioIsMuted
-{
-    if (audioIsMuted) {
-        UIImage *image = [UIImage imageNamed:@"call-audio-disable"];
-        [self.muteButton setImage:image forState:UIControlStateNormal];
-        _audioIsMuted = YES;
-    }
-    else {
-        UIImage *image = [UIImage imageNamed:@"call-audio-enable"];
-        [self.muteButton setImage:image forState:UIControlStateNormal];
-        _audioIsMuted = NO;
-    }
-}
 @end
