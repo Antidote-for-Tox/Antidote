@@ -12,8 +12,6 @@
 @class OCTChat;
 @class OCTCall;
 
-#import "AppearanceManager.h"
-
 @interface AbstractCallViewController : UIViewController
 
 - (instancetype)init NS_UNAVAILABLE;

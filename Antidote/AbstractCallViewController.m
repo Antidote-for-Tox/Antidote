@@ -13,6 +13,7 @@
 #import "OCTCall.h"
 #import "OCTChat.h"
 #import "OCTSubmanagerCalls.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kIndent = 50.0;
 
