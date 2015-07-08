@@ -10,15 +10,19 @@
 #import "OCTSubmanagerCalls.h"
 #import "ActiveCallViewController.h"
 #import "Masonry.h"
+#import "OCTCall.h"
+#import "AvatarsManager.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSize = 50.0;
 static const CGFloat kIndentBelowNameLabel = 10.0;
+static const CGFloat kAvatarDiameter = 180.0;
 
 @interface RingingCallViewController ()
 
 @property (strong, nonatomic) UIButton *acceptCallButton;
 @property (strong, nonatomic) UIButton *declineCallButton;
+@property (strong, nonatomic) UIImageView *friendAvatar;
 
 @property (strong, nonatomic) UILabel *incomingCallLabel;
 
@@ -35,8 +39,25 @@ static const CGFloat kIndentBelowNameLabel = 10.0;
     [self createAcceptCallButton];
     [self createDeclineCallButton];
     [self createIncomingCallLabel];
+    [self createFriendAvatar];
 
     [self installConstraints];
+}
+
+- (void)createFriendAvatar
+{
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
+
+    OCTFriend *friend = [self.call.chat.friends firstObject];
+
+    UIImage *image = [avatars avatarFromString:friend.nickname
+                                      diameter:kAvatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
+
+    self.friendAvatar = [[UIImageView alloc] initWithImage:image];
+
+    [self.view addSubview:self.friendAvatar];
 }
 
 - (void)installConstraints
@@ -55,6 +76,11 @@ static const CGFloat kIndentBelowNameLabel = 10.0;
         make.height.equalTo(kButtonSize);
         make.width.equalTo(kButtonSize);
         make.centerY.equalTo(self.view.centerY).with.offset(kIndent);
+    }];
+
+    [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.view);
     }];
 
     [self.incomingCallLabel makeConstraints:^(MASConstraintMaker *make) {

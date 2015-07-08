@@ -13,6 +13,7 @@
 #import "OCTCall.h"
 #import "OCTChat.h"
 #import "OCTSubmanagerCalls.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kIndent = 50.0;
 
@@ -70,6 +71,7 @@ static const CGFloat kIndent = 50.0;
 
         self.nameLabel = [UILabel new];
         self.nameLabel.text = friend.nickname;
+        self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:30.0];
         self.nameLabel.textColor = [UIColor whiteColor];
         self.nameLabel.textAlignment = NSTextAlignmentCenter;
         [self.nameLabel sizeToFit];

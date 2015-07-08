@@ -34,6 +34,9 @@
  */
 @property (weak, nonatomic) OCTSubmanagerCalls *manager;
 
+/**
+ * Label of the caller.
+ */
 @property (strong, nonatomic, readonly) UILabel *nameLabel;
 
 /**

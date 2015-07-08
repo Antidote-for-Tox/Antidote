@@ -11,15 +11,18 @@
 #import "Helper.h"
 #import "OCTCall.h"
 #import "OCTChat.h"
+#import "AvatarsManager.h"
 #import "OCTSubmanagerCalls.h"
 #import "ActiveCallViewController.h"
 
 static const CGFloat kIndent = 50.0;
+static const CGFloat kAvatarDiameter = 180.0;
 
 @interface DialingCallViewController ()
 
 @property (strong, nonatomic) UIButton *cancelCallButton;
 @property (assign, nonatomic) dispatch_once_t becameActiveToken;
+@property (strong, nonatomic) UIImageView *friendAvatar;
 
 @end
 
@@ -45,7 +48,7 @@ static const CGFloat kIndent = 50.0;
     [super viewDidLoad];
 
     [self createEndCallButton];
-
+    [self createFriendAvatar];
     [self installConstraints];
 }
 
@@ -61,9 +64,29 @@ static const CGFloat kIndent = 50.0;
     [self.view addSubview:self.cancelCallButton];
 }
 
+- (void)createFriendAvatar
+{
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
+
+    OCTFriend *friend = [self.call.chat.friends firstObject];
+    UIImage *image = [avatars avatarFromString:friend.nickname
+                                      diameter:kAvatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
+
+    self.friendAvatar = [[UIImageView alloc] initWithImage:image];
+
+    [self.view addSubview:self.friendAvatar];
+}
+
 - (void)installConstraints
 {
     [super installConstraints];
+
+    [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.view);
+    }];
 
     [self.cancelCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
