@@ -12,6 +12,7 @@ typedef NS_ENUM(NSUInteger, AppDelegateTabIndex) {
     AppDelegateTabIndexFriends = 0,
     AppDelegateTabIndexChats,
     AppDelegateTabIndexSettings,
+    AppDelegateTabIndexProfile,
 };
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>

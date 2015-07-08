@@ -17,11 +17,13 @@
 #import "AllChatsViewController.h"
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
+#import "ProfileViewController.h"
 #import "BadgeWithText.h"
 #import "UIAlertView+BlocksKit.h"
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
 #import "Helper.h"
+#import "AvatarsManager.h"
 
 @interface AppDelegate () <RBQFetchedResultsControllerDelegate>
 
@@ -175,14 +177,16 @@
     UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
     UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
     UINavigationController *settings = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
+    UINavigationController *profile = [[UINavigationController alloc] initWithRootViewController:[ProfileViewController new]];
 
     UITabBarController *tabBar = [UITabBarController new];
-    tabBar.viewControllers = @[friends, allChats, settings];
+    tabBar.viewControllers = @[friends, allChats, settings, profile];
 
     UIColor *textMainColor = [[AppContext sharedContext].appearance textMainColor];
     friends.navigationBar.tintColor = textMainColor;
     allChats.navigationBar.tintColor = textMainColor;
     settings.navigationBar.tintColor = textMainColor;
+    profile.navigationBar.tintColor = textMainColor;
     tabBar.tabBar.tintColor = textMainColor;
 
     friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
@@ -196,6 +200,11 @@
     settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:settings.title
                                                         image:[UIImage imageNamed:@"tab-bar-settings"]
                                                           tag:AppDelegateTabIndexSettings];
+
+    UIImage *avatar = [[AppContext sharedContext].avatars avatarFromString:@"temp avatar" diameter:30];
+    profile.tabBarItem = [[UITabBarItem alloc] initWithTitle:profile.title
+                                                       image:avatar
+                                                         tag:AppDelegateTabIndexProfile];
 
     tabBar.selectedIndex = tabIndex;
 
