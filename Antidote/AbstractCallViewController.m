@@ -119,7 +119,7 @@ static const CGFloat kIndent = 50.0;
     if (! self.call) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
-
+    
     [self didUpdateCall];
 }
 
