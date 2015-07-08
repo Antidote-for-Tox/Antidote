@@ -65,6 +65,7 @@
 		11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F0417A591B4C853C00704348 /* CallNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0417A581B4C853C00704348 /* CallNavigationViewController.m */; };
 		F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */; };
 		F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */; };
 		F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */; };
@@ -188,6 +189,8 @@
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F0417A571B4C853C00704348 /* CallNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallNavigationViewController.h; sourceTree = "<group>"; };
+		F0417A581B4C853C00704348 /* CallNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallNavigationViewController.m; sourceTree = "<group>"; };
 		F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingingCallViewController.h; sourceTree = "<group>"; };
 		F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingingCallViewController.m; sourceTree = "<group>"; };
 		F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveCallViewController.h; sourceTree = "<group>"; };
@@ -610,6 +613,8 @@
 				F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */,
 				F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */,
 				F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */,
+				F0417A571B4C853C00704348 /* CallNavigationViewController.h */,
+				F0417A581B4C853C00704348 /* CallNavigationViewController.m */,
 			);
 			name = Call;
 			sourceTree = "<group>";
@@ -914,6 +919,7 @@
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
+				F0417A591B4C853C00704348 /* CallNavigationViewController.m in Sources */,
 				11C3A77C198E93FB0029A7A0 /* EventsManager.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,

@@ -54,37 +54,14 @@ static const CGFloat kIndent = 50.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.opaque = YES;
+
+    self.view.opaque = NO;
 
     self.view.backgroundColor = [UIColor clearColor];
 
-    [self setupBlurredView];
     [self createNameLabel];
 
     [self installConstraints];
-}
-
-- (void)setupBlurredView
-{
-    UIView *darkView = [[UIView alloc] initWithFrame:self.view.bounds];
-    darkView.backgroundColor = [UIColor blackColor];
-    darkView.alpha = 0.5;
-
-    [self.view addSubview:darkView];
-
-    [darkView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-    }];
-
-    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
-
-    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-    visualEffectView.frame = self.view.bounds;
-
-    [self.view addSubview:visualEffectView];
-    [visualEffectView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
-    }];
 }
 
 - (void)createNameLabel
@@ -128,4 +105,9 @@ static const CGFloat kIndent = 50.0;
 #pragma mark - Public
 - (void)didUpdateCall
 {}
+
+- (void)endCall
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
+}
 @end
