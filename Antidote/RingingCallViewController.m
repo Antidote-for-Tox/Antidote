@@ -56,9 +56,10 @@ static const CGFloat kAvatarDiameter = 180.0;
 
     OCTFriend *friend = [self.call.chat.friends firstObject];
 
-    UIImage *image = [avatars createAvatarFromString:friend.nickname
-                                            diameter:kAvatarDiameter
-                                           textColor:[UIColor whiteColor] backgroundColor:[UIColor clearColor]];
+    UIImage *image = [avatars avatarFromString:friend.nickname
+                                      diameter:kAvatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
 
     self.friendAvatar = [[UIImageView alloc] initWithImage:image];
 

@@ -32,7 +32,9 @@
  *
  * @return Avatar from given string with given size.
  */
-- (UIImage *)createAvatarFromString:(NSString *)string diameter:(CGFloat)diameter
-                          textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor;
+- (UIImage *)avatarFromString:(NSString *)string
+                     diameter:(CGFloat)diameter
+                    textColor:(UIColor *)textColor
+              backgroundColor:(UIColor *)backgroundColor;
 
 @end
