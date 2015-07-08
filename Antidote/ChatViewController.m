@@ -400,6 +400,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
     dialingCallViewController.modalInPopover = YES;
     dialingCallViewController.modalPresentationStyle = UIModalPresentationOverFullScreen;
+    dialingCallViewController.appearanceManager = [AppContext sharedContext].appearance;
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:dialingCallViewController];
     navigationController.navigationBarHidden = YES;

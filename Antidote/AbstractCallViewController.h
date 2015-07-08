@@ -12,6 +12,8 @@
 @class OCTChat;
 @class OCTCall;
 
+#import "AppearanceManager.h"
+
 @interface AbstractCallViewController : UIViewController
 
 - (instancetype)init NS_UNAVAILABLE;
@@ -33,6 +35,8 @@
  * The call manager responsible for call handling.
  */
 @property (weak, nonatomic) OCTSubmanagerCalls *manager;
+
+@property (weak, nonatomic) AppearanceManager *appearanceManager;
 
 @property (strong, nonatomic, readonly) UILabel *nameLabel;
 

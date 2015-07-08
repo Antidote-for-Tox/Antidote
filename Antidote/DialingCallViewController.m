@@ -11,6 +11,7 @@
 #import "Helper.h"
 #import "OCTCall.h"
 #import "OCTChat.h"
+#import "AvatarsManager.h"
 #import "OCTSubmanagerCalls.h"
 #import "ActiveCallViewController.h"
 
@@ -20,6 +21,7 @@ static const CGFloat kIndent = 50.0;
 
 @property (strong, nonatomic) UIButton *cancelCallButton;
 @property (assign, nonatomic) dispatch_once_t becameActiveToken;
+@property (strong, nonatomic) UIImageView *friendAvatar;
 
 @end
 
@@ -45,7 +47,7 @@ static const CGFloat kIndent = 50.0;
     [super viewDidLoad];
 
     [self createEndCallButton];
-
+    [self createFriendAvatar];
     [self installConstraints];
 }
 
@@ -61,9 +63,29 @@ static const CGFloat kIndent = 50.0;
     [self.view addSubview:self.cancelCallButton];
 }
 
+- (void)createFriendAvatar
+{
+    AvatarsManager *avatars = [[AvatarsManager alloc] init];
+
+    CGFloat diameter = (1.0 / 2.0) * self.view.bounds.size.width;
+
+    OCTFriend *friend = [self.call.chat.friends firstObject];
+    UIImage *image = [avatars createAvatarFromString:friend.name diameter:diameter
+                                           textColor:[UIColor whiteColor] backgroundColor:[UIColor clearColor]];
+
+    self.friendAvatar = [[UIImageView alloc] initWithImage:image];
+
+    [self.view addSubview:self.friendAvatar];
+}
+
 - (void)installConstraints
 {
     [super installConstraints];
+
+    [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.view);
+    }];
 
     [self.cancelCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
@@ -93,6 +115,8 @@ static const CGFloat kIndent = 50.0;
 - (void)pushToActiveCallController
 {
     ActiveCallViewController *activeCallViewController = [[ActiveCallViewController alloc] initWithCall:self.call submanagerCalls:self.manager];
+
+    activeCallViewController.appearanceManager = self.appearanceManager;
 
     [self.navigationController pushViewController:activeCallViewController animated:YES];
 }
