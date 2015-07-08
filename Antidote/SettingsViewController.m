@@ -19,7 +19,7 @@
 #import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
 #import "CellWithSwitch.h"
-#import "ProfilesViewController.h"
+#import "ProfilesListViewController.h"
 #import "AdvancedSettingsViewController.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
@@ -158,7 +158,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     if (type == CellTypeProfile) {
-        [self.navigationController pushViewController:[ProfilesViewController new] animated:YES];
+        [self.navigationController pushViewController:[ProfilesListViewController new] animated:YES];
     }
     else if (type == CellTypeAdvancedSettings) {
         [self.navigationController pushViewController:[AdvancedSettingsViewController new] animated:YES];

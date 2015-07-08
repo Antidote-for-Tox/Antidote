@@ -9,7 +9,7 @@
 #import "AppDelegate+Utilities.h"
 #import "FriendsViewController.h"
 #import "ChatViewController.h"
-#import "ProfilesViewController.h"
+#import "ProfilesListViewController.h"
 
 @implementation AppDelegate (Utilities)
 
@@ -75,7 +75,7 @@
         [navCon popToRootViewControllerAnimated:NO];
     }
 
-    [navCon pushViewController:[ProfilesViewController new] animated:YES];
+    [navCon pushViewController:[ProfilesListViewController new] animated:YES];
 }
 
 #pragma mark -  Private

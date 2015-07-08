@@ -1,5 +1,5 @@
 //
-//  ProfilesViewController.h
+//  ProfilesListViewController.h
 //  Antidote
 //
 //  Created by Dmitry Vorobyov on 17.09.14.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ProfilesViewController : UIViewController
+@interface ProfilesListViewController : UIViewController
 
 @end
