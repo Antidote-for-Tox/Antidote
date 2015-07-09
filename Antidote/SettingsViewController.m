@@ -365,6 +365,8 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     cell.title = NSLocalizedString(@"My Tox ID", @"Settings");
     cell.toxId = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
 
+    NSLog(@"tox ID: %@", cell.toxId);
+
     [cell redraw];
 
     return cell;
