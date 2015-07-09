@@ -24,6 +24,7 @@
 #import "ProfileManager.h"
 #import "Helper.h"
 #import "AvatarsManager.h"
+#import "TabBarViewController.h"
 
 @interface AppDelegate () <RBQFetchedResultsControllerDelegate>
 
@@ -174,37 +175,7 @@
 - (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
                          withBlock:(void (^)(UINavigationController *topNavigation))block;
 {
-    UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
-    UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
-    UINavigationController *settings = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
-    UINavigationController *profile = [[UINavigationController alloc] initWithRootViewController:[ProfileViewController new]];
-
-    UITabBarController *tabBar = [UITabBarController new];
-    tabBar.viewControllers = @[friends, allChats, settings, profile];
-
-    UIColor *textMainColor = [[AppContext sharedContext].appearance textMainColor];
-    friends.navigationBar.tintColor = textMainColor;
-    allChats.navigationBar.tintColor = textMainColor;
-    settings.navigationBar.tintColor = textMainColor;
-    profile.navigationBar.tintColor = textMainColor;
-    tabBar.tabBar.tintColor = textMainColor;
-
-    friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
-                                                       image:[UIImage imageNamed:@"tab-bar-friends"]
-                                                         tag:AppDelegateTabIndexFriends];
-
-    allChats.tabBarItem = [[UITabBarItem alloc] initWithTitle:allChats.title
-                                                        image:[UIImage imageNamed:@"tab-bar-chats"]
-                                                          tag:AppDelegateTabIndexChats];
-
-    settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:settings.title
-                                                        image:[UIImage imageNamed:@"tab-bar-settings"]
-                                                          tag:AppDelegateTabIndexSettings];
-
-    UIImage *avatar = [[AppContext sharedContext].avatars avatarFromString:@"temp avatar" diameter:30];
-    profile.tabBarItem = [[UITabBarItem alloc] initWithTitle:profile.title
-                                                       image:avatar
-                                                         tag:AppDelegateTabIndexProfile];
+    TabBarViewController *tabBar = [TabBarViewController new];
 
     tabBar.selectedIndex = tabIndex;
 
@@ -223,18 +194,19 @@
 
 - (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index
 {
-    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
+    return nil;
+    // UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
 
-    CGRect frame = CGRectZero;
-    frame.origin.x = index * (tabBarController.tabBar.frame.size.width / 3) +
-                     tabBarController.tabBar.frame.size.width / 6;
-    frame.origin.y = 3.0;
+    // CGRect frame = CGRectZero;
+    // frame.origin.x = index * (tabBarController.tabBar.frame.size.width / 3) +
+    //                  tabBarController.tabBar.frame.size.width / 6;
+    // frame.origin.y = 3.0;
 
-    BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
-    badge.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
-    [tabBarController.tabBar addSubview:badge];
+    // BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
+    // badge.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
+    // [tabBarController.tabBar addSubview:badge];
 
-    return badge;
+    // return badge;
 }
 
 - (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex

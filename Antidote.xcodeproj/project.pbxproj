@@ -22,6 +22,9 @@
 		1164764319794D3300DB20B8 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1164764219794D3300DB20B8 /* AppDelegate.m */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
+		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
+		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
+		1182AF431B4EE3360095B476 /* TabBarProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF421B4EE3360095B476 /* TabBarProfileItem.m */; };
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
 		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
 		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
@@ -96,6 +99,13 @@
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
+		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
+		1182AF391B4EE2070095B476 /* TabBarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarViewController.m; sourceTree = "<group>"; };
+		1182AF3E1B4EE31B0095B476 /* TabBarBadgeItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarBadgeItem.h; sourceTree = "<group>"; };
+		1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarBadgeItem.m; sourceTree = "<group>"; };
+		1182AF411B4EE3360095B476 /* TabBarProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarProfileItem.h; sourceTree = "<group>"; };
+		1182AF421B4EE3360095B476 /* TabBarProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarProfileItem.m; sourceTree = "<group>"; };
+		1182AF441B4EFFCE0095B476 /* TabBarItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarItemProtocol.h; sourceTree = "<group>"; };
 		118352A6197A64B70048CA64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		118352A7197A64B70048CA64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		118352AA197A6C410048CA64 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
@@ -323,6 +333,20 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		1182AF371B4EE1EC0095B476 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				1182AF381B4EE2070095B476 /* TabBarViewController.h */,
+				1182AF391B4EE2070095B476 /* TabBarViewController.m */,
+				1182AF441B4EFFCE0095B476 /* TabBarItemProtocol.h */,
+				1182AF3E1B4EE31B0095B476 /* TabBarBadgeItem.h */,
+				1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */,
+				1182AF411B4EE3360095B476 /* TabBarProfileItem.h */,
+				1182AF421B4EE3360095B476 /* TabBarProfileItem.m */,
+			);
+			name = TabBar;
+			sourceTree = "<group>";
+		};
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -345,6 +369,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				1182AF371B4EE1EC0095B476 /* TabBar */,
 				119BB11F198BE76600380557 /* AddFriend */,
 				114630981984E19A0075DA16 /* AllChats */,
 				114630E119857C5D0075DA16 /* Chat */,
@@ -835,6 +860,7 @@
 				11CFD0C71B40745E002C59DB /* ToxListener.m in Sources */,
 				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
+				1182AF431B4EE3360095B476 /* TabBarProfileItem.m in Sources */,
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
@@ -863,6 +889,7 @@
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
+				1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */,
 				119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
 				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
@@ -874,6 +901,7 @@
 				119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */,
 				11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */,
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
+				1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
