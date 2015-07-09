@@ -12,19 +12,28 @@
 #import "Masonry.h"
 #import "OCTCall.h"
 #import "AvatarsManager.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kIndent = 50.0;
-static const CGFloat kButtonSize = 50.0;
+static const CGFloat kButtonHeight = 70.0;
+static const CGFloat kButtonWidth = 90.0;
+static const CGFloat kButtonBorderWidth = 1.0;
 static const CGFloat kIndentBelowNameLabel = 10.0;
 static const CGFloat kAvatarDiameter = 180.0;
+static const CGFloat kLabelFontSize = 16.0;
 
 @interface RingingCallViewController ()
 
-@property (strong, nonatomic) UIButton *acceptCallButton;
-@property (strong, nonatomic) UIButton *declineCallButton;
 @property (strong, nonatomic) UIImageView *friendAvatar;
-
 @property (strong, nonatomic) UILabel *incomingCallLabel;
+
+@property (strong, nonatomic) UIView *declineContainer;
+@property (strong, nonatomic) UIButton *declineCallButton;
+@property (strong, nonatomic) UILabel *declineLabel;
+
+@property (strong, nonatomic) UIView *acceptContainer;
+@property (strong, nonatomic) UIButton *acceptCallButton;
+@property (strong, nonatomic) UILabel *answerLabel;
 
 @end
 
@@ -64,18 +73,42 @@ static const CGFloat kAvatarDiameter = 180.0;
 {
     [super installConstraints];
 
-    [self.acceptCallButton makeConstraints:^(MASConstraintMaker *make) {
+    [self.declineContainer makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.left).with.offset(kIndent);
-        make.height.equalTo(kButtonSize);
-        make.width.equalTo(kButtonSize);
-        make.centerY.equalTo(self.view.centerY).with.offset(kIndent);
+        make.height.equalTo(kButtonHeight * 1.5);
+        make.width.equalTo(kButtonWidth);
+        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
     }];
 
     [self.declineCallButton makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.declineContainer);
+        make.bottom.equalTo(self.declineContainer);
+        make.width.equalTo(kButtonWidth);
+        make.height.equalTo(kButtonHeight);
+    }];
+
+    [self.acceptCallButton makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.acceptContainer);
+        make.bottom.equalTo(self.acceptContainer);
+        make.width.equalTo(kButtonWidth);
+        make.height.equalTo(kButtonHeight);
+    }];
+
+    [self.acceptContainer makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.view.right).with.offset(-kIndent);
-        make.height.equalTo(kButtonSize);
-        make.width.equalTo(kButtonSize);
-        make.centerY.equalTo(self.view.centerY).with.offset(kIndent);
+        make.height.equalTo(kButtonHeight * 1.5);
+        make.width.equalTo(kButtonWidth);
+        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
+    }];
+
+    [self.declineLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.declineCallButton);
+        make.bottom.equalTo(self.declineCallButton.top);
+    }];
+
+    [self.answerLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.acceptCallButton.top);
+        make.centerX.equalTo(self.acceptCallButton);
     }];
 
     [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
@@ -93,22 +126,52 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)createAcceptCallButton
 {
-    self.acceptCallButton = [UIButton new];
-    self.acceptCallButton.backgroundColor = [UIColor greenColor];
-    [self.acceptCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
+    UIColor *darkGreen = [UIColor colorWithRed:0.12 green:0.65 blue:0.17 alpha:1.0];
+
+    self.acceptCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.acceptCallButton.tintColor = [UIColor whiteColor];
+    self.acceptCallButton.backgroundColor = darkGreen;
+    self.acceptCallButton.layer.cornerRadius = kButtonHeight / 2.0f;
+    self.acceptCallButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.acceptCallButton.layer.borderWidth = kButtonBorderWidth;
+    [self.acceptCallButton setImage:[UIImage imageNamed:@"call-phone"] forState:UIControlStateNormal];
     [self.acceptCallButton addTarget:self action:@selector(acceptCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.view addSubview:self.acceptCallButton];
+    self.answerLabel = [UILabel new];
+    self.answerLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kLabelFontSize];
+    self.answerLabel.textColor = [UIColor whiteColor];
+    self.answerLabel.text = NSLocalizedString(@"Answer", @"Calls");
+
+    self.acceptContainer = [UIView new];
+    [self.acceptContainer addSubview:self.acceptCallButton];
+    [self.acceptContainer addSubview:self.answerLabel];
+
+    [self.view addSubview:self.acceptContainer];
 }
 
 - (void)createDeclineCallButton
 {
-    self.declineCallButton = [UIButton new];
-    self.declineCallButton.backgroundColor = [UIColor redColor];
-    [self.declineCallButton setImage:[UIImage imageNamed:@"call-decline"] forState:UIControlStateNormal];
+    UIColor *darkRed = [UIColor colorWithRed:0.86 green:0.24 blue:0.24 alpha:1.0];
+
+    self.declineCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.declineCallButton.tintColor = [UIColor whiteColor];
+    self.declineCallButton.backgroundColor = darkRed;
+    self.declineCallButton.layer.cornerRadius = kButtonHeight / 2.0f;
+    self.declineCallButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.declineCallButton.layer.borderWidth = kButtonBorderWidth;
+    [self.declineCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
     [self.declineCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
 
-    [self.view addSubview:self.declineCallButton];
+    self.declineLabel = [UILabel new];
+    self.declineLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kLabelFontSize];
+    self.declineLabel.textColor = [UIColor whiteColor];
+    self.declineLabel.text = NSLocalizedString(@"Decline", @"Calls");
+
+    self.declineContainer = [UIView new];
+    [self.declineContainer addSubview:self.declineCallButton];
+    [self.declineContainer addSubview:self.declineLabel];
+
+    [self.view addSubview:self.declineContainer];
 }
 
 - (void)createIncomingCallLabel
