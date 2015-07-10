@@ -31,11 +31,17 @@
 
 + (StatusCircleStatus)circleStatusFromFriend:(OCTFriend *)friend
 {
-    if (friend.connectionStatus == OCTToxConnectionStatusNone) {
+    return [self circleStatusFromConnectionStatus:friend.connectionStatus userStatus:friend.status];
+}
+
++ (StatusCircleStatus)circleStatusFromConnectionStatus:(OCTToxConnectionStatus)connectionStatus
+                                            userStatus:(OCTToxUserStatus)userStatus
+{
+    if (connectionStatus == OCTToxConnectionStatusNone) {
         return StatusCircleStatusOffline;
     }
 
-    switch (friend.status) {
+    switch (userStatus) {
         case OCTToxUserStatusNone:
             return StatusCircleStatusOnline;
         case OCTToxUserStatusAway:

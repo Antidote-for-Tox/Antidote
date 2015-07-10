@@ -1,22 +1,22 @@
 //
-//  ProfilesViewController.m
+//  ProfilesListViewController.m
 //  Antidote
 //
 //  Created by Dmitry Vorobyov on 17.09.14.
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
-#import "ProfilesViewController.h"
+#import "ProfilesListViewController.h"
 #import "UIViewController+Utilities.h"
 #import "UITableViewCell+Utilities.h"
 #import "UIAlertView+BlocksKit.h"
-#import "AppDelegate.h"
 #import "UIActionSheet+BlocksKit.h"
 #import "ProfileManager.h"
 #import "AppearanceManager.h"
+#import "TabBarViewController.h"
 
-@interface ProfilesViewController () <UITableViewDataSource, UITableViewDelegate,
-                                      UIDocumentInteractionControllerDelegate>
+@interface ProfilesListViewController () <UITableViewDataSource, UITableViewDelegate,
+                                          UIDocumentInteractionControllerDelegate>
 
 @property (strong, nonatomic) UITableView *tableView;
 
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation ProfilesViewController
+@implementation ProfilesListViewController
 
 #pragma mark -  Lifecycle
 
@@ -59,17 +59,17 @@
 
 - (void)addButtonPressed
 {
-    NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
+    NSString *title = NSLocalizedString(@"New profile name", @"Profiles List");
     UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
     view.alertViewStyle = UIAlertViewStylePlainTextInput;
 
-    [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
+    [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles List") handler:^{
         NSString *name = [view textFieldAtIndex:0].text;
 
         [self selectProfile:name];
     }];
 
-    [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+    [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles List") handler:nil];
 
     [view show];
 }
@@ -108,24 +108,24 @@
     UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
 
     if (! [self isCurrentProfile:name]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Select", @"Profiles") handler:^{
+        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Select", @"Profiles List") handler:^{
             [self selectProfile:name];
         }];
     }
 
-    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Rename", @"Profiles") handler:^{
+    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Rename", @"Profiles List") handler:^{
         [self renameProfile:name];
     }];
 
-    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Export", @"Profiles") handler:^{
+    [sheet bk_addButtonWithTitle:NSLocalizedString(@"Export", @"Profiles List") handler:^{
         [self exportProfile:name];
     }];
 
     // FIXME add delete option
 
-    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles List") handler:nil];
 
-    [sheet showFromTabBar:self.tabBarController.tabBar];
+    [sheet showInView:self.view];
 }
 
 - (void)     tableView:(UITableView *)tableView
@@ -135,19 +135,19 @@
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         NSString *name = [self nameAtIndexPath:indexPath];
 
-        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Delete profile %@?", @"Profiles"), name];
+        NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Delete profile %@?", @"Profiles List"), name];
 
-        NSString *message = NSLocalizedString(@"This operation cannot be undone", @"Profiles");
+        NSString *message = NSLocalizedString(@"This operation cannot be undone", @"Profiles List");
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title message:message];
 
-        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Profiles") handler:^{
+        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Profiles List") handler:^{
             BOOL isCurrent = [self isCurrentProfile:name];
             [[AppContext sharedContext].profileManager deleteProfileWithName:name];
 
             isCurrent ?  [self recreateControllers] : [self.tableView reloadData];
         }];
 
-        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Profiles") handler:nil];
+        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Profiles List") handler:nil];
 
         [alert show];
     }
@@ -197,20 +197,23 @@
 
 - (void)recreateControllers
 {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
-        [nav pushViewController:[ProfilesViewController new] animated:NO];
-    }];
+    [[AppContext sharedContext] recreateTabBarController];
+
+    TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
+    [AppContext sharedContext].tabBarController.selectedIndex = index;
+
+    UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
+    [navCon pushViewController:[ProfilesListViewController new] animated:NO];
 }
 
 - (void)renameProfile:(NSString *)name
 {
-    NSString *title = NSLocalizedString(@"New profile name", @"Profiles");
+    NSString *title = NSLocalizedString(@"New profile name", @"Profiles List");
     UIAlertView *view = [UIAlertView bk_alertViewWithTitle:title];
     view.alertViewStyle = UIAlertViewStylePlainTextInput;
     [view textFieldAtIndex:0].text = name;
 
-    [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles") handler:^{
+    [view bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Profiles List") handler:^{
         NSString *nName = [view textFieldAtIndex:0].text;
 
         if (! nName.length) {
@@ -221,7 +224,7 @@
         [self.tableView reloadData];
     }];
 
-    [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles") handler:nil];
+    [view bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles List") handler:nil];
 
     [view show];
 }
