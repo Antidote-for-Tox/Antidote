@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIActionSheet+BlocksKit.h>
+
 #import "AdvancedSettingsViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "CellWithSwitch.h"
@@ -74,11 +76,13 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     if (type == CellTypeRestoreDefault) {
-        [[AppContext sharedContext] restoreDefaultSettings];
+        UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:NSLocalizedString(@"This will reset all settings. Are you sure?", @"Settings")];
+        [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Restore", @"Settings") handler:^{
+            [[AppContext sharedContext] restoreDefaultSettings];
+        }];
+        [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Settings") handler:nil];
+        [sheet showInView:self.view];
 
-        [self.tableView reloadData];
-
-        [self reloadToxManager];
     }
 }
 
@@ -129,7 +133,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 {
     UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kRestoreDefaultReuseIdentifier
                                                                  forIndexPath:indexPath];
-    cell.textLabel.text = NSLocalizedString(@"Restore default", @"Settings");
+    cell.textLabel.text = NSLocalizedString(@"Restore default settings", @"Settings");
 
     cell.textLabel.textAlignment = NSTextAlignmentCenter;
     cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
