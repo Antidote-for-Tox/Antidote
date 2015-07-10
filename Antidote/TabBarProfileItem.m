@@ -90,10 +90,12 @@ static const CGFloat kStatusViewSize = 6.0;
     self.button.backgroundColor = [UIColor clearColor];
     [self addSubview:self.button];
 
-    __weak TabBarProfileItem *weakSelf = self;
+    weakself;
     [self.button bk_addEventHandler:^(UIButton *b) {
-        if (weakSelf.didTapOnItem) {
-            weakSelf.didTapOnItem(weakSelf);
+        strongself;
+
+        if (self.didTapOnItem) {
+            self.didTapOnItem(self);
         }
     } forControlEvents:UIControlEventTouchUpInside];
 }

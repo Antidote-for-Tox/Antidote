@@ -253,17 +253,19 @@ static const CGFloat kConnectingLabelBlinkPeriod = 1.0;
     NotificationView *view = [[NotificationView alloc] initWithObject:object];
     [self.notificationContentView addSubview:view];
 
-    __weak NotificationManager *weakSelf = self;
+    weakself;
 
     [self showNotificationViewAnimated:view completion:^(MASConstraint *topConstraint) {
         void (^hideNotification)() = ^() {
-            [weakSelf dequeueAndShowNextObject];
+            strongself;
 
-            [weakSelf hideNotificationViewAnimated:view topConstraint:topConstraint completion:^{
+            [self dequeueAndShowNextObject];
+
+            [self hideNotificationViewAnimated:view topConstraint:topConstraint completion:^{
                 [view removeFromSuperview];
 
-                if (weakSelf.notificationContentView.subviews.count == 0) {
-                    weakSelf.notificationContentView.hidden = YES;
+                if (self.notificationContentView.subviews.count == 0) {
+                    self.notificationContentView.hidden = YES;
                 }
             }];
         };

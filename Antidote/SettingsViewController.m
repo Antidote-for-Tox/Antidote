@@ -155,14 +155,16 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
         UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:NSLocalizedString(@"Add log files?", @"Settings")];
 
-        __weak SettingsViewController *weakSelf = self;
+        weakself;
 
         [alertView bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Settings") handler:^{
-            [weakSelf showMailControllerWithLogs:NO];
+            strongself;
+            [self showMailControllerWithLogs:NO];
         }];
 
         [alertView bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Settings") handler:^{
-            [weakSelf showMailControllerWithLogs:YES];
+            strongself;
+            [self showMailControllerWithLogs:YES];
         }];
 
         [alertView show];

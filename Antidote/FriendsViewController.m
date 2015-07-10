@@ -460,13 +460,14 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
                 forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        __weak FriendsViewController *weakSelf = self;
+        weakself;
 
         NSString *title = NSLocalizedString(@"Are you sure you want to remove a friend?\nThis will remove all chat history as well.", @"Friends");
         UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
 
         [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{
-            OCTFriend *friend = [weakSelf.friendsController objectAtIndexPath:indexPath];
+            strongself;
+            OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
             OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
             [[AppContext sharedContext].profileManager.toxManager.friends removeFriend:friend error:nil];
@@ -474,7 +475,8 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
         }];
 
         [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friends") handler:^{
-            [weakSelf.tableView setEditing:NO animated:YES];
+            strongself;
+            [self.tableView setEditing:NO animated:YES];
         }];
 
         [sheet showInView:self.view];
@@ -485,19 +487,22 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
                  forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        __weak FriendsViewController *weakSelf = self;
+        weakself;
 
         NSString *title = NSLocalizedString(@"Are you sure you want to remove friend request?", @"Friend requests");
         UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
 
         [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{
-            OCTFriendRequest *request = [weakSelf.friendRequestsController objectAtIndexPath:indexPath];
+            strongself;
 
+            OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
             [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:request];
         }];
 
         [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friends") handler:^{
-            [weakSelf.tableView setEditing:NO animated:YES];
+            strongself;
+
+            [self.tableView setEditing:NO animated:YES];
         }];
 
         [sheet showInView:self.view];

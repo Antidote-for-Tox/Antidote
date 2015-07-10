@@ -21,5 +21,10 @@
 
     #define MAS_SHORTHAND
     #define MAS_SHORTHAND_GLOBALS
+
+    #define WeakRef(object) __weak __typeof(object) weak_##object = object
+    #define StrongRef(object) __strong __typeof(weak_##object) object = weak_##object
+    #define weakself WeakRef(self)
+    #define strongself StrongRef(self)
 #endif
 
