@@ -377,32 +377,31 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 {
     if (self.segmentedControl.selectedSegmentIndex != FriendsViewControllerTabFriends) {
         self.navigationItem.leftBarButtonItem = nil;
-        self.navigationItem.rightBarButtonItem = nil;
+    }
+    else {
+        UIImage *image;
 
-        return;
+        FriendsSort sort = [AppContext sharedContext].userDefaults.uFriendsSort.integerValue;
+
+        switch (sort) {
+            case FriendsSortByNickname:
+                image = [UIImage imageNamed:@"friends-sort-alphabet"];
+                break;
+            case FriendsSortByStatus:
+                image = [UIImage imageNamed:@"friends-sort-status"];
+                break;
+            case __FriendsSortCount:
+                // nop
+                break;
+        }
+        image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
+                                                                                 style:UIBarButtonItemStylePlain
+                                                                                target:self
+                                                                                action:@selector(sortButtonPressed)];
     }
 
-    UIImage *image;
-
-    FriendsSort sort = [AppContext sharedContext].userDefaults.uFriendsSort.integerValue;
-
-    switch (sort) {
-        case FriendsSortByNickname:
-            image = [UIImage imageNamed:@"friends-sort-alphabet"];
-            break;
-        case FriendsSortByStatus:
-            image = [UIImage imageNamed:@"friends-sort-status"];
-            break;
-        case __FriendsSortCount:
-            // nop
-            break;
-    }
-    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:image
-                                                                             style:UIBarButtonItemStylePlain
-                                                                            target:self
-                                                                            action:@selector(sortButtonPressed)];
 
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
                                               initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
