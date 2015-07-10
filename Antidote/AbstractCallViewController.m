@@ -14,6 +14,7 @@
 #import "OCTChat.h"
 #import "OCTSubmanagerCalls.h"
 #import "AppearanceManager.h"
+#import "CallNavigationViewController.h"
 
 static const CGFloat kIndent = 50.0;
 
@@ -96,9 +97,8 @@ static const CGFloat kIndent = 50.0;
     self.call = [[self.callController fetchedObjects] firstObject];
 
     if (! self.call) {
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewControllerAnimated:YES completion:nil];
     }
-
     [self didUpdateCall];
 }
 
@@ -109,5 +109,15 @@ static const CGFloat kIndent = 50.0;
 - (void)endCall
 {
     [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
+}
+
+- (void)switchToCall:(OCTCall *)call
+{
+    [(CallNavigationViewController *)self.navigationController switchToCall:call fromAbstractViewController:self];
+}
+
+- (void)displayNotificationOfNewCall:(OCTCall *)call
+{
+    // To Do: Display incoming call.
 }
 @end

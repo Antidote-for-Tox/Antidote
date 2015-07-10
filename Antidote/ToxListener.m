@@ -127,13 +127,14 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 - (void)callSubmanager:(OCTSubmanagerCalls *)callSubmanager receiveCall:(OCTCall *)call audioEnabled:(BOOL)audioEnabled videoEnabled:(BOOL)videoEnabled
 {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    UIViewController *visibleVC = [delegate visibleViewController];
+    UIViewController *visibleVC = [[delegate visibleViewController] presentedViewController];
 
-    if ([visibleVC isKindOfClass:[AbstractCallViewController class]]) {
-        // User is in a middle of call, send some kind of notification?
-        [callSubmanager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+    if ([visibleVC isKindOfClass:[CallNavigationViewController class]]) {
+        // User is in a middle of call, callNAV will handle this
         return;
     }
+
+    visibleVC = [delegate visibleViewController];
 
     RingingCallViewController *ringingViewController = [[RingingCallViewController alloc] initWithCall:call submanagerCalls:callSubmanager];
 

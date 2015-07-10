@@ -58,4 +58,19 @@
  */
 - (void)endCall;
 
+/**
+ * Switch to a different call
+ * Will switch to the appropriate view controller based
+ * on call status.
+ * Calling this will dismiss the current view controller.
+ * @param call Call to switch to
+ */
+- (void)switchToCall:(OCTCall *)call;
+
+/**
+ * Use this to notify of a new incoming call.
+ * @param call The call that is incoming
+ */
+- (void)displayNotificationOfNewCall:(OCTCall *)call;
+
 @end

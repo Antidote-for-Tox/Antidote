@@ -27,6 +27,7 @@ static const CGFloat k3ButtonGap = 30.0;
 @property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIButton *microphoneButton;
 @property (strong, nonatomic) UIButton *muteButton;
+@property (strong, nonatomic) UIView *incomingCallContainer;
 
 @end
 
@@ -221,6 +222,31 @@ static const CGFloat k3ButtonGap = 30.0;
             self.muteButton.selected = NO;
         }
     }
+}
+
+- (void)displayNotificationOfNewCall:(OCTCall *)call
+{
+    self.incomingCallContainer = [UIView new];
+    self.incomingCallContainer.backgroundColor = [UIColor grayColor];
+    [self.view addSubview:self.incomingCallContainer];
+
+    UILabel *nameLabel = [UILabel new];
+    OCTFriend *friend = [call.chat.friends firstObject];
+    nameLabel.text = friend.nickname;
+    [self.incomingCallContainer addSubview:nameLabel];
+
+    UIButton *declineCall = [UIButton buttonWithType:UIButtonTypeCustom];
+    declineCall.backgroundColor = [UIColor redColor];
+    [self.incomingCallContainer addSubview:declineCall];
+
+    UIButton *acceptCall = [UIButton buttonWithType:UIButtonTypeCustom];
+    acceptCall.backgroundColor = [UIColor greenColor];
+    [self.incomingCallContainer addSubview:acceptCall];
+
+    [self.incomingCallContainer makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(self.view);
+        make.height.equalTo(kButtonSide);
+    }];
 }
 
 @end
