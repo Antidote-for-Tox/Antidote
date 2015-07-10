@@ -159,6 +159,11 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     return [NSURL fileURLWithPath:path];
 }
 
+- (void)updateInterface
+{
+    [self.toxListener performUpdates];
+}
+
 #pragma mark -  Private
 
 - (NSString *)saveDirectoryPath

@@ -21,18 +21,12 @@
 #import "UIAlertView+BlocksKit.h"
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
-#import "Helper.h"
-#import "AvatarsManager.h"
-#import "TabBarViewController.h"
 
-@interface AppDelegate () <RBQFetchedResultsControllerDelegate>
+@interface AppDelegate ()
 
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTask;
-
-@property (strong, nonatomic) RBQFetchedResultsController *friendRequestController;
-@property (strong, nonatomic) RBQFetchedResultsController *chatsController;
 
 @end
 
@@ -60,10 +54,6 @@
 
         [application registerUserNotificationSettings:settings];
     }
-
-    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
-    self.friendRequestController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
-                                                                        delegate:self];
 
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
         // FIXME

@@ -139,6 +139,7 @@
     self.avatars = nil;
 
     [self.notification resetAppearance];
+    [self.profileManager updateInterface];
 }
 
 - (void)recreateTabBarController
@@ -147,6 +148,7 @@
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.window.rootViewController = self.tabBarController;
+    [self.profileManager updateInterface];
 }
 
 #pragma mark -  Private

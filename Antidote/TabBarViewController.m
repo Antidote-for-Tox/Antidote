@@ -49,13 +49,13 @@
 
 #pragma mark -  Properties
 
-- (void)setStatus:(StatusCircleStatus)status
+- (void)setConnectionStatus:(StatusCircleStatus)status
 {
     TabBarProfileItem *profileItem = self.items[TabBarViewControllerIndexProfile];
     profileItem.status = status;
 }
 
-- (StatusCircleStatus)status
+- (StatusCircleStatus)connectionStatus
 {
     TabBarProfileItem *profileItem = self.items[TabBarViewControllerIndexProfile];
     return profileItem.status;
