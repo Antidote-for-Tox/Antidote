@@ -14,6 +14,8 @@
 #import "TabBarViewController.h"
 #import "UserDefaultsManager.h"
 #import "AppDelegate.h"
+#import "Helper.h"
+#import "FriendsViewController.h"
 
 @interface AppContext ()
 
@@ -145,6 +147,31 @@
 - (void)recreateTabBarController
 {
     self.tabBarController = nil;
+
+    RBQFetchedResultsController *chats = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:nil];
+    RBQFetchedResultsController *friends = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:nil];
+    RBQFetchedResultsController *friendRequests = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest delegate:nil];
+
+    if ([chats numberOfRowsForSectionIndex:0]) {
+        self.tabBarController.selectedIndex = TabBarViewControllerIndexChats;
+    }
+    else if ([friends numberOfRowsForSectionIndex:0]) {
+        self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
+    }
+    else if ([friendRequests numberOfRowsForSectionIndex:0]) {
+        self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
+
+        UINavigationController *navCon = [self.tabBarController navigationControllerForIndex:TabBarViewControllerIndexFriends];
+
+        FriendsViewController *friendsVC = (FriendsViewController *)[navCon topViewController];
+
+        if ([friendsVC isKindOfClass:[FriendsViewController class]]) {
+            [friendsVC switchToTab:FriendsViewControllerTabRequests];
+        }
+    }
+    else {
+        self.tabBarController.selectedIndex = TabBarViewControllerIndexProfile;
+    }
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.window.rootViewController = self.tabBarController;
