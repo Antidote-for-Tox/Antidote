@@ -7,6 +7,7 @@
 //
 
 #import "CopyLabel.h"
+#import "AppDelegate.h"
 
 @implementation CopyLabel
 
@@ -30,6 +31,10 @@
 
 - (void)tapGesture:(UITapGestureRecognizer *)tapGR
 {
+    // This fixes issue with calling UIMenuController after UIActionSheet was presented.
+    AppDelegate *delegate = [UIApplication sharedApplication].delegate;
+    [delegate.window makeKeyWindow];
+
     [self becomeFirstResponder];
 
     UIMenuController *menu = [UIMenuController sharedMenuController];

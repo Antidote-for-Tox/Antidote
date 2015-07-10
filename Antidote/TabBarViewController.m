@@ -89,10 +89,16 @@
 
 - (void)setSelectedIndex:(NSUInteger)index
 {
+    NSUInteger previousIndex = self.selectedIndex;
+
     [super setSelectedIndex:index];
 
     UINavigationController *navCon = [self navigationControllerForIndex:index];
     navCon.delegate = self;
+
+    if (previousIndex == index) {
+        [navCon popToRootViewControllerAnimated:YES];
+    }
 
     [self updateSelectedItems];
 }

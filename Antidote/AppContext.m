@@ -132,7 +132,11 @@
 - (void)restoreDefaultSettings
 {
     [self createUserDefaultsValuesAndRewrite:YES];
+
+    self.profileManager = nil;
+
     [self recreateAppearance];
+    [self recreateTabBarController];
 }
 
 - (void)recreateAppearance

@@ -65,6 +65,12 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
             ]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
 #pragma mark -  Overridden methods
 
 - (void)registerCellsForTableView

@@ -125,7 +125,7 @@
 
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profiles List") handler:nil];
 
-    [sheet showFromTabBar:self.tabBarController.tabBar];
+    [sheet showInView:self.view];
 }
 
 - (void)     tableView:(UITableView *)tableView
