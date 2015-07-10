@@ -61,6 +61,19 @@
     return profileItem.status;
 }
 
+#pragma mark -  Public
+
+- (void)setBadgeTo:(NSString *)string atIndex:(TabBarViewControllerIndex)index
+{
+    TabBarBadgeItem *item = self.items[index];
+
+    if (! [item isKindOfClass:[TabBarBadgeItem class]]) {
+        return;
+    }
+
+    item.badgeText = string;
+}
+
 #pragma mark -  UITabBarControllerDelegate
 
 - (void)setSelectedIndex:(NSUInteger)index
@@ -205,6 +218,7 @@
 
         badgeItem.text = [self.viewControllers[index] title];
         badgeItem.image = [UIImage imageNamed:imageName];
+        badgeItem.badgeText = @"2";
 
         item = badgeItem;
     }

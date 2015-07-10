@@ -14,8 +14,11 @@
 
 static const CGFloat kImageAndTextContainerYOffset = 2.0;
 static const CGFloat kImageAndTextOffset = 3.0;
-static const CGFloat kBadgeVerticalOffset = 1.0;
-static const CGFloat kBadgeHorizontalOffset = 3.0;
+
+static const CGFloat kBadgeTopOffset = -5.0;
+static const CGFloat kBadgeHorizontalOffset = 5.0;
+static const CGFloat kBadgeMinimumWidth = 22.0;
+static const CGFloat kBadgeHeight = 18.0;
 
 @interface TabBarBadgeItem ()
 
@@ -55,6 +58,13 @@ static const CGFloat kBadgeHorizontalOffset = 3.0;
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+
+    self.badgeContainer.layer.cornerRadius = self.badgeContainer.frame.size.height / 2;
+}
+
 #pragma mark -  Properties
 
 - (void)setImage:(UIImage *)image
@@ -80,6 +90,7 @@ static const CGFloat kBadgeHorizontalOffset = 3.0;
 - (void)setBadgeText:(NSString *)badgeText
 {
     self.badgeLabel.text = badgeText;
+    self.badgeContainer.hidden = (badgeText.length == 0);
 }
 
 - (NSString *)badgeText
@@ -121,13 +132,18 @@ static const CGFloat kBadgeHorizontalOffset = 3.0;
 {
     self.badgeContainer = [UIView new];
     self.badgeContainer.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
+    self.badgeContainer.layer.masksToBounds = YES;
     [self addSubview:self.badgeContainer];
 
     self.badgeLabel = [UILabel new];
     self.badgeLabel.textColor = [UIColor whiteColor];
+    self.badgeLabel.textAlignment = NSTextAlignmentCenter;
     self.badgeLabel.backgroundColor = [UIColor clearColor];
     self.badgeLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:14.0];
     [self.badgeContainer addSubview:self.badgeLabel];
+
+    // hide badge
+    self.badgeText = nil;
 }
 
 - (void)createButton
@@ -163,15 +179,16 @@ static const CGFloat kBadgeHorizontalOffset = 3.0;
     }];
 
     [self.badgeContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.imageAndTextContainer.right);
-        make.bottom.equalTo(self.imageAndTextContainer.top);
+        make.left.equalTo(self.imageAndTextContainer.left);
+        make.top.equalTo(self.imageAndTextContainer.top).offset(kBadgeTopOffset);
+        make.width.greaterThanOrEqualTo(kBadgeMinimumWidth);
+        make.height.equalTo(kBadgeHeight);
     }];
 
-    [self.badgeContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.badgeContainer).offset(kBadgeVerticalOffset);
+    [self.badgeLabel makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.badgeContainer).offset(kBadgeHorizontalOffset);
         make.right.equalTo(self.badgeContainer).offset(-kBadgeHorizontalOffset);
-        make.bottom.equalTo(self.badgeContainer).offset(-kBadgeVerticalOffset);
+        make.centerY.equalTo(self.badgeContainer);
     }];
 
     [self.button makeConstraints:^(MASConstraintMaker *make) {
