@@ -17,23 +17,16 @@
 #import "AllChatsViewController.h"
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
-#import "BadgeWithText.h"
+#import "ProfileViewController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
-#import "Helper.h"
 
-@interface AppDelegate () <RBQFetchedResultsControllerDelegate>
+@interface AppDelegate ()
 
 @property (strong, nonatomic) DDFileLogger *fileLogger;
 
-@property (strong, nonatomic) BadgeWithText *friendsBadge;
-@property (strong, nonatomic) BadgeWithText *chatsBadge;
-
 @property (assign, nonatomic) UIBackgroundTaskIdentifier backgroundTask;
-
-@property (strong, nonatomic) RBQFetchedResultsController *friendRequestController;
-@property (strong, nonatomic) RBQFetchedResultsController *chatsController;
 
 @end
 
@@ -49,7 +42,7 @@
     [self configureLoggingStuff];
 
     // initialize context
-    [AppContext sharedContext];
+    [[AppContext sharedContext] recreateTabBarController];
 
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationType types =
@@ -61,12 +54,6 @@
 
         [application registerUserNotificationSettings:settings];
     }
-
-    self.chatsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:self];
-    self.friendRequestController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
-                                                                        delegate:self];
-
-    [self recreateControllersAndShow:AppDelegateTabIndexChats];
 
     if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
         // FIXME
@@ -150,110 +137,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-#pragma mark -  RBQFetchedResultsControllerDelegate
-
-- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
-{
-    if ([controller isEqual:self.friendRequestController]) {
-        [self updateBadgeForTab:AppDelegateTabIndexFriends];
-    }
-    else if ([controller isEqual:self.chatsController]) {
-        [self updateBadgeForTab:AppDelegateTabIndexChats];
-    }
-}
-
 #pragma mark -  Private
-
-- (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
-{
-    [self recreateControllersAndShow:tabIndex withBlock:nil];
-}
-
-- (void)recreateControllersAndShow:(AppDelegateTabIndex)tabIndex
-                         withBlock:(void (^)(UINavigationController *topNavigation))block;
-{
-    UINavigationController *friends = [[UINavigationController alloc] initWithRootViewController:[FriendsViewController new]];
-    UINavigationController *allChats = [[UINavigationController alloc] initWithRootViewController:[AllChatsViewController new]];
-    UINavigationController *settings = [[UINavigationController alloc] initWithRootViewController:[SettingsViewController new]];
-
-    UITabBarController *tabBar = [UITabBarController new];
-    tabBar.viewControllers = @[friends, allChats, settings];
-
-    UIColor *textMainColor = [[AppContext sharedContext].appearance textMainColor];
-    friends.navigationBar.tintColor = textMainColor;
-    allChats.navigationBar.tintColor = textMainColor;
-    settings.navigationBar.tintColor = textMainColor;
-    tabBar.tabBar.tintColor = textMainColor;
-
-    friends.tabBarItem = [[UITabBarItem alloc] initWithTitle:friends.title
-                                                       image:[UIImage imageNamed:@"tab-bar-friends"]
-                                                         tag:AppDelegateTabIndexFriends];
-
-    allChats.tabBarItem = [[UITabBarItem alloc] initWithTitle:allChats.title
-                                                        image:[UIImage imageNamed:@"tab-bar-chats"]
-                                                          tag:AppDelegateTabIndexChats];
-
-    settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:settings.title
-                                                        image:[UIImage imageNamed:@"tab-bar-settings"]
-                                                          tag:AppDelegateTabIndexSettings];
-
-    tabBar.selectedIndex = tabIndex;
-
-    self.window.rootViewController = tabBar;
-
-    self.friendsBadge = [self addBadgeAtIndex:AppDelegateTabIndexFriends];
-    self.chatsBadge = [self addBadgeAtIndex:AppDelegateTabIndexChats];
-
-    [self updateBadgeForTab:AppDelegateTabIndexFriends];
-    [self updateBadgeForTab:AppDelegateTabIndexChats];
-
-    if (block) {
-        block((UINavigationController *) tabBar.selectedViewController);
-    }
-}
-
-- (BadgeWithText *)addBadgeAtIndex:(NSUInteger)index
-{
-    UITabBarController *tabBarController = (UITabBarController *)self.window.rootViewController;
-
-    CGRect frame = CGRectZero;
-    frame.origin.x = index * (tabBarController.tabBar.frame.size.width / 3) +
-                     tabBarController.tabBar.frame.size.width / 6;
-    frame.origin.y = 3.0;
-
-    BadgeWithText *badge = [[BadgeWithText alloc] initWithFrame:frame];
-    badge.backgroundColor = [[AppContext sharedContext].appearance statusBusyColor];
-    [tabBarController.tabBar addSubview:badge];
-
-    return badge;
-}
-
-- (void)updateBadgeForTab:(AppDelegateTabIndex)tabIndex
-{
-    void (^updateApplicationBadge)() = ^() {
-        [UIApplication sharedApplication].applicationIconBadgeNumber =
-            [self.friendsBadge.value integerValue] + [self.chatsBadge.value integerValue];
-    };
-
-    if (tabIndex == AppDelegateTabIndexFriends) {
-        NSUInteger number = [self.friendRequestController numberOfRowsForSectionIndex:0];
-
-        self.friendsBadge.value = number ? [NSString stringWithFormat : @"%lu", (unsigned long)number] : nil;
-        updateApplicationBadge();
-    }
-    else if (tabIndex == AppDelegateTabIndexChats) {
-        NSInteger number = 0;
-
-        for (OCTChat *chat in self.chatsController.fetchedObjects) {
-            if ([chat hasUnreadMessages]) {
-                number++;
-            }
-        }
-
-        self.chatsBadge.value = number ? [NSString stringWithFormat : @"%lu", (unsigned long)number] : nil;
-        updateApplicationBadge();
-    }
-}
 
 - (NSArray *)getLogFilesPaths
 {

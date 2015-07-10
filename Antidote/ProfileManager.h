@@ -55,4 +55,9 @@
  */
 - (NSURL *)exportProfileWithName:(NSString *)name;
 
+/**
+ * Updates interface with current tox manager (connection status, tabbar badges, etc).
+ */
+- (void)updateInterface;
+
 @end

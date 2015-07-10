@@ -81,6 +81,22 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     [self createTableView];
 }
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    FriendsViewControllerTab tab = FriendsViewControllerTabFriends;
+
+    if ([self.friendsController numberOfRowsForSectionIndex:0]) {
+        tab = FriendsViewControllerTabFriends;
+    }
+    else if ([self.friendRequestsController numberOfRowsForSectionIndex:0]) {
+        tab = FriendsViewControllerTabRequests;
+    }
+
+    [self switchToTab:tab];
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];

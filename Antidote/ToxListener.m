@@ -20,12 +20,16 @@
 #import "OCTMessageFile.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
+#import "TabBarViewController.h"
 
 NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupIdentifierFriendRequest";
 
 @interface ToxListener () <OCTSubmanagerUserDelegate, RBQFetchedResultsControllerDelegate>
 
+@property (weak, nonatomic) OCTManager *manager;
+
 @property (strong, nonatomic) RBQFetchedResultsController *friendRequestsController;
+@property (strong, nonatomic) RBQFetchedResultsController *chatsController;
 @property (strong, nonatomic) RBQFetchedResultsController *messagesController;
 
 @property (strong, nonatomic) UpdatesQueue *friendRequestsUpdateQueue;
@@ -45,15 +49,25 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
         return nil;
     }
 
-    manager.user.delegate = self;
-    [self updateConnectionStatus:manager.user.connectionStatus];
+    _manager = manager;
+    _manager.user.delegate = self;
 
     self.friendRequestsController = [self createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest
                                                                         manager:manager];
+    self.chatsController = [self createFetchedResultsControllerForType:OCTFetchRequestTypeChat manager:manager];
     self.messagesController = [self createFetchedResultsControllerForType:OCTFetchRequestTypeMessageAbstract
                                                                   manager:manager];
 
     return self;
+}
+
+#pragma mark -  Public
+
+- (void)performUpdates
+{
+    [self updateConnectionStatus:self.manager.user.connectionStatus];
+    [self updateFriendsBadge];
+    [self updateChatBadge];
 }
 
 #pragma mark -  OCTSubmanagerUserDelegate
@@ -95,46 +109,18 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    while (YES) {
-        UpdatesQueue *queue;
-        if ([controller isEqual:self.friendRequestsController]) {
-            queue = self.friendRequestsUpdateQueue;
-        }
-        else if ([controller isEqual:self.messagesController]) {
-            queue = self.messagesUpdateQueue;
-        }
-
-        UpdatesQueueObject *object = [queue dequeue];
-        if (! object) {
-            break;
-        }
-
-        NotificationObject *notification;
-
-        if ([controller isEqual:self.friendRequestsController]) {
-            notification = [self friendRequestNotificationWithPath:object.path];
-        }
-        else if ([controller isEqual:self.messagesController]) {
-            notification = [self messageNotificationWithPath:object.path];
-        }
-
-        if (notification) {
-            [[AppContext sharedContext].notification addNotificationToQueue:notification];
-        }
+    if ([controller isEqual:self.friendRequestsController]) {
+        [self didChangeFriendRequests];
+    }
+    else if ([controller isEqual:self.chatsController]) {
+        [self didChangeChats];
+    }
+    else if ([controller isEqual:self.messagesController]) {
+        [self didChangeMessages];
     }
 }
 
 #pragma mark -  Private
-
-- (void)updateConnectionStatus:(OCTToxConnectionStatus)connectionStatus
-{
-    if (connectionStatus == OCTToxConnectionStatusNone) {
-        [[AppContext sharedContext].notification showConnectingView];
-    }
-    else {
-        [[AppContext sharedContext].notification hideConnectingView];
-    }
-}
 
 - (RBQFetchedResultsController *)createFetchedResultsControllerForType:(OCTFetchRequestType)type
                                                                manager:(OCTManager *)manager
@@ -209,6 +195,85 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     }
 
     return YES;
+}
+
+- (void)didChangeFriendRequests
+{
+    [self updateFriendsBadge];
+
+    while (YES) {
+        UpdatesQueue *queue = self.friendRequestsUpdateQueue;
+
+        UpdatesQueueObject *object = [queue dequeue];
+        if (! object) {
+            break;
+        }
+
+        NotificationObject *notification = [self friendRequestNotificationWithPath:object.path];
+
+        if (notification) {
+            [[AppContext sharedContext].notification addNotificationToQueue:notification];
+        }
+    }
+}
+
+- (void)didChangeChats
+{
+    [self updateChatBadge];
+}
+
+- (void)didChangeMessages
+{
+    while (YES) {
+        UpdatesQueue *queue = self.messagesUpdateQueue;
+
+        UpdatesQueueObject *object = [queue dequeue];
+        if (! object) {
+            break;
+        }
+
+        NotificationObject *notification = [self messageNotificationWithPath:object.path];
+
+        if (notification) {
+            [[AppContext sharedContext].notification addNotificationToQueue:notification];
+        }
+    }
+}
+
+- (void)updateConnectionStatus:(OCTToxConnectionStatus)connectionStatus
+{
+    if (connectionStatus == OCTToxConnectionStatusNone) {
+        [[AppContext sharedContext].notification showConnectingView];
+    }
+    else {
+        [[AppContext sharedContext].notification hideConnectingView];
+    }
+
+    OCTToxUserStatus userStatus = self.manager.user.userStatus;
+    [AppContext sharedContext].tabBarController.connectionStatus = [Helper circleStatusFromConnectionStatus:connectionStatus
+                                                                                                 userStatus:userStatus];
+}
+
+- (void)updateFriendsBadge
+{
+    NSUInteger number = [self.friendRequestsController numberOfRowsForSectionIndex:0];
+    NSString *badge = (number > 0) ? [NSString stringWithFormat : @"%lu", number] : nil;
+
+    [[AppContext sharedContext].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexFriends];
+}
+
+- (void)updateChatBadge
+{
+    NSInteger number = 0;
+    for (OCTChat *chat in self.chatsController.fetchedObjects) {
+        if ([chat hasUnreadMessages]) {
+            number++;
+        }
+    }
+
+    NSString *badge = (number > 0) ? [NSString stringWithFormat : @"%lu", number] : nil;
+
+    [[AppContext sharedContext].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexChats];
 }
 
 @end

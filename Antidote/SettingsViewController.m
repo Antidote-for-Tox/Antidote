@@ -6,28 +6,24 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIAlertView+BlocksKit.h>
+#import <BlocksKit/UIActionSheet+BlocksKit.h>
+
 #import "SettingsViewController.h"
-#import "QRViewerController.h"
 #import "UIView+Utilities.h"
 #import "AppDelegate.h"
 #import "MFMailComposeViewController+BlocksKit.h"
-#import "UIAlertView+BlocksKit.h"
-#import "UIActionSheet+BlocksKit.h"
 #import "DDFileLogger.h"
 #import "UITableViewCell+Utilities.h"
-#import "CellWithNameStatusAvatar.h"
-#import "CellWithToxId.h"
 #import "CellWithColorscheme.h"
 #import "CellWithSwitch.h"
-#import "ProfilesViewController.h"
+#import "ProfilesListViewController.h"
 #import "AdvancedSettingsViewController.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
-#import "AvatarsManager.h"
+#import "TabBarViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
-    CellTypeNameStatusAvatar,
-    CellTypeToxId,
     CellTypeColorscheme,
     CellTypeFeedback,
     CellTypeTitleNotifications,
@@ -39,9 +35,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
 static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
-@interface SettingsViewController () <SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate,
-                                      CellWithColorschemeDelegate, CellWithSwitchDelegate, UIImagePickerControllerDelegate,
-                                      UINavigationControllerDelegate>
+@interface SettingsViewController () <CellWithColorschemeDelegate, CellWithSwitchDelegate>
 
 @end
 
@@ -53,10 +47,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     return [super initWithTitle:NSLocalizedString(@"Settings", @"Settings") tableStructure:@[
                 @[
-                    @(CellTypeNameStatusAvatar),
-                ],
-                @[
-                    @(CellTypeToxId),
                     @(CellTypeColorscheme),
                 ],
                 @[
@@ -79,11 +69,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)registerCellsForTableView
 {
-    [self.tableView registerClass:[CellWithNameStatusAvatar class]
-           forCellReuseIdentifier:[CellWithNameStatusAvatar reuseIdentifier]];
-
-    [self.tableView registerClass:[CellWithToxId class] forCellReuseIdentifier:[CellWithToxId reuseIdentifier]];
-
     [self.tableView registerClass:[CellWithColorscheme class]
            forCellReuseIdentifier:[CellWithColorscheme reuseIdentifier]];
 
@@ -97,13 +82,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeNameStatusAvatar) {
-        return [self cellWithNameStatusAvatarAtIndexPath:indexPath];
-    }
-    else if (type == CellTypeToxId) {
-        return [self cellWithToxIdAtIndexPath:indexPath];
-    }
-    else if (type == CellTypeColorscheme) {
+    if (type == CellTypeColorscheme) {
         return [self cellWithColorschemeIdAtIndexPath:indexPath];
     }
     else if (type == CellTypeTitleNotifications) {
@@ -131,13 +110,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeNameStatusAvatar) {
-        return [CellWithNameStatusAvatar height];
-    }
-    else if (type == CellTypeToxId) {
-        return [CellWithToxId height];
-    }
-    else if (type == CellTypeColorscheme) {
+    if (type == CellTypeColorscheme) {
         return [CellWithColorscheme height];
     }
     else if ((type == CellTypeTitleNotifications) ||
@@ -158,7 +131,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     if (type == CellTypeProfile) {
-        [self.navigationController pushViewController:[ProfilesViewController new] animated:YES];
+        [self.navigationController pushViewController:[ProfilesListViewController new] animated:YES];
     }
     else if (type == CellTypeAdvancedSettings) {
         [self.navigationController pushViewController:[AdvancedSettingsViewController new] animated:YES];
@@ -190,85 +163,17 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     }
 }
 
-#pragma mark -  SettingsNameStatusAvatarCellDelegate
-
-- (void)cellWithNameStatusAvatarAvatarButtonPressed:(CellWithNameStatusAvatar *)cell
-{
-    __weak SettingsViewController *weakSelf = self;
-
-    void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
-        UIImagePickerController *ipc = [UIImagePickerController new];
-        ipc.allowsEditing = NO;
-        ipc.sourceType = sourceType;
-        ipc.delegate = weakSelf;
-
-        [weakSelf presentViewController:ipc animated:YES completion:nil];
-    };
-
-    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Settings") handler:^{
-            photoHandler(UIImagePickerControllerSourceTypeCamera);
-        }];
-    }
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Settings") handler:^{
-            photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
-        }];
-    }
-
-    // FIXME avatar
-    // if ([[ToxManager sharedInstance] userHasAvatar]) {
-    //     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Settings") handler:^{
-    //         [[ToxManager sharedInstance] updateAvatar:nil];
-
-    //         NSIndexPath *path = [weakSelf indexPathForCellType:CellTypeNameStatusAvatar];
-    //         [weakSelf.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-    //     }];
-    // }
-
-    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Settings") handler:nil];
-
-    [sheet showFromTabBar:self.tabBarController.tabBar];
-}
-
-- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
-{
-    [[AppContext sharedContext].profileManager.toxManager.user setUserName:newName error:nil];
-
-    // FIXME avatar
-    // if (! [[ToxManager sharedInstance] userHasAvatar]) {
-    NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
-    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-    // }
-}
-
-- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell statusMessageChangedTo:(NSString *)newStatusMessage
-{
-    [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:newStatusMessage error:nil];
-}
-
-#pragma mark -  CellWithToxIdDelegate
-
-- (void)cellWithToxIdQrButtonPressed:(CellWithToxId *)cell
-{
-    QRViewerController *qrVC = [[QRViewerController alloc] initWithToxId:cell.toxId];
-
-    [self presentViewController:qrVC animated:YES completion:nil];
-}
-
 #pragma mark -  CellWithColorschemeDelegate
 
 - (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
 {
-    [AppContext sharedContext].userDefaults.uCurrentColorscheme = @(scheme);
-    [[AppContext sharedContext] recreateAppearance];
+    AppContext *context = [AppContext sharedContext];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    context.userDefaults.uCurrentColorscheme = @(scheme);
+    [context recreateAppearance];
+    [context recreateTabBarController];
 
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+    context.tabBarController.selectedIndex = TabBarViewControllerIndexSettings;
 }
 
 #pragma mark -  CellWithSwitchDelegate
@@ -281,30 +186,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     if (type == CellTypeShowMessageInLocalNotification) {
         [AppContext sharedContext].userDefaults.uShowMessageInLocalNotification = @(cell.on);
     }
-}
-
-#pragma mark -  UIImagePickerControllerDelegate
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
-
-    UIImage *image = info[UIImagePickerControllerOriginalImage];
-
-    if (! image) {
-        return;
-    }
-
-    // FIXME avatar
-    // [[ToxManager sharedInstance] updateAvatar:image];
-
-    NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
-    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-}
-
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
-{
-    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark -  Private
@@ -333,41 +214,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     };
 
     [self presentViewController:vc animated:YES completion:nil];
-}
-
-- (CellWithNameStatusAvatar *)cellWithNameStatusAvatarAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *identifier = [CellWithNameStatusAvatar reuseIdentifier];
-
-    CellWithNameStatusAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier
-                                                                          forIndexPath:indexPath];
-
-    NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
-
-    cell.delegate = self;
-    cell.avatarImage = [[AppContext sharedContext].avatars avatarFromString:userName
-                                                                   diameter:[CellWithNameStatusAvatar avatarHeight]];
-    cell.name = userName;
-    cell.statusMessage = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
-    cell.maxNameLength = kOCTToxMaxNameLength;
-    cell.maxStatusMessageLength = kOCTToxMaxStatusMessageLength;
-
-    [cell redraw];
-
-    return cell;
-}
-
-- (CellWithToxId *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
-{
-    CellWithToxId *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithToxId reuseIdentifier]
-                                                               forIndexPath:indexPath];
-    cell.delegate = self;
-    cell.title = NSLocalizedString(@"My Tox ID", @"Settings");
-    cell.toxId = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
-
-    [cell redraw];
-
-    return cell;
 }
 
 - (CellWithColorscheme *)cellWithColorschemeIdAtIndexPath:(NSIndexPath *)indexPath
