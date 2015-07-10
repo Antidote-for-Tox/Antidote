@@ -124,7 +124,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profile") handler:nil];
 
-    [sheet showFromTabBar:self.tabBarController.tabBar];
+    [sheet showInView:self.view];
 }
 
 - (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
