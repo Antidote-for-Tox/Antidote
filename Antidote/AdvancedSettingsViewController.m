@@ -82,7 +82,6 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
         }];
         [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Settings") handler:nil];
         [sheet showInView:self.view];
-
     }
 }
 

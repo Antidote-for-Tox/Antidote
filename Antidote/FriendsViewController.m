@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIActionSheet+BlocksKit.h>
+
 #import "FriendsViewController.h"
 #import "UIViewController+Utilities.h"
 #import "FriendsCell.h"
@@ -14,7 +16,6 @@
 #import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
 #import "FriendCardViewController.h"
-#import "UIAlertView+BlocksKit.h"
 #import "TimeFormatter.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
@@ -462,34 +463,22 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         __weak FriendsViewController *weakSelf = self;
 
-        NSString *friendTitle = NSLocalizedString(@"Are you sure you want to delete a friend?", @"Friends");
-        NSString *chatTitle = NSLocalizedString(@"Remove private chat with this friend?", @"Friends");
+        NSString *title = NSLocalizedString(@"Are you sure you want to remove a friend?\nThis will remove all chat history as well.", @"Friends");
+        UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
 
-        UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
-
-        [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
+        [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{
             OCTFriend *friend = [weakSelf.friendsController objectAtIndexPath:indexPath];
-
             OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
             [[AppContext sharedContext].profileManager.toxManager.friends removeFriend:friend error:nil];
-
-            UIAlertView *chatAlert = [UIAlertView bk_alertViewWithTitle:chatTitle];
-
-            [chatAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friends") handler:^{
-                [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
-            }];
-
-            [chatAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:nil];
-
-            [chatAlert show];
+            [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
         }];
 
-        [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friends") handler:^{
+        [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friends") handler:^{
             [weakSelf.tableView setEditing:NO animated:YES];
         }];
 
-        [friendAlert show];
+        [sheet showInView:self.view];
     }
 }
 
@@ -499,21 +488,20 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         __weak FriendsViewController *weakSelf = self;
 
-        NSString *friendTitle = NSLocalizedString(@"Are you sure you want to delete friend request?", @"Friend requests");
+        NSString *title = NSLocalizedString(@"Are you sure you want to remove friend request?", @"Friend requests");
+        UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
 
-        UIAlertView *friendAlert = [UIAlertView bk_alertViewWithTitle:friendTitle];
-
-        [friendAlert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Friend requestss") handler:^{
+        [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{
             OCTFriendRequest *request = [weakSelf.friendRequestsController objectAtIndexPath:indexPath];
 
             [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:request];
         }];
 
-        [friendAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Friend requestss") handler:^{
+        [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friends") handler:^{
             [weakSelf.tableView setEditing:NO animated:YES];
         }];
 
-        [friendAlert show];
+        [sheet showInView:self.view];
     }
 }
 
