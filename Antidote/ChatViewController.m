@@ -194,24 +194,25 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
             }
         }
 
-        __weak ChatViewController *weakSelf = self;
+        weakself;
 
         [self.collectionView performBatchUpdates:^{
+            strongself;
             while (YES) {
-                UpdatesQueueObject *object = [weakSelf.updatesQueue dequeue];
+                UpdatesQueueObject *object = [self.updatesQueue dequeue];
                 if (! object) {
                     break;
                 }
 
                 switch (object.type) {
                     case UpdatesQueueObjectTypeInsert:
-                        [weakSelf.collectionView insertItemsAtIndexPaths:@[object.path]];
+                        [self.collectionView insertItemsAtIndexPaths:@[object.path]];
                         break;
                     case UpdatesQueueObjectTypeDelete:
-                        [weakSelf.collectionView deleteItemsAtIndexPaths:@[object.path]];
+                        [self.collectionView deleteItemsAtIndexPaths:@[object.path]];
                         break;
                     case UpdatesQueueObjectTypeUpdate:
-                        [weakSelf.collectionView reloadItemsAtIndexPaths:@[object.path]];
+                        [self.collectionView reloadItemsAtIndexPaths:@[object.path]];
                         break;
                 }
             }

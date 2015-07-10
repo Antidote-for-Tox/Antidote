@@ -140,14 +140,15 @@
      forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        __weak AllChatsViewController *weakSelf = self;
+        weakself;
 
         NSString *title = NSLocalizedString(@"Are you sure you want to delete chat with all messages?", @"Chats");
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:title];
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Chats") handler:^{
-            OCTChat *chat = [weakSelf.chatsController objectAtIndexPath:indexPath];
+            strongself;
 
+            OCTChat *chat = [self.chatsController objectAtIndexPath:indexPath];
             [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
         }];
 
@@ -214,9 +215,10 @@
 
         OCTFriend *updatedFriend = (OCTFriend *)[anObject RLMObject];
 
-        __weak AllChatsViewController *weakSelf = self;
+        weakself;
         NSArray *pathsToUpdate = [[self.tableView indexPathsForVisibleRows] bk_select:^BOOL (NSIndexPath *path) {
-            OCTChat *chat = [weakSelf.chatsController objectAtIndexPath:path];
+            strongself;
+            OCTChat *chat = [self.chatsController objectAtIndexPath:path];
 
             return ([chat.friends indexOfObject:updatedFriend] != NSNotFound);
         }];

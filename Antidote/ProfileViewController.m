@@ -87,15 +87,17 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (void)cellWithNameStatusAvatarAvatarButtonPressed:(CellWithNameStatusAvatar *)cell
 {
-    __weak ProfileViewController *weakSelf = self;
+    weakself;
 
     void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
+        strongself;
+
         UIImagePickerController *ipc = [UIImagePickerController new];
         ipc.allowsEditing = NO;
         ipc.sourceType = sourceType;
-        ipc.delegate = weakSelf;
+        ipc.delegate = self;
 
-        [weakSelf presentViewController:ipc animated:YES completion:nil];
+        [self presentViewController:ipc animated:YES completion:nil];
     };
 
     UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
