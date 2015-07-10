@@ -155,19 +155,9 @@
     if ([chats numberOfRowsForSectionIndex:0]) {
         self.tabBarController.selectedIndex = TabBarViewControllerIndexChats;
     }
-    else if ([friends numberOfRowsForSectionIndex:0]) {
+    else if ([friends numberOfRowsForSectionIndex:0] ||
+             [friendRequests numberOfRowsForSectionIndex:0]) {
         self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
-    }
-    else if ([friendRequests numberOfRowsForSectionIndex:0]) {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
-
-        UINavigationController *navCon = [self.tabBarController navigationControllerForIndex:TabBarViewControllerIndexFriends];
-
-        FriendsViewController *friendsVC = (FriendsViewController *)[navCon topViewController];
-
-        if ([friendsVC isKindOfClass:[FriendsViewController class]]) {
-            [friendsVC switchToTab:FriendsViewControllerTabRequests];
-        }
     }
     else {
         self.tabBarController.selectedIndex = TabBarViewControllerIndexProfile;
