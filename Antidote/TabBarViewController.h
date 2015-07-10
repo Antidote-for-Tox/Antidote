@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "StatusCircleView.h"
 
 typedef NS_ENUM(NSUInteger, TabBarViewControllerIndex) {
     TabBarViewControllerIndexFriends = 0,
@@ -16,6 +17,11 @@ typedef NS_ENUM(NSUInteger, TabBarViewControllerIndex) {
     __TabBarViewControllerCount,
 };
 
+/**
+ * Controller representing TabBar. Is responsible for creating all controllers.
+ */
 @interface TabBarViewController : UITabBarController
+
+@property (assign, nonatomic) StatusCircleStatus connectionStatus;
 
 @end

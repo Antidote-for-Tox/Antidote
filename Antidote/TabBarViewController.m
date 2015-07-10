@@ -47,6 +47,20 @@
     [self updateSelectedItems];
 }
 
+#pragma mark -  Properties
+
+- (void)setStatus:(StatusCircleStatus)status
+{
+    TabBarProfileItem *profileItem = self.items[TabBarViewControllerIndexProfile];
+    profileItem.status = status;
+}
+
+- (StatusCircleStatus)status
+{
+    TabBarProfileItem *profileItem = self.items[TabBarViewControllerIndexProfile];
+    return profileItem.status;
+}
+
 #pragma mark -  UITabBarControllerDelegate
 
 - (void)setSelectedIndex:(NSUInteger)index
@@ -167,8 +181,6 @@
 
     if (index == TabBarViewControllerIndexProfile) {
         TabBarProfileItem *profileItem = [TabBarProfileItem new];
-        profileItem.status = StatusCircleStatusOnline;
-
         item = profileItem;
     }
     else {
