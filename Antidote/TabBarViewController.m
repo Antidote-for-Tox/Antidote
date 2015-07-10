@@ -225,7 +225,6 @@
 
         badgeItem.text = [self.viewControllers[index] title];
         badgeItem.image = [UIImage imageNamed:imageName];
-        badgeItem.badgeText = @"2";
 
         item = badgeItem;
     }
