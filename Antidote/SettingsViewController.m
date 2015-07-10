@@ -24,6 +24,7 @@
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 #import "AvatarsManager.h"
+#import "TabBarViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameStatusAvatar,
@@ -263,12 +264,13 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
 {
-    [AppContext sharedContext].userDefaults.uCurrentColorscheme = @(scheme);
-    [[AppContext sharedContext] recreateAppearance];
+    AppContext *context = [AppContext sharedContext];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    context.userDefaults.uCurrentColorscheme = @(scheme);
+    [context recreateAppearance];
+    [context recreateTabBarController];
 
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings];
+    context.tabBarController.selectedIndex = TabBarViewControllerIndexSettings;
 }
 
 #pragma mark -  CellWithSwitchDelegate

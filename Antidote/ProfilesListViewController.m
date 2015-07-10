@@ -10,10 +10,10 @@
 #import "UIViewController+Utilities.h"
 #import "UITableViewCell+Utilities.h"
 #import "UIAlertView+BlocksKit.h"
-#import "AppDelegate.h"
 #import "UIActionSheet+BlocksKit.h"
 #import "ProfileManager.h"
 #import "AppearanceManager.h"
+#import "TabBarViewController.h"
 
 @interface ProfilesListViewController () <UITableViewDataSource, UITableViewDelegate,
                                           UIDocumentInteractionControllerDelegate>
@@ -197,10 +197,13 @@
 
 - (void)recreateControllers
 {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate recreateControllersAndShow:AppDelegateTabIndexSettings withBlock:^(UINavigationController *nav) {
-        [nav pushViewController:[ProfilesListViewController new] animated:NO];
-    }];
+    [[AppContext sharedContext] recreateTabBarController];
+
+    TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
+    [AppContext sharedContext].tabBarController.selectedIndex = index;
+
+    UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
+    [navCon pushViewController:[ProfilesListViewController new] animated:NO];
 }
 
 - (void)renameProfile:(NSString *)name

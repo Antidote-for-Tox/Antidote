@@ -11,7 +11,9 @@
 #import "AvatarsManager.h"
 #import "NotificationManager.h"
 #import "ProfileManager.h"
+#import "TabBarViewController.h"
 #import "UserDefaultsManager.h"
+#import "AppDelegate.h"
 
 @interface AppContext ()
 
@@ -19,6 +21,7 @@
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) NotificationManager *notification;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
+@property (strong, nonatomic, readwrite) TabBarViewController *tabBarController;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
 @end
@@ -100,6 +103,16 @@
     return _profileManager;
 }
 
+- (TabBarViewController *)tabBarController
+{
+    if (_tabBarController) {
+        return _tabBarController;
+    }
+
+    _tabBarController = [TabBarViewController new];
+    return _tabBarController;
+}
+
 - (UserDefaultsManager *)userDefaults
 {
     if (_userDefaults) {
@@ -126,6 +139,14 @@
     self.avatars = nil;
 
     [self.notification resetAppearance];
+}
+
+- (void)recreateTabBarController
+{
+    self.tabBarController = nil;
+
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    delegate.window.rootViewController = self.tabBarController;
 }
 
 #pragma mark -  Private

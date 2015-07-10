@@ -24,6 +24,8 @@ typedef NS_ENUM(NSUInteger, TabBarViewControllerIndex) {
 
 @property (assign, nonatomic) StatusCircleStatus connectionStatus;
 
-- (void)setBadgeTo:(NSString *)string atIndex:(TabBarViewControllerIndex)index;
+- (void)setBadge:(NSString *)string atIndex:(TabBarViewControllerIndex)index;
+
+- (UINavigationController *)navigationControllerForIndex:(TabBarViewControllerIndex)index;
 
 @end

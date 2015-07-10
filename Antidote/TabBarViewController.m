@@ -63,7 +63,7 @@
 
 #pragma mark -  Public
 
-- (void)setBadgeTo:(NSString *)string atIndex:(TabBarViewControllerIndex)index
+- (void)setBadge:(NSString *)string atIndex:(TabBarViewControllerIndex)index
 {
     TabBarBadgeItem *item = self.items[index];
 
@@ -74,18 +74,25 @@
     item.badgeText = string;
 }
 
+- (UINavigationController *)navigationControllerForIndex:(TabBarViewControllerIndex)index
+{
+    UIViewController *controller = self.viewControllers[index];
+
+    if ([controller isKindOfClass:[UINavigationController class]]) {
+        return (UINavigationController *)controller;
+    }
+
+    return nil;
+}
+
 #pragma mark -  UITabBarControllerDelegate
 
 - (void)setSelectedIndex:(NSUInteger)index
 {
     [super setSelectedIndex:index];
 
-    UIViewController *controller = self.viewControllers[index];
-
-    if ([controller isKindOfClass:[UINavigationController class]]) {
-        UINavigationController *navCon = (UINavigationController *)controller;
-        navCon.delegate = self;
-    }
+    UINavigationController *navCon = [self navigationControllerForIndex:index];
+    navCon.delegate = self;
 
     [self updateSelectedItems];
 }

@@ -45,7 +45,6 @@
 		119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAD01B3EA462008CA975 /* NotificationObject.m */; };
 		11A757471B0BB50F005DAD82 /* AppContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A757461B0BB50F005DAD82 /* AppContext.m */; };
 		11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */; };
-		11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B5A365199626920005C1E7 /* BadgeWithText.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
 		11C2AA0319C48F31003BE161 /* CellWithToxId.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0219C48F31003BE161 /* CellWithToxId.m */; };
@@ -146,8 +145,6 @@
 		11A757461B0BB50F005DAD82 /* AppContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppContext.m; sourceTree = "<group>"; };
 		11A757491B0BB74C005DAD82 /* UserDefaultsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserDefaultsManager.h; sourceTree = "<group>"; };
 		11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserDefaultsManager.m; sourceTree = "<group>"; };
-		11B5A364199626920005C1E7 /* BadgeWithText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeWithText.h; sourceTree = "<group>"; };
-		11B5A365199626920005C1E7 /* BadgeWithText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeWithText.m; sourceTree = "<group>"; };
 		11B9E6151993EBDB00FB20A6 /* TimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeFormatter.h; sourceTree = "<group>"; };
 		11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeFormatter.m; sourceTree = "<group>"; };
 		11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceManager.h; sourceTree = "<group>"; };
@@ -389,7 +386,6 @@
 			children = (
 				11CFD0B71B401375002C59DB /* PassingGestures */,
 				11E57F4319C23CF100C8ACB8 /* Cells */,
-				F902D2991ADED3000070A3F5 /* BadgeWithText */,
 				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
 				F902D29B1ADED3170070A3F5 /* StatusCircleView */,
 				F902D29C1ADED31E0070A3F5 /* QRScannerAimView */,
@@ -713,15 +709,6 @@
 			name = PortraitNavigationController;
 			sourceTree = "<group>";
 		};
-		F902D2991ADED3000070A3F5 /* BadgeWithText */ = {
-			isa = PBXGroup;
-			children = (
-				11B5A364199626920005C1E7 /* BadgeWithText.h */,
-				11B5A365199626920005C1E7 /* BadgeWithText.m */,
-			);
-			name = BadgeWithText;
-			sourceTree = "<group>";
-		};
 		F902D29A1ADED30B0070A3F5 /* CopyLabel */ = {
 			isa = PBXGroup;
 			children = (
@@ -892,7 +879,6 @@
 				1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */,
 				119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
-				11B5A366199626920005C1E7 /* BadgeWithText.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				1146308819842C730075DA16 /* Model.xcdatamodeld in Sources */,
 				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
