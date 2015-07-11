@@ -12,7 +12,6 @@
 #import "UIViewController+Utilities.h"
 #import "FriendsCell.h"
 #import "NSIndexSet+Utilities.h"
-#import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
 #import "FriendCardViewController.h"
 #import "TimeFormatter.h"
@@ -248,16 +247,6 @@ static const CGFloat kCellHeight = 44.0;
             return [self friendsDidSelectRowAtIndexPath:indexPath];
         case FriendsViewControllerTabRequests:
             return [self friendRequestDidSelectRowAtIndexPath:indexPath];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
-
-        FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
-        [self.navigationController pushViewController:fcvc animated:YES];
     }
 }
 
@@ -499,10 +488,9 @@ static const CGFloat kCellHeight = 44.0;
 - (void)friendsDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
-    OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
+    FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
+    [self.navigationController pushViewController:fcvc animated:YES];
 }
 
 - (void)friendRequestDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
