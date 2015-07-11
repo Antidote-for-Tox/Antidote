@@ -14,6 +14,7 @@
 #import "AppearanceManager.h"
 #import "UIViewController+Utilities.h"
 #import "ProfileManager.h"
+#import "UIImage+Utilities.h"
 
 static const CGFloat kHorizontalIndentation = 10.0;
 static const CGFloat kVerticalSmallIndentation = 4.0;
@@ -184,10 +185,12 @@ static const CGFloat kButtonWidth = 120.0;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:text forState:UIControlStateNormal];
     [button setTitleColor:titleColor forState:UIControlStateNormal];
-    button.backgroundColor = backgroundColor;
     button.layer.cornerRadius = 5.0;
     button.layer.masksToBounds = YES;
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
+
+    UIImage *bgImage = [UIImage imageWithColor:backgroundColor size:CGSizeMake(1.0, 1.0)];
+    [button setBackgroundImage:bgImage forState:UIControlStateNormal];
 
     return button;
 }
@@ -219,9 +222,9 @@ static const CGFloat kButtonWidth = 120.0;
     }];
 
     [self.buttonsContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.top.greaterThanOrEqualTo(self.messageValueContainer.bottom).offset(kVerticalLargeIndentation);
+        make.top.equalTo(self.messageValueContainer.bottom).offset(kVerticalLargeIndentation);
         make.centerX.equalTo(self.view);
-        make.bottom.equalTo(self.view).offset(-kVerticalLargeIndentation);
+        make.bottom.lessThanOrEqualTo(self.view).offset(-kVerticalLargeIndentation);
         make.height.equalTo(kButtonHeight);
     }];
 
