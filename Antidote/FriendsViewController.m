@@ -476,7 +476,7 @@ static const CGFloat kCellHeight = 44.0;
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         weakself;
 
-        NSString *title = NSLocalizedString(@"Are you sure you want to remove friend request?", @"Friend requests");
+        NSString *title = NSLocalizedString(@"Are you sure you want to remove friend request?", @"Friends");
         UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
 
         [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{

@@ -6,13 +6,14 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import <BlocksKit/UIControl+BlocksKit.h>
+#import <BlocksKit/UIActionSheet+BlocksKit.h>
 #import <Masonry/Masonry.h>
 
 #import "FriendRequestViewController.h"
 #import "OCTFriendRequest.h"
 #import "AppearanceManager.h"
 #import "UIViewController+Utilities.h"
+#import "ProfileManager.h"
 
 static const CGFloat kHorizontalIndentation = 10.0;
 static const CGFloat kVerticalSmallIndentation = 4.0;
@@ -70,6 +71,32 @@ static const CGFloat kButtonWidth = 120.0;
     [self installConstraints];
 }
 
+#pragma mark -  Properties
+
+- (void)declineButtonPressed
+{
+    NSString *title = NSLocalizedString(@"Are you sure you want to decline friend request?", @"Friend requests");
+    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
+
+    weakself;
+
+    [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Decline", @"Friend requests") handler:^{
+        strongself;
+        [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:self.request];
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+
+    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friend requests") handler:nil];
+
+    [sheet showInView:self.view];
+}
+
+- (void)acceptButtonPressed
+{
+    [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:self.request error:nil];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark -  Private
 
 - (void)createToxIdViews
@@ -99,17 +126,13 @@ static const CGFloat kButtonWidth = 120.0;
     self.declineButton = [self createButtonWithText:NSLocalizedString(@"Decline", @"Friend request")
                                          titleColor:[UIColor blackColor]
                                     backgroundColor:[UIColor whiteColor]
-                                            handler:^{
-        NSLog(@"decline");
-    }];
+                                             action:@selector(declineButtonPressed)];
     [self.buttonsContainer addSubview:self.declineButton];
 
     self.acceptButton = [self createButtonWithText:NSLocalizedString(@"Accept", @"Friend request")
                                         titleColor:[UIColor whiteColor]
                                    backgroundColor:[[AppContext sharedContext].appearance textMainColor]
-                                           handler:^{
-        NSLog(@"accept");
-    }];
+                                            action:@selector(acceptButtonPressed)];
     [self.buttonsContainer addSubview:self.acceptButton];
 
     self.orLabel = [UILabel new];
@@ -156,7 +179,7 @@ static const CGFloat kButtonWidth = 120.0;
 - (UIButton *)createButtonWithText:(NSString *)text
                         titleColor:(UIColor *)titleColor
                    backgroundColor:(UIColor *)backgroundColor
-                           handler:(void (^)())handler
+                            action:(SEL)action
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:text forState:UIControlStateNormal];
@@ -164,10 +187,7 @@ static const CGFloat kButtonWidth = 120.0;
     button.backgroundColor = backgroundColor;
     button.layer.cornerRadius = 5.0;
     button.layer.masksToBounds = YES;
-
-    [button bk_addEventHandler:^(id b) {
-        handler();
-    } forControlEvents:UIControlEventTouchUpInside];
+    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
     return button;
 }
