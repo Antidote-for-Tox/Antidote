@@ -24,6 +24,7 @@
 #import "OCTFriendRequest.h"
 #import "AvatarsManager.h"
 #import "UserDefaultsManager.h"
+#import "FriendRequestViewController.h"
 
 typedef NS_ENUM(NSInteger, FriendsSort) {
     FriendsSortByNickname = 0,
@@ -506,17 +507,11 @@ static const CGFloat kCellHeight = 44.0;
 
 - (void)friendRequestDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
+    OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
+    FriendRequestViewController *controller = [[FriendRequestViewController alloc] initWithRequest:request];
 
-    // BOOL wasLastRequest = ([self.friendRequestsController numberOfRowsForSectionIndex:0] == 1);
-
-    // [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:request error:nil];
-
-    // if (wasLastRequest) {
-    //     [self switchToTab:FriendsViewControllerTabFriends];
-    // }
+    [self.navigationController pushViewController:controller animated:YES];
 }
-
 
 - (void)updateSegmentedControlRequestTitle
 {

@@ -49,7 +49,7 @@ static const CGFloat kYIndentation = 10.0;
 
 - (void)loadView
 {
-    [self loadWhiteView];
+    [self loadLightGrayView];
 
     [self subscribeNotifications];
 
@@ -57,8 +57,6 @@ static const CGFloat kYIndentation = 10.0;
     [self createToxIdViews];
     [self createMessageViews];
     [self createSendRequestButton];
-
-    self.view.backgroundColor = [UIColor uColorOpaqueWithRed:239 green:239 blue:244];
 }
 
 - (void)viewDidLayoutSubviews

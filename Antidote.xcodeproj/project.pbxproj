@@ -25,6 +25,7 @@
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
 		1182AF431B4EE3360095B476 /* TabBarProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF421B4EE3360095B476 /* TabBarProfileItem.m */; };
+		1182AF4C1B5116A60095B476 /* FriendRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF4B1B5116A60095B476 /* FriendRequestViewController.m */; };
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
 		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
 		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
@@ -104,6 +105,8 @@
 		1182AF411B4EE3360095B476 /* TabBarProfileItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarProfileItem.h; sourceTree = "<group>"; };
 		1182AF421B4EE3360095B476 /* TabBarProfileItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBarProfileItem.m; sourceTree = "<group>"; };
 		1182AF441B4EFFCE0095B476 /* TabBarItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarItemProtocol.h; sourceTree = "<group>"; };
+		1182AF4A1B5116A60095B476 /* FriendRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendRequestViewController.h; sourceTree = "<group>"; };
+		1182AF4B1B5116A60095B476 /* FriendRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestViewController.m; sourceTree = "<group>"; };
 		118352A6197A64B70048CA64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		118352A7197A64B70048CA64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		118352AA197A6C410048CA64 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
@@ -341,6 +344,15 @@
 			name = TabBar;
 			sourceTree = "<group>";
 		};
+		1182AF491B5116930095B476 /* FriendRequest */ = {
+			isa = PBXGroup;
+			children = (
+				1182AF4A1B5116A60095B476 /* FriendRequestViewController.h */,
+				1182AF4B1B5116A60095B476 /* FriendRequestViewController.m */,
+			);
+			name = FriendRequest;
+			sourceTree = "<group>";
+		};
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,6 +379,7 @@
 				114630981984E19A0075DA16 /* AllChats */,
 				114630E119857C5D0075DA16 /* Chat */,
 				11C3A74C198CF4870029A7A0 /* FriendCard */,
+				1182AF491B5116930095B476 /* FriendRequest */,
 				118352B6197A7AF60048CA64 /* Friends */,
 				11300B651B4DB25200233052 /* Profile */,
 				110B8B8819C8E3F1000E4334 /* ProfilesList */,
@@ -843,6 +856,7 @@
 				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				1182AF431B4EE3360095B476 /* TabBarProfileItem.m in Sources */,
+				1182AF4C1B5116A60095B476 /* FriendRequestViewController.m in Sources */,
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
