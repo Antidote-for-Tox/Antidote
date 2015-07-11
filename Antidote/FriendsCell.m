@@ -6,10 +6,19 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <Masonry/Masonry.h>
+
 #import "FriendsCell.h"
 #import "NSString+Utilities.h"
 #import "UIColor+Utilities.h"
 #import "AppearanceManager.h"
+
+const CGFloat kFriendsCellImageViewSize = 30.0;
+
+static const CGFloat kImageViewLeftOffset = 10.0;
+static const CGFloat kStatusViewSize = 8.0;
+static const CGFloat kStatusViewLeftOffset = 8.0;
+static const CGFloat kStatusViewMinimumRightOffset = -30.0;
 
 @interface FriendsCell ()
 
@@ -26,17 +35,17 @@
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
 
     if (self) {
-        [self adjustSubviews];
-
         self.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:18];
         self.detailTextLabel.textColor = [UIColor uColorOpaqueWithWhite:140];
-        self.accessoryType = UITableViewCellAccessoryDetailDisclosureButton;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
         self.imageView.contentMode = UIViewContentModeScaleAspectFill;
-        self.imageView.layer.cornerRadius = self.imageView.frame.size.width / 2;
+        self.imageView.layer.cornerRadius = kFriendsCellImageViewSize / 2;
         self.imageView.layer.masksToBounds = YES;
 
         [self createStatusView];
+
+        [self installConstraints];
     }
 
     return self;
@@ -58,14 +67,17 @@
     [self.statusView redraw];
 }
 
-- (void)layoutSubviews
-{
-    [super layoutSubviews];
+#pragma mark -  Properties
 
-    [self adjustSubviews];
+- (void)setShowStatusView:(BOOL)show
+{
+    self.statusView.hidden = ! show;
 }
 
-#pragma mark -  Properties
+- (BOOL)showStatusView
+{
+    return self.statusView.hidden;
+}
 
 - (void)setStatus:(StatusCircleStatus)status
 {
@@ -79,35 +91,29 @@
     return self.statusView.status;
 }
 
-#pragma mark -  Public
-
-+ (CGFloat)height
-{
-    return 44.0;
-}
-
 #pragma mark -  Private
 
 - (void)createStatusView
 {
     self.statusView = [StatusCircleView new];
-    self.statusView.side = 8.0;
-
+    self.statusView.side = kStatusViewSize;
     [self.contentView addSubview:self.statusView];
 }
 
-- (void)adjustSubviews
+- (void)installConstraints
 {
-    CGRect frame = self.imageView.frame;
-    frame.size.width = frame.size.height = 30.0;
-    frame.origin.y = (self.contentView.frame.size.height - frame.size.height) / 2;
-    self.imageView.frame = frame;
+    [self.imageView makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(kFriendsCellImageViewSize);
+        make.centerY.equalTo(self);
+        make.left.equalTo(kImageViewLeftOffset);
+    }];
 
-    CGSize size = [self.textLabel.text stringSizeWithFont:self.textLabel.font];
-    frame = self.statusView.frame;
-    frame.origin.x = CGRectGetMinX(self.textLabel.frame) + size.width + 8.0;
-    frame.origin.y = (CGRectGetMaxY(self.textLabel.frame) - frame.size.height) / 2 + 2.0;
-    self.statusView.frame = frame;
+    [self.statusView makeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(kStatusViewSize);
+        make.left.equalTo(self.textLabel.right).offset(kStatusViewLeftOffset).priorityLow();
+        make.right.lessThanOrEqualTo(self.right).offset(kStatusViewMinimumRightOffset);
+        make.centerY.equalTo(self.textLabel);
+    }];
 }
 
 @end
