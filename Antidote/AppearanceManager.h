@@ -27,6 +27,7 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 - (UIFont *)fontHelveticaNeueBoldWithSize:(CGFloat)size;
 
 - (UIColor *)textMainColor;
+- (UIColor *)lightGrayBackground;
 
 - (UIColor *)statusOfflineColor;
 - (UIColor *)statusOnlineColor;

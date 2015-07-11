@@ -11,5 +11,6 @@
 @interface UIViewController (Utilities)
 
 - (void)loadWhiteView;
+- (void)loadLightGrayView;
 
 @end

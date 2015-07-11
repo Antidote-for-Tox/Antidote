@@ -54,6 +54,11 @@
     return [self textMainColorForScheme:self.colorscheme];
 }
 
+- (UIColor *)lightGrayBackground
+{
+    return [UIColor uColorOpaqueWithRed:239 green:239 blue:244];
+}
+
 - (UIColor *)statusOfflineColor
 {
     return [UIColor uColorOpaqueWithWhite:170];
