@@ -8,8 +8,7 @@
 
 #import "ActiveCallViewController.h"
 #import "Masonry.h"
-#import "OCTCall.h"
-#import "OCTSubmanagerCalls.h"
+#import "NSString+Utilities.h"
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kIndent = 50.0;
@@ -54,7 +53,7 @@ static const CGFloat k3ButtonGap = 30.0;
 {
     self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.endCallButton.backgroundColor = [UIColor redColor];
-    [self.endCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.endCallButton addTarget:self action:@selector(endCurrentCall) forControlEvents:UIControlEventTouchUpInside];
     self.endCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
     UIImage *image = [UIImage imageNamed:@"call-accept"];
@@ -156,15 +155,16 @@ static const CGFloat k3ButtonGap = 30.0;
 
 #pragma mark - Private
 
-- (void)didUpdateCall
+- (void)setCallDuration:(NSTimeInterval)callDuration
 {
-    [super didUpdateCall];
+    [super setCallDuration:callDuration];
     [self updateTimerLabel];
 }
 
 - (void)updateTimerLabel
 {
-    self.timerLabel.text = [self stringFromTimeInterval:self.call.callDuration];
+    self.timerLabel.text = [NSString stringFromTimeInterval:self.callDuration];
+
     [self.timerLabel setNeedsDisplay];
 }
 
@@ -197,8 +197,8 @@ static const CGFloat k3ButtonGap = 30.0;
 
 - (void)toggleMicrophone
 {
-    BOOL enabled = ! self.manager.enableMicrophone;
-    self.manager.enableMicrophone = enabled;
+    BOOL enabled = ! self.delegate.enableMicrophone;
+    self.delegate.enableMicrophone = enabled;
     self.microphoneButton.selected = ! enabled;
 }
 
@@ -207,7 +207,7 @@ static const CGFloat k3ButtonGap = 30.0;
     NSError *error;
 
     if (self.muteButton.selected) {
-        if ([self.manager sendCallControl:OCTToxAVCallControlUnmuteAudio toCall:self.call error:&error]) {
+        if ([self.delegate sendCallControl:OCTToxAVCallControlUnmuteAudio error:&error]) {
             self.muteButton.selected = NO;
         }
         else if (error.code == OCTToxAVErrorControlInvaldTransition) {
@@ -215,7 +215,7 @@ static const CGFloat k3ButtonGap = 30.0;
         }
     }
     else {
-        if ([self.manager sendCallControl:OCTToxAVCallControlMuteAudio toCall:self.call error:&error]) {
+        if ([self.delegate sendCallControl:OCTToxAVCallControlUnmuteAudio error:&error]) {
             self.muteButton.selected = YES;
         }
         else if (error.code == OCTToxAVErrorControlInvaldTransition) {
@@ -224,15 +224,14 @@ static const CGFloat k3ButtonGap = 30.0;
     }
 }
 
-- (void)displayNotificationOfNewCall:(OCTCall *)call
+- (void)incomingCallFromFriend:(NSString *)nickname
 {
     self.incomingCallContainer = [UIView new];
     self.incomingCallContainer.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.incomingCallContainer];
 
     UILabel *nameLabel = [UILabel new];
-    OCTFriend *friend = [call.chat.friends firstObject];
-    nameLabel.text = friend.nickname;
+    nameLabel.text = nickname;
     [self.incomingCallContainer addSubview:nameLabel];
 
     UIButton *declineCall = [UIButton buttonWithType:UIButtonTypeCustom];

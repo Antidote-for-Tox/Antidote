@@ -8,9 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+#import "OCTToxAVConstants.h"
+
 @class OCTSubmanagerCalls;
 @class OCTChat;
 @class OCTCall;
+
+@protocol AbstractCallViewControllerDelegate <NSObject>
+
+@required
+- (void)dismissCurrentCall;
+- (void)callAccept;
+- (BOOL)sendCallControl:(OCTToxAVCallControl)control error:(NSError **)error;
+
+- (void)otherCallAccept:(BOOL)accept;
+
+@property (nonatomic, assign) BOOL enableMicrophone;
+
+@end
 
 @interface AbstractCallViewController : UIViewController
 
@@ -18,21 +33,20 @@
 + (instancetype)new NS_UNAVAILABLE;
 
 /**
- * Create an instance of the CallViewController.
- * @param chat Appropriate chat for the call.
- * @param manager The call maanger for the application.
+ * Create an instance of the AbstractCallViewController.
+ * @param nickname The nickname associated with the caller.
  */
-- (instancetype)initWithCall:(OCTCall *)call submanagerCalls:(OCTSubmanagerCalls *)manager;
+- (instancetype)initWithCallerNickname:(NSString *)nickname;
 
 /**
- * The call associated with this view controller.
+ * Name of the caller
  */
-@property (strong, nonatomic, readonly) OCTCall *call;
+@property (strong, nonatomic, readonly) NSString *nickname;
 
 /**
- * The call manager responsible for call handling.
+ * The AbstractCallViewControllerDelegate.
  */
-@property (weak, nonatomic) OCTSubmanagerCalls *manager;
+@property (weak, nonatomic) id <AbstractCallViewControllerDelegate> delegate;
 
 /**
  * Label of the caller.
@@ -40,10 +54,9 @@
 @property (strong, nonatomic, readonly) UILabel *nameLabel;
 
 /**
- * This is called whenever the call is updated.
- * Override this to include any other updates as needed.
+ * The duration of the call.
  */
-- (void)didUpdateCall NS_REQUIRES_SUPER;
+@property (nonatomic, assign) NSTimeInterval callDuration;
 
 /**
  * Install constraints for subviews.
@@ -52,25 +65,14 @@
 - (void)installConstraints NS_REQUIRES_SUPER;
 
 /**
- * End the call.
- * This can be used to cancel a call, end an active one or reject a call.
- * Note, ending the call will dismiss the view controller itself.
- */
-- (void)endCall;
-
-/**
- * Switch to a different call
- * Will switch to the appropriate view controller based
- * on call status.
- * Calling this will dismiss the current view controller.
- * @param call Call to switch to
- */
-- (void)switchToCall:(OCTCall *)call;
-
-/**
- * Use this to notify of a new incoming call.
+ * Use this to notify of an incoming call.
  * @param call The call that is incoming
  */
-- (void)displayNotificationOfNewCall:(OCTCall *)call;
+- (void)incomingCallFromFriend:(NSString *)nickname;
+
+/**
+ * Ends the current call.
+ */
+- (void)endCurrentCall;
 
 @end

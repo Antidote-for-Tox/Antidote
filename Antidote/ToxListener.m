@@ -20,8 +20,7 @@
 #import "OCTMessageFile.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
-#import "RingingCallViewController.h"
-#import "CallNavigationViewController.h"
+#import "CallsManager.h"
 #import "OCTCall.h"
 #import "TabBarViewController.h"
 
@@ -126,24 +125,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 #pragma mark - SubmanagerCalls delegate
 - (void)callSubmanager:(OCTSubmanagerCalls *)callSubmanager receiveCall:(OCTCall *)call audioEnabled:(BOOL)audioEnabled videoEnabled:(BOOL)videoEnabled
 {
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    UIViewController *visibleVC = [[delegate visibleViewController] presentedViewController];
-
-    if ([visibleVC isKindOfClass:[CallNavigationViewController class]]) {
-        // User is in a middle of call, callNAV will handle this
-        return;
-    }
-
-    visibleVC = [delegate visibleViewController];
-
-    RingingCallViewController *ringingViewController = [[RingingCallViewController alloc] initWithCall:call submanagerCalls:callSubmanager];
-
-    UINavigationController *callNav = [[CallNavigationViewController alloc] initWithRootViewController:ringingViewController];
-
-    callNav.modalInPopover = YES;
-    callNav.modalPresentationStyle = UIModalPresentationOverFullScreen;
-
-    [visibleVC presentViewController:callNav animated:YES completion:nil];
+    [[AppContext sharedContext].calls handleIncomingCall:call];
 }
 
 #pragma mark -  Private

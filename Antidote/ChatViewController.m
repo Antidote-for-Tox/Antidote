@@ -23,8 +23,7 @@
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
-#import "DialingCallViewController.h"
-#import "CallNavigationViewController.h"
+#import "CallsManager.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -392,20 +391,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 - (void)startCallButtonPressed
 {
-    OCTSubmanagerCalls *manager = [AppContext sharedContext].profileManager.toxManager.calls;
-
-    DialingCallViewController *dialingCallViewController = [[DialingCallViewController alloc] initWithChat:self.chat submanagerCalls:manager];
-
-    if (! dialingCallViewController) {
-        return;
-    }
-
-    CallNavigationViewController *callNav = [[CallNavigationViewController alloc] initWithRootViewController:dialingCallViewController];
-
-    callNav.modalInPopover = YES;
-    callNav.modalPresentationStyle = UIModalPresentationOverFullScreen;
-
-    [self presentViewController:callNav animated:YES completion:nil];
+    [[AppContext sharedContext].calls callToChat:self.chat];
 }
 
 @end

@@ -7,10 +7,7 @@
 //
 
 #import "RingingCallViewController.h"
-#import "OCTSubmanagerCalls.h"
-#import "ActiveCallViewController.h"
 #import "Masonry.h"
-#import "OCTCall.h"
 #import "AvatarsManager.h"
 #import "AppearanceManager.h"
 
@@ -57,9 +54,7 @@ static const CGFloat kLabelFontSize = 16.0;
 {
     AvatarsManager *avatars = [AppContext sharedContext].avatars;
 
-    OCTFriend *friend = [self.call.chat.friends firstObject];
-
-    UIImage *image = [avatars avatarFromString:friend.nickname
+    UIImage *image = [avatars avatarFromString:self.nickname
                                       diameter:kAvatarDiameter
                                      textColor:[UIColor whiteColor]
                                backgroundColor:[UIColor clearColor]];
@@ -160,7 +155,7 @@ static const CGFloat kLabelFontSize = 16.0;
     self.declineCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.declineCallButton.layer.borderWidth = kButtonBorderWidth;
     [self.declineCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
-    [self.declineCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.declineCallButton addTarget:self action:@selector(endCurrentCall) forControlEvents:UIControlEventTouchUpInside];
 
     self.declineLabel = [UILabel new];
     self.declineLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kLabelFontSize];
@@ -187,13 +182,7 @@ static const CGFloat kLabelFontSize = 16.0;
 
 - (void)acceptCallButtonPressed
 {
-    if (! [self.manager answerCall:self.call enableAudio:YES enableVideo:NO error:nil]) {
-        return;
-    }
-
-    ActiveCallViewController *activeViewController = [[ActiveCallViewController alloc] initWithCall:self.call submanagerCalls:self.manager];
-
-    [self.navigationController pushViewController:activeViewController animated:YES];
+    [self.delegate callAccept];
 }
 
 

@@ -15,4 +15,6 @@
 
 - (NSString *)substringToByteLength:(NSUInteger)length usingEncoding:(NSStringEncoding)encoding;
 
++ (NSString *)stringFromTimeInterval:(NSTimeInterval)interval;
+
 @end

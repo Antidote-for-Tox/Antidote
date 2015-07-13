@@ -85,4 +85,14 @@
     return controller;
 }
 
++ (void)updateFetchedResultsController:(RBQFetchedResultsController *)controller
+                              withType:(OCTFetchRequestType)type
+                             predicate:(NSPredicate *)predicate
+{
+    OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+    RBQFetchRequest *fetchRequest = [submanager fetchRequestForType:type withPredicate:predicate];
+
+    [controller updateFetchRequest:fetchRequest sectionNameKeyPath:nil andPeformFetch:YES];
+}
+
 @end

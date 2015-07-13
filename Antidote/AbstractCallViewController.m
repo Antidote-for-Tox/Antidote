@@ -10,18 +10,13 @@
 
 #import "Masonry.h"
 #import "Helper.h"
-#import "OCTCall.h"
-#import "OCTChat.h"
-#import "OCTSubmanagerCalls.h"
 #import "AppearanceManager.h"
-#import "CallNavigationViewController.h"
 
 static const CGFloat kIndent = 50.0;
 
-@interface AbstractCallViewController () <RBQFetchedResultsControllerDelegate>
+@interface AbstractCallViewController ()
 
-@property (strong, nonatomic) RBQFetchedResultsController *callController;
-@property (strong, nonatomic, readwrite) OCTCall *call;
+@property (strong, nonatomic, readwrite) NSString *nickname;
 @property (strong, nonatomic, readwrite) UILabel *nameLabel;
 
 @end
@@ -30,24 +25,14 @@ static const CGFloat kIndent = 50.0;
 
 #pragma mark - Life cycle
 
-- (instancetype)initWithCall:(OCTCall *)call submanagerCalls:(OCTSubmanagerCalls *)manager
+- (instancetype)initWithCallerNickname:(NSString *)nickname
 {
     self = [super init];
     if (! self) {
         return nil;
     }
 
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@", call.uniqueIdentifier];
-    _callController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall predicate:predicate delegate:self];
-    _callController.delegate = self;
-
-    _call = [[_callController fetchedObjects] firstObject];
-
-    if (! _call) {
-        return nil;
-    }
-
-    _manager = manager;
+    _nickname = nickname;
 
     return self;
 }
@@ -56,29 +41,39 @@ static const CGFloat kIndent = 50.0;
 {
     [super viewDidLoad];
 
-    self.view.opaque = NO;
-
-    self.view.backgroundColor = [UIColor clearColor];
+    [self setupBlurredBackground];
 
     [self createNameLabel];
 
     [self installConstraints];
 }
 
+- (void)setupBlurredBackground
+{
+    self.view.backgroundColor = [UIColor clearColor];
+    self.view.opaque = NO;
+
+    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    visualEffectView.frame = self.view.bounds;
+
+    [self.view insertSubview:visualEffectView atIndex:0];
+
+    [visualEffectView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+}
+
 - (void)createNameLabel
 {
-    if (self.call.chat.friends.count == 1) {
-        OCTFriend *friend = self.call.chat.friends.firstObject;
+    self.nameLabel = [UILabel new];
+    self.nameLabel.text = self.nickname;
+    self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:30.0];
+    self.nameLabel.textColor = [UIColor whiteColor];
+    self.nameLabel.textAlignment = NSTextAlignmentCenter;
+    [self.nameLabel sizeToFit];
 
-        self.nameLabel = [UILabel new];
-        self.nameLabel.text = friend.nickname;
-        self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:30.0];
-        self.nameLabel.textColor = [UIColor whiteColor];
-        self.nameLabel.textAlignment = NSTextAlignmentCenter;
-        [self.nameLabel sizeToFit];
-
-        [self.view addSubview:self.nameLabel];
-    }
+    [self.view addSubview:self.nameLabel];
 }
 
 - (void)installConstraints
@@ -90,34 +85,16 @@ static const CGFloat kIndent = 50.0;
     }];
 }
 
-#pragma mark -  RBQFetchedResultsControllerDelegate
-
-- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
+- (void)setCallDuration:(NSTimeInterval)callDuration
 {
-    self.call = [[self.callController fetchedObjects] firstObject];
-
-    if (! self.call) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
-    [self didUpdateCall];
+    _callDuration = callDuration;
 }
 
-#pragma mark - Public
-- (void)didUpdateCall
+- (void)endCurrentCall
+{
+    [self.delegate dismissCurrentCall];
+}
+
+- (void)incomingCallFromFriend:(NSString *)nickname
 {}
-
-- (void)endCall
-{
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
-}
-
-- (void)switchToCall:(OCTCall *)call
-{
-    [(CallNavigationViewController *)self.navigationController switchToCall:call fromAbstractViewController:self];
-}
-
-- (void)displayNotificationOfNewCall:(OCTCall *)call
-{
-    // To Do: Display incoming call.
-}
 @end
