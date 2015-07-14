@@ -36,6 +36,8 @@ static const CGFloat kLabelFontSize = 16.0;
 
 @implementation RingingCallViewController
 
+@dynamic delegate;
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -155,7 +157,7 @@ static const CGFloat kLabelFontSize = 16.0;
     self.declineCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.declineCallButton.layer.borderWidth = kButtonBorderWidth;
     [self.declineCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
-    [self.declineCallButton addTarget:self action:@selector(endCurrentCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.declineCallButton addTarget:self action:@selector(declineCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
     self.declineLabel = [UILabel new];
     self.declineLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kLabelFontSize];
@@ -178,11 +180,16 @@ static const CGFloat kLabelFontSize = 16.0;
     [self.view addSubview:self.incomingCallLabel];
 }
 
-#pragma mark - Actions
+#pragma mark - Touch actions
 
 - (void)acceptCallButtonPressed
 {
-    [self.delegate callAccept];
+    [self.delegate ringingCallAnswerButtonPressed:self];
+}
+
+- (void)declineCallButtonPressed
+{
+    [self.delegate ringingCallDeclineButtonPressed:self];
 }
 
 

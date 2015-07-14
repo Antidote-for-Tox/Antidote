@@ -29,6 +29,8 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 
 @implementation DialingCallViewController
 
+@dynamic delegate;
+
 #pragma mark - Life cycle
 
 - (void)viewDidLoad
@@ -48,7 +50,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 {
     self.cancelCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.cancelCallButton.backgroundColor = [UIColor redColor];
-    [self.cancelCallButton addTarget:self action:@selector(endCurrentCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.cancelCallButton addTarget:self action:@selector(cancelCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.cancelCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
     UIImage *image = [UIImage imageNamed:@"call-accept"];
@@ -106,4 +108,10 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     }];
 }
 
+#pragma mark - Touch actions
+
+- (void)cancelCallButtonPressed
+{
+    [self.delegate dialingCallDeclineButtonPressed:self];
+}
 @end

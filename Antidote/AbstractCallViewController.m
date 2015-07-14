@@ -85,16 +85,4 @@ static const CGFloat kIndent = 50.0;
     }];
 }
 
-- (void)setCallDuration:(NSTimeInterval)callDuration
-{
-    _callDuration = callDuration;
-}
-
-- (void)endCurrentCall
-{
-    [self.delegate dismissCurrentCall];
-}
-
-- (void)incomingCallFromFriend:(NSString *)nickname
-{}
 @end

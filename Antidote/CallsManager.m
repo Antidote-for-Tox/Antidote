@@ -20,11 +20,12 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
-@interface CallsManager () <RBQFetchedResultsControllerDelegate, AbstractCallViewControllerDelegate>
+@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate>
 
 @property (strong, nonatomic) RBQFetchedResultsController *currentCallController;
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
+@property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsController;
 @property (strong, nonatomic) AbstractCallViewController *currentCallViewController;
 
 @property (weak, nonatomic) OCTSubmanagerCalls *manager;
@@ -114,8 +115,8 @@
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    if (controller == self.currentCallController) {
-        self.currentCall = [[self.currentCallController fetchedObjects] firstObject];
+    if (controller == self.allActiveCallsController) {
+        self.currentCall = [[self.allActiveCallsController fetchedObjects] firstObject];
         [self updateDuration:self.currentCall.callDuration];
     }
 }
@@ -124,36 +125,10 @@
 
 - (void)updateDuration:(NSTimeInterval)duration
 {
-    self.currentCallViewController.callDuration = duration;
-}
-
-#pragma mark - AbstractCallViewControllerDelegate
-
-- (void)dismissCurrentCall
-{
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:nil];
-    [self.currentCallViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)callAccept
-{
-    [self.manager answerCall:self.currentCall enableAudio:YES enableVideo:NO error:nil];
-}
-
-- (BOOL)sendCallControl:(OCTToxAVCallControl)control error:(NSError **)error;
-{
-    return [self.manager sendCallControl:control toCall:self.currentCall error:error];
-}
-
-- (void)otherCallAccept:(BOOL)accept
-{
-    if (! [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:nil]) {
-        return;
+    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+        ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
+        activeVC.callDuration = duration;
     }
-
-    self.currentCall = self.pendingIncomingCall;
-
-    self.pendingIncomingCall = nil;
 }
 
 - (void)setEnableMicrophone:(BOOL)enableMicrophone
@@ -166,13 +141,94 @@
     return self.manager.enableMicrophone;
 }
 
+#pragma mark - ActiveCallViewController Delegate
+
+- (void)activeCallDeclineButtonPressed:(ActiveCallViewController *)controller
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:nil];
+}
+
+- (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller
+{
+    BOOL enable = ! controller.micSelected;
+    self.manager.enableMicrophone = enable;
+    controller.micSelected = enable;
+}
+
+- (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller
+{
+    NSError *error;
+
+    if (controller.speakerSelected) {
+        if ([self.manager sendCallControl:OCTToxAVCallControlUnmuteAudio toCall:self.currentCall error:&error]) {
+            controller.speakerSelected = NO;
+        }
+        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
+            controller.speakerSelected = YES;
+        }
+    }
+    else {
+        if ([self.manager sendCallControl:OCTToxAVCallControlMuteAudio toCall:self.currentCall error:&error]) {
+            controller.speakerSelected = YES;
+        }
+        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
+            controller.speakerSelected = NO;
+        }
+    }
+}
+
+- (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:nil];
+}
+
+- (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller
+{
+    [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:nil];
+}
+
+- (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller
+{
+    // grab paused call from RBQ index and resume call.
+}
+
+#pragma mark - DialingCallViewController Delegate
+
+- (void)dialingCallDeclineButtonPressed:(DialingCallViewController *)controller
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel
+                           toCall:self.currentCall
+                            error:nil];
+}
+
+#pragma mark - RingingCallViewController Delegate
+
+- (void)ringingCallAnswerButtonPressed:(RingingCallViewController *)controller
+{
+    [self.manager answerCall:self.currentCall
+                 enableAudio:YES
+                 enableVideo:NO error:nil];
+}
+
+- (void)ringingCallDeclineButtonPressed:(RingingCallViewController *)controller
+{
+    [self.manager sendCallControl:OCTToxAVCallControlCancel
+                           toCall:self.currentCall
+                            error:nil];
+}
+
 #pragma mark - Private
 
 - (void)notifyOfIncomingCall
 {
+    if (! [self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+        return;
+    }
     OCTFriend *friend = [self.pendingIncomingCall.chat.friends firstObject];
 
-    [self.currentCallViewController incomingCallFromFriend:friend.nickname];
+    ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
+    activeVC.incomingCallCallerName = friend.nickname;
+    activeVC.showIncomingCallView = YES;
 }
 
 - (void)dealloc

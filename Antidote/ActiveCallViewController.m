@@ -17,6 +17,10 @@ static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat k3ButtonGap = 30.0;
+static const CGFloat kotherCallButtonSize = 4.0 / 5.0 * kButtonSide;
+
+static const NSInteger declineButtonTag = 0;
+static const NSInteger acceptButtonTag = 1;
 
 @interface ActiveCallViewController ()
 
@@ -25,12 +29,14 @@ static const CGFloat k3ButtonGap = 30.0;
 @property (strong, nonatomic) UIButton *videoButton;
 @property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIButton *microphoneButton;
-@property (strong, nonatomic) UIButton *muteButton;
+@property (strong, nonatomic) UIButton *speakerButton;
 @property (strong, nonatomic) UIView *incomingCallContainer;
 
 @end
 
 @implementation ActiveCallViewController
+
+@dynamic delegate;
 
 #pragma mark - View lifecycle
 - (void)viewDidLoad
@@ -53,7 +59,7 @@ static const CGFloat k3ButtonGap = 30.0;
 {
     self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.endCallButton.backgroundColor = [UIColor redColor];
-    [self.endCallButton addTarget:self action:@selector(endCurrentCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.endCallButton addTarget:self action:@selector(endCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.endCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
     UIImage *image = [UIImage imageNamed:@"call-accept"];
@@ -89,22 +95,23 @@ static const CGFloat k3ButtonGap = 30.0;
 
 - (void)createMicrophoneButton
 {
-    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-enable" action:@selector(toggleMicrophone)];
+    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
 
-    UIImage *selectedImage = [UIImage imageNamed:@"call-microphone-disable"];
+    UIImage *selectedImage = [UIImage imageNamed:@"call-microphone-enable"];
     [self.microphoneButton setImage:selectedImage forState:UIControlStateSelected];
+    self.microphoneButton.selected = YES;
 
     [self.containerView addSubview:self.microphoneButton];
 }
 
 - (void)createMuteButton
 {
-    self.muteButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(toggleMute)];
+    self.speakerButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
 
     UIImage *selectedImage = [UIImage imageNamed:@"call-audio-disable"];
-    [self.muteButton setImage:selectedImage forState:UIControlStateSelected];
+    [self.speakerButton setImage:selectedImage forState:UIControlStateSelected];
 
-    [self.containerView addSubview:self.muteButton];
+    [self.containerView addSubview:self.speakerButton];
 }
 
 - (void)installConstraints
@@ -138,13 +145,13 @@ static const CGFloat k3ButtonGap = 30.0;
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.containerView.left);
-        make.right.equalTo(self.muteButton.left).with.offset(-k3ButtonGap);
+        make.right.equalTo(self.speakerButton.left).with.offset(-k3ButtonGap);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
         make.centerY.equalTo(self.containerView);
     }];
 
-    [self.muteButton makeConstraints:^(MASConstraintMaker *make) {
+    [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.containerView.right);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
@@ -153,13 +160,47 @@ static const CGFloat k3ButtonGap = 30.0;
 
 }
 
-#pragma mark - Private
+#pragma mark - Public
 
 - (void)setCallDuration:(NSTimeInterval)callDuration
 {
-    [super setCallDuration:callDuration];
+    _callDuration = callDuration;
     [self updateTimerLabel];
 }
+
+- (void)setMicSelected:(BOOL)micSelected
+{
+    self.microphoneButton.selected = micSelected;
+}
+
+- (BOOL)micSelected
+{
+    return self.microphoneButton.selected;
+}
+
+- (void)setSpeakerSelected:(BOOL)speakerSelected
+{
+    self.speakerButton.selected = speakerSelected;
+}
+
+- (BOOL)speakerSelected
+{
+    return self.speakerButton.selected;
+}
+
+- (void)setShowIncomingCallView:(BOOL)showIncomingCallView
+{
+    if (showIncomingCallView) {
+        // show incoming view
+    }
+    else {
+        // hide incoming view
+    }
+
+    _showIncomingCallView = showIncomingCallView;
+}
+
+#pragma mark - Private
 
 - (void)updateTimerLabel
 {
@@ -187,59 +228,31 @@ static const CGFloat k3ButtonGap = 30.0;
     return button;
 }
 
-- (NSString *)stringFromTimeInterval:(NSTimeInterval)interval
-{
-    int minutes = (int)interval / 60;
-    int seconds = interval - (minutes * 60);
-
-    return [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
-}
-
-- (void)toggleMicrophone
-{
-    BOOL enabled = ! self.delegate.enableMicrophone;
-    self.delegate.enableMicrophone = enabled;
-    self.microphoneButton.selected = ! enabled;
-}
-
-- (void)toggleMute
-{
-    NSError *error;
-
-    if (self.muteButton.selected) {
-        if ([self.delegate sendCallControl:OCTToxAVCallControlUnmuteAudio error:&error]) {
-            self.muteButton.selected = NO;
-        }
-        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            self.muteButton.selected = YES;
-        }
-    }
-    else {
-        if ([self.delegate sendCallControl:OCTToxAVCallControlUnmuteAudio error:&error]) {
-            self.muteButton.selected = YES;
-        }
-        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            self.muteButton.selected = NO;
-        }
-    }
-}
-
-- (void)incomingCallFromFriend:(NSString *)nickname
+- (void)setupIncomingCallView
 {
     self.incomingCallContainer = [UIView new];
     self.incomingCallContainer.backgroundColor = [UIColor grayColor];
     [self.view addSubview:self.incomingCallContainer];
 
     UILabel *nameLabel = [UILabel new];
-    nameLabel.text = nickname;
+    nameLabel.text = self.incomingCallCallerName;
     [self.incomingCallContainer addSubview:nameLabel];
+
+    UILabel *descriptionLabel = [UILabel new];
+    descriptionLabel.text = NSLocalizedString(@"is calling", @"Calls");
 
     UIButton *declineCall = [UIButton buttonWithType:UIButtonTypeCustom];
     declineCall.backgroundColor = [UIColor redColor];
+    declineCall.tag = declineButtonTag;
+    declineCall.layer.cornerRadius = kotherCallButtonSize / 2.0;
+    [declineCall addTarget:self action:@selector(declineIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:declineCall];
 
     UIButton *acceptCall = [UIButton buttonWithType:UIButtonTypeCustom];
     acceptCall.backgroundColor = [UIColor greenColor];
+    acceptCall.tag = acceptButtonTag;
+    acceptCall.layer.cornerRadius = kotherCallButtonSize / 2.0;
+    [acceptCall addTarget:self action:@selector(acceptIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:acceptCall];
 
     [self.incomingCallContainer makeConstraints:^(MASConstraintMaker *make) {
@@ -247,6 +260,65 @@ static const CGFloat k3ButtonGap = 30.0;
         make.height.equalTo(kButtonSide);
         make.bottom.equalTo(self.endCallButton.top).with.offset(-kIndent);
     }];
+
+    [acceptCall makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.incomingCallContainer);
+        make.centerY.equalTo(self.incomingCallContainer);
+        make.height.equalTo(kotherCallButtonSize);
+        make.width.equalTo(kotherCallButtonSize);
+    }];
+
+    [declineCall makeConstraints:^(MASConstraintMaker *make) {
+        make.size.equalTo(acceptCall);
+        make.centerY.equalTo(acceptCall);
+        make.right.equalTo(acceptCall).with.offset(-5.0);
+    }];
+
+    [nameLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(self.incomingCallContainer.bounds.size.width / 2.0);
+        make.left.equalTo(self.incomingCallContainer);
+        make.top.equalTo(self.incomingCallContainer.top);
+    }];
+
+    [descriptionLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.width.lessThanOrEqualTo(nameLabel);
+        make.centerX.equalTo(nameLabel);
+        make.left.equalTo(self.incomingCallContainer);
+        make.bottom.equalTo(self.incomingCallContainer.bottom);
+    }];
+}
+
+#pragma mark - Touch actions
+
+- (void)acceptIncomingCallButtonPressed
+{
+    [self.delegate activeCallAnswerIncomingCallButtonPressed:self];
+}
+
+- (void)declineIncomingCallButtonPressed
+{
+    [self.delegate activeCallDeclineIncomingCallButtonPressed:self];
+}
+
+- (void)micButtonPressed
+{
+    [self.delegate activeCallMicButtonPressed:self];
+}
+
+- (void)speakerButtonPressed
+{
+    [self.delegate activeCallSpeakerButtonPressed:self];
+}
+
+- (void)endCallButtonPressed
+{
+    [self.delegate activeCallDeclineButtonPressed:self];
+}
+
+- (void)pauseSelectedCallAtIndex:(NSUInteger)index
+{
+    [self.delegate activeCallPausedCallSelectedAtIndex:index
+                                            controller:self];
 }
 
 @end
