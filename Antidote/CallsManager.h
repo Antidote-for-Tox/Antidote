@@ -10,15 +10,8 @@
 
 @class OCTChat;
 @class OCTCall;
-#import "AbstractCallViewController.h"
 
-@interface CallsManager : NSObject <AbstractCallViewControllerDelegate>
-
-/**
- * Set the property to YES to enable the microphone, otherwise NO.
- * Default value is YES;
- **/
-@property (nonatomic, assign) BOOL enableMicrophone;
+@interface CallsManager : NSObject
 
 /**
  * Make a call.

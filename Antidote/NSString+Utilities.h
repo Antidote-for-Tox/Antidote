@@ -15,6 +15,12 @@
 
 - (NSString *)substringToByteLength:(NSUInteger)length usingEncoding:(NSStringEncoding)encoding;
 
+/**
+ * Takes a given time interval and provides the time in mm:ss.
+ * For example 83 seconds -> @"01:23".
+ * @param interval the seconds to convert.
+ * @return String representation of the seconds
+ */
 + (NSString *)stringFromTimeInterval:(NSTimeInterval)interval;
 
 @end

@@ -18,8 +18,9 @@
 #import "Helper.h"
 #import "OCTCall.h"
 #import "TabBarViewController.h"
+#import "AbstractCallViewController.h"
 
-@interface CallsManager () <RBQFetchedResultsControllerDelegate>
+@interface CallsManager () <RBQFetchedResultsControllerDelegate, AbstractCallViewControllerDelegate>
 
 @property (strong, nonatomic) RBQFetchedResultsController *currentCallController;
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
