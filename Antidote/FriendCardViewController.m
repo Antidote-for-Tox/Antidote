@@ -6,22 +6,40 @@
 //  Copyright (c) 2014 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIControl+BlocksKit.h>
+#import <Masonry/Masonry.h>
+
 #import "FriendCardViewController.h"
 #import "UIViewController+Utilities.h"
-#import "UIView+Utilities.h"
 #import "ProfileManager.h"
 #import "Helper.h"
+#import "ValueViewWithTitle.h"
+#import "AvatarsManager.h"
+#import "AppearanceManager.h"
 
-@interface FriendCardViewController () <UITextFieldDelegate, RBQFetchedResultsControllerDelegate>
+static const CGFloat kHorizontalIndentation = 10.0;
+static const CGFloat kVerticalIndentation = 20.0;
 
-@property (strong, nonatomic) UIScrollView *scrollView;
+static const CGFloat kAvatarSize = 120.0;
+static const CGFloat kSeparatorHeight = 0.5;
+static const CGFloat kButtonSize = 40.0;
 
-@property (strong, nonatomic) UITextField *nicknameField;
-@property (strong, nonatomic) UILabel *realNameLabel;
+@interface FriendCardViewController () <RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) OCTFriend *friend;
-
 @property (strong, nonatomic) RBQFetchedResultsController *friendController;
+
+@property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) UIView *contentView;
+
+@property (strong, nonatomic) UIImageView *avatarImageView;
+@property (strong, nonatomic) UITextField *nicknameTextField;
+@property (strong, nonatomic) UILabel *nameLabel;
+@property (strong, nonatomic) UILabel *statusLabel;
+@property (strong, nonatomic) UIView *separator;
+@property (strong, nonatomic) ValueViewWithTitle *toxIdValueView;
+@property (strong, nonatomic) UIView *buttonsView;
+@property (strong, nonatomic) UIButton *chatButton;
 
 @end
 
@@ -34,50 +52,42 @@
     self = [super init];
 
     if (self) {
-        self.friend = friend;
+        _friend = friend;
 
         NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@", friend.uniqueIdentifier];
-        self.friendController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend
-                                                                    predicate:predicate
-                                                                     delegate:self];
+        _friendController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend
+                                                                predicate:predicate
+                                                                 delegate:self];
     }
     return self;
 }
 
 - (void)loadView
 {
-    [self loadWhiteView];
+    [self loadLightGrayView];
 
     [self createScrollView];
+    [self createAvatarImageView];
     [self createNameViews];
+    [self createSeparator];
+    [self createToxIdView];
+    [self createBottomButtons];
 
-    [self redrawTitleAndViews];
+    [self installConstraints];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
 
-    [self adjustSubviews];
+    self.scrollView.contentSize = self.contentView.frame.size;
 }
 
-#pragma mark -  UITextFieldDelegate
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void)viewDidLoad
 {
-    if ([textField isEqual:self.nicknameField]) {
-        [textField resignFirstResponder];
-    }
+    [super viewDidLoad];
 
-    return YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if ([textField isEqual:self.nicknameField]) {
-        OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
-        [submanager changeFriend:self.friend nickname:textField.text];
-    }
+    [self friendWasUpdated];
 }
 
 #pragma mark -  RBQFetchedResultsControllerDelegate
@@ -90,7 +100,8 @@
 {
     if (type == NSFetchedResultsChangeUpdate) {
         self.friend = [self.friendController objectAtIndexPath:indexPath];
-        [self redrawTitleAndViews];
+
+        [self friendWasUpdated];
     }
 }
 
@@ -99,64 +110,151 @@
 - (void)createScrollView
 {
     self.scrollView = [UIScrollView new];
+    self.scrollView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.scrollView];
+
+    self.contentView = [UIView new];
+    self.contentView.backgroundColor = [UIColor clearColor];
+    [self.scrollView addSubview:self.contentView];
+}
+
+- (void)createAvatarImageView
+{
+    self.avatarImageView = [UIImageView new];
+    self.avatarImageView.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.avatarImageView];
 }
 
 - (void)createNameViews
 {
-    self.nicknameField = [UITextField new];
-    self.nicknameField.delegate = self;
-    self.nicknameField.placeholder = NSLocalizedString(@"Name", @"Settings");
-    self.nicknameField.borderStyle = UITextBorderStyleRoundedRect;
-    self.nicknameField.returnKeyType = UIReturnKeyDone;
-    self.nicknameField.textAlignment = NSTextAlignmentCenter;
-    [self.scrollView addSubview:self.nicknameField];
+    self.nicknameTextField = [UITextField new];
+    self.nicknameTextField.text = self.friend.nickname;
+    self.nicknameTextField.textColor = [[AppContext sharedContext].appearance textMainColor];
+    self.nicknameTextField.textAlignment = NSTextAlignmentCenter;
+    [self.contentView addSubview:self.nicknameTextField];
 
-    self.realNameLabel = [self.scrollView addLabelWithTextColor:[UIColor lightGrayColor]
-                                                        bgColor:[UIColor clearColor]];
+    self.nameLabel = [UILabel new];
+    self.nameLabel.backgroundColor = [UIColor clearColor];
+    self.nameLabel.textColor = [UIColor darkGrayColor];
+    self.nameLabel.textAlignment = NSTextAlignmentCenter;
+    [self.contentView addSubview:self.nameLabel];
+
+    self.statusLabel = [UILabel new];
+    self.statusLabel.backgroundColor = [UIColor clearColor];
+    self.statusLabel.textColor = [UIColor darkGrayColor];
+    self.statusLabel.textAlignment = NSTextAlignmentCenter;
+    self.statusLabel.numberOfLines = 3;
+    [self.contentView addSubview:self.statusLabel];
 }
 
-- (void)adjustSubviews
+- (void)createSeparator
 {
-    self.scrollView.frame = self.view.bounds;
-
-    CGFloat currentOriginY = 0.0;
-    const CGFloat yIndentation = 10.0;
-
-    CGRect frame = CGRectZero;
-
-    {
-        frame = self.nicknameField.frame;
-        frame.size.width = 200.0;
-        frame.size.height = 30.0;
-        frame.origin.x = (self.view.bounds.size.width - frame.size.width) / 2;
-        frame.origin.y = currentOriginY + yIndentation;
-
-        self.nicknameField.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    {
-        [self.realNameLabel sizeToFit];
-        frame = self.realNameLabel.frame;
-        frame.origin.x = (self.view.bounds.size.width - frame.size.width) / 2;
-        frame.origin.y = currentOriginY + yIndentation;
-        self.realNameLabel.frame = frame;
-    }
-    currentOriginY = CGRectGetMaxY(frame);
-
-    self.scrollView.contentSize = CGSizeMake(self.scrollView.frame.origin.x, currentOriginY + yIndentation);
+    self.separator = [UIView new];
+    self.separator.backgroundColor = [UIColor darkGrayColor];
+    [self.contentView addSubview:self.separator];
 }
 
-- (void)redrawTitleAndViews
+- (void)createToxIdView
+{
+    self.toxIdValueView = [ValueViewWithTitle new];
+    self.toxIdValueView.title = NSLocalizedString(@"Tox ID", @"Friend card");
+    [self.contentView addSubview:self.toxIdValueView];
+}
+
+- (void)createBottomButtons
+{
+    self.buttonsView = [UIView new];
+    self.buttonsView.backgroundColor = [UIColor clearColor];
+    [self.contentView addSubview:self.buttonsView];
+
+    self.chatButton = [UIButton new];
+    [self.chatButton setImage:[UIImage imageNamed:@"tab-bar-chats"] forState:UIControlStateNormal];
+    [self.buttonsView addSubview:self.chatButton];
+
+    weakself;
+    [self.chatButton bk_addEventHandler:^(id button) {
+        strongself;
+        NSLog(@"----- %@", self.scrollView);
+
+    } forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)installConstraints
+{
+    [self.scrollView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+
+    [self.contentView makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(self.view);
+    }];
+
+    [self.avatarImageView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView).offset(kVerticalIndentation);
+        make.centerX.equalTo(self.contentView);
+        make.width.height.equalTo(kAvatarSize);
+    }];
+
+    [self.nicknameTextField makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.avatarImageView.bottom).offset(kVerticalIndentation);
+        make.left.equalTo(self.contentView).offset(kHorizontalIndentation);
+        make.right.equalTo(self.contentView).offset(-kHorizontalIndentation);
+    }];
+
+    [self.nameLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nicknameTextField.bottom);
+        make.left.equalTo(self.contentView).offset(kHorizontalIndentation);
+        make.right.equalTo(self.contentView).offset(-kHorizontalIndentation);
+    }];
+
+    [self.statusLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.bottom).offset(kVerticalIndentation);
+        make.left.equalTo(self.contentView).offset(kHorizontalIndentation);
+        make.right.equalTo(self.contentView).offset(-kHorizontalIndentation);
+    }];
+
+    [self.separator makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.statusLabel.bottom).offset(kVerticalIndentation);
+        make.left.equalTo(self.contentView).offset(kHorizontalIndentation);
+        make.right.equalTo(self.contentView).offset(-kHorizontalIndentation);
+        make.height.equalTo(kSeparatorHeight);
+    }];
+
+    [self.toxIdValueView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.separator.bottom).offset(kVerticalIndentation);
+        make.left.equalTo(self.contentView).offset(kHorizontalIndentation);
+        make.right.equalTo(self.contentView).offset(-kHorizontalIndentation);
+    }];
+
+    [self.buttonsView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toxIdValueView.bottom).offset(kVerticalIndentation);
+        make.bottom.equalTo(self.contentView).offset(-kVerticalIndentation);
+        make.centerX.equalTo(self.contentView);
+        make.height.equalTo(kButtonSize);
+    }];
+
+    [self.chatButton makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.equalTo(self.buttonsView);
+        make.centerY.equalTo(self.buttonsView);
+        make.width.height.equalTo(kButtonSize);
+    }];
+}
+
+- (void)friendWasUpdated
 {
     self.title = self.friend.nickname;
 
-    self.nicknameField.text = self.friend.nickname;
+    self.avatarImageView.image = [[AppContext sharedContext].avatars avatarFromString:self.friend.nickname
+                                                                             diameter:kAvatarSize];
+    self.statusLabel.text = self.friend.statusMessage;
+    self.toxIdValueView.value = self.friend.publicKey;
 
-    self.realNameLabel.text = self.friend.name.length ?  [NSString stringWithFormat : @"(%@)", self.friend.name] : nil;
-
-    [self adjustSubviews];
+    if (self.friend.name && ! [self.friend.name isEqualToString:self.friend.nickname]) {
+        self.nameLabel.text = [NSString stringWithFormat:@"(%@)", self.friend.name];
+    }
+    else {
+        self.nameLabel.text = nil;
+    }
 }
 
 @end

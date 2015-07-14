@@ -74,7 +74,7 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
     label.textAlignment = NSTextAlignmentCenter;
     label.text = string;
 
-    CGFloat fontSize = 51;
+    CGFloat fontSize = diameter;
     CGSize size;
 
     do {
