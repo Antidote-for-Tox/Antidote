@@ -15,18 +15,18 @@
 #import "UIViewController+Utilities.h"
 #import "ProfileManager.h"
 #import "UIImage+Utilities.h"
+#import "ValueViewWithTitle.h"
 
 static const CGFloat kHorizontalIndentation = 10.0;
-static const CGFloat kVerticalSmallIndentation = 4.0;
-static const CGFloat kVerticalLargeIndentation = 20.0;
-
-static const CGFloat kTextIndentation = 8.0;
+static const CGFloat kVerticalIndentation = 20.0;
 
 static const CGFloat kButtonHeight = 40.0;
 static const CGFloat kButtonWidth = 120.0;
 
 @interface FriendRequestViewController ()
 
+@property (strong, nonatomic) ValueViewWithTitle *toxIdValueView;
+@property (strong, nonatomic) ValueViewWithTitle *messageValueView;
 @property (strong, nonatomic) UILabel *toxIdTitleLabel;
 @property (strong, nonatomic) UIView *toxIdValueContainer;
 
@@ -65,8 +65,7 @@ static const CGFloat kButtonWidth = 120.0;
 {
     [self loadLightGrayView];
 
-    [self createToxIdViews];
-    [self createMessageViews];
+    [self createValueViews];
     [self createButtons];
 
     [self installConstraints];
@@ -100,22 +99,17 @@ static const CGFloat kButtonWidth = 120.0;
 
 #pragma mark -  Private
 
-- (void)createToxIdViews
+- (void)createValueViews
 {
-    self.toxIdTitleLabel = [self createTitleLabelWithText:NSLocalizedString(@"Tox ID", @"Friend request")];
-    [self.view addSubview:self.toxIdTitleLabel];
+    self.toxIdValueView = [ValueViewWithTitle new];
+    self.toxIdValueView.title = NSLocalizedString(@"Tox ID", @"Friend request");
+    self.toxIdValueView.value = self.request.publicKey;
+    [self.view addSubview:self.toxIdValueView];
 
-    self.toxIdValueContainer = [self createViewWithText:self.request.publicKey];
-    [self.view addSubview:self.toxIdValueContainer];
-}
-
-- (void)createMessageViews
-{
-    self.messageTitleLabel = [self createTitleLabelWithText:NSLocalizedString(@"Message", @"Friend request")];
-    [self.view addSubview:self.messageTitleLabel];
-
-    self.messageValueContainer = [self createViewWithText:self.request.message];
-    [self.view addSubview:self.messageValueContainer];
+    self.messageValueView = [ValueViewWithTitle new];
+    self.messageValueView.title = NSLocalizedString(@"Message", @"Friend request");
+    self.messageValueView.value = self.request.message;
+    [self.view addSubview:self.messageValueView];
 }
 
 - (void)createButtons
@@ -143,40 +137,6 @@ static const CGFloat kButtonWidth = 120.0;
     [self.buttonsContainer addSubview:self.orLabel];
 }
 
-- (UILabel *)createTitleLabelWithText:(NSString *)text
-{
-    UILabel *label = [UILabel new];
-    label.text = text;
-    label.textColor = [UIColor blackColor];
-    label.backgroundColor = [UIColor clearColor];
-
-    return label;
-}
-
-- (UIView *)createViewWithText:(NSString *)text
-{
-    UIView *view = [UIView new];
-    view.backgroundColor = [UIColor whiteColor];
-    view.layer.cornerRadius = 5.0;
-    view.layer.borderWidth = 0.5;
-    view.layer.borderColor = [[UIColor colorWithWhite:0.8f alpha:1.0f] CGColor];
-    view.layer.masksToBounds = YES;
-
-    UILabel *label = [UILabel new];
-    label.text = text;
-    label.backgroundColor = [UIColor clearColor];
-    label.numberOfLines = 0;
-    label.textColor = [UIColor blackColor];
-    [view addSubview:label];
-
-    [label makeConstraints:^(MASConstraintMaker *make) {
-        make.top.left.equalTo(view).offset(kTextIndentation);
-        make.bottom.right.equalTo(view).offset(-kTextIndentation);
-    }];
-
-    return view;
-}
-
 - (UIButton *)createButtonWithText:(NSString *)text
                         titleColor:(UIColor *)titleColor
                    backgroundColor:(UIColor *)backgroundColor
@@ -197,34 +157,22 @@ static const CGFloat kButtonWidth = 120.0;
 
 - (void)installConstraints
 {
-    [self.toxIdTitleLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(kVerticalLargeIndentation);
+    [self.toxIdValueView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(kVerticalIndentation);
         make.left.equalTo(kHorizontalIndentation);
         make.right.equalTo(-kHorizontalIndentation);
     }];
 
-    [self.toxIdValueContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.toxIdTitleLabel.bottom).offset(kVerticalSmallIndentation);
-        make.left.equalTo(kHorizontalIndentation);
-        make.right.equalTo(-kHorizontalIndentation);
-    }];
-
-    [self.messageTitleLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.toxIdValueContainer.bottom).offset(kVerticalLargeIndentation);
-        make.left.equalTo(kHorizontalIndentation);
-        make.right.equalTo(-kHorizontalIndentation);
-    }];
-
-    [self.messageValueContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.messageTitleLabel.bottom).offset(kVerticalSmallIndentation);
+    [self.messageValueView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toxIdValueView.bottom).offset(kVerticalIndentation);
         make.left.equalTo(kHorizontalIndentation);
         make.right.equalTo(-kHorizontalIndentation);
     }];
 
     [self.buttonsContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.messageValueContainer.bottom).offset(kVerticalLargeIndentation);
+        make.top.equalTo(self.messageValueView.bottom).offset(kVerticalIndentation);
         make.centerX.equalTo(self.view);
-        make.bottom.lessThanOrEqualTo(self.view).offset(-kVerticalLargeIndentation);
+        make.bottom.lessThanOrEqualTo(self.view).offset(-kVerticalIndentation);
         make.height.equalTo(kButtonHeight);
     }];
 
