@@ -245,6 +245,7 @@ static const CGFloat k3ButtonGap = 30.0;
     [self.incomingCallContainer makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.view);
         make.height.equalTo(kButtonSide);
+        make.bottom.equalTo(self.endCallButton.top).with.offset(-kIndent);
     }];
 }
 

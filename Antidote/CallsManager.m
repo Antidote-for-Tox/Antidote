@@ -154,8 +154,6 @@
     self.currentCall = self.pendingIncomingCall;
 
     self.pendingIncomingCall = nil;
-
-    [self dismissAndSwitchViewControllerForCall:self.currentCall];
 }
 
 - (void)setEnableMicrophone:(BOOL)enableMicrophone
@@ -212,14 +210,22 @@
 
 - (void)dismissAndSwitchViewControllerForCall:(OCTCall *)call
 {
-    [self.currentCallViewController dismissViewControllerAnimated:NO completion:nil];
-
     AbstractCallViewController *abstractVC = [self viewControllerForCall:call];
 
     TabBarViewController *tabBarVC = (TabBarViewController *)[AppContext sharedContext].tabBarController;
-    [tabBarVC presentViewController:abstractVC
-                           animated:YES
-                         completion:nil];
+
+    if ([tabBarVC presentedViewController]) {
+        [self.currentCallViewController dismissViewControllerAnimated:NO completion:^{
+            [tabBarVC presentViewController:abstractVC
+                                   animated:YES
+                                 completion:nil];
+        }];
+    }
+    else {
+        [tabBarVC presentViewController:abstractVC
+                               animated:YES
+                             completion:nil];
+    }
 
     NSPredicate *predicateForCurrentCall = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@",
                                             call.uniqueIdentifier];
