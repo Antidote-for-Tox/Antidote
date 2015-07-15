@@ -114,6 +114,12 @@
       forChangeType:(NSFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath;
 {
+    if (type == NSFetchedResultsChangeUpdate) {
+        if (controller == self.allActiveCallsController) {
+            OCTCall *call = [anObject RLMObject];
+            [self updateDuration:call.callDuration];
+        }
+    }
 
     if (type == NSFetchedResultsChangeDelete) {
         if ([self.allCallsController.fetchedObjects count] == 0) {
@@ -127,14 +133,6 @@
         // workaround for deadlock in objcTox
         // https://github.com/Antidote-for-Tox/objcTox/issues/51
         [self performSelector:@selector(dismissAndSwitchToActiveViewControllerForCall:) withObject:call afterDelay:0];
-    }
-}
-
-- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
-{
-    if (controller == self.allActiveCallsController) {
-        self.currentCall = [[self.allActiveCallsController fetchedObjects] firstObject];
-        [self updateDuration:self.currentCall.callDuration];
     }
 }
 
@@ -190,6 +188,20 @@
         }
         else if (error.code == OCTToxAVErrorControlInvaldTransition) {
             controller.speakerSelected = NO;
+        }
+    }
+}
+
+- (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller
+{
+    if (controller.pauseSelected) {
+        if ([self.manager sendCallControl:OCTToxAVCallControlResume toCall:self.currentCall error:nil]) {
+            controller.pauseSelected = NO;
+        }
+    }
+    else {
+        if ([self.manager sendCallControl:OCTToxAVCallControlPause toCall:self.currentCall error:nil]) {
+            controller.pauseSelected = YES;
         }
     }
 }

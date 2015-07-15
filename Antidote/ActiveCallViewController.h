@@ -19,6 +19,8 @@
 - (void)activeCallDeclineButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller;
+- (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller;
+
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller;
@@ -46,6 +48,11 @@
  * Set the speaker to be selected or not selected
  */
 @property (assign, nonatomic) BOOL speakerSelected;
+
+/**
+ * Set the pause buton to be selected or not selected.
+ */
+@property (assign, nonatomic) BOOL pauseSelected;
 
 /**
  * Create an incoming call view for friend

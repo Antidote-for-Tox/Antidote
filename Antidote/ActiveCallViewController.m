@@ -30,6 +30,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 @property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIButton *microphoneButton;
 @property (strong, nonatomic) UIButton *speakerButton;
+@property (strong, nonatomic) UIButton *pauseButton;
 @property (strong, nonatomic) UIView *incomingCallContainer;
 
 @end
@@ -47,6 +48,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [self createContainerView];
     [self createMicrophoneButton];
     [self createMuteButton];
+    [self createPauseButton];
 
     [self installConstraints];
 }
@@ -110,6 +112,16 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [self.containerView addSubview:self.speakerButton];
 }
 
+- (void)createPauseButton
+{
+    self.pauseButton = [self createButtonWithImageName:@"call-play" action:@selector(pauseButtonPressed)];
+
+    UIImage *selectedImage = [UIImage imageNamed:@"call-pause"];
+    [self.pauseButton setImage:selectedImage forState:UIControlStateSelected];
+
+    [self.view addSubview:self.pauseButton];
+}
+
 - (void)installConstraints
 {
     [super installConstraints];
@@ -128,7 +140,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.centerY).with.offset(-kIndent);
-        make.centerX.equalTo(self.view.centerX);
+        make.centerX.equalTo(self.view);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
     }];
@@ -137,6 +149,13 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
         make.top.equalTo(self.videoButton.bottom).with.offset(k3ButtonGap);
         make.centerX.equalTo(self.view);
         make.height.equalTo(kButtonSide);
+    }];
+
+    [self.pauseButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.containerView.bottom).with.offset(k3ButtonGap);
+        make.width.equalTo(kButtonSide);
+        make.height.equalTo(kButtonSide);
+        make.centerX.equalTo(self.view);
     }];
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
@@ -191,6 +210,16 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     }
 
     [self createIncomingCallViewForFriend:nickname];
+}
+
+- (void)setPauseSelected:(BOOL)pauseSelected
+{
+    self.pauseButton.selected = pauseSelected;
+}
+
+- (BOOL)pauseSelected
+{
+    return self.pauseButton.selected;
 }
 
 - (void)hideIncomingCallView
@@ -323,6 +352,11 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 - (void)endCallButtonPressed
 {
     [self.delegate activeCallDeclineButtonPressed:self];
+}
+
+- (void)pauseButtonPressed
+{
+    [self.delegate activeCallPauseButtonPressed:self];
 }
 
 - (void)pauseSelectedCallAtIndex:(NSUInteger)index
