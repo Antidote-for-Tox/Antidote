@@ -36,8 +36,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
 @implementation ActiveCallViewController
 
-@dynamic delegate;
-
 #pragma mark - View lifecycle
 - (void)viewDidLoad
 {

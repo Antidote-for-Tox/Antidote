@@ -29,8 +29,6 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 
 @implementation DialingCallViewController
 
-@dynamic delegate;
-
 #pragma mark - Life cycle
 
 - (void)viewDidLoad

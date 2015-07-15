@@ -13,11 +13,6 @@
 @interface AbstractCallViewController : UIViewController
 
 /**
- * Abstract delegate
- */
-@property (weak, nonatomic) id delegate;
-
-/**
  * Name of the caller
  */
 @property (strong, nonatomic) NSString *nickname;

@@ -36,8 +36,6 @@ static const CGFloat kLabelFontSize = 16.0;
 
 @implementation RingingCallViewController
 
-@dynamic delegate;
-
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad

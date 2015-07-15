@@ -256,15 +256,24 @@
     OCTFriend *friend = [call.chat.friends firstObject];
 
     switch (call.status) {
-        case OCTCallStatusActive:
-            viewController = [ActiveCallViewController new];
+        case OCTCallStatusActive: {
+            ActiveCallViewController *activeVC = [ActiveCallViewController new];
+            activeVC.delegate = self;
+            viewController = activeVC;
             break;
-        case OCTCallStatusDialing:
-            viewController = [DialingCallViewController new];
+        }
+        case OCTCallStatusDialing: {
+            DialingCallViewController *dialingVC = [DialingCallViewController new];
+            dialingVC.delegate = self;
+            viewController = dialingVC;
             break;
-        case OCTCallStatusRinging:
-            viewController = [RingingCallViewController new];
+        }
+        case OCTCallStatusRinging: {
+            RingingCallViewController *ringingVC = [RingingCallViewController new];
+            ringingVC.delegate = self;
+            viewController = ringingVC;
             break;
+        }
         case OCTCallStatusPaused:
             NSAssert(NO, @"We should not be here yet. Not yet implemented");
             break;
@@ -273,7 +282,6 @@
     viewController.nickname = friend.nickname;
     viewController.modalInPopover = YES;
     viewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
-    viewController.delegate = self;
 
     return viewController;
 }
