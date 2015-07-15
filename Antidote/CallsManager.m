@@ -55,6 +55,11 @@
                                                                     predicate:predicate
                                                                      delegate:self];
 
+    predicate = [NSPredicate predicateWithFormat:@"status == %d", OCTCallStatusPaused];
+    _allPausedCallsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
+                                                                    predicate:predicate
+                                                                     delegate:self];
+
     _manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
     _callNavigation = [UINavigationController new];
@@ -124,6 +129,14 @@
     if (type == NSFetchedResultsChangeDelete) {
         if ([self.allCallsController.fetchedObjects count] == 0) {
             [[AppContext sharedContext] killCallsManager];
+        }
+
+        if ([self onlyPauseCallsLeft]) {
+            OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
+
+            // workaround for deadlock in objcTox
+            // https://github.com/Antidote-for-Tox/objcTox/issues/51
+            [self performSelector:@selector(dismissAndSwitchToActiveViewControllerForCall:) withObject:call afterDelay:0];
         }
     }
 
@@ -319,6 +332,12 @@
 - (void)dismissAndSwitchToActiveViewControllerForCall:(OCTCall *)call
 {
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+
+        if (call.status == OCTCallStatusPaused) {
+            ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
+            activeVC.pauseSelected = YES;
+        }
+
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
         self.currentCall = call;
@@ -326,6 +345,12 @@
     else {
         [self dismissAndSwitchViewControllerForCall:call];
     }
+}
+
+- (BOOL)onlyPauseCallsLeft
+{
+    return (([self.allActiveCallsController.fetchedObjects count] == 0) &&
+            ([self.allPausedCallsController.fetchedObjects count] != 0));
 }
 
 @end
