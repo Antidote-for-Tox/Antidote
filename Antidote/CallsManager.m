@@ -27,6 +27,8 @@
 @property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsController;
 @property (strong, nonatomic) AbstractCallViewController *currentCallViewController;
 
+@property (strong, nonatomic) UINavigationController *callNavigation;
+
 @property (weak, nonatomic) OCTSubmanagerCalls *manager;
 
 @property (strong, nonatomic) OCTCall *currentCall;
@@ -55,12 +57,20 @@
 
     _manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
+    _callNavigation = [UINavigationController new];
+    _callNavigation.view.backgroundColor = [UIColor clearColor];
+    _callNavigation.navigationBarHidden = YES;
+    _callNavigation.modalInPopover = YES;
+    _callNavigation.modalPresentationStyle = UIModalPresentationOverCurrentContext;
+
+    [[AppContext sharedContext].tabBarController presentViewController:_callNavigation animated:YES completion:nil];
+
     return self;
 }
 
 - (void)dealloc
 {
-    [self.currentCallViewController dismissViewControllerAnimated:YES completion:nil];
+    [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Public
@@ -287,22 +297,10 @@
 {
     AbstractCallViewController *abstractVC = [self viewControllerForCall:call];
 
-    TabBarViewController *tabBarVC = (TabBarViewController *)[AppContext sharedContext].tabBarController;
-
-    if ([tabBarVC presentedViewController]) {
-        [self.currentCallViewController dismissViewControllerAnimated:NO completion:^{
-            [tabBarVC presentViewController:abstractVC
-                                   animated:YES
-                                 completion:nil];
-        }];
-    }
-    else {
-        [tabBarVC presentViewController:abstractVC
-                               animated:YES
-                             completion:nil];
-    }
+    [self.callNavigation setViewControllers:@[abstractVC] animated:YES];
 
     self.currentCallViewController = abstractVC;
+
     self.currentCall = call;
 }
 
