@@ -17,7 +17,7 @@ static const CGFloat kIndentBetweenNameLabelTimer = 20.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
-static const CGFloat k3ButtonGap = 30.0;
+static const CGFloat k3ButtonGap = 15.0;
 static const CGFloat kOtherCallButtonSize = 4.0 / 5.0 * kButtonSide;
 static const CGFloat kIncomingNameFontSize = 12.0;
 static const CGFloat kIncomingIsCallingFontSize = 10.0;
@@ -209,7 +209,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
         return;
     }
 
-    [self createIncomingCallViewForFriend:nickname];
+    [self setupIncomingCallViewForFriend:nickname];
 }
 
 - (void)setPauseSelected:(BOOL)pauseSelected
