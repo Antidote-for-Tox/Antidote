@@ -22,7 +22,6 @@
 
 @interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate>
 
-@property (strong, nonatomic) RBQFetchedResultsController *currentCallController;
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsController;
@@ -37,6 +36,7 @@
 
 @implementation CallsManager
 
+#pragma mark - Lifecycle
 - (instancetype)init
 {
     self = [super self];
@@ -56,6 +56,11 @@
     _manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
     return self;
+}
+
+- (void)dealloc
+{
+    [self.currentCallViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Public
@@ -183,16 +188,14 @@
 {
     [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:nil];
     self.pendingIncomingCall = nil;
-    controller.incomingCallCallerName = nil;
-    controller.createIncomingCallView = NO;
+    [controller hideIncomingCallView];
 }
 
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
     [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:nil];
     self.pendingIncomingCall = nil;
-    controller.incomingCallCallerName = nil;
-    controller.createIncomingCallView = NO;
+    [controller hideIncomingCallView];
 }
 
 - (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller
@@ -240,13 +243,7 @@
     OCTFriend *friend = [self.pendingIncomingCall.chat.friends firstObject];
 
     ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
-    activeVC.incomingCallCallerName = friend.nickname;
-    activeVC.createIncomingCallView = YES;
-}
-
-- (void)dealloc
-{
-    [self.currentCallViewController dismissViewControllerAnimated:YES completion:nil];
+    [activeVC createIncomingCallViewForFriend:friend.nickname];
 }
 
 - (AbstractCallViewController *)viewControllerForCall:(OCTCall *)call
@@ -305,13 +302,6 @@
                              completion:nil];
     }
 
-    NSPredicate *predicateForCurrentCall = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@",
-                                            call.uniqueIdentifier];
-
-    self.currentCallController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
-                                                                     predicate:predicateForCurrentCall
-                                                                      delegate:self];
-
     self.currentCallViewController = abstractVC;
     self.currentCall = call;
 }
@@ -321,14 +311,6 @@
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
-
-        NSPredicate *predicateForCurrentCall = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@",
-                                                call.uniqueIdentifier];
-
-        self.currentCallController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
-                                                                         predicate:predicateForCurrentCall
-                                                                          delegate:self];
-
         self.currentCall = call;
     }
     else {

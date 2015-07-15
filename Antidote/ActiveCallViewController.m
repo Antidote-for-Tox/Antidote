@@ -184,18 +184,19 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     return self.speakerButton.selected;
 }
 
-- (void)setCreateIncomingCallView:(BOOL)createIncomingCallView
+- (void)createIncomingCallViewForFriend:(NSString *)nickname
 {
-    if (createIncomingCallView) {
-        [self setupIncomingCallView];
-    }
-    else {
-        [self.incomingCallContainer removeFromSuperview];
-        self.incomingCallContainer = nil;
-        self.incomingCallCallerName = nil;
+    if (self.incomingCallContainer) {
+        return;
     }
 
-    _createIncomingCallView = createIncomingCallView;
+    [self createIncomingCallViewForFriend:nickname];
+}
+
+- (void)hideIncomingCallView
+{
+    [self.incomingCallContainer removeFromSuperview];
+    self.incomingCallContainer = nil;
 }
 
 #pragma mark - Private
@@ -226,7 +227,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     return button;
 }
 
-- (void)setupIncomingCallView
+- (void)setupIncomingCallViewForFriend:(NSString *)nickname
 {
     self.incomingCallContainer = [UIView new];
     self.incomingCallContainer.backgroundColor = [UIColor grayColor];
@@ -235,7 +236,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     UILabel *nameLabel = [UILabel new];
     nameLabel.adjustsFontSizeToFitWidth = YES;
     nameLabel.textAlignment = NSTextAlignmentCenter;
-    nameLabel.text = self.incomingCallCallerName;
+    nameLabel.text = nickname;
     nameLabel.textColor = [UIColor whiteColor];
     nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kIncomingNameFontSize];
     [self.incomingCallContainer addSubview:nameLabel];

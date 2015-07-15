@@ -48,13 +48,14 @@
 @property (assign, nonatomic) BOOL speakerSelected;
 
 /**
- * Set to YES to create an incoming call view
+ * Create an incoming call view for friend
+ * @param nickname Nickname of friend
  */
-@property (assign, nonatomic) BOOL createIncomingCallView;
+- (void)createIncomingCallViewForFriend:(NSString *)nickname;
 
 /**
- * Set the name of the other caller who is calling
+ * Hide incoming call view
  */
-@property (strong, nonatomic) NSString *incomingCallCallerName;
+- (void)hideIncomingCallView;
 
 @end
