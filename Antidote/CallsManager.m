@@ -108,11 +108,10 @@
 
     if ((type == NSFetchedResultsChangeInsert) && (controller == self.allActiveCallsController)) {
         OCTCall *call = [anObject RLMObject];
-        [self.allActiveCallsController objectAtIndexPath:newIndexPath];
 
         // workaround for deadlock in objcTox
         // https://github.com/Antidote-for-Tox/objcTox/issues/51
-        [self performSelector:@selector(dismissAndSwitchViewControllerForCall:) withObject:call afterDelay:0];
+        [self performSelector:@selector(dismissAndSwitchToActiveViewControllerForCall:) withObject:call afterDelay:0];
     }
 }
 
@@ -258,19 +257,20 @@
 
     switch (call.status) {
         case OCTCallStatusActive:
-            viewController = [[ActiveCallViewController alloc] initWithCallerNickname:friend.nickname];
+            viewController = [ActiveCallViewController new];
             break;
         case OCTCallStatusDialing:
-            viewController = [[DialingCallViewController alloc] initWithCallerNickname:friend.nickname];
+            viewController = [DialingCallViewController new];
             break;
         case OCTCallStatusRinging:
-            viewController = [[RingingCallViewController alloc] initWithCallerNickname:friend.nickname];
+            viewController = [RingingCallViewController new];
             break;
         case OCTCallStatusPaused:
             NSAssert(NO, @"We should not be here yet. Not yet implemented");
             break;
     }
 
+    viewController.nickname = friend.nickname;
     viewController.modalInPopover = YES;
     viewController.modalPresentationStyle = UIModalPresentationOverCurrentContext;
     viewController.delegate = self;
@@ -307,4 +307,25 @@
     self.currentCallViewController = abstractVC;
     self.currentCall = call;
 }
+
+- (void)dismissAndSwitchToActiveViewControllerForCall:(OCTCall *)call
+{
+    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+        OCTFriend *friend = [call.chat.friends firstObject];
+        self.currentCallViewController.nickname = friend.nickname;
+
+        NSPredicate *predicateForCurrentCall = [NSPredicate predicateWithFormat:@"uniqueIdentifier == %@",
+                                                call.uniqueIdentifier];
+
+        self.currentCallController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
+                                                                         predicate:predicateForCurrentCall
+                                                                          delegate:self];
+
+        self.currentCall = call;
+    }
+    else {
+        [self dismissAndSwitchViewControllerForCall:call];
+    }
+}
+
 @end

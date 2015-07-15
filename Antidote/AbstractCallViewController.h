@@ -12,15 +12,6 @@
 
 @interface AbstractCallViewController : UIViewController
 
-- (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
-
-/**
- * Create an instance of the AbstractCallViewController.
- * @param nickname The nickname associated with the caller.
- */
-- (instancetype)initWithCallerNickname:(NSString *)nickname;
-
 /**
  * Abstract delegate
  */
@@ -29,7 +20,7 @@
 /**
  * Name of the caller
  */
-@property (strong, nonatomic, readonly) NSString *nickname;
+@property (strong, nonatomic) NSString *nickname;
 
 /**
  * Label of the caller.

@@ -43,6 +43,14 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     [self installConstraints];
 }
 
+#pragma mark - Public
+
+- (void)setNickname:(NSString *)nickname
+{
+    [super setNickname:nickname];
+
+    [self updateFriendAvatar];
+}
 #pragma mark - Private
 
 
@@ -74,6 +82,18 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     self.friendAvatar = [[UIImageView alloc] initWithImage:image];
 
     [self.view addSubview:self.friendAvatar];
+}
+
+- (void)updateFriendAvatar
+{
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
+
+    UIImage *image = [avatars avatarFromString:self.nickname
+                                      diameter:kAvatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
+
+    [self.friendAvatar setImage:image];
 }
 
 - (void)createReachingLabel

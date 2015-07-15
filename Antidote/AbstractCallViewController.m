@@ -16,7 +16,6 @@ static const CGFloat kIndent = 50.0;
 
 @interface AbstractCallViewController ()
 
-@property (strong, nonatomic, readwrite) NSString *nickname;
 @property (strong, nonatomic, readwrite) UILabel *nameLabel;
 
 @end
@@ -24,18 +23,6 @@ static const CGFloat kIndent = 50.0;
 @implementation AbstractCallViewController
 
 #pragma mark - Life cycle
-
-- (instancetype)initWithCallerNickname:(NSString *)nickname
-{
-    self = [super init];
-    if (! self) {
-        return nil;
-    }
-
-    _nickname = nickname;
-
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -62,6 +49,12 @@ static const CGFloat kIndent = 50.0;
     [visualEffectView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+}
+
+- (void)setNickname:(NSString *)nickname
+{
+    _nickname = nickname;
+    [self.nameLabel setNeedsDisplay];
 }
 
 - (void)createNameLabel
