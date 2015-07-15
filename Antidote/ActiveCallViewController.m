@@ -18,7 +18,7 @@ static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat k3ButtonGap = 30.0;
-static const CGFloat kotherCallButtonSize = 4.0 / 5.0 * kButtonSide;
+static const CGFloat kOtherCallButtonSize = 4.0 / 5.0 * kButtonSide;
 static const CGFloat kIncomingNameFontSize = 12.0;
 static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
@@ -94,11 +94,10 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
 - (void)createMicrophoneButton
 {
-    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
+    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-enable" action:@selector(micButtonPressed)];
 
-    UIImage *selectedImage = [UIImage imageNamed:@"call-microphone-enable"];
+    UIImage *selectedImage = [UIImage imageNamed:@"call-microphone-disable"];
     [self.microphoneButton setImage:selectedImage forState:UIControlStateSelected];
-    self.microphoneButton.selected = YES;
 
     [self.containerView addSubview:self.microphoneButton];
 }
@@ -187,17 +186,18 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     return self.speakerButton.selected;
 }
 
-- (void)setShowIncomingCallView:(BOOL)showIncomingCallView
+- (void)setCreateIncomingCallView:(BOOL)createIncomingCallView
 {
-    if (showIncomingCallView) {
+    if (createIncomingCallView) {
         [self setupIncomingCallView];
     }
     else {
         [self.incomingCallContainer removeFromSuperview];
         self.incomingCallContainer = nil;
+        self.incomingCallCallerName = nil;
     }
 
-    _showIncomingCallView = showIncomingCallView;
+    _createIncomingCallView = createIncomingCallView;
 }
 
 #pragma mark - Private
@@ -254,7 +254,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [declineCall setImage:declineCallImage forState:UIControlStateNormal];
     declineCall.tintColor = [UIColor whiteColor];
     declineCall.backgroundColor = [UIColor redColor];
-    declineCall.layer.cornerRadius = kotherCallButtonSize / 2.0;
+    declineCall.layer.cornerRadius = kOtherCallButtonSize / 2.0;
     [declineCall addTarget:self action:@selector(declineIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:declineCall];
 
@@ -263,7 +263,7 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [acceptCall setImage:acceptCallimage forState:UIControlStateNormal];
     acceptCall.tintColor = [UIColor whiteColor];
     acceptCall.backgroundColor = [UIColor greenColor];
-    acceptCall.layer.cornerRadius = kotherCallButtonSize / 2.0;
+    acceptCall.layer.cornerRadius = kOtherCallButtonSize / 2.0;
     [acceptCall addTarget:self action:@selector(acceptIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:acceptCall];
 
@@ -276,8 +276,8 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [acceptCall makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.incomingCallContainer);
         make.centerY.equalTo(self.incomingCallContainer);
-        make.height.equalTo(kotherCallButtonSize);
-        make.width.equalTo(kotherCallButtonSize);
+        make.height.equalTo(kOtherCallButtonSize);
+        make.width.equalTo(kOtherCallButtonSize);
     }];
 
     [declineCall makeConstraints:^(MASConstraintMaker *make) {
@@ -294,7 +294,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
     [descriptionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(nameLabel);
-        make.left.equalTo(self.incomingCallContainer.left);
         make.bottom.equalTo(self.incomingCallContainer.bottom);
         make.top.equalTo(self.incomingCallContainer.centerY);
     }];

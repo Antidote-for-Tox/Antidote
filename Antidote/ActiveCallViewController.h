@@ -48,12 +48,13 @@
 @property (assign, nonatomic) BOOL speakerSelected;
 
 /**
- * Set to YES to show an incoming call
+ * Set to YES to create an incoming call view
  */
-@property (assign, nonatomic) BOOL showIncomingCallView;
+@property (assign, nonatomic) BOOL createIncomingCallView;
 
 /**
  * Set the name of the other caller who is calling
  */
 @property (strong, nonatomic) NSString *incomingCallCallerName;
+
 @end

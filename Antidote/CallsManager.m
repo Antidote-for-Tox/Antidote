@@ -153,9 +153,9 @@
 
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller
 {
-    BOOL enable = ! controller.micSelected;
+    BOOL enable = controller.micSelected;
     self.manager.enableMicrophone = enable;
-    controller.micSelected = enable;
+    controller.micSelected = ! enable;
 }
 
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller
@@ -185,7 +185,7 @@
     [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:nil];
     self.pendingIncomingCall = nil;
     controller.incomingCallCallerName = nil;
-    controller.showIncomingCallView = NO;
+    controller.createIncomingCallView = NO;
 }
 
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller
@@ -193,7 +193,7 @@
     [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:nil];
     self.pendingIncomingCall = nil;
     controller.incomingCallCallerName = nil;
-    controller.showIncomingCallView = NO;
+    controller.createIncomingCallView = NO;
 }
 
 - (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller
@@ -242,7 +242,7 @@
 
     ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
     activeVC.incomingCallCallerName = friend.nickname;
-    activeVC.showIncomingCallView = YES;
+    activeVC.createIncomingCallView = YES;
 }
 
 - (void)dealloc
