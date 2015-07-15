@@ -54,6 +54,7 @@ static const CGFloat kIndent = 50.0;
 - (void)setNickname:(NSString *)nickname
 {
     _nickname = nickname;
+    self.nameLabel.text = nickname;
     [self.nameLabel setNeedsDisplay];
 }
 
