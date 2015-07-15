@@ -9,6 +9,7 @@
 #import "ActiveCallViewController.h"
 #import "Masonry.h"
 #import "NSString+Utilities.h"
+#import "AppearanceManager.h"
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kIndent = 50.0;
@@ -18,9 +19,8 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat k3ButtonGap = 30.0;
 static const CGFloat kotherCallButtonSize = 4.0 / 5.0 * kButtonSide;
-
-static const NSInteger declineButtonTag = 0;
-static const NSInteger acceptButtonTag = 1;
+static const CGFloat kIncomingNameFontSize = 12.0;
+static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
 @interface ActiveCallViewController ()
 
@@ -83,7 +83,6 @@ static const NSInteger acceptButtonTag = 1;
 - (void)createVideoButton
 {
     self.videoButton = [self createButtonWithImageName:@"call-video" action:nil];
-
     [self.view addSubview:self.videoButton];
 }
 
@@ -191,10 +190,11 @@ static const NSInteger acceptButtonTag = 1;
 - (void)setShowIncomingCallView:(BOOL)showIncomingCallView
 {
     if (showIncomingCallView) {
-        // show incoming view
+        [self setupIncomingCallView];
     }
     else {
-        // hide incoming view
+        [self.incomingCallContainer removeFromSuperview];
+        self.incomingCallContainer = nil;
     }
 
     _showIncomingCallView = showIncomingCallView;
@@ -235,22 +235,34 @@ static const NSInteger acceptButtonTag = 1;
     [self.view addSubview:self.incomingCallContainer];
 
     UILabel *nameLabel = [UILabel new];
+    nameLabel.adjustsFontSizeToFitWidth = YES;
+    nameLabel.textAlignment = NSTextAlignmentCenter;
     nameLabel.text = self.incomingCallCallerName;
+    nameLabel.textColor = [UIColor whiteColor];
+    nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kIncomingNameFontSize];
     [self.incomingCallContainer addSubview:nameLabel];
 
     UILabel *descriptionLabel = [UILabel new];
     descriptionLabel.text = NSLocalizedString(@"is calling", @"Calls");
+    descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    descriptionLabel.textColor = [UIColor whiteColor];
+    descriptionLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kIncomingIsCallingFontSize];
+    [self.incomingCallContainer addSubview:descriptionLabel];
 
     UIButton *declineCall = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *declineCallImage = [UIImage imageNamed:@"call-accept"];
+    [declineCall setImage:declineCallImage forState:UIControlStateNormal];
+    declineCall.tintColor = [UIColor whiteColor];
     declineCall.backgroundColor = [UIColor redColor];
-    declineCall.tag = declineButtonTag;
     declineCall.layer.cornerRadius = kotherCallButtonSize / 2.0;
     [declineCall addTarget:self action:@selector(declineIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:declineCall];
 
     UIButton *acceptCall = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *acceptCallimage = [UIImage imageNamed:@"call-phone"];
+    [acceptCall setImage:acceptCallimage forState:UIControlStateNormal];
+    acceptCall.tintColor = [UIColor whiteColor];
     acceptCall.backgroundColor = [UIColor greenColor];
-    acceptCall.tag = acceptButtonTag;
     acceptCall.layer.cornerRadius = kotherCallButtonSize / 2.0;
     [acceptCall addTarget:self action:@selector(acceptIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:acceptCall];
@@ -271,20 +283,20 @@ static const NSInteger acceptButtonTag = 1;
     [declineCall makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(acceptCall);
         make.centerY.equalTo(acceptCall);
-        make.right.equalTo(acceptCall).with.offset(-5.0);
+        make.right.equalTo(acceptCall.left).with.offset(-kIndent);
     }];
 
     [nameLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.width.lessThanOrEqualTo(self.incomingCallContainer.bounds.size.width / 2.0);
-        make.left.equalTo(self.incomingCallContainer);
-        make.top.equalTo(self.incomingCallContainer.top);
+        make.left.equalTo(self.incomingCallContainer.left);
+        make.height.equalTo(20.0);
+        make.bottom.equalTo(self.incomingCallContainer.centerY);
     }];
 
     [descriptionLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.width.lessThanOrEqualTo(nameLabel);
         make.centerX.equalTo(nameLabel);
-        make.left.equalTo(self.incomingCallContainer);
+        make.left.equalTo(self.incomingCallContainer.left);
         make.bottom.equalTo(self.incomingCallContainer.bottom);
+        make.top.equalTo(self.incomingCallContainer.centerY);
     }];
 }
 

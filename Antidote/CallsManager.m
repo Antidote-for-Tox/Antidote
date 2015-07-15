@@ -58,6 +58,8 @@
     return self;
 }
 
+#pragma mark - Public
+
 - (void)callToChat:(OCTChat *)chat
 {
     if (self.currentCall) {
@@ -76,12 +78,13 @@
 
 - (void)handleIncomingCall:(OCTCall *)call
 {
+    if (self.currentCall && self.pendingIncomingCall) {
+        // We only support showing one incoming call at a time. Reject all others
+        [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+    }
+
     if (self.currentCall) {
-
-        self.pendingIncomingCall = call;
-
-        [self notifyOfIncomingCall];
-
+        [self notifyOfIncomingCall:call];
         return;
     }
 
@@ -180,11 +183,17 @@
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
     [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:nil];
+    self.pendingIncomingCall = nil;
+    controller.incomingCallCallerName = nil;
+    controller.showIncomingCallView = NO;
 }
 
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
     [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:nil];
+    self.pendingIncomingCall = nil;
+    controller.incomingCallCallerName = nil;
+    controller.showIncomingCallView = NO;
 }
 
 - (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller
@@ -219,11 +228,16 @@
 
 #pragma mark - Private
 
-- (void)notifyOfIncomingCall
+- (void)notifyOfIncomingCall:(OCTCall *)call
 {
     if (! [self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+        // For now we reject call if we are in a dialing or ringing state
+        [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
         return;
     }
+
+    self.pendingIncomingCall = call;
+
     OCTFriend *friend = [self.pendingIncomingCall.chat.friends firstObject];
 
     ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
