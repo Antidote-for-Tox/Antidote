@@ -31,9 +31,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 @property (strong, nonatomic) UIButton *pauseButton;
 @property (strong, nonatomic) UIView *incomingCallContainer;
 
-@property (strong, nonatomic) UIButton *callMenuButton;
-@property (strong, nonatomic) UITableView *pausedCallsTableView;
-
 @end
 
 @implementation ActiveCallViewController
@@ -49,7 +46,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [self createMicrophoneButton];
     [self createMuteButton];
     [self createPauseButton];
-    [self createCallMenuButton];
 
     [self installConstraints];
 }
@@ -112,19 +108,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [self.pauseButton setImage:selectedImage forState:UIControlStateSelected];
 
     [self.view addSubview:self.pauseButton];
-}
-
-- (void)createCallMenuButton
-{
-    self.callMenuButton = [self createButtonWithImageName:@"call-menu" action:@selector(menuButtonPressed)];
-    [self.topViewContainer addSubview:self.callMenuButton];
-
-    [self.callMenuButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.topViewContainer);
-        make.top.equalTo(self.topViewContainer);
-        make.width.equalTo(kButtonSide);
-        make.height.equalTo(kButtonSide);
-    }];
 }
 
 - (void)installConstraints
@@ -228,27 +211,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     self.incomingCallContainer = nil;
 }
 
-- (void)showPausedCallsTableView:(UITableView *)tableView
-{
-    if (self.pausedCallsTableView) {
-        return;
-    }
-
-    self.pausedCallsTableView = tableView;
-    [self.view addSubview:self.pausedCallsTableView];
-    [self.pausedCallsTableView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topViewContainer.bottom);
-        make.width.equalTo(self.view);
-        make.height.equalTo(50.0);
-    }];
-}
-
-- (void)hidePausedCallsTableView
-{
-    [self.pausedCallsTableView removeFromSuperview];
-    self.pausedCallsTableView = nil;
-}
-
 #pragma mark - Private
 
 - (void)updateTimerLabel
@@ -346,11 +308,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
         make.bottom.equalTo(self.incomingCallContainer.bottom);
         make.top.equalTo(self.incomingCallContainer.centerY);
     }];
-}
-
-- (void)menuButtonPressed
-{
-    [self.delegate activeCallMenuButtonPressed:self];
 }
 
 #pragma mark - Touch actions

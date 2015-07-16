@@ -23,8 +23,6 @@
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller;
-
-- (void)activeCallMenuButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller;
 
 @end
@@ -66,10 +64,5 @@
  * Hide incoming call view
  */
 - (void)hideIncomingCallView;
-
-/**
- * Provide tableview of paused calls.
- */
-- (void)showPausedCallsTableView:(UITableView *)tableView;
 
 @end
