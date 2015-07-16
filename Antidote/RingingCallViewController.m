@@ -15,7 +15,6 @@ static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonHeight = 70.0;
 static const CGFloat kButtonWidth = 90.0;
 static const CGFloat kButtonBorderWidth = 1.0;
-static const CGFloat kIndentBelowNameLabel = 10.0;
 static const CGFloat kAvatarDiameter = 180.0;
 static const CGFloat kLabelFontSize = 16.0;
 
@@ -44,8 +43,8 @@ static const CGFloat kLabelFontSize = 16.0;
 
     [self createAcceptCallButton];
     [self createDeclineCallButton];
-    [self createIncomingCallLabel];
     [self createFriendAvatar];
+    [self createIncomingCallLabel];
 
     [self installConstraints];
 }
@@ -110,11 +109,6 @@ static const CGFloat kLabelFontSize = 16.0;
         make.centerX.equalTo(self.view);
         make.centerY.equalTo(self.view);
     }];
-
-    [self.incomingCallLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.bottom).with.offset(kIndentBelowNameLabel);
-        make.centerX.equalTo(self.view.centerX);
-    }];
 }
 
 #pragma mark - View setup
@@ -171,11 +165,7 @@ static const CGFloat kLabelFontSize = 16.0;
 
 - (void)createIncomingCallLabel
 {
-    self.incomingCallLabel = [UILabel new];
-    self.incomingCallLabel.text = NSLocalizedString(@"incoming call", @"Calls");
-    self.incomingCallLabel.textColor = [UIColor whiteColor];
-
-    [self.view addSubview:self.incomingCallLabel];
+    self.subLabel.text = NSLocalizedString(@"incoming call", @"Calls");
 }
 
 #pragma mark - Touch actions

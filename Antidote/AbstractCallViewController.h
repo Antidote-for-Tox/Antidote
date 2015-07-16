@@ -18,9 +18,20 @@
 @property (strong, nonatomic) NSString *nickname;
 
 /**
+ * This view container holds onto both the nameLabel and subLabel
+ */
+@property (strong, nonatomic, readonly) UIView *topViewContainer;
+
+/**
  * Label of the caller.
  */
 @property (strong, nonatomic, readonly) UILabel *nameLabel;
+
+/**
+ * This label sits below the name label. Change the text
+ * to display any additional status.
+ */
+@property (strong, nonatomic, readonly) UILabel *subLabel;
 
 /**
  * Install constraints for subviews.

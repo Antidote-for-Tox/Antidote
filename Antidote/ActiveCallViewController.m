@@ -13,7 +13,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 static const CGFloat kIndent = 50.0;
-static const CGFloat kIndentBetweenNameLabelTimer = 20.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
@@ -24,7 +23,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
 @interface ActiveCallViewController ()
 
-@property (strong, nonatomic) UILabel *timerLabel;
 @property (strong, nonatomic) UIButton *endCallButton;
 @property (strong, nonatomic) UIButton *videoButton;
 @property (strong, nonatomic) UIView *containerView;
@@ -43,7 +41,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     [super viewDidLoad];
 
     [self createEndCallButton];
-    [self createCallTimer];
     [self createVideoButton];
     [self createContainerView];
     [self createMicrophoneButton];
@@ -69,15 +66,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
     self.endCallButton.tintColor = [UIColor whiteColor];
 
     [self.view addSubview:self.endCallButton];
-}
-
-- (void)createCallTimer
-{
-    self.timerLabel = [UILabel new];
-    self.timerLabel.textColor = [UIColor whiteColor];
-    self.timerLabel.textAlignment = NSTextAlignmentCenter;
-
-    [self.view addSubview:self.timerLabel];
 }
 
 - (void)createVideoButton
@@ -125,11 +113,6 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 - (void)installConstraints
 {
     [super installConstraints];
-
-    [self.timerLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.nameLabel.bottom).with.offset(kIndentBetweenNameLabelTimer);
-        make.centerX.equalTo(self.nameLabel.centerX);
-    }];
 
     [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
@@ -232,9 +215,9 @@ static const CGFloat kIncomingIsCallingFontSize = 10.0;
 
 - (void)updateTimerLabel
 {
-    self.timerLabel.text = [NSString stringFromTimeInterval:self.callDuration];
+    self.subLabel.text = [NSString stringFromTimeInterval:self.callDuration];
 
-    [self.timerLabel setNeedsDisplay];
+    [self.subLabel setNeedsDisplay];
 }
 
 - (UIButton *)createButtonWithImageName:(NSString *)imageName action:(SEL)action

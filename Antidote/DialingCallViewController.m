@@ -14,16 +14,13 @@
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kAvatarDiameter = 180.0;
-static const CGFloat kLabelFontSize = 16.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat kEndCallButtonHeight = 45.0;
 
 @interface DialingCallViewController ()
 
 @property (strong, nonatomic) UIButton *cancelCallButton;
-@property (assign, nonatomic) dispatch_once_t becameActiveToken;
 @property (strong, nonatomic) UIImageView *friendAvatar;
-@property (strong, nonatomic) UILabel *reachingLabel;
 
 @end
 
@@ -38,6 +35,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     [self createEndCallButton];
     [self createFriendAvatar];
     [self createReachingLabel];
+
     [self installConstraints];
 }
 
@@ -96,12 +94,8 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 
 - (void)createReachingLabel
 {
-    self.reachingLabel = [UILabel new];
-    self.reachingLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kLabelFontSize];
-    self.reachingLabel.textColor = [UIColor whiteColor];
-    self.reachingLabel.text = NSLocalizedString(@"reaching...", @"Calls");
+    self.subLabel.text = NSLocalizedString(@"reaching...", @"Calls");
 
-    [self.view addSubview:self.reachingLabel];
 }
 
 - (void)installConstraints
@@ -118,11 +112,6 @@ static const CGFloat kEndCallButtonHeight = 45.0;
         make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
         make.left.equalTo(self.view.left).with.offset(kIndent);
         make.right.equalTo(self.view.right).with.offset(-kIndent);
-    }];
-
-    [self.reachingLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.nameLabel);
-        make.top.equalTo(self.nameLabel.bottom);
     }];
 }
 
