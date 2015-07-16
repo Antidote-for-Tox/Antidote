@@ -46,4 +46,11 @@
     return substring;
 }
 
++ (NSString *)stringFromTimeInterval:(NSTimeInterval)interval
+{
+    int minutes = (int)interval / 60;
+    int seconds = interval - (minutes * 60);
+
+    return [NSString stringWithFormat:@"%02d:%02d", minutes, seconds];
+}
 @end

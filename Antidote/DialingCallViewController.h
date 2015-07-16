@@ -9,17 +9,20 @@
 #import <UIKit/UIKit.h>
 #import "AbstractCallViewController.h"
 
-@class OCTSubmanagerCalls;
-@class OCTChat;
-
+@class DialingCallViewController;
 /**
  * This class will be responsible for dialing a friend
  * through the user interface.
  */
+
+@protocol DialingCallViewControllerDelegate <NSObject>
+
+- (void)dialingCallDeclineButtonPressed:(DialingCallViewController *)controller;
+
+@end
+
 @interface DialingCallViewController : AbstractCallViewController
 
-- (instancetype)initWithChat:(OCTChat *)chat submanagerCalls:(OCTSubmanagerCalls *)manager;
-
-- (instancetype)initWithCall:(OCTCall *)call submanagerCalls:(OCTSubmanagerCalls *)manager NS_UNAVAILABLE;
+@property (weak, nonatomic) id<DialingCallViewControllerDelegate> delegate;
 
 @end

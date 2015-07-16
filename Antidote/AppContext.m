@@ -9,6 +9,7 @@
 #import "AppContext.h"
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
+#import "CallsManager.h"
 #import "NotificationManager.h"
 #import "ProfileManager.h"
 #import "TabBarViewController.h"
@@ -21,6 +22,7 @@
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
+@property (strong, nonatomic, readwrite) CallsManager *calls;
 @property (strong, nonatomic, readwrite) NotificationManager *notification;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) TabBarViewController *tabBarController;
@@ -83,6 +85,17 @@
     _avatars = [AvatarsManager new];
 
     return _avatars;
+}
+
+- (CallsManager *)calls
+{
+    if (_calls) {
+        return _calls;
+    }
+
+    _calls = [CallsManager new];
+
+    return _calls;
 }
 
 - (NotificationManager *)notification
@@ -170,6 +183,11 @@
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.window.rootViewController = self.tabBarController;
     [self.profileManager updateInterface];
+}
+
+- (void)killCallsManager
+{
+    self.calls = nil;
 }
 
 #pragma mark -  Private

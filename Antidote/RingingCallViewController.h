@@ -10,10 +10,20 @@
 
 #import "AbstractCallViewController.h"
 
+@class RingingCallViewController;
 /**
  * Use this controller whenever an incoming call occurs
  */
+
+@protocol RingingCallViewControllerDelegate <NSObject>
+
+- (void)ringingCallAnswerButtonPressed:(RingingCallViewController *)controller;
+- (void)ringingCallDeclineButtonPressed:(RingingCallViewController *)controller;
+
+@end
+
 @interface RingingCallViewController : AbstractCallViewController
 
+@property (weak, nonatomic) id<RingingCallViewControllerDelegate> delegate;
 
 @end

@@ -8,31 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@class OCTSubmanagerCalls;
-@class OCTChat;
-@class OCTCall;
+#import "OCTToxAVConstants.h"
 
 @interface AbstractCallViewController : UIViewController
 
-- (instancetype)init NS_UNAVAILABLE;
-+ (instancetype)new NS_UNAVAILABLE;
+/**
+ * Name of the caller
+ */
+@property (strong, nonatomic) NSString *nickname;
 
 /**
- * Create an instance of the CallViewController.
- * @param chat Appropriate chat for the call.
- * @param manager The call maanger for the application.
+ * This view container holds onto both the nameLabel and subLabel
  */
-- (instancetype)initWithCall:(OCTCall *)call submanagerCalls:(OCTSubmanagerCalls *)manager;
-
-/**
- * The call associated with this view controller.
- */
-@property (strong, nonatomic, readonly) OCTCall *call;
-
-/**
- * The call manager responsible for call handling.
- */
-@property (weak, nonatomic) OCTSubmanagerCalls *manager;
+@property (strong, nonatomic, readonly) UIView *topViewContainer;
 
 /**
  * Label of the caller.
@@ -40,22 +28,15 @@
 @property (strong, nonatomic, readonly) UILabel *nameLabel;
 
 /**
- * This is called whenever the call is updated.
- * Override this to include any other updates as needed.
+ * This label sits below the name label. Change the text
+ * to display any additional status.
  */
-- (void)didUpdateCall NS_REQUIRES_SUPER;
+@property (strong, nonatomic, readonly) UILabel *subLabel;
 
 /**
  * Install constraints for subviews.
  * Override this to include any other constraints in your subclass.
  */
 - (void)installConstraints NS_REQUIRES_SUPER;
-
-/**
- * End the call.
- * This can be used to cancel a call, end an active one or reject a call.
- * Note, ending the call will dismiss the view controller itself.
- */
-- (void)endCall;
 
 @end

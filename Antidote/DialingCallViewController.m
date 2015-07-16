@@ -9,44 +9,24 @@
 #import "DialingCallViewController.h"
 #import "Masonry.h"
 #import "Helper.h"
-#import "OCTCall.h"
-#import "OCTChat.h"
 #import "AvatarsManager.h"
-#import "OCTSubmanagerCalls.h"
 #import "AppearanceManager.h"
-#import "ActiveCallViewController.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kAvatarDiameter = 180.0;
-static const CGFloat kLabelFontSize = 16.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat kEndCallButtonHeight = 45.0;
 
 @interface DialingCallViewController ()
 
 @property (strong, nonatomic) UIButton *cancelCallButton;
-@property (assign, nonatomic) dispatch_once_t becameActiveToken;
 @property (strong, nonatomic) UIImageView *friendAvatar;
-@property (strong, nonatomic) UILabel *reachingLabel;
 
 @end
 
 @implementation DialingCallViewController
 
 #pragma mark - Life cycle
-
-- (instancetype)initWithChat:(OCTChat *)chat submanagerCalls:(OCTSubmanagerCalls *)manager
-{
-    OCTCall *call = [manager callToChat:chat enableAudio:YES enableVideo:NO error:nil];
-
-    if (! call) {
-        return nil;
-    }
-
-    self = [super initWithCall:call submanagerCalls:manager];
-
-    return self;
-}
 
 - (void)viewDidLoad
 {
@@ -55,9 +35,18 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     [self createEndCallButton];
     [self createFriendAvatar];
     [self createReachingLabel];
+
     [self installConstraints];
 }
 
+#pragma mark - Public
+
+- (void)setNickname:(NSString *)nickname
+{
+    [super setNickname:nickname];
+
+    [self updateFriendAvatar];
+}
 #pragma mark - Private
 
 
@@ -65,7 +54,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 {
     self.cancelCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.cancelCallButton.backgroundColor = [UIColor redColor];
-    [self.cancelCallButton addTarget:self action:@selector(endCall) forControlEvents:UIControlEventTouchUpInside];
+    [self.cancelCallButton addTarget:self action:@selector(cancelCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.cancelCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
     UIImage *image = [UIImage imageNamed:@"call-accept"];
@@ -81,8 +70,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 {
     AvatarsManager *avatars = [AppContext sharedContext].avatars;
 
-    OCTFriend *friend = [self.call.chat.friends firstObject];
-    UIImage *image = [avatars avatarFromString:friend.nickname
+    UIImage *image = [avatars avatarFromString:self.nickname
                                       diameter:kAvatarDiameter
                                      textColor:[UIColor whiteColor]
                                backgroundColor:[UIColor clearColor]];
@@ -92,14 +80,22 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     [self.view addSubview:self.friendAvatar];
 }
 
+- (void)updateFriendAvatar
+{
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
+
+    UIImage *image = [avatars avatarFromString:self.nickname
+                                      diameter:kAvatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
+
+    [self.friendAvatar setImage:image];
+}
+
 - (void)createReachingLabel
 {
-    self.reachingLabel = [UILabel new];
-    self.reachingLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kLabelFontSize];
-    self.reachingLabel.textColor = [UIColor whiteColor];
-    self.reachingLabel.text = NSLocalizedString(@"reaching...", @"Calls");
+    self.subLabel.text = NSLocalizedString(@"reaching...", @"Calls");
 
-    [self.view addSubview:self.reachingLabel];
 }
 
 - (void)installConstraints
@@ -117,36 +113,12 @@ static const CGFloat kEndCallButtonHeight = 45.0;
         make.left.equalTo(self.view.left).with.offset(kIndent);
         make.right.equalTo(self.view.right).with.offset(-kIndent);
     }];
-
-    [self.reachingLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.nameLabel);
-        make.top.equalTo(self.nameLabel.bottom);
-    }];
 }
 
-#pragma mark - Call methods
+#pragma mark - Touch actions
 
-- (void)didUpdateCall
+- (void)cancelCallButtonPressed
 {
-    [super didUpdateCall];
-
-    if (self.call.status == OCTCallStatusActive) {
-        // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
-        dispatch_once(&_becameActiveToken, ^{
-            [self performSelector:@selector(pushToActiveCallController) withObject:nil afterDelay:0];
-        });
-    }
+    [self.delegate dialingCallDeclineButtonPressed:self];
 }
-- (void)endCall
-{
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.call error:nil];
-}
-
-- (void)pushToActiveCallController
-{
-    ActiveCallViewController *activeCallViewController = [[ActiveCallViewController alloc] initWithCall:self.call submanagerCalls:self.manager];
-
-    [self.navigationController pushViewController:activeCallViewController animated:YES];
-}
-
 @end
