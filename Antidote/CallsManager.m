@@ -167,16 +167,6 @@
     }
 }
 
-- (void)setEnableMicrophone:(BOOL)enableMicrophone
-{
-    self.manager.enableMicrophone = enableMicrophone;
-}
-
-- (BOOL)enableMicrophone
-{
-    return self.manager.enableMicrophone;
-}
-
 #pragma mark - ActiveCallViewController Delegate
 
 - (void)activeCallDeclineButtonPressed:(ActiveCallViewController *)controller
