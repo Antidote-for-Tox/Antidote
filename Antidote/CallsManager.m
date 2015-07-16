@@ -20,7 +20,7 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
-@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate>
+@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
@@ -149,6 +149,42 @@
     }
 }
 
+#pragma mark - UITableViewDelegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.manager sendCallControl:OCTToxAVCallControlPause toCall:self.currentCall error:nil];
+
+    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:nil];
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)numberOfRowsInSection:(NSInteger)section
+{
+    return [self.allPausedCallsController numberOfRowsForSectionIndex:section];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return [self.allPausedCallsController numberOfSections];
+}
+
+- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [UITableViewCell new];
+
+    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTFriend *friend = [call.chat.friends firstObject];
+
+    cell.textLabel.text = friend.nickname;
+    cell.backgroundColor = [UIColor orangeColor];
+
+    return cell;
+}
+
 #pragma mark - Updates to Current Call
 
 - (void)updateDuration:(NSTimeInterval)duration
@@ -236,6 +272,15 @@
 - (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller
 {
     // grab paused call from RBQ index and resume call.
+}
+
+- (void)activeCallMenuButtonPressed:(ActiveCallViewController *)controller
+{
+    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+
+    [controller showPausedCallsTableView:tableView];
 }
 
 #pragma mark - DialingCallViewController Delegate
