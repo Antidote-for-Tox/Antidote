@@ -81,7 +81,6 @@ static const CGFloat kNameLabelFontSize = 30.0;
     self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kNameLabelFontSize];
     self.nameLabel.textColor = [UIColor whiteColor];
     self.nameLabel.textAlignment = NSTextAlignmentCenter;
-    [self.nameLabel sizeToFit];
 
     [self.topViewContainer addSubview:self.nameLabel];
 }
@@ -92,7 +91,6 @@ static const CGFloat kNameLabelFontSize = 30.0;
     self.subLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kSublabelFontSize];
     self.subLabel.textColor = [UIColor whiteColor];
     self.subLabel.textAlignment = NSTextAlignmentCenter;
-    [self.subLabel sizeToFit];
 
     [self.topViewContainer addSubview:self.subLabel];
 }

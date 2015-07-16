@@ -91,9 +91,10 @@
 
     if (! call) {
         [[AppContext sharedContext] killCallsManager];
+        return;
     }
 
-    [self dismissAndSwitchViewControllerForCall:call];
+    [self switchViewControllerForCall:call];
 }
 
 - (void)handleIncomingCall:(OCTCall *)call
@@ -108,7 +109,7 @@
         return;
     }
 
-    [self dismissAndSwitchViewControllerForCall:call];
+    [self switchViewControllerForCall:call];
 }
 
 #pragma mark - RBQFetchedResultsControllerDelegate
@@ -119,33 +120,40 @@
       forChangeType:(NSFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath;
 {
-    if (type == NSFetchedResultsChangeUpdate) {
-        if (controller == self.allActiveCallsController) {
-            OCTCall *call = [anObject RLMObject];
-            [self updateDuration:call.callDuration];
+
+    switch (type) {
+        case NSFetchedResultsChangeUpdate:
+            if (controller == self.allActiveCallsController) {
+                OCTCall *call = [anObject RLMObject];
+                [self updateDuration:call.callDuration];
+            }
+            break;
+        case NSFetchedResultsChangeDelete: {
+            if ([self.allCallsController.fetchedObjects count] == 0) {
+                [[AppContext sharedContext] killCallsManager];
+                return;
+            }
+
+            if ([self onlyPauseCallsLeft]) {
+                OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
+
+                // workaround for deadlock in objcTox
+                // https://github.com/Antidote-for-Tox/objcTox/issues/51
+                [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
+            }
+            break;
         }
-    }
+        case NSFetchedResultsChangeInsert:
+            if (controller == self.allActiveCallsController) {
+                OCTCall *call = [anObject RLMObject];
 
-    if (type == NSFetchedResultsChangeDelete) {
-        if ([self.allCallsController.fetchedObjects count] == 0) {
-            [[AppContext sharedContext] killCallsManager];
-        }
-
-        if ([self onlyPauseCallsLeft]) {
-            OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
-
-            // workaround for deadlock in objcTox
-            // https://github.com/Antidote-for-Tox/objcTox/issues/51
-            [self performSelector:@selector(dismissAndSwitchToActiveViewControllerForCall:) withObject:call afterDelay:0];
-        }
-    }
-
-    if ((type == NSFetchedResultsChangeInsert) && (controller == self.allActiveCallsController)) {
-        OCTCall *call = [anObject RLMObject];
-
-        // workaround for deadlock in objcTox
-        // https://github.com/Antidote-for-Tox/objcTox/issues/51
-        [self performSelector:@selector(dismissAndSwitchToActiveViewControllerForCall:) withObject:call afterDelay:0];
+                // workaround for deadlock in objcTox
+                // https://github.com/Antidote-for-Tox/objcTox/issues/51
+                [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
+            }
+            break;
+        case NSFetchedResultsChangeMove:
+            break;
     }
 }
 
@@ -318,8 +326,32 @@
     return viewController;
 }
 
-- (void)dismissAndSwitchViewControllerForCall:(OCTCall *)call
+- (void)switchViewControllerForCall:(OCTCall *)call
 {
+    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+
+        ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
+
+        switch (call.status) {
+            case OCTCallStatusPaused:
+                activeVC.pauseSelected = YES;
+                break;
+            case OCTCallStatusActive:
+                activeVC.pauseSelected = NO;
+                break;
+            case OCTCallStatusDialing:
+            case OCTCallStatusRinging:
+                NSAssert(NO, @"We shouldn't be here");
+                break;
+        }
+
+        OCTFriend *friend = [call.chat.friends firstObject];
+        self.currentCallViewController.nickname = friend.nickname;
+        self.currentCall = call;
+
+        return;
+    }
+
     AbstractCallViewController *abstractVC = [self viewControllerForCall:call];
 
     [self.callNavigation setViewControllers:@[abstractVC] animated:YES];
@@ -327,24 +359,6 @@
     self.currentCallViewController = abstractVC;
 
     self.currentCall = call;
-}
-
-- (void)dismissAndSwitchToActiveViewControllerForCall:(OCTCall *)call
-{
-    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
-
-        if (call.status == OCTCallStatusPaused) {
-            ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
-            activeVC.pauseSelected = YES;
-        }
-
-        OCTFriend *friend = [call.chat.friends firstObject];
-        self.currentCallViewController.nickname = friend.nickname;
-        self.currentCall = call;
-    }
-    else {
-        [self dismissAndSwitchViewControllerForCall:call];
-    }
 }
 
 - (BOOL)onlyPauseCallsLeft
