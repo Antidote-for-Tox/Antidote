@@ -23,7 +23,16 @@
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller;
-- (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller;
+
+@end
+
+@protocol ActiveCallViewControllerDataSource <NSObject>
+
+- (NSInteger)activeCallControllerNumberOfPausedCalls:(ActiveCallViewController *)controller;
+- (NSString *)activeCallController:(ActiveCallViewController *)controller pausedCallerNicknameForCallAtIndex:(NSIndexPath *)indexPath;
+- (NSTimeInterval)activeCallController:(ActiveCallViewController *)controller pauseTimeDurationForCallAtIndex:(NSIndexPath *)indexPath;
+- (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath;
+- (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath;
 
 @end
 
@@ -33,6 +42,11 @@
  * Delegate for call touches.
  */
 @property (weak, nonatomic) id<ActiveCallViewControllerDelegate> delegate;
+
+/**
+ * Datasource for paused calls
+ */
+@property (weak, nonatomic) id<ActiveCallViewControllerDataSource> dataSource;
 
 /**
  * The duration of the call.
@@ -64,5 +78,11 @@
  * Hide incoming call view
  */
 - (void)hideIncomingCallView;
+
+/**
+ * Reload the table of paused calls.
+ * Use this when there is a new change.
+ */
+- (void)reloadPausedCalls;
 
 @end

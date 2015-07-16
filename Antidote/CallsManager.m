@@ -20,7 +20,7 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
-@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate>
+@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, ActiveCallViewControllerDataSource, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate>
 
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
@@ -157,6 +157,15 @@
     }
 }
 
+- (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
+{
+    if (self.allPausedCallsController == controller) {
+        if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+            ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
+            [activeVC reloadPausedCalls];
+        }
+    }
+}
 #pragma mark - Updates to Current Call
 
 - (void)updateDuration:(NSTimeInterval)duration
@@ -241,11 +250,6 @@
     [controller hideIncomingCallView];
 }
 
-- (void)activeCallPausedCallSelectedAtIndex:(NSUInteger)index controller:(ActiveCallViewController *)controller
-{
-    // grab paused call from RBQ index and resume call.
-}
-
 #pragma mark - DialingCallViewController Delegate
 
 - (void)dialingCallDeclineButtonPressed:(DialingCallViewController *)controller
@@ -269,6 +273,43 @@
     [self.manager sendCallControl:OCTToxAVCallControlCancel
                            toCall:self.currentCall
                             error:nil];
+}
+
+#pragma mark - ActiveCallViewControllerDataSource
+
+- (NSInteger)activeCallControllerNumberOfPausedCalls:(ActiveCallViewController *)controller
+{
+    return [[self.allPausedCallsController fetchedObjects] count];
+}
+
+- (NSString *)activeCallController:(ActiveCallViewController *)controller pausedCallerNicknameForCallAtIndex:(NSIndexPath *)indexPath
+{
+    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    OCTFriend *friend = [call.chat.friends firstObject];
+
+    return friend.nickname;
+}
+
+- (NSTimeInterval)activeCallController:(ActiveCallViewController *)controller pauseTimeDurationForCallAtIndex:(NSIndexPath *)indexPath
+{
+    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    return call.callDuration;
+}
+
+- (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath
+{
+    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:nil];
+}
+
+- (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath
+{
+    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
 }
 
 #pragma mark - Private
@@ -299,6 +340,7 @@
         case OCTCallStatusActive: {
             ActiveCallViewController *activeVC = [ActiveCallViewController new];
             activeVC.delegate = self;
+            activeVC.dataSource = self;
             viewController = activeVC;
             break;
         }
