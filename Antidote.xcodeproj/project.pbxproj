@@ -67,6 +67,7 @@
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		F04234F61B54254800B93009 /* CallsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F04234F51B54254800B93009 /* CallsManager.m */; };
+		F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */; };
 		F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */; };
 		F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */; };
 		F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */; };
@@ -195,6 +196,8 @@
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F04234F41B54254800B93009 /* CallsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallsManager.h; sourceTree = "<group>"; };
 		F04234F51B54254800B93009 /* CallsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallsManager.m; sourceTree = "<group>"; };
+		F08766471B58379700D2B9D7 /* PauseCallTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseCallTableViewCell.h; sourceTree = "<group>"; };
+		F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseCallTableViewCell.m; sourceTree = "<group>"; };
 		F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingingCallViewController.h; sourceTree = "<group>"; };
 		F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingingCallViewController.m; sourceTree = "<group>"; };
 		F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveCallViewController.h; sourceTree = "<group>"; };
@@ -636,9 +639,19 @@
 			name = CallsManager;
 			sourceTree = "<group>";
 		};
+		F08766461B58377500D2B9D7 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F08766471B58379700D2B9D7 /* PauseCallTableViewCell.h */,
+				F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		F0D127DA1B445AC800E2E7B8 /* Call */ = {
 			isa = PBXGroup;
 			children = (
+				F08766461B58377500D2B9D7 /* Cells */,
 				F0D127DB1B445B2700E2E7B8 /* DialingCallViewController.h */,
 				F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */,
 				F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */,
@@ -920,6 +933,7 @@
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
+				F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */,
 				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
