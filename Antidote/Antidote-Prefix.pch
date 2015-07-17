@@ -26,5 +26,10 @@
     #define StrongRef(object) __strong __typeof(weak_##object) object = weak_##object
     #define weakself WeakRef(self)
     #define strongself StrongRef(self)
+
+    #define AALogError(fmt, ...) DDLogError((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
+    #define AALogWarn(fmt, ...) DDLogWarn((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
+    #define AALogInfo(fmt, ...) DDLogInfo((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
+    #define AALogVerbose(fmt, ...) DDLogVerbose((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
 #endif
 
