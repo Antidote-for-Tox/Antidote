@@ -10,11 +10,11 @@
 
 #import "StatusCircleView.h"
 
+extern const CGFloat kFriendsCellImageViewSize;
+
 @interface FriendsCell : UITableViewCell
 
+@property (assign, nonatomic) BOOL showStatusView;
 @property (assign, nonatomic) StatusCircleStatus status;
-
-- (void)adjustSubviews;
-+ (CGFloat)height;
 
 @end

@@ -11,7 +11,6 @@
 #import "FriendsViewController.h"
 #import "UIViewController+Utilities.h"
 #import "FriendsCell.h"
-#import "FriendRequestsCell.h"
 #import "NSIndexSet+Utilities.h"
 #import "AppDelegate+Utilities.h"
 #import "AddFriendViewController.h"
@@ -25,6 +24,7 @@
 #import "OCTFriendRequest.h"
 #import "AvatarsManager.h"
 #import "UserDefaultsManager.h"
+#import "FriendRequestViewController.h"
 
 typedef NS_ENUM(NSInteger, FriendsSort) {
     FriendsSortByNickname = 0,
@@ -32,8 +32,9 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     __FriendsSortCount,
 };
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, FriendRequestsCellDelegate,
-                                     RBQFetchedResultsControllerDelegate>
+static const CGFloat kCellHeight = 44.0;
+
+@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, RBQFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
@@ -164,37 +165,68 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        return [self friendsCellForRowAtIndexPath:indexPath];
-    }
-    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
-        return [self requestsCellForRowAtIndexPath:indexPath];
+    FriendsCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
+                                                             forIndexPath:indexPath];
+
+    FriendsViewControllerTab tab = self.segmentedControl.selectedSegmentIndex;
+    NSString *avatarString;
+
+    switch (tab) {
+        case FriendsViewControllerTabFriends: {
+            OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
+
+            cell.textLabel.text = friend.nickname;
+            cell.detailTextLabel.text = [self detailTextLabelForFriend:friend];
+            cell.showStatusView = YES;
+            cell.status = [Helper circleStatusFromFriend:friend];
+            avatarString = friend.nickname;
+
+            break;
+        }
+        case FriendsViewControllerTabRequests: {
+            OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
+
+            cell.textLabel.text = request.publicKey;
+            cell.detailTextLabel.text = request.message;
+            cell.showStatusView = NO;
+            avatarString = @"?";
+
+            break;
+        }
     }
 
-    return [UITableViewCell new];
+    cell.imageView.image = [[AppContext sharedContext].avatars avatarFromString:avatarString
+                                                                       diameter:kFriendsCellImageViewSize];
+
+
+    return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        return [self.friendsController numberOfRowsForSectionIndex:section];
-    }
-    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
-        return [self.friendRequestsController numberOfRowsForSectionIndex:section];
-    }
+    FriendsViewControllerTab tab = self.segmentedControl.selectedSegmentIndex;
 
-    return 0;
+    switch (tab) {
+        case FriendsViewControllerTabFriends:
+            return [self.friendsController numberOfRowsForSectionIndex:section];
+        case FriendsViewControllerTabRequests:
+            return [self.friendRequestsController numberOfRowsForSectionIndex:section];
+    }
 }
 
 - (void)     tableView:(UITableView *)tableView
     commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
      forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        [self friendsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
-    }
-    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
-        [self requestsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
+    FriendsViewControllerTab tab = self.segmentedControl.selectedSegmentIndex;
+
+    switch (tab) {
+        case FriendsViewControllerTabFriends:
+            [self friendsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
+            break;
+        case FriendsViewControllerTabRequests:
+            [self requestsCommitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
+            break;
     }
 }
 
@@ -202,22 +234,20 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        return [FriendsCell height];
-    }
-    else if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabRequests) {
-        return [FriendRequestsCell height];
-    }
-
-    return 0.0;
+    return kCellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (self.segmentedControl.selectedSegmentIndex == FriendsViewControllerTabFriends) {
-        return [self friendsDidSelectRowAtIndexPath:indexPath];
+    FriendsViewControllerTab tab = self.segmentedControl.selectedSegmentIndex;
+
+    switch (tab) {
+        case FriendsViewControllerTabFriends:
+            return [self friendsDidSelectRowAtIndexPath:indexPath];
+        case FriendsViewControllerTabRequests:
+            return [self friendRequestDidSelectRowAtIndexPath:indexPath];
     }
 }
 
@@ -228,23 +258,6 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 
         FriendCardViewController *fcvc = [[FriendCardViewController alloc] initWithToxFriend:friend];
         [self.navigationController pushViewController:fcvc animated:YES];
-    }
-}
-
-#pragma mark -  FriendRequestsCellDelegate
-
-- (void)friendRequestCellAddButtonPressed:(FriendRequestsCell *)cell
-{
-    NSIndexPath *path = [self.tableView indexPathForCell:cell];
-
-    OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:path];
-
-    BOOL wasLastRequest = ([self.friendRequestsController numberOfRowsForSectionIndex:0] == 1);
-
-    [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:request error:nil];
-
-    if (wasLastRequest) {
-        [self switchToTab:FriendsViewControllerTabFriends];
     }
 }
 
@@ -358,8 +371,6 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     [self.tableView registerClass:[FriendsCell class] forCellReuseIdentifier:[FriendsCell reuseIdentifier]];
-    [self.tableView registerClass:[FriendRequestsCell class]
-           forCellReuseIdentifier:[FriendRequestsCell reuseIdentifier]];
 
     [self.view addSubview:self.tableView];
 }
@@ -409,51 +420,27 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
                                                                    action:@selector(addButtonPressed)];
 }
 
-- (FriendsCell *)friendsCellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (NSString *)detailTextLabelForFriend:(OCTFriend *)friend
 {
-    FriendsCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[FriendsCell reuseIdentifier]
-                                                             forIndexPath:indexPath];
-
-    OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
-
-    cell.textLabel.text = friend.nickname;
-    cell.imageView.image = [[AppContext sharedContext].avatars avatarFromString:friend.nickname diameter:30.0];
-    cell.status = [Helper circleStatusFromFriend:friend];
+    NSString *text;
 
     if (friend.connectionStatus == OCTToxConnectionStatusNone) {
         if (friend.lastSeenOnline) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"last seen %@", @"Friends"),
-                                         [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline
-                                                                                   type:TimeFormatterTypeRelativeDateAndTime]];
+            text = [NSString stringWithFormat:NSLocalizedString(@"last seen %@", @"Friends"),
+                    [[TimeFormatter sharedInstance] stringFromDate:friend.lastSeenOnline
+                                                              type:TimeFormatterTypeRelativeDateAndTime]];
         }
     }
     else {
-        cell.detailTextLabel.text = friend.statusMessage;
+        text = friend.statusMessage;
     }
 
-    if (! cell.detailTextLabel.text.length) {
+    if (! text.length) {
         // add whitespace for nice alignment
-
-        cell.detailTextLabel.text = @" ";
+        text = @" ";
     }
 
-    return cell;
-}
-
-- (FriendRequestsCell *)requestsCellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    FriendRequestsCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[FriendRequestsCell reuseIdentifier]
-                                                                    forIndexPath:indexPath];
-    cell.delegate = self;
-
-    OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
-
-    cell.title = request.publicKey;
-    cell.subtitle = request.message;
-
-    [cell redraw];
-
-    return cell;
+    return text;
 }
 
 - (void)friendsCommitEditingStyle:(UITableViewCellEditingStyle)editingStyle
@@ -489,7 +476,7 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         weakself;
 
-        NSString *title = NSLocalizedString(@"Are you sure you want to remove friend request?", @"Friend requests");
+        NSString *title = NSLocalizedString(@"Are you sure you want to remove friend request?", @"Friends");
         UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:title];
 
         [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{
@@ -516,6 +503,14 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     [delegate switchToChatsTabAndShowChatViewControllerWithChat:chat];
+}
+
+- (void)friendRequestDidSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
+    FriendRequestViewController *controller = [[FriendRequestViewController alloc] initWithRequest:request];
+
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)updateSegmentedControlRequestTitle
