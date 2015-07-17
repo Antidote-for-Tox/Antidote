@@ -20,6 +20,8 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
+#define LOG_IDENTIFIER @"CallsManager"
+
 @interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate,
                             ActiveCallViewControllerDataSource, DialingCallViewControllerDelegate,
                             RingingCallViewControllerDelegate>
@@ -43,6 +45,7 @@
 #pragma mark - Lifecycle
 - (instancetype)init
 {
+    AALogVerbose(@"");
     self = [super self];
 
     if (! self) {
@@ -77,7 +80,7 @@
 
 - (void)dealloc
 {
-    DDLogVerbose(@"%@, dealloc", self);
+    AALogVerbose(@"");
     [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -85,7 +88,7 @@
 
 - (void)callToChat:(OCTChat *)chat
 {
-    DDLogVerbose(@"%@, callToChat:%@", self, chat);
+    AALogVerbose(@"%@", chat);
 
     if (self.currentCall) {
         NSAssert(NO, @"We should not be able to make another call yet");
@@ -96,7 +99,7 @@
     OCTCall *call = [self.manager callToChat:chat enableAudio:YES enableVideo:NO error:&error];
 
     if (! call) {
-        DDLogWarn(@"%@, Error callToChat: %@", self, error.localizedFailureReason);
+        AALogWarn(@"error %@, failureReason:%@", error, error.localizedFailureReason);
         [[AppContext sharedContext] killCallsManager];
         return;
     }
@@ -106,6 +109,8 @@
 
 - (void)handleIncomingCall:(OCTCall *)call
 {
+    AALogVerbose(@"%@", call);
+
     if (self.currentCall && self.pendingIncomingCall) {
         // We only support showing one incoming call at a time. Reject all others
         [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
@@ -186,6 +191,8 @@
 
 - (void)activeCallDeclineButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:&error]) {
         DDLogWarn(@"%@, activeCallDeclineButtonPressed error: %@", self, error.localizedFailureReason);
@@ -194,6 +201,8 @@
 
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     BOOL enable = controller.micSelected;
     self.manager.enableMicrophone = enable;
     controller.micSelected = ! enable;
@@ -201,6 +210,8 @@
 
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     NSError *error;
 
     if (controller.speakerSelected) {
@@ -225,27 +236,25 @@
 
 - (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     NSError *error;
-    if (controller.pauseSelected) {
-        if ([self.manager sendCallControl:OCTToxAVCallControlResume toCall:self.currentCall error:&error]) {
-            controller.pauseSelected = NO;
-        }
-        else {
-            DDLogWarn(@"%@, activeCallPauseButtonPressed:OCTToxAVCallControlResume error: %@", self, error.localizedFailureReason);
-        }
+    OCTToxAVCallControl control = controller.pauseSelected ? OCTToxAVCallControlResume : OCTToxAVCallControlPause;
+
+    BOOL result = [self.manager sendCallControl:control toCall:self.currentCall error:&error];
+
+    if (result) {
+        controller.pauseSelected = ! controller.pauseSelected;
     }
     else {
-        if ([self.manager sendCallControl:OCTToxAVCallControlPause toCall:self.currentCall error:nil]) {
-            controller.pauseSelected = YES;
-        }
-        else {
-            DDLogWarn(@"%@, activeCallPauseButtonPressed:OCTToxAVCallControlPause error: %@", self, error.localizedFailureReason);
-        }
+        AALogWarn(@"Error:%@, failureReason:%@", error, error.localizedFailureReason);
     }
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:&error]) {
         DDLogWarn(@"%@, activeCallDeclineIncomingCallButtonPressed error:%@", self, error.localizedFailureReason);
@@ -256,7 +265,7 @@
 
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
-    DDLogVerbose(@"%@, activeCallAnswerIncomingCallButtonPressed", self);
+    AALogVerbose(@"%@", controller);
 
     NSError *error;
 
@@ -273,7 +282,7 @@
 
 - (void)dialingCallDeclineButtonPressed:(DialingCallViewController *)controller
 {
-    DDLogVerbose(@"%@, dialingCallDeclineButtonPressed", self);
+    AALogVerbose(@"%@", controller);
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
@@ -287,7 +296,7 @@
 
 - (void)ringingCallAnswerButtonPressed:(RingingCallViewController *)controller
 {
-    DDLogVerbose(@"%@, ringingCallAnswerButtonPressed", self);
+    AALogVerbose(@"%@", controller);
 
     NSError *error;
     if (! [self.manager answerCall:self.currentCall
@@ -299,7 +308,7 @@
 
 - (void)ringingCallDeclineButtonPressed:(RingingCallViewController *)controller
 {
-    DDLogVerbose(@"%@, ringingCallDeclineButtonPressed", self);
+    AALogVerbose(@"%@", controller);
 
     NSError *error;
 
@@ -335,16 +344,27 @@
 
 - (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
+    AALogVerbose(@"%@ indexPath:%@", controller, indexPath);
+
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
 
-    [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:nil];
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
+        AALogWarn(@"Error: %@, FailureReason: %@, Call:%@", error, error.localizedFailureReason, call);
+    }
+
 }
 
 - (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
+    AALogVerbose(@"%@ indexPath:%@", controller, indexPath);
+
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
 
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error] ) {
+        AALogWarn(@"Error: %@, FailureReason: %@, Call:%@", error, error.localizedFailureReason, call);
+    }
 }
 
 #pragma mark - Private
@@ -409,7 +429,7 @@
 
 - (void)switchViewControllerForCall:(OCTCall *)call
 {
-    DDLogVerbose(@"%@, switchViewControllerForCall:%@", self, call);
+    AALogVerbose(@"%@", call);
 
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
 
