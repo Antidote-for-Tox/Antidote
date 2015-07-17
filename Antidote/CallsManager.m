@@ -214,7 +214,7 @@
 
     NSError *error;
 
-    OCTToxAVCallControl control = (controller.speakerSelected)? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
+    OCTToxAVCallControl control = (controller.speakerSelected) ? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
 
     if ([self.manager sendCallControl:control toCall:self.currentCall error:&error]) {
         controller.speakerSelected = ! controller.speakerSelected;
@@ -352,7 +352,7 @@
     AALogVerbose(@"%@ call:%@", controller, call);
 
     NSError *error;
-    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error] ) {
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
 }
