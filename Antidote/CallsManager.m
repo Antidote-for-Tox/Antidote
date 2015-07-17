@@ -20,6 +20,8 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
+#define LOG_IDENTIFIER self
+
 @interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate,
                             ActiveCallViewControllerDataSource, DialingCallViewControllerDelegate,
                             RingingCallViewControllerDelegate>
@@ -43,6 +45,7 @@
 #pragma mark - Lifecycle
 - (instancetype)init
 {
+    AALogVerbose();
     self = [super self];
 
     if (! self) {
@@ -77,6 +80,7 @@
 
 - (void)dealloc
 {
+    AALogVerbose();
     [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -84,14 +88,18 @@
 
 - (void)callToChat:(OCTChat *)chat
 {
+    AALogVerbose(@"%@", chat);
+
     if (self.currentCall) {
         NSAssert(NO, @"We should not be able to make another call yet");
         return;
     }
 
-    OCTCall *call = [self.manager callToChat:chat enableAudio:YES enableVideo:NO error:nil];
+    NSError *error;
+    OCTCall *call = [self.manager callToChat:chat enableAudio:YES enableVideo:NO error:&error];
 
     if (! call) {
+        AALogWarn(@"%@", error);
         [[AppContext sharedContext] killCallsManager];
         return;
     }
@@ -101,6 +109,8 @@
 
 - (void)handleIncomingCall:(OCTCall *)call
 {
+    AALogVerbose(@"%@", call);
+
     if (self.currentCall && self.pendingIncomingCall) {
         // We only support showing one incoming call at a time. Reject all others
         [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
@@ -122,7 +132,6 @@
       forChangeType:(NSFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath;
 {
-
     switch (type) {
         case NSFetchedResultsChangeUpdate:
             if (controller == self.allActiveCallsController) {
@@ -182,11 +191,18 @@
 
 - (void)activeCallDeclineButtonPressed:(ActiveCallViewController *)controller
 {
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:nil];
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:&error]) {
+        AALogWarn(@"%@", error);
+    }
 }
 
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     BOOL enable = controller.micSelected;
     self.manager.enableMicrophone = enable;
     controller.micSelected = ! enable;
@@ -194,50 +210,60 @@
 
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller
 {
+    AALogVerbose(@"%@", controller);
+
     NSError *error;
 
-    if (controller.speakerSelected) {
-        if ([self.manager sendCallControl:OCTToxAVCallControlUnmuteAudio toCall:self.currentCall error:&error]) {
-            controller.speakerSelected = NO;
-        }
-        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            controller.speakerSelected = YES;
-        }
+    OCTToxAVCallControl control = (controller.speakerSelected) ? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
+
+    if ([self.manager sendCallControl:control toCall:self.currentCall error:&error]) {
+        controller.speakerSelected = ! controller.speakerSelected;
     }
     else {
-        if ([self.manager sendCallControl:OCTToxAVCallControlMuteAudio toCall:self.currentCall error:&error]) {
-            controller.speakerSelected = YES;
-        }
-        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            controller.speakerSelected = NO;
-        }
+        AALogWarn(@"Error: %@", error);
     }
 }
 
 - (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller
 {
-    if (controller.pauseSelected) {
-        if ([self.manager sendCallControl:OCTToxAVCallControlResume toCall:self.currentCall error:nil]) {
-            controller.pauseSelected = NO;
-        }
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+    OCTToxAVCallControl control = controller.pauseSelected ? OCTToxAVCallControlResume : OCTToxAVCallControlPause;
+
+    BOOL result = [self.manager sendCallControl:control toCall:self.currentCall error:&error];
+
+    if (result) {
+        controller.pauseSelected = ! controller.pauseSelected;
     }
     else {
-        if ([self.manager sendCallControl:OCTToxAVCallControlPause toCall:self.currentCall error:nil]) {
-            controller.pauseSelected = YES;
-        }
+        AALogWarn(@"%@", error);
     }
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:nil];
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:&error]) {
+        AALogWarn(@"%@", error);
+    }
     self.pendingIncomingCall = nil;
     [controller hideIncomingCallView];
 }
 
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller
 {
-    [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:nil];
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+
+    if (! [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:&error]) {
+        AALogWarn(@"%@", error);
+    }
+
+
     self.pendingIncomingCall = nil;
     [controller hideIncomingCallView];
 }
@@ -246,25 +272,41 @@
 
 - (void)dialingCallDeclineButtonPressed:(DialingCallViewController *)controller
 {
-    [self.manager sendCallControl:OCTToxAVCallControlCancel
-                           toCall:self.currentCall
-                            error:nil];
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
+                                 toCall:self.currentCall
+                                  error:&error]) {
+        AALogWarn(@"%@", error);
+    }
 }
 
 #pragma mark - RingingCallViewController Delegate
 
 - (void)ringingCallAnswerButtonPressed:(RingingCallViewController *)controller
 {
-    [self.manager answerCall:self.currentCall
-                 enableAudio:YES
-                 enableVideo:NO error:nil];
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+    if (! [self.manager answerCall:self.currentCall
+                       enableAudio:YES
+                       enableVideo:NO error:&error]) {
+        AALogWarn(@"%@", error);
+    }
 }
 
 - (void)ringingCallDeclineButtonPressed:(RingingCallViewController *)controller
 {
-    [self.manager sendCallControl:OCTToxAVCallControlCancel
-                           toCall:self.currentCall
-                            error:nil];
+    AALogVerbose(@"%@", controller);
+
+    NSError *error;
+
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
+                                 toCall:self.currentCall
+                                  error:&error]) {
+        AALogWarn(@"%@", error);
+    }
 }
 
 #pragma mark - ActiveCallViewControllerDataSource
@@ -294,14 +336,25 @@
 {
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
 
-    [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:nil];
+    AALogVerbose(@"%@ call:%@", controller, call);
+
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
+        AALogWarn(@"%@", error);
+    }
+
 }
 
 - (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
 
-    [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+    AALogVerbose(@"%@ call:%@", controller, call);
+
+    NSError *error;
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
+        AALogWarn(@"%@", error);
+    }
 }
 
 #pragma mark - Private
@@ -310,7 +363,11 @@
 {
     if (! [self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         // For now we reject call if we are in a dialing or ringing state
-        [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+
+        NSError *error;
+        if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
+            AALogWarn(@"%@", error);
+        }
         return;
     }
 
@@ -362,6 +419,8 @@
 
 - (void)switchViewControllerForCall:(OCTCall *)call
 {
+    AALogVerbose(@"%@", call);
+
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
 
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
