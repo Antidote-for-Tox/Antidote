@@ -20,7 +20,7 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
-#define LOG_IDENTIFIER @"CallsManager"
+#define LOG_IDENTIFIER self
 
 @interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate,
                             ActiveCallViewControllerDataSource, DialingCallViewControllerDelegate,
@@ -45,7 +45,7 @@
 #pragma mark - Lifecycle
 - (instancetype)init
 {
-    AALogVerbose(@"");
+    AALogVerbose();
     self = [super self];
 
     if (! self) {
@@ -80,7 +80,7 @@
 
 - (void)dealloc
 {
-    AALogVerbose(@"");
+    AALogVerbose();
     [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -99,7 +99,7 @@
     OCTCall *call = [self.manager callToChat:chat enableAudio:YES enableVideo:NO error:&error];
 
     if (! call) {
-        AALogWarn(@"error %@, failureReason:%@", error, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
         [[AppContext sharedContext] killCallsManager];
         return;
     }
@@ -195,7 +195,7 @@
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:&error]) {
-        DDLogWarn(@"%@, activeCallDeclineButtonPressed error: %@", self, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
 }
 
@@ -214,23 +214,13 @@
 
     NSError *error;
 
-    if (controller.speakerSelected) {
-        if ([self.manager sendCallControl:OCTToxAVCallControlUnmuteAudio toCall:self.currentCall error:&error]) {
-            controller.speakerSelected = NO;
-        }
-        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            DDLogWarn(@"%@, sendCallControl error:%@", self, error.localizedFailureReason);
-            controller.speakerSelected = YES;
-        }
+    OCTToxAVCallControl control = (controller.speakerSelected)? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
+
+    if ([self.manager sendCallControl:control toCall:self.currentCall error:&error]) {
+        controller.speakerSelected = ! controller.speakerSelected;
     }
     else {
-        if ([self.manager sendCallControl:OCTToxAVCallControlMuteAudio toCall:self.currentCall error:&error]) {
-            controller.speakerSelected = YES;
-        }
-        else if (error.code == OCTToxAVErrorControlInvaldTransition) {
-            DDLogWarn(@"%@, sendCallControl error:%@", self, error.localizedFailureReason);
-            controller.speakerSelected = NO;
-        }
+        AALogWarn(@"Error: %@", error);
     }
 }
 
@@ -247,7 +237,7 @@
         controller.pauseSelected = ! controller.pauseSelected;
     }
     else {
-        AALogWarn(@"Error:%@, failureReason:%@", error, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
 }
 
@@ -257,7 +247,7 @@
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:&error]) {
-        DDLogWarn(@"%@, activeCallDeclineIncomingCallButtonPressed error:%@", self, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
     self.pendingIncomingCall = nil;
     [controller hideIncomingCallView];
@@ -270,7 +260,7 @@
     NSError *error;
 
     if (! [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:&error]) {
-        DDLogWarn(@"%@, activeCallAnswerIncomingCallButtonPressed, error: %@", self, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
 
 
@@ -288,7 +278,7 @@
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
                                  toCall:self.currentCall
                                   error:&error]) {
-        DDLogWarn(@"%@: dialingCallDeclineButtonPressed error: %@", self, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
 }
 
@@ -302,7 +292,7 @@
     if (! [self.manager answerCall:self.currentCall
                        enableAudio:YES
                        enableVideo:NO error:&error]) {
-        DDLogWarn(@"%@, ringingCallAnswerButtonPressed error:%@", self, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
 }
 
@@ -315,7 +305,7 @@
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
                                  toCall:self.currentCall
                                   error:&error]) {
-        DDLogWarn(@"%@, sendCallControl:OCTToxAVCallControlCancel error:%@", self, error.localizedFailureReason);
+        AALogWarn(@"%@", error);
     }
 }
 
@@ -344,26 +334,26 @@
 
 - (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
-    AALogVerbose(@"%@ indexPath:%@", controller, indexPath);
-
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    AALogVerbose(@"%@ call:%@", controller, call);
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
-        AALogWarn(@"Error: %@, FailureReason: %@, Call:%@", error, error.localizedFailureReason, call);
+        AALogWarn(@"%@", error);
     }
 
 }
 
 - (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
-    AALogVerbose(@"%@ indexPath:%@", controller, indexPath);
-
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+
+    AALogVerbose(@"%@ call:%@", controller, call);
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error] ) {
-        AALogWarn(@"Error: %@, FailureReason: %@, Call:%@", error, error.localizedFailureReason, call);
+        AALogWarn(@"%@", error);
     }
 }
 
@@ -376,7 +366,7 @@
 
         NSError *error;
         if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
-            DDLogWarn(@"%@, sendCallControl:OCTToxAVCallControlCancel error:%@", self, error.localizedFailureReason);
+            AALogWarn(@"%@", error);
         }
         return;
     }
