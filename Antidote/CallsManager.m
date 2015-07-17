@@ -283,11 +283,11 @@
     return friend.nickname;
 }
 
-- (NSTimeInterval)activeCallController:(ActiveCallViewController *)controller pauseTimeDurationForCallAtIndex:(NSIndexPath *)indexPath
+- (NSDate *)activeCallController:(ActiveCallViewController *)controller pauseDateForCallAtIndex:(NSIndexPath *)indexPath
 {
     OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
 
-    return call.callDuration;
+    return [call onHoldDate];
 }
 
 - (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath

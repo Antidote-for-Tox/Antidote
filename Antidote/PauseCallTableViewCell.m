@@ -103,7 +103,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
 
 #pragma mark - Public
 
-- (void)setCallerNickname:(NSString *)nickName andCallDuration:(NSTimeInterval)callDuration
+- (void)setCallerNickname:(NSString *)nickName andOnHoldDuration:(NSTimeInterval)callDuration
 {
     self.textLabel.text = nickName;
 

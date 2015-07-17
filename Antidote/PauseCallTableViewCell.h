@@ -25,6 +25,6 @@
  * @param nickName Name of the caller.
  * @param callDuration The time it was paused at.
  */
-- (void)setCallerNickname:(NSString *)nickName andCallDuration:(NSTimeInterval)callDuration;
+- (void)setCallerNickname:(NSString *)nickName andOnHoldDuration:(NSTimeInterval)callDuration;
 
 @end
