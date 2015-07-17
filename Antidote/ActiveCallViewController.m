@@ -21,7 +21,9 @@ static const CGFloat k3ButtonGap = 15.0;
 static const CGFloat kOtherCallButtonSize = 4.0 / 5.0 * kButtonSide;
 static const CGFloat kIncomingNameFontSize = 12.0;
 static const CGFloat kIncomingIsCallingFontSize = 10.0;
+static const CGFloat kTableViewBottomOffSet = 100.0;
 
+static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
 static const CGFloat kBadgeHeightWidth = 30.0;
 static const CGFloat kBadgeFontSize = 14.0;
 
@@ -58,6 +60,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createCallMenuButton];
     [self createCallPauseTableView];
     [self createBadgeViews];
+    [self reloadPausedCalls];
 
     [self installConstraints];
 }
@@ -71,7 +74,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.endCallButton addTarget:self action:@selector(endCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.endCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
-    UIImage *image = [UIImage imageNamed:@"call-accept"];
+    UIImage *image = [UIImage imageNamed:@"call-decline"];
     [self.endCallButton setImage:image forState:UIControlStateNormal];
     self.endCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.endCallButton.layer.borderWidth = kButtonBorderWidth;
@@ -158,7 +161,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.badgeLabel.textAlignment = NSTextAlignmentCenter;
     self.badgeLabel.backgroundColor = [UIColor clearColor];
     self.badgeLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kBadgeFontSize];
-    [self.badgeContainer addSubview:self.badgeLabel];
+    [self.topViewContainer addSubview:self.badgeLabel];
 
     NSInteger numberOfPausedCalls = [self.dataSource activeCallControllerNumberOfPausedCalls:self];
     self.badgeLabel.text = [NSString stringWithFormat:@"%lu", numberOfPausedCalls];
@@ -219,12 +222,12 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topViewContainer.bottom);
         make.width.equalTo(self.view);
-        make.height.equalTo(self.view.bounds.size.height / 3.0);
+        make.bottom.equalTo(self.view.bottom).with.offset(-kTableViewBottomOffSet);
     }];
 
     [self.badgeContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.callMenuButton.centerY);
-        make.centerX.equalTo(self.callMenuButton.imageView.frame.origin.x);
+        make.centerX.equalTo(self.callMenuButton.right).with.offset(-kBadgeContainerHorizontalOffset);
         make.width.equalTo(kBadgeHeightWidth);
         make.height.equalTo(kBadgeHeightWidth);
     }];
@@ -290,7 +293,19 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)reloadPausedCalls
 {
+    NSInteger numberOfPausedCalls = [self.dataSource activeCallControllerNumberOfPausedCalls:self];
+
+
+
     self.badgeLabel.text = [NSString stringWithFormat:@"%lu", [self.dataSource activeCallControllerNumberOfPausedCalls:self]];
+
+
+    self.badgeLabel.hidden = (numberOfPausedCalls == 0);
+    self.callMenuButton.hidden = (numberOfPausedCalls == 0);
+
+    if (numberOfPausedCalls == 0) {
+        self.tableViewOfPausedCalls.hidden = YES;
+    }
 
     [self.tableViewOfPausedCalls reloadData];
 }
@@ -345,7 +360,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.incomingCallContainer addSubview:descriptionLabel];
 
     UIButton *declineCall = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *declineCallImage = [UIImage imageNamed:@"call-accept"];
+    UIImage *declineCallImage = [UIImage imageNamed:@"call-decline"];
     [declineCall setImage:declineCallImage forState:UIControlStateNormal];
     declineCall.tintColor = [UIColor whiteColor];
     declineCall.backgroundColor = [UIColor redColor];
@@ -398,12 +413,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)callMenuButtonPressed
 {
-    if (self.tableViewOfPausedCalls.hidden) {
-        self.tableViewOfPausedCalls.hidden = NO;
-    }
-    else {
-        self.tableViewOfPausedCalls.hidden = YES;
-    }
+    self.tableViewOfPausedCalls.hidden = ! self.tableViewOfPausedCalls.hidden;
 }
 
 #pragma mark - UITableViewDelegate
@@ -436,8 +446,6 @@ static const CGFloat kBadgeFontSize = 14.0;
 {
     NSInteger numberOfPausedCalls = [self.dataSource activeCallControllerNumberOfPausedCalls:self];
 
-    self.callMenuButton.hidden = (numberOfPausedCalls == 0);
-
     return numberOfPausedCalls;
 }
 
@@ -448,8 +456,6 @@ static const CGFloat kBadgeFontSize = 14.0;
     NSIndexPath *indexPath = [self.tableViewOfPausedCalls indexPathForCell:cell];
 
     [self.dataSource activeCallController:self endPausedCallSelectedAtIndex:indexPath];
-
-    self.tableViewOfPausedCalls.hidden = YES;
 }
 
 #pragma mark - Touch actions

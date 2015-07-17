@@ -20,7 +20,9 @@
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
 
-@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate, ActiveCallViewControllerDataSource, DialingCallViewControllerDelegate, RingingCallViewControllerDelegate>
+@interface CallsManager () <RBQFetchedResultsControllerDelegate, ActiveCallViewControllerDelegate,
+                            ActiveCallViewControllerDataSource, DialingCallViewControllerDelegate,
+                            RingingCallViewControllerDelegate>
 
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
@@ -279,7 +281,7 @@
 
 - (NSInteger)activeCallControllerNumberOfPausedCalls:(ActiveCallViewController *)controller
 {
-    return [[self.allPausedCallsController fetchedObjects] count];
+    return [self.allPausedCallsController numberOfRowsForSectionIndex:0];
 }
 
 - (NSString *)activeCallController:(ActiveCallViewController *)controller pausedCallerNicknameForCallAtIndex:(NSIndexPath *)indexPath

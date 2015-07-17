@@ -34,7 +34,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
 
     self.backgroundColor = [UIColor blackColor];
 
-    [self createResumeCallButton];
+    [self setImageViewToPauseImage];
     [self createEndCallButton];
     [self setupFont];
     [self installConstraints];
@@ -46,7 +46,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
 
 - (void)createEndCallButton
 {
-    UIImage *image = [UIImage imageNamed:@"call-accept"];
+    UIImage *image = [UIImage imageNamed:@"call-decline"];
 
     self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.endCallButton setBackgroundImage:image forState:UIControlStateNormal];
@@ -59,7 +59,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
     [self.contentView addSubview:self.endCallButton];
 }
 
-- (void)createResumeCallButton
+- (void)setImageViewToPauseImage
 {
     UIImage *image = [UIImage imageNamed:@"call-pause"];
 

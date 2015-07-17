@@ -148,7 +148,7 @@ static const CGFloat kLabelFontSize = 16.0;
     self.declineCallButton.layer.cornerRadius = kButtonHeight / 2.0f;
     self.declineCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.declineCallButton.layer.borderWidth = kButtonBorderWidth;
-    [self.declineCallButton setImage:[UIImage imageNamed:@"call-accept"] forState:UIControlStateNormal];
+    [self.declineCallButton setImage:[UIImage imageNamed:@"call-decline"] forState:UIControlStateNormal];
     [self.declineCallButton addTarget:self action:@selector(declineCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
     self.declineLabel = [UILabel new];
