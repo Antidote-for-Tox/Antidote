@@ -16,6 +16,8 @@
 #import "ValueViewWithTitle.h"
 #import "AvatarsManager.h"
 #import "AppearanceManager.h"
+#import "ChatViewController.h"
+#import "TabBarViewController.h"
 
 static const CGFloat kHorizontalIndentation = 10.0;
 static const CGFloat kVerticalIndentation = 20.0;
@@ -174,8 +176,17 @@ static const CGFloat kButtonSize = 40.0;
     weakself;
     [self.chatButton bk_addEventHandler:^(id button) {
         strongself;
-        NSLog(@"----- %@", self.scrollView);
+        AppContext *context = [AppContext sharedContext];
 
+        OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+        ChatViewController *chatVC = [[ChatViewController alloc] initWithChat:chat];
+
+        TabBarViewControllerIndex index = TabBarViewControllerIndexChats;
+        context.tabBarController.selectedIndex = index;
+
+        UINavigationController *navCon = [context.tabBarController navigationControllerForIndex:index];
+        [navCon popToRootViewControllerAnimated:NO];
+        [navCon pushViewController:chatVC animated:NO];
     } forControlEvents:UIControlEventTouchUpInside];
 }
 
