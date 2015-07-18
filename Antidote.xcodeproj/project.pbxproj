@@ -68,6 +68,7 @@
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		F04234F61B54254800B93009 /* CallsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F04234F51B54254800B93009 /* CallsManager.m */; };
 		F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */; };
+		F09582B01B59BE4000E26076 /* TableViewRefresher.m in Sources */ = {isa = PBXBuildFile; fileRef = F09582AF1B59BE4000E26076 /* TableViewRefresher.m */; };
 		F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */; };
 		F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */; };
 		F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */; };
@@ -198,6 +199,8 @@
 		F04234F51B54254800B93009 /* CallsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallsManager.m; sourceTree = "<group>"; };
 		F08766471B58379700D2B9D7 /* PauseCallTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseCallTableViewCell.h; sourceTree = "<group>"; };
 		F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseCallTableViewCell.m; sourceTree = "<group>"; };
+		F09582AE1B59BE4000E26076 /* TableViewRefresher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewRefresher.h; sourceTree = "<group>"; };
+		F09582AF1B59BE4000E26076 /* TableViewRefresher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewRefresher.m; sourceTree = "<group>"; };
 		F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingingCallViewController.h; sourceTree = "<group>"; };
 		F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingingCallViewController.m; sourceTree = "<group>"; };
 		F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveCallViewController.h; sourceTree = "<group>"; };
@@ -660,6 +663,8 @@
 				F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */,
 				F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */,
 				F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */,
+				F09582AE1B59BE4000E26076 /* TableViewRefresher.h */,
+				F09582AF1B59BE4000E26076 /* TableViewRefresher.m */,
 			);
 			name = Call;
 			sourceTree = "<group>";
@@ -965,6 +970,7 @@
 				11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */,
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
 				1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */,
+				F09582B01B59BE4000E26076 /* TableViewRefresher.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

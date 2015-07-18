@@ -30,7 +30,7 @@
 
 - (NSInteger)activeCallControllerNumberOfPausedCalls:(ActiveCallViewController *)controller;
 - (NSString *)activeCallController:(ActiveCallViewController *)controller pausedCallerNicknameForCallAtIndex:(NSIndexPath *)indexPath;
-- (NSTimeInterval)activeCallController:(ActiveCallViewController *)controller pauseTimeDurationForCallAtIndex:(NSIndexPath *)indexPath;
+- (NSDate *)activeCallController:(ActiveCallViewController *)controller pauseDateForCallAtIndex:(NSIndexPath *)indexPath;
 - (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath;
 - (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath;
 
