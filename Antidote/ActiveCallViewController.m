@@ -305,8 +305,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.callMenuButton.hidden = (numberOfPausedCalls == 0);
 
     if (numberOfPausedCalls == 0) {
-        self.tableViewOfPausedCalls.hidden = YES;
-        [self.tableViewRefreshTimer invalidate];
+        [self hideTableViewOfPausedCalls];
     }
 
     [self.tableViewOfPausedCalls reloadData];
@@ -411,8 +410,13 @@ static const CGFloat kBadgeFontSize = 14.0;
     }];
 }
 
-- (void)startTableViewRefreshTimer
+- (void)showTableViewOfPausedCalls
 {
+    if (! self.tableViewOfPausedCalls.hidden) {
+        return;
+    }
+
+    self.tableViewOfPausedCalls.hidden = NO;
     self.tableViewRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                   target:self
                                                                 selector:@selector(reloadPausedCalls)
@@ -420,18 +424,21 @@ static const CGFloat kBadgeFontSize = 14.0;
                                                                  repeats:YES];
 }
 
+- (void)hideTableViewOfPausedCalls
+{
+    self.tableViewOfPausedCalls.hidden = YES;
+
+    [self.tableViewRefreshTimer invalidate];
+    self.tableViewRefreshTimer = nil;
+}
+
 #pragma mark - Call Menu
 
 - (void)callMenuButtonPressed
 {
-    self.tableViewOfPausedCalls.hidden = ! self.tableViewOfPausedCalls.hidden;
+    BOOL wasHidden = self.tableViewOfPausedCalls.hidden;
 
-    if (! self.tableViewOfPausedCalls.hidden) {
-        [self startTableViewRefreshTimer];
-    }
-    else {
-        [self.tableViewRefreshTimer invalidate];
-    }
+    wasHidden ? [self showTableViewOfPausedCalls] : [self hideTableViewOfPausedCalls];
 }
 
 #pragma mark - UITableViewDelegate
