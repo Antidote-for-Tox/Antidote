@@ -5,7 +5,7 @@ platform :ios, '7.0'
 # ignore all warnings from all pods
 inhibit_all_warnings!
 
-pod 'toxcore-ios', :podspec => 'https://raw.githubusercontent.com/Chuongv/toxcore-ios/0.1.12-new-av/toxcore-ios.podspec'
+pod 'toxcore-ios', :podspec => 'https://raw.githubusercontent.com/Chuongv/toxcore-ios/0.1.13-new-av/toxcore-ios.podspec'
 pod 'BlocksKit', '~> 2.2.5'
 pod 'CocoaLumberjack', '~> 1.9.2'
 pod 'JSQMessagesViewController', '~> 7.1.0'

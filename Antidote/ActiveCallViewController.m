@@ -42,6 +42,8 @@ static const CGFloat kBadgeFontSize = 14.0;
 @property (strong, nonatomic) UILabel *badgeLabel;
 @property (strong, nonatomic) UITableView *tableViewOfPausedCalls;
 
+@property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
+
 @end
 
 @implementation ActiveCallViewController
@@ -60,9 +62,10 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createCallMenuButton];
     [self createCallPauseTableView];
     [self createBadgeViews];
-    [self reloadPausedCalls];
 
     [self installConstraints];
+
+    [self reloadPausedCalls];
 }
 
 #pragma mark - View setup
@@ -142,7 +145,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.tableViewOfPausedCalls.backgroundColor = [UIColor blackColor];
     self.tableViewOfPausedCalls.delegate = self;
     self.tableViewOfPausedCalls.dataSource = self;
-    self.tableViewOfPausedCalls.hidden = ([self.dataSource activeCallControllerNumberOfPausedCalls:self] == 0);
+    self.tableViewOfPausedCalls.hidden = YES;
     [self.tableViewOfPausedCalls registerClass:[PauseCallTableViewCell class] forCellReuseIdentifier:[PauseCallTableViewCell reuseIdentifier]];
 
     [self.view addSubview:self.tableViewOfPausedCalls];
@@ -295,8 +298,6 @@ static const CGFloat kBadgeFontSize = 14.0;
 {
     NSInteger numberOfPausedCalls = [self.dataSource activeCallControllerNumberOfPausedCalls:self];
 
-
-
     self.badgeLabel.text = [NSString stringWithFormat:@"%lu", [self.dataSource activeCallControllerNumberOfPausedCalls:self]];
 
 
@@ -304,7 +305,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.callMenuButton.hidden = (numberOfPausedCalls == 0);
 
     if (numberOfPausedCalls == 0) {
-        self.tableViewOfPausedCalls.hidden = YES;
+        [self hideTableViewOfPausedCalls];
     }
 
     [self.tableViewOfPausedCalls reloadData];
@@ -409,11 +410,35 @@ static const CGFloat kBadgeFontSize = 14.0;
     }];
 }
 
+- (void)showTableViewOfPausedCalls
+{
+    if (! self.tableViewOfPausedCalls.hidden) {
+        return;
+    }
+
+    self.tableViewOfPausedCalls.hidden = NO;
+    self.tableViewRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
+                                                                  target:self
+                                                                selector:@selector(reloadPausedCalls)
+                                                                userInfo:nil
+                                                                 repeats:YES];
+}
+
+- (void)hideTableViewOfPausedCalls
+{
+    self.tableViewOfPausedCalls.hidden = YES;
+
+    [self.tableViewRefreshTimer invalidate];
+    self.tableViewRefreshTimer = nil;
+}
+
 #pragma mark - Call Menu
 
 - (void)callMenuButtonPressed
 {
-    self.tableViewOfPausedCalls.hidden = ! self.tableViewOfPausedCalls.hidden;
+    BOOL wasHidden = self.tableViewOfPausedCalls.hidden;
+
+    wasHidden ? [self showTableViewOfPausedCalls] : [self hideTableViewOfPausedCalls];
 }
 
 #pragma mark - UITableViewDelegate
@@ -422,6 +447,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 {
     [self.dataSource activeCallController:self resumePausedCallSelectedAtIndex:indexPath];
     self.tableViewOfPausedCalls.hidden = YES;
+    [self.tableViewRefreshTimer invalidate];
 }
 
 #pragma mark - UITableViewDataSource
@@ -433,10 +459,12 @@ static const CGFloat kBadgeFontSize = 14.0;
     NSString *nickName = [self.dataSource activeCallController:self
                             pausedCallerNicknameForCallAtIndex             :indexPath];
 
-    NSTimeInterval callDuration = [self.dataSource activeCallController:self
-                                        pauseTimeDurationForCallAtIndex          :indexPath];
+    NSDate *callPauseDate = [self.dataSource activeCallController:self
+                                          pauseDateForCallAtIndex  :indexPath];
 
-    [cell setCallerNickname:nickName andCallDuration:callDuration];
+    NSTimeInterval holdDuration = [[NSDate date] timeIntervalSinceDate:callPauseDate];
+
+    [cell setCallerNickname:nickName andOnHoldDuration:holdDuration];
     cell.delegate = self;
 
     return cell;
