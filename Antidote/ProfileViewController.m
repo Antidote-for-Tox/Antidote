@@ -76,20 +76,6 @@ typedef NS_ENUM(NSInteger, CellType) {
     return [UITableViewCell new];
 }
 
-// - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-// {
-//     CellType type = [self cellTypeForIndexPath:indexPath];
-
-//     if (type == CellTypeNameStatusAvatar) {
-//         return [CellWithNameStatusAvatar height];
-//     }
-//     else if (type == CellTypeToxId) {
-//         return [CellWithToxId height];
-//     }
-
-//     return 0.0;
-// }
-
 #pragma mark -  SettingsNameStatusAvatarCellDelegate
 
 - (void)cellWithNameStatusAvatarAvatarButtonPressed:(CellWithNameStatusAvatar *)cell
