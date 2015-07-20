@@ -98,10 +98,14 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 
+    [self configureTableView];
     [self registerCellsForTableView];
 
     [self.view addSubview:self.tableView];
 }
+
+- (void)configureTableView
+{}
 
 - (void)registerCellsForTableView
 {

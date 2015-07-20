@@ -12,19 +12,19 @@
 #import "ProfileViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "CellWithNameStatusAvatar.h"
-#import "CellWithToxId.h"
 #import "AppContext.h"
 #import "ProfileManager.h"
 #import "OCTManager.h"
 #import "QRViewerController.h"
 #import "AvatarsManager.h"
+#import "ContentCellWithTitle.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameStatusAvatar,
     CellTypeToxId,
 };
 
-@interface ProfileViewController () <SettingsNameStatusAvatarCellDelegate, CellWithToxIdDelegate,
+@interface ProfileViewController () <SettingsNameStatusAvatarCellDelegate, ContentCellWithTitleDelegate,
                                      UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
@@ -47,12 +47,19 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 #pragma mark -  Override
 
+- (void)configureTableView
+{
+    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.estimatedRowHeight = 44.0;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+}
+
 - (void)registerCellsForTableView
 {
     [self.tableView registerClass:[CellWithNameStatusAvatar class]
            forCellReuseIdentifier:[CellWithNameStatusAvatar reuseIdentifier]];
 
-    [self.tableView registerClass:[CellWithToxId class] forCellReuseIdentifier:[CellWithToxId reuseIdentifier]];
+    [self.tableView registerClass:[ContentCellWithTitle class] forCellReuseIdentifier:[ContentCellWithTitle reuseIdentifier]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -69,19 +76,19 @@ typedef NS_ENUM(NSInteger, CellType) {
     return [UITableViewCell new];
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CellType type = [self cellTypeForIndexPath:indexPath];
+// - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+// {
+//     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeNameStatusAvatar) {
-        return [CellWithNameStatusAvatar height];
-    }
-    else if (type == CellTypeToxId) {
-        return [CellWithToxId height];
-    }
+//     if (type == CellTypeNameStatusAvatar) {
+//         return [CellWithNameStatusAvatar height];
+//     }
+//     else if (type == CellTypeToxId) {
+//         return [CellWithToxId height];
+//     }
 
-    return 0.0;
-}
+//     return 0.0;
+// }
 
 #pragma mark -  SettingsNameStatusAvatarCellDelegate
 
@@ -145,11 +152,11 @@ typedef NS_ENUM(NSInteger, CellType) {
     [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:newStatusMessage error:nil];
 }
 
-#pragma mark -  CellWithToxIdDelegate
+#pragma mark -  ContentCellWithTitleDelegate
 
-- (void)cellWithToxIdQrButtonPressed:(CellWithToxId *)cell
+- (void)contentCellWithTitleDidPressButton:(ContentCellWithTitle *)cell
 {
-    QRViewerController *qrVC = [[QRViewerController alloc] initWithToxId:cell.toxId];
+    QRViewerController *qrVC = [[QRViewerController alloc] initWithToxId:cell.mainText];
 
     [self presentViewController:qrVC animated:YES completion:nil];
 }
@@ -202,15 +209,13 @@ typedef NS_ENUM(NSInteger, CellType) {
     return cell;
 }
 
-- (CellWithToxId *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
+- (ContentCellWithTitle *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
 {
-    CellWithToxId *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithToxId reuseIdentifier]
-                                                               forIndexPath:indexPath];
+    ContentCellWithTitle *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithTitle reuseIdentifier]
+                                                                      forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Profile");
-    cell.toxId = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
-
-    [cell redraw];
+    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
 
     return cell;
 }

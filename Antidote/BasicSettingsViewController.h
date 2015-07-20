@@ -22,6 +22,7 @@
 #pragma mark -  Methods to override
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)configureTableView;
 - (void)registerCellsForTableView;
 
 @end
