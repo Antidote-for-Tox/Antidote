@@ -244,19 +244,22 @@ static const CGFloat kBadgeFontSize = 14.0;
 
     [self.pauseCallsContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topViewContainer.bottom);
-        make.width.equalTo(self.view);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
 
     [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.pauseCallsContainer);
-        make.width.equalTo(self.pauseCallsContainer);
+        make.left.equalTo(self.pauseCallsContainer);
+        make.right.equalTo(self.pauseCallsContainer);
         make.bottom.equalTo(self.pauseCallsContainer).with.offset(-kTableViewBottomOffSet);
     }];
 
     [self.tapOutsideTableViewButton makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.tableViewOfPausedCalls);
-        make.width.equalTo(self.pauseCallsContainer);
+        make.left.equalTo(self.pauseCallsContainer);
+        make.right.equalTo(self.pauseCallsContainer);
         make.bottom.equalTo(self.pauseCallsContainer);
     }];
 
