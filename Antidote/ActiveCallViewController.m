@@ -76,7 +76,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)createEndCallButton
 {
     self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.endCallButton.backgroundColor = [UIColor redColor];
+    self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     [self.endCallButton addTarget:self action:@selector(endCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.endCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
@@ -162,6 +162,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.tableViewOfPausedCalls.backgroundColor = [UIColor blackColor];
     self.tableViewOfPausedCalls.delegate = self;
     self.tableViewOfPausedCalls.dataSource = self;
+    self.tableViewOfPausedCalls.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableViewOfPausedCalls registerClass:[PauseCallTableViewCell class] forCellReuseIdentifier:[PauseCallTableViewCell reuseIdentifier]];
 
     [self.tapOutsideTableViewButton addSubview:self.tableViewOfPausedCalls];
@@ -170,7 +171,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)createBadgeViews
 {
     self.badgeContainer = [UIView new];
-    self.badgeContainer.backgroundColor = [UIColor redColor];
+    self.badgeContainer.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     self.badgeContainer.layer.masksToBounds = YES;
     self.badgeContainer.layer.cornerRadius = kBadgeHeightWidth / 2.0;
     [self.callMenuButton addSubview:self.badgeContainer];
@@ -390,7 +391,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     UIImage *declineCallImage = [UIImage imageNamed:@"call-decline"];
     [declineCall setImage:declineCallImage forState:UIControlStateNormal];
     declineCall.tintColor = [UIColor whiteColor];
-    declineCall.backgroundColor = [UIColor redColor];
+    declineCall.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     declineCall.layer.cornerRadius = kOtherCallButtonSize / 2.0;
     [declineCall addTarget:self action:@selector(declineIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.incomingCallContainer addSubview:declineCall];
