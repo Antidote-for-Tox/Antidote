@@ -11,7 +11,7 @@
 #import "NSString+Utilities.h"
 #import "Masonry.h"
 
-static const CGFloat kEndCallButtonWidth = 30.0;
+static const CGFloat kEndCallButtonSize = 30.0;
 static const CGFloat kNickNameFontSize = 16.0;
 static const CGFloat kCallDurationFontSize = 11.0;
 
@@ -52,7 +52,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
     [self.endCallButton setBackgroundImage:image forState:UIControlStateNormal];
     self.endCallButton.tintColor = [UIColor whiteColor];
     self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
-    self.endCallButton.layer.cornerRadius = kEndCallButtonWidth / 2.0;
+    self.endCallButton.layer.cornerRadius = kEndCallButtonSize / 2.0;
 
     [self.endCallButton addTarget:self action:@selector(endCallButtonTapped) forControlEvents:UIControlEventTouchUpInside];
 
@@ -83,8 +83,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
 {
     [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.rightMargin);
-        make.height.equalTo(kEndCallButtonWidth);
-        make.width.equalTo(kEndCallButtonWidth);
+        make.size.equalTo(kEndCallButtonSize);
         make.centerY.equalTo(self.contentView);
     }];
 
