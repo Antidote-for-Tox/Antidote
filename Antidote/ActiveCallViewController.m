@@ -63,6 +63,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createMuteButton];
     [self createPauseButton];
     [self createCallMenuButton];
+    [self createPauseCallContainer];
     [self createCallPauseTableView];
     [self createBadgeViews];
 
@@ -142,22 +143,24 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.topViewContainer addSubview:self.callMenuButton];
 }
 
-- (void)createCallPauseTableView
+- (void)createPauseCallContainer
 {
-
     self.pauseCallsContainer = [UIView new];
     self.pauseCallsContainer.backgroundColor = [UIColor clearColor];
+    self.pauseCallsContainer.hidden = YES;
+
+    [self.view addSubview:self.pauseCallsContainer];
 
     self.tapOutsideTableViewButton = [UIButton new];
     [self.tapOutsideTableViewButton addTarget:self
                                        action:@selector(hideTableViewOfPausedCalls)
                              forControlEvents:UIControlEventTouchUpInside];
+
     [self.pauseCallsContainer addSubview:self.tapOutsideTableViewButton];
+}
 
-    self.pauseCallsContainer.hidden = YES;
-
-    [self.view addSubview:self.pauseCallsContainer];
-
+- (void)createCallPauseTableView
+{
     self.tableViewOfPausedCalls = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableViewOfPausedCalls.backgroundColor = [UIColor blackColor];
     self.tableViewOfPausedCalls.delegate = self;
@@ -165,7 +168,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.tableViewOfPausedCalls.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableViewOfPausedCalls registerClass:[PauseCallTableViewCell class] forCellReuseIdentifier:[PauseCallTableViewCell reuseIdentifier]];
 
-    [self.tapOutsideTableViewButton addSubview:self.tableViewOfPausedCalls];
+    [self.pauseCallsContainer addSubview:self.tableViewOfPausedCalls];
 }
 
 - (void)createBadgeViews
@@ -245,15 +248,18 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.bottom.equalTo(self.view);
     }];
 
-    [self.tapOutsideTableViewButton makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.pauseCallsContainer);
+    [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.pauseCallsContainer);
+        make.width.equalTo(self.pauseCallsContainer);
+        make.bottom.equalTo(self.pauseCallsContainer).with.offset(-kTableViewBottomOffSet);
     }];
 
-    [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tapOutsideTableViewButton);
-        make.width.equalTo(self.tapOutsideTableViewButton);
-        make.bottom.equalTo(self.tapOutsideTableViewButton).with.offset(-kTableViewBottomOffSet);
+    [self.tapOutsideTableViewButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tableViewOfPausedCalls);
+        make.width.equalTo(self.pauseCallsContainer);
+        make.bottom.equalTo(self.pauseCallsContainer);
     }];
+
 
     [self.badgeContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.callMenuButton.centerY);
