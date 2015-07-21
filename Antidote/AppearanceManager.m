@@ -221,6 +221,11 @@
     }
 }
 
+- (UIColor *)callRedColor
+{
+    return [UIColor colorWithRed:0.86 green:0.24 blue:0.24 alpha:1.0];
+}
+
 #pragma mark -  Private
 
 - (void)setColorscheme:(AppearanceManagerColorscheme)colorscheme

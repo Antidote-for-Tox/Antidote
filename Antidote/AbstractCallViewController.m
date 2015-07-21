@@ -48,12 +48,11 @@ static const CGFloat kNameLabelFontSize = 30.0;
     self.view.backgroundColor = [UIColor clearColor];
     self.view.opaque = NO;
 
-    UIVisualEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
     visualEffectView.frame = self.view.bounds;
 
     [self.view insertSubview:visualEffectView atIndex:0];
-
     [visualEffectView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];

@@ -11,7 +11,7 @@
 #import "NSString+Utilities.h"
 #import "Masonry.h"
 
-static const CGFloat kEndCallButtonWidth = 40.0;
+static const CGFloat kEndCallButtonWidth = 30.0;
 static const CGFloat kNickNameFontSize = 16.0;
 static const CGFloat kCallDurationFontSize = 11.0;
 
@@ -51,7 +51,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
     self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.endCallButton setBackgroundImage:image forState:UIControlStateNormal];
     self.endCallButton.tintColor = [UIColor whiteColor];
-    self.endCallButton.backgroundColor = [UIColor redColor];
+    self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     self.endCallButton.layer.cornerRadius = kEndCallButtonWidth / 2.0;
 
     [self.endCallButton addTarget:self action:@selector(endCallButtonTapped) forControlEvents:UIControlEventTouchUpInside];
@@ -70,6 +70,7 @@ static const CGFloat kCallDurationFontSize = 11.0;
 - (void)setupFont
 {
     self.textLabel.textAlignment = NSTextAlignmentLeft;
+
     self.textLabel.textColor = [UIColor whiteColor];
     self.textLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kNickNameFontSize];
 
@@ -82,8 +83,9 @@ static const CGFloat kCallDurationFontSize = 11.0;
 {
     [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.rightMargin);
-        make.height.equalTo(self.contentView);
+        make.height.equalTo(kEndCallButtonWidth);
         make.width.equalTo(kEndCallButtonWidth);
+        make.centerY.equalTo(self.contentView);
     }];
 
     [self.textLabel makeConstraints:^(MASConstraintMaker *make) {
