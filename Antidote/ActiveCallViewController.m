@@ -21,7 +21,7 @@ static const CGFloat k3ButtonGap = 15.0;
 static const CGFloat kOtherCallButtonSize = 4.0 / 5.0 * kButtonSide;
 static const CGFloat kIncomingNameFontSize = 12.0;
 static const CGFloat kIncomingIsCallingFontSize = 10.0;
-static const CGFloat kTableViewBottomOffSet = 100.0;
+static const CGFloat kTableViewBottomOffSet = 200.0;
 
 static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
 static const CGFloat kBadgeHeightWidth = 30.0;
@@ -40,6 +40,8 @@ static const CGFloat kBadgeFontSize = 14.0;
 @property (strong, nonatomic) UIButton *callMenuButton;
 @property (strong, nonatomic) UIView *badgeContainer;
 @property (strong, nonatomic) UILabel *badgeLabel;
+
+@property (strong, nonatomic) UIButton *pauseCallsContainer;
 @property (strong, nonatomic) UITableView *tableViewOfPausedCalls;
 
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
@@ -141,14 +143,23 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)createCallPauseTableView
 {
+
+    self.pauseCallsContainer = [UIButton new];
+    self.pauseCallsContainer.backgroundColor = [UIColor clearColor];
+    [self.pauseCallsContainer addTarget:self
+                                 action:@selector(hideTableViewOfPausedCalls)
+                       forControlEvents:UIControlEventTouchUpInside];
+    self.pauseCallsContainer.hidden = YES;
+
+    [self.view addSubview:self.pauseCallsContainer];
+
     self.tableViewOfPausedCalls = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableViewOfPausedCalls.backgroundColor = [UIColor blackColor];
     self.tableViewOfPausedCalls.delegate = self;
     self.tableViewOfPausedCalls.dataSource = self;
-    self.tableViewOfPausedCalls.hidden = YES;
     [self.tableViewOfPausedCalls registerClass:[PauseCallTableViewCell class] forCellReuseIdentifier:[PauseCallTableViewCell reuseIdentifier]];
 
-    [self.view addSubview:self.tableViewOfPausedCalls];
+    [self.pauseCallsContainer addSubview:self.tableViewOfPausedCalls];
 }
 
 - (void)createBadgeViews
@@ -222,10 +233,16 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.top.equalTo(self.topViewContainer.topMargin);
     }];
 
-    [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
+    [self.pauseCallsContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topViewContainer.bottom);
         make.width.equalTo(self.view);
-        make.bottom.equalTo(self.view.bottom).with.offset(-kTableViewBottomOffSet);
+        make.bottom.equalTo(self.view);
+    }];
+
+    [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.pauseCallsContainer);
+        make.width.equalTo(self.pauseCallsContainer);
+        make.bottom.equalTo(self.pauseCallsContainer).with.offset(-kTableViewBottomOffSet);
     }];
 
     [self.badgeContainer makeConstraints:^(MASConstraintMaker *make) {
@@ -412,10 +429,11 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)showTableViewOfPausedCalls
 {
-    if (! self.tableViewOfPausedCalls.hidden) {
+    if (! self.pauseCallsContainer.hidden) {
         return;
     }
 
+    self.pauseCallsContainer.hidden = NO;
     self.tableViewOfPausedCalls.hidden = NO;
     self.tableViewRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                   target:self
@@ -426,6 +444,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)hideTableViewOfPausedCalls
 {
+    self.pauseCallsContainer.hidden = YES;
     self.tableViewOfPausedCalls.hidden = YES;
 
     [self.tableViewRefreshTimer invalidate];
@@ -436,7 +455,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)callMenuButtonPressed
 {
-    BOOL wasHidden = self.tableViewOfPausedCalls.hidden;
+    BOOL wasHidden = self.pauseCallsContainer.hidden;
 
     wasHidden ? [self showTableViewOfPausedCalls] : [self hideTableViewOfPausedCalls];
 }
@@ -446,7 +465,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.dataSource activeCallController:self resumePausedCallSelectedAtIndex:indexPath];
-    self.tableViewOfPausedCalls.hidden = YES;
+    self.pauseCallsContainer.hidden = YES;
     [self.tableViewRefreshTimer invalidate];
 }
 
