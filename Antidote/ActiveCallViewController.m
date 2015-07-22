@@ -40,7 +40,10 @@ static const CGFloat kBadgeFontSize = 14.0;
 @property (strong, nonatomic) UIButton *callMenuButton;
 @property (strong, nonatomic) UIView *badgeContainer;
 @property (strong, nonatomic) UILabel *badgeLabel;
+
+@property (strong, nonatomic) UIView *pauseCallsContainer;
 @property (strong, nonatomic) UITableView *tableViewOfPausedCalls;
+@property (strong, nonatomic) UIButton *tapOutsideTableViewButton;
 
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
@@ -60,6 +63,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createMuteButton];
     [self createPauseButton];
     [self createCallMenuButton];
+    [self createPauseCallContainer];
     [self createCallPauseTableView];
     [self createBadgeViews];
 
@@ -139,17 +143,32 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.topViewContainer addSubview:self.callMenuButton];
 }
 
+- (void)createPauseCallContainer
+{
+    self.pauseCallsContainer = [UIView new];
+    self.pauseCallsContainer.backgroundColor = [UIColor clearColor];
+    self.pauseCallsContainer.hidden = YES;
+
+    [self.view addSubview:self.pauseCallsContainer];
+
+    self.tapOutsideTableViewButton = [UIButton new];
+    [self.tapOutsideTableViewButton addTarget:self
+                                       action:@selector(hideTableViewOfPausedCalls)
+                             forControlEvents:UIControlEventTouchUpInside];
+
+    [self.pauseCallsContainer addSubview:self.tapOutsideTableViewButton];
+}
+
 - (void)createCallPauseTableView
 {
     self.tableViewOfPausedCalls = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
     self.tableViewOfPausedCalls.backgroundColor = [UIColor blackColor];
     self.tableViewOfPausedCalls.delegate = self;
     self.tableViewOfPausedCalls.dataSource = self;
-    self.tableViewOfPausedCalls.hidden = YES;
     self.tableViewOfPausedCalls.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableViewOfPausedCalls registerClass:[PauseCallTableViewCell class] forCellReuseIdentifier:[PauseCallTableViewCell reuseIdentifier]];
 
-    [self.view addSubview:self.tableViewOfPausedCalls];
+    [self.pauseCallsContainer addSubview:self.tableViewOfPausedCalls];
 }
 
 - (void)createBadgeViews
@@ -223,11 +242,27 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.top.equalTo(self.topViewContainer.topMargin);
     }];
 
-    [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
+    [self.pauseCallsContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topViewContainer.bottom);
-        make.width.equalTo(self.view);
-        make.bottom.equalTo(self.view.bottom).with.offset(-kTableViewBottomOffSet);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
     }];
+
+    [self.tableViewOfPausedCalls makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.pauseCallsContainer);
+        make.left.equalTo(self.pauseCallsContainer);
+        make.right.equalTo(self.pauseCallsContainer);
+        make.bottom.equalTo(self.pauseCallsContainer).with.offset(-kTableViewBottomOffSet);
+    }];
+
+    [self.tapOutsideTableViewButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tableViewOfPausedCalls);
+        make.left.equalTo(self.pauseCallsContainer);
+        make.right.equalTo(self.pauseCallsContainer);
+        make.bottom.equalTo(self.pauseCallsContainer);
+    }];
+
 
     [self.badgeContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.callMenuButton.centerY);
@@ -413,11 +448,11 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)showTableViewOfPausedCalls
 {
-    if (! self.tableViewOfPausedCalls.hidden) {
+    if (! self.pauseCallsContainer.hidden) {
         return;
     }
 
-    self.tableViewOfPausedCalls.hidden = NO;
+    self.pauseCallsContainer.hidden = NO;
     self.tableViewRefreshTimer = [NSTimer scheduledTimerWithTimeInterval:1.0
                                                                   target:self
                                                                 selector:@selector(reloadPausedCalls)
@@ -427,7 +462,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)hideTableViewOfPausedCalls
 {
-    self.tableViewOfPausedCalls.hidden = YES;
+    self.pauseCallsContainer.hidden = YES;
 
     [self.tableViewRefreshTimer invalidate];
     self.tableViewRefreshTimer = nil;
@@ -437,7 +472,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)callMenuButtonPressed
 {
-    BOOL wasHidden = self.tableViewOfPausedCalls.hidden;
+    BOOL wasHidden = self.pauseCallsContainer.hidden;
 
     wasHidden ? [self showTableViewOfPausedCalls] : [self hideTableViewOfPausedCalls];
 }
@@ -447,8 +482,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self.dataSource activeCallController:self resumePausedCallSelectedAtIndex:indexPath];
-    self.tableViewOfPausedCalls.hidden = YES;
-    [self.tableViewRefreshTimer invalidate];
+    [self hideTableViewOfPausedCalls];
 }
 
 #pragma mark - UITableViewDataSource
