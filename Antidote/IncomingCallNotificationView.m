@@ -13,7 +13,8 @@
 static const CGFloat kIncomingNameFontSize = 12.0;
 static const CGFloat kIncomingIsCallingFontSize = 10.0;
 static const CGFloat kButtonSize = 50.0;
-static const CGFloat kIndent = 30.0;
+static const CGFloat kButtonBorderWidth = 1.0;
+static const CGFloat kIndent = 20.0;
 
 @interface IncomingCallNotificationView ()
 
@@ -81,6 +82,8 @@ static const CGFloat kIndent = 30.0;
     UIImage *declineCallImage = [UIImage imageNamed:@"call-decline"];
     [self.declineButton setImage:declineCallImage forState:UIControlStateNormal];
     self.declineButton.tintColor = [UIColor whiteColor];
+    self.declineButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.declineButton.layer.borderWidth = kButtonBorderWidth;
     self.declineButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     self.declineButton.layer.cornerRadius = kButtonSize / 2.0;
     [self.declineButton addTarget:self action:@selector(tappedDeclineButton) forControlEvents:UIControlEventTouchUpInside];
@@ -93,7 +96,9 @@ static const CGFloat kIndent = 30.0;
     UIImage *acceptCallimage = [UIImage imageNamed:@"call-phone"];
     [self.acceptButton setImage:acceptCallimage forState:UIControlStateNormal];
     self.acceptButton.tintColor = [UIColor whiteColor];
-    self.acceptButton.backgroundColor = [UIColor greenColor];
+    self.acceptButton.layer.borderColor = [UIColor blackColor].CGColor;
+    self.acceptButton.layer.borderWidth = kButtonBorderWidth;
+    self.acceptButton.backgroundColor = [[AppContext sharedContext].appearance callGreenColor];
     self.acceptButton.layer.cornerRadius = kButtonSize / 2.0;
     [self.acceptButton addTarget:self action:@selector(tappedAcceptButton) forControlEvents:UIControlEventTouchUpInside];
 
@@ -103,7 +108,7 @@ static const CGFloat kIndent = 30.0;
 - (void)installConstraints
 {
     [self.acceptButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self);
+        make.right.equalTo(self.rightMargin);
         make.centerY.equalTo(self);
         make.height.equalTo(kButtonSize);
         make.width.equalTo(kButtonSize);
@@ -116,7 +121,7 @@ static const CGFloat kIndent = 30.0;
     }];
 
     [self.nameLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.left);
+        make.left.equalTo(self.leftMargin);
         make.height.equalTo(20.0);
         make.bottom.equalTo(self.centerY);
     }];

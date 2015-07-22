@@ -115,11 +115,9 @@ static const CGFloat kLabelFontSize = 16.0;
 
 - (void)createAcceptCallButton
 {
-    UIColor *darkGreen = [UIColor colorWithRed:0.12 green:0.65 blue:0.17 alpha:1.0];
-
     self.acceptCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.acceptCallButton.tintColor = [UIColor whiteColor];
-    self.acceptCallButton.backgroundColor = darkGreen;
+    self.acceptCallButton.backgroundColor = [[AppContext sharedContext].appearance callGreenColor];
     self.acceptCallButton.layer.cornerRadius = kButtonHeight / 2.0f;
     self.acceptCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.acceptCallButton.layer.borderWidth = kButtonBorderWidth;

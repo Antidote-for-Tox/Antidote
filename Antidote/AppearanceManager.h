@@ -44,5 +44,6 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 - (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
 
 - (UIColor *)callRedColor;
+- (UIColor *)callGreenColor;
 
 @end
