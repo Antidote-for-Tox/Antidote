@@ -12,22 +12,23 @@
 #import "AppearanceManager.h"
 #import "PauseCallTableViewCell.h"
 #import "UITableViewCell+Utilities.h"
+#import "IncomingCallNotificationView.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat k3ButtonGap = 15.0;
-static const CGFloat kOtherCallButtonSize = 4.0 / 5.0 * kButtonSide;
-static const CGFloat kIncomingNameFontSize = 12.0;
-static const CGFloat kIncomingIsCallingFontSize = 10.0;
 static const CGFloat kTableViewBottomOffSet = 200.0;
 
 static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
 static const CGFloat kBadgeHeightWidth = 30.0;
 static const CGFloat kBadgeFontSize = 14.0;
 
-@interface ActiveCallViewController () <UITableViewDelegate, UITableViewDataSource, PauseCallTableViewCellDelegate>
+@interface ActiveCallViewController () <UITableViewDelegate,
+                                        UITableViewDataSource,
+                                        PauseCallTableViewCellDelegate,
+                                        IncomingCallNotificationViewDelegate>
 
 @property (strong, nonatomic) UIButton *endCallButton;
 @property (strong, nonatomic) UIButton *videoButton;
@@ -36,7 +37,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 @property (strong, nonatomic) UIButton *speakerButton;
 @property (strong, nonatomic) UIButton *pauseButton;
 
-@property (strong, nonatomic) UIView *incomingCallContainer;
+@property (strong, nonatomic) IncomingCallNotificationView *incomingCallNotification;
 @property (strong, nonatomic) UIView *bottomIncomingCallSpacer;
 @property (strong, nonatomic) UIView *topIncomingCallSpacer;
 
@@ -275,7 +276,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)createIncomingCallViewForFriend:(NSString *)nickname
 {
-    if (self.incomingCallContainer) {
+    if (self.incomingCallNotification) {
         return;
     }
 
@@ -294,8 +295,8 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)hideIncomingCallView
 {
-    [self.incomingCallContainer removeFromSuperview];
-    self.incomingCallContainer = nil;
+    [self.incomingCallNotification removeFromSuperview];
+    self.incomingCallNotification = nil;
 
     [self.topIncomingCallSpacer removeFromSuperview];
     self.topIncomingCallSpacer = nil;
@@ -350,42 +351,9 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)setupIncomingCallViewForFriend:(NSString *)nickname
 {
-    self.incomingCallContainer = [UIView new];
-    self.incomingCallContainer.backgroundColor = [UIColor grayColor];
-    [self.view addSubview:self.incomingCallContainer];
-
-    UILabel *nameLabel = [UILabel new];
-    nameLabel.adjustsFontSizeToFitWidth = YES;
-    nameLabel.textAlignment = NSTextAlignmentCenter;
-    nameLabel.text = nickname;
-    nameLabel.textColor = [UIColor whiteColor];
-    nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kIncomingNameFontSize];
-    [self.incomingCallContainer addSubview:nameLabel];
-
-    UILabel *descriptionLabel = [UILabel new];
-    descriptionLabel.text = NSLocalizedString(@"is calling", @"Calls");
-    descriptionLabel.textAlignment = NSTextAlignmentCenter;
-    descriptionLabel.textColor = [UIColor whiteColor];
-    descriptionLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kIncomingIsCallingFontSize];
-    [self.incomingCallContainer addSubview:descriptionLabel];
-
-    UIButton *declineCall = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *declineCallImage = [UIImage imageNamed:@"call-decline"];
-    [declineCall setImage:declineCallImage forState:UIControlStateNormal];
-    declineCall.tintColor = [UIColor whiteColor];
-    declineCall.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
-    declineCall.layer.cornerRadius = kOtherCallButtonSize / 2.0;
-    [declineCall addTarget:self action:@selector(declineIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self.incomingCallContainer addSubview:declineCall];
-
-    UIButton *acceptCall = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *acceptCallimage = [UIImage imageNamed:@"call-phone"];
-    [acceptCall setImage:acceptCallimage forState:UIControlStateNormal];
-    acceptCall.tintColor = [UIColor whiteColor];
-    acceptCall.backgroundColor = [UIColor greenColor];
-    acceptCall.layer.cornerRadius = kOtherCallButtonSize / 2.0;
-    [acceptCall addTarget:self action:@selector(acceptIncomingCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    [self.incomingCallContainer addSubview:acceptCall];
+    self.incomingCallNotification = [[IncomingCallNotificationView alloc] initWithNickname:nickname];
+    self.incomingCallNotification.delegate = self;
+    [self.view addSubview:self.incomingCallNotification];
 
     self.topIncomingCallSpacer = [UIView new];
     self.topIncomingCallSpacer.backgroundColor = [UIColor clearColor];
@@ -395,7 +363,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.view addSubview:self.topIncomingCallSpacer];
     [self.view addSubview:self.bottomIncomingCallSpacer];
 
-    [self.incomingCallContainer makeConstraints:^(MASConstraintMaker *make) {
+    [self.incomingCallNotification makeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.view);
         make.height.equalTo(kButtonSide);
         make.bottom.equalTo(self.bottomIncomingCallSpacer.top);
@@ -410,31 +378,6 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.bottomIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.bottomIncomingCallSpacer);
         make.bottom.equalTo(self.endCallButton.top);
-    }];
-
-    [acceptCall makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.incomingCallContainer);
-        make.centerY.equalTo(self.incomingCallContainer);
-        make.height.equalTo(kOtherCallButtonSize);
-        make.width.equalTo(kOtherCallButtonSize);
-    }];
-
-    [declineCall makeConstraints:^(MASConstraintMaker *make) {
-        make.size.equalTo(acceptCall);
-        make.centerY.equalTo(acceptCall);
-        make.right.equalTo(acceptCall.left).with.offset(-kIndent);
-    }];
-
-    [nameLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.incomingCallContainer.left);
-        make.height.equalTo(20.0);
-        make.bottom.equalTo(self.incomingCallContainer.centerY);
-    }];
-
-    [descriptionLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(nameLabel);
-        make.bottom.equalTo(self.incomingCallContainer.bottom);
-        make.top.equalTo(self.incomingCallContainer.centerY);
     }];
 }
 
@@ -505,7 +448,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     return numberOfPausedCalls;
 }
 
-#pragma mark PauseCallTableViewCellDelegate
+#pragma mark - PauseCallTableViewCellDelegate
 
 - (void)pauseCallCellEndPausedCallButtonTapped:(PauseCallTableViewCell *)cell
 {
@@ -514,17 +457,19 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.dataSource activeCallController:self endPausedCallSelectedAtIndex:indexPath];
 }
 
-#pragma mark - Touch actions
+#pragma mark - IncomingCallNotificationViewDelegate
 
-- (void)acceptIncomingCallButtonPressed
+- (void)incomingCallNotificationViewTappedAcceptButton
 {
     [self.delegate activeCallAnswerIncomingCallButtonPressed:self];
 }
 
-- (void)declineIncomingCallButtonPressed
+- (void)incomingCallNotificationViewTappedDeclineButton
 {
     [self.delegate activeCallDeclineIncomingCallButtonPressed:self];
 }
+
+#pragma mark - Touch actions
 
 - (void)micButtonPressed
 {
