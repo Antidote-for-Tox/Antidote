@@ -35,7 +35,7 @@
 
 @property (weak, nonatomic) OCTSubmanagerCalls *manager;
 
-@property (strong, nonatomic) OCTCall *currentCall;
+@property (strong, nonatomic) RBQSafeRealmObject *currentCall;
 @property (strong, nonatomic) OCTCall *pendingIncomingCall;
 
 @end
@@ -114,6 +114,8 @@
     if (self.currentCall && self.pendingIncomingCall) {
         // We only support showing one incoming call at a time. Reject all others
         [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+        AALogVerbose(@"Unable to take on more calls, incoming call declined");
+        return;
     }
 
     if (self.currentCall) {
@@ -140,17 +142,17 @@
             }
             break;
         case NSFetchedResultsChangeDelete: {
+
             if ([self.allCallsController.fetchedObjects count] == 0) {
                 [[AppContext sharedContext] killCallsManager];
                 return;
             }
 
-            if ([self onlyPauseCallsLeft]) {
-                OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
+            if (controller == self.allCallsController) {
 
-                // workaround for deadlock in objcTox
-                // https://github.com/Antidote-for-Tox/objcTox/issues/51
-                [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
+                if ([anObject.primaryKeyValue isEqualToString:self.currentCall.primaryKeyValue]) {
+                    [self replaceCurrentCallThatWasRemoved];
+                }
             }
             break;
         }
@@ -193,8 +195,10 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
-    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:&error]) {
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
 }
@@ -212,11 +216,13 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
 
     OCTToxAVCallControl control = (controller.speakerSelected) ? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
 
-    if ([self.manager sendCallControl:control toCall:self.currentCall error:&error]) {
+    if ([self.manager sendCallControl:control toCall:call error:&error]) {
         controller.speakerSelected = ! controller.speakerSelected;
     }
     else {
@@ -228,10 +234,12 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
     OCTToxAVCallControl control = controller.pauseSelected ? OCTToxAVCallControlResume : OCTToxAVCallControlPause;
 
-    BOOL result = [self.manager sendCallControl:control toCall:self.currentCall error:&error];
+    BOOL result = [self.manager sendCallControl:control toCall:call error:&error];
 
     if (result) {
         controller.pauseSelected = ! controller.pauseSelected;
@@ -274,9 +282,11 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
-                                 toCall:self.currentCall
+                                 toCall:call
                                   error:&error]) {
         AALogWarn(@"%@", error);
     }
@@ -288,8 +298,10 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
-    if (! [self.manager answerCall:self.currentCall
+    if (! [self.manager answerCall:call
                        enableAudio:YES
                        enableVideo:NO error:&error]) {
         AALogWarn(@"%@", error);
@@ -300,10 +312,12 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
 
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
-                                 toCall:self.currentCall
+                                 toCall:call
                                   error:&error]) {
         AALogWarn(@"%@", error);
     }
@@ -421,7 +435,7 @@
 {
     AALogVerbose(@"%@", call);
 
-    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+    if ([self isCurrentViewControllerReusableForCurrentCall:call]) {
 
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
 
@@ -440,7 +454,7 @@
 
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
-        self.currentCall = call;
+        self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
 
         return;
     }
@@ -451,13 +465,33 @@
 
     self.currentCallViewController = abstractVC;
 
-    self.currentCall = call;
+    self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
 }
 
-- (BOOL)onlyPauseCallsLeft
+- (void)replaceCurrentCallThatWasRemoved
 {
-    return (([self.allActiveCallsController.fetchedObjects count] == 0) &&
-            ([self.allPausedCallsController.fetchedObjects count] != 0));
+    OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
+
+    if (! call) {
+        call = [self.allCallsController.fetchedObjects firstObject];
+    }
+
+    // workaround for deadlock in objcTox
+    // https://github.com/Antidote-for-Tox/objcTox/issues/51
+    [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
+}
+
+- (BOOL)isCurrentViewControllerReusableForCurrentCall:(OCTCall *)call
+{
+    if (! ((call.status == OCTCallStatusActive) || (call.status == OCTCallStatusPaused))) {
+        return NO;
+    }
+
+    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+        return YES;
+    }
+
+    return NO;
 }
 
 @end
