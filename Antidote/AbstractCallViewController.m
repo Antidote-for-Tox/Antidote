@@ -68,7 +68,7 @@ static const CGFloat kNameLabelFontSize = 30.0;
 - (void)createTopViewContainer
 {
     self.topViewContainer = [UIView new];
-    self.topViewContainer.backgroundColor = [UIColor darkGrayColor];
+    self.topViewContainer.backgroundColor = [UIColor clearColor];
     self.topViewContainer.alpha = 0.95;
     [self.view addSubview:self.topViewContainer];
 }
@@ -79,6 +79,7 @@ static const CGFloat kNameLabelFontSize = 30.0;
     self.nameLabel.text = self.nickname;
     self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kNameLabelFontSize];
     self.nameLabel.textColor = [UIColor whiteColor];
+    self.nameLabel.adjustsFontSizeToFitWidth = YES;
     self.nameLabel.textAlignment = NSTextAlignmentCenter;
 
     [self.topViewContainer addSubview:self.nameLabel];
@@ -106,6 +107,7 @@ static const CGFloat kNameLabelFontSize = 30.0;
         make.top.equalTo(self.topViewContainer.topMargin).with.offset(kIndent);
         make.centerX.equalTo(self.topViewContainer);
         make.height.equalTo(kNameLabelHeight);
+        make.width.lessThanOrEqualTo(self.view.bounds.size.width / 2.0);
     }];
 
     [self.subLabel makeConstraints:^(MASConstraintMaker *make) {
