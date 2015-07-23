@@ -18,8 +18,6 @@ static const CGFloat kIndent = 20.0;
 
 @interface IncomingCallNotificationView ()
 
-@property (strong, nonatomic) NSString *nickname;
-
 @property (strong, nonatomic) UILabel *nameLabel;
 @property (strong, nonatomic) UILabel *descriptionLabel;
 @property (strong, nonatomic) UIButton *declineButton;
@@ -37,11 +35,9 @@ static const CGFloat kIndent = 20.0;
         return nil;
     }
 
-    _nickname = nickname;
-
     self.backgroundColor = [UIColor grayColor];
 
-    [self createNameLabel];
+    [self createNameLabelWithName:nickname];
     [self createDescriptionLabel];
     [self createDeclineCallButton];
     [self createAcceptCallButton];
@@ -52,12 +48,12 @@ static const CGFloat kIndent = 20.0;
 }
 
 #pragma mark - View setup
-- (void)createNameLabel
+- (void)createNameLabelWithName:(NSString *)name
 {
     self.nameLabel = [UILabel new];
     self.nameLabel.adjustsFontSizeToFitWidth = YES;
     self.nameLabel.textAlignment = NSTextAlignmentCenter;
-    self.nameLabel.text = self.nickname;
+    self.nameLabel.text = name;
     self.nameLabel.textColor = [UIColor whiteColor];
     self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:kIncomingNameFontSize];
 
@@ -78,28 +74,15 @@ static const CGFloat kIndent = 20.0;
 
 - (void)createDeclineCallButton
 {
-    self.declineButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *declineCallImage = [UIImage imageNamed:@"call-decline"];
-    [self.declineButton setImage:declineCallImage forState:UIControlStateNormal];
-    self.declineButton.tintColor = [UIColor whiteColor];
-    self.declineButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.declineButton.layer.borderWidth = kButtonBorderWidth;
-    self.declineButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
-    self.declineButton.layer.cornerRadius = kButtonSize / 2.0;
+    self.declineButton = [self createButtonWithImageName:@"call-decline" backgroundColor:[[AppContext sharedContext].appearance callRedColor]];
     [self.declineButton addTarget:self action:@selector(tappedDeclineButton) forControlEvents:UIControlEventTouchUpInside];
+
     [self addSubview:self.declineButton];
 }
 
 - (void)createAcceptCallButton
 {
-    self.acceptButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *acceptCallimage = [UIImage imageNamed:@"call-phone"];
-    [self.acceptButton setImage:acceptCallimage forState:UIControlStateNormal];
-    self.acceptButton.tintColor = [UIColor whiteColor];
-    self.acceptButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.acceptButton.layer.borderWidth = kButtonBorderWidth;
-    self.acceptButton.backgroundColor = [[AppContext sharedContext].appearance callGreenColor];
-    self.acceptButton.layer.cornerRadius = kButtonSize / 2.0;
+    self.acceptButton = [self createButtonWithImageName:@"call-phone" backgroundColor:[[AppContext sharedContext].appearance callGreenColor]];
     [self.acceptButton addTarget:self action:@selector(tappedAcceptButton) forControlEvents:UIControlEventTouchUpInside];
 
     [self addSubview:self.acceptButton];
@@ -143,6 +126,20 @@ static const CGFloat kIndent = 20.0;
 - (void)tappedAcceptButton
 {
     [self.delegate incomingCallNotificationViewTappedAcceptButton];
+}
+
+- (UIButton *)createButtonWithImageName:(NSString *)imageName backgroundColor:(UIColor *)backgroundColor
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    UIImage *image = [UIImage imageNamed:imageName];
+    [button setImage:image forState:UIControlStateNormal];
+    button.tintColor = [UIColor whiteColor];
+    button.layer.borderColor = [UIColor blackColor].CGColor;
+    button.layer.borderWidth = kButtonBorderWidth;
+    button.backgroundColor = backgroundColor;
+    button.layer.cornerRadius = kButtonSize / 2.0;
+
+    return button;
 }
 
 @end
