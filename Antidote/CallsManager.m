@@ -19,6 +19,7 @@
 #import "OCTCall.h"
 #import "TabBarViewController.h"
 #import "AbstractCallViewController.h"
+#import "RingTonePlayer.h"
 
 #define LOG_IDENTIFIER self
 
@@ -37,6 +38,8 @@
 
 @property (strong, nonatomic) RBQSafeRealmObject *currentCall;
 @property (strong, nonatomic) OCTCall *pendingIncomingCall;
+
+@property (strong, nonatomic) RingTonePlayer *ringTonePlayer;
 
 @end
 
@@ -75,6 +78,8 @@
 
     [[AppContext sharedContext].tabBarController presentViewController:_callNavigation animated:YES completion:nil];
 
+    _ringTonePlayer = [RingTonePlayer new];
+
     return self;
 }
 
@@ -82,6 +87,7 @@
 {
     AALogVerbose();
     [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
+    [self.ringTonePlayer stopPlayingSound];
 }
 
 #pragma mark - Public
@@ -104,6 +110,7 @@
         return;
     }
 
+    [self.ringTonePlayer playRingBackTone];
     [self switchViewControllerForCall:call];
 }
 
@@ -123,6 +130,7 @@
         return;
     }
 
+    [self.ringTonePlayer playRingTone];
     [self switchViewControllerForCall:call];
 }
 
@@ -159,6 +167,8 @@
         case NSFetchedResultsChangeInsert:
             if (controller == self.allActiveCallsController) {
                 OCTCall *call = [anObject RLMObject];
+
+                [self.ringTonePlayer stopPlayingSound];
 
                 // workaround for deadlock in objcTox
                 // https://github.com/Antidote-for-Tox/objcTox/issues/51
@@ -282,6 +292,8 @@
 {
     AALogVerbose(@"%@", controller);
 
+    [self.ringTonePlayer stopPlayingSound];
+
     OCTCall *call = [self.currentCall RLMObject];
 
     NSError *error;
@@ -298,6 +310,8 @@
 {
     AALogVerbose(@"%@", controller);
 
+    [self.ringTonePlayer stopPlayingSound];
+
     OCTCall *call = [self.currentCall RLMObject];
 
     NSError *error;
@@ -311,6 +325,8 @@
 - (void)ringingCallDeclineButtonPressed:(RingingCallViewController *)controller
 {
     AALogVerbose(@"%@", controller);
+
+    [self.ringTonePlayer stopPlayingSound];
 
     OCTCall *call = [self.currentCall RLMObject];
 
