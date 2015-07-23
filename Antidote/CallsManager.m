@@ -151,7 +151,7 @@
             if (controller == self.allCallsController) {
 
                 if ([anObject.primaryKeyValue isEqualToString:self.currentCall.primaryKeyValue]) {
-                    [self replaceCurrentCallThatWasRemoved];
+                    [self didRemoveCurrentCall];
                 }
             }
             break;
@@ -468,7 +468,7 @@
     self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
 }
 
-- (void)replaceCurrentCallThatWasRemoved
+- (void)didRemoveCurrentCall
 {
     OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
 
