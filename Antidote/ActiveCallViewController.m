@@ -188,7 +188,8 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.controlsContainerView makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.view);
         make.centerX.equalTo(self.view);
-        make.height.equalTo(kButtonSide * 3 + 2 * k3ButtonGap);
+        make.top.equalTo(self.videoButton.top);
+        make.bottom.equalTo(self.pauseButton.bottom);
     }];
 
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
@@ -196,6 +197,7 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.centerX.equalTo(self.controlsContainerView);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
+        make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
     }];
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
@@ -203,20 +205,20 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.right.equalTo(self.speakerButton.left).with.offset(-k3ButtonGap);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
-        make.centerY.equalTo(self.controlsContainerView);
+        make.bottom.equalTo(self.pauseButton.top).with.offset(-k3ButtonGap);
     }];
 
     [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.controlsContainerView.right);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
-        make.centerY.equalTo(self.controlsContainerView);
+        make.centerY.equalTo(self.microphoneButton);
     }];
 
     [self.pauseButton makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.controlsContainerView);
         make.width.equalTo(kButtonSide);
         make.height.equalTo(kButtonSide);
+        make.top.equalTo(self.microphoneButton.bottom).with.offset(k3ButtonGap);
         make.centerX.equalTo(self.controlsContainerView);
     }];
 

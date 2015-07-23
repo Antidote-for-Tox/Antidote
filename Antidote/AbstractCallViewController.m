@@ -17,6 +17,7 @@ static const CGFloat kNameLabelHeight = 30.0;
 static const CGFloat kTopContainerHeight = 100.0;
 static const CGFloat kSublabelFontSize = 16.0;
 static const CGFloat kNameLabelFontSize = 30.0;
+static const CGFloat kNameLabelHorizontalIndent = 30.0;
 
 @interface AbstractCallViewController ()
 
@@ -105,9 +106,9 @@ static const CGFloat kNameLabelFontSize = 30.0;
 
     [self.nameLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topViewContainer.topMargin).with.offset(kIndent);
-        make.centerX.equalTo(self.topViewContainer);
         make.height.equalTo(kNameLabelHeight);
-        make.width.lessThanOrEqualTo(self.view.bounds.size.width / 2.0);
+        make.left.equalTo(self.topViewContainer.left).with.offset(kNameLabelHorizontalIndent);
+        make.right.equalTo(self.topViewContainer.right).with.offset(-kNameLabelHorizontalIndent);
     }];
 
     [self.subLabel makeConstraints:^(MASConstraintMaker *make) {
