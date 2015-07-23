@@ -486,10 +486,11 @@
 
 - (void)didRemoveCurrentCall
 {
-    OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
+    OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject] ?:
+                    [self.allCallsController.fetchedObjects firstObject];
 
     if (! call) {
-        call = [self.allCallsController.fetchedObjects firstObject];
+        return;
     }
 
     // workaround for deadlock in objcTox
