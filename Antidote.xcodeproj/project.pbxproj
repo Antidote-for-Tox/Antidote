@@ -68,6 +68,7 @@
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		F0028B011B6194E800B42D9C /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = F0028B001B6194E800B42D9C /* ringback.wav */; };
 		F04234F61B54254800B93009 /* CallsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F04234F51B54254800B93009 /* CallsManager.m */; };
+		F066F7D61B5F56B3002B2ADF /* IncomingCallNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */; };
 		F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */; };
 		F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */; };
 		F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */; };
@@ -200,6 +201,8 @@
 		F0028B001B6194E800B42D9C /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
 		F04234F41B54254800B93009 /* CallsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallsManager.h; sourceTree = "<group>"; };
 		F04234F51B54254800B93009 /* CallsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallsManager.m; sourceTree = "<group>"; };
+		F066F7D41B5F56B3002B2ADF /* IncomingCallNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallNotificationView.h; sourceTree = "<group>"; };
+		F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallNotificationView.m; sourceTree = "<group>"; };
 		F08766471B58379700D2B9D7 /* PauseCallTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseCallTableViewCell.h; sourceTree = "<group>"; };
 		F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseCallTableViewCell.m; sourceTree = "<group>"; };
 		F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingingCallViewController.h; sourceTree = "<group>"; };
@@ -686,6 +689,8 @@
 				F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */,
 				F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */,
 				F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */,
+				F066F7D41B5F56B3002B2ADF /* IncomingCallNotificationView.h */,
+				F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */,
 			);
 			name = Call;
 			sourceTree = "<group>";
@@ -959,6 +964,7 @@
 				11300B681B4DB25E00233052 /* ProfileViewController.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				F0D127DD1B445B2700E2E7B8 /* DialingCallViewController.m in Sources */,
+				F066F7D61B5F56B3002B2ADF /* IncomingCallNotificationView.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,

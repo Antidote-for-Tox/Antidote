@@ -115,11 +115,9 @@ static const CGFloat kLabelFontSize = 16.0;
 
 - (void)createAcceptCallButton
 {
-    UIColor *darkGreen = [UIColor colorWithRed:0.12 green:0.65 blue:0.17 alpha:1.0];
-
     self.acceptCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.acceptCallButton.tintColor = [UIColor whiteColor];
-    self.acceptCallButton.backgroundColor = darkGreen;
+    self.acceptCallButton.backgroundColor = [[AppContext sharedContext].appearance callGreenColor];
     self.acceptCallButton.layer.cornerRadius = kButtonHeight / 2.0f;
     self.acceptCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.acceptCallButton.layer.borderWidth = kButtonBorderWidth;
@@ -140,11 +138,9 @@ static const CGFloat kLabelFontSize = 16.0;
 
 - (void)createDeclineCallButton
 {
-    UIColor *darkRed = [UIColor colorWithRed:0.86 green:0.24 blue:0.24 alpha:1.0];
-
     self.declineCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
     self.declineCallButton.tintColor = [UIColor whiteColor];
-    self.declineCallButton.backgroundColor = darkRed;
+    self.declineCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     self.declineCallButton.layer.cornerRadius = kButtonHeight / 2.0f;
     self.declineCallButton.layer.borderColor = [UIColor blackColor].CGColor;
     self.declineCallButton.layer.borderWidth = kButtonBorderWidth;

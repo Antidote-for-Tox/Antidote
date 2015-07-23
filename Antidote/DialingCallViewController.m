@@ -53,7 +53,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 - (void)createEndCallButton
 {
     self.cancelCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.cancelCallButton.backgroundColor = [UIColor redColor];
+    self.cancelCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
     [self.cancelCallButton addTarget:self action:@selector(cancelCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     self.cancelCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
 
