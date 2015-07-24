@@ -201,7 +201,6 @@
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
         activeVC.callDuration = call.callDuration;
-        activeVC.pauseSelected = (call.pausedStatus & OCTCallPausedStatusByUser);
     }
 }
 
@@ -246,19 +245,20 @@
     }
 }
 
-- (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller
+- (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller
 {
     AALogVerbose(@"%@", controller);
 
     OCTCall *call = [self.currentCall RLMObject];
 
     NSError *error;
-    OCTToxAVCallControl control = controller.pauseSelected ? OCTToxAVCallControlResume : OCTToxAVCallControlPause;
 
-    if (! [self.manager sendCallControl:control toCall:call error:&error]) {
+    if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
     ;
+
+    // hide resume call button after
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
@@ -455,7 +455,9 @@
 
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
 
-        activeVC.pauseSelected = (call.pausedStatus == OCTCallPausedStatusByUser) ? YES : NO;
+        if (call.pausedStatus == OCTCallPausedStatusByUser) {
+            [activeVC showResumeButton];
+        }
 
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
