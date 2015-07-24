@@ -23,6 +23,7 @@
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
 		116625C21B5B00BE0036ABC2 /* ContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625C11B5B00BE0036ABC2 /* ContentCell.m */; };
 		116625C81B5B0B640036ABC2 /* ContentCellWithTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625C71B5B0B640036ABC2 /* ContentCellWithTitle.m */; };
+		116625CE1B62DA880036ABC2 /* ContentCellWithAvatar.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625CD1B62DA880036ABC2 /* ContentCellWithAvatar.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
@@ -102,6 +103,8 @@
 		116625C11B5B00BE0036ABC2 /* ContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCell.m; sourceTree = "<group>"; };
 		116625C61B5B0B640036ABC2 /* ContentCellWithTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCellWithTitle.h; sourceTree = "<group>"; };
 		116625C71B5B0B640036ABC2 /* ContentCellWithTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellWithTitle.m; sourceTree = "<group>"; };
+		116625CC1B62DA880036ABC2 /* ContentCellWithAvatar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCellWithAvatar.h; sourceTree = "<group>"; };
+		116625CD1B62DA880036ABC2 /* ContentCellWithAvatar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellWithAvatar.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -343,6 +346,8 @@
 				116625C11B5B00BE0036ABC2 /* ContentCell.m */,
 				116625C61B5B0B640036ABC2 /* ContentCellWithTitle.h */,
 				116625C71B5B0B640036ABC2 /* ContentCellWithTitle.m */,
+				116625CC1B62DA880036ABC2 /* ContentCellWithAvatar.h */,
+				116625CD1B62DA880036ABC2 /* ContentCellWithAvatar.m */,
 			);
 			name = ContentCells;
 			sourceTree = "<group>";
@@ -892,6 +897,7 @@
 				116625C21B5B00BE0036ABC2 /* ContentCell.m in Sources */,
 				118352B9197A7B040048CA64 /* FriendsViewController.m in Sources */,
 				11300B681B4DB25E00233052 /* ProfileViewController.m in Sources */,
+				116625CE1B62DA880036ABC2 /* ContentCellWithAvatar.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,

@@ -18,13 +18,17 @@
 #import "QRViewerController.h"
 #import "AvatarsManager.h"
 #import "ContentCellWithTitle.h"
+#import "ContentCellWithAvatar.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
-    CellTypeNameStatusAvatar,
+    CellTypeAvatar,
+    CellTypeName,
+    CellTypeStatusMessage,
     CellTypeToxId,
 };
 
 @interface ProfileViewController () <SettingsNameStatusAvatarCellDelegate, ContentCellWithTitleDelegate,
+                                     ContentCellWithAvatarDelegate,
                                      UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @end
@@ -37,7 +41,9 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     return [super initWithTitle:NSLocalizedString(@"Profile", @"Profile") tableStructure:@[
                 @[
-                    @(CellTypeNameStatusAvatar),
+                    @(CellTypeAvatar),
+                    @(CellTypeName),
+                    @(CellTypeStatusMessage),
                 ],
                 @[
                     @(CellTypeToxId),
@@ -59,6 +65,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     [self.tableView registerClass:[CellWithNameStatusAvatar class]
            forCellReuseIdentifier:[CellWithNameStatusAvatar reuseIdentifier]];
 
+    [self.tableView registerClass:[ContentCellWithAvatar class] forCellReuseIdentifier:[ContentCellWithAvatar reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithTitle class] forCellReuseIdentifier:[ContentCellWithTitle reuseIdentifier]];
 }
 
@@ -66,19 +73,42 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeNameStatusAvatar) {
-        return [self cellWithNameStatusAvatarAtIndexPath:indexPath];
+    switch (type) {
+        case CellTypeAvatar:
+            return [self cellWithAvatarAtIndexPath:indexPath];
+        case CellTypeName:
+            return [self cellWithNameAtIndexPath:indexPath];
+        case CellTypeStatusMessage:
+            return [self cellWithStatusMessageAtIndexPath:indexPath];
+        case CellTypeToxId:
+            return [self cellWithToxIdAtIndexPath:indexPath];
     }
-    else if (type == CellTypeToxId) {
-        return [self cellWithToxIdAtIndexPath:indexPath];
-    }
-
-    return [UITableViewCell new];
 }
 
 #pragma mark -  SettingsNameStatusAvatarCellDelegate
 
 - (void)cellWithNameStatusAvatarAvatarButtonPressed:(CellWithNameStatusAvatar *)cell
+{}
+
+- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
+{
+    [[AppContext sharedContext].profileManager.toxManager.user setUserName:newName error:nil];
+
+    // FIXME avatar
+    // if (! [[ToxManager sharedInstance] userHasAvatar]) {
+    NSIndexPath *path = [self indexPathForCellType:CellTypeAvatar];
+    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    // }
+}
+
+- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell statusMessageChangedTo:(NSString *)newStatusMessage
+{
+    [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:newStatusMessage error:nil];
+}
+
+#pragma mark -  ContentCellWithAvatarDelegate
+
+- (void)contentCellWithAvatarImagePressed:(ContentCellWithAvatar *)cell
 {
     weakself;
 
@@ -112,7 +142,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     //     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Profile") handler:^{
     //         [[ToxManager sharedInstance] updateAvatar:nil];
 
-    //         NSIndexPath *path = [weakSelf indexPathForCellType:CellTypeNameStatusAvatar];
+    //         NSIndexPath *path = [weakSelf indexPathForCellType:CellTypeAvatar];
     //         [weakSelf.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
     //     }];
     // }
@@ -120,22 +150,6 @@ typedef NS_ENUM(NSInteger, CellType) {
     [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profile") handler:nil];
 
     [sheet showInView:self.view];
-}
-
-- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell nameChangedTo:(NSString *)newName
-{
-    [[AppContext sharedContext].profileManager.toxManager.user setUserName:newName error:nil];
-
-    // FIXME avatar
-    // if (! [[ToxManager sharedInstance] userHasAvatar]) {
-    NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
-    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-    // }
-}
-
-- (void)cellWithNameStatusAvatar:(CellWithNameStatusAvatar *)cell statusMessageChangedTo:(NSString *)newStatusMessage
-{
-    [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:newStatusMessage error:nil];
 }
 
 #pragma mark -  ContentCellWithTitleDelegate
@@ -162,7 +176,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     // FIXME avatar
     // [[ToxManager sharedInstance] updateAvatar:image];
 
-    NSIndexPath *path = [self indexPathForCellType:CellTypeNameStatusAvatar];
+    NSIndexPath *path = [self indexPathForCellType:CellTypeAvatar];
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
 }
 
@@ -173,27 +187,63 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 #pragma mark -  Private
 
-- (CellWithNameStatusAvatar *)cellWithNameStatusAvatarAtIndexPath:(NSIndexPath *)indexPath
+- (ContentCellWithAvatar *)cellWithAvatarAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = [CellWithNameStatusAvatar reuseIdentifier];
-
-    CellWithNameStatusAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier
-                                                                          forIndexPath:indexPath];
+    ContentCellWithAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithAvatar reuseIdentifier]
+                                                                       forIndexPath:indexPath];
+    cell.delegate = self;
 
     NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
-
-    cell.delegate = self;
-    cell.avatarImage = [[AppContext sharedContext].avatars avatarFromString:userName
-                                                                   diameter:[CellWithNameStatusAvatar avatarHeight]];
-    cell.name = userName;
-    cell.statusMessage = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
-    cell.maxNameLength = kOCTToxMaxNameLength;
-    cell.maxStatusMessageLength = kOCTToxMaxStatusMessageLength;
-
-    [cell redraw];
+    cell.avatar = [[AppContext sharedContext].avatars avatarFromString:userName diameter:kContentCellWithAvatarImageSize];
 
     return cell;
 }
+
+- (ContentCellWithTitle *)cellWithNameAtIndexPath:(NSIndexPath *)indexPath
+{
+    ContentCellWithTitle *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithTitle reuseIdentifier]
+                                                                      forIndexPath:indexPath];
+    cell.delegate = self;
+    cell.title = NSLocalizedString(@"Name", @"Profile");
+    cell.buttonTitle = nil;
+    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userName;
+
+    return cell;
+}
+
+- (ContentCellWithTitle *)cellWithStatusMessageAtIndexPath:(NSIndexPath *)indexPath
+{
+    ContentCellWithTitle *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithTitle reuseIdentifier]
+                                                                      forIndexPath:indexPath];
+    cell.delegate = self;
+    cell.title = NSLocalizedString(@"Status message", @"Profile");
+    cell.buttonTitle = nil;
+    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
+
+    return cell;
+}
+
+// - (CellWithNameStatusAvatar *)cellWithNameStatusAvatarAtIndexPath:(NSIndexPath *)indexPath
+// {
+//     NSString *identifier = [CellWithNameStatusAvatar reuseIdentifier];
+
+//     CellWithNameStatusAvatar *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier
+//                                                                           forIndexPath:indexPath];
+
+//     NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
+
+//     cell.delegate = self;
+//     cell.avatarImage = [[AppContext sharedContext].avatars avatarFromString:userName
+//                                                                    diameter:[CellWithNameStatusAvatar avatarHeight]];
+//     cell.name = userName;
+//     cell.statusMessage = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
+//     cell.maxNameLength = kOCTToxMaxNameLength;
+//     cell.maxStatusMessageLength = kOCTToxMaxStatusMessageLength;
+
+//     [cell redraw];
+
+//     return cell;
+// }
 
 - (ContentCellWithTitle *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -201,6 +251,7 @@ typedef NS_ENUM(NSInteger, CellType) {
                                                                       forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Profile");
+    cell.buttonTitle = NSLocalizedString(@"Show QR", @"Profile");
     cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
 
     return cell;
