@@ -275,6 +275,27 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     return cell;
 }
 
+- (CGFloat)collectionView:(JSQMessagesCollectionView *)collectionView
+                   layout:(JSQMessagesCollectionViewFlowLayout *)collectionViewLayout heightForCellTopLabelAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.item % 3 == 0) {
+        return kJSQMessagesCollectionViewCellLabelHeightDefault;
+    }
+
+    return 0.0f;
+}
+
+- (NSAttributedString *)collectionView:(JSQMessagesCollectionView *)collectionView attributedTextForCellTopLabelAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.item % 3 == 0) {
+        OCTMessageAbstract *messageAbstract = [self.messagesController objectAtIndexPath:indexPath];
+        ChatMessage *message = [[ChatMessage alloc] initWithMessage:messageAbstract];
+        return [[JSQMessagesTimestampFormatter sharedFormatter] attributedTimestampForDate:message.date];
+    }
+
+    return nil;
+}
+
 #pragma mark -  Private
 
 - (void)createBubbleImages

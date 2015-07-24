@@ -26,6 +26,7 @@
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
 		1182AF431B4EE3360095B476 /* TabBarProfileItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF421B4EE3360095B476 /* TabBarProfileItem.m */; };
 		1182AF4C1B5116A60095B476 /* FriendRequestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF4B1B5116A60095B476 /* FriendRequestViewController.m */; };
+		1182AF501B5458820095B476 /* ValueViewWithTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF4F1B5458820095B476 /* ValueViewWithTitle.m */; };
 		118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352A7197A64B70048CA64 /* SettingsViewController.m */; };
 		118352AC197A6C410048CA64 /* CopyLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AB197A6C410048CA64 /* CopyLabel.m */; };
 		118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352AF197A6F7F0048CA64 /* NSString+Utilities.m */; };
@@ -117,6 +118,8 @@
 		1182AF441B4EFFCE0095B476 /* TabBarItemProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarItemProtocol.h; sourceTree = "<group>"; };
 		1182AF4A1B5116A60095B476 /* FriendRequestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendRequestViewController.h; sourceTree = "<group>"; };
 		1182AF4B1B5116A60095B476 /* FriendRequestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendRequestViewController.m; sourceTree = "<group>"; };
+		1182AF4E1B5458820095B476 /* ValueViewWithTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ValueViewWithTitle.h; sourceTree = "<group>"; };
+		1182AF4F1B5458820095B476 /* ValueViewWithTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ValueViewWithTitle.m; sourceTree = "<group>"; };
 		118352A6197A64B70048CA64 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		118352A7197A64B70048CA64 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		118352AA197A6C410048CA64 /* CopyLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CopyLabel.h; sourceTree = "<group>"; };
@@ -381,6 +384,15 @@
 			name = FriendRequest;
 			sourceTree = "<group>";
 		};
+		1182AF4D1B5458210095B476 /* ValueViewWithTitle */ = {
+			isa = PBXGroup;
+			children = (
+				1182AF4E1B5458820095B476 /* ValueViewWithTitle.h */,
+				1182AF4F1B5458820095B476 /* ValueViewWithTitle.m */,
+			);
+			name = ValueViewWithTitle;
+			sourceTree = "<group>";
+		};
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
@@ -425,11 +437,12 @@
 		118352A9197A6C210048CA64 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				11CFD0B71B401375002C59DB /* PassingGestures */,
 				11E57F4319C23CF100C8ACB8 /* Cells */,
 				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
-				F902D29B1ADED3170070A3F5 /* StatusCircleView */,
+				11CFD0B71B401375002C59DB /* PassingGestures */,
 				F902D29C1ADED31E0070A3F5 /* QRScannerAimView */,
+				F902D29B1ADED3170070A3F5 /* StatusCircleView */,
+				1182AF4D1B5458210095B476 /* ValueViewWithTitle */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -980,6 +993,7 @@
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
+				1182AF501B5458820095B476 /* ValueViewWithTitle.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */,
