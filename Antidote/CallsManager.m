@@ -29,7 +29,7 @@
 
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
-@property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsController;
+@property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsByUserController;
 @property (strong, nonatomic) AbstractCallViewController *currentCallViewController;
 
 @property (strong, nonatomic) UINavigationController *callNavigation;
@@ -59,14 +59,18 @@
                                                                delegate:self];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"status == %d", OCTCallStatusActive];
+    NSArray *sortDescriptors = @[
+        [RLMSortDescriptor sortDescriptorWithProperty:@"pausedStatus" ascending:YES]
+    ];
     _allActiveCallsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
                                                                     predicate:predicate
+                                                              sortDescriptors:sortDescriptors
                                                                      delegate:self];
 
-    predicate = [NSPredicate predicateWithFormat:@"status == %d", OCTCallStatusPaused];
-    _allPausedCallsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
-                                                                    predicate:predicate
-                                                                     delegate:self];
+    predicate = [NSPredicate predicateWithFormat:@"pausedStatus == %d", OCTCallPausedStatusByUser];
+    _allPausedCallsByUserController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
+                                                                          predicate:predicate
+                                                                           delegate:self];
 
     _manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
@@ -145,8 +149,9 @@
     switch (type) {
         case NSFetchedResultsChangeUpdate:
             if (controller == self.allActiveCallsController) {
-                OCTCall *call = [anObject RLMObject];
-                [self updateDuration:call.callDuration];
+                if ([anObject.primaryKeyValue isEqualToString:self.currentCall.primaryKeyValue]) {
+                    [self updateCurrentCallInterface:[anObject RLMObject]];
+                }
             }
             break;
         case NSFetchedResultsChangeDelete: {
@@ -182,7 +187,7 @@
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    if (self.allPausedCallsController == controller) {
+    if (self.allPausedCallsByUserController == controller) {
         if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
             ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
             [activeVC reloadPausedCalls];
@@ -191,11 +196,12 @@
 }
 #pragma mark - Updates to Current Call
 
-- (void)updateDuration:(NSTimeInterval)duration
+- (void)updateCurrentCallInterface:(OCTCall *)call
 {
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
-        activeVC.callDuration = duration;
+        activeVC.callDuration = call.callDuration;
+        activeVC.pauseSelected = (call.pausedStatus & OCTCallPausedStatusByUser);
     }
 }
 
@@ -249,14 +255,10 @@
     NSError *error;
     OCTToxAVCallControl control = controller.pauseSelected ? OCTToxAVCallControlResume : OCTToxAVCallControlPause;
 
-    BOOL result = [self.manager sendCallControl:control toCall:call error:&error];
-
-    if (result) {
-        controller.pauseSelected = ! controller.pauseSelected;
-    }
-    else {
+    if (! [self.manager sendCallControl:control toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
+    ;
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
@@ -343,12 +345,12 @@
 
 - (NSInteger)activeCallControllerNumberOfPausedCalls:(ActiveCallViewController *)controller
 {
-    return [self.allPausedCallsController numberOfRowsForSectionIndex:0];
+    return [self.allPausedCallsByUserController numberOfRowsForSectionIndex:0];
 }
 
 - (NSString *)activeCallController:(ActiveCallViewController *)controller pausedCallerNicknameForCallAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     OCTFriend *friend = [call.chat.friends firstObject];
 
@@ -357,14 +359,14 @@
 
 - (NSDate *)activeCallController:(ActiveCallViewController *)controller pauseDateForCallAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     return [call onHoldDate];
 }
 
 - (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     AALogVerbose(@"%@ call:%@", controller, call);
 
@@ -377,7 +379,7 @@
 
 - (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     AALogVerbose(@"%@ call:%@", controller, call);
 
@@ -409,7 +411,7 @@
     [activeVC createIncomingCallViewForFriend:friend.nickname];
 }
 
-- (AbstractCallViewController *)viewControllerForCall:(OCTCall *)call
+- (AbstractCallViewController *)createViewControllerForCall:(OCTCall *)call
 {
     AbstractCallViewController *viewController;
 
@@ -435,9 +437,6 @@
             viewController = ringingVC;
             break;
         }
-        case OCTCallStatusPaused:
-            NSAssert(NO, @"We should not be here yet. Not yet implemented");
-            break;
     }
 
     viewController.nickname = friend.nickname;
@@ -451,22 +450,12 @@
 {
     AALogVerbose(@"%@", call);
 
-    if ([self isCurrentViewControllerReusableForCurrentCall:call]) {
+    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]] &&
+        (call.status == OCTCallStatusActive) ) {
 
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
 
-        switch (call.status) {
-            case OCTCallStatusPaused:
-                activeVC.pauseSelected = YES;
-                break;
-            case OCTCallStatusActive:
-                activeVC.pauseSelected = NO;
-                break;
-            case OCTCallStatusDialing:
-            case OCTCallStatusRinging:
-                NSAssert(NO, @"We shouldn't be here");
-                break;
-        }
+        activeVC.pauseSelected = (call.pausedStatus == OCTCallPausedStatusByUser) ? YES : NO;
 
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
@@ -475,7 +464,7 @@
         return;
     }
 
-    AbstractCallViewController *abstractVC = [self viewControllerForCall:call];
+    AbstractCallViewController *abstractVC = [self createViewControllerForCall:call];
 
     [self.callNavigation setViewControllers:@[abstractVC] animated:YES];
 
@@ -486,7 +475,7 @@
 
 - (void)didRemoveCurrentCall
 {
-    OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject] ?:
+    OCTCall *call = [self.allActiveCallsController.fetchedObjects firstObject] ?:
                     [self.allCallsController.fetchedObjects firstObject];
 
     if (! call) {
@@ -498,17 +487,5 @@
     [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
 }
 
-- (BOOL)isCurrentViewControllerReusableForCurrentCall:(OCTCall *)call
-{
-    if (! ((call.status == OCTCallStatusActive) || (call.status == OCTCallStatusPaused))) {
-        return NO;
-    }
-
-    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
-        return YES;
-    }
-
-    return NO;
-}
 
 @end
