@@ -39,7 +39,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (id)init
 {
-    return [super initWithTitle:NSLocalizedString(@"Profile", @"Profile") tableStructure:@[
+    return [super initWithTitle:NSLocalizedString(@"Profile", @"Profile") tableStyle:UITableViewStylePlain tableStructure:@[
                 @[
                     @(CellTypeAvatar),
                     @(CellTypeName),

@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <Masonry/Masonry.h>
+
 #import "BasicSettingsViewController.h"
 #import "UIViewController+Utilities.h"
 
@@ -15,19 +17,23 @@
                               userInfo:nil];
 
 @interface BasicSettingsViewController ()
+@property (assign, nonatomic) UITableViewStyle tableStyle;
 @end
 
 @implementation BasicSettingsViewController
 
 #pragma mark -  Lifecycle
 
-- (instancetype)initWithTitle:(NSString *)title tableStructure:(NSArray *)tableStructure
+- (instancetype)initWithTitle:(NSString *)title
+                   tableStyle:(UITableViewStyle)tableStyle
+               tableStructure:(NSArray *)tableStructure
 {
     self = [super init];
 
     if (self) {
         self.title = title;
-        self.tableStructure = tableStructure;
+        _tableStyle = tableStyle;
+        _tableStructure = tableStructure;
     }
 
     return self;
@@ -38,13 +44,7 @@
     [self loadWhiteView];
 
     [self createTableView];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self adjustSubviews];
+    [self basicSettings_installConstraints];
 }
 
 #pragma mark -  Public
@@ -94,7 +94,7 @@
 
 - (void)createTableView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.tableStyle];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 
@@ -104,17 +104,19 @@
     [self.view addSubview:self.tableView];
 }
 
+- (void)basicSettings_installConstraints
+{
+    [self.tableView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+}
+
 - (void)configureTableView
 {}
 
 - (void)registerCellsForTableView
 {
     OVERRIDE_METHOD
-}
-
-- (void)adjustSubviews
-{
-    self.tableView.frame = self.view.bounds;
 }
 
 @end

@@ -14,7 +14,9 @@
 
 @property (strong, nonatomic) NSArray *tableStructure;
 
-- (instancetype)initWithTitle:(NSString *)title tableStructure:(NSArray *)tableStructure;
+- (instancetype)initWithTitle:(NSString *)title
+                   tableStyle:(UITableViewStyle)tableStyle
+               tableStructure:(NSArray *)tableStructure;
 
 - (NSIndexPath *)indexPathForCellType:(NSInteger)type;
 - (NSInteger)cellTypeForIndexPath:(NSIndexPath *)indexPath;
