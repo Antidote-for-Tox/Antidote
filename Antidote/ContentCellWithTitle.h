@@ -10,7 +10,13 @@
 
 @class ContentCellWithTitle;
 @protocol ContentCellWithTitleDelegate <NSObject>
+
 - (void)contentCellWithTitleDidPressButton:(ContentCellWithTitle *)cell;
+
+@optional;
+- (void)contentCellWithTitleWantsToResize:(ContentCellWithTitle *)cell;
+- (void)contentCellWithTitle:(ContentCellWithTitle *)cell didChangeMainText:(NSString *)mainText;
+
 @end
 
 @interface ContentCellWithTitle : ContentCell
@@ -20,5 +26,8 @@
 @property (strong, nonatomic) NSString *title;
 @property (strong, nonatomic) NSString *buttonTitle;
 @property (strong, nonatomic) NSString *mainText;
+
+@property (assign, nonatomic) BOOL editable;
+@property (assign, nonatomic) NSUInteger maxMainTextLength;
 
 @end
