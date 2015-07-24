@@ -11,6 +11,7 @@
 #import "ContentCell.h"
 
 static const CGFloat kContentLeftOffset = 20.0;
+static const CGFloat kContentRightOffset = -20.0;
 static const CGFloat kContentYOffset = 5.0;
 
 @interface ContentCell ()
@@ -37,7 +38,7 @@ static const CGFloat kContentYOffset = 5.0;
 
     [self.customContentView makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(kContentLeftOffset);
-        make.right.equalTo(self);
+        make.right.equalTo(self).offset(kContentRightOffset);
         make.top.equalTo(self).offset(kContentYOffset);
         make.bottom.equalTo(self).offset(-kContentYOffset);
     }];

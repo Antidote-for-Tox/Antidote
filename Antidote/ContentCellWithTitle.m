@@ -12,6 +12,7 @@
 #import "AppearanceManager.h"
 
 static const CGFloat kTitleHeight = 20.0;
+static const CGFloat kTextTopOffset = 2.0;
 
 @interface ContentCellWithTitle ()
 
@@ -90,6 +91,7 @@ static const CGFloat kTitleHeight = 20.0;
     [self.customContentView addSubview:self.titleLabel];
 
     self.button = [UIButton new];
+    self.button.titleLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:18.0];
     [self.button setTitleColor:textMainColor forState:UIControlStateNormal];
     [self.button addTarget:self action:@selector(buttonPressed) forControlEvents:UIControlEventTouchUpInside];
     [self.customContentView addSubview:self.button];
@@ -97,6 +99,7 @@ static const CGFloat kTitleHeight = 20.0;
     self.mainTextLabel = [UILabel new];
     self.mainTextLabel.textColor = [UIColor blackColor];
     self.mainTextLabel.backgroundColor = [UIColor clearColor];
+    self.mainTextLabel.numberOfLines = 0;
     [self.customContentView addSubview:self.mainTextLabel];
 }
 
@@ -114,7 +117,7 @@ static const CGFloat kTitleHeight = 20.0;
     }];
 
     [self.mainTextLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.titleLabel.bottom);
+        make.top.equalTo(self.titleLabel.bottom).offset(kTextTopOffset);
         make.left.right.bottom.equalTo(self.customContentView);
     }];
 }
