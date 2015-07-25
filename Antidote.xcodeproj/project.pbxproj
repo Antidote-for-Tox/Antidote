@@ -27,6 +27,7 @@
 		116625D41B63D6BF0036ABC2 /* ContentCellWithTitleBasic.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625D31B63D6BF0036ABC2 /* ContentCellWithTitleBasic.m */; };
 		116625DA1B63D7E50036ABC2 /* ContentCellWithTitleEditable.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625D91B63D7E50036ABC2 /* ContentCellWithTitleEditable.m */; };
 		116625DD1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625DC1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m */; };
+		116625E01B63F4B80036ABC2 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625DF1B63F4B80036ABC2 /* FriendCardViewController.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
@@ -55,7 +56,6 @@
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
 		11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */; };
-		11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */; };
 		11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */; };
 		11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C4B4D01B25F8DF00646A2E /* Helper.m */; };
 		11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C7C6B719840C3E001B849B /* NSIndexSet+Utilities.m */; };
@@ -113,6 +113,8 @@
 		116625D91B63D7E50036ABC2 /* ContentCellWithTitleEditable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellWithTitleEditable.m; sourceTree = "<group>"; };
 		116625DB1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCellWithTitleImmutable.h; sourceTree = "<group>"; };
 		116625DC1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellWithTitleImmutable.m; sourceTree = "<group>"; };
+		116625DE1B63F4B80036ABC2 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
+		116625DF1B63F4B80036ABC2 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -170,8 +172,6 @@
 		11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppearanceManager.m; sourceTree = "<group>"; };
 		11C2AA0419C4979A003BE161 /* CellWithColorscheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithColorscheme.h; sourceTree = "<group>"; };
 		11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CellWithColorscheme.m; sourceTree = "<group>"; };
-		11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
-		11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
 		11C3A754198D3E460029A7A0 /* UIImage+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Utilities.h"; sourceTree = "<group>"; };
 		11C3A755198D3E460029A7A0 /* UIImage+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Utilities.m"; sourceTree = "<group>"; };
 		11C4B4CF1B25F8DF00646A2E /* Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Helper.h; sourceTree = "<group>"; };
@@ -568,8 +568,8 @@
 		11C3A74C198CF4870029A7A0 /* FriendCard */ = {
 			isa = PBXGroup;
 			children = (
-				11C3A74D198CF4960029A7A0 /* FriendCardViewController.h */,
-				11C3A74E198CF4960029A7A0 /* FriendCardViewController.m */,
+				116625DE1B63F4B80036ABC2 /* FriendCardViewController.h */,
+				116625DF1B63F4B80036ABC2 /* FriendCardViewController.m */,
 			);
 			name = FriendCard;
 			sourceTree = "<group>";
@@ -883,7 +883,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11C3A74F198CF4960029A7A0 /* FriendCardViewController.m in Sources */,
 				11CFD0B61B3F526E002C59DB /* NotificationView.m in Sources */,
 				11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */,
 				116625D11B63C3F70036ABC2 /* ContentSeparatorCell.m in Sources */,
@@ -943,6 +942,7 @@
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
 				1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
+				116625E01B63F4B80036ABC2 /* FriendCardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
