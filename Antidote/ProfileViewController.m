@@ -16,7 +16,8 @@
 #import "OCTManager.h"
 #import "QRViewerController.h"
 #import "AvatarsManager.h"
-#import "ContentCellWithTitle.h"
+#import "ContentCellWithTitleImmutable.h"
+#import "ContentCellWithTitleEditable.h"
 #import "ContentCellWithAvatar.h"
 #import "ContentSeparatorCell.h"
 
@@ -24,13 +25,18 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
     CellTypeSeparatorGray,
     CellTypeAvatar,
-    CellTypeName,
-    CellTypeStatusMessage,
+    CellTypeNameImmutable,
+    CellTypeNameEditable,
+    CellTypeStatusMessageImmutable,
+    CellTypeStatusMessageEditable,
     CellTypeToxId,
 };
 
-@interface ProfileViewController () <ContentCellWithTitleDelegate, ContentCellWithAvatarDelegate,
-                                     UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface ProfileViewController () <ContentCellWithTitleImmutableDelegate,
+                                     ContentCellWithTitleEditableDelegate,
+                                     ContentCellWithAvatarDelegate,
+                                     UIImagePickerControllerDelegate,
+                                     UINavigationControllerDelegate>
 
 @end
 
@@ -45,8 +51,8 @@ typedef NS_ENUM(NSInteger, CellType) {
                     @(CellTypeSeparatorTransparent),
                     @(CellTypeAvatar),
                     @(CellTypeSeparatorGray),
-                    @(CellTypeName),
-                    @(CellTypeStatusMessage),
+                    @(CellTypeNameImmutable),
+                    @(CellTypeStatusMessageImmutable),
                     @(CellTypeSeparatorGray),
                     @(CellTypeToxId),
                 ]
@@ -66,7 +72,10 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     [self.tableView registerClass:[ContentSeparatorCell class] forCellReuseIdentifier:[ContentSeparatorCell reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithAvatar class] forCellReuseIdentifier:[ContentCellWithAvatar reuseIdentifier]];
-    [self.tableView registerClass:[ContentCellWithTitle class] forCellReuseIdentifier:[ContentCellWithTitle reuseIdentifier]];
+    [self.tableView registerClass:[ContentCellWithTitleImmutable class]
+           forCellReuseIdentifier:[ContentCellWithTitleImmutable reuseIdentifier]];
+    [self.tableView registerClass:[ContentCellWithTitleEditable class]
+           forCellReuseIdentifier:[ContentCellWithTitleEditable reuseIdentifier]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -80,10 +89,14 @@ typedef NS_ENUM(NSInteger, CellType) {
             return [self separatorCellAtIndexPath:indexPath isGray:YES];
         case CellTypeAvatar:
             return [self cellWithAvatarAtIndexPath:indexPath];
-        case CellTypeName:
-            return [self cellWithNameAtIndexPath:indexPath];
-        case CellTypeStatusMessage:
-            return [self cellWithStatusMessageAtIndexPath:indexPath];
+        case CellTypeNameImmutable:
+            return [self cellWithNameAtIndexPath:indexPath editable:NO];
+        case CellTypeNameEditable:
+            return [self cellWithNameAtIndexPath:indexPath editable:YES];
+        case CellTypeStatusMessageImmutable:
+            return [self cellWithStatusMessageAtIndexPath:indexPath editable:NO];
+        case CellTypeStatusMessageEditable:
+            return [self cellWithStatusMessageAtIndexPath:indexPath editable:YES];
         case CellTypeToxId:
             return [self cellWithToxIdAtIndexPath:indexPath];
     }
@@ -135,36 +148,82 @@ typedef NS_ENUM(NSInteger, CellType) {
     [sheet showInView:self.view];
 }
 
-#pragma mark -  ContentCellWithTitleDelegate
+#pragma mark -  ContentCellWithTitleBasicDelegate
 
-- (void)contentCellWithTitleDidPressButton:(ContentCellWithTitle *)cell
+- (void)contentCellWithTitleBasicDidPressButton:(ContentCellWithTitleBasic *)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
-    CellType type = indexPath.row;
+    CellType type = [self cellTypeForIndexPath:indexPath];
 
-    switch (type) {
-        case CellTypeToxId:
-            [self presentViewController:[[QRViewerController alloc] initWithToxId:cell.mainText] animated:YES completion:nil];
-            break;
-        case CellTypeSeparatorTransparent:
-        case CellTypeSeparatorGray:
-        case CellTypeAvatar:
-        case CellTypeName:
-        case CellTypeStatusMessage:
-            // nop
-            break;
+    if (type == CellTypeToxId) {
+        [self presentViewController:[[QRViewerController alloc] initWithToxId:cell.mainText] animated:YES completion:nil];
     }
 }
 
-- (void)contentCellWithTitleDidBeginEditing:(ContentCellWithTitle *)cell
+#pragma mark -  ContentCellWithTitleImmutableDelegate
+
+- (void)contentCellWithTitleImmutableEditButtonPressed:(ContentCellWithTitleImmutable *)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    NSMutableArray *arrayToChange = self.tableStructure[indexPath.section];
+
+    if (type == CellTypeNameImmutable) {
+        NSUInteger index = [arrayToChange indexOfObject:@(CellTypeNameImmutable)];
+        [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeNameEditable)];
+    }
+    else if (type == CellTypeStatusMessageImmutable) {
+        NSUInteger index = [arrayToChange indexOfObject:@(CellTypeStatusMessageImmutable)];
+        [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeStatusMessageEditable)];
+    }
+
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+
+    ContentCellWithTitleEditable *editableCell = (ContentCellWithTitleEditable *)
+                                                 [self.tableView cellForRowAtIndexPath:indexPath];
+    [editableCell startEditing];
+}
+
+#pragma mark -  ContentCellWithTitleEditableDelegate
+
+- (void)contentCellWithTitleEditableDidBeginEditing:(ContentCellWithTitleEditable *)cell
 {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
 
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
 }
 
-- (void)contentCellWithTitleWantsToResize:(ContentCellWithTitle *)cell
+- (void)contentCellWithTitleEditableDidEndEditing:(ContentCellWithTitleEditable *)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    NSMutableArray *arrayToChange = self.tableStructure[indexPath.section];
+
+    if (type == CellTypeNameEditable) {
+        [[AppContext sharedContext].profileManager.toxManager.user setUserName:cell.mainText error:nil];
+
+        NSUInteger index = [arrayToChange indexOfObject:@(CellTypeNameEditable)];
+        [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeNameImmutable)];
+
+        // FIXME avatar
+        // if (! [[ToxManager sharedInstance] userHasAvatar]) {
+        [self reloadAvatarCell];
+        // }
+    }
+    else if (type == CellTypeStatusMessageEditable) {
+        [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:cell.mainText error:nil];
+
+        NSUInteger index = [arrayToChange indexOfObject:@(CellTypeStatusMessageEditable)];
+        [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeStatusMessageImmutable)];
+    }
+
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)contentCellWithTitleEditableWantsToResize:(ContentCellWithTitleEditable *)cell
 {
     // This forces tableView to nicely animate change of cell's frame without reloading it.
     [UIView setAnimationsEnabled:NO];
@@ -174,35 +233,6 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-}
-
-- (void)contentCellWithTitle:(ContentCellWithTitle *)cell didChangeMainText:(NSString *)mainText
-{
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-
-    CellType type = indexPath.row;
-
-    switch (type) {
-        case CellTypeName: {
-            [[AppContext sharedContext].profileManager.toxManager.user setUserName:mainText error:nil];
-
-            // FIXME avatar
-            // if (! [[ToxManager sharedInstance] userHasAvatar]) {
-            NSIndexPath *path = [self indexPathForCellType:CellTypeAvatar];
-            [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
-            // }
-            break;
-        }
-        case CellTypeStatusMessage:
-            [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:mainText error:nil];
-            break;
-        case CellTypeSeparatorTransparent:
-        case CellTypeSeparatorGray:
-        case CellTypeAvatar:
-        case CellTypeToxId:
-            // nop
-            break;
-    }
 }
 
 #pragma mark -  UIImagePickerControllerDelegate
@@ -220,8 +250,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     // FIXME avatar
     // [[ToxManager sharedInstance] updateAvatar:image];
 
-    NSIndexPath *path = [self indexPathForCellType:CellTypeAvatar];
-    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
+    [self reloadAvatarCell];
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -252,45 +281,71 @@ typedef NS_ENUM(NSInteger, CellType) {
     return cell;
 }
 
-- (ContentCellWithTitle *)cellWithNameAtIndexPath:(NSIndexPath *)indexPath
+- (ContentCellWithTitleBasic *)cellWithNameAtIndexPath:(NSIndexPath *)indexPath editable:(BOOL)editable
 {
-    ContentCellWithTitle *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithTitle reuseIdentifier]
-                                                                      forIndexPath:indexPath];
+    NSString *identifier = editable ?
+                           [ContentCellWithTitleEditable reuseIdentifier] :
+                           [ContentCellWithTitleImmutable reuseIdentifier];
+
+    ContentCellWithTitleBasic *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"Name", @"Profile");
     cell.buttonTitle = nil;
     cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userName;
-    cell.maxMainTextLength = kOCTToxMaxNameLength;
-    cell.editable = YES;
+
+    if (editable) {
+        ContentCellWithTitleEditable *eCell = (ContentCellWithTitleEditable *)cell;
+        eCell.maxMainTextLength = kOCTToxMaxNameLength;
+    }
+    else {
+        ContentCellWithTitleImmutable *iCell = (ContentCellWithTitleImmutable *)cell;
+        iCell.showEditButton = YES;
+    }
 
     return cell;
 }
 
-- (ContentCellWithTitle *)cellWithStatusMessageAtIndexPath:(NSIndexPath *)indexPath
+- (ContentCellWithTitleBasic *)cellWithStatusMessageAtIndexPath:(NSIndexPath *)indexPath editable:(BOOL)editable
 {
-    ContentCellWithTitle *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithTitle reuseIdentifier]
-                                                                      forIndexPath:indexPath];
+    NSString *identifier = editable ?
+                           [ContentCellWithTitleEditable reuseIdentifier] :
+                           [ContentCellWithTitleImmutable reuseIdentifier];
+
+    ContentCellWithTitleBasic *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"Status Message", @"Profile");
     cell.buttonTitle = nil;
     cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
-    cell.maxMainTextLength = kOCTToxMaxStatusMessageLength;
-    cell.editable = YES;
+
+    if (editable) {
+        ContentCellWithTitleEditable *eCell = (ContentCellWithTitleEditable *)cell;
+        eCell.maxMainTextLength = kOCTToxMaxStatusMessageLength;
+    }
+    else {
+        ContentCellWithTitleImmutable *iCell = (ContentCellWithTitleImmutable *)cell;
+        iCell.showEditButton = YES;
+    }
 
     return cell;
 }
 
-- (ContentCellWithTitle *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
+- (ContentCellWithTitleImmutable *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
 {
-    ContentCellWithTitle *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentCellWithTitle reuseIdentifier]
-                                                                      forIndexPath:indexPath];
+    NSString *identifier = [ContentCellWithTitleImmutable reuseIdentifier];
+    ContentCellWithTitleImmutable *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Profile");
     cell.buttonTitle = NSLocalizedString(@"Show QR", @"Profile");
     cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
-    cell.editable = NO;
+    cell.showEditButton = NO;
 
     return cell;
+}
+
+- (void)reloadAvatarCell
+{
+    NSIndexPath *path = [self indexPathForCellType:CellTypeAvatar];
+    [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

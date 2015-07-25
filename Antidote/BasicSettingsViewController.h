@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) UITableView *tableView;
 
-@property (strong, nonatomic) NSArray *tableStructure;
+@property (strong, nonatomic) NSMutableArray *tableStructure;
 
 - (instancetype)initWithTitle:(NSString *)title
                    tableStyle:(UITableViewStyle)tableStyle

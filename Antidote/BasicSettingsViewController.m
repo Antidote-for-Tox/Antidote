@@ -36,7 +36,12 @@
     if (self) {
         self.title = title;
         _tableStyle = tableStyle;
-        _tableStructure = tableStructure;
+
+        NSMutableArray *mutableArray = [NSMutableArray new];
+        for (NSArray *array in tableStructure) {
+            [mutableArray addObject:[array mutableCopy]];
+        }
+        _tableStructure = mutableArray;
 
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShowNotification:)
