@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <Masonry/Masonry.h>
+
 #import "FriendCardViewController.h"
 #import "ContentCellWithTitleImmutable.h"
 #import "ContentCellWithTitleEditable.h"
@@ -15,6 +17,10 @@
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
 #import "AvatarsManager.h"
+#import "ChatViewController.h"
+#import "TabBarViewController.h"
+
+static const CGFloat kFooterHeight = 50.0;
 
 typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -71,6 +77,23 @@ typedef NS_ENUM(NSUInteger, CellType) {
     return self;
 }
 
+#pragma mark -  Actions
+
+- (void)chatButtonPressed
+{
+    AppContext *context = [AppContext sharedContext];
+
+    OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+    ChatViewController *chatVC = [[ChatViewController alloc] initWithChat:chat];
+
+    TabBarViewControllerIndex index = TabBarViewControllerIndexChats;
+    context.tabBarController.selectedIndex = index;
+
+    UINavigationController *navCon = [context.tabBarController navigationControllerForIndex:index];
+    [navCon popToRootViewControllerAnimated:NO];
+    [navCon pushViewController:chatVC animated:NO];
+}
+
 #pragma mark -  Override
 
 - (void)configureTableView
@@ -78,6 +101,8 @@ typedef NS_ENUM(NSUInteger, CellType) {
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.estimatedRowHeight = 44.0;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+
+    [self createFooterView];
 }
 
 - (void)registerCellsForTableView
@@ -203,6 +228,26 @@ typedef NS_ENUM(NSUInteger, CellType) {
 }
 
 #pragma mark -  Private
+
+- (void)createFooterView
+{
+    UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, kFooterHeight)];
+
+    UIImage *image = [[UIImage imageNamed:@"friend-card-chat"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    UIButton *chatButton = [UIButton new];
+    [chatButton setImage:image forState:UIControlStateNormal];
+    [chatButton addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [footer addSubview:chatButton];
+
+    [chatButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.bottom.equalTo(footer);
+        make.centerX.equalTo(footer);
+        make.size.equalTo(kFooterHeight);
+    }];
+
+    self.tableView.tableFooterView = footer;
+}
 
 - (ContentSeparatorCell *)separatorCellAtIndexPath:(NSIndexPath *)indexPath isGray:(BOOL)isGray
 {
