@@ -149,7 +149,9 @@
     switch (type) {
         case NSFetchedResultsChangeUpdate:
             if (controller == self.allActiveCallsController) {
-                if ([anObject.primaryKeyValue isEqualToString:self.currentCall.primaryKeyValue]) {
+
+                OCTCall *call = [anObject RLMObject];
+                if (call.pausedStatus == OCTCallPausedStatusNone) {
                     [self updateCurrentCallInterface:[anObject RLMObject]];
                 }
             }
@@ -198,6 +200,10 @@
 
 - (void)updateCurrentCallInterface:(OCTCall *)call
 {
+    if (self.currentCall.primaryKeyValue != call.uniqueIdentifier) {
+        [self switchViewControllerForCall:call];
+    }
+
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
         activeVC.callDuration = call.callDuration;
