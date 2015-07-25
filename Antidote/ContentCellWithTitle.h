@@ -14,6 +14,7 @@
 - (void)contentCellWithTitleDidPressButton:(ContentCellWithTitle *)cell;
 
 @optional;
+- (void)contentCellWithTitleDidBeginEditing:(ContentCellWithTitle *)cell;
 - (void)contentCellWithTitleWantsToResize:(ContentCellWithTitle *)cell;
 - (void)contentCellWithTitle:(ContentCellWithTitle *)cell didChangeMainText:(NSString *)mainText;
 

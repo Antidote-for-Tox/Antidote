@@ -146,11 +146,23 @@ typedef NS_ENUM(NSInteger, CellType) {
     }
 }
 
+- (void)contentCellWithTitleDidBeginEditing:(ContentCellWithTitle *)cell
+{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+}
+
 - (void)contentCellWithTitleWantsToResize:(ContentCellWithTitle *)cell
 {
     // This forces tableView to nicely animate change of cell's frame without reloading it.
+    [UIView setAnimationsEnabled:NO];
     [self.tableView beginUpdates];
     [self.tableView endUpdates];
+    [UIView setAnimationsEnabled:YES];
+
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+    [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 
 - (void)contentCellWithTitle:(ContentCellWithTitle *)cell didChangeMainText:(NSString *)mainText

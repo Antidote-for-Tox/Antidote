@@ -17,7 +17,10 @@
                               userInfo:nil];
 
 @interface BasicSettingsViewController ()
+
 @property (assign, nonatomic) UITableViewStyle tableStyle;
+@property (assign, nonatomic) UIEdgeInsets tableViewInsets;
+
 @end
 
 @implementation BasicSettingsViewController
@@ -34,9 +37,24 @@
         self.title = title;
         _tableStyle = tableStyle;
         _tableStructure = tableStructure;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShowNotification:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHideNotification:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
 
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
@@ -88,6 +106,26 @@
 {
     NSArray *subArray = self.tableStructure[section];
     return subArray.count;
+}
+
+#pragma mark -  Notifications
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    self.tableViewInsets = self.tableView.contentInset;
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.bottom = keyboardSize.height;
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification
+{
+    self.tableView.contentInset = self.tableViewInsets;
+    self.tableView.scrollIndicatorInsets = self.tableViewInsets;
 }
 
 #pragma mark -  Private

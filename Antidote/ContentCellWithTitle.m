@@ -130,8 +130,23 @@ static const CGFloat kTextTopOffset = 2.0;
     return YES;
 }
 
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([self.delegate respondsToSelector:@selector(contentCellWithTitleDidBeginEditing:)]) {
+        [self.delegate contentCellWithTitleDidBeginEditing:self];
+    }
+}
+
 - (void)textViewDidChange:(UITextView *)textView
 {
+    CGSize size  = textView.frame.size;
+    CGSize newSize = [textView sizeThatFits:CGSizeMake(size.width, CGFLOAT_MAX)];
+
+    // Resize cell only when cell's size is changes
+    if (size.height == newSize.height) {
+        return;
+    }
+
     if ([self.delegate respondsToSelector:@selector(contentCellWithTitleWantsToResize:)]) {
         [self.delegate contentCellWithTitleWantsToResize:self];
     }
