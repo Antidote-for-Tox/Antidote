@@ -10,6 +10,7 @@
 
 #import "ContentCellWithTitleImmutable.h"
 #import "AppearanceManager.h"
+#import "CopyLabel.h"
 
 static const CGFloat kLabelTopOffset = 2.0;
 
@@ -19,7 +20,7 @@ static const CGFloat kEditButtonSize = 30.0;
 
 @interface ContentCellWithTitleImmutable ()
 
-@property (strong, nonatomic) UILabel *mainLabel;
+@property (strong, nonatomic) CopyLabel *mainLabel;
 @property (strong, nonatomic) UIButton *editButton;
 
 @property (strong, nonatomic) MASConstraint *editButtonSizeConstraint;
@@ -84,7 +85,7 @@ static const CGFloat kEditButtonSize = 30.0;
 
 - (void)createViews
 {
-    self.mainLabel = [UILabel new];
+    self.mainLabel = [CopyLabel new];
     self.mainLabel.numberOfLines = 0;
     self.mainLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:17.0];
     self.mainLabel.textColor = [UIColor blackColor];
