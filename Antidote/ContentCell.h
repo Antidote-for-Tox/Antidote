@@ -15,4 +15,9 @@
  */
 @property (strong, nonatomic, readonly) UIView *customContentView;
 
+/**
+ * By default is enabled.
+ */
+@property (assign, nonatomic) BOOL enableRightOffset;
+
 @end

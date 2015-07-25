@@ -18,8 +18,11 @@
 #import "AvatarsManager.h"
 #import "ContentCellWithTitle.h"
 #import "ContentCellWithAvatar.h"
+#import "ContentSeparatorCell.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
+    CellTypeSeparatorTransparent,
+    CellTypeSeparatorGray,
     CellTypeAvatar,
     CellTypeName,
     CellTypeStatusMessage,
@@ -39,11 +42,12 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     return [super initWithTitle:NSLocalizedString(@"Profile", @"Profile") tableStyle:UITableViewStylePlain tableStructure:@[
                 @[
+                    @(CellTypeSeparatorTransparent),
                     @(CellTypeAvatar),
+                    @(CellTypeSeparatorGray),
                     @(CellTypeName),
                     @(CellTypeStatusMessage),
-                ],
-                @[
+                    @(CellTypeSeparatorGray),
                     @(CellTypeToxId),
                 ]
             ]];
@@ -60,6 +64,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (void)registerCellsForTableView
 {
+    [self.tableView registerClass:[ContentSeparatorCell class] forCellReuseIdentifier:[ContentSeparatorCell reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithAvatar class] forCellReuseIdentifier:[ContentCellWithAvatar reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithTitle class] forCellReuseIdentifier:[ContentCellWithTitle reuseIdentifier]];
 }
@@ -69,6 +74,10 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     switch (type) {
+        case CellTypeSeparatorTransparent:
+            return [self separatorCellAtIndexPath:indexPath isGray:NO];
+        case CellTypeSeparatorGray:
+            return [self separatorCellAtIndexPath:indexPath isGray:YES];
         case CellTypeAvatar:
             return [self cellWithAvatarAtIndexPath:indexPath];
         case CellTypeName:
@@ -138,6 +147,8 @@ typedef NS_ENUM(NSInteger, CellType) {
         case CellTypeToxId:
             [self presentViewController:[[QRViewerController alloc] initWithToxId:cell.mainText] animated:YES completion:nil];
             break;
+        case CellTypeSeparatorTransparent:
+        case CellTypeSeparatorGray:
         case CellTypeAvatar:
         case CellTypeName:
         case CellTypeStatusMessage:
@@ -185,6 +196,8 @@ typedef NS_ENUM(NSInteger, CellType) {
         case CellTypeStatusMessage:
             [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:mainText error:nil];
             break;
+        case CellTypeSeparatorTransparent:
+        case CellTypeSeparatorGray:
         case CellTypeAvatar:
         case CellTypeToxId:
             // nop
@@ -217,6 +230,15 @@ typedef NS_ENUM(NSInteger, CellType) {
 }
 
 #pragma mark -  Private
+
+- (ContentSeparatorCell *)separatorCellAtIndexPath:(NSIndexPath *)indexPath isGray:(BOOL)isGray
+{
+    ContentSeparatorCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentSeparatorCell reuseIdentifier]
+                                                                      forIndexPath:indexPath];
+    cell.showGraySeparator = isGray;
+
+    return cell;
+}
 
 - (ContentCellWithAvatar *)cellWithAvatarAtIndexPath:(NSIndexPath *)indexPath
 {

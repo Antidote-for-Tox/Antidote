@@ -18,6 +18,9 @@ static const CGFloat kContentYOffset = 5.0;
 
 @property (strong, nonatomic) UIView *customContentView;
 
+@property (strong, nonatomic) MASConstraint *rightConstraintWithOffset;
+@property (strong, nonatomic) MASConstraint *rightConstraintNoOffset;
+
 @end
 
 @implementation ContentCell
@@ -39,12 +42,32 @@ static const CGFloat kContentYOffset = 5.0;
 
     [self.customContentView makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).offset(kContentLeftOffset);
-        make.right.equalTo(self).offset(kContentRightOffset);
         make.top.equalTo(self).offset(kContentYOffset);
         make.bottom.equalTo(self).offset(-kContentYOffset);
+
+        self.rightConstraintWithOffset = make.right.equalTo(self).offset(kContentRightOffset);
+        self.rightConstraintNoOffset = make.right.equalTo(self);
     }];
 
+    self.enableRightOffset = YES;
+
     return self;
+}
+
+#pragma mark -  Properties
+
+- (void)setEnableRightOffset:(BOOL)enable
+{
+    _enableRightOffset = enable;
+
+    if (enable) {
+        [self.rightConstraintWithOffset activate];
+        [self.rightConstraintNoOffset deactivate];
+    }
+    else {
+        [self.rightConstraintWithOffset deactivate];
+        [self.rightConstraintNoOffset activate];
+    }
 }
 
 @end
