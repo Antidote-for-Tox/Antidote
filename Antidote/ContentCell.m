@@ -32,6 +32,7 @@ static const CGFloat kContentYOffset = 5.0;
         return nil;
     }
 
+    self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.customContentView = [UIView new];
     self.customContentView.backgroundColor = [UIColor clearColor];
     [self addSubview:self.customContentView];
