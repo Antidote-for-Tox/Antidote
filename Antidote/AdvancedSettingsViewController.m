@@ -33,7 +33,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 
 - (instancetype)init
 {
-    return [super initWithTitle:NSLocalizedString(@"Advanced Settings", @"Settings") tableStructure:@[
+    return [super initWithTitle:NSLocalizedString(@"Advanced Settings", @"Settings") tableStyle:UITableViewStyleGrouped tableStructure:@[
                 @[
                     @(CellTypeIpv6Enabled),
                     @(CellTypeUdpEnabled),

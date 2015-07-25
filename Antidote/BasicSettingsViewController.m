@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <Masonry/Masonry.h>
+
 #import "BasicSettingsViewController.h"
 #import "UIViewController+Utilities.h"
 
@@ -15,22 +17,49 @@
                               userInfo:nil];
 
 @interface BasicSettingsViewController ()
+
+@property (assign, nonatomic) UITableViewStyle tableStyle;
+@property (assign, nonatomic) UIEdgeInsets tableViewInsets;
+
 @end
 
 @implementation BasicSettingsViewController
 
 #pragma mark -  Lifecycle
 
-- (instancetype)initWithTitle:(NSString *)title tableStructure:(NSArray *)tableStructure
+- (instancetype)initWithTitle:(NSString *)title
+                   tableStyle:(UITableViewStyle)tableStyle
+               tableStructure:(NSArray *)tableStructure
 {
     self = [super init];
 
     if (self) {
         self.title = title;
-        self.tableStructure = tableStructure;
+        _tableStyle = tableStyle;
+
+        NSMutableArray *mutableArray = [NSMutableArray new];
+        for (NSArray *array in tableStructure) {
+            [mutableArray addObject:[array mutableCopy]];
+        }
+        _tableStructure = mutableArray;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillShowNotification:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(keyboardWillHideNotification:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
     }
 
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
@@ -38,13 +67,7 @@
     [self loadWhiteView];
 
     [self createTableView];
-}
-
-- (void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self adjustSubviews];
+    [self basicSettings_installConstraints];
 }
 
 #pragma mark -  Public
@@ -90,27 +113,53 @@
     return subArray.count;
 }
 
+#pragma mark -  Notifications
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+    CGSize keyboardSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    self.tableViewInsets = self.tableView.contentInset;
+    UIEdgeInsets insets = self.tableView.contentInset;
+    insets.bottom = keyboardSize.height;
+    self.tableView.contentInset = insets;
+    self.tableView.scrollIndicatorInsets = insets;
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification
+{
+    self.tableView.contentInset = self.tableViewInsets;
+    self.tableView.scrollIndicatorInsets = self.tableViewInsets;
+}
+
 #pragma mark -  Private
 
 - (void)createTableView
 {
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:self.tableStyle];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 
+    [self configureTableView];
     [self registerCellsForTableView];
 
     [self.view addSubview:self.tableView];
 }
 
+- (void)basicSettings_installConstraints
+{
+    [self.tableView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
+}
+
+- (void)configureTableView
+{}
+
 - (void)registerCellsForTableView
 {
     OVERRIDE_METHOD
-}
-
-- (void)adjustSubviews
-{
-    self.tableView.frame = self.view.bounds;
 }
 
 @end

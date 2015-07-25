@@ -45,7 +45,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (instancetype)init
 {
-    return [super initWithTitle:NSLocalizedString(@"Settings", @"Settings") tableStructure:@[
+    return [super initWithTitle:NSLocalizedString(@"Settings", @"Settings") tableStyle:UITableViewStyleGrouped tableStructure:@[
                 @[
                     @(CellTypeColorscheme),
                 ],
