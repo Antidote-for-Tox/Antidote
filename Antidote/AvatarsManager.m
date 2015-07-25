@@ -104,7 +104,17 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
         return @"";
     }
 
+    // Avatar can has alphanumeric symbols and "?" sign.
+    NSMutableCharacterSet *badSymbols = [[[NSCharacterSet alphanumericCharacterSet] invertedSet] mutableCopy];
+    [badSymbols removeCharactersInString:@"?"];
+
     NSArray *words = [string componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    words = [[words bk_map:^NSString * (NSString *w) {
+        return [[w componentsSeparatedByCharactersInSet:badSymbols] componentsJoinedByString:@""];
+    }] bk_reject:^BOOL (NSString *w) {
+        return (w.length == 0);
+    }];
+
     NSString *result = @"";
 
     if (words.count > 1) {
