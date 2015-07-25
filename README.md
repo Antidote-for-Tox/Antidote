@@ -1,6 +1,6 @@
 [![Build Status](https://img.shields.io/travis/Antidote-for-Tox/Antidote/master.svg?style=flat)](https://travis-ci.org/Antidote-for-Tox/Antidote)
 
-[Tox](https://tox.im/) client for iOS 7.0+;
+[Tox](https://tox.chat/) client for iOS 7.0+;
 
 ## Screenshots
 
