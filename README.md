@@ -31,41 +31,22 @@ open Antidote.xcworkspace
 ## Features
 
 -  one to one conversations
--  typing notification
+-  ~~typing notification~~ *(temporary disabled)*
 -  emoticons
 -  spell check
 -  reading/scanning Tox ID via QR code
--  file transfer (temporary disabled)
+-  ~~file transfer~~ *(temporary disabled)*
 -  read receipts
 -  multiple profiles
 -  tox_save import/export
--  avatars (temporary disabled)
+-  ~~avatars~~ *(temporary disabled)*
 
-#### In progress
+#### What's next?
 
--  audio calls groundwork see [(objcTox/audio)](https://github.com/Antidote-for-Tox/objcTox/tree/audio)
--  getting back file transfers and avatars
--  designing UX
--  UI polishing
--  fixing bugs
-
-#### Then
-
--  video calls
--  group chats
-
-#### Future
-
--  offline mode
--  background mode (via background fetch?)
--  iOS notifications (with app in background)
--  tox:// scheme from another apps
--  *...*
--  App Store ?
--  *...*
--  iPad app
--  *???*
--  **PROFIT**
+You can check [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) to see what is in progress and what is on the list:
+- **X.X.X** *(milestone with next version number)* - this milestone has issues that will go to the next release
+- **Next** - stuff we'll probably do soon
+- **Future** - stuff we'll probably *won't* do soon.
 
 ## Contribution
 
