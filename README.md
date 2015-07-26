@@ -46,7 +46,7 @@ open Antidote.xcworkspace
 You can check [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) to see what is in progress and what is on the list:
 - **X.X.X** *(milestone with next version number)* - this milestone has issues that will go to the next release
 - **Next** - stuff we'll probably do soon
-- **Future** - stuff we'll probably *won't* do soon.
+- **Faraway** - stuff we'll probably *won't* do soon.
 
 ## Contribution
 
