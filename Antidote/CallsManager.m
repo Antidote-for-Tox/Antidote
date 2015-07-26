@@ -95,6 +95,10 @@
     AALogVerbose();
     [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
     [self.ringTonePlayer stopPlayingSound];
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    currentDevice.proximityMonitoringEnabled = NO;
+
 }
 
 #pragma mark - Public
@@ -458,6 +462,9 @@
 - (void)switchViewControllerForCall:(OCTCall *)call
 {
     AALogVerbose(@"%@", call);
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    currentDevice.proximityMonitoringEnabled = (call.status == OCTCallStatusActive);
 
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]] &&
         (call.status == OCTCallStatusActive) ) {
