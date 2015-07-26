@@ -33,7 +33,10 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 
 static const CGFloat kCellHeight = 44.0;
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, RBQFetchedResultsControllerDelegate>
+@interface FriendsViewController () <UITableViewDataSource,
+                                     UITableViewDelegate,
+                                     RBQFetchedResultsControllerDelegate,
+                                     FriendRequestViewControllerDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
@@ -305,6 +308,22 @@ static const CGFloat kCellHeight = 44.0;
     }
 }
 
+#pragma mark -  FriendRequestViewControllerDelegate
+
+- (void)friendRequestViewControllerAcceptedRequest:(FriendRequestViewController *)controller
+{
+    if (! [self.friendRequestsController numberOfRowsForSectionIndex:0]) {
+        [self switchToTab:FriendsViewControllerTabFriends];
+    }
+}
+
+- (void)friendRequestViewControllerRemovedRequest:(FriendRequestViewController *)controller
+{
+    if (! [self.friendRequestsController numberOfRowsForSectionIndex:0]) {
+        [self switchToTab:FriendsViewControllerTabFriends];
+    }
+}
+
 #pragma mark -  Private
 
 - (void)updateFriendsControllerWithCurrentFriendsSort
@@ -497,6 +516,7 @@ static const CGFloat kCellHeight = 44.0;
 {
     OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
     FriendRequestViewController *controller = [[FriendRequestViewController alloc] initWithRequest:request];
+    controller.delegate = self;
 
     [self.navigationController pushViewController:controller animated:YES];
 }
