@@ -21,6 +21,7 @@
 #import "UIAlertView+BlocksKit.h"
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
+#import "OCTTox.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -166,10 +167,22 @@
     [[DDTTYLogger sharedInstance] setLogFormatter:formatter];
 
     DDLogInfo(@"\n\n\n\t\t\t\t\t\t***** Application started *****\n\n\n");
-    DDLogInfo(@"Device:\n\tname = %@\n\tmodel = %@\n\tsystemVersion = %@\n\n",
+    DDLogInfo(@"\n"
+              "Antidote version %@\n"
+              "Antidote build %@\n"
+              "toxcore version %@\n"
+              "Device:\n"
+              "\tname = %@\n"
+              "\tmodel = %@\n"
+              "\tsystemVersion = %@\n"
+              "\n",
+              [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+              [[NSBundle mainBundle] objectForInfoDictionaryKey:(NSString *)kCFBundleVersionKey],
+              [OCTTox version],
               [UIDevice currentDevice].name,
               [UIDevice currentDevice].model,
-              [UIDevice currentDevice].systemVersion);
+              [UIDevice currentDevice].systemVersion
+    );
 }
 
 - (void)handleIncomingFileAtUrl:(NSURL *)url isDataFile:(BOOL)isDataFile
