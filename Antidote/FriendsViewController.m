@@ -32,6 +32,7 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 };
 
 static const CGFloat kCellHeight = 44.0;
+static const CGFloat kSegmentedControlHeight = 25.0;
 
 @interface FriendsViewController () <UITableViewDataSource,
                                      UITableViewDelegate,
@@ -385,10 +386,6 @@ static const CGFloat kCellHeight = 44.0;
 
 - (void)adjustSubviews
 {
-    CGRect frame = self.segmentedControl.frame;
-    frame.size.height = 25.0;
-    self.segmentedControl.frame = frame;
-
     self.tableView.frame = self.view.bounds;
 }
 
@@ -533,6 +530,10 @@ static const CGFloat kCellHeight = 44.0;
 
     [self.segmentedControl setTitle:title forSegmentAtIndex:FriendsViewControllerTabRequests];
     [self.segmentedControl sizeToFit];
+
+    CGRect frame = self.segmentedControl.frame;
+    frame.size.height = kSegmentedControlHeight;
+    self.segmentedControl.frame = frame;
 }
 
 - (BOOL)isCurrentFetchedRequestController:(RBQFetchedResultsController *)controller
