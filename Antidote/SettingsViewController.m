@@ -22,6 +22,7 @@
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 #import "TabBarViewController.h"
+#import "AboutViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeColorscheme,
@@ -29,6 +30,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeTitleNotifications,
     CellTypeShowMessageInLocalNotification,
     CellTypeAdvancedSettings,
+    CellTypeAbout,
     CellTypeProfile,
 };
 
@@ -57,6 +59,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
                     @(CellTypeShowMessageInLocalNotification),
                 ],
                 @[
+                    @(CellTypeAbout),
                     @(CellTypeAdvancedSettings),
                 ],
                 @[
@@ -100,6 +103,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeAdvancedSettings) {
         return [self cellWithArrowAtIndexPath:indexPath type:type];
     }
+    else if (type == CellTypeAbout) {
+        return [self cellWithArrowAtIndexPath:indexPath type:type];
+    }
     else if (type == CellTypeProfile) {
         return [self profileCellAtIndexPath:indexPath];
     }
@@ -122,6 +128,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if ((type == CellTypeTitleNotifications) ||
              (type == CellTypeShowMessageInLocalNotification) ||
              (type == CellTypeAdvancedSettings) ||
+             (type == CellTypeAbout) ||
              (type == CellTypeProfile) ||
              (type == CellTypeFeedback) ) {
         return 44.0;
@@ -141,6 +148,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     }
     else if (type == CellTypeAdvancedSettings) {
         [self.navigationController pushViewController:[AdvancedSettingsViewController new] animated:YES];
+    }
+    else if (type == CellTypeAbout) {
+        [self.navigationController pushViewController:[AboutViewController new] animated:YES];
     }
     else if (type == CellTypeFeedback) {
         if (! [MFMailComposeViewController canSendMail]) {
@@ -273,6 +283,9 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     if (type == CellTypeAdvancedSettings) {
         cell.textLabel.text = NSLocalizedString(@"Advanced Settings", @"Settings");
+    }
+    else if (type == CellTypeAbout) {
+        cell.textLabel.text = NSLocalizedString(@"About", @"Settings");
     }
 
     return cell;

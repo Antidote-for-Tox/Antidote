@@ -69,6 +69,7 @@
                                                          sortDescriptors:descriptors
                                                                 delegate:self];
     self.friendsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:self];
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated

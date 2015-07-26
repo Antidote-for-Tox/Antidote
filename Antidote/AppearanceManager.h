@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
-    AppearanceManagerColorschemeRed = 0,
-    AppearanceManagerColorschemeIce,
-    AppearanceManagerColorschemeOrange,
+    AppearanceManagerColorschemeIce = 0,
     AppearanceManagerColorschemePurple,
+    AppearanceManagerColorschemeRed,
+    AppearanceManagerColorschemeOrange,
     __AppearanceManagerColorschemeCount,
 };
 
