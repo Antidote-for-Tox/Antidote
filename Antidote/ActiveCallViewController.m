@@ -113,10 +113,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)createMicrophoneButton
 {
-    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-enable" action:@selector(micButtonPressed)];
-
-    UIImage *selectedImage = [UIImage imageNamed:@"call-microphone-disable"];
-    [self.microphoneButton setImage:selectedImage forState:UIControlStateSelected];
+    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
 
     [self.controlsContainerView addSubview:self.microphoneButton];
 }
@@ -294,6 +291,15 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)setMicSelected:(BOOL)micSelected
 {
     self.microphoneButton.selected = micSelected;
+
+    if (micSelected) {
+        self.microphoneButton.backgroundColor = [UIColor whiteColor];
+        self.microphoneButton.tintColor = [UIColor grayColor];
+    }
+    else {
+        self.microphoneButton.backgroundColor = [UIColor clearColor];
+        self.microphoneButton.tintColor = [UIColor whiteColor];
+    }
 }
 
 - (BOOL)micSelected
