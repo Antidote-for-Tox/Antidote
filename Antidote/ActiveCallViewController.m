@@ -133,9 +133,6 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)createResumeButton
 {
-    if (self.resumeButton) {
-        return;
-    }
     self.resumeButton = [self createButtonWithImageName:@"call-pause" action:@selector(resumeButtonPressed)];
 
     UIImage *selectedImage = [UIImage imageNamed:@"call-pause"];
