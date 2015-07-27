@@ -95,6 +95,10 @@
     AALogVerbose();
     [self.callNavigation dismissViewControllerAnimated:YES completion:nil];
     [self.ringTonePlayer stopPlayingSound];
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    currentDevice.proximityMonitoringEnabled = NO;
+
 }
 
 #pragma mark - Public
@@ -203,7 +207,7 @@
 
 - (void)updateCurrentCallInterface:(OCTCall *)call
 {
-    if (self.currentCall.primaryKeyValue != call.uniqueIdentifier) {
+    if (! [self.currentCall.primaryKeyValue isEqualToString:call.uniqueIdentifier]) {
         [self switchViewControllerForCall:call];
     }
 
@@ -239,19 +243,18 @@
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller
 {
     AALogVerbose(@"%@", controller);
-
-    OCTCall *call = [self.currentCall RLMObject];
+    BOOL selected = ! controller.speakerSelected;
 
     NSError *error;
-
-    OCTToxAVCallControl control = (controller.speakerSelected) ? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
-
-    if ([self.manager sendCallControl:control toCall:call error:&error]) {
-        controller.speakerSelected = ! controller.speakerSelected;
+    if (! [self.manager routeAudioToSpeaker:selected error:&error]) {
+        AALogWarn(@"Error:%@", error);
     }
     else {
-        AALogWarn(@"Error: %@", error);
+        controller.speakerSelected = selected;
     }
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    currentDevice.proximityMonitoringEnabled = ! controller.speakerSelected;
 }
 
 - (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller
@@ -458,6 +461,10 @@
 - (void)switchViewControllerForCall:(OCTCall *)call
 {
     AALogVerbose(@"%@", call);
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    currentDevice.proximityMonitoringEnabled = (call.status == OCTCallStatusActive ||
+                                                call.status == OCTCallStatusDialing);
 
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]] &&
         (call.status == OCTCallStatusActive) ) {
