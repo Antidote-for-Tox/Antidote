@@ -205,17 +205,17 @@ static const CGFloat kBadgeFontSize = 14.0;
     [super installConstraints];
 
     [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
-        make.left.equalTo(self.view.left).with.offset(kIndent);
-        make.right.equalTo(self.view.right).with.offset(-kIndent);
+        make.bottom.equalTo(self.view).with.offset(-kIndent);
+        make.left.equalTo(self.view).with.offset(kIndent);
+        make.right.equalTo(self.view).with.offset(-kIndent);
         make.height.equalTo(kEndCallButtonHeight);
     }];
 
     [self.controlsContainerView makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.view);
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.videoButton.top);
-        make.bottom.equalTo(self.microphoneButton.bottom);
+        make.top.equalTo(self.videoButton);
+        make.bottom.equalTo(self.microphoneButton);
     }];
 
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
@@ -234,22 +234,22 @@ static const CGFloat kBadgeFontSize = 14.0;
     }];
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.controlsContainerView.left);
+        make.left.equalTo(self.controlsContainerView);
         make.right.equalTo(self.speakerButton.left).with.offset(-k3ButtonGap);
         make.size.equalTo(kButtonSide);
         make.top.equalTo(self.videoButton.bottom).with.offset(k3ButtonGap);
     }];
 
     [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.controlsContainerView.right);
+        make.right.equalTo(self.controlsContainerView);
         make.size.equalTo(kButtonSide);
         make.centerY.equalTo(self.microphoneButton);
     }];
 
     [self.callMenuButton makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(kButtonSide);
-        make.right.equalTo(self.topViewContainer.rightMargin);
-        make.top.equalTo(self.topViewContainer.topMargin);
+        make.right.equalTo(self.topViewContainer);
+        make.top.equalTo(self.topViewContainer);
     }];
 
     [self.pauseCallsContainer makeConstraints:^(MASConstraintMaker *make) {

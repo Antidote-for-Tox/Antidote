@@ -109,9 +109,9 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 
     [self.cancelCallButton makeConstraints:^(MASConstraintMaker *make) {
         make.height.equalTo(kEndCallButtonHeight);
-        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
-        make.left.equalTo(self.view.left).with.offset(kIndent);
-        make.right.equalTo(self.view.right).with.offset(-kIndent);
+        make.bottom.equalTo(self.view).with.offset(-kIndent);
+        make.left.equalTo(self.view).with.offset(kIndent);
+        make.right.equalTo(self.view).with.offset(-kIndent);
     }];
 }
 

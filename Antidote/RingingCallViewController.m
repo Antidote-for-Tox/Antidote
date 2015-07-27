@@ -68,10 +68,10 @@ static const CGFloat kLabelFontSize = 16.0;
     [super installConstraints];
 
     [self.declineContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.left).with.offset(kIndent);
+        make.left.equalTo(self.view).with.offset(kIndent);
         make.height.equalTo(kButtonHeight * 1.5);
         make.width.equalTo(kButtonWidth);
-        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
+        make.bottom.equalTo(self.view).with.offset(-kIndent);
     }];
 
     [self.declineCallButton makeConstraints:^(MASConstraintMaker *make) {
@@ -89,10 +89,10 @@ static const CGFloat kLabelFontSize = 16.0;
     }];
 
     [self.acceptContainer makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view.right).with.offset(-kIndent);
+        make.right.equalTo(self.view).with.offset(-kIndent);
         make.height.equalTo(kButtonHeight * 1.5);
         make.width.equalTo(kButtonWidth);
-        make.bottom.equalTo(self.view.bottom).with.offset(-kIndent);
+        make.bottom.equalTo(self.view).with.offset(-kIndent);
     }];
 
     [self.declineLabel makeConstraints:^(MASConstraintMaker *make) {
