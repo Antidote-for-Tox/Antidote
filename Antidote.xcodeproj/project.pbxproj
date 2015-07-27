@@ -28,6 +28,7 @@
 		116625DA1B63D7E50036ABC2 /* ContentCellWithTitleEditable.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625D91B63D7E50036ABC2 /* ContentCellWithTitleEditable.m */; };
 		116625DD1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625DC1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m */; };
 		116625E01B63F4B80036ABC2 /* FriendCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625DF1B63F4B80036ABC2 /* FriendCardViewController.m */; };
+		116625E41B653F060036ABC2 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625E31B653F060036ABC2 /* AboutViewController.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
@@ -125,6 +126,8 @@
 		116625DC1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellWithTitleImmutable.m; sourceTree = "<group>"; };
 		116625DE1B63F4B80036ABC2 /* FriendCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FriendCardViewController.h; sourceTree = "<group>"; };
 		116625DF1B63F4B80036ABC2 /* FriendCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FriendCardViewController.m; sourceTree = "<group>"; };
+		116625E21B653F060036ABC2 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
+		116625E31B653F060036ABC2 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutViewController.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -392,6 +395,15 @@
 			name = ContentCells;
 			sourceTree = "<group>";
 		};
+		116625E11B653EC80036ABC2 /* About */ = {
+			isa = PBXGroup;
+			children = (
+				116625E21B653F060036ABC2 /* AboutViewController.h */,
+				116625E31B653F060036ABC2 /* AboutViewController.m */,
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
 		1182AF371B4EE1EC0095B476 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -449,6 +461,7 @@
 			isa = PBXGroup;
 			children = (
 				F0D127DA1B445AC800E2E7B8 /* Call */,
+				116625E11B653EC80036ABC2 /* About */,
 				119BB11F198BE76600380557 /* AddFriend */,
 				114630981984E19A0075DA16 /* AllChats */,
 				114630E119857C5D0075DA16 /* Chat */,
@@ -991,6 +1004,7 @@
 				118352B0197A6F7F0048CA64 /* NSString+Utilities.m in Sources */,
 				110B8B8B19C8E3FE000E4334 /* ProfilesListViewController.m in Sources */,
 				11CFD0C71B40745E002C59DB /* ToxListener.m in Sources */,
+				116625E41B653F060036ABC2 /* AboutViewController.m in Sources */,
 				11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */,
 				1164764319794D3300DB20B8 /* AppDelegate.m in Sources */,
 				1182AF431B4EE3360095B476 /* TabBarProfileItem.m in Sources */,

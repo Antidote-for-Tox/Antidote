@@ -9,8 +9,18 @@
 #import <UIKit/UIKit.h>
 
 @class OCTFriendRequest;
+@class FriendRequestViewController;
+
+@protocol FriendRequestViewControllerDelegate <NSObject>
+
+- (void)friendRequestViewControllerAcceptedRequest:(FriendRequestViewController *)controller;
+- (void)friendRequestViewControllerRemovedRequest:(FriendRequestViewController *)controller;
+
+@end
 
 @interface FriendRequestViewController : UIViewController
+
+@property (weak, nonatomic) id<FriendRequestViewControllerDelegate> delegate;
 
 - (instancetype)initWithRequest:(OCTFriendRequest *)request;
 

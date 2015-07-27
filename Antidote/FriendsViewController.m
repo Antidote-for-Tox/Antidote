@@ -32,8 +32,12 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
 };
 
 static const CGFloat kCellHeight = 44.0;
+static const CGFloat kSegmentedControlHeight = 25.0;
 
-@interface FriendsViewController () <UITableViewDataSource, UITableViewDelegate, RBQFetchedResultsControllerDelegate>
+@interface FriendsViewController () <UITableViewDataSource,
+                                     UITableViewDelegate,
+                                     RBQFetchedResultsControllerDelegate,
+                                     FriendRequestViewControllerDelegate>
 
 @property (strong, nonatomic) UISegmentedControl *segmentedControl;
 @property (strong, nonatomic) UITableView *tableView;
@@ -305,6 +309,22 @@ static const CGFloat kCellHeight = 44.0;
     }
 }
 
+#pragma mark -  FriendRequestViewControllerDelegate
+
+- (void)friendRequestViewControllerAcceptedRequest:(FriendRequestViewController *)controller
+{
+    if (! [self.friendRequestsController numberOfRowsForSectionIndex:0]) {
+        [self switchToTab:FriendsViewControllerTabFriends];
+    }
+}
+
+- (void)friendRequestViewControllerRemovedRequest:(FriendRequestViewController *)controller
+{
+    if (! [self.friendRequestsController numberOfRowsForSectionIndex:0]) {
+        [self switchToTab:FriendsViewControllerTabFriends];
+    }
+}
+
 #pragma mark -  Private
 
 - (void)updateFriendsControllerWithCurrentFriendsSort
@@ -366,10 +386,6 @@ static const CGFloat kCellHeight = 44.0;
 
 - (void)adjustSubviews
 {
-    CGRect frame = self.segmentedControl.frame;
-    frame.size.height = 25.0;
-    self.segmentedControl.frame = frame;
-
     self.tableView.frame = self.view.bounds;
 }
 
@@ -497,6 +513,7 @@ static const CGFloat kCellHeight = 44.0;
 {
     OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
     FriendRequestViewController *controller = [[FriendRequestViewController alloc] initWithRequest:request];
+    controller.delegate = self;
 
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -513,6 +530,10 @@ static const CGFloat kCellHeight = 44.0;
 
     [self.segmentedControl setTitle:title forSegmentAtIndex:FriendsViewControllerTabRequests];
     [self.segmentedControl sizeToFit];
+
+    CGRect frame = self.segmentedControl.frame;
+    frame.size.height = kSegmentedControlHeight;
+    self.segmentedControl.frame = frame;
 }
 
 - (BOOL)isCurrentFetchedRequestController:(RBQFetchedResultsController *)controller

@@ -83,6 +83,8 @@ static const CGFloat kButtonWidth = 120.0;
     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Decline", @"Friend requests") handler:^{
         strongself;
         [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:self.request];
+
+        [self.delegate friendRequestViewControllerRemovedRequest:self];
         [self.navigationController popViewControllerAnimated:YES];
     }];
 
@@ -94,6 +96,8 @@ static const CGFloat kButtonWidth = 120.0;
 - (void)acceptButtonPressed
 {
     [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:self.request error:nil];
+
+    [self.delegate friendRequestViewControllerAcceptedRequest:self];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

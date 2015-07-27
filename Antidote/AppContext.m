@@ -207,7 +207,7 @@
     }
 
     if (rewrite || ! _userDefaults.uCurrentColorscheme) {
-        _userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeRed);
+        _userDefaults.uCurrentColorscheme = @(AppearanceManagerColorschemeIce);
     }
 }
 
