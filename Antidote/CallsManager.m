@@ -463,7 +463,8 @@
     AALogVerbose(@"%@", call);
 
     UIDevice *currentDevice = [UIDevice currentDevice];
-    currentDevice.proximityMonitoringEnabled = (call.status == OCTCallStatusActive);
+    currentDevice.proximityMonitoringEnabled = (call.status == OCTCallStatusActive ||
+                                                call.status == OCTCallStatusDialing);
 
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]] &&
         (call.status == OCTCallStatusActive) ) {
