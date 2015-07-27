@@ -207,7 +207,7 @@
 
 - (void)updateCurrentCallInterface:(OCTCall *)call
 {
-    if (self.currentCall.primaryKeyValue != call.uniqueIdentifier) {
+    if (! [self.currentCall.primaryKeyValue isEqualToString:call.uniqueIdentifier]) {
         [self switchViewControllerForCall:call];
     }
 
