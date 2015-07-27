@@ -243,19 +243,18 @@
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller
 {
     AALogVerbose(@"%@", controller);
-
-    OCTCall *call = [self.currentCall RLMObject];
+    BOOL selected = ! controller.speakerSelected;
 
     NSError *error;
-
-    OCTToxAVCallControl control = (controller.speakerSelected) ? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
-
-    if ([self.manager sendCallControl:control toCall:call error:&error]) {
-        controller.speakerSelected = ! controller.speakerSelected;
+    if (! [self.manager routeAudioToSpeaker:selected error:&error]) {
+        AALogWarn(@"Error:%@", error);
     }
     else {
-        AALogWarn(@"Error: %@", error);
+        controller.speakerSelected = selected;
     }
+
+    UIDevice *currentDevice = [UIDevice currentDevice];
+    currentDevice.proximityMonitoringEnabled = ! controller.speakerSelected;
 }
 
 - (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller

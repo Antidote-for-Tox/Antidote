@@ -68,7 +68,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createVideoButton];
     [self createResumeButton];
     [self createMicrophoneButton];
-    [self createMuteButton];
+    [self createSpeakerButton];
     [self createCallMenuButton];
     [self createPauseCallContainer];
     [self createCallPauseTableView];
@@ -121,12 +121,9 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.controlsContainerView addSubview:self.microphoneButton];
 }
 
-- (void)createMuteButton
+- (void)createSpeakerButton
 {
     self.speakerButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
-
-    UIImage *selectedImage = [UIImage imageNamed:@"call-audio-disable"];
-    [self.speakerButton setImage:selectedImage forState:UIControlStateSelected];
 
     [self.controlsContainerView addSubview:self.speakerButton];
 }
@@ -307,6 +304,15 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
     self.speakerButton.selected = speakerSelected;
+
+    if (speakerSelected) {
+        self.speakerButton.backgroundColor = [UIColor whiteColor];
+        self.speakerButton.tintColor = [UIColor grayColor];
+    }
+    else {
+        self.speakerButton.backgroundColor = [UIColor clearColor];
+        self.speakerButton.tintColor = [UIColor whiteColor];
+    }
 }
 
 - (BOOL)speakerSelected
