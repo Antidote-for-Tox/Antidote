@@ -105,10 +105,10 @@ static const CGFloat kNameLabelHorizontalIndent = 30.0;
     }];
 
     [self.nameLabel makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topViewContainer.topMargin).with.offset(kIndent);
+        make.top.equalTo(self.topViewContainer).with.offset(kIndent);
         make.height.equalTo(kNameLabelHeight);
-        make.left.equalTo(self.topViewContainer.left).with.offset(kNameLabelHorizontalIndent);
-        make.right.equalTo(self.topViewContainer.right).with.offset(-kNameLabelHorizontalIndent);
+        make.left.equalTo(self.topViewContainer).with.offset(kNameLabelHorizontalIndent);
+        make.right.equalTo(self.topViewContainer).with.offset(-kNameLabelHorizontalIndent);
     }];
 
     [self.subLabel makeConstraints:^(MASConstraintMaker *make) {
