@@ -29,14 +29,14 @@
 
 @property (strong, nonatomic) RBQFetchedResultsController *allCallsController;
 @property (strong, nonatomic) RBQFetchedResultsController *allActiveCallsController;
-@property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsController;
+@property (strong, nonatomic) RBQFetchedResultsController *allPausedCallsByUserController;
 @property (strong, nonatomic) AbstractCallViewController *currentCallViewController;
 
 @property (strong, nonatomic) UINavigationController *callNavigation;
 
 @property (weak, nonatomic) OCTSubmanagerCalls *manager;
 
-@property (strong, nonatomic) OCTCall *currentCall;
+@property (strong, nonatomic) RBQSafeRealmObject *currentCall;
 @property (strong, nonatomic) OCTCall *pendingIncomingCall;
 
 @property (strong, nonatomic) RingTonePlayer *ringTonePlayer;
@@ -59,14 +59,21 @@
                                                                delegate:self];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"status == %d", OCTCallStatusActive];
+
+    // Sort below by pause status so calls that are active with no paused status have priority in getting
+    // selected for didRemoveCurrentCall. Since we want to show active(no paused) calls first to the user.
+    NSArray *sortDescriptors = @[
+        [RLMSortDescriptor sortDescriptorWithProperty:@"pausedStatus" ascending:YES]
+    ];
     _allActiveCallsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
                                                                     predicate:predicate
+                                                              sortDescriptors:sortDescriptors
                                                                      delegate:self];
 
-    predicate = [NSPredicate predicateWithFormat:@"status == %d", OCTCallStatusPaused];
-    _allPausedCallsController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
-                                                                    predicate:predicate
-                                                                     delegate:self];
+    predicate = [NSPredicate predicateWithFormat:@"pausedStatus == %d", OCTCallPausedStatusByUser];
+    _allPausedCallsByUserController = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeCall
+                                                                          predicate:predicate
+                                                                           delegate:self];
 
     _manager = [AppContext sharedContext].profileManager.toxManager.calls;
 
@@ -121,6 +128,8 @@
     if (self.currentCall && self.pendingIncomingCall) {
         // We only support showing one incoming call at a time. Reject all others
         [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:nil];
+        AALogVerbose(@"Unable to take on more calls, incoming call declined");
+        return;
     }
 
     if (self.currentCall) {
@@ -143,22 +152,25 @@
     switch (type) {
         case NSFetchedResultsChangeUpdate:
             if (controller == self.allActiveCallsController) {
+
                 OCTCall *call = [anObject RLMObject];
-                [self updateDuration:call.callDuration];
+                if (call.pausedStatus == OCTCallPausedStatusNone) {
+                    [self updateCurrentCallInterface:[anObject RLMObject]];
+                }
             }
             break;
         case NSFetchedResultsChangeDelete: {
+
             if ([self.allCallsController.fetchedObjects count] == 0) {
                 [[AppContext sharedContext] killCallsManager];
                 return;
             }
 
-            if ([self onlyPauseCallsLeft]) {
-                OCTCall *call = [self.allPausedCallsController.fetchedObjects firstObject];
+            if (controller == self.allCallsController) {
 
-                // workaround for deadlock in objcTox
-                // https://github.com/Antidote-for-Tox/objcTox/issues/51
-                [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
+                if ([anObject.primaryKeyValue isEqualToString:self.currentCall.primaryKeyValue]) {
+                    [self didRemoveCurrentCall];
+                }
             }
             break;
         }
@@ -180,7 +192,7 @@
 
 - (void)controllerDidChangeContent:(RBQFetchedResultsController *)controller
 {
-    if (self.allPausedCallsController == controller) {
+    if (self.allPausedCallsByUserController == controller) {
         if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
             ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
             [activeVC reloadPausedCalls];
@@ -189,11 +201,15 @@
 }
 #pragma mark - Updates to Current Call
 
-- (void)updateDuration:(NSTimeInterval)duration
+- (void)updateCurrentCallInterface:(OCTCall *)call
 {
+    if (self.currentCall.primaryKeyValue != call.uniqueIdentifier) {
+        [self switchViewControllerForCall:call];
+    }
+
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
-        activeVC.callDuration = duration;
+        activeVC.callDuration = call.callDuration;
     }
 }
 
@@ -203,8 +219,10 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
-    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.currentCall error:&error]) {
+    if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
 }
@@ -222,11 +240,13 @@
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
 
     OCTToxAVCallControl control = (controller.speakerSelected) ? OCTToxAVCallControlUnmuteAudio : OCTToxAVCallControlMuteAudio;
 
-    if ([self.manager sendCallControl:control toCall:self.currentCall error:&error]) {
+    if ([self.manager sendCallControl:control toCall:call error:&error]) {
         controller.speakerSelected = ! controller.speakerSelected;
     }
     else {
@@ -234,21 +254,20 @@
     }
 }
 
-- (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller
+- (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller
 {
     AALogVerbose(@"%@", controller);
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
-    OCTToxAVCallControl control = controller.pauseSelected ? OCTToxAVCallControlResume : OCTToxAVCallControlPause;
 
-    BOOL result = [self.manager sendCallControl:control toCall:self.currentCall error:&error];
-
-    if (result) {
-        controller.pauseSelected = ! controller.pauseSelected;
-    }
-    else {
+    if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
+    ;
+
+    [controller hideResumeButton];
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
@@ -286,9 +305,11 @@
 
     [self.ringTonePlayer stopPlayingSound];
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
-                                 toCall:self.currentCall
+                                 toCall:call
                                   error:&error]) {
         AALogWarn(@"%@", error);
     }
@@ -302,8 +323,10 @@
 
     [self.ringTonePlayer stopPlayingSound];
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
-    if (! [self.manager answerCall:self.currentCall
+    if (! [self.manager answerCall:call
                        enableAudio:YES
                        enableVideo:NO error:&error]) {
         AALogWarn(@"%@", error);
@@ -316,10 +339,12 @@
 
     [self.ringTonePlayer stopPlayingSound];
 
+    OCTCall *call = [self.currentCall RLMObject];
+
     NSError *error;
 
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
-                                 toCall:self.currentCall
+                                 toCall:call
                                   error:&error]) {
         AALogWarn(@"%@", error);
     }
@@ -329,12 +354,12 @@
 
 - (NSInteger)activeCallControllerNumberOfPausedCalls:(ActiveCallViewController *)controller
 {
-    return [self.allPausedCallsController numberOfRowsForSectionIndex:0];
+    return [self.allPausedCallsByUserController numberOfRowsForSectionIndex:0];
 }
 
 - (NSString *)activeCallController:(ActiveCallViewController *)controller pausedCallerNicknameForCallAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     OCTFriend *friend = [call.chat.friends firstObject];
 
@@ -343,14 +368,14 @@
 
 - (NSDate *)activeCallController:(ActiveCallViewController *)controller pauseDateForCallAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     return [call onHoldDate];
 }
 
 - (void)activeCallController:(ActiveCallViewController *)controller resumePausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     AALogVerbose(@"%@ call:%@", controller, call);
 
@@ -363,7 +388,7 @@
 
 - (void)activeCallController:(ActiveCallViewController *)controller endPausedCallSelectedAtIndex:(NSIndexPath *)indexPath
 {
-    OCTCall *call = [self.allPausedCallsController objectAtIndexPath:indexPath];
+    OCTCall *call = [self.allPausedCallsByUserController objectAtIndexPath:indexPath];
 
     AALogVerbose(@"%@ call:%@", controller, call);
 
@@ -395,7 +420,7 @@
     [activeVC createIncomingCallViewForFriend:friend.nickname];
 }
 
-- (AbstractCallViewController *)viewControllerForCall:(OCTCall *)call
+- (AbstractCallViewController *)createViewControllerForCall:(OCTCall *)call
 {
     AbstractCallViewController *viewController;
 
@@ -421,9 +446,6 @@
             viewController = ringingVC;
             break;
         }
-        case OCTCallStatusPaused:
-            NSAssert(NO, @"We should not be here yet. Not yet implemented");
-            break;
     }
 
     viewController.nickname = friend.nickname;
@@ -437,43 +459,44 @@
 {
     AALogVerbose(@"%@", call);
 
-    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]] &&
+        (call.status == OCTCallStatusActive) ) {
 
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
 
-        switch (call.status) {
-            case OCTCallStatusPaused:
-                activeVC.pauseSelected = YES;
-                break;
-            case OCTCallStatusActive:
-                activeVC.pauseSelected = NO;
-                break;
-            case OCTCallStatusDialing:
-            case OCTCallStatusRinging:
-                NSAssert(NO, @"We shouldn't be here");
-                break;
+        if (call.pausedStatus == OCTCallPausedStatusByUser) {
+            [activeVC showResumeButton];
         }
 
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
-        self.currentCall = call;
+        self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
 
         return;
     }
 
-    AbstractCallViewController *abstractVC = [self viewControllerForCall:call];
+    AbstractCallViewController *abstractVC = [self createViewControllerForCall:call];
 
     [self.callNavigation setViewControllers:@[abstractVC] animated:YES];
 
     self.currentCallViewController = abstractVC;
 
-    self.currentCall = call;
+    self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
 }
 
-- (BOOL)onlyPauseCallsLeft
+- (void)didRemoveCurrentCall
 {
-    return (([self.allActiveCallsController.fetchedObjects count] == 0) &&
-            ([self.allPausedCallsController.fetchedObjects count] != 0));
+    OCTCall *call = [self.allActiveCallsController.fetchedObjects firstObject] ?:
+                    [self.allCallsController.fetchedObjects firstObject];
+
+    if (! call) {
+        return;
+    }
+
+    // workaround for deadlock in objcTox
+    // https://github.com/Antidote-for-Tox/objcTox/issues/51
+    [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
 }
+
 
 @end

@@ -19,7 +19,7 @@
 - (void)activeCallDeclineButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller;
-- (void)activeCallPauseButtonPressed:(ActiveCallViewController *)controller;
+- (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller;
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller;
@@ -64,9 +64,14 @@
 @property (assign, nonatomic) BOOL speakerSelected;
 
 /**
- * Set the pause buton to be selected or not selected.
+ * Show the resume button so the user can resume a paused call.
  */
-@property (assign, nonatomic) BOOL pauseSelected;
+- (void)showResumeButton;
+
+/**
+ * Hide the resume button.
+ */
+- (void)hideResumeButton;
 
 /**
  * Create an incoming call view for friend
