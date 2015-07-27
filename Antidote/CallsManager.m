@@ -59,6 +59,9 @@
                                                                delegate:self];
 
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"status == %d", OCTCallStatusActive];
+
+    // Sort below by pause status so calls that are active with no paused status have priority in getting
+    // selected for didRemoveCurrentCall. Since we want to show active(no paused) calls first to the user.
     NSArray *sortDescriptors = @[
         [RLMSortDescriptor sortDescriptorWithProperty:@"pausedStatus" ascending:YES]
     ];
@@ -264,7 +267,7 @@
     }
     ;
 
-    // hide resume call button after
+    [controller hideResumeButton];
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller

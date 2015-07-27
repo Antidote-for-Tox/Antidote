@@ -51,6 +51,9 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
+@property (strong, nonatomic) MASConstraint *videoCenterXConstraint;
+@property (strong, nonatomic) MASConstraint *videoRightConstraint;
+
 @end
 
 @implementation ActiveCallViewController
@@ -63,6 +66,7 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createEndCallButton];
     [self createContainerView];
     [self createVideoButton];
+    [self createResumeButton];
     [self createMicrophoneButton];
     [self createMuteButton];
     [self createCallMenuButton];
@@ -71,6 +75,8 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self createBadgeViews];
 
     [self installConstraints];
+
+    [self hideResumeButton];
 
     [self reloadPausedCalls];
 }
@@ -138,14 +144,6 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.resumeButton.layer.borderColor = [[AppContext sharedContext].appearance callRedColor].CGColor;
 
     [self.controlsContainerView addSubview:self.resumeButton];
-
-    [self.resumeButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.videoButton.left).with.offset(-k3ButtonGap);
-        make.centerY.equalTo(self.videoButton);
-        make.size.equalTo(kButtonSide);
-    }];
-
-    [self moveVideoButtonToRight];
 }
 
 - (void)createCallMenuButton
@@ -225,9 +223,17 @@ static const CGFloat kBadgeFontSize = 14.0;
 
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.controlsContainerView);
-        make.centerX.equalTo(self.controlsContainerView);
         make.size.equalTo(kButtonSide);
         make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
+
+        self.videoCenterXConstraint = make.centerX.equalTo(self.controlsContainerView);
+        self.videoRightConstraint = make.right.equalTo(self.controlsContainerView);
+    }];
+
+    [self.resumeButton makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.videoButton.left).with.offset(-k3ButtonGap);
+        make.centerY.equalTo(self.videoButton);
+        make.size.equalTo(kButtonSide);
     }];
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
@@ -283,28 +289,6 @@ static const CGFloat kBadgeFontSize = 14.0;
     }];
 }
 
-#pragma mark - Constraints movement
-
-- (void)moveVideoButtonToRight
-{
-    [self.videoButton remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.controlsContainerView);
-        make.centerX.equalTo(self.speakerButton);
-        make.size.equalTo(kButtonSide);
-        make.bottom.equalTo(self.speakerButton.top).with.offset(-k3ButtonGap);
-    }];
-}
-
-- (void)moveVideoButtonToCenter
-{
-    [self.videoButton remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.controlsContainerView);
-        make.centerX.equalTo(self.controlsContainerView);
-        make.size.equalTo(kButtonSide);
-        make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
-    }];
-}
-
 #pragma mark - Public
 
 - (void)setCallDuration:(NSTimeInterval)callDuration
@@ -344,11 +328,16 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)showResumeButton
 {
-    if (self.resumeButton) {
-        return;
-    }
+    self.resumeButton.hidden = NO;
+    [self.videoCenterXConstraint deactivate];
+    [self.videoRightConstraint activate];
+}
 
-    [self createResumeButton];
+- (void)hideResumeButton
+{
+    self.resumeButton.hidden = YES;
+    [self.videoCenterXConstraint activate];
+    [self.videoRightConstraint deactivate];
 }
 
 - (void)hideIncomingCallView
@@ -546,11 +535,6 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)resumeButtonPressed
 {
     [self.delegate activeCallResumeButtonPressed:self];
-
-    [self.resumeButton removeFromSuperview];
-    self.resumeButton = nil;
-
-    [self moveVideoButtonToCenter];
 }
 
 @end

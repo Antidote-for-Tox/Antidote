@@ -69,6 +69,11 @@
 - (void)showResumeButton;
 
 /**
+ * Hide the resume button.
+ */
+- (void)hideResumeButton;
+
+/**
  * Create an incoming call view for friend
  * @param nickname Nickname of friend
  */
