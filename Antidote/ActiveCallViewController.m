@@ -51,8 +51,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
-@property (strong, nonatomic) MASConstraint *videoCenterXConstraint;
-@property (strong, nonatomic) MASConstraint *videoRightConstraint;
+@property (strong, nonatomic) MASConstraint *videoHorizontalConstraint;
 
 @end
 
@@ -220,8 +219,7 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.size.equalTo(kButtonSide);
         make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
 
-        self.videoCenterXConstraint = make.centerX.equalTo(self.controlsContainerView);
-        self.videoRightConstraint = make.right.equalTo(self.controlsContainerView);
+        self.videoHorizontalConstraint = make.centerX.equalTo(self.controlsContainerView);
     }];
 
     [self.resumeButton makeConstraints:^(MASConstraintMaker *make) {
@@ -332,15 +330,23 @@ static const CGFloat kBadgeFontSize = 14.0;
 - (void)showResumeButton
 {
     self.resumeButton.hidden = NO;
-    [self.videoCenterXConstraint deactivate];
-    [self.videoRightConstraint activate];
+
+    [self.videoHorizontalConstraint uninstall];
+
+    [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
+        self.videoHorizontalConstraint = make.right.equalTo(self.controlsContainerView);
+    }];
 }
 
 - (void)hideResumeButton
 {
     self.resumeButton.hidden = YES;
-    [self.videoCenterXConstraint activate];
-    [self.videoRightConstraint deactivate];
+
+    [self.videoHorizontalConstraint uninstall];
+
+    [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
+        self.videoHorizontalConstraint = make.centerX.equalTo(self.controlsContainerView);
+    }];
 }
 
 - (void)hideIncomingCallView
