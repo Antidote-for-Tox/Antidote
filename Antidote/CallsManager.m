@@ -158,8 +158,9 @@
             if (controller == self.allActiveCallsController) {
 
                 OCTCall *call = [anObject RLMObject];
-                if (call.pausedStatus == OCTCallPausedStatusNone) {
-                    [self updateCurrentCallInterface:[anObject RLMObject]];
+                if ((call.pausedStatus == OCTCallPausedStatusNone) ||
+                    (call.pausedStatus == OCTCallPausedStatusByFriend) ) {
+                    [self updateCurrentCallInterface:call];
                 }
             }
             break;
@@ -213,7 +214,13 @@
 
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
-        activeVC.callDuration = call.callDuration;
+
+        if (call.pausedStatus == OCTCallPausedStatusByFriend) {
+            [activeVC showCallPausedByFriend];
+        }
+        else {
+            activeVC.callDuration = call.callDuration;
+        }
     }
 }
 
@@ -473,6 +480,10 @@
 
         if (call.pausedStatus == OCTCallPausedStatusByUser) {
             [activeVC showResumeButton];
+        }
+
+        if (call.pausedStatus == OCTCallPausedStatusByFriend) {
+            [activeVC showCallPausedByFriend];
         }
 
         OCTFriend *friend = [call.chat.friends firstObject];
