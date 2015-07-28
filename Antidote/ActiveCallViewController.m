@@ -13,12 +13,12 @@
 #import "PauseCallTableViewCell.h"
 #import "UITableViewCell+Utilities.h"
 #import "IncomingCallNotificationView.h"
+#import "CallControlsView.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kEndCallButtonHeight = 45.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
-static const CGFloat k3ButtonGap = 15.0;
 static const CGFloat kTableViewBottomOffSet = 200.0;
 
 static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
@@ -28,14 +28,11 @@ static const CGFloat kBadgeFontSize = 14.0;
 @interface ActiveCallViewController () <UITableViewDelegate,
                                         UITableViewDataSource,
                                         PauseCallTableViewCellDelegate,
-                                        IncomingCallNotificationViewDelegate>
+                                        IncomingCallNotificationViewDelegate,
+                                        CallControlsViewDelegate>
 
 @property (strong, nonatomic) UIButton *endCallButton;
-@property (strong, nonatomic) UIButton *videoButton;
-@property (strong, nonatomic) UIView *controlsContainerView;
-@property (strong, nonatomic) UIButton *microphoneButton;
-@property (strong, nonatomic) UIButton *speakerButton;
-@property (strong, nonatomic) UIButton *resumeButton;
+@property (strong, nonatomic) CallControlsView *callControlsView;
 
 @property (strong, nonatomic) IncomingCallNotificationView *incomingCallNotification;
 @property (strong, nonatomic) UIView *bottomIncomingCallSpacer;
@@ -63,11 +60,8 @@ static const CGFloat kBadgeFontSize = 14.0;
     [super viewDidLoad];
 
     [self createEndCallButton];
-    [self createContainerView];
-    [self createVideoButton];
-    [self createResumeButton];
-    [self createMicrophoneButton];
-    [self createSpeakerButton];
+    [self createCallControlsView];
+
     [self createCallMenuButton];
     [self createPauseCallContainer];
     [self createCallPauseTableView];
@@ -98,42 +92,11 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.view addSubview:self.endCallButton];
 }
 
-- (void)createContainerView
+- (void)createCallControlsView
 {
-    self.controlsContainerView = [UIView new];
-    [self.view addSubview:self.controlsContainerView];
-}
-
-- (void)createVideoButton
-{
-    self.videoButton = [self createButtonWithImageName:@"call-video" action:nil];
-    [self.controlsContainerView addSubview:self.videoButton];
-}
-
-- (void)createMicrophoneButton
-{
-    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
-
-    [self.controlsContainerView addSubview:self.microphoneButton];
-}
-
-- (void)createSpeakerButton
-{
-    self.speakerButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
-
-    [self.controlsContainerView addSubview:self.speakerButton];
-}
-
-- (void)createResumeButton
-{
-    self.resumeButton = [self createButtonWithImageName:@"call-pause" action:@selector(resumeButtonPressed)];
-
-    UIImage *selectedImage = [UIImage imageNamed:@"call-pause"];
-    [self.resumeButton setImage:selectedImage forState:UIControlStateSelected];
-    self.resumeButton.tintColor = [[AppContext sharedContext].appearance callRedColor];
-    self.resumeButton.layer.borderColor = [[AppContext sharedContext].appearance callRedColor].CGColor;
-
-    [self.controlsContainerView addSubview:self.resumeButton];
+    self.callControlsView = [CallControlsView new];
+    self.callControlsView.delegate = self;
+    [self.view addSubview:self.callControlsView];
 }
 
 - (void)createCallMenuButton
@@ -204,38 +167,9 @@ static const CGFloat kBadgeFontSize = 14.0;
         make.height.equalTo(kEndCallButtonHeight);
     }];
 
-    [self.controlsContainerView makeConstraints:^(MASConstraintMaker *make) {
+    [self.callControlsView makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.view);
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.videoButton);
-        make.bottom.equalTo(self.microphoneButton);
-    }];
-
-    [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.controlsContainerView);
-        make.size.equalTo(kButtonSide);
-        make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
-
-        self.videoHorizontalConstraint = make.centerX.equalTo(self.controlsContainerView);
-    }];
-
-    [self.resumeButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.videoButton.left).with.offset(-k3ButtonGap);
-        make.centerY.equalTo(self.videoButton);
-        make.size.equalTo(kButtonSide);
-    }];
-
-    [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.controlsContainerView);
-        make.right.equalTo(self.speakerButton.left).with.offset(-k3ButtonGap);
-        make.size.equalTo(kButtonSide);
-        make.top.equalTo(self.videoButton.bottom).with.offset(k3ButtonGap);
-    }];
-
-    [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.controlsContainerView);
-        make.size.equalTo(kButtonSide);
-        make.centerY.equalTo(self.microphoneButton);
     }];
 
     [self.callMenuButton makeConstraints:^(MASConstraintMaker *make) {
@@ -288,40 +222,22 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)setMicSelected:(BOOL)micSelected
 {
-    self.microphoneButton.selected = micSelected;
-
-    if (micSelected) {
-        self.microphoneButton.backgroundColor = [UIColor whiteColor];
-        self.microphoneButton.tintColor = [UIColor grayColor];
-    }
-    else {
-        self.microphoneButton.backgroundColor = [UIColor clearColor];
-        self.microphoneButton.tintColor = [UIColor whiteColor];
-    }
+    self.callControlsView.micSelected = micSelected;
 }
 
 - (BOOL)micSelected
 {
-    return self.microphoneButton.selected;
+    return self.callControlsView.micSelected;
 }
 
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
-    self.speakerButton.selected = speakerSelected;
-
-    if (speakerSelected) {
-        self.speakerButton.backgroundColor = [UIColor whiteColor];
-        self.speakerButton.tintColor = [UIColor grayColor];
-    }
-    else {
-        self.speakerButton.backgroundColor = [UIColor clearColor];
-        self.speakerButton.tintColor = [UIColor whiteColor];
-    }
+    self.callControlsView.speakerSelected = speakerSelected;
 }
 
 - (BOOL)speakerSelected
 {
-    return self.speakerButton.selected;
+    return self.callControlsView.speakerSelected;
 }
 
 - (void)createIncomingCallViewForFriend:(NSString *)nickname
@@ -335,24 +251,12 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 - (void)showResumeButton
 {
-    self.resumeButton.hidden = NO;
-
-    [self.videoHorizontalConstraint uninstall];
-
-    [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
-        self.videoHorizontalConstraint = make.right.equalTo(self.controlsContainerView);
-    }];
+    [self.callControlsView showResumeButton];
 }
 
 - (void)hideResumeButton
 {
-    self.resumeButton.hidden = YES;
-
-    [self.videoHorizontalConstraint uninstall];
-
-    [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
-        self.videoHorizontalConstraint = make.centerX.equalTo(self.controlsContainerView);
-    }];
+    [self.callControlsView hideResumeButton];
 }
 
 - (void)hideIncomingCallView
@@ -392,25 +296,6 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.subLabel setNeedsDisplay];
 }
 
-- (UIButton *)createButtonWithImageName:(NSString *)imageName action:(SEL)action
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    UIImage *image = [UIImage imageNamed:imageName];
-    [button setImage:image forState:UIControlStateNormal];
-
-    button.tintColor = [UIColor whiteColor];
-
-    button.contentMode = UIViewContentModeScaleAspectFill;
-    button.layer.cornerRadius = kButtonSide / 2.0f;
-    button.layer.masksToBounds = YES;
-    button.layer.borderColor = [UIColor whiteColor].CGColor;
-    button.layer.borderWidth = kButtonBorderWidth;
-
-    [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
-
-    return button;
-}
-
 - (void)setupIncomingCallViewForFriend:(NSString *)nickname
 {
     self.incomingCallNotification = [[IncomingCallNotificationView alloc] initWithNickname:nickname];
@@ -434,7 +319,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
     [self.topIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.bottomIncomingCallSpacer);
-        make.top.equalTo(self.controlsContainerView.bottom);
+        make.top.equalTo(self.callControlsView.bottom);
     }];
 
     [self.bottomIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
@@ -532,22 +417,24 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 #pragma mark - Call controls pressed
 
-- (void)micButtonPressed
-{
-    [self.delegate activeCallMicButtonPressed:self];
-}
-
-- (void)speakerButtonPressed
-{
-    [self.delegate activeCallSpeakerButtonPressed:self];
-}
-
 - (void)endCallButtonPressed
 {
     [self.delegate activeCallDeclineButtonPressed:self];
 }
 
-- (void)resumeButtonPressed
+#pragma mark - CallControlsViewDelegate
+
+- (void)callControlsMicButtonPressed:(CallControlsView *)callsControlView
+{
+    [self.delegate activeCallMicButtonPressed:self];
+}
+
+- (void)callControlsSpeakerButtonPressed:(CallControlsView *)callsControlView
+{
+    [self.delegate activeCallSpeakerButtonPressed:self];
+}
+
+- (void)callControlsResumeButtonPressed:(CallControlsView *)callsControlView
 {
     [self.delegate activeCallResumeButtonPressed:self];
 }
