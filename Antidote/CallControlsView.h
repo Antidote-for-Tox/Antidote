@@ -33,13 +33,8 @@
 @property (assign, nonatomic) BOOL speakerSelected;
 
 /**
- * Show the resume button so the user can resume a paused call.
+ * Set the resume button to be hidden or not.
  */
-- (void)showResumeButton;
-
-/**
- * Hide the resume button.
- */
-- (void)hideResumeButton;
+@property (assign, nonatomic) BOOL resumeButtonHidden;
 
 @end

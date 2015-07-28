@@ -44,8 +44,6 @@ static const CGFloat k3ButtonGap = 15.0;
 
     [self installConstraints];
 
-    [self hideResumeButton];
-
     return self;
 }
 
@@ -75,6 +73,7 @@ static const CGFloat k3ButtonGap = 15.0;
     self.resumeButton = [self createButtonWithImageName:@"call-pause" action:@selector(resumeButtonPressed)];
     self.resumeButton.tintColor = [[AppContext sharedContext].appearance callRedColor];
     self.resumeButton.layer.borderColor = [[AppContext sharedContext].appearance callRedColor].CGColor;
+    self.resumeButton.hidden = YES;
 
     [self addSubview:self.resumeButton];
 }
@@ -137,14 +136,7 @@ static const CGFloat k3ButtonGap = 15.0;
 {
     self.microphoneButton.selected = micSelected;
 
-    if (micSelected) {
-        self.microphoneButton.backgroundColor = [UIColor whiteColor];
-        self.microphoneButton.tintColor = [UIColor grayColor];
-    }
-    else {
-        self.microphoneButton.backgroundColor = [UIColor clearColor];
-        self.microphoneButton.tintColor = [UIColor whiteColor];
-    }
+    [self setButton:self.microphoneButton selected:micSelected];
 }
 
 - (BOOL)micSelected
@@ -156,14 +148,7 @@ static const CGFloat k3ButtonGap = 15.0;
 {
     self.speakerButton.selected = speakerSelected;
 
-    if (speakerSelected) {
-        self.speakerButton.backgroundColor = [UIColor whiteColor];
-        self.speakerButton.tintColor = [UIColor grayColor];
-    }
-    else {
-        self.speakerButton.backgroundColor = [UIColor clearColor];
-        self.speakerButton.tintColor = [UIColor whiteColor];
-    }
+    [self setButton:self.speakerButton selected:speakerSelected];
 }
 
 - (BOOL)speakerSelected
@@ -171,26 +156,29 @@ static const CGFloat k3ButtonGap = 15.0;
     return self.speakerButton.selected;
 }
 
-- (void)showResumeButton
+- (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
 {
-    self.resumeButton.hidden = NO;
+    self.resumeButton.hidden = resumeButtonHidden;
 
     [self.videoHorizontalConstraint uninstall];
 
-    [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
-        self.videoHorizontalConstraint = make.right.equalTo(self);
-    }];
+    if (resumeButtonHidden) {
+
+        [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
+            self.videoHorizontalConstraint = make.centerX.equalTo(self);
+        }];
+    }
+    else {
+
+        [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
+            self.videoHorizontalConstraint = make.right.equalTo(self);
+        }];
+    }
 }
 
-- (void)hideResumeButton
+- (BOOL)resumeButtonHidden
 {
-    self.resumeButton.hidden = YES;
-
-    [self.videoHorizontalConstraint uninstall];
-
-    [self.videoButton updateConstraints:^(MASConstraintMaker *make) {
-        self.videoHorizontalConstraint = make.centerX.equalTo(self);
-    }];
+    return self.resumeButton.hidden;
 }
 
 #pragma mark - Private
@@ -212,6 +200,18 @@ static const CGFloat k3ButtonGap = 15.0;
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
     return button;
+}
+
+- (void)setButton:(UIButton *)button selected:(BOOL)selected
+{
+    if (selected) {
+        button.backgroundColor = [UIColor whiteColor];
+        button.tintColor = [UIColor grayColor];
+    }
+    else {
+        button.backgroundColor = [UIColor clearColor];
+        button.tintColor = [UIColor whiteColor];
+    }
 }
 
 @end

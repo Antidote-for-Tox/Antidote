@@ -48,8 +48,6 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
-@property (strong, nonatomic) MASConstraint *videoHorizontalConstraint;
-
 @end
 
 @implementation ActiveCallViewController
@@ -69,7 +67,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
     [self installConstraints];
 
-    [self hideResumeButton];
+    self.resumeButtonHidden = YES;
 
     [self reloadPausedCalls];
 }
@@ -249,14 +247,13 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self setupIncomingCallViewForFriend:nickname];
 }
 
-- (void)showResumeButton
+- (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
 {
-    [self.callControlsView showResumeButton];
-}
+    if (self.callControlsView.resumeButtonHidden == resumeButtonHidden) {
+        return;
+    }
 
-- (void)hideResumeButton
-{
-    [self.callControlsView hideResumeButton];
+    self.callControlsView.resumeButtonHidden = resumeButtonHidden;
 }
 
 - (void)hideIncomingCallView
