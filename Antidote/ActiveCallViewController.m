@@ -217,8 +217,7 @@ static const CGFloat kAvatarDiameter = 180.0;
     [self.view addSubview:self.friendAvatar];
 
     [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.view);
+        make.center.equalTo(self.view);
     }];
 }
 
@@ -416,7 +415,7 @@ static const CGFloat kAvatarDiameter = 180.0;
 
     [self.subLabel setNeedsDisplay];
 
-    [self removeFriendAvatar];
+    [self hideCallPausedByFriendIfNeeded];
 }
 
 - (UIButton *)createButtonWithImageName:(NSString *)imageName action:(SEL)action
@@ -492,7 +491,7 @@ static const CGFloat kAvatarDiameter = 180.0;
     self.tableViewRefreshTimer = nil;
 }
 
-- (void)removeFriendAvatar
+- (void)hideCallPausedByFriendIfNeeded
 {
     if (! self.friendAvatar) {
         return;
