@@ -85,4 +85,9 @@
  */
 - (void)reloadPausedCalls;
 
+/**
+ * Use this when the friend has paused the call.
+ */
+- (void)showCallPausedByFriend;
+
 @end

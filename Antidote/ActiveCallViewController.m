@@ -13,6 +13,7 @@
 #import "PauseCallTableViewCell.h"
 #import "UITableViewCell+Utilities.h"
 #import "IncomingCallNotificationView.h"
+#import "AvatarsManager.h"
 #import "CallControlsView.h"
 
 static const CGFloat kIndent = 50.0;
@@ -24,6 +25,8 @@ static const CGFloat kTableViewBottomOffSet = 200.0;
 static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
 static const CGFloat kBadgeHeightWidth = 30.0;
 static const CGFloat kBadgeFontSize = 14.0;
+
+static const CGFloat kAvatarDiameter = 180.0;
 
 @interface ActiveCallViewController () <UITableViewDelegate,
                                         UITableViewDataSource,
@@ -48,6 +51,7 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
+@property (strong, nonatomic) UIImageView *friendAvatar;
 @end
 
 @implementation ActiveCallViewController
@@ -154,6 +158,26 @@ static const CGFloat kBadgeFontSize = 14.0;
     NSInteger numberOfPausedCalls = [self.dataSource activeCallControllerNumberOfPausedCalls:self];
     self.badgeLabel.text = [NSString stringWithFormat:@"%lu", numberOfPausedCalls];
 }
+
+- (void)createFriendAvatar
+{
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
+
+    UIImage *image = [avatars avatarFromString:self.nickname
+                                      diameter:kAvatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
+
+    self.friendAvatar = [[UIImageView alloc] initWithImage:image];
+
+    [self.view addSubview:self.friendAvatar];
+
+    [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.view);
+    }];
+}
+
+
 - (void)installConstraints
 {
     [super installConstraints];
@@ -284,6 +308,17 @@ static const CGFloat kBadgeFontSize = 14.0;
     [self.tableViewOfPausedCalls reloadData];
 }
 
+- (void)showCallPausedByFriend
+{
+    if (self.friendAvatar) {
+        return;
+    }
+
+    self.subLabel.text = NSLocalizedString(@"is holding the call", @"Calls");
+    self.callControlsView.hidden = YES;
+    [self createFriendAvatar];
+}
+
 #pragma mark - Private
 
 - (void)updateTimerLabel
@@ -291,6 +326,8 @@ static const CGFloat kBadgeFontSize = 14.0;
     self.subLabel.text = [NSString stringFromTimeInterval:self.callDuration];
 
     [self.subLabel setNeedsDisplay];
+
+    [self hideCallPausedByFriendIfNeeded];
 }
 
 - (void)setupIncomingCallViewForFriend:(NSString *)nickname
@@ -345,6 +382,18 @@ static const CGFloat kBadgeFontSize = 14.0;
 
     [self.tableViewRefreshTimer invalidate];
     self.tableViewRefreshTimer = nil;
+}
+
+- (void)hideCallPausedByFriendIfNeeded
+{
+    if (! self.friendAvatar) {
+        return;
+    }
+
+    [self.friendAvatar removeFromSuperview];
+    self.friendAvatar = nil;
+
+    self.callControlsView.hidden = NO;
 }
 
 #pragma mark - Call Menu
