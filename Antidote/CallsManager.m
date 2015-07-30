@@ -275,9 +275,8 @@
     if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
         AALogWarn(@"%@", error);
     }
-    ;
 
-    [controller hideResumeButton];
+    controller.resumeButtonHidden = YES;
 }
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller
@@ -478,9 +477,7 @@
 
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
 
-        if (call.pausedStatus == OCTCallPausedStatusByUser) {
-            [activeVC showResumeButton];
-        }
+        activeVC.resumeButtonHidden = ! (call.pausedStatus == OCTCallPausedStatusByUser);
 
         if (call.pausedStatus == OCTCallPausedStatusByFriend) {
             [activeVC showCallPausedByFriend];
