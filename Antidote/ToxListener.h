@@ -30,7 +30,7 @@ extern NSString *const kToxListenerGroupIdentifierFriendRequest;
 - (instancetype)initWithManager:(OCTManager *)manager;
 
 /**
- * Updates interface with current tox manager (connection status, tabbar badges, etc).
+ * Updates interface with current tox manager (connection status, tabbar badges, app icon badge etc).
  */
 - (void)performUpdates;
 
