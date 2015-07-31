@@ -20,6 +20,7 @@
 #import "ContentCellWithTitleEditable.h"
 #import "ContentCellWithAvatar.h"
 #import "ContentSeparatorCell.h"
+#import "ErrorHandler.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -203,7 +204,11 @@ typedef NS_ENUM(NSInteger, CellType) {
     NSMutableArray *arrayToChange = self.tableStructure[indexPath.section];
 
     if (type == CellTypeNameEditable) {
-        [[AppContext sharedContext].profileManager.toxManager.user setUserName:cell.mainText error:nil];
+        NSError *error;
+        if (! [[AppContext sharedContext].profileManager.toxManager.user setUserName:cell.mainText error:&error]) {
+            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSetUserName];
+            return;
+        }
 
         NSUInteger index = [arrayToChange indexOfObject:@(CellTypeNameEditable)];
         [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeNameImmutable)];
@@ -214,7 +219,11 @@ typedef NS_ENUM(NSInteger, CellType) {
         // }
     }
     else if (type == CellTypeStatusMessageEditable) {
-        [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:cell.mainText error:nil];
+        NSError *error;
+        if (! [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:cell.mainText error:&error]) {
+            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSetUserStatus];
+            return;
+        }
 
         NSUInteger index = [arrayToChange indexOfObject:@(CellTypeStatusMessageEditable)];
         [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeStatusMessageImmutable)];

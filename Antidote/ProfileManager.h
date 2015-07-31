@@ -43,12 +43,12 @@
 /**
  * Removes profile with given name.
  */
-- (void)deleteProfileWithName:(NSString *)name;
+- (BOOL)deleteProfileWithName:(NSString *)name error:(NSError **)error;
 
 /**
  * Return YES if renamed successfully, NO if name if already taken.
  */
-- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName;
+- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName error:(NSError **)error;
 
 /**
  * Return NSURL path with profile save file.

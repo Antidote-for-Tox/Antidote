@@ -14,6 +14,7 @@
 #import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "TabBarViewController.h"
+#import "ErrorHandler.h"
 
 @interface ProfilesListViewController () <UITableViewDataSource, UITableViewDelegate,
                                           UIDocumentInteractionControllerDelegate>
@@ -142,7 +143,12 @@
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Profiles List") handler:^{
             BOOL isCurrent = [self isCurrentProfile:name];
-            [[AppContext sharedContext].profileManager deleteProfileWithName:name];
+            NSError *error;
+
+            if (! [[AppContext sharedContext].profileManager deleteProfileWithName:name error:&error]) {
+                [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeDeleteProfile];
+                return;
+            }
 
             isCurrent ?  [self recreateControllers] : [self.tableView reloadData];
         }];
@@ -220,7 +226,13 @@
             return;
         }
 
-        [[AppContext sharedContext].profileManager renameProfileWithName:name toName:nName];
+        NSError *error;
+
+        if (! [[AppContext sharedContext].profileManager renameProfileWithName:name toName:nName error:&error]) {
+            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeRenameProfile];
+            return;
+        }
+
         [self.tableView reloadData];
     }];
 

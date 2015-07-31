@@ -66,6 +66,7 @@
 		11CFD0C71B40745E002C59DB /* ToxListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0C61B40745E002C59DB /* ToxListener.m */; };
 		11CFD0D11B407B57002C59DB /* UpdatesQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0D01B407B57002C59DB /* UpdatesQueue.m */; };
 		11E366621B6A2D0400E7E8D2 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E366611B6A2D0400E7E8D2 /* AddFriendViewController.m */; };
+		11E366661B6A40CF00E7E8D2 /* ErrorHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E366651B6A40CF00E7E8D2 /* ErrorHandler.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
 		11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFB1A7D8C5C00E19766 /* AdvancedSettingsViewController.m */; };
@@ -193,6 +194,8 @@
 		11CFD0D01B407B57002C59DB /* UpdatesQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdatesQueue.m; sourceTree = "<group>"; };
 		11E366601B6A2D0400E7E8D2 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
 		11E366611B6A2D0400E7E8D2 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
+		11E366641B6A40CF00E7E8D2 /* ErrorHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ErrorHandler.h; sourceTree = "<group>"; };
+		11E366651B6A40CF00E7E8D2 /* ErrorHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ErrorHandler.m; sourceTree = "<group>"; };
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
 		11FCD3481A5B283D00DE10CC /* CellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithSwitch.h; sourceTree = "<group>"; };
@@ -411,6 +414,7 @@
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				11E366631B6A40C500E7E8D2 /* ErrorHandler */,
 				11CFD0C81B407954002C59DB /* UpdatesAggregator */,
 				11A757441B0BB501005DAD82 /* AppContext */,
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
@@ -623,6 +627,15 @@
 				11CFD0D01B407B57002C59DB /* UpdatesQueue.m */,
 			);
 			name = UpdatesAggregator;
+			sourceTree = "<group>";
+		};
+		11E366631B6A40C500E7E8D2 /* ErrorHandler */ = {
+			isa = PBXGroup;
+			children = (
+				11E366641B6A40CF00E7E8D2 /* ErrorHandler.h */,
+				11E366651B6A40CF00E7E8D2 /* ErrorHandler.m */,
+			);
+			name = ErrorHandler;
 			sourceTree = "<group>";
 		};
 		11E57F4319C23CF100C8ACB8 /* Cells */ = {
@@ -939,6 +952,7 @@
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				116625D41B63D6BF0036ABC2 /* ContentCellWithTitleBasic.m in Sources */,
 				1182AF501B5458820095B476 /* ValueViewWithTitle.m in Sources */,
+				11E366661B6A40CF00E7E8D2 /* ErrorHandler.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
