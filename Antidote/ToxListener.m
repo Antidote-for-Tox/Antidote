@@ -68,8 +68,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 - (void)performUpdates
 {
     [self updateConnectionStatus:self.manager.user.connectionStatus];
-    [self updateFriendsBadge];
-    [self updateChatBadge];
+    [self updateBadges];
 }
 
 #pragma mark -  OCTSubmanagerUserDelegate
@@ -207,7 +206,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 
 - (void)didChangeFriendRequests
 {
-    [self updateFriendsBadge];
+    [self updateBadges];
 
     while (YES) {
         UpdatesQueue *queue = self.friendRequestsUpdateQueue;
@@ -227,7 +226,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 
 - (void)didChangeChats
 {
-    [self updateChatBadge];
+    [self updateBadges];
 }
 
 - (void)didChangeMessages
@@ -262,26 +261,25 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
                                                                                                  userStatus:userStatus];
 }
 
-- (void)updateFriendsBadge
+- (void)updateBadges
 {
-    NSUInteger number = [self.friendRequestsController numberOfRowsForSectionIndex:0];
-    NSString *badge = (number > 0) ? [NSString stringWithFormat : @"%lu", number] : nil;
+    NSUInteger friendRequestsNumber = [self.friendRequestsController numberOfRowsForSectionIndex:0];
+    NSString *badge = (friendRequestsNumber > 0) ? [NSString stringWithFormat : @"%lu", friendRequestsNumber] : nil;
 
     [[AppContext sharedContext].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexFriends];
-}
 
-- (void)updateChatBadge
-{
-    NSInteger number = 0;
+    NSInteger chatsNumber = 0;
     for (OCTChat *chat in self.chatsController.fetchedObjects) {
         if ([chat hasUnreadMessages]) {
-            number++;
+            chatsNumber++;
         }
     }
 
-    NSString *badge = (number > 0) ? [NSString stringWithFormat : @"%lu", number] : nil;
+    badge = (chatsNumber > 0) ? [NSString stringWithFormat : @"%lu", chatsNumber] : nil;
 
     [[AppContext sharedContext].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexChats];
+
+    [UIApplication sharedApplication].applicationIconBadgeNumber = friendRequestsNumber + chatsNumber;
 }
 
 @end

@@ -24,6 +24,7 @@
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
 #import "CallsManager.h"
+#import "ErrorHandler.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -134,11 +135,16 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
                       date:(NSDate *)date
 
 {
-    [[AppContext sharedContext].profileManager.toxManager.chats sendMessageToChat:self.chat
-                                                                             text:text
-                                                                             type:OCTToxMessageTypeNormal
-                                                                            error:nil];
-    // [self finishSendingMessageAnimated:YES];
+    NSError *error;
+    BOOL result = [[AppContext sharedContext].profileManager.toxManager.chats sendMessageToChat:self.chat
+                                                                                           text:text
+                                                                                           type:OCTToxMessageTypeNormal
+                                                                                          error:&error];
+
+    if (! result) {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendMessage];
+        return;
+    }
 }
 
 #pragma mark -  RBQFetchedResultsControllerDelegate
