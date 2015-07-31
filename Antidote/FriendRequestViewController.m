@@ -16,6 +16,7 @@
 #import "ProfileManager.h"
 #import "UIImage+Utilities.h"
 #import "ValueViewWithTitle.h"
+#import "ErrorHandler.h"
 
 static const CGFloat kHorizontalIndentation = 10.0;
 static const CGFloat kVerticalIndentation = 20.0;
@@ -95,7 +96,14 @@ static const CGFloat kButtonWidth = 120.0;
 
 - (void)acceptButtonPressed
 {
-    [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:self.request error:nil];
+    NSError *error;
+    BOOL result = [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:self.request
+                                                                                               error:&error];
+
+    if (! result) {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeApproveFriendRequest];
+        return;
+    }
 
     [self.delegate friendRequestViewControllerAcceptedRequest:self];
     [self.navigationController popViewControllerAnimated:YES];

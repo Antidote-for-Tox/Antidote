@@ -96,7 +96,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
                 initializeWithDefaultValues:isNewDirectory];
 }
 
-- (void)deleteProfileWithName:(NSString *)name
+- (BOOL)deleteProfileWithName:(NSString *)name error:(NSError **)error
 {
     NSAssert(name.length > 0, @"name cannot be empty");
 
@@ -110,7 +110,9 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    [fileManager removeItemAtPath:path error:nil];
+    if (! [fileManager removeItemAtPath:path error:error]) {
+        return NO;
+    }
 
     [self reloadAllProfiles];
 
@@ -118,16 +120,14 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
         NSString *nameToSwitch = [self.allProfiles firstObject] ?: kDefaultProfileName;
         [self switchToProfileWithName:nameToSwitch];
     }
+
+    return YES;
 }
 
-- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName
+- (BOOL)renameProfileWithName:(NSString *)name toName:(NSString *)toName error:(NSError **)error
 {
     NSAssert(name.length > 0, @"name cannot be empty");
     NSAssert(toName.length > 0, @"toName cannot be empty");
-
-    if ([self.allProfiles containsObject:toName]) {
-        return NO;
-    }
 
     BOOL isCurrent = [[self currentProfileName] isEqualToString:name];
 
@@ -139,7 +139,9 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     NSString *fromPath = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
     NSString *toPath = [[self saveDirectoryPath] stringByAppendingPathComponent:toName];
 
-    [[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:nil];
+    if (! [[NSFileManager defaultManager] moveItemAtPath:fromPath toPath:toPath error:error]) {
+        return NO;
+    }
 
     [self reloadAllProfiles];
 

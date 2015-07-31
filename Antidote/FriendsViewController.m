@@ -24,6 +24,7 @@
 #import "AvatarsManager.h"
 #import "UserDefaultsManager.h"
 #import "FriendRequestViewController.h"
+#import "ErrorHandler.h"
 
 typedef NS_ENUM(NSInteger, FriendsSort) {
     FriendsSortByNickname = 0,
@@ -462,7 +463,12 @@ static const CGFloat kSegmentedControlHeight = 25.0;
             OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
             OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
 
-            [[AppContext sharedContext].profileManager.toxManager.friends removeFriend:friend error:nil];
+            NSError *error;
+            if (! [[AppContext sharedContext].profileManager.toxManager.friends removeFriend:friend error:&error]) {
+                [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeRemoveFriend];
+                return;
+            }
+
             [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
         }];
 

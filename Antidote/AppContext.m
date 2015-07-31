@@ -9,6 +9,7 @@
 #import "AppContext.h"
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
+#import "ErrorHandler.h"
 #import "NotificationManager.h"
 #import "ProfileManager.h"
 #import "TabBarViewController.h"
@@ -21,6 +22,7 @@
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
+@property (strong, nonatomic, readwrite) ErrorHandler *errorHandler;
 @property (strong, nonatomic, readwrite) NotificationManager *notification;
 @property (strong, nonatomic, readwrite) ProfileManager *profileManager;
 @property (strong, nonatomic, readwrite) TabBarViewController *tabBarController;
@@ -83,6 +85,17 @@
     _avatars = [AvatarsManager new];
 
     return _avatars;
+}
+
+- (ErrorHandler *)errorHandler
+{
+    if (_errorHandler) {
+        return _errorHandler;
+    }
+
+    _errorHandler = [ErrorHandler new];
+
+    return _errorHandler;
 }
 
 - (NotificationManager *)notification

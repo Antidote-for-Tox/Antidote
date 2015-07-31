@@ -18,6 +18,7 @@
 #import "Helper.h"
 #import "UIViewController+Utilities.h"
 #import "NSString+Utilities.h"
+#import "ErrorHandler.h"
 
 static const CGFloat kTextViewTopOffset = 5.0;
 static const CGFloat kTextViewXOffset = 5.0;
@@ -36,6 +37,8 @@ static const CGFloat kSendAlertTextViewHeight = 70.0;
 
 @property (strong, nonatomic) UILabel *orLabel;
 @property (strong, nonatomic) UIButton *qrCodeButton;
+
+@property (strong, nonatomic) NSString *cachedMessage;
 
 @end
 
@@ -97,6 +100,7 @@ static const CGFloat kSendAlertTextViewHeight = 70.0;
     weakself;
 
     UITextView *textView = [UITextView new];
+    textView.text = self.cachedMessage;
     textView.placeholder = NSLocalizedString(@"Hello! Could you please add me to your friendlist?", @"Add Friend");
     textView.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:17.0];
     textView.layer.cornerRadius = 5.0;
@@ -123,11 +127,17 @@ static const CGFloat kSendAlertTextViewHeight = 70.0;
                                                style:SDCAlertActionStyleRecommended
                                              handler:^(SDCAlertAction *action) {
         strongself;
-        NSString *message = textView.text.length ? textView.text : textView.placeholder;
 
-        [[AppContext sharedContext].profileManager.toxManager.friends sendFriendRequestToAddress:self.textView.text
-                                                                                         message:message
-                                                                                           error:nil];
+        self.cachedMessage = textView.text;
+
+        OCTSubmanagerFriends *submanager = [AppContext sharedContext].profileManager.toxManager.friends;
+        NSString *message = textView.text.length ? textView.text : textView.placeholder;
+        NSError *error;
+
+        if (! [submanager sendFriendRequestToAddress:self.textView.text message:message error:&error]) {
+            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendFriendRequest];
+            return;
+        }
 
         [self.navigationController popViewControllerAnimated:YES];
     }]];

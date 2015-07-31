@@ -22,6 +22,7 @@
 #import "AppearanceManager.h"
 #import "ProfileManager.h"
 #import "OCTTox.h"
+#import "ErrorHandler.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -80,7 +81,12 @@
                                                          timeoutInterval:.1];
 
         NSURLResponse *response = nil;
-        [NSURLConnection sendSynchronousRequest:fileUrlRequest returningResponse:&response error:nil];
+        NSError *error;
+
+        if (! [NSURLConnection sendSynchronousRequest:fileUrlRequest returningResponse:&response error:&error]) {
+            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeOpenFileFromOtherApp];
+            return NO;
+        }
 
         NSString *mimeType = [response MIMEType];
 
