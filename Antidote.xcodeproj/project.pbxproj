@@ -47,7 +47,6 @@
 		118352C9197A867A0048CA64 /* UIColor+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 118352C8197A867A0048CA64 /* UIColor+Utilities.m */; };
 		1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1195D6001B28C2D6004E59FD /* ChatViewController.m */; };
 		119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB11D198B536300380557 /* AppDelegate+Utilities.m */; };
-		119BB122198BE77900380557 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 119BB121198BE77900380557 /* AddFriendViewController.m */; };
 		119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC11B3D4D75008CA975 /* ChatMessage.m */; };
 		119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFAC51B3DDFFE008CA975 /* AvatarsManager.m */; };
 		119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 119DFACD1B3EA34F008CA975 /* NotificationManager.m */; };
@@ -66,6 +65,7 @@
 		11CFD0C31B406A96002C59DB /* NotificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0C21B406A96002C59DB /* NotificationViewController.m */; };
 		11CFD0C71B40745E002C59DB /* ToxListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0C61B40745E002C59DB /* ToxListener.m */; };
 		11CFD0D11B407B57002C59DB /* UpdatesQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 11CFD0D01B407B57002C59DB /* UpdatesQueue.m */; };
+		11E366621B6A2D0400E7E8D2 /* AddFriendViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E366611B6A2D0400E7E8D2 /* AddFriendViewController.m */; };
 		11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 11E82AA119CD72E6001561CA /* PreviewItem.m */; };
 		11FCD34A1A5B283D00DE10CC /* CellWithSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FCD3491A5B283D00DE10CC /* CellWithSwitch.m */; };
 		11FE3FFC1A7D8C5C00E19766 /* AdvancedSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFB1A7D8C5C00E19766 /* AdvancedSettingsViewController.m */; };
@@ -155,8 +155,6 @@
 		1195D6001B28C2D6004E59FD /* ChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
 		119BB11C198B536300380557 /* AppDelegate+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AppDelegate+Utilities.h"; sourceTree = "<group>"; };
 		119BB11D198B536300380557 /* AppDelegate+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AppDelegate+Utilities.m"; sourceTree = "<group>"; };
-		119BB120198BE77900380557 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
-		119BB121198BE77900380557 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
 		119DFAC01B3D4D75008CA975 /* ChatMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatMessage.h; sourceTree = "<group>"; };
 		119DFAC11B3D4D75008CA975 /* ChatMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatMessage.m; sourceTree = "<group>"; };
 		119DFAC41B3DDFFE008CA975 /* AvatarsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AvatarsManager.h; sourceTree = "<group>"; };
@@ -193,6 +191,8 @@
 		11CFD0C61B40745E002C59DB /* ToxListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToxListener.m; sourceTree = "<group>"; };
 		11CFD0CF1B407B57002C59DB /* UpdatesQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UpdatesQueue.h; sourceTree = "<group>"; };
 		11CFD0D01B407B57002C59DB /* UpdatesQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UpdatesQueue.m; sourceTree = "<group>"; };
+		11E366601B6A2D0400E7E8D2 /* AddFriendViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddFriendViewController.h; sourceTree = "<group>"; };
+		11E366611B6A2D0400E7E8D2 /* AddFriendViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddFriendViewController.m; sourceTree = "<group>"; };
 		11E82AA019CD72E6001561CA /* PreviewItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreviewItem.h; sourceTree = "<group>"; };
 		11E82AA119CD72E6001561CA /* PreviewItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreviewItem.m; sourceTree = "<group>"; };
 		11FCD3481A5B283D00DE10CC /* CellWithSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CellWithSwitch.h; sourceTree = "<group>"; };
@@ -512,8 +512,8 @@
 		119BB11F198BE76600380557 /* AddFriend */ = {
 			isa = PBXGroup;
 			children = (
-				119BB120198BE77900380557 /* AddFriendViewController.h */,
-				119BB121198BE77900380557 /* AddFriendViewController.m */,
+				11E366601B6A2D0400E7E8D2 /* AddFriendViewController.h */,
+				11E366611B6A2D0400E7E8D2 /* AddFriendViewController.m */,
 			);
 			name = AddFriend;
 			sourceTree = "<group>";
@@ -925,9 +925,9 @@
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				116625DA1B63D7E50036ABC2 /* ContentCellWithTitleEditable.m in Sources */,
 				116625DD1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m in Sources */,
-				119BB122198BE77900380557 /* AddFriendViewController.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
 				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
+				11E366621B6A2D0400E7E8D2 /* AddFriendViewController.m in Sources */,
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
