@@ -8,6 +8,7 @@
 
 #import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <Masonry/Masonry.h>
+#import <UITextView+Placeholder/UITextView+Placeholder.h>
 
 #import "AddFriendViewController.h"
 #import "QRScannerController.h"
@@ -17,8 +18,8 @@
 #import "UIViewController+Utilities.h"
 #import "NSString+Utilities.h"
 
-static const CGFloat kTextViewTopOffset = 30.0;
-static const CGFloat kTextViewXOffset = 10.0;
+static const CGFloat kTextViewTopOffset = 5.0;
+static const CGFloat kTextViewXOffset = 5.0;
 static const CGFloat kQrCodeBottomSpacerDeltaHeight = 70.0;
 
 @interface AddFriendViewController () <UITextViewDelegate>
@@ -143,6 +144,7 @@ static const CGFloat kQrCodeBottomSpacerDeltaHeight = 70.0;
 - (void)createViews
 {
     self.textView = [UITextView new];
+    self.textView.placeholder = NSLocalizedString(@"Enter Tox ID", @"Add Friend");
     self.textView.delegate = self;
     self.textView.scrollEnabled = NO;
     self.textView.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:17.0];
@@ -151,6 +153,7 @@ static const CGFloat kQrCodeBottomSpacerDeltaHeight = 70.0;
     self.textView.returnKeyType = UIReturnKeyDone;
     self.textView.layer.cornerRadius = 5.0;
     self.textView.layer.borderWidth = 0.5;
+    self.textView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
     self.textView.layer.masksToBounds = YES;
     [self.view addSubview:self.textView];
 
