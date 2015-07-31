@@ -8,6 +8,7 @@
 
 #import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <Masonry/Masonry.h>
+#import <SDCAlertView/SDCAlertController.h>
 #import <UITextView+Placeholder/UITextView+Placeholder.h>
 
 #import "AddFriendViewController.h"
@@ -21,6 +22,10 @@
 static const CGFloat kTextViewTopOffset = 5.0;
 static const CGFloat kTextViewXOffset = 5.0;
 static const CGFloat kQrCodeBottomSpacerDeltaHeight = 70.0;
+
+static const CGFloat kSendAlertTextViewXOffset = 5.0;
+static const CGFloat kSendAlertTextViewBottomOffset = -10.0;
+static const CGFloat kSendAlertTextViewHeight = 70.0;
 
 @interface AddFriendViewController () <UITextViewDelegate>
 
@@ -91,27 +96,43 @@ static const CGFloat kQrCodeBottomSpacerDeltaHeight = 70.0;
     [self.textView resignFirstResponder];
     weakself;
 
-    NSString *defaultMessage = NSLocalizedString(@"Hello! Could you please add me to your friendlist?", @"Add Friend");
+    UITextView *textView = [UITextView new];
+    textView.placeholder = NSLocalizedString(@"Hello! Could you please add me to your friendlist?", @"Add Friend");
+    textView.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:17.0];
+    textView.layer.cornerRadius = 5.0;
+    textView.layer.masksToBounds = YES;
 
-    UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:NSLocalizedString(@"Message", @"Add Friend")];
-    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    SDCAlertController *alert = [SDCAlertController alertControllerWithTitle:NSLocalizedString(@"Message", @"Add Friend")
+                                                                     message:nil
+                                                              preferredStyle:SDCAlertControllerStyleAlert];
 
-    UITextField *textField = [alert textFieldAtIndex:0];
-    textField.placeholder = defaultMessage;
+    [alert.contentView addSubview:textView];
+    [textView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(alert.contentView);
+        make.bottom.equalTo(alert.contentView).offset(kSendAlertTextViewBottomOffset);
+        make.left.equalTo(alert.contentView).offset(kSendAlertTextViewXOffset);
+        make.right.equalTo(alert.contentView).offset(-kSendAlertTextViewXOffset);
+        make.height.equalTo(kSendAlertTextViewHeight);
+    }];
 
-    [alert bk_addButtonWithTitle:NSLocalizedString(@"Send", @"Add Friend") handler:^{
+    [alert addAction:[SDCAlertAction actionWithTitle:NSLocalizedString(@"Cancel", @"Add Friend")
+                                               style:SDCAlertActionStyleDefault
+                                             handler:nil]];
+
+    [alert addAction:[SDCAlertAction actionWithTitle:NSLocalizedString(@"Send", @"Add Friend")
+                                               style:SDCAlertActionStyleRecommended
+                                             handler:^(SDCAlertAction *action) {
         strongself;
-        NSString *message = textField.text.length ? textField.text : defaultMessage;
+        NSString *message = textView.text.length ? textView.text : textView.placeholder;
 
         [[AppContext sharedContext].profileManager.toxManager.friends sendFriendRequestToAddress:self.textView.text
                                                                                          message:message
                                                                                            error:nil];
 
         [self.navigationController popViewControllerAnimated:YES];
-    }];
-    [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Add Friend") handler:nil];
+    }]];
 
-    [alert show];
+    [alert presentWithCompletion:nil];
 }
 
 #pragma mark -  UITextViewDelegate
