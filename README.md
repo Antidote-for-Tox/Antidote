@@ -30,6 +30,8 @@ open Antidote.xcworkspace
 
 ## Features
 
+See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current and previous versions).
+
 -  one to one conversations
 -  ~~typing notification~~ *(temporary disabled)*
 -  emoticons
