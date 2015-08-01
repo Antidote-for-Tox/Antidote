@@ -32,7 +32,6 @@ typedef NS_ENUM(NSInteger, FriendsSort) {
     __FriendsSortCount,
 };
 
-static const CGFloat kCellHeight = 44.0;
 static const CGFloat kSegmentedControlHeight = 25.0;
 
 @interface FriendsViewController () <UITableViewDataSource,
@@ -179,8 +178,8 @@ static const CGFloat kSegmentedControlHeight = 25.0;
         case FriendsViewControllerTabFriends: {
             OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
 
-            cell.textLabel.text = friend.nickname;
-            cell.detailTextLabel.text = [self detailTextLabelForFriend:friend];
+            cell.name = friend.nickname;
+            cell.statusMessage = [self detailTextLabelForFriend:friend];
             cell.showStatusView = YES;
             cell.status = [Helper circleStatusFromFriend:friend];
             avatarString = friend.nickname;
@@ -190,8 +189,8 @@ static const CGFloat kSegmentedControlHeight = 25.0;
         case FriendsViewControllerTabRequests: {
             OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
 
-            cell.textLabel.text = request.publicKey;
-            cell.detailTextLabel.text = request.message;
+            cell.name = request.publicKey;
+            cell.statusMessage = request.message;
             cell.showStatusView = NO;
             avatarString = @"?";
 
@@ -199,8 +198,7 @@ static const CGFloat kSegmentedControlHeight = 25.0;
         }
     }
 
-    cell.imageView.image = [[AppContext sharedContext].avatars avatarFromString:avatarString
-                                                                       diameter:kFriendsCellImageViewSize];
+    cell.avatar = [[AppContext sharedContext].avatars avatarFromString:avatarString diameter:kFriendsCellAvatarSize];
 
 
     return cell;
@@ -235,11 +233,6 @@ static const CGFloat kSegmentedControlHeight = 25.0;
 }
 
 #pragma mark -  UITableViewDelegate
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return kCellHeight;
-}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -375,6 +368,7 @@ static const CGFloat kSegmentedControlHeight = 25.0;
 - (void)createTableView
 {
     self.tableView = [UITableView new];
+    self.tableView.estimatedRowHeight = 44.0;
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.backgroundColor = [UIColor whiteColor];
