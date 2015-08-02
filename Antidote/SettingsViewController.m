@@ -213,7 +213,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     MFMailComposeViewController *vc = [MFMailComposeViewController new];
     vc.navigationBar.tintColor = [[AppContext sharedContext].appearance textMainColor];
     [vc setSubject:@"Feedback"];
-    [vc setToRecipients:@[@"antidote@dvor.me"]];
+    [vc setToRecipients:@[@"feedback@antidote.im"]];
 
     if (withLogs) {
         AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;

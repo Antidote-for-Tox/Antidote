@@ -13,9 +13,9 @@
 #### TestFlight beta testing
 
 Antidote is available for beta testing via TestFlight. If you wish to participate, you must:
-- be on iOS 8+
-- install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore
-- give [dvor](https://github.com/dvor) your Apple ID email - you can send it to [antidote@dvor.me](mailto:antidote@dvor.me?subject=Beta%20testing) (optional PGP key is [0x95714DFB28AFC4DC](https://pgp.mit.edu/pks/lookup?op=get&search=0x95714DFB28AFC4DC)).
+- Be on iOS 8+.
+- Install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore.
+- Send your Apple ID email to [beta@antidote.im](mailto:beta@antidote.im?subject=Beta%20testing).
 
 #### Manual Installation
 
@@ -88,7 +88,7 @@ ln -s ../../pre-commit.sh .git/hooks/pre-commit
 
 ## Contact
 
-Dmytro Vorobiov [d@dvor.me](mailto:d@dvor.me)
+[feedback@antidote.im](mailto:feedback@antidote.im)
 
 ## License
 
