@@ -45,10 +45,11 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 
 #### What's next?
 
-You can check [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) to see what is in progress and what is on the list:
-- **X.X.X** *(milestone with next version number)* - this milestone has issues that will go to the next release
-- **Next** - stuff we'll probably do soon
-- **Faraway** - stuff we'll probably *won't* do soon.
+- [**Now**](https://github.com/Antidote-for-Tox/Antidote/milestones/Now) - this milestone has issues that will go to the next release.
+- [**Next**](https://github.com/Antidote-for-Tox/Antidote/milestones/Next) - stuff we'll probably do soon.
+- [**Faraway**](https://github.com/Antidote-for-Tox/Antidote/milestones/Faraway) - stuff we'll probably *won't* do soon.
+
+Also there may be other [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) that represent long-running and big ongoing tasks.
 
 ## Contribution
 
