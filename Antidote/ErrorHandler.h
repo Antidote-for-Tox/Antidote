@@ -22,6 +22,11 @@ typedef NS_ENUM(NSUInteger, ErrorHandlerType) {
     ErrorHandlerTypeRenameProfile,
 
     ErrorHandlerTypeOpenFileFromOtherApp,
+
+    ErrorHandlerTypeSendCallControl,
+    ErrorHandlerTypeCallToChat,
+    ErrorHandlerTypeAnswerCall,
+    ErrorHandlerTypeRouteAudio,
 };
 
 @interface ErrorHandler : NSObject
