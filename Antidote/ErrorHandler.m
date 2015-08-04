@@ -8,7 +8,7 @@
 
 #import "ErrorHandler.h"
 #import "OCTToxConstants.h"
-#import "OCTTOxAVConstants.h"
+#import "OCTToxAVConstants.h"
 
 #define ELOCALIZED(string) NSLocalizedString(string, @"ErrorHandler")
 #define INTERNAL_ERROR ELOCALIZED(@"Internal error")

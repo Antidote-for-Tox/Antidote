@@ -117,7 +117,6 @@
     OCTCall *call = [self.manager callToChat:chat enableAudio:YES enableVideo:NO error:&error];
 
     if (! call) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext] killCallsManager];
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeCallToChat];
         return;
@@ -236,7 +235,6 @@
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
 }
@@ -257,7 +255,6 @@
 
     NSError *error;
     if (! [self.manager routeAudioToSpeaker:selected error:&error]) {
-        AALogWarn(@"Error:%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeRouteAudio];
     }
     else {
@@ -277,7 +274,6 @@
     NSError *error;
 
     if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
 
@@ -290,7 +286,6 @@
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:self.pendingIncomingCall error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
     self.pendingIncomingCall = nil;
@@ -304,7 +299,6 @@
     NSError *error;
 
     if (! [self.manager answerCall:self.pendingIncomingCall enableAudio:YES enableVideo:NO error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeAnswerCall];
     }
 
@@ -326,7 +320,6 @@
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
                                  toCall:call
                                   error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
 }
@@ -345,7 +338,6 @@
     if (! [self.manager answerCall:call
                        enableAudio:YES
                        enableVideo:NO error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeAnswerCall];
     }
 }
@@ -363,7 +355,6 @@
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel
                                  toCall:call
                                   error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
 }
@@ -399,7 +390,6 @@
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlResume toCall:call error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
 
@@ -413,7 +403,6 @@
 
     NSError *error;
     if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
-        AALogWarn(@"%@", error);
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
     }
 }
@@ -427,7 +416,6 @@
 
         NSError *error;
         if (! [self.manager sendCallControl:OCTToxAVCallControlCancel toCall:call error:&error]) {
-            AALogWarn(@"%@", error);
             [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendCallControl];
         }
         return;
