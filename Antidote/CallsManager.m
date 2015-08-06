@@ -222,6 +222,23 @@
         else {
             activeVC.callDuration = call.callDuration;
         }
+
+        if (call.friendSendingVideo && ! activeVC.videoView) {
+            AALogVerbose(@"provide video feed to video view");
+            activeVC.videoView = [self.manager videoFeed];
+        }
+        else if (! call.friendSendingVideo && ! call.videoIsEnabled) {
+            activeVC.videoView = nil;
+        }
+
+        if (call.videoIsEnabled && ! activeVC.previewLayer) {
+            AALogVerbose(@"provide preview layer");
+            __weak ActiveCallViewController *weakVC = activeVC;
+            [self.manager getVideoCallPreview:^(CALayer *layer) {
+                ActiveCallViewController *strongVC = weakVC;
+                strongVC.previewLayer = layer;
+            }];
+        }
     }
 }
 
@@ -263,6 +280,18 @@
 
     UIDevice *currentDevice = [UIDevice currentDevice];
     currentDevice.proximityMonitoringEnabled = ! controller.speakerSelected;
+}
+
+- (void)activeCallVideoButtonPressed:(ActiveCallViewController *)controller
+{
+    OCTCall *call = [self.currentCall RLMObject];
+    NSError *error;
+
+    BOOL enable = ! controller.previewLayer;
+
+    if (! [self.manager enableVideoSending:enable forCall:call error:&error]) {
+        /* log error */
+    }
 }
 
 - (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller
@@ -441,6 +470,19 @@
             activeVC.delegate = self;
             activeVC.dataSource = self;
             viewController = activeVC;
+
+            if (call.friendSendingVideo) {
+                activeVC.videoView = [self.manager videoFeed];
+            }
+
+            if (call.videoIsEnabled) {
+                __weak ActiveCallViewController *weakVC = activeVC;
+                [self.manager getVideoCallPreview:^(CALayer *layer) {
+                    ActiveCallViewController *strongVC = weakVC;
+                    strongVC.previewLayer = layer;
+                }];
+            }
+
             break;
         }
         case OCTCallStatusDialing: {
@@ -483,6 +525,18 @@
             [activeVC showCallPausedByFriend];
         }
 
+        if (call.friendSendingVideo) {
+            activeVC.videoView = [self.manager videoFeed];
+        }
+
+        if (call.videoIsEnabled) {
+            __weak ActiveCallViewController *weakVC = activeVC;
+            [self.manager getVideoCallPreview:^(CALayer *layer) {
+                ActiveCallViewController *strongVC = weakVC;
+                strongVC.previewLayer = layer;
+            }];
+        }
+
         OCTFriend *friend = [call.chat.friends firstObject];
         self.currentCallViewController.nickname = friend.nickname;
         self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
@@ -512,6 +566,5 @@
     // https://github.com/Antidote-for-Tox/objcTox/issues/51
     [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
 }
-
 
 @end

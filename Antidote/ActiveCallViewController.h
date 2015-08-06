@@ -20,6 +20,7 @@
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller;
+- (void)activeCallVideoButtonPressed:(ActiveCallViewController *)controller;
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller;
@@ -67,6 +68,16 @@
  * Set whether or not the resume button is hidden.
  */
 @property (assign, nonatomic) BOOL resumeButtonHidden;
+
+/**
+ * Provide the video view for this controller.
+ */
+@property (strong, nonatomic) UIView *videoView;
+
+/**
+ * Provide a preview layer
+ */
+@property (strong, nonatomic) CALayer *previewLayer;
 
 /**
  * Create an incoming call view for friend

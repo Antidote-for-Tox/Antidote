@@ -8,18 +8,21 @@
 
 #import "CallControlsView.h"
 #import "AppearanceManager.h"
+#import "CompactControlsView.h"
 #import "Masonry.h"
 
 static const CGFloat kButtonBorderWidth = 1.5f;
-static const CGFloat kButtonSide = 75.0;
-static const CGFloat k3ButtonGap = 15.0;
+static const CGFloat k3ButtonGap = 30.0;
 
-@interface CallControlsView ()
+@interface CallControlsView () <CompactControlsViewDelegate>
 
 @property (strong, nonatomic) UIButton *videoButton;
 @property (strong, nonatomic) UIButton *microphoneButton;
 @property (strong, nonatomic) UIButton *speakerButton;
 @property (strong, nonatomic) UIButton *resumeButton;
+@property (strong, nonatomic) UIView *expandedView;
+
+@property (strong, nonatomic) CompactControlsView *compactView;
 
 @property (strong, nonatomic) MASConstraint *videoHorizontalConstraint;
 
@@ -37,6 +40,9 @@ static const CGFloat k3ButtonGap = 15.0;
 
     self.backgroundColor = [UIColor clearColor];
 
+    [self createExpandedView];
+    [self createCompactView];
+
     [self createVideoButton];
     [self createMicrophoneButton];
     [self createSpeakerButton];
@@ -47,42 +53,55 @@ static const CGFloat k3ButtonGap = 15.0;
     return self;
 }
 
+- (void)createExpandedView
+{
+    self.expandedView = [UIView new];
+    [self addSubview:self.expandedView];
+}
+
+- (void)createCompactView
+{
+    self.compactView = [CompactControlsView new];
+    self.compactView.delegate = self;
+
+    self.compactView.hidden = YES;
+}
 - (void)createVideoButton
 {
-    self.videoButton = [self createButtonWithImageName:@"call-video" action:nil];
+    self.videoButton = [self createCircularButtonWithImageName:@"call-video" action:@selector(videoButtonPressed)];
 
-    [self addSubview:self.videoButton];
+    [self.expandedView addSubview:self.videoButton];
 }
 
 - (void)createMicrophoneButton
 {
-    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
+    self.microphoneButton = [self createCircularButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
 
-    [self addSubview:self.microphoneButton];
+    [self.expandedView addSubview:self.microphoneButton];
 }
 
 - (void)createSpeakerButton
 {
-    self.speakerButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
+    self.speakerButton = [self createCircularButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
 
-    [self addSubview:self.speakerButton];
+    [self.expandedView addSubview:self.speakerButton];
 }
 
 - (void)createResumeButton
 {
-    self.resumeButton = [self createButtonWithImageName:@"call-pause" action:@selector(resumeButtonPressed)];
+    self.resumeButton = [self createCircularButtonWithImageName:@"call-pause" action:@selector(resumeButtonPressed)];
     self.resumeButton.tintColor = [[AppContext sharedContext].appearance callRedColor];
     self.resumeButton.layer.borderColor = [[AppContext sharedContext].appearance callRedColor].CGColor;
     self.resumeButton.hidden = YES;
 
-    [self addSubview:self.resumeButton];
+    [self.expandedView addSubview:self.resumeButton];
 }
 
 - (void)installConstraints
 {
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
-        make.size.equalTo(kButtonSide);
+        make.height.equalTo(self.videoButton.width);
         make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
 
         self.videoHorizontalConstraint = make.centerX.equalTo(self);
@@ -91,26 +110,28 @@ static const CGFloat k3ButtonGap = 15.0;
     [self.resumeButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.videoButton.left).with.offset(-k3ButtonGap);
         make.centerY.equalTo(self.videoButton);
-        make.size.equalTo(kButtonSide);
+        make.size.equalTo(self.videoButton);
     }];
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self);
+        make.left.equalTo(self.expandedView);
         make.right.equalTo(self.speakerButton.left).with.offset(-k3ButtonGap);
-        make.size.equalTo(kButtonSide);
+        make.size.equalTo(self.videoButton);
         make.top.equalTo(self.videoButton.bottom).with.offset(k3ButtonGap);
     }];
 
     [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self);
-        make.size.equalTo(kButtonSide);
+        make.right.equalTo(self.expandedView);
+        make.size.equalTo(self.videoButton);
         make.centerY.equalTo(self.microphoneButton);
     }];
+}
 
-    [self makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.videoButton);
-        make.bottom.equalTo(self.microphoneButton);
-    }];
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self layoutIfNeeded];
+    [self updateCornerRadius];
 }
 
 #pragma mark - Touch actions
@@ -130,11 +151,72 @@ static const CGFloat k3ButtonGap = 15.0;
     [self.delegate callControlsResumeButtonPressed:self];
 }
 
-#pragma makr - Public
+- (void)videoButtonPressed
+{
+    [self.delegate callControlsVideoButtonPressed:self];
+}
+
+- (void)endCallButtonPressed
+{
+    [self.delegate callControlsEndCallButtonPressed:self];
+}
+
+#pragma mark - CompactControlsViewDelegate
+
+- (void)compactControlsVideoButtonPressed:(CompactControlsView *)compactControlsView
+{
+    [self.delegate callControlsVideoButtonPressed:self];
+}
+
+- (void)compactControlsMicButtonPressed:(CompactControlsView *)compactControlsView
+{
+    [self.delegate callControlsMicButtonPressed:self];
+}
+
+- (void)compactControlsSpeakerButtonPressed:(CompactControlsView *)compactControlsView
+{
+    [self.delegate callControlsSpeakerButtonPressed:self];
+}
+
+- (void)compactControlsEndCallButtonPressed:(CompactControlsView *)compactControlsView
+{
+    [self.delegate callControlsEndCallButtonPressed:self];
+}
+
+- (void)compactControlsResumeButtonPressed:(CompactControlsView *)compactControlsView
+{
+    [self.delegate callControlsResumeButtonPressed:self];
+}
+
+#pragma mark - Public
+
+- (void)setType:(CallsControlsViewType)type
+{
+    _type = type;
+
+    self.compactView.hidden = (type == CallsControlsViewTypeExpand);
+    self.expandedView.hidden = (type == CallsControlsViewTypeCompact);
+
+    if (type == CallsControlsViewTypeCompact) {
+        [self.expandedView removeFromSuperview];
+        [self addSubview:self.compactView];
+        [self.compactView makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
+    }
+    else {
+        [self.compactView removeFromSuperview];
+        [self addSubview:self.expandedView];
+        [self.expandedView makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(self);
+        }];
+    }
+}
 
 - (void)setMicSelected:(BOOL)micSelected
 {
     self.microphoneButton.selected = micSelected;
+    self.compactView.micSelected = micSelected;
 
     [self setButton:self.microphoneButton selected:micSelected];
 }
@@ -147,6 +229,7 @@ static const CGFloat k3ButtonGap = 15.0;
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
     self.speakerButton.selected = speakerSelected;
+    self.compactView.speakerSelected = speakerSelected;
 
     [self setButton:self.speakerButton selected:speakerSelected];
 }
@@ -181,9 +264,14 @@ static const CGFloat k3ButtonGap = 15.0;
     return self.resumeButton.hidden;
 }
 
+- (void)setVideoButtonSelected:(BOOL)selected
+{
+    self.compactView.videoButtonSelected = selected;
+}
+
 #pragma mark - Private
 
-- (UIButton *)createButtonWithImageName:(NSString *)imageName action:(SEL)action
+- (UIButton *)createCircularButtonWithImageName:(NSString *)imageName action:(SEL)action
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *image = [UIImage imageNamed:imageName];
@@ -192,7 +280,6 @@ static const CGFloat k3ButtonGap = 15.0;
     button.tintColor = [UIColor whiteColor];
 
     button.contentMode = UIViewContentModeScaleAspectFill;
-    button.layer.cornerRadius = kButtonSide / 2.0f;
     button.layer.masksToBounds = YES;
     button.layer.borderColor = [UIColor whiteColor].CGColor;
     button.layer.borderWidth = kButtonBorderWidth;
@@ -212,6 +299,15 @@ static const CGFloat k3ButtonGap = 15.0;
         button.backgroundColor = [UIColor clearColor];
         button.tintColor = [UIColor whiteColor];
     }
+}
+
+- (void)updateCornerRadius
+{
+    CGFloat newCornerRadius = self.videoButton.frame.size.height / 2.0;
+    self.videoButton.layer.cornerRadius = newCornerRadius;
+    self.microphoneButton.layer.cornerRadius = newCornerRadius;
+    self.speakerButton.layer.cornerRadius = newCornerRadius;
+    self.resumeButton.layer.cornerRadius = newCornerRadius;
 }
 
 @end

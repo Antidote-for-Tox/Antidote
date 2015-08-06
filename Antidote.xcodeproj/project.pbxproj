@@ -74,6 +74,7 @@
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		F0028B011B6194E800B42D9C /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = F0028B001B6194E800B42D9C /* ringback.wav */; };
+		F015E2591B794FDA0052E1B3 /* CompactControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F015E2581B794FDA0052E1B3 /* CompactControlsView.m */; };
 		F04234F61B54254800B93009 /* CallsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F04234F51B54254800B93009 /* CallsManager.m */; };
 		F066F7D61B5F56B3002B2ADF /* IncomingCallNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */; };
 		F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */; };
@@ -221,6 +222,8 @@
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F0028B001B6194E800B42D9C /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
+		F015E2551B794DCC0052E1B3 /* CompactControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompactControlsView.h; sourceTree = "<group>"; };
+		F015E2581B794FDA0052E1B3 /* CompactControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompactControlsView.m; sourceTree = "<group>"; };
 		F04234F41B54254800B93009 /* CallsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallsManager.h; sourceTree = "<group>"; };
 		F04234F51B54254800B93009 /* CallsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallsManager.m; sourceTree = "<group>"; };
 		F066F7D41B5F56B3002B2ADF /* IncomingCallNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallNotificationView.h; sourceTree = "<group>"; };
@@ -763,6 +766,8 @@
 				F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */,
 				F0A37E371B6758610099B225 /* CallControlsView.h */,
 				F0A37E381B6758610099B225 /* CallControlsView.m */,
+				F015E2551B794DCC0052E1B3 /* CompactControlsView.h */,
+				F015E2581B794FDA0052E1B3 /* CompactControlsView.m */,
 			);
 			name = Call;
 			sourceTree = "<group>";
@@ -1081,6 +1086,7 @@
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
 				1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
+				F015E2591B794FDA0052E1B3 /* CompactControlsView.m in Sources */,
 				116625E01B63F4B80036ABC2 /* FriendCardViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1132,6 +1138,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1162,6 +1169,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

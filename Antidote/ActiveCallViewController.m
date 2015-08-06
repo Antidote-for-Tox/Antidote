@@ -28,6 +28,8 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 static const CGFloat kAvatarDiameter = 180.0;
 
+static const CGFloat kVideoPreviewSize = 50.0;
+
 @interface ActiveCallViewController () <UITableViewDelegate,
                                         UITableViewDataSource,
                                         PauseCallTableViewCellDelegate,
@@ -52,6 +54,8 @@ static const CGFloat kAvatarDiameter = 180.0;
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
 @property (strong, nonatomic) UIImageView *friendAvatar;
+@property (strong, nonatomic) UIView *previewView;
+
 @end
 
 @implementation ActiveCallViewController
@@ -189,11 +193,6 @@ static const CGFloat kAvatarDiameter = 180.0;
         make.height.equalTo(kEndCallButtonHeight);
     }];
 
-    [self.callControlsView makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view);
-        make.centerX.equalTo(self.view);
-    }];
-
     [self.callMenuButton makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(kButtonSide);
         make.right.equalTo(self.topViewContainer);
@@ -234,6 +233,37 @@ static const CGFloat kAvatarDiameter = 180.0;
     }];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [self adjustPreviewLayer];
+}
+
+- (void)updateCallsControlViewExpand
+{
+    self.callControlsView.type = CallsControlsViewTypeExpand;
+
+    [self.callControlsView remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
+        make.centerX.equalTo(self.view);
+        make.left.equalTo(self.view).with.offset(kIndent);
+        make.right.equalTo(self.view).with.offset(-kIndent);
+        make.bottom.equalTo(self.view.centerY).with.offset(-kIndent);
+    }];
+
+    self.endCallButton.hidden = NO;
+}
+
+- (void)updateCallsControlViewCondensed
+{
+    self.callControlsView.type = CallsControlsViewTypeCompact;
+    self.endCallButton.hidden = YES;
+
+    [self.callControlsView remakeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+    }];
+}
 #pragma mark - Public
 
 - (void)setCallDuration:(NSTimeInterval)callDuration
@@ -319,6 +349,71 @@ static const CGFloat kAvatarDiameter = 180.0;
     [self createFriendAvatar];
 }
 
+- (void)setVideoView:(UIView *)videoView
+{
+    _videoView = videoView;
+
+    if (self.videoView) {
+
+        if (self.previewView) {
+            [self.view insertSubview:self.videoView belowSubview:self.previewView];
+        }
+        else {
+            [self.view addSubview:self.videoView];
+        }
+
+        [self.videoView makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.equalTo(self.endCallButton.top).with.offset(-kIndent);
+            make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
+            make.left.equalTo(self.view);
+            make.right.equalTo(self.view);
+        }];
+
+        [self updateCallsControlViewCondensed];
+    }
+    else {
+        [self.videoView removeFromSuperview];
+
+        if (! self.previewLayer) {
+            [self updateCallsControlViewExpand];
+        }
+    }
+}
+
+- (void)setPreviewLayer:(CALayer *)previewLayer
+{
+    _previewLayer = previewLayer;
+
+    if (! self.previewLayer) {
+        [self.previewView removeFromSuperview];
+        [self.callControlsView setVideoButtonSelected:NO];
+        return;
+    }
+
+    if (self.previewLayer) {
+        self.previewView = [UIView new];
+        [self.previewView.layer addSublayer:self.previewLayer];
+
+        [self.view addSubview:self.previewView];
+        [self.view bringSubviewToFront:self.previewView];
+
+        [self.previewView makeConstraints:^(MASConstraintMaker *make) {
+            if (self.videoView) {
+                make.centerY.equalTo(self.videoView);
+            }
+            else {
+                make.centerY.equalTo(self.view);
+            }
+            make.right.equalTo(self.view);
+            make.size.equalTo(kVideoPreviewSize);
+        }];
+
+        self.previewLayer.frame = self.previewView.bounds;
+    }
+
+    [self.callControlsView setVideoButtonSelected:YES];
+}
+
 #pragma mark - Private
 
 - (void)updateTimerLabel
@@ -394,6 +489,14 @@ static const CGFloat kAvatarDiameter = 180.0;
     self.friendAvatar = nil;
 
     self.callControlsView.hidden = NO;
+}
+
+- (void)adjustPreviewLayer
+{
+    if (! self.previewLayer) {
+        return;
+    }
+    self.previewLayer.frame = self.previewView.bounds;
 }
 
 #pragma mark - Call Menu
@@ -485,4 +588,13 @@ static const CGFloat kAvatarDiameter = 180.0;
     [self.delegate activeCallResumeButtonPressed:self];
 }
 
+- (void)callControlsVideoButtonPressed:(CallControlsView *)callsControlView
+{
+    [self.delegate activeCallVideoButtonPressed:self];
+}
+
+- (void)callControlsEndCallButtonPressed:(CallControlsView *)callsControlView
+{
+    [self.delegate activeCallDeclineButtonPressed:self];
+}
 @end
