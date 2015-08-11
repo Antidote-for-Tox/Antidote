@@ -14,12 +14,12 @@
 #import "UITableViewCell+Utilities.h"
 #import "IncomingCallNotificationView.h"
 #import "AvatarsManager.h"
-#import "CallControlsView.h"
+#import "ExpandedControlsView.h"
+#import "CompactControlsView.h"
+#import "VideoAndPreviewView.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSide = 75.0;
-static const CGFloat kEndCallButtonHeight = 45.0;
-static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat kTableViewBottomOffSet = 200.0;
 
 static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
@@ -28,16 +28,14 @@ static const CGFloat kBadgeFontSize = 14.0;
 
 static const CGFloat kAvatarDiameter = 180.0;
 
-static const CGFloat kVideoPreviewSize = 50.0;
-
 @interface ActiveCallViewController () <UITableViewDelegate,
                                         UITableViewDataSource,
                                         PauseCallTableViewCellDelegate,
                                         IncomingCallNotificationViewDelegate,
                                         CallControlsViewDelegate>
 
-@property (strong, nonatomic) UIButton *endCallButton;
-@property (strong, nonatomic) CallControlsView *callControlsView;
+@property (strong, nonatomic) ExpandedControlsView *expandedControlsView;
+@property (strong, nonatomic) CompactControlsView *compactControlsView;
 
 @property (strong, nonatomic) IncomingCallNotificationView *incomingCallNotification;
 @property (strong, nonatomic) UIView *bottomIncomingCallSpacer;
@@ -54,7 +52,7 @@ static const CGFloat kVideoPreviewSize = 50.0;
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
 @property (strong, nonatomic) UIImageView *friendAvatar;
-@property (strong, nonatomic) UIView *previewView;
+@property (strong, nonatomic) VideoAndPreviewView *videoContainerView;
 
 @end
 
@@ -65,8 +63,9 @@ static const CGFloat kVideoPreviewSize = 50.0;
 {
     [super viewDidLoad];
 
-    [self createEndCallButton];
-    [self createCallControlsView];
+    [self createExpandedCallControlsView];
+    [self createCompactCallControlsView];
+    [self createVideoContainerView];
 
     [self createCallMenuButton];
     [self createPauseCallContainer];
@@ -82,28 +81,29 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
 #pragma mark - View setup
 
-- (void)createEndCallButton
+- (void)createExpandedCallControlsView
 {
-    self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
-    [self.endCallButton addTarget:self action:@selector(endCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.endCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
+    self.expandedControlsView = [ExpandedControlsView new];
+    self.expandedControlsView.delegate = self;
 
-    UIImage *image = [UIImage imageNamed:@"call-decline"];
-    [self.endCallButton setImage:image forState:UIControlStateNormal];
-    self.endCallButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.endCallButton.layer.borderWidth = kButtonBorderWidth;
-    self.endCallButton.tintColor = [UIColor whiteColor];
-
-    [self.view addSubview:self.endCallButton];
+    [self.view addSubview:self.expandedControlsView];
 }
 
-- (void)createCallControlsView
+- (void)createCompactCallControlsView
 {
-    self.callControlsView = [CallControlsView new];
-    self.callControlsView.delegate = self;
+    self.compactControlsView = [CompactControlsView new];
+    self.compactControlsView.delegate = self;
+    self.compactControlsView.hidden = YES;
 
-    [self.view insertSubview:self.callControlsView belowSubview:self.topViewContainer];
+    [self.view addSubview:self.compactControlsView];
+}
+
+- (void)createVideoContainerView
+{
+    self.videoContainerView = [VideoAndPreviewView new];
+    self.videoContainerView.hidden = YES;
+
+    [self.view addSubview:self.videoContainerView];
 }
 
 - (void)createCallMenuButton
@@ -187,13 +187,6 @@ static const CGFloat kVideoPreviewSize = 50.0;
 {
     [super installConstraints];
 
-    [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).with.offset(-kIndent);
-        make.left.equalTo(self.view).with.offset(kIndent);
-        make.right.equalTo(self.view).with.offset(-kIndent);
-        make.height.equalTo(kEndCallButtonHeight);
-    }];
-
     [self.callMenuButton makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(kButtonSide);
         make.right.equalTo(self.topViewContainer);
@@ -233,27 +226,27 @@ static const CGFloat kVideoPreviewSize = 50.0;
         make.centerY.equalTo(self.badgeContainer);
     }];
 
-    [self.callControlsView makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.view);
+    [self.expandedControlsView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
+
+    [self.compactControlsView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+    }];
+
+    [self.videoContainerView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topViewContainer.bottom);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.compactControlsView.top);
     }];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [self adjustPreviewLayer];
-}
-
-- (void)updateCallsControlViewExpand
-{
-    self.callControlsView.type = CallsControlsViewTypeExpand;
-    self.endCallButton.hidden = NO;
-}
-
-- (void)updateCallsControlViewCondensed
-{
-    self.callControlsView.type = CallsControlsViewTypeCompact;
-    self.endCallButton.hidden = YES;
-}
 #pragma mark - Public
 
 - (void)setCallDuration:(NSTimeInterval)callDuration
@@ -264,22 +257,34 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
 - (void)setMicSelected:(BOOL)micSelected
 {
-    self.callControlsView.micSelected = micSelected;
+    self.expandedControlsView.micSelected = micSelected;
+    self.compactControlsView.micSelected = micSelected;
 }
 
 - (BOOL)micSelected
 {
-    return self.callControlsView.micSelected;
+    return self.expandedControlsView.micSelected;
 }
 
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
-    self.callControlsView.speakerSelected = speakerSelected;
+    self.expandedControlsView.speakerSelected = speakerSelected;
+    self.compactControlsView.speakerSelected = speakerSelected;
 }
 
 - (BOOL)speakerSelected
 {
-    return self.callControlsView.speakerSelected;
+    return self.expandedControlsView.speakerSelected;
+}
+
+- (void)setVideoButtonSelected:(BOOL)videoButtonSelected
+{
+    self.compactControlsView.videoButtonSelected = videoButtonSelected;
+}
+
+- (BOOL)videoButtonSelected
+{
+    return self.compactControlsView.videoButtonSelected;
 }
 
 - (void)createIncomingCallViewForFriend:(NSString *)nickname
@@ -293,11 +298,11 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
 - (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
 {
-    if (self.callControlsView.resumeButtonHidden == resumeButtonHidden) {
+    if (self.expandedControlsView.resumeButtonHidden == resumeButtonHidden) {
         return;
     }
 
-    self.callControlsView.resumeButtonHidden = resumeButtonHidden;
+    self.expandedControlsView.resumeButtonHidden = resumeButtonHidden;
 }
 
 - (void)hideIncomingCallView
@@ -335,86 +340,32 @@ static const CGFloat kVideoPreviewSize = 50.0;
     }
 
     self.subLabel.text = NSLocalizedString(@"is holding the call", @"Calls");
-    self.callControlsView.hidden = YES;
+    self.expandedControlsView.hidden = YES;
     [self createFriendAvatar];
 }
 
 - (void)setVideoView:(UIView *)videoView
 {
+    self.videoContainerView.videoView = videoView;
 
-    if (_videoView == videoView) {
-        return;
-    }
+    [self switchToVideoViewIfNeeded];
+}
 
-    if (_videoView) {
-        [_videoView removeFromSuperview];
-    }
-
-    _videoView = videoView;
-
-    if (! videoView) {
-
-        if (! self.previewLayer) {
-            [self updateCallsControlViewExpand];
-        }
-
-        return;
-    }
-
-
-    if (self.previewView) {
-        [self.view insertSubview:self.videoView belowSubview:self.previewView];
-    }
-    else {
-        [self.view addSubview:self.videoView];
-    }
-
-    [self.videoView makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.endCallButton.top).with.offset(-kIndent);
-        make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-    }];
-
-    [self updateCallsControlViewCondensed];
+- (UIView *)videoView
+{
+    return self.videoContainerView.videoView;
 }
 
 - (void)setPreviewLayer:(CALayer *)previewLayer
 {
-    if (_previewLayer == previewLayer) {
-        return;
-    }
+    self.videoContainerView.previewLayer = previewLayer;
 
-    if (_previewLayer) {
-        [_previewLayer removeFromSuperlayer];
-    }
+    [self switchToVideoViewIfNeeded];
+}
 
-    _previewLayer = previewLayer;
-
-    if (! _previewLayer) {
-        [self.callControlsView setVideoButtonSelected:NO];
-        return;
-    }
-
-    self.previewView = [UIView new];
-    [self.previewView.layer addSublayer:self.previewLayer];
-
-    [self.view addSubview:self.previewView];
-    [self.view bringSubviewToFront:self.previewView];
-
-    [self.previewView makeConstraints:^(MASConstraintMaker *make) {
-        if (self.videoView) {
-            make.centerY.equalTo(self.videoView.bottom);
-        }
-        else {
-            make.centerY.equalTo(self.view);
-        }
-        make.right.equalTo(self.view);
-        make.size.equalTo(kVideoPreviewSize);
-    }];
-
-    self.previewLayer.frame = self.previewView.bounds;
-    [self.callControlsView setVideoButtonSelected:YES];
+- (CALayer *)previewLayer
+{
+    return self.videoContainerView.previewLayer;
 }
 
 #pragma mark - Private
@@ -456,7 +407,7 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
     [self.bottomIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.bottomIncomingCallSpacer);
-        make.bottom.equalTo(self.endCallButton.top);
+        make.bottom.equalTo(self.compactControlsView.top);
     }];
 }
 
@@ -491,15 +442,14 @@ static const CGFloat kVideoPreviewSize = 50.0;
     [self.friendAvatar removeFromSuperview];
     self.friendAvatar = nil;
 
-    self.callControlsView.hidden = NO;
+    self.expandedControlsView.hidden = NO;
 }
 
-- (void)adjustPreviewLayer
+- (void)switchToVideoViewIfNeeded
 {
-    if (! self.previewLayer) {
-        return;
-    }
-    self.previewLayer.frame = self.previewView.bounds;
+    self.videoContainerView.hidden = ! (self.videoContainerView.videoView || self.videoContainerView.previewLayer);
+    self.expandedControlsView.hidden = (self.videoContainerView.videoView || self.videoContainerView.previewLayer);
+    self.compactControlsView.hidden = ! (self.videoContainerView.videoView || self.videoContainerView.previewLayer);
 }
 
 #pragma mark - Call Menu
@@ -576,27 +526,27 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
 #pragma mark - CallControlsViewDelegate
 
-- (void)callControlsMicButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsMicButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallMicButtonPressed:self];
 }
 
-- (void)callControlsSpeakerButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsSpeakerButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallSpeakerButtonPressed:self];
 }
 
-- (void)callControlsResumeButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsResumeButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallResumeButtonPressed:self];
 }
 
-- (void)callControlsVideoButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsVideoButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallVideoButtonPressed:self];
 }
 
-- (void)callControlsEndCallButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsEndCallButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallDeclineButtonPressed:self];
 }

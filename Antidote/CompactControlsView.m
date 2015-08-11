@@ -19,6 +19,7 @@ static const CGFloat kSpacing = 10.0;
 @property (strong, nonatomic) UIButton *speakerButton;
 @property (strong, nonatomic) UIButton *resumeButton;
 @property (strong, nonatomic) UIButton *endCallButton;
+
 @end
 
 @implementation CompactControlsView
@@ -112,26 +113,11 @@ static const CGFloat kSpacing = 10.0;
     }];
 }
 
-#pragma mark - Public
-
-- (void)setVideoButtonSelected:(BOOL)videoButtonSelected
-{
-    [self setButton:self.videoButton selected:videoButtonSelected];
-}
+#pragma mark - CallControlsViewProtocol
 
 - (void)setMicSelected:(BOOL)micSelected
 {
     [self setButton:self.microphoneButton selected:micSelected];
-}
-
-- (void)setSpeakerSelected:(BOOL)speakerSelected
-{
-    [self setButton:self.speakerButton selected:speakerSelected];
-}
-
-- (BOOL)videoButtonSelected
-{
-    return self.videoButton.selected;
 }
 
 - (BOOL)micSelected
@@ -139,31 +125,57 @@ static const CGFloat kSpacing = 10.0;
     return self.microphoneButton.selected;
 }
 
+- (void)setSpeakerSelected:(BOOL)speakerSelected
+{
+    [self setButton:self.speakerButton selected:speakerSelected];
+}
+
 - (BOOL)speakerSelected
 {
     return self.speakerButton.selected;
+}
+
+- (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
+{
+    /** to do **/
+}
+
+- (BOOL)resumeButtonHidden
+{
+    /** to do **/
+    return YES;
+}
+
+- (void)setVideoButtonSelected:(BOOL)videoButtonSelected
+{
+    [self setButton:self.videoButton selected:videoButtonSelected];
+}
+
+- (BOOL)videoButtonSelected
+{
+    return self.videoButton.selected;
 }
 
 #pragma mark - Touch Actions
 
 - (void)videoButtonPressed
 {
-    [self.delegate compactControlsVideoButtonPressed:self];
+    [self.delegate callControlsVideoButtonPressed:self];
 }
 
 - (void)micButtonPressed
 {
-    [self.delegate compactControlsMicButtonPressed:self];
+    [self.delegate callControlsMicButtonPressed:self];
 }
 
 - (void)speakerButtonPressed
 {
-    [self.delegate compactControlsSpeakerButtonPressed:self];
+    [self.delegate callControlsSpeakerButtonPressed:self];
 }
 
 - (void)endCallButtonPressed
 {
-    [self.delegate compactControlsEndCallButtonPressed:self];
+    [self.delegate callControlsEndCallButtonPressed:self];
 }
 
 #pragma mark - Private

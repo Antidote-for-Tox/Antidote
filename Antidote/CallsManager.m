@@ -50,7 +50,7 @@
 - (instancetype)init
 {
     AALogVerbose();
-    self = [super self];
+    self = [super init];
 
     if (! self) {
         return nil;
@@ -223,21 +223,34 @@
             activeVC.callDuration = call.callDuration;
         }
 
+
+        if (call.videoIsEnabled && ! activeVC.previewLayer) {
+            // Have to figure out a better way to do this so we don't have to give
+            // a dummy layer. Otherwise thread will keep calling previewLayer.
+            // Even with the below, getting or removing the the preview layer
+            // is locking up the main queue.
+            //            CALayer *dummyLayer = [CALayer new];
+            //            activeVC.previewLayer = dummyLayer;
+            //
+            //            __weak ActiveCallViewController *weakVC = activeVC;
+            //            [self.manager getVideoCallPreview:^(CALayer *layer) {
+            //                ActiveCallViewController *strongVC = weakVC;
+            //                strongVC.previewLayer = layer;
+            //            }];
+            activeVC.videoButtonSelected = YES;
+        }
+
         if (call.friendSendingVideo && ! activeVC.videoView) {
-            AALogVerbose(@"provide video feed to video view");
             activeVC.videoView = [self.manager videoFeed];
         }
-        else if (! call.friendSendingVideo && ! call.videoIsEnabled) {
+
+        if (! call.friendSendingVideo && activeVC.videoView) {
             activeVC.videoView = nil;
         }
 
-        if (call.videoIsEnabled && ! activeVC.previewLayer) {
-            AALogVerbose(@"provide preview layer");
-            __weak ActiveCallViewController *weakVC = activeVC;
-            [self.manager getVideoCallPreview:^(CALayer *layer) {
-                ActiveCallViewController *strongVC = weakVC;
-                strongVC.previewLayer = layer;
-            }];
+        if (! call.videoIsEnabled && activeVC.previewLayer) {
+            activeVC.previewLayer = nil;
+            activeVC.videoButtonSelected = NO;
         }
     }
 }
@@ -287,10 +300,12 @@
     OCTCall *call = [self.currentCall RLMObject];
     NSError *error;
 
-    BOOL enable = ! controller.previewLayer;
+    BOOL enable = ! call.videoIsEnabled;
 
     if (! [self.manager enableVideoSending:enable forCall:call error:&error]) {
         /* log error */
+
+        return;
     }
 }
 
@@ -470,19 +485,6 @@
             activeVC.delegate = self;
             activeVC.dataSource = self;
             viewController = activeVC;
-
-            if (call.friendSendingVideo) {
-                activeVC.videoView = [self.manager videoFeed];
-            }
-
-            if (call.videoIsEnabled) {
-                __weak ActiveCallViewController *weakVC = activeVC;
-                [self.manager getVideoCallPreview:^(CALayer *layer) {
-                    ActiveCallViewController *strongVC = weakVC;
-                    strongVC.previewLayer = layer;
-                }];
-            }
-
             break;
         }
         case OCTCallStatusDialing: {
@@ -523,18 +525,6 @@
 
         if (call.pausedStatus == OCTCallPausedStatusByFriend) {
             [activeVC showCallPausedByFriend];
-        }
-
-        if (call.friendSendingVideo) {
-            activeVC.videoView = [self.manager videoFeed];
-        }
-
-        if (call.videoIsEnabled) {
-            __weak ActiveCallViewController *weakVC = activeVC;
-            [self.manager getVideoCallPreview:^(CALayer *layer) {
-                ActiveCallViewController *strongVC = weakVC;
-                strongVC.previewLayer = layer;
-            }];
         }
 
         OCTFriend *friend = [call.chat.friends firstObject];

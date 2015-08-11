@@ -65,17 +65,22 @@
 @property (assign, nonatomic) BOOL speakerSelected;
 
 /**
+ * Set video button selected.
+ */
+@property (assign, nonatomic) BOOL videoButtonSelected;
+
+/**
  * Set whether or not the resume button is hidden.
  */
 @property (assign, nonatomic) BOOL resumeButtonHidden;
 
 /**
- * Provide the video view for this controller.
+ * Video view of friend
  */
 @property (strong, nonatomic) UIView *videoView;
 
 /**
- * Provide a preview layer
+ * Preview layer of video sending
  */
 @property (strong, nonatomic) CALayer *previewLayer;
 
