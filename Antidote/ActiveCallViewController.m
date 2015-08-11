@@ -102,7 +102,8 @@ static const CGFloat kVideoPreviewSize = 50.0;
 {
     self.callControlsView = [CallControlsView new];
     self.callControlsView.delegate = self;
-    [self.view addSubview:self.callControlsView];
+
+    [self.view insertSubview:self.callControlsView belowSubview:self.topViewContainer];
 }
 
 - (void)createCallMenuButton
@@ -231,6 +232,10 @@ static const CGFloat kVideoPreviewSize = 50.0;
         make.centerX.equalTo(self.badgeContainer);
         make.centerY.equalTo(self.badgeContainer);
     }];
+
+    [self.callControlsView makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
 }
 
 - (void)viewDidLayoutSubviews
@@ -241,15 +246,6 @@ static const CGFloat kVideoPreviewSize = 50.0;
 - (void)updateCallsControlViewExpand
 {
     self.callControlsView.type = CallsControlsViewTypeExpand;
-
-    [self.callControlsView remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
-        make.centerX.equalTo(self.view);
-        make.left.equalTo(self.view).with.offset(kIndent);
-        make.right.equalTo(self.view).with.offset(-kIndent);
-        make.bottom.equalTo(self.view.centerY).with.offset(-kIndent);
-    }];
-
     self.endCallButton.hidden = NO;
 }
 
@@ -257,12 +253,6 @@ static const CGFloat kVideoPreviewSize = 50.0;
 {
     self.callControlsView.type = CallsControlsViewTypeCompact;
     self.endCallButton.hidden = YES;
-
-    [self.callControlsView remakeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-    }];
 }
 #pragma mark - Public
 
@@ -351,66 +341,79 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
 - (void)setVideoView:(UIView *)videoView
 {
+
+    if (_videoView == videoView) {
+        return;
+    }
+
+    if (_videoView) {
+        [_videoView removeFromSuperview];
+    }
+
     _videoView = videoView;
 
-    if (self.videoView) {
-
-        if (self.previewView) {
-            [self.view insertSubview:self.videoView belowSubview:self.previewView];
-        }
-        else {
-            [self.view addSubview:self.videoView];
-        }
-
-        [self.videoView makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(self.endCallButton.top).with.offset(-kIndent);
-            make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
-            make.left.equalTo(self.view);
-            make.right.equalTo(self.view);
-        }];
-
-        [self updateCallsControlViewCondensed];
-    }
-    else {
-        [self.videoView removeFromSuperview];
+    if (! videoView) {
 
         if (! self.previewLayer) {
             [self updateCallsControlViewExpand];
         }
+
+        return;
     }
+
+
+    if (self.previewView) {
+        [self.view insertSubview:self.videoView belowSubview:self.previewView];
+    }
+    else {
+        [self.view addSubview:self.videoView];
+    }
+
+    [self.videoView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.endCallButton.top).with.offset(-kIndent);
+        make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+    }];
+
+    [self updateCallsControlViewCondensed];
 }
 
 - (void)setPreviewLayer:(CALayer *)previewLayer
 {
+    if (_previewLayer == previewLayer) {
+        return;
+    }
+
+    if (_previewLayer) {
+        [_previewLayer removeFromSuperlayer];
+    }
+
     _previewLayer = previewLayer;
 
-    if (! self.previewLayer) {
-        [self.previewView removeFromSuperview];
+    if (! _previewLayer) {
         [self.callControlsView setVideoButtonSelected:NO];
         return;
     }
 
-    if (self.previewLayer) {
-        self.previewView = [UIView new];
-        [self.previewView.layer addSublayer:self.previewLayer];
+    self.previewView = [UIView new];
+    [self.previewView.layer addSublayer:self.previewLayer];
 
-        [self.view addSubview:self.previewView];
-        [self.view bringSubviewToFront:self.previewView];
+    [self.view addSubview:self.previewView];
+    [self.view bringSubviewToFront:self.previewView];
 
-        [self.previewView makeConstraints:^(MASConstraintMaker *make) {
-            if (self.videoView) {
-                make.centerY.equalTo(self.videoView);
-            }
-            else {
-                make.centerY.equalTo(self.view);
-            }
-            make.right.equalTo(self.view);
-            make.size.equalTo(kVideoPreviewSize);
-        }];
+    [self.previewView makeConstraints:^(MASConstraintMaker *make) {
+        if (self.videoView) {
+            make.centerY.equalTo(self.videoView.bottom);
+        }
+        else {
+            make.centerY.equalTo(self.view);
+        }
+        make.right.equalTo(self.view);
+        make.size.equalTo(kVideoPreviewSize);
+    }];
 
-        self.previewLayer.frame = self.previewView.bounds;
-    }
-
+    self.previewLayer.frame = self.previewView.bounds;
     [self.callControlsView setVideoButtonSelected:YES];
 }
 
@@ -448,7 +451,7 @@ static const CGFloat kVideoPreviewSize = 50.0;
 
     [self.topIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.bottomIncomingCallSpacer);
-        make.top.equalTo(self.callControlsView.bottom);
+        make.top.equalTo(self.view.centerY);
     }];
 
     [self.bottomIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {

@@ -11,7 +11,9 @@
 #import "CompactControlsView.h"
 #import "Masonry.h"
 
+static const CGFloat kExpandedViewWidthIndents = 70.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
+static const CGFloat kExpandedViewHeight = 190.0;
 static const CGFloat k3ButtonGap = 30.0;
 
 @interface CallControlsView () <CompactControlsViewDelegate>
@@ -38,8 +40,6 @@ static const CGFloat k3ButtonGap = 30.0;
         return nil;
     }
 
-    self.backgroundColor = [UIColor clearColor];
-
     [self createExpandedView];
     [self createCompactView];
 
@@ -56,6 +56,8 @@ static const CGFloat k3ButtonGap = 30.0;
 - (void)createExpandedView
 {
     self.expandedView = [UIView new];
+
+    [self addSubview:self.expandedView];
     [self addSubview:self.expandedView];
 }
 
@@ -63,6 +65,7 @@ static const CGFloat k3ButtonGap = 30.0;
 {
     self.compactView = [CompactControlsView new];
     self.compactView.delegate = self;
+    [self addSubview:self.compactView];
 
     self.compactView.hidden = YES;
 }
@@ -100,7 +103,7 @@ static const CGFloat k3ButtonGap = 30.0;
 - (void)installConstraints
 {
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self);
+        make.top.equalTo(self.expandedView);
         make.height.equalTo(self.videoButton.width);
         make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
 
@@ -117,13 +120,27 @@ static const CGFloat k3ButtonGap = 30.0;
         make.left.equalTo(self.expandedView);
         make.right.equalTo(self.speakerButton.left).with.offset(-k3ButtonGap);
         make.size.equalTo(self.videoButton);
-        make.top.equalTo(self.videoButton.bottom).with.offset(k3ButtonGap);
+        make.bottom.equalTo(self.expandedView);
     }];
 
     [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.expandedView);
         make.size.equalTo(self.videoButton);
         make.centerY.equalTo(self.microphoneButton);
+        make.bottom.equalTo(self.expandedView);
+    }];
+
+    [self.expandedView makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self);
+        make.height.equalTo(kExpandedViewHeight);
+        make.left.equalTo(self).with.offset(kExpandedViewWidthIndents);
+        make.right.equalTo(self).with.offset(-kExpandedViewWidthIndents);
+    }];
+
+    [self.compactView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self);
+        make.left.equalTo(self);
+        make.right.equalTo(self);
     }];
 }
 
@@ -196,21 +213,6 @@ static const CGFloat k3ButtonGap = 30.0;
 
     self.compactView.hidden = (type == CallsControlsViewTypeExpand);
     self.expandedView.hidden = (type == CallsControlsViewTypeCompact);
-
-    if (type == CallsControlsViewTypeCompact) {
-        [self.expandedView removeFromSuperview];
-        [self addSubview:self.compactView];
-        [self.compactView makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
-        }];
-    }
-    else {
-        [self.compactView removeFromSuperview];
-        [self addSubview:self.expandedView];
-        [self.expandedView makeConstraints:^(MASConstraintMaker *make) {
-            make.edges.equalTo(self);
-        }];
-    }
 }
 
 - (void)setMicSelected:(BOOL)micSelected

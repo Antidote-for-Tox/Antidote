@@ -27,7 +27,7 @@ typedef NS_ENUM(NSUInteger, CallsControlsViewType) {
     CallsControlsViewTypeExpand,
 
     /**
-     * Use this view when showing video.
+     * Use this view when the in a tightly constrained area. ie landscape mode.
      * Controls are set up horizontally |-video-mic-speaker-endCall-|
      */
     CallsControlsViewTypeCompact,
