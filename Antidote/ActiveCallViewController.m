@@ -305,6 +305,11 @@ static const CGFloat kAvatarDiameter = 180.0;
     self.expandedControlsView.resumeButtonHidden = resumeButtonHidden;
 }
 
+- (BOOL)videoViewIsShown
+{
+    return (self.videoContainerView.videoView != nil);
+}
+
 - (void)hideIncomingCallView
 {
     [self.incomingCallNotification removeFromSuperview];
@@ -344,28 +349,18 @@ static const CGFloat kAvatarDiameter = 180.0;
     [self createFriendAvatar];
 }
 
-- (void)setVideoView:(UIView *)videoView
+- (void)provideVideoView:(UIView *)view
 {
-    self.videoContainerView.videoView = videoView;
+    self.videoContainerView.videoView = view;
 
     [self switchToVideoViewIfNeeded];
 }
 
-- (UIView *)videoView
+- (void)providePreviewLayer:(CALayer *)layer
 {
-    return self.videoContainerView.videoView;
-}
-
-- (void)setPreviewLayer:(CALayer *)previewLayer
-{
-    self.videoContainerView.previewLayer = previewLayer;
+    self.videoContainerView.previewLayer = layer;
 
     [self switchToVideoViewIfNeeded];
-}
-
-- (CALayer *)previewLayer
-{
-    return self.videoContainerView.previewLayer;
 }
 
 #pragma mark - Private
@@ -447,9 +442,11 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)switchToVideoViewIfNeeded
 {
-    self.videoContainerView.hidden = ! (self.videoContainerView.videoView || self.videoContainerView.previewLayer);
-    self.expandedControlsView.hidden = (self.videoContainerView.videoView || self.videoContainerView.previewLayer);
-    self.compactControlsView.hidden = ! (self.videoContainerView.videoView || self.videoContainerView.previewLayer);
+    BOOL videoVisible = (self.videoContainerView.videoView || self.previewViewIsShown);
+
+    self.videoContainerView.hidden = ! videoVisible;
+    self.expandedControlsView.hidden = videoVisible;
+    self.compactControlsView.hidden = ! videoVisible;
 }
 
 #pragma mark - Call Menu

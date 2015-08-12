@@ -75,14 +75,17 @@
 @property (assign, nonatomic) BOOL resumeButtonHidden;
 
 /**
- * Video view of friend
+ * YES if the video view is being shown, otherwise NO.
  */
-@property (strong, nonatomic) UIView *videoView;
+@property (nonatomic, assign, readonly) BOOL videoViewIsShown;
 
 /**
- * Preview layer of video sending
+ * Since it takes a while for the preview layer to be loaded,
+ * it is best to set this to YES to indicate that one is loaded and in progress
+ * or that it is already present.
+ * Set to YES if the preview view is being shown, otherwise NO.
  */
-@property (strong, nonatomic) CALayer *previewLayer;
+@property (nonatomic, assign) BOOL previewViewIsShown;
 
 /**
  * Create an incoming call view for friend
@@ -105,5 +108,17 @@
  * Use this when the friend has paused the call.
  */
 - (void)showCallPausedByFriend;
+
+/**
+ * Provide video view to view controller
+ * @param view Video view to provide.
+ */
+- (void)provideVideoView:(UIView *)view;
+
+/**
+ * Provide preview view layer to view controller.
+ * @param layer Layer of the preview video.
+ */
+- (void)providePreviewLayer:(CALayer *)layer;
 
 @end

@@ -224,32 +224,27 @@
         }
 
 
-        if (call.videoIsEnabled && ! activeVC.previewLayer) {
-            // Have to figure out a better way to do this so we don't have to give
-            // a dummy layer. Otherwise thread will keep calling previewLayer.
-            // Even with the below, getting or removing the the preview layer
-            // is locking up the main queue.
-            //            CALayer *dummyLayer = [CALayer new];
-            //            activeVC.previewLayer = dummyLayer;
-            //
-            //            __weak ActiveCallViewController *weakVC = activeVC;
-            //            [self.manager getVideoCallPreview:^(CALayer *layer) {
-            //                ActiveCallViewController *strongVC = weakVC;
-            //                strongVC.previewLayer = layer;
-            //            }];
+        if (call.videoIsEnabled && ! activeVC.previewViewIsShown) {
+            activeVC.previewViewIsShown = YES;
+            __weak ActiveCallViewController *weakVC = activeVC;
+            [self.manager getVideoCallPreview:^(CALayer *layer) {
+                ActiveCallViewController *strongVC = weakVC;
+                [strongVC providePreviewLayer:layer];
+            }];
             activeVC.videoButtonSelected = YES;
         }
 
-        if (call.friendSendingVideo && ! activeVC.videoView) {
-            activeVC.videoView = [self.manager videoFeed];
+        if (call.friendSendingVideo && ! activeVC.videoViewIsShown) {
+            [activeVC provideVideoView:[self.manager videoFeed]];
         }
 
-        if (! call.friendSendingVideo && activeVC.videoView) {
-            activeVC.videoView = nil;
+        if (! call.friendSendingVideo && activeVC.videoViewIsShown) {
+            [activeVC provideVideoView:nil];
         }
 
-        if (! call.videoIsEnabled && activeVC.previewLayer) {
-            activeVC.previewLayer = nil;
+        if (! call.videoIsEnabled && activeVC.previewViewIsShown) {
+            activeVC.previewViewIsShown = NO;
+            [activeVC providePreviewLayer:nil];
             activeVC.videoButtonSelected = NO;
         }
     }
