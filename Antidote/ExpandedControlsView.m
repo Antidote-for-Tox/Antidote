@@ -237,12 +237,12 @@ static const CGFloat kControlsContainerSpaceFromEndCall = 100.0;
 
 - (void)setVideoButtonSelected:(BOOL)selected
 {
-    NSAssert( YES, @"Video button should never be set here");
+    NSAssert(NO, @"Video button should never be set here");
 }
 
 - (BOOL)videoButtonSelected
 {
-    NSAssert(YES, @"Video button selected should not be checked here");
+    NSAssert(NO, @"Video button selected should not be checked here");
     return NO;
 }
 

@@ -52,7 +52,6 @@ static const CGFloat kPreviewViewHeight = 100.0;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self layoutIfNeeded]; // is this needed?
     [self adjustPreviewLayer];
 
 }
@@ -96,26 +95,24 @@ static const CGFloat kPreviewViewHeight = 100.0;
 
 - (void)setPreviewLayer:(CALayer *)previewLayer
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (previewLayer == _previewLayer) {
-            return;
-        }
+    if (previewLayer == _previewLayer) {
+        return;
+    }
 
-        if (_previewLayer) {
-            [_previewLayer removeFromSuperlayer];
-        }
+    if (_previewLayer) {
+        [_previewLayer removeFromSuperlayer];
+    }
 
-        _previewLayer = previewLayer;
+    _previewLayer = previewLayer;
 
-        if (! _previewLayer) {
-            self.previewView.hidden = YES;
-            return;
-        }
+    if (! _previewLayer) {
+        self.previewView.hidden = YES;
+        return;
+    }
 
-        [self.previewView.layer addSublayer:self.previewLayer];
-        self.previewView.hidden = NO;
-        [self adjustPreviewLayer];
-    });
+    [self.previewView.layer addSublayer:self.previewLayer];
+    self.previewView.hidden = NO;
+    [self adjustPreviewLayer];
 }
 
 - (void)setHidden:(BOOL)hidden
