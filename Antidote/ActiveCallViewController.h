@@ -20,6 +20,7 @@
 - (void)activeCallMicButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallSpeakerButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller;
+- (void)activeCallVideoButtonPressed:(ActiveCallViewController *)controller;
 
 - (void)activeCallDeclineIncomingCallButtonPressed:(ActiveCallViewController *)controller;
 - (void)activeCallAnswerIncomingCallButtonPressed:(ActiveCallViewController *)controller;
@@ -64,9 +65,27 @@
 @property (assign, nonatomic) BOOL speakerSelected;
 
 /**
+ * Set video button selected.
+ */
+@property (assign, nonatomic) BOOL videoButtonSelected;
+
+/**
  * Set whether or not the resume button is hidden.
  */
 @property (assign, nonatomic) BOOL resumeButtonHidden;
+
+/**
+ * YES if the video view is being shown, otherwise NO.
+ */
+@property (nonatomic, assign, readonly) BOOL videoViewIsShown;
+
+/**
+ * Since it takes a while for the preview layer to be loaded,
+ * it is best to set this to YES to indicate that one is loaded and in progress
+ * or that it is already present.
+ * Set to YES if the preview view is being shown, otherwise NO.
+ */
+@property (nonatomic, assign) BOOL previewViewIsShown;
 
 /**
  * Create an incoming call view for friend
@@ -89,5 +108,17 @@
  * Use this when the friend has paused the call.
  */
 - (void)showCallPausedByFriend;
+
+/**
+ * Provide video view to view controller
+ * @param view Video view to provide.
+ */
+- (void)provideVideoView:(UIView *)view;
+
+/**
+ * Provide preview view layer to view controller.
+ * @param layer Layer of the preview video.
+ */
+- (void)providePreviewLayer:(CALayer *)layer;
 
 @end

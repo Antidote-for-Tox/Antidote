@@ -14,12 +14,12 @@
 #import "UITableViewCell+Utilities.h"
 #import "IncomingCallNotificationView.h"
 #import "AvatarsManager.h"
-#import "CallControlsView.h"
+#import "ExpandedControlsView.h"
+#import "CompactControlsView.h"
+#import "VideoAndPreviewView.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kButtonSide = 75.0;
-static const CGFloat kEndCallButtonHeight = 45.0;
-static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat kTableViewBottomOffSet = 200.0;
 
 static const CGFloat kBadgeContainerHorizontalOffset = 10.0;
@@ -34,8 +34,8 @@ static const CGFloat kAvatarDiameter = 180.0;
                                         IncomingCallNotificationViewDelegate,
                                         CallControlsViewDelegate>
 
-@property (strong, nonatomic) UIButton *endCallButton;
-@property (strong, nonatomic) CallControlsView *callControlsView;
+@property (strong, nonatomic) ExpandedControlsView *expandedControlsView;
+@property (strong, nonatomic) CompactControlsView *compactControlsView;
 
 @property (strong, nonatomic) IncomingCallNotificationView *incomingCallNotification;
 @property (strong, nonatomic) UIView *bottomIncomingCallSpacer;
@@ -52,6 +52,8 @@ static const CGFloat kAvatarDiameter = 180.0;
 @property (strong, nonatomic) NSTimer *tableViewRefreshTimer;
 
 @property (strong, nonatomic) UIImageView *friendAvatar;
+@property (strong, nonatomic) VideoAndPreviewView *videoContainerView;
+
 @end
 
 @implementation ActiveCallViewController
@@ -61,8 +63,9 @@ static const CGFloat kAvatarDiameter = 180.0;
 {
     [super viewDidLoad];
 
-    [self createEndCallButton];
-    [self createCallControlsView];
+    [self createExpandedCallControlsView];
+    [self createCompactCallControlsView];
+    [self createVideoContainerView];
 
     [self createCallMenuButton];
     [self createPauseCallContainer];
@@ -78,27 +81,29 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 #pragma mark - View setup
 
-- (void)createEndCallButton
+- (void)createExpandedCallControlsView
 {
-    self.endCallButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
-    [self.endCallButton addTarget:self action:@selector(endCallButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-    self.endCallButton.layer.cornerRadius = kEndCallButtonHeight / 2.0f;
+    self.expandedControlsView = [ExpandedControlsView new];
+    self.expandedControlsView.delegate = self;
 
-    UIImage *image = [UIImage imageNamed:@"call-decline"];
-    [self.endCallButton setImage:image forState:UIControlStateNormal];
-    self.endCallButton.layer.borderColor = [UIColor blackColor].CGColor;
-    self.endCallButton.layer.borderWidth = kButtonBorderWidth;
-    self.endCallButton.tintColor = [UIColor whiteColor];
-
-    [self.view addSubview:self.endCallButton];
+    [self.view addSubview:self.expandedControlsView];
 }
 
-- (void)createCallControlsView
+- (void)createCompactCallControlsView
 {
-    self.callControlsView = [CallControlsView new];
-    self.callControlsView.delegate = self;
-    [self.view addSubview:self.callControlsView];
+    self.compactControlsView = [CompactControlsView new];
+    self.compactControlsView.delegate = self;
+    self.compactControlsView.hidden = YES;
+
+    [self.view addSubview:self.compactControlsView];
+}
+
+- (void)createVideoContainerView
+{
+    self.videoContainerView = [VideoAndPreviewView new];
+    self.videoContainerView.hidden = YES;
+
+    [self.view addSubview:self.videoContainerView];
 }
 
 - (void)createCallMenuButton
@@ -182,18 +187,6 @@ static const CGFloat kAvatarDiameter = 180.0;
 {
     [super installConstraints];
 
-    [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.view).with.offset(-kIndent);
-        make.left.equalTo(self.view).with.offset(kIndent);
-        make.right.equalTo(self.view).with.offset(-kIndent);
-        make.height.equalTo(kEndCallButtonHeight);
-    }];
-
-    [self.callControlsView makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.view);
-        make.centerX.equalTo(self.view);
-    }];
-
     [self.callMenuButton makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(kButtonSide);
         make.right.equalTo(self.topViewContainer);
@@ -232,6 +225,26 @@ static const CGFloat kAvatarDiameter = 180.0;
         make.centerX.equalTo(self.badgeContainer);
         make.centerY.equalTo(self.badgeContainer);
     }];
+
+    [self.expandedControlsView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topViewContainer.bottom).with.offset(kIndent);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
+
+    [self.compactControlsView makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(self.view);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+    }];
+
+    [self.videoContainerView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topViewContainer.bottom);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.compactControlsView.top);
+    }];
 }
 
 #pragma mark - Public
@@ -244,22 +257,34 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)setMicSelected:(BOOL)micSelected
 {
-    self.callControlsView.micSelected = micSelected;
+    self.expandedControlsView.micSelected = micSelected;
+    self.compactControlsView.micSelected = micSelected;
 }
 
 - (BOOL)micSelected
 {
-    return self.callControlsView.micSelected;
+    return self.expandedControlsView.micSelected;
 }
 
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
-    self.callControlsView.speakerSelected = speakerSelected;
+    self.expandedControlsView.speakerSelected = speakerSelected;
+    self.compactControlsView.speakerSelected = speakerSelected;
 }
 
 - (BOOL)speakerSelected
 {
-    return self.callControlsView.speakerSelected;
+    return self.expandedControlsView.speakerSelected;
+}
+
+- (void)setVideoButtonSelected:(BOOL)videoButtonSelected
+{
+    self.compactControlsView.videoButtonSelected = videoButtonSelected;
+}
+
+- (BOOL)videoButtonSelected
+{
+    return self.compactControlsView.videoButtonSelected;
 }
 
 - (void)createIncomingCallViewForFriend:(NSString *)nickname
@@ -273,11 +298,16 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
 {
-    if (self.callControlsView.resumeButtonHidden == resumeButtonHidden) {
+    if (self.expandedControlsView.resumeButtonHidden == resumeButtonHidden) {
         return;
     }
 
-    self.callControlsView.resumeButtonHidden = resumeButtonHidden;
+    self.expandedControlsView.resumeButtonHidden = resumeButtonHidden;
+}
+
+- (BOOL)videoViewIsShown
+{
+    return (self.videoContainerView.videoView != nil);
 }
 
 - (void)hideIncomingCallView
@@ -315,8 +345,22 @@ static const CGFloat kAvatarDiameter = 180.0;
     }
 
     self.subLabel.text = NSLocalizedString(@"is holding the call", @"Calls");
-    self.callControlsView.hidden = YES;
+    self.expandedControlsView.hidden = YES;
     [self createFriendAvatar];
+}
+
+- (void)provideVideoView:(UIView *)view
+{
+    self.videoContainerView.videoView = view;
+
+    [self switchToVideoViewIfNeeded];
+}
+
+- (void)providePreviewLayer:(CALayer *)layer
+{
+    self.videoContainerView.previewLayer = layer;
+
+    [self switchToVideoViewIfNeeded];
 }
 
 #pragma mark - Private
@@ -353,12 +397,12 @@ static const CGFloat kAvatarDiameter = 180.0;
 
     [self.topIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.bottomIncomingCallSpacer);
-        make.top.equalTo(self.callControlsView.bottom);
+        make.top.equalTo(self.view.centerY);
     }];
 
     [self.bottomIncomingCallSpacer makeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.bottomIncomingCallSpacer);
-        make.bottom.equalTo(self.endCallButton.top);
+        make.bottom.equalTo(self.compactControlsView.top);
     }];
 }
 
@@ -393,7 +437,16 @@ static const CGFloat kAvatarDiameter = 180.0;
     [self.friendAvatar removeFromSuperview];
     self.friendAvatar = nil;
 
-    self.callControlsView.hidden = NO;
+    self.expandedControlsView.hidden = NO;
+}
+
+- (void)switchToVideoViewIfNeeded
+{
+    BOOL videoVisible = (self.videoContainerView.videoView || self.previewViewIsShown);
+
+    self.videoContainerView.hidden = ! videoVisible;
+    self.expandedControlsView.hidden = videoVisible;
+    self.compactControlsView.hidden = ! videoVisible;
 }
 
 #pragma mark - Call Menu
@@ -470,19 +523,28 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 #pragma mark - CallControlsViewDelegate
 
-- (void)callControlsMicButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsMicButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallMicButtonPressed:self];
 }
 
-- (void)callControlsSpeakerButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsSpeakerButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallSpeakerButtonPressed:self];
 }
 
-- (void)callControlsResumeButtonPressed:(CallControlsView *)callsControlView
+- (void)callControlsResumeButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallResumeButtonPressed:self];
 }
 
+- (void)callControlsVideoButtonPressed:(ExpandedControlsView *)callsControlView
+{
+    [self.delegate activeCallVideoButtonPressed:self];
+}
+
+- (void)callControlsEndCallButtonPressed:(ExpandedControlsView *)callsControlView
+{
+    [self.delegate activeCallDeclineButtonPressed:self];
+}
 @end

@@ -50,7 +50,7 @@
 - (instancetype)init
 {
     AALogVerbose();
-    self = [super self];
+    self = [super init];
 
     if (! self) {
         return nil;
@@ -222,6 +222,31 @@
         else {
             activeVC.callDuration = call.callDuration;
         }
+
+
+        if (call.videoIsEnabled && ! activeVC.previewViewIsShown) {
+            activeVC.previewViewIsShown = YES;
+            __weak ActiveCallViewController *weakVC = activeVC;
+            [self.manager getVideoCallPreview:^(CALayer *layer) {
+                ActiveCallViewController *strongVC = weakVC;
+                [strongVC providePreviewLayer:layer];
+            }];
+            activeVC.videoButtonSelected = YES;
+        }
+
+        if (call.friendSendingVideo && ! activeVC.videoViewIsShown) {
+            [activeVC provideVideoView:[self.manager videoFeed]];
+        }
+
+        if (! call.friendSendingVideo && activeVC.videoViewIsShown) {
+            [activeVC provideVideoView:nil];
+        }
+
+        if (! call.videoIsEnabled && activeVC.previewViewIsShown) {
+            activeVC.previewViewIsShown = NO;
+            [activeVC providePreviewLayer:nil];
+            activeVC.videoButtonSelected = NO;
+        }
     }
 }
 
@@ -263,6 +288,20 @@
 
     UIDevice *currentDevice = [UIDevice currentDevice];
     currentDevice.proximityMonitoringEnabled = ! controller.speakerSelected;
+}
+
+- (void)activeCallVideoButtonPressed:(ActiveCallViewController *)controller
+{
+    OCTCall *call = [self.currentCall RLMObject];
+    NSError *error;
+
+    BOOL enable = ! call.videoIsEnabled;
+
+    if (! [self.manager enableVideoSending:enable forCall:call error:&error]) {
+        /* log error */
+
+        return;
+    }
 }
 
 - (void)activeCallResumeButtonPressed:(ActiveCallViewController *)controller
@@ -512,6 +551,5 @@
     // https://github.com/Antidote-for-Tox/objcTox/issues/51
     [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
 }
-
 
 @end
