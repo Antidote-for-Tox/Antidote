@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+
+@class VideoAndPreviewView;
+
+@protocol VideoAndPreviewViewDelegate <NSObject>
+
+@optional
+- (void)videoAndPreviewViewTapped:(VideoAndPreviewView *)videoView;
+
+@end
+
 /**
  * View that holds both the video view and preview
  * This class is responsible for showing the video UI.
@@ -34,5 +44,7 @@
  * If previewLayer is nil, the preview view will be hidden.
  */
 - (void)providePreviewLayer:(CALayer *)previewLayer;
+
+@property (weak, nonatomic) id<VideoAndPreviewViewDelegate> delegate;
 
 @end

@@ -19,6 +19,7 @@
 #import "VideoAndPreviewView.h"
 
 static const CGFloat kIndent = 50.0;
+static const CGFloat kCompactLandScapeXIndent = 100.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kTableViewBottomOffSet = 200.0;
 
@@ -32,7 +33,8 @@ static const CGFloat kAvatarDiameter = 180.0;
                                         UITableViewDataSource,
                                         PauseCallTableViewCellDelegate,
                                         IncomingCallNotificationViewDelegate,
-                                        CallControlsViewDelegate>
+                                        CallControlsViewDelegate,
+                                        VideoAndPreviewViewDelegate>
 
 @property (strong, nonatomic) ExpandedControlsView *expandedControlsView;
 @property (strong, nonatomic) CompactControlsView *compactControlsView;
@@ -44,7 +46,6 @@ static const CGFloat kAvatarDiameter = 180.0;
 @property (strong, nonatomic) UIButton *callMenuButton;
 @property (strong, nonatomic) UIView *badgeContainer;
 @property (strong, nonatomic) UILabel *badgeLabel;
-
 @property (strong, nonatomic) UIView *pauseCallsContainer;
 @property (strong, nonatomic) UITableView *tableViewOfPausedCalls;
 @property (strong, nonatomic) UIButton *tapOutsideTableViewButton;
@@ -63,9 +64,9 @@ static const CGFloat kAvatarDiameter = 180.0;
 {
     [super viewDidLoad];
 
+    [self createVideoContainerView];
     [self createExpandedCallControlsView];
     [self createCompactCallControlsView];
-    [self createVideoContainerView];
 
     [self createCallMenuButton];
     [self createPauseCallContainer];
@@ -102,8 +103,9 @@ static const CGFloat kAvatarDiameter = 180.0;
 {
     self.videoContainerView = [VideoAndPreviewView new];
     self.videoContainerView.hidden = YES;
+    self.videoContainerView.delegate = self;
 
-    [self.view addSubview:self.videoContainerView];
+    [self.view insertSubview:self.videoContainerView belowSubview:self.topViewContainer];
 }
 
 - (void)createCallMenuButton
@@ -240,11 +242,34 @@ static const CGFloat kAvatarDiameter = 180.0;
     }];
 
     [self.videoContainerView makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topViewContainer.bottom);
-        make.left.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.compactControlsView.top);
+        make.edges.equalTo(self.view);
     }];
+
+    [self updateUIForInterfaceOrientation:self.interfaceOrientation];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self updateUIForInterfaceOrientation:toInterfaceOrientation];
+
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
+- (void)updateUIForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    const BOOL isPortrait = UIInterfaceOrientationIsPortrait(interfaceOrientation);
+
+    const CGFloat compactControlsXIndents = isPortrait ? 0.0 : kCompactLandScapeXIndent;
+
+    [self.compactControlsView updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).with.offset(compactControlsXIndents);
+        make.right.equalTo(self.view).with.offset(-compactControlsXIndents);
+    }];
+
+    const BOOL isCompacted = ! isPortrait ||  [self videoViewIsShown];
+
+    self.compactControlsView.hidden = ! isCompacted;
+    self.expandedControlsView.hidden = isCompacted;
 }
 
 #pragma mark - Public
@@ -546,5 +571,28 @@ static const CGFloat kAvatarDiameter = 180.0;
 - (void)callControlsEndCallButtonPressed:(ExpandedControlsView *)callsControlView
 {
     [self.delegate activeCallDeclineButtonPressed:self];
+}
+
+#pragma mark - VideoAndPreviewViewDelegate
+
+- (void)videoAndPreviewViewTapped:(VideoAndPreviewView *)videoView
+{
+    BOOL hidden = (self.topViewContainer.alpha == 1.0);
+
+    CGFloat newAlpha = (self.topViewContainer.alpha == 0.0) ? 1.0 : 0.0;
+
+    if (newAlpha == 1.0) {
+        self.topViewContainer.hidden = NO;
+        self.compactControlsView.hidden = NO;
+    }
+
+    [UIView animateWithDuration:1.0
+                     animations:^{
+        self.topViewContainer.alpha = newAlpha;
+        self.compactControlsView.alpha = newAlpha;
+    } completion:^(BOOL finished) {
+        self.topViewContainer.hidden = hidden;
+        self.compactControlsView.hidden = hidden;
+    }];
 }
 @end
