@@ -268,8 +268,8 @@ static const CGFloat kAvatarDiameter = 180.0;
 
     const BOOL isCompacted = ! isPortrait ||  [self videoViewIsShown];
 
-    self.compactControlsView.hidden = isCompacted;
-    self.expandedControlsView.hidden = ! isCompacted;
+    self.compactControlsView.hidden = ! isCompacted;
+    self.expandedControlsView.hidden = isCompacted;
 }
 
 #pragma mark - Public
