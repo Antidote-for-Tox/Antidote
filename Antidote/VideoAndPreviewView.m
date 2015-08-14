@@ -14,6 +14,7 @@ static const CGFloat kPreviewViewHeight = 100.0;
 @interface VideoAndPreviewView ()
 
 @property (strong, nonatomic) UIView *previewView;
+@property (strong, nonatomic) UIButton *videoViewButton;
 
 @end
 
@@ -31,6 +32,8 @@ static const CGFloat kPreviewViewHeight = 100.0;
 
     self.backgroundColor = [UIColor blackColor];
 
+    [self createVideoViewButton];
+
     [self createPreviewView];
 
     [self installConstraints];
@@ -40,10 +43,21 @@ static const CGFloat kPreviewViewHeight = 100.0;
 
 #pragma mark - View setup
 
+- (void)createVideoViewButton
+{
+    self.videoViewButton = [UIButton new];
+    [self.videoViewButton addTarget:self
+                             action:@selector(videoViewTapped)
+                   forControlEvents:UIControlEventTouchUpInside];
+
+    [self addSubview:self.videoViewButton];
+}
+
 - (void)createPreviewView
 {
     self.previewView = [UIView new];
     self.previewView.backgroundColor = [UIColor blackColor];
+    self.previewView.userInteractionEnabled = NO;
     self.previewView.hidden = YES;
 
     [self addSubview:self.previewView];
@@ -57,6 +71,10 @@ static const CGFloat kPreviewViewHeight = 100.0;
 }
 - (void)installConstraints
 {
+    [self.videoViewButton makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self);
+    }];
+
     [self.previewView makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self);
         make.right.equalTo(self);
@@ -83,6 +101,7 @@ static const CGFloat kPreviewViewHeight = 100.0;
         return;
     }
 
+    _videoView.userInteractionEnabled = NO;
     [self insertSubview:_videoView belowSubview:self.previewView];
 
     [self.videoView makeConstraints:^(MASConstraintMaker *make) {
@@ -131,6 +150,15 @@ static const CGFloat kPreviewViewHeight = 100.0;
 - (void)adjustPreviewLayer
 {
     self.previewLayer.frame = self.previewView.bounds;
+}
+
+#pragma mark - VideoAndPreviewViewDelegate
+
+- (void)videoViewTapped
+{
+    if ([self.delegate respondsToSelector:@selector(videoAndPreviewViewTapped:)]) {
+        [self.delegate videoAndPreviewViewTapped:self];
+    }
 }
 
 @end
