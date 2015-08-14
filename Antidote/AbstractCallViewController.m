@@ -13,9 +13,11 @@
 #import "AppearanceManager.h"
 
 static const CGFloat kIndent = 20.0;
-static const CGFloat kNameLabelHeight = 30.0;
-static const CGFloat kTopContainerHeight = 100.0;
-static const CGFloat kSublabelFontSize = 16.0;
+static const CGFloat kNameLabelHeightPortrait = 30.0;
+static const CGFloat kNameLabelHeightLandscape = 20.0;
+static const CGFloat kTopContainerHeightPortrait = 100.0;
+static const CGFloat kTopContainerHeightLandscape = 75.0;
+static const CGFloat kSublabelFontSize = 13.0;
 static const CGFloat kNameLabelFontSize = 30.0;
 static const CGFloat kNameLabelHorizontalIndent = 30.0;
 
@@ -96,25 +98,74 @@ static const CGFloat kNameLabelHorizontalIndent = 30.0;
     [self.topViewContainer addSubview:self.subLabel];
 }
 
+#pragma mark - Autolayout
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        [self installConstraintsPortrait];
+    }
+    else {
+        [self installConstraintsLandscape];
+    }
+
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+}
+
 - (void)installConstraints
 {
-    [self.topViewContainer makeConstraints:^(MASConstraintMaker *make) {
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+        [self installConstraintsPortrait];
+    }
+    else {
+        [self installConstraintsLandscape];
+    }
+}
+
+- (void)installConstraintsPortrait
+{
+    [self.topViewContainer remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
-        make.width.equalTo(self.view);
-        make.height.equalTo(kTopContainerHeight);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.height.equalTo(kTopContainerHeightPortrait);
     }];
 
-    [self.nameLabel makeConstraints:^(MASConstraintMaker *make) {
+    [self.nameLabel remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topViewContainer).with.offset(kIndent);
-        make.height.equalTo(kNameLabelHeight);
+        make.height.equalTo(kNameLabelHeightPortrait);
         make.left.equalTo(self.topViewContainer).with.offset(kNameLabelHorizontalIndent);
         make.right.equalTo(self.topViewContainer).with.offset(-kNameLabelHorizontalIndent);
     }];
 
-    [self.subLabel makeConstraints:^(MASConstraintMaker *make) {
+    [self.subLabel remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLabel.bottom).with.offset(kIndent);
         make.centerX.equalTo(self.topViewContainer);
     }];
 }
+
+- (void)installConstraintsLandscape
+{
+    [self.topViewContainer remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view);
+        make.left.equalTo(self.view).with.offset(kIndent);
+        make.right.equalTo(self.view).with.offset(-kIndent);
+        make.height.equalTo(kTopContainerHeightLandscape);
+    }];
+
+    [self.nameLabel remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.topViewContainer).with.offset(kIndent);
+        make.height.equalTo(kNameLabelHeightLandscape);
+        make.left.equalTo(self.topViewContainer).with.offset(kNameLabelHorizontalIndent);
+        make.right.equalTo(self.topViewContainer).with.offset(-kNameLabelHorizontalIndent);
+    }];
+
+    [self.subLabel remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.nameLabel.bottom).with.offset(kIndent);
+        make.centerX.equalTo(self.topViewContainer);
+    }];
+}
+
+
 
 @end
