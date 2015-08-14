@@ -266,8 +266,11 @@ static const CGFloat kAvatarDiameter = 180.0;
         make.right.equalTo(self.view).with.offset(-compactControlsXIndents);
     }];
 
-    self.compactControlsView.hidden = isPortrait && ! [self videoViewIsShown];
-    self.expandedControlsView.hidden = [self videoViewIsShown] || ! isPortrait;
+    const BOOL isCompacted = ! isPortrait ||  [self videoViewIsShown];
+    const BOOL isExpanded = ! isCompacted;
+
+    self.compactControlsView.hidden = isExpanded;
+    self.expandedControlsView.hidden = ! isExpanded;
 }
 
 #pragma mark - Public
