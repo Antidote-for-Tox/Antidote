@@ -19,7 +19,7 @@
 #import "VideoAndPreviewView.h"
 
 static const CGFloat kIndent = 50.0;
-static const CGFloat kCompactLandScapeHorizontalIndent = 100.0;
+static const CGFloat kCompactLandScapeXIndent = 100.0;
 static const CGFloat kButtonSide = 75.0;
 static const CGFloat kTableViewBottomOffSet = 200.0;
 
@@ -244,6 +244,8 @@ static const CGFloat kAvatarDiameter = 180.0;
     [self.videoContainerView makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+
+    [self updateUIForInterfaceOrientation:self.interfaceOrientation];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -255,26 +257,19 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)updateUIForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
+    const BOOL isPortrait = UIInterfaceOrientationIsPortrait(interfaceOrientation);
 
-        [self.compactControlsView updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view);
-            make.right.equalTo(self.view);
-        }];
+    const CGFloat compactControlsXIndents = isPortrait ? 0.0 : kCompactLandScapeXIndent;
 
-        self.compactControlsView.hidden = YES;
-        self.expandedControlsView.hidden = [self videoViewIsShown];
-    }
-    else {
-        [self.compactControlsView updateConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.view).with.offset(-kCompactLandScapeHorizontalIndent);
-            make.left.equalTo(self.view).with.offset(kCompactLandScapeHorizontalIndent);
-        }];
+    [self.compactControlsView updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view).with.offset(compactControlsXIndents);
+        make.right.equalTo(self.view).with.offset(-compactControlsXIndents);
+    }];
 
-        self.compactControlsView.hidden = NO;
-        self.expandedControlsView.hidden = YES;
-    }
+    self.compactControlsView.hidden = isPortrait && ! [self videoViewIsShown];
+    self.expandedControlsView.hidden = [self videoViewIsShown] || ! isPortrait;
 }
+
 #pragma mark - Public
 
 - (void)setCallDuration:(NSTimeInterval)callDuration
