@@ -224,8 +224,8 @@
         }
 
 
-        if (call.videoIsEnabled && ! activeVC.previewViewIsShown) {
-            activeVC.previewViewIsShown = YES;
+        if (call.videoIsEnabled && ! activeVC.previewViewLoaded) {
+            activeVC.previewViewLoaded = YES;
             __weak ActiveCallViewController *weakVC = activeVC;
             [self.manager getVideoCallPreview:^(CALayer *layer) {
                 ActiveCallViewController *strongVC = weakVC;
@@ -242,8 +242,8 @@
             [activeVC provideVideoView:nil];
         }
 
-        if (! call.videoIsEnabled && activeVC.previewViewIsShown) {
-            activeVC.previewViewIsShown = NO;
+        if (! call.videoIsEnabled && activeVC.previewViewLoaded) {
+            activeVC.previewViewLoaded = NO;
             [activeVC providePreviewLayer:nil];
             activeVC.videoButtonSelected = NO;
         }

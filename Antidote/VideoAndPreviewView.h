@@ -24,9 +24,15 @@
 @property (strong, nonatomic) UIView *videoView;
 
 /**
- * The preview layer for the preview video.
- * Setting this to nil will hide the preview view.
+ * YES if the preview view is currently hidden, otherwise NO.
  */
-@property (strong, nonatomic) CALayer *previewLayer;
+@property (nonatomic, assign, readonly) BOOL previewViewHidden;
+
+/**
+ * Provide a preview layer to be added.
+ * @param previewLayer Layer to add for preview video.
+ * If previewLayer is nil, the preview view will be hidden.
+ */
+- (void)providePreviewLayer:(CALayer *)previewLayer;
 
 @end
