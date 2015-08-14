@@ -47,7 +47,11 @@ static NSString *const kRingBackFilePath = @"ringback.wav";
 
     [self createAudioPlayerWithFile:kRingToneFilePath];
 
-    [self.audioPlayer play];
+    [self setAudioSessionToSpeaker];
+
+    if (! [self.audioPlayer play]) {
+        AALogWarn(@"Unable to play ringtone");
+    }
 }
 
 - (void)playRingBackTone
@@ -58,7 +62,11 @@ static NSString *const kRingBackFilePath = @"ringback.wav";
 
     [self createAudioPlayerWithFile:kRingBackFilePath];
 
-    [self.audioPlayer play];
+    [self setAudioSessionToSpeaker];
+
+    if (! [self.audioPlayer play]) {
+        AALogWarn(@"Unable to play ringbacktone");
+    }
 }
 
 - (void)stopPlayingSound
@@ -69,6 +77,19 @@ static NSString *const kRingBackFilePath = @"ringback.wav";
 
     [self.audioPlayer stop];
     self.audioPlayer = nil;
+}
+
+#pragma mark - Private
+
+- (void)setAudioSessionToSpeaker
+{
+    NSError *error;
+
+    if (! [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback
+                                           withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker
+                                                 error:&error]) {
+        AALogWarn(@"Unable to set audio session to speaker %@", error);
+    }
 }
 
 @end
