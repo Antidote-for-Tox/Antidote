@@ -83,9 +83,9 @@
  * Since it takes a while for the preview layer to be loaded,
  * it is best to set this to YES to indicate that one is loaded and in progress
  * or that it is already present.
- * Set to YES if the preview view is being shown, otherwise NO.
+ * Set to YES before providing a preview layer.
  */
-@property (nonatomic, assign) BOOL previewViewIsShown;
+@property (nonatomic, assign) BOOL previewViewLoaded;
 
 /**
  * Create an incoming call view for friend

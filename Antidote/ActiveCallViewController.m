@@ -383,7 +383,7 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)providePreviewLayer:(CALayer *)layer
 {
-    self.videoContainerView.previewLayer = layer;
+    [self.videoContainerView providePreviewLayer:layer];
 
     [self switchToVideoViewIfNeeded];
 }
@@ -467,7 +467,7 @@ static const CGFloat kAvatarDiameter = 180.0;
 
 - (void)switchToVideoViewIfNeeded
 {
-    BOOL videoVisible = (self.videoContainerView.videoView || self.previewViewIsShown);
+    BOOL videoVisible = (self.videoContainerView.videoView || ! self.videoContainerView.previewViewHidden);
 
     self.videoContainerView.hidden = ! videoVisible;
     self.expandedControlsView.hidden = videoVisible;

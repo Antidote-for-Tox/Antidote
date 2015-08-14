@@ -11,9 +11,11 @@
 
 static const CGFloat kPreviewViewWidth = 75.0;
 static const CGFloat kPreviewViewHeight = 100.0;
+
 @interface VideoAndPreviewView ()
 
 @property (strong, nonatomic) UIView *previewView;
+@property (weak, nonatomic) CALayer *previewLayer;
 @property (strong, nonatomic) UIButton *videoViewButton;
 
 @end
@@ -112,25 +114,26 @@ static const CGFloat kPreviewViewHeight = 100.0;
     }];
 }
 
-- (void)setPreviewLayer:(CALayer *)previewLayer
+- (BOOL)previewViewHidden
 {
-    if (previewLayer == _previewLayer) {
-        return;
-    }
+    return self.previewView.hidden;
+}
 
-    if (_previewLayer) {
-        [_previewLayer removeFromSuperlayer];
-    }
-
-    _previewLayer = previewLayer;
-
-    if (! _previewLayer) {
+- (void)providePreviewLayer:(CALayer *)previewLayer
+{
+    if (! previewLayer) {
         self.previewView.hidden = YES;
         return;
     }
 
-    [self.previewView.layer addSublayer:self.previewLayer];
     self.previewView.hidden = NO;
+
+    if (previewLayer == self.previewLayer) {
+        return;
+    }
+
+    [self.previewView.layer addSublayer:previewLayer];
+    self.previewLayer = previewLayer;
     [self adjustPreviewLayer];
 }
 
