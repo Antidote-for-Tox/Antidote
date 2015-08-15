@@ -10,7 +10,9 @@
 #import "AppearanceManager.h"
 #import "Masonry.h"
 
-static const CGFloat kSpacing = 10.0;
+static const CGFloat kSpacing = 15.0;
+static const CGFloat kNotSelectedAlpha = 0.3;
+static const CGFloat kSelectedAlpha = 1.0;
 
 @interface CompactControlsView ()
 
@@ -47,35 +49,36 @@ static const CGFloat kSpacing = 10.0;
 
 - (void)createVideoButton
 {
-    self.videoButton = [self createButtonWithImageName:@"call-video" action:@selector(videoButtonPressed)];
+    self.videoButton = [self createCircularButtonWithImageName:@"call-video" action:@selector(videoButtonPressed)];
     [self addSubview:self.videoButton];
 }
 
 - (void)createMicButton
 {
-    self.microphoneButton = [self createButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
+    self.microphoneButton = [self createCircularButtonWithImageName:@"call-microphone-disable" action:@selector(micButtonPressed)];
 
     [self addSubview:self.microphoneButton];
 }
 
 - (void)createSpeakerButton
 {
-    self.speakerButton = [self createButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
+    self.speakerButton = [self createCircularButtonWithImageName:@"call-audio-enable" action:@selector(speakerButtonPressed)];
 
     [self addSubview:self.speakerButton];
 }
 
 - (void)createResumeButton
 {
-    self.resumeButton = [self createButtonWithImageName:@"call-pause" action:@selector(endCallButtonPressed)];
+    self.resumeButton = [self createCircularButtonWithImageName:@"call-pause" action:@selector(endCallButtonPressed)];
 
     [self addSubview:self.resumeButton];
 }
 
 - (void)createEndCallButton
 {
-    self.endCallButton = [self createButtonWithImageName:@"call-decline" action:@selector(endCallButtonPressed)];
-    self.endCallButton.tintColor = [[AppContext sharedContext].appearance callRedColor];
+    self.endCallButton = [self createCircularButtonWithImageName:@"call-decline" action:@selector(endCallButtonPressed)];
+    self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
+    self.endCallButton.tintColor = [UIColor whiteColor];
 
     [self addSubview:self.endCallButton];
 }
@@ -108,9 +111,15 @@ static const CGFloat kSpacing = 10.0;
     }];
 
     [self makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.videoButton);
-        make.bottom.equalTo(self.videoButton);
+        make.top.equalTo(self.videoButton).with.offset(-kSpacing);
+        make.bottom.equalTo(self.videoButton).with.offset(kSpacing);
     }];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self updateCornerRadius];
 }
 
 #pragma mark - CallControlsViewProtocol
@@ -180,13 +189,17 @@ static const CGFloat kSpacing = 10.0;
 
 #pragma mark - Private
 
-- (UIButton *)createButtonWithImageName:(NSString *)imageName action:(SEL)action
+- (UIButton *)createCircularButtonWithImageName:(NSString *)imageName action:(SEL)action
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     UIImage *image = [UIImage imageNamed:imageName];
+    button.backgroundColor = [UIColor whiteColor];
     [button setImage:image forState:UIControlStateNormal];
-    button.tintColor = [UIColor grayColor];
-    button.contentMode = UIViewContentModeScaleAspectFit;
+    button.tintColor = [UIColor blackColor];
+    button.alpha = kNotSelectedAlpha;
+
+    button.contentMode = UIViewContentModeScaleAspectFill;
+    button.layer.masksToBounds = YES;
 
     [button addTarget:self action:action forControlEvents:UIControlEventTouchUpInside];
 
@@ -195,12 +208,18 @@ static const CGFloat kSpacing = 10.0;
 
 - (void)setButton:(UIButton *)button selected:(BOOL)selected
 {
-    if (selected) {
-        button.tintColor = [UIColor whiteColor];
-    }
-    else {
-        button.tintColor = [UIColor grayColor];
-    }
+    CGFloat newAlpha = selected ? kSelectedAlpha : kNotSelectedAlpha;
+    button.alpha = newAlpha;
+}
+
+- (void)updateCornerRadius
+{
+    CGFloat newCornerRadius = self.videoButton.frame.size.height / 2.0;
+    self.videoButton.layer.cornerRadius = newCornerRadius;
+    self.microphoneButton.layer.cornerRadius = newCornerRadius;
+    self.speakerButton.layer.cornerRadius = newCornerRadius;
+    self.resumeButton.layer.cornerRadius = newCornerRadius;
+    self.endCallButton.layer.cornerRadius = newCornerRadius;
 }
 
 @end
