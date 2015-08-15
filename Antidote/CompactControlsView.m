@@ -78,6 +78,7 @@ static const CGFloat kSelectedAlpha = 1.0;
 {
     self.endCallButton = [self createCircularButtonWithImageName:@"call-decline" action:@selector(endCallButtonPressed)];
     self.endCallButton.backgroundColor = [[AppContext sharedContext].appearance callRedColor];
+    self.endCallButton.alpha = kSelectedAlpha;
     self.endCallButton.tintColor = [UIColor whiteColor];
 
     [self addSubview:self.endCallButton];
