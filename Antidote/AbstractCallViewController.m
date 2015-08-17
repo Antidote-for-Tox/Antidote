@@ -49,7 +49,6 @@ static const CGFloat kNameLabelXIndent = 30.0;
 - (void)setupBlurredBackground
 {
     self.view.backgroundColor = [UIColor clearColor];
-    self.view.opaque = NO;
 
     UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
     UIVisualEffectView *visualEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
