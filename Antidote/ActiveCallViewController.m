@@ -472,7 +472,6 @@ static const CGFloat kAvatarDiameter = 180.0;
     self.videoContainerView.hidden = ! videoVisible;
     self.expandedControlsView.hidden = videoVisible;
     self.compactControlsView.hidden = ! videoVisible;
-    self.view.opaque = videoVisible;
 }
 
 #pragma mark - Call Menu
