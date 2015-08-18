@@ -12,7 +12,8 @@
 
 @class ActiveCallViewController;
 /**
- * This controller is used during an active call.
+ * This abstract controller is used during an active (audio/video) call.
+ * Supports showing paused and incoming calls.
  */
 @protocol ActiveCallViewControllerDelegate <NSObject>
 
@@ -74,18 +75,6 @@
  */
 @property (assign, nonatomic) BOOL resumeButtonHidden;
 
-/**
- * YES if the video view is being shown, otherwise NO.
- */
-@property (nonatomic, assign, readonly) BOOL videoViewIsShown;
-
-/**
- * Since it takes a while for the preview layer to be loaded,
- * it is best to set this to YES to indicate that one is loaded and in progress
- * or that it is already present.
- * Set to YES before providing a preview layer.
- */
-@property (nonatomic, assign) BOOL previewViewLoaded;
 
 /**
  * Create an incoming call view for friend
@@ -105,20 +94,8 @@
 - (void)reloadPausedCalls;
 
 /**
- * Use this when the friend has paused the call.
+ * Override this to update the UI when a call is paused by friend.
  */
-- (void)showCallPausedByFriend;
-
-/**
- * Provide video view to view controller
- * @param view Video view to provide.
- */
-- (void)provideVideoView:(UIView *)view;
-
-/**
- * Provide preview view layer to view controller.
- * @param layer Layer of the preview video.
- */
-- (void)providePreviewLayer:(CALayer *)layer;
+- (void)friendPausedCall:(BOOL)paused NS_REQUIRES_SUPER;
 
 @end

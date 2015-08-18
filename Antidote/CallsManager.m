@@ -12,6 +12,8 @@
 #import "DialingCallViewController.h"
 #import "RingingCallViewController.h"
 #import "ActiveCallViewController.h"
+#import "VideoCallViewController.h"
+#import "AudioCallViewController.h"
 #import "AppDelegate+Utilities.h"
 #import "RBQFetchedResultsController.h"
 #import "ProfileManager.h"
@@ -182,9 +184,13 @@
         }
         case NSFetchedResultsChangeInsert:
             if (controller == self.allActiveCallsController) {
-                OCTCall *call = [anObject RLMObject];
-
                 [self.ringTonePlayer stopPlayingSound];
+
+                if ([self.currentCall isEqualToObject:anObject]) {
+                    return;
+                }
+
+                OCTCall *call = [anObject RLMObject];
 
                 // workaround for deadlock in objcTox
                 // https://github.com/Antidote-for-Tox/objcTox/issues/51
@@ -209,7 +215,22 @@
 
 - (void)updateCurrentCallInterface:(OCTCall *)call
 {
+    BOOL isActive = call.status == OCTCallStatusActive;
+    BOOL videoEnabled = call.videoIsEnabled || call.friendSendingVideo;
+
     if (! [self.currentCall.primaryKeyValue isEqualToString:call.uniqueIdentifier]) {
+        [self switchViewControllerForCall:call];
+    }
+
+    if (isActive && ! [self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
+        [self switchViewControllerForCall:call];
+    }
+
+    if (videoEnabled && isActive && ! [self.currentCallViewController isKindOfClass:[VideoCallViewController class]]) {
+        [self switchViewControllerForCall:call];
+    }
+
+    if (! videoEnabled && isActive && [self.currentCallViewController isKindOfClass:[VideoCallViewController class]]) {
         [self switchViewControllerForCall:call];
     }
 
@@ -217,35 +238,41 @@
         ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
 
         if (call.pausedStatus == OCTCallPausedStatusByFriend) {
-            [activeVC showCallPausedByFriend];
+            [activeVC friendPausedCall:YES];
         }
         else {
             activeVC.callDuration = call.callDuration;
+            [activeVC friendPausedCall:NO];
         }
 
+        activeVC.resumeButtonHidden = ! (call.pausedStatus & OCTCallPausedStatusByUser);
 
-        if (call.videoIsEnabled && ! activeVC.previewViewLoaded) {
-            activeVC.previewViewLoaded = YES;
-            __weak ActiveCallViewController *weakVC = activeVC;
-            [self.manager getVideoCallPreview:^(CALayer *layer) {
-                ActiveCallViewController *strongVC = weakVC;
-                [strongVC providePreviewLayer:layer];
-            }];
-            activeVC.videoButtonSelected = YES;
-        }
+        if ([self.currentCallViewController isKindOfClass:[VideoCallViewController class]]) {
+            VideoCallViewController *videoVC = (VideoCallViewController *)self.currentCallViewController;
 
-        if (call.friendSendingVideo && ! activeVC.videoViewIsShown) {
-            [activeVC provideVideoView:[self.manager videoFeed]];
-        }
+            if (call.videoIsEnabled && ! videoVC.previewViewLoaded) {
+                videoVC.previewViewLoaded = YES;
+                __weak VideoCallViewController *weakVC = videoVC;
+                [self.manager getVideoCallPreview:^(CALayer *layer) {
+                    VideoCallViewController *strongVC = weakVC;
+                    [strongVC providePreviewLayer:layer];
+                }];
+                activeVC.videoButtonSelected = YES;
+            }
 
-        if (! call.friendSendingVideo && activeVC.videoViewIsShown) {
-            [activeVC provideVideoView:nil];
-        }
+            if (call.friendSendingVideo && ! videoVC.videoViewIsShown) {
+                [videoVC provideVideoView:[self.manager videoFeed]];
+            }
 
-        if (! call.videoIsEnabled && activeVC.previewViewLoaded) {
-            activeVC.previewViewLoaded = NO;
-            [activeVC providePreviewLayer:nil];
-            activeVC.videoButtonSelected = NO;
+            if (! call.friendSendingVideo && videoVC.videoViewIsShown) {
+                [videoVC provideVideoView:nil];
+            }
+
+            if (! call.videoIsEnabled && videoVC.previewViewLoaded) {
+                videoVC.previewViewLoaded = NO;
+                [videoVC providePreviewLayer:nil];
+                videoVC.videoButtonSelected = NO;
+            }
         }
     }
 }
@@ -476,7 +503,14 @@
 
     switch (call.status) {
         case OCTCallStatusActive: {
-            ActiveCallViewController *activeVC = [ActiveCallViewController new];
+            ActiveCallViewController *activeVC;
+            BOOL isVideo = call.videoIsEnabled || call.friendSendingVideo;
+            activeVC = (isVideo) ? [VideoCallViewController new] : [AudioCallViewController new];
+
+            BOOL pausedByFriend = call.pausedStatus == OCTCallPausedStatusByFriend;
+            [activeVC friendPausedCall:pausedByFriend];
+            activeVC.resumeButtonHidden = ! (call.pausedStatus == OCTCallPausedStatusByUser);
+
             activeVC.delegate = self;
             activeVC.dataSource = self;
             viewController = activeVC;
@@ -510,24 +544,6 @@
     UIDevice *currentDevice = [UIDevice currentDevice];
     currentDevice.proximityMonitoringEnabled = (call.status == OCTCallStatusActive ||
                                                 call.status == OCTCallStatusDialing);
-
-    if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]] &&
-        (call.status == OCTCallStatusActive) ) {
-
-        ActiveCallViewController *activeVC = (ActiveCallViewController *)self.currentCallViewController;
-
-        activeVC.resumeButtonHidden = ! (call.pausedStatus == OCTCallPausedStatusByUser);
-
-        if (call.pausedStatus == OCTCallPausedStatusByFriend) {
-            [activeVC showCallPausedByFriend];
-        }
-
-        OCTFriend *friend = [call.chat.friends firstObject];
-        self.currentCallViewController.nickname = friend.nickname;
-        self.currentCall = [RBQSafeRealmObject safeObjectFromObject:call];
-
-        return;
-    }
 
     AbstractCallViewController *abstractVC = [self createViewControllerForCall:call];
 

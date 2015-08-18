@@ -157,6 +157,15 @@ static const CGFloat kControlsContainerSpaceFromEndCall = 100.0;
     [self updateCornerRadius];
 }
 
+#pragma mark - Public
+- (void)mainControlsHide:(BOOL)hide
+{
+    self.videoButton.hidden = hide;
+    self.microphoneButton.hidden = hide;
+    self.speakerButton.hidden = hide;
+    self.resumeButton.hidden = hide;
+}
+
 #pragma mark - Touch actions
 
 - (void)micButtonPressed
