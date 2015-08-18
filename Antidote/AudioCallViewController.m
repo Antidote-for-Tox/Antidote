@@ -33,6 +33,8 @@ static const CGFloat kIndent = 50.0;
 {
     self.expandedControlsView = [ExpandedControlsView new];
     self.expandedControlsView.delegate = self;
+    self.expandedControlsView.micSelected = self.micSelected;
+    self.expandedControlsView.speakerSelected = self.speakerSelected;
 
     [self.view addSubview:self.expandedControlsView];
 }
@@ -53,36 +55,29 @@ static const CGFloat kIndent = 50.0;
 
 - (void)setMicSelected:(BOOL)micSelected
 {
-    self.expandedControlsView.micSelected = micSelected;
-}
+    [super setMicSelected:micSelected];
 
-- (BOOL)micSelected
-{
-    return self.expandedControlsView.micSelected;
+    self.expandedControlsView.micSelected = micSelected;
 }
 
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
-    self.expandedControlsView.speakerSelected = speakerSelected;
-}
+    [super setSpeakerSelected:speakerSelected];
 
-- (BOOL)speakerSelected
-{
-    return self.expandedControlsView.speakerSelected;
+    self.expandedControlsView.speakerSelected = speakerSelected;
 }
 
 - (void)setVideoButtonSelected:(BOOL)videoButtonSelected
 {
-    self.expandedControlsView.videoButtonSelected = videoButtonSelected;
-}
+    [super setVideoButtonSelected:videoButtonSelected];
 
-- (BOOL)videoButtonSelected
-{
-    return self.expandedControlsView.videoButtonSelected;
+    self.expandedControlsView.videoButtonSelected = videoButtonSelected;
 }
 
 - (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
 {
+    [super setResumeButtonHidden:resumeButtonHidden];
+
     if (self.expandedControlsView.resumeButtonHidden == resumeButtonHidden) {
         return;
     }

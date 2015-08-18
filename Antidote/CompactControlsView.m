@@ -211,6 +211,7 @@ static const CGFloat kSelectedAlpha = 1.0;
 {
     CGFloat newAlpha = selected ? kSelectedAlpha : kNotSelectedAlpha;
     button.alpha = newAlpha;
+    button.selected = selected;
 }
 
 - (void)updateCornerRadius

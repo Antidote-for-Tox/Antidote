@@ -44,6 +44,8 @@
 
 @property (strong, nonatomic) RingTonePlayer *ringTonePlayer;
 
+@property (nonatomic, assign) BOOL speakerSelected;
+
 @end
 
 @implementation CallsManager
@@ -313,6 +315,7 @@
         controller.speakerSelected = selected;
     }
 
+    self.speakerSelected = controller.speakerSelected;
     UIDevice *currentDevice = [UIDevice currentDevice];
     currentDevice.proximityMonitoringEnabled = ! controller.speakerSelected;
 }
@@ -510,7 +513,8 @@
             BOOL pausedByFriend = call.pausedStatus == OCTCallPausedStatusByFriend;
             [activeVC friendPausedCall:pausedByFriend];
             activeVC.resumeButtonHidden = ! (call.pausedStatus == OCTCallPausedStatusByUser);
-
+            activeVC.micSelected = ! self.manager.enableMicrophone;
+            activeVC.speakerSelected = self.speakerSelected;
             activeVC.delegate = self;
             activeVC.dataSource = self;
             viewController = activeVC;

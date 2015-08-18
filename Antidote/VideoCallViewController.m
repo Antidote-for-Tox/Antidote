@@ -46,6 +46,9 @@ static const CGFloat kCompactLandScapeXIndent = 100.0;
 {
     self.compactControlsView = [CompactControlsView new];
     self.compactControlsView.delegate = self;
+    self.compactControlsView.videoButtonSelected = self.videoButtonSelected;
+    self.compactControlsView.micSelected = self.micSelected;
+    self.compactControlsView.speakerSelected = self.speakerSelected;
 
     [self.view addSubview:self.compactControlsView];
 }
@@ -107,36 +110,29 @@ static const CGFloat kCompactLandScapeXIndent = 100.0;
 
 - (void)setMicSelected:(BOOL)micSelected
 {
-    self.compactControlsView.micSelected = micSelected;
-}
+    [super setMicSelected:micSelected];
 
-- (BOOL)micSelected
-{
-    return NO;
+    self.compactControlsView.micSelected = micSelected;
 }
 
 - (void)setSpeakerSelected:(BOOL)speakerSelected
 {
-    self.compactControlsView.speakerSelected = speakerSelected;
-}
+    [super setSpeakerSelected:speakerSelected];
 
-- (BOOL)speakerSelected
-{
-    return self.compactControlsView.speakerSelected;
+    self.compactControlsView.speakerSelected = speakerSelected;
 }
 
 - (void)setVideoButtonSelected:(BOOL)videoButtonSelected
 {
-    self.compactControlsView.videoButtonSelected = videoButtonSelected;
-}
+    [super setVideoButtonSelected:videoButtonSelected];
 
-- (BOOL)videoButtonSelected
-{
-    return self.compactControlsView.videoButtonSelected;
+    self.compactControlsView.videoButtonSelected = videoButtonSelected;
 }
 
 - (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
 {
+    [super setResumeButtonHidden:resumeButtonHidden];
+
     if (self.compactControlsView.resumeButtonHidden == resumeButtonHidden) {
         return;
     }
