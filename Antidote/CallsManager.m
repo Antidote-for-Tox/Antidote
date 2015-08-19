@@ -88,6 +88,8 @@
 
     _ringTonePlayer = [RingTonePlayer new];
 
+    [UIApplication sharedApplication].idleTimerDisabled = YES;
+
     return self;
 }
 
@@ -100,6 +102,7 @@
     UIDevice *currentDevice = [UIDevice currentDevice];
     currentDevice.proximityMonitoringEnabled = NO;
 
+    [UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
 #pragma mark - Public
