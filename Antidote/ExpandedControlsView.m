@@ -100,7 +100,7 @@ static const CGFloat kControlsContainerSpaceFromEndCall = 100.0;
     }];
 
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.callControlsContainer);
+        make.top.greaterThanOrEqualTo(self.callControlsContainer);
         make.height.equalTo(self.videoButton.width);
         make.bottom.equalTo(self.microphoneButton.top).with.offset(-k3ButtonGap);
 
@@ -120,6 +120,7 @@ static const CGFloat kControlsContainerSpaceFromEndCall = 100.0;
     }];
 
     [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.microphoneButton.right).with.offset(k3ButtonGap);
         make.right.equalTo(self.callControlsContainer);
         make.size.equalTo(self.videoButton);
         make.centerY.equalTo(self.microphoneButton);
