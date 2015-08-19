@@ -98,6 +98,7 @@ static const CGFloat kCompactControlsHeight = 80.0;
     [super setMicSelected:micSelected];
 
     self.expandedControlsView.micSelected = micSelected;
+    self.compactedControlsView.micSelected = micSelected;
 }
 
 - (void)setSpeakerSelected:(BOOL)speakerSelected
@@ -105,6 +106,7 @@ static const CGFloat kCompactControlsHeight = 80.0;
     [super setSpeakerSelected:speakerSelected];
 
     self.expandedControlsView.speakerSelected = speakerSelected;
+    self.compactedControlsView.speakerSelected = speakerSelected;
 }
 
 - (void)setVideoButtonSelected:(BOOL)videoButtonSelected
@@ -112,6 +114,7 @@ static const CGFloat kCompactControlsHeight = 80.0;
     [super setVideoButtonSelected:videoButtonSelected];
 
     self.expandedControlsView.videoButtonSelected = videoButtonSelected;
+    self.compactedControlsView.videoButtonSelected = videoButtonSelected;
 }
 
 - (void)setResumeButtonHidden:(BOOL)resumeButtonHidden
@@ -123,6 +126,7 @@ static const CGFloat kCompactControlsHeight = 80.0;
     }
 
     self.expandedControlsView.resumeButtonHidden = resumeButtonHidden;
+    self.compactedControlsView.resumeButtonHidden = resumeButtonHidden;
 }
 
 - (void)friendPausedCall:(BOOL)paused
@@ -134,27 +138,27 @@ static const CGFloat kCompactControlsHeight = 80.0;
 
 #pragma mark - CallControlsViewDelegate
 
-- (void)callControlsMicButtonPressed:(ExpandedControlsView *)callsControlView
+- (void)callControlsMicButtonPressed:(id <CallControlsViewProtocol>)callsControlView
 {
     [self.delegate activeCallMicButtonPressed:self];
 }
 
-- (void)callControlsSpeakerButtonPressed:(ExpandedControlsView *)callsControlView
+- (void)callControlsSpeakerButtonPressed:(id <CallControlsViewProtocol>)callsControlView
 {
     [self.delegate activeCallSpeakerButtonPressed:self];
 }
 
-- (void)callControlsResumeButtonPressed:(ExpandedControlsView *)callsControlView
+- (void)callControlsResumeButtonPressed:(id <CallControlsViewProtocol>)callsControlView
 {
     [self.delegate activeCallResumeButtonPressed:self];
 }
 
-- (void)callControlsVideoButtonPressed:(ExpandedControlsView *)callsControlView
+- (void)callControlsVideoButtonPressed:(id <CallControlsViewProtocol>)callsControlView
 {
     [self.delegate activeCallVideoButtonPressed:self];
 }
 
-- (void)callControlsEndCallButtonPressed:(ExpandedControlsView *)callsControlView
+- (void)callControlsEndCallButtonPressed:(id <CallControlsViewProtocol>)callsControlView
 {
     [self.delegate activeCallDeclineButtonPressed:self];
 }

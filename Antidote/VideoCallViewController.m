@@ -12,6 +12,7 @@
 #import "CompactControlsView.h"
 
 static const CGFloat kCompactLandScapeXIndent = 100.0;
+static const CGFloat kCompactControlsHeight = 60.0;
 
 @interface VideoCallViewController () <VideoAndPreviewViewDelegate,
                                        CallControlsViewDelegate>
@@ -66,6 +67,7 @@ static const CGFloat kCompactLandScapeXIndent = 100.0;
         make.bottom.equalTo(self.view);
         make.left.equalTo(self.view);
         make.right.equalTo(self.view);
+        make.height.equalTo(kCompactControlsHeight);
     }];
 
     [self updateUIForInterfaceOrientation:self.interfaceOrientation];
