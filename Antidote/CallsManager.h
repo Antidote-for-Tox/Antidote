@@ -17,7 +17,7 @@
  * Make a call.
  * @param chat The chat for which to make a call
  */
-- (void)callToChat:(OCTChat *)chat;
+- (void)callToChat:(OCTChat *)chat enableAudio:(BOOL)audio enableVideo:(BOOL)video;
 
 /**
  * Handle an incoming call.
