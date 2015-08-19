@@ -9,12 +9,15 @@
 #import "AudioCallViewController.h"
 #import "Masonry.h"
 #import "ExpandedControlsView.h"
+#import "CompactControlsView.h"
 
 static const CGFloat kIndent = 50.0;
+static const CGFloat kCompactControlsHeight = 80.0;
 
 @interface AudioCallViewController () <CallControlsViewDelegate>
 
 @property (strong, nonatomic) ExpandedControlsView *expandedControlsView;
+@property (strong, nonatomic) CompactControlsView *compactedControlsView;
 
 @end
 
@@ -25,8 +28,11 @@ static const CGFloat kIndent = 50.0;
     [super viewDidLoad];
 
     [self createExpandedCallControlsView];
+    [self createCompactedCallControlsView];
 
     [self installConstraints];
+
+    [self showControlsForOrientation:self.interfaceOrientation];
 }
 
 - (void)createExpandedCallControlsView
@@ -39,6 +45,16 @@ static const CGFloat kIndent = 50.0;
     [self.view addSubview:self.expandedControlsView];
 }
 
+- (void)createCompactedCallControlsView
+{
+    self.compactedControlsView = [CompactControlsView new];
+    self.compactedControlsView.delegate = self;
+    self.compactedControlsView.micSelected = self.micSelected;
+    self.compactedControlsView.speakerSelected = self.speakerSelected;
+
+    [self.view addSubview:self.compactedControlsView];
+}
+
 - (void)installConstraints
 {
     [super installConstraints];
@@ -49,7 +65,31 @@ static const CGFloat kIndent = 50.0;
         make.right.equalTo(self.view);
         make.bottom.equalTo(self.view);
     }];
+
+    [self.compactedControlsView makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(kCompactControlsHeight);
+        make.left.equalTo(self.view);
+        make.right.equalTo(self.view);
+        make.bottom.equalTo(self.view);
+    }];
 }
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+
+    [self showControlsForOrientation:toInterfaceOrientation];
+
+}
+
+- (void)showControlsForOrientation:(UIInterfaceOrientation)orientation
+{
+    BOOL isPortrait = UIInterfaceOrientationIsPortrait(orientation);
+
+    self.expandedControlsView.hidden = ! isPortrait;
+    self.compactedControlsView.hidden = isPortrait;
+}
+
 
 #pragma mark - Public
 
@@ -83,7 +123,6 @@ static const CGFloat kIndent = 50.0;
     }
 
     self.expandedControlsView.resumeButtonHidden = resumeButtonHidden;
-    self.expandedControlsView.hidden = ! resumeButtonHidden;
 }
 
 - (void)friendPausedCall:(BOOL)paused

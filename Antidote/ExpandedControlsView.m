@@ -160,10 +160,13 @@ static const CGFloat kControlsContainerSpaceFromEndCall = 100.0;
 #pragma mark - Public
 - (void)mainControlsHide:(BOOL)hide
 {
+    if (self.hidden) {
+        return;
+    }
+
     self.videoButton.hidden = hide;
     self.microphoneButton.hidden = hide;
     self.speakerButton.hidden = hide;
-    self.resumeButton.hidden = hide;
 }
 
 #pragma mark - Touch actions
