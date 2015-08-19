@@ -1,11 +1,8 @@
 language: objective-c
+osx_image: xcode6.4
 
 before_install:
-    - gem install cocoapods -v 0.38.0
-    - gem uninstall cocoapods -v '>0.38.0' --force || true
-    - brew update
-    - brew unlink xctool
-    - brew install xctool
+    - brew update; brew update
     - brew install uncrustify
     - pod install
 
