@@ -19,8 +19,10 @@
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
 #import "TabBarViewController.h"
+#import "CallsManager.h"
 
 static const CGFloat kFooterHeight = 50.0;
+static const CGFloat kFooterXOffset = 50.0;
 
 typedef NS_ENUM(NSUInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -92,6 +94,22 @@ typedef NS_ENUM(NSUInteger, CellType) {
     UINavigationController *navCon = [context.tabBarController navigationControllerForIndex:index];
     [navCon popToRootViewControllerAnimated:NO];
     [navCon pushViewController:chatVC animated:NO];
+}
+
+- (void)callButtonPressed
+{
+    AppContext *context = [AppContext sharedContext];
+
+    OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+    [context.calls callToChat:chat enableAudio:YES enableVideo:NO];
+}
+
+- (void)videoButtonPressed
+{
+    AppContext *context = [AppContext sharedContext];
+
+    OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+    [context.calls callToChat:chat enableAudio:YES enableVideo:YES];
 }
 
 #pragma mark -  Override
@@ -233,16 +251,39 @@ typedef NS_ENUM(NSUInteger, CellType) {
 {
     UIView *footer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, kFooterHeight)];
 
-    UIImage *image = [[UIImage imageNamed:@"friend-card-chat"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-
+    UIImage *chatImage = [[UIImage imageNamed:@"friend-card-chat"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     UIButton *chatButton = [UIButton new];
-    [chatButton setImage:image forState:UIControlStateNormal];
+    [chatButton setImage:chatImage forState:UIControlStateNormal];
     [chatButton addTarget:self action:@selector(chatButtonPressed) forControlEvents:UIControlEventTouchUpInside];
     [footer addSubview:chatButton];
 
+    UIImage *phoneImage = [UIImage imageNamed:@"call-phone"];
+    UIButton *phoneButton = [UIButton new];
+    [phoneButton setImage:phoneImage forState:UIControlStateNormal];
+    [phoneButton addTarget:self action:@selector(callButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [footer addSubview:phoneButton];
+
+    UIImage *videoImage = [UIImage imageNamed:@"call-video"];
+    UIButton *callButton = [UIButton new];
+    [callButton setImage:videoImage forState:UIControlStateNormal];
+    [callButton addTarget:self action:@selector(videoButtonPressed) forControlEvents:UIControlEventTouchUpInside];
+    [footer addSubview:callButton];
+
     [chatButton makeConstraints:^(MASConstraintMaker *make) {
         make.top.bottom.equalTo(footer);
+        make.left.equalTo(footer).with.offset(kFooterXOffset);
+        make.size.equalTo(kFooterHeight);
+    }];
+
+    [phoneButton makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(footer);
+        make.top.bottom.equalTo(footer);
+        make.size.equalTo(kFooterHeight);
+    }];
+
+    [callButton makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(footer).with.offset(-kFooterXOffset);
+        make.top.bottom.equalTo(footer);
         make.size.equalTo(kFooterHeight);
     }];
 

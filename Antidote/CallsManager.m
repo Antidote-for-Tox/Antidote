@@ -104,7 +104,7 @@
 
 #pragma mark - Public
 
-- (void)callToChat:(OCTChat *)chat
+- (void)callToChat:(OCTChat *)chat enableAudio:(BOOL)audio enableVideo:(BOOL)video
 {
     AALogVerbose(@"%@", chat);
 
@@ -114,7 +114,7 @@
     }
 
     NSError *error;
-    OCTCall *call = [self.manager callToChat:chat enableAudio:YES enableVideo:NO error:&error];
+    OCTCall *call = [self.manager callToChat:chat enableAudio:audio enableVideo:video error:&error];
 
     if (! call) {
         [[AppContext sharedContext] killCallsManager];
