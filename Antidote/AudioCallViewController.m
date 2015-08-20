@@ -10,14 +10,17 @@
 #import "Masonry.h"
 #import "ExpandedControlsView.h"
 #import "CompactControlsView.h"
+#import "AvatarsManager.h"
 
 static const CGFloat kIndent = 50.0;
 static const CGFloat kCompactControlsHeight = 80.0;
+static const CGFloat kAvatarPadding = 5.0;
 
 @interface AudioCallViewController () <CallControlsViewDelegate>
 
 @property (strong, nonatomic) ExpandedControlsView *expandedControlsView;
 @property (strong, nonatomic) CompactControlsView *compactedControlsView;
+@property (strong, nonatomic) UIImageView *landscapeAvatar;
 
 @end
 
@@ -82,6 +85,11 @@ static const CGFloat kCompactControlsHeight = 80.0;
 
 }
 
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self showAvatarIfNeeded];
+}
+
 - (void)showControlsForOrientation:(UIInterfaceOrientation)orientation
 {
     BOOL isPortrait = UIInterfaceOrientationIsPortrait(orientation);
@@ -134,6 +142,40 @@ static const CGFloat kCompactControlsHeight = 80.0;
     [super friendPausedCall:paused];
 
     [self.expandedControlsView mainControlsHide:paused];
+}
+
+#pragma mark - Private
+
+- (void)showAvatarIfNeeded
+{
+    BOOL isLandscape = UIInterfaceOrientationIsLandscape(self.interfaceOrientation);
+
+    if (! isLandscape) {
+        [self.landscapeAvatar removeFromSuperview];
+        self.landscapeAvatar = nil;
+        return;
+    }
+
+    CGFloat bottomOfTopContainer = CGRectGetMaxY(self.topViewContainer.frame);
+    CGFloat topOfCompactControls = CGRectGetMinY(self.compactedControlsView.frame);
+
+    CGFloat avatarDiameter = topOfCompactControls - bottomOfTopContainer - kAvatarPadding;
+
+    AvatarsManager *avatars = [AppContext sharedContext].avatars;
+
+    UIImage *image = [avatars avatarFromString:self.nickname
+                                      diameter:avatarDiameter
+                                     textColor:[UIColor whiteColor]
+                               backgroundColor:[UIColor clearColor]];
+
+    self.landscapeAvatar = [[UIImageView alloc] initWithImage:image];
+
+    [self.view addSubview:self.landscapeAvatar];
+
+    [self.landscapeAvatar makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(self.view);
+        make.width.equalTo(self.landscapeAvatar.height);
+    }];
 }
 
 #pragma mark - CallControlsViewDelegate
