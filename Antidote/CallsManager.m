@@ -217,23 +217,23 @@
 
 - (void)updateCurrentCallInterface:(OCTCall *)call
 {
-    BOOL isActive = call.status == OCTCallStatusActive;
-    BOOL videoEnabled = call.videoIsEnabled || call.friendSendingVideo;
-
     if (! [self.currentCall.primaryKeyValue isEqualToString:call.uniqueIdentifier]) {
         [self switchViewControllerForCall:call];
     }
 
-    if (isActive && ! [self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
-        [self switchViewControllerForCall:call];
-    }
+    BOOL isActive = call.status == OCTCallStatusActive;
+    BOOL videoEnabled = call.videoIsEnabled || call.friendSendingVideo;
 
-    if (videoEnabled && isActive && ! [self.currentCallViewController isKindOfClass:[VideoCallViewController class]]) {
-        [self switchViewControllerForCall:call];
-    }
+    if (isActive) {
+        BOOL currentVCIsVideo = [self.currentCallViewController isKindOfClass:[VideoCallViewController class]];
 
-    if (! videoEnabled && isActive && [self.currentCallViewController isKindOfClass:[VideoCallViewController class]]) {
-        [self switchViewControllerForCall:call];
+        BOOL hasWrongClass = ! [self.currentCallViewController isKindOfClass:[ActiveCallViewController class]];
+        BOOL shouldSwitchToVideoVC = videoEnabled && ! currentVCIsVideo;
+        BOOL shouldSwitchToAudioVC = ! videoEnabled && currentVCIsVideo;
+
+        if (hasWrongClass || shouldSwitchToAudioVC || shouldSwitchToVideoVC) {
+            [self switchViewControllerForCall:call];
+        }
     }
 
     if ([self.currentCallViewController isKindOfClass:[ActiveCallViewController class]]) {
