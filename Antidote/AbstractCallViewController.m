@@ -26,6 +26,7 @@ static const CGFloat kNameLabelXIndent = 30.0;
 @property (strong, nonatomic, readwrite) UIView *topViewContainer;
 @property (strong, nonatomic, readwrite) UILabel *nameLabel;
 @property (strong, nonatomic, readwrite) UILabel *subLabel;
+@property (strong, nonatomic) UIVisualEffectView *topContainerVisualEffect;
 
 @end
 
@@ -40,6 +41,7 @@ static const CGFloat kNameLabelXIndent = 30.0;
     [self setupBlurredBackground];
 
     [self createTopViewContainer];
+    [self createTopContainerVisualEffect];
     [self createNameLabel];
     [self createSublabel];
 
@@ -71,8 +73,21 @@ static const CGFloat kNameLabelXIndent = 30.0;
 {
     self.topViewContainer = [UIView new];
     self.topViewContainer.backgroundColor = [UIColor clearColor];
-    self.topViewContainer.alpha = 0.95;
+
     [self.view addSubview:self.topViewContainer];
+}
+
+- (void)createTopContainerVisualEffect
+{
+    UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+    self.topContainerVisualEffect = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+    self.topContainerVisualEffect.frame = self.topViewContainer.bounds;
+
+    [self.topViewContainer addSubview:self.topContainerVisualEffect];
+
+    [self.topContainerVisualEffect makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.topViewContainer);
+    }];
 }
 
 - (void)createNameLabel
@@ -84,7 +99,7 @@ static const CGFloat kNameLabelXIndent = 30.0;
     self.nameLabel.adjustsFontSizeToFitWidth = YES;
     self.nameLabel.textAlignment = NSTextAlignmentCenter;
 
-    [self.topViewContainer addSubview:self.nameLabel];
+    [self.topContainerVisualEffect.contentView addSubview:self.nameLabel];
 }
 
 - (void)createSublabel
@@ -94,7 +109,7 @@ static const CGFloat kNameLabelXIndent = 30.0;
     self.subLabel.textColor = [UIColor whiteColor];
     self.subLabel.textAlignment = NSTextAlignmentCenter;
 
-    [self.topViewContainer addSubview:self.subLabel];
+    [self.topContainerVisualEffect.contentView addSubview:self.subLabel];
 }
 
 #pragma mark - Autolayout
@@ -115,28 +130,26 @@ static const CGFloat kNameLabelXIndent = 30.0;
 {
     const BOOL isPortrait = UIInterfaceOrientationIsPortrait(orientation);
 
-    const CGFloat topViewContainerXOffset = isPortrait ? 0.0 : kIndent;
     const CGFloat topViewContainerYHeight = isPortrait ? kTopContainerHeightPortrait : kTopContainerHeightLandscape;
 
     [self.topViewContainer remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view);
-        make.left.equalTo(self.view).with.offset(topViewContainerXOffset);
-        make.right.equalTo(self.view).with.offset(-topViewContainerXOffset);
+        make.left.right.equalTo(self.view);
         make.height.equalTo(topViewContainerYHeight);
     }];
 
     const CGFloat nameLabelHeight = isPortrait ? kNameLabelHeightPortrait : kNameLabelHeightLandscape;
 
     [self.nameLabel remakeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.topViewContainer).with.offset(kIndent);
+        make.top.equalTo(self.topContainerVisualEffect.contentView).with.offset(kIndent);
         make.height.equalTo(nameLabelHeight);
-        make.left.equalTo(self.topViewContainer).with.offset(kNameLabelXIndent);
-        make.right.equalTo(self.topViewContainer).with.offset(-kNameLabelXIndent);
+        make.left.equalTo(self.topContainerVisualEffect.contentView).with.offset(kNameLabelXIndent);
+        make.right.equalTo(self.topContainerVisualEffect.contentView).with.offset(-kNameLabelXIndent);
     }];
 
     [self.subLabel remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLabel.bottom).with.offset(kIndent);
-        make.centerX.equalTo(self.topViewContainer);
+        make.centerX.equalTo(self.topContainerVisualEffect.contentView);
     }];
 }
 
