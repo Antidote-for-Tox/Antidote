@@ -13,4 +13,9 @@
 
 @property (weak, nonatomic) id<CallControlsViewDelegate> delegate;
 
+/**
+ * Hides all the buttons except the end call
+ */
+- (void)mainControlsHide:(BOOL)hide;
+
 @end

@@ -10,7 +10,6 @@
 #import "AppearanceManager.h"
 #import "Masonry.h"
 
-static const CGFloat kSpacing = 15.0;
 static const CGFloat kNotSelectedAlpha = 0.3;
 static const CGFloat kSelectedAlpha = 1.0;
 
@@ -21,6 +20,12 @@ static const CGFloat kSelectedAlpha = 1.0;
 @property (strong, nonatomic) UIButton *speakerButton;
 @property (strong, nonatomic) UIButton *resumeButton;
 @property (strong, nonatomic) UIButton *endCallButton;
+
+@property (strong, nonatomic) UIView *spacing1;
+@property (strong, nonatomic) UIView *spacing2;
+@property (strong, nonatomic) UIView *spacing3;
+@property (strong, nonatomic) UIView *spacing4;
+@property (strong, nonatomic) UIView *spacing5;
 
 @end
 
@@ -39,6 +44,8 @@ static const CGFloat kSelectedAlpha = 1.0;
     [self createMicButton];
     [self createSpeakerButton];
     [self createEndCallButton];
+
+    [self createSpacings];
 
     [self installConstraints];
 
@@ -84,36 +91,83 @@ static const CGFloat kSelectedAlpha = 1.0;
     [self addSubview:self.endCallButton];
 }
 
+- (void)createSpacings
+{
+    self.spacing1 = [UIView new];
+    self.spacing2 = [UIView new];
+    self.spacing3 = [UIView new];
+    self.spacing4 = [UIView new];
+    self.spacing5 = [UIView new];
+
+    [self addSubview:self.spacing1];
+    [self addSubview:self.spacing2];
+    [self addSubview:self.spacing3];
+    [self addSubview:self.spacing4];
+    [self addSubview:self.spacing5];
+}
+
 #pragma mark - View setup
 - (void)installConstraints
 {
+    [self.spacing1 makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self);
+        make.right.equalTo(self.videoButton.left);
+        make.top.equalTo(self);
+        make.bottom.equalTo(self);
+        make.width.equalTo(self.spacing2);
+    }];
+
     [self.videoButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).with.offset(kSpacing);
-        make.height.equalTo(self.videoButton.width);
+        make.width.equalTo(self.videoButton.height);
+        make.top.equalTo(self);
+        make.bottom.equalTo(self);
+    }];
+
+    [self.spacing2 makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.videoButton.right);
+        make.right.equalTo(self.microphoneButton.left);
+        make.top.equalTo(self);
+        make.bottom.equalTo(self);
+        make.width.equalTo(self.spacing3);
     }];
 
     [self.microphoneButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.videoButton.right).with.offset(kSpacing);
         make.centerY.equalTo(self.videoButton);
         make.size.equalTo(self.videoButton);
+    }];
+
+    [self.spacing3 makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.speakerButton.left);
+        make.left.equalTo(self.microphoneButton.right);
+        make.top.equalTo(self);
+        make.bottom.equalTo(self);
+        make.width.equalTo(self.spacing4);
     }];
 
     [self.speakerButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.microphoneButton.right).with.offset(kSpacing);
         make.centerY.equalTo(self.videoButton);
         make.size.equalTo(self.videoButton);
+    }];
+
+    [self.spacing4 makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.speakerButton.right);
+        make.right.equalTo(self.endCallButton.left);
+        make.top.equalTo(self);
+        make.bottom.equalTo(self);
+        make.width.equalTo(self.spacing5);
     }];
 
     [self.endCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.speakerButton.right).with.offset(kSpacing);
-        make.right.equalTo(self).with.offset(-kSpacing);
         make.centerY.equalTo(self.videoButton);
         make.size.equalTo(self.videoButton);
     }];
 
-    [self makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.videoButton).with.offset(-kSpacing);
-        make.bottom.equalTo(self.videoButton).with.offset(kSpacing);
+    [self.spacing5 makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self);
+        make.left.equalTo(self.endCallButton.right);
+        make.top.equalTo(self);
+        make.bottom.equalTo(self);
+        make.width.equalTo(self.spacing4);
     }];
 }
 
@@ -211,6 +265,7 @@ static const CGFloat kSelectedAlpha = 1.0;
 {
     CGFloat newAlpha = selected ? kSelectedAlpha : kNotSelectedAlpha;
     button.alpha = newAlpha;
+    button.selected = selected;
 }
 
 - (void)updateCornerRadius
