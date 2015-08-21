@@ -191,6 +191,10 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIViewController *visibleVC = [delegate visibleViewController];
 
+    if (message.messageCall) {
+        return NO;
+    }
+
     if (! [visibleVC isKindOfClass:[ChatViewController class]]) {
         return YES;
     }
