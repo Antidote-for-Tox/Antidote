@@ -18,7 +18,8 @@ static const CGFloat kNameLabelHeightLandscape = 20.0;
 static const CGFloat kTopContainerHeightPortrait = 100.0;
 static const CGFloat kTopContainerHeightLandscape = 75.0;
 static const CGFloat kSublabelFontSize = 13.0;
-static const CGFloat kNameLabelFontSize = 30.0;
+static const CGFloat kNameLabelFontSizePortrait = 30.0;
+static const CGFloat kNameLabelFontSizeLandscape = 20.0;
 static const CGFloat kNameLabelXIndent = 30.0;
 
 @interface AbstractCallViewController ()
@@ -94,7 +95,7 @@ static const CGFloat kNameLabelXIndent = 30.0;
 {
     self.nameLabel = [UILabel new];
     self.nameLabel.text = self.nickname;
-    self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kNameLabelFontSize];
+    self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:kNameLabelFontSizePortrait];
     self.nameLabel.textColor = [UIColor whiteColor];
     self.nameLabel.adjustsFontSizeToFitWidth = YES;
     self.nameLabel.textAlignment = NSTextAlignmentCenter;
@@ -139,6 +140,7 @@ static const CGFloat kNameLabelXIndent = 30.0;
     }];
 
     const CGFloat nameLabelHeight = isPortrait ? kNameLabelHeightPortrait : kNameLabelHeightLandscape;
+    const CGFloat nameLabelFontSize = isPortrait ? kNameLabelFontSizePortrait : kNameLabelFontSizeLandscape;
 
     [self.nameLabel remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.topContainerVisualEffect.contentView).with.offset(kIndent);
@@ -146,6 +148,8 @@ static const CGFloat kNameLabelXIndent = 30.0;
         make.left.equalTo(self.topContainerVisualEffect.contentView).with.offset(kNameLabelXIndent);
         make.right.equalTo(self.topContainerVisualEffect.contentView).with.offset(-kNameLabelXIndent);
     }];
+
+    self.nameLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:nameLabelFontSize];
 
     [self.subLabel remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.nameLabel.bottom).with.offset(kIndent);
