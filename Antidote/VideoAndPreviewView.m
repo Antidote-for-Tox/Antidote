@@ -78,7 +78,7 @@ static const CGFloat kPreviewViewHeight = 100.0;
     }];
 
     [self.previewView makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self);
+        make.bottom.equalTo(self).with.offset(-kPreviewViewHeight);
         make.right.equalTo(self);
         make.height.equalTo(kPreviewViewHeight);
         make.width.equalTo(kPreviewViewWidth);
@@ -107,7 +107,7 @@ static const CGFloat kPreviewViewHeight = 100.0;
     [self insertSubview:_videoView belowSubview:self.previewView];
 
     [self.videoView makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.previewView);
+        make.bottom.equalTo(self);
         make.left.equalTo(self);
         make.right.equalTo(self);
         make.top.equalTo(self);
