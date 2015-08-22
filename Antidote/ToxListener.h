@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OCTManager.h"
+#import <objcTox/OCTManager.h>
+#import <objcTox/OCTSubmanagerCallsDelegate.h>
 
 extern NSString *const kToxListenerGroupIdentifierFriendRequest;
 

@@ -158,11 +158,11 @@
 - (void) controller:(RBQFetchedResultsController *)controller
     didChangeObject:(RBQSafeRealmObject *)anObject
         atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
+      forChangeType:(RBQFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath;
 {
     switch (type) {
-        case NSFetchedResultsChangeUpdate:
+        case RBQFetchedResultsChangeUpdate:
             if (controller == self.allActiveCallsController) {
 
                 OCTCall *call = [anObject RLMObject];
@@ -172,7 +172,7 @@
                 }
             }
             break;
-        case NSFetchedResultsChangeDelete: {
+        case RBQFetchedResultsChangeDelete: {
 
             if ([self.allCallsController.fetchedObjects count] == 0) {
                 [[AppContext sharedContext] killCallsManager];
@@ -187,7 +187,7 @@
             }
             break;
         }
-        case NSFetchedResultsChangeInsert:
+        case RBQFetchedResultsChangeInsert:
             if (controller == self.allActiveCallsController) {
                 [self.ringTonePlayer stopPlayingSound];
 
@@ -202,7 +202,7 @@
                 [self performSelector:@selector(switchViewControllerForCall:) withObject:call afterDelay:0];
             }
             break;
-        case NSFetchedResultsChangeMove:
+        case RBQFetchedResultsChangeMove:
             break;
     }
 }
