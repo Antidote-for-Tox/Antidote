@@ -9,8 +9,10 @@
 #import <BlocksKit/UIActionSheet+BlocksKit.h>
 #import <Masonry/Masonry.h>
 
+#import <objcTox/OCTFriendRequest.h>
+#import <objcTox/OCTSubmanagerFriends.h>
+
 #import "FriendRequestViewController.h"
-#import "OCTFriendRequest.h"
 #import "AppearanceManager.h"
 #import "UIViewController+Utilities.h"
 #import "ProfileManager.h"
