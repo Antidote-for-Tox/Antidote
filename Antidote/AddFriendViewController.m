@@ -11,6 +11,8 @@
 #import <SDCAlertView/SDCAlertController.h>
 #import <UITextView+Placeholder/UITextView+Placeholder.h>
 
+#import <objcTox/OCTSubmanagerFriends.h>
+
 #import "AddFriendViewController.h"
 #import "QRScannerController.h"
 #import "ProfileManager.h"

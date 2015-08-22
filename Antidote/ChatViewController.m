@@ -10,15 +10,18 @@
 #import <JSQMessagesViewController/JSQMessages.h>
 #import <Masonry/Masonry.h>
 
+#import <objcTox/OCTFriend.h>
+#import <objcTox/OCTMessageAbstract.h>
+#import <objcTox/OCTMessageText.h>
+#import <objcTox/OCTSubmanagerChats.h>
+#import <objcTox/OCTSubmanagerObjects.h>
+
 #import "ChatViewController.h"
-#import "OCTFriend.h"
 #import "StatusCircleView.h"
 #import "Helper.h"
 #import "UIView+Utilities.h"
 #import "ProfileManager.h"
 #import "TimeFormatter.h"
-#import "OCTMessageAbstract.h"
-#import "OCTMessageText.h"
 #import "ChatMessage.h"
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
@@ -156,21 +159,21 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 - (void) controller:(RBQFetchedResultsController *)controller
     didChangeObject:(RBQSafeRealmObject *)anObject
         atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
+      forChangeType:(RBQFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
     if ([controller isEqual:self.messagesController]) {
         switch (type) {
-            case NSFetchedResultsChangeInsert:
+            case RBQFetchedResultsChangeInsert:
                 [self.updatesQueue enqueuePath:newIndexPath type:UpdatesQueueObjectTypeInsert];
                 break;
-            case NSFetchedResultsChangeDelete:
+            case RBQFetchedResultsChangeDelete:
                 [self.updatesQueue enqueuePath:indexPath type:UpdatesQueueObjectTypeDelete];
                 break;
-            case NSFetchedResultsChangeUpdate:
+            case RBQFetchedResultsChangeUpdate:
                 [self.updatesQueue enqueuePath:indexPath type:UpdatesQueueObjectTypeUpdate];
                 break;
-            case NSFetchedResultsChangeMove:
+            case RBQFetchedResultsChangeMove:
                 [self.updatesQueue enqueuePath:indexPath type:UpdatesQueueObjectTypeDelete];
                 [self.updatesQueue enqueuePath:newIndexPath type:UpdatesQueueObjectTypeInsert];
                 break;

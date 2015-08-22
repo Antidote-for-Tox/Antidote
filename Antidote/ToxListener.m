@@ -6,18 +6,21 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <objcTox/OCTFriendRequest.h>
+#import <objcTox/OCTManager.h>
+#import <objcTox/OCTMessageAbstract.h>
+#import <objcTox/OCTMessageFile.h>
+#import <objcTox/OCTMessageText.h>
+#import <objcTox/OCTSubmanagerObjects.h>
+#import <objcTox/OCTSubmanagerUser.h>
+
 #import "ToxListener.h"
-#import "OCTManager.h"
 #import "NotificationManager.h"
 #import "Helper.h"
 #import "RBQFetchedResultsController.h"
 #import "UpdatesQueue.h"
 #import "AppDelegate+Utilities.h"
 #import "NotificationObject.h"
-#import "OCTFriendRequest.h"
-#import "OCTMessageAbstract.h"
-#import "OCTMessageText.h"
-#import "OCTMessageFile.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
 #import "TabBarViewController.h"
@@ -91,10 +94,10 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 - (void) controller:(RBQFetchedResultsController *)controller
     didChangeObject:(RBQSafeRealmObject *)anObject
         atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
+      forChangeType:(RBQFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
-    if (type != NSFetchedResultsChangeInsert) {
+    if (type != RBQFetchedResultsChangeInsert) {
         return;
     }
 

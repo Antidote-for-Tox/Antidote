@@ -6,8 +6,10 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <objcTox/OCTSubmanagerObjects.h>
+#import <objcTox/OCTToxConstants.h>
+
 #import "Helper.h"
-#import "OCTToxConstants.h"
 #import "ProfileManager.h"
 
 @implementation Helper
