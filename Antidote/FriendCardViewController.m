@@ -8,6 +8,9 @@
 
 #import <Masonry/Masonry.h>
 
+#import <objcTox/OCTSubmanagerChats.h>
+#import <objcTox/OCTSubmanagerObjects.h>
+
 #import "FriendCardViewController.h"
 #import "ContentCellWithTitleImmutable.h"
 #import "ContentCellWithTitleEditable.h"
@@ -228,10 +231,10 @@ typedef NS_ENUM(NSUInteger, CellType) {
 - (void) controller:(RBQFetchedResultsController *)controller
     didChangeObject:(RBQSafeRealmObject *)anObject
         atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
+      forChangeType:(RBQFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
-    if (type != NSFetchedResultsChangeUpdate) {
+    if (type != RBQFetchedResultsChangeUpdate) {
         return;
     }
 

@@ -9,6 +9,12 @@
 #import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <BlocksKit/NSArray+BlocksKit.h>
 
+#import <objcTox/OCTMessageAbstract.h>
+#import <objcTox/OCTMessageCall.h>
+#import <objcTox/OCTMessageFile.h>
+#import <objcTox/OCTMessageText.h>
+#import <objcTox/OCTSubmanagerChats.h>
+
 #import "AllChatsViewController.h"
 #import "AllChatsCell.h"
 #import "UIViewController+Utilities.h"
@@ -19,10 +25,6 @@
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
 #import "ProfileManager.h"
-#import "OCTMessageAbstract.h"
-#import "OCTMessageText.h"
-#import "OCTMessageFile.h"
-#import "OCTMessageCall.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "AvatarsManager.h"
@@ -207,28 +209,28 @@
 - (void) controller:(RBQFetchedResultsController *)controller
     didChangeObject:(RBQSafeRealmObject *)anObject
         atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
+      forChangeType:(RBQFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
     if ([controller isEqual:self.chatsController]) {
         switch (type) {
-            case NSFetchedResultsChangeInsert:
+            case RBQFetchedResultsChangeInsert:
                 [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 break;
-            case NSFetchedResultsChangeDelete:
+            case RBQFetchedResultsChangeDelete:
                 [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 break;
-            case NSFetchedResultsChangeUpdate:
+            case RBQFetchedResultsChangeUpdate:
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 break;
-            case NSFetchedResultsChangeMove:
+            case RBQFetchedResultsChangeMove:
                 [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 break;
         }
     }
     else if ([controller isEqual:self.friendsController]) {
-        if (type != NSFetchedResultsChangeUpdate) {
+        if (type != RBQFetchedResultsChangeUpdate) {
             return;
         }
 

@@ -1,4 +1,4 @@
-[![Build Status](https://img.shields.io/travis/Antidote-for-Tox/Antidote/master.svg?style=flat)](https://travis-ci.org/Antidote-for-Tox/Antidote)
+[![Circle CI](https://circleci.com/gh/Antidote-for-Tox/Antidote.svg?style=svg)](https://circleci.com/gh/Antidote-for-Tox/Antidote)
 
 [Tox](https://tox.chat/) client for iOS 7.0+;
 
@@ -13,9 +13,9 @@
 #### TestFlight beta testing
 
 Antidote is available for beta testing via TestFlight. If you wish to participate, you must:
-- be on iOS 8+
-- install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore
-- give [dvor](https://github.com/dvor) your Apple ID email - you can send it to [antidote@dvor.me](mailto:antidote@dvor.me?subject=Beta%20testing) (optional PGP key is [0x95714DFB28AFC4DC](https://pgp.mit.edu/pks/lookup?op=get&search=0x95714DFB28AFC4DC)).
+- Be on iOS 8+.
+- Install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore.
+- Send your Apple ID email to [beta@antidote.im](mailto:beta@antidote.im?subject=Beta%20testing).
 
 #### Manual Installation
 
@@ -45,10 +45,11 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 
 #### What's next?
 
-You can check [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) to see what is in progress and what is on the list:
-- **X.X.X** *(milestone with next version number)* - this milestone has issues that will go to the next release
-- **Next** - stuff we'll probably do soon
-- **Faraway** - stuff we'll probably *won't* do soon.
+- [**Now**](https://github.com/Antidote-for-Tox/Antidote/milestones/Now) - this milestone has issues that will go to the next release.
+- [**Next**](https://github.com/Antidote-for-Tox/Antidote/milestones/Next) - stuff we'll probably do soon.
+- [**Faraway**](https://github.com/Antidote-for-Tox/Antidote/milestones/Faraway) - stuff we'll probably *won't* do soon.
+
+Also there may be other [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) that represent long-running and big ongoing tasks.
 
 ## Contribution
 
@@ -88,7 +89,7 @@ ln -s ../../pre-commit.sh .git/hooks/pre-commit
 
 ## Contact
 
-Dmytro Vorobiov [d@dvor.me](mailto:d@dvor.me)
+[feedback@antidote.im](mailto:feedback@antidote.im)
 
 ## License
 

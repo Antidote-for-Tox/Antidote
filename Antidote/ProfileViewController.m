@@ -9,11 +9,13 @@
 #import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <BlocksKit/UIActionSheet+BlocksKit.h>
 
+#import <objcTox/OCTManager.h>
+#import <objcTox/OCTSubmanagerUser.h>
+
 #import "ProfileViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "AppContext.h"
 #import "ProfileManager.h"
-#import "OCTManager.h"
 #import "QRViewerController.h"
 #import "AvatarsManager.h"
 #import "ContentCellWithTitleImmutable.h"

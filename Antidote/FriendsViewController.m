@@ -8,6 +8,11 @@
 
 #import <BlocksKit/UIActionSheet+BlocksKit.h>
 
+#import <objcTox/OCTChat.h>
+#import <objcTox/OCTFriendRequest.h>
+#import <objcTox/OCTSubmanagerChats.h>
+#import <objcTox/OCTSubmanagerFriends.h>
+
 #import "FriendsViewController.h"
 #import "UIViewController+Utilities.h"
 #import "FriendsCell.h"
@@ -20,7 +25,6 @@
 #import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
-#import "OCTFriendRequest.h"
 #import "AvatarsManager.h"
 #import "UserDefaultsManager.h"
 #import "FriendRequestViewController.h"
@@ -262,7 +266,7 @@ static const CGFloat kSegmentedControlHeight = 25.0;
 - (void) controller:(RBQFetchedResultsController *)controller
     didChangeObject:(RBQSafeRealmObject *)anObject
         atIndexPath:(NSIndexPath *)indexPath
-      forChangeType:(NSFetchedResultsChangeType)type
+      forChangeType:(RBQFetchedResultsChangeType)type
        newIndexPath:(NSIndexPath *)newIndexPath
 {
     if (! [self isCurrentFetchedRequestController:controller]) {
@@ -270,16 +274,16 @@ static const CGFloat kSegmentedControlHeight = 25.0;
     }
 
     switch (type) {
-        case NSFetchedResultsChangeInsert:
+        case RBQFetchedResultsChangeInsert:
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
-        case NSFetchedResultsChangeDelete:
+        case RBQFetchedResultsChangeDelete:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
-        case NSFetchedResultsChangeUpdate:
+        case RBQFetchedResultsChangeUpdate:
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
-        case NSFetchedResultsChangeMove:
+        case RBQFetchedResultsChangeMove:
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;

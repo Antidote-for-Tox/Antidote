@@ -6,12 +6,16 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <objcTox/OCTDefaultFileStorage.h>
+#import <objcTox/OCTDefaultSettingsStorage.h>
+#import <objcTox/OCTManager.h>
+#import <objcTox/OCTManagerConfiguration.h>
+#import <objcTox/OCTSubmanagerBootstrap.h>
+#import <objcTox/OCTSubmanagerUser.h>
+
 #import "ProfileManager.h"
 #import "NSArray+BlocksKit.h"
 #import "UserDefaultsManager.h"
-#import "OCTManager.h"
-#import "OCTDefaultSettingsStorage.h"
-#import "OCTDefaultFileStorage.h"
 #import "ToxListener.h"
 
 static NSString *const kSaveDirectoryPath = @"saves";
@@ -237,7 +241,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
                                                                   temporaryDirectory:NSTemporaryDirectory()];
 
-    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath];
+    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath error:nil];
     self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
 
     self.toxManager.calls.delegate = self.toxListener;
@@ -249,25 +253,8 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
         [self.toxManager.user setUserStatusMessage:kDefaultUserStatusMessage error:nil];
     }
 
-    [self bootstrapToxManager:self.toxManager];
-}
-
-- (void)bootstrapToxManager:(OCTManager *)manager
-{
-    [manager bootstrapFromHost:@"192.254.75.102"
-                          port:33445
-                     publicKey:@"951C88B7E75C867418ACDB5D273821372BB5BD652740BCDF623A4FA293E75D2F"
-                         error:nil];
-
-    [manager bootstrapFromHost:@"178.62.125.224"
-                          port:33445
-                     publicKey:@"10B20C49ACBD968D7C80F2E8438F92EA51F189F4E70CFBBB2C2C8C799E97F03E"
-                         error:nil];
-
-    [manager bootstrapFromHost:@"192.210.149.121"
-                          port:33445
-                     publicKey:@"F404ABAA1C99A9D37D61AB54898F56793E1DEF8BD46B1038B9D822E8460FAB67"
-                         error:nil];
+    [self.toxManager.bootstrap addPredefinedNodes];
+    [self.toxManager.bootstrap bootstrap];
 }
 
 - (NSString *)createUniqueNameFromName:(NSString *)name
