@@ -39,11 +39,6 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     [self installConstraints];
 }
 
-- (void)viewDidLayoutSubviews
-{
-    [self updateFriendAvatar];
-}
-
 - (void)installConstraints
 {
     [super installConstraints];
@@ -91,8 +86,6 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 - (void)createFriendAvatar
 {
     self.friendAvatar = [UIImageView new];
-
-    [self updateFriendAvatar];
 
     [self.view addSubview:self.friendAvatar];
 }
