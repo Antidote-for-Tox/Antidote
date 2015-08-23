@@ -13,7 +13,7 @@
 #import "AppearanceManager.h"
 
 static const CGFloat kIndent = 50.0;
-static const CGFloat kAvatarDiameter = 180.0;
+static const CGFloat kYEndCallPadding = 20.0;
 static const CGFloat kButtonBorderWidth = 1.5f;
 static const CGFloat kEndCallButtonHeight = 45.0;
 
@@ -26,7 +26,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 
 @implementation DialingCallViewController
 
-#pragma mark - Life cycle
+#pragma mark - View setup
 
 - (void)viewDidLoad
 {
@@ -37,6 +37,35 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     [self createReachingLabel];
 
     [self installConstraints];
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [self updateFriendAvatar];
+}
+
+- (void)installConstraints
+{
+    [super installConstraints];
+
+    [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.centerY.equalTo(self.view);
+    }];
+
+    [self.cancelCallButton makeConstraints:^(MASConstraintMaker *make) {
+        make.height.equalTo(kEndCallButtonHeight);
+        make.bottom.equalTo(self.view).with.offset(-kYEndCallPadding);
+        make.left.equalTo(self.view).with.offset(kIndent);
+        make.right.equalTo(self.view).with.offset(-kIndent);
+    }];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+    [self updateFriendAvatar];
 }
 
 #pragma mark - Public
@@ -68,14 +97,7 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 
 - (void)createFriendAvatar
 {
-    AvatarsManager *avatars = [AppContext sharedContext].avatars;
-
-    UIImage *image = [avatars avatarFromString:self.nickname
-                                      diameter:kAvatarDiameter
-                                     textColor:[UIColor whiteColor]
-                               backgroundColor:[UIColor clearColor]];
-
-    self.friendAvatar = [[UIImageView alloc] initWithImage:image];
+    self.friendAvatar = [UIImageView new];
 
     [self.view addSubview:self.friendAvatar];
 }
@@ -84,8 +106,11 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 {
     AvatarsManager *avatars = [AppContext sharedContext].avatars;
 
+    CGFloat smallestSide = MIN(self.view.bounds.size.width, self.view.bounds.size.height);
+    CGFloat diameterOfImage = smallestSide / 2;
+
     UIImage *image = [avatars avatarFromString:self.nickname
-                                      diameter:kAvatarDiameter
+                                      diameter:diameterOfImage
                                      textColor:[UIColor whiteColor]
                                backgroundColor:[UIColor clearColor]];
 
@@ -96,23 +121,6 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 {
     self.subLabel.text = NSLocalizedString(@"reaching...", @"Calls");
 
-}
-
-- (void)installConstraints
-{
-    [super installConstraints];
-
-    [self.friendAvatar makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.centerY.equalTo(self.view);
-    }];
-
-    [self.cancelCallButton makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(kEndCallButtonHeight);
-        make.bottom.equalTo(self.view).with.offset(-kIndent);
-        make.left.equalTo(self.view).with.offset(kIndent);
-        make.right.equalTo(self.view).with.offset(-kIndent);
-    }];
 }
 
 #pragma mark - Touch actions
