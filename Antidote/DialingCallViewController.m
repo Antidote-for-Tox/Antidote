@@ -61,13 +61,6 @@ static const CGFloat kEndCallButtonHeight = 45.0;
     }];
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-
-    [self updateFriendAvatar];
-}
-
 #pragma mark - Public
 
 - (void)setNickname:(NSString *)nickname
@@ -98,6 +91,8 @@ static const CGFloat kEndCallButtonHeight = 45.0;
 - (void)createFriendAvatar
 {
     self.friendAvatar = [UIImageView new];
+
+    [self updateFriendAvatar];
 
     [self.view addSubview:self.friendAvatar];
 }
