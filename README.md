@@ -2,8 +2,6 @@
 
 [Tox](https://tox.chat/) client for iOS 7.0+;
 
-## Screenshots
-
 ![](https://i.imgur.com/LV6FOlG.png)
 
 ##Usage
