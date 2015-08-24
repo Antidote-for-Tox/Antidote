@@ -2,7 +2,7 @@
 
 [Tox](https://tox.chat/) client for iOS 7.0+;
 
-![](https://i.imgur.com/LV6FOlG.png)
+![](https://i.imgur.com/5HF5RMX.png)
 
 ##Usage
 
