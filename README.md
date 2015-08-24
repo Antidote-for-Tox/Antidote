@@ -4,9 +4,7 @@
 
 ## Screenshots
 
-![](https://i.imgur.com/geSRhlQ.png)
-![](https://i.imgur.com/kAXdWwI.png)
-![](https://i.imgur.com/VOpGzgg.png)
+![](https://i.imgur.com/LV6FOlG.png)
 
 ##Usage
 
