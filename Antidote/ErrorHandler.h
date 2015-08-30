@@ -22,6 +22,8 @@ typedef NS_ENUM(NSUInteger, ErrorHandlerType) {
     ErrorHandlerTypeRenameProfile,
 
     ErrorHandlerTypeOpenFileFromOtherApp,
+
+    ErrorHandlerTypeExportProfile,
 };
 
 @interface ErrorHandler : NSObject

@@ -82,7 +82,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     [self createToxManagerWithDirectoryPath:path name:name initializeWithDefaultValues:isNewDirectory];
 }
 
-- (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
+- (void)createAndSwitchToProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
 {
     NSParameterAssert(toxSaveURL);
     NSAssert(name.length > 0, @"name cannot be empty");
@@ -90,6 +90,8 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     if ([self.allProfiles containsObject:name]) {
         name = [self createUniqueNameFromName:name];
     }
+
+    [AppContext sharedContext].userDefaults.uCurrentProfileName = name;
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
     BOOL isNewDirectory = [self createDirectoryAtPathIfNotExist:path];
@@ -158,11 +160,11 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     return YES;
 }
 
-- (NSURL *)exportProfileWithName:(NSString *)name
+- (NSURL *)exportProfileWithName:(NSString *)name error:(NSError **)error
 {
-    NSString *path = [self.toxManager exportToxSaveFile:nil];
+    NSString *path = [self.toxManager exportToxSaveFile:error];
 
-    return [NSURL fileURLWithPath:path];
+    return path ? [NSURL fileURLWithPath : path] : nil;
 }
 
 - (void)updateInterface
@@ -258,11 +260,11 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 - (NSString *)createUniqueNameFromName:(NSString *)name
 {
     NSString *result = name;
-    NSUInteger count = 0;
+    NSUInteger count = 1;
 
     while ([self.allProfiles containsObject:result]) {
 
-        result = [name stringByAppendingFormat:@"-%lu", count];
+        result = [name stringByAppendingFormat:@"-%lu", count++];
     }
 
     return result;

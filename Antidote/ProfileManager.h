@@ -34,11 +34,11 @@
 - (void)switchToProfileWithName:(NSString *)name;
 
 /**
- * Creates profile with given tox save file and name.
+ * Creates and switches to profile with given tox save file and name.
  *
  * In case if given name is already taken, create a new one with numeric suffix.
  */
-- (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name;
+- (void)createAndSwitchToProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name;
 
 /**
  * Removes profile with given name.
@@ -53,7 +53,7 @@
 /**
  * Return NSURL path with profile save file.
  */
-- (NSURL *)exportProfileWithName:(NSString *)name;
+- (NSURL *)exportProfileWithName:(NSString *)name error:(NSError **)error;
 
 /**
  * Updates interface with current tox manager (connection status, tabbar badges, etc).

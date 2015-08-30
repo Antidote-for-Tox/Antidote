@@ -67,23 +67,14 @@
     [friendsVC switchToTab:FriendsViewControllerTabRequests];
 }
 
-- (void)switchToSettingsTabAndShowProfiles
-{
-    UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexSettings];
-
-    if (navCon.viewControllers.count > 1) {
-        [navCon popToRootViewControllerAnimated:NO];
-    }
-
-    [navCon pushViewController:[ProfilesListViewController new] animated:YES];
-}
-
 #pragma mark -  Private
 
 - (UINavigationController *)switchToIndexAndGetNavigation:(AppDelegateTabIndex)index
 {
     UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-    tabBar.selectedIndex = index;
+    if (tabBar.selectedIndex != index) {
+        tabBar.selectedIndex = index;
+    }
 
     return (UINavigationController *)[tabBar selectedViewController];
 }

@@ -98,6 +98,25 @@
     return [AppContext sharedContext].profileManager.allProfiles.count;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+    if (section != 0) {
+        return nil;
+    }
+
+    NSString *deviceName = NSLocalizedString(@"iPhone", @"Profiles List");
+
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad) {
+        deviceName = NSLocalizedString(@"iPad", @"Profiles List");
+    }
+    return [NSString stringWithFormat:NSLocalizedString(
+                @"To import your Tox profile:\n"
+                "1. Send the \".tox\" file to your %@ using any app (Mail, Dropbox, etc.).\n"
+                "2. Use \"Open In\" menu for this file.\n"
+                "3. Select Antidote in a list of available apps.\n"
+                "4. Check the name of your new profile and press OK.", @"Profiles List"), deviceName];
+}
+
 #pragma mark -  UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -180,7 +199,7 @@
 
 - (void)createTableView
 {
-    self.tableView = [UITableView new];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
 
@@ -243,7 +262,13 @@
 
 - (void)exportProfile:(NSString *)name
 {
-    NSURL *url = [[AppContext sharedContext].profileManager exportProfileWithName:name];
+    NSError *error;
+    NSURL *url = [[AppContext sharedContext].profileManager exportProfileWithName:name error:&error];
+
+    if (! url) {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeExportProfile];
+        return;
+    }
 
     self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
     self.documentInteractionController.delegate = self;

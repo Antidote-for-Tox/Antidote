@@ -48,6 +48,9 @@
         case ErrorHandlerTypeOpenFileFromOtherApp:
             [self handleOpenFileFromOtherAppError:error];
             break;
+        case ErrorHandlerTypeExportProfile:
+            [self handleExportProfileError:error];
+            break;
     }
 }
 
@@ -211,6 +214,11 @@
 }
 
 - (void)handleOpenFileFromOtherAppError:(NSError *)error
+{
+    [self showErrorWithMessage:[error localizedDescription]];
+}
+
+- (void)handleExportProfileError:(NSError *)error
 {
     [self showErrorWithMessage:[error localizedDescription]];
 }

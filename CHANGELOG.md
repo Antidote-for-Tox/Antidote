@@ -3,10 +3,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-### Changes
+### Added
+- "Import profile" instruction.
+
+### Changed
 - objcTox update to version 0.2.0.
 - Using improved bootstrapping methods from objcTox, now it works better.
 - Feedback email replaced with feedback@antidote.im
+
+### Fixed
+- Updating connection status when changing IPv6/UDP setting.
+- Various fixes and crashes when importing profile.
 
 ## [0.4.0] - 2015-08-01
 ### Added
@@ -16,7 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Showing alert view with text on different errors.
 - Showing timestamps in chat after every 3 messages (temporary solution, will be improved in future).
 
-### Changes
+### Changed
 - Improving flow for removing friends/requests.
 - Updating UI for friends screen.
 - Updating UI for incoming friend request screen.
