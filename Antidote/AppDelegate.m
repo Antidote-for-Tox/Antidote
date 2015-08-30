@@ -209,7 +209,8 @@
 
             UIAlertView *nameAlert = [UIAlertView bk_alertViewWithTitle:title];
             nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [nameAlert textFieldAtIndex:0].text = [url lastPathComponent];
+
+            [nameAlert textFieldAtIndex:0].text = [[url lastPathComponent] stringByDeletingPathExtension];
 
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
                 NSString *name = [nameAlert textFieldAtIndex:0].text;

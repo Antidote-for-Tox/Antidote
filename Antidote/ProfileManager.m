@@ -258,11 +258,11 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 - (NSString *)createUniqueNameFromName:(NSString *)name
 {
     NSString *result = name;
-    NSUInteger count = 0;
+    NSUInteger count = 1;
 
     while ([self.allProfiles containsObject:result]) {
 
-        result = [name stringByAppendingFormat:@"-%lu", count];
+        result = [name stringByAppendingFormat:@"-%lu", count++];
     }
 
     return result;
