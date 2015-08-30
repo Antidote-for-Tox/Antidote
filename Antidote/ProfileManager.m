@@ -82,7 +82,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     [self createToxManagerWithDirectoryPath:path name:name initializeWithDefaultValues:isNewDirectory];
 }
 
-- (void)createProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
+- (void)createAndSwitchToProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
 {
     NSParameterAssert(toxSaveURL);
     NSAssert(name.length > 0, @"name cannot be empty");
@@ -90,6 +90,8 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     if ([self.allProfiles containsObject:name]) {
         name = [self createUniqueNameFromName:name];
     }
+
+    [AppContext sharedContext].userDefaults.uCurrentProfileName = name;
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
     BOOL isNewDirectory = [self createDirectoryAtPathIfNotExist:path];

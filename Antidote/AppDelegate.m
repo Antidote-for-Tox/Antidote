@@ -215,7 +215,7 @@
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
                 NSString *name = [nameAlert textFieldAtIndex:0].text;
 
-                [[AppContext sharedContext].profileManager createProfileWithToxSave:url name:name];
+                [[AppContext sharedContext].profileManager createAndSwitchToProfileWithToxSave:url name:name];
                 removeFile();
 
                 [self switchToSettingsTabAndShowProfiles];
