@@ -23,6 +23,8 @@
 #import "ProfileManager.h"
 #import "OCTTox.h"
 #import "ErrorHandler.h"
+#import "TabBarViewController.h"
+#import "ProfilesListViewController.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -218,7 +220,12 @@
                 [[AppContext sharedContext].profileManager createAndSwitchToProfileWithToxSave:url name:name];
                 removeFile();
 
-                [self switchToSettingsTabAndShowProfiles];
+                [[AppContext sharedContext] recreateTabBarController];
+                TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
+                [AppContext sharedContext].tabBarController.selectedIndex = index;
+
+                UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
+                [navCon pushViewController:[ProfilesListViewController new] animated:NO];
             }];
 
             [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:removeFile];

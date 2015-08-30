@@ -67,20 +67,6 @@
     [friendsVC switchToTab:FriendsViewControllerTabRequests];
 }
 
-- (void)switchToSettingsTabAndShowProfiles
-{
-    UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexSettings];
-    UIViewController *top = [navCon topViewController];
-
-    BOOL animated = ! [top isKindOfClass:[ProfilesListViewController class]];
-
-    if (navCon.viewControllers.count > 1) {
-        [navCon popToRootViewControllerAnimated:NO];
-    }
-
-    [navCon pushViewController:[ProfilesListViewController new] animated:animated];
-}
-
 #pragma mark -  Private
 
 - (UINavigationController *)switchToIndexAndGetNavigation:(AppDelegateTabIndex)index
