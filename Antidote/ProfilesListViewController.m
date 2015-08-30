@@ -243,7 +243,13 @@
 
 - (void)exportProfile:(NSString *)name
 {
-    NSURL *url = [[AppContext sharedContext].profileManager exportProfileWithName:name];
+    NSError *error;
+    NSURL *url = [[AppContext sharedContext].profileManager exportProfileWithName:name error:&error];
+
+    if (! url) {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeExportProfile];
+        return;
+    }
 
     self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
     self.documentInteractionController.delegate = self;

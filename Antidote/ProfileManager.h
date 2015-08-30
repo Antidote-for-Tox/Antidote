@@ -53,7 +53,7 @@
 /**
  * Return NSURL path with profile save file.
  */
-- (NSURL *)exportProfileWithName:(NSString *)name;
+- (NSURL *)exportProfileWithName:(NSString *)name error:(NSError **)error;
 
 /**
  * Updates interface with current tox manager (connection status, tabbar badges, etc).

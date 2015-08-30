@@ -158,11 +158,11 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     return YES;
 }
 
-- (NSURL *)exportProfileWithName:(NSString *)name
+- (NSURL *)exportProfileWithName:(NSString *)name error:(NSError **)error
 {
-    NSString *path = [self.toxManager exportToxSaveFile:nil];
+    NSString *path = [self.toxManager exportToxSaveFile:error];
 
-    return [NSURL fileURLWithPath:path];
+    return path ? [NSURL fileURLWithPath : path] : nil;
 }
 
 - (void)updateInterface
