@@ -108,6 +108,7 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 {
     ProfileManager *profileManager = [AppContext sharedContext].profileManager;
     [profileManager switchToProfileWithName:profileManager.currentProfileName];
+    [profileManager updateInterface];
 }
 
 - (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath type:(CellType)type

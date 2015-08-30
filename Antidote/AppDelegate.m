@@ -23,6 +23,8 @@
 #import "ProfileManager.h"
 #import "OCTTox.h"
 #import "ErrorHandler.h"
+#import "TabBarViewController.h"
+#import "ProfilesListViewController.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -209,15 +211,21 @@
 
             UIAlertView *nameAlert = [UIAlertView bk_alertViewWithTitle:title];
             nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            [nameAlert textFieldAtIndex:0].text = [url lastPathComponent];
+
+            [nameAlert textFieldAtIndex:0].text = [[url lastPathComponent] stringByDeletingPathExtension];
 
             [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
                 NSString *name = [nameAlert textFieldAtIndex:0].text;
 
-                [[AppContext sharedContext].profileManager createProfileWithToxSave:url name:name];
+                [[AppContext sharedContext].profileManager createAndSwitchToProfileWithToxSave:url name:name];
                 removeFile();
 
-                [self switchToSettingsTabAndShowProfiles];
+                [[AppContext sharedContext] recreateTabBarController];
+                TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
+                [AppContext sharedContext].tabBarController.selectedIndex = index;
+
+                UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
+                [navCon pushViewController:[ProfilesListViewController new] animated:NO];
             }];
 
             [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:removeFile];

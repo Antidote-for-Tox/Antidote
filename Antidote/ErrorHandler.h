@@ -23,6 +23,8 @@ typedef NS_ENUM(NSUInteger, ErrorHandlerType) {
 
     ErrorHandlerTypeOpenFileFromOtherApp,
 
+    ErrorHandlerTypeExportProfile,
+
     ErrorHandlerTypeSendCallControl,
     ErrorHandlerTypeCallToChat,
     ErrorHandlerTypeAnswerCall,
