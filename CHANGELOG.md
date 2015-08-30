@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - "Import profile" instruction.
 
 ### Changed
-- objcTox update to version 0.2.0.
+- objcTox update to version 0.2.1.
 - Using improved bootstrapping methods from objcTox, now it works better.
 - Feedback email replaced with feedback@antidote.im
 
