@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- "Import profile" instruction.
+
 ### Changed
 - objcTox update to version 0.2.0.
 - Using improved bootstrapping methods from objcTox, now it works better.
