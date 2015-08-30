@@ -3,11 +3,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [0.5.0] - 2015-08-30
 ### Added
 - "Import profile" instruction.
 
 ### Changed
-- objcTox update to version 0.2.1.
+- objcTox updated to version 0.2.1.
 - Using improved bootstrapping methods from objcTox, now it works better.
 - Feedback email replaced with feedback@antidote.im
 
@@ -52,7 +54,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.4.0...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.5.0...master
+[0.5.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.2.5...0.3.0
 
