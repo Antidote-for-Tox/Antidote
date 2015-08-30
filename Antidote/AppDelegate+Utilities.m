@@ -70,12 +70,15 @@
 - (void)switchToSettingsTabAndShowProfiles
 {
     UINavigationController *navCon = [self switchToIndexAndGetNavigation:AppDelegateTabIndexSettings];
+    UIViewController *top = [navCon topViewController];
+
+    BOOL animated = ! [top isKindOfClass:[ProfilesListViewController class]];
 
     if (navCon.viewControllers.count > 1) {
         [navCon popToRootViewControllerAnimated:NO];
     }
 
-    [navCon pushViewController:[ProfilesListViewController new] animated:YES];
+    [navCon pushViewController:[ProfilesListViewController new] animated:animated];
 }
 
 #pragma mark -  Private
@@ -83,7 +86,9 @@
 - (UINavigationController *)switchToIndexAndGetNavigation:(AppDelegateTabIndex)index
 {
     UITabBarController *tabBar = (UITabBarController *)self.window.rootViewController;
-    tabBar.selectedIndex = index;
+    if (tabBar.selectedIndex != index) {
+        tabBar.selectedIndex = index;
+    }
 
     return (UINavigationController *)[tabBar selectedViewController];
 }

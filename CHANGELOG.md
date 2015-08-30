@@ -14,6 +14,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Updating connection status when changing IPv6/UDP setting.
 - Freezes when importing profile.
+- Minor UI fixes and improvements.
 
 ## [0.4.0] - 2015-08-01
 ### Added
