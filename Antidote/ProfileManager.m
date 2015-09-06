@@ -7,7 +7,6 @@
 //
 
 #import <objcTox/OCTDefaultFileStorage.h>
-#import <objcTox/OCTDefaultSettingsStorage.h>
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
@@ -98,7 +97,7 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     [self reloadAllProfiles];
 
     [self createToxManagerWithDirectoryPath:path name:name
-                        loadToxSaveFilePath:toxSaveURL.path
+                      importToxSaveFromPath:toxSaveURL.path
                 initializeWithDefaultValues:isNewDirectory];
 }
 
@@ -223,13 +222,13 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 {
     [self createToxManagerWithDirectoryPath:path
                                        name:name
-                        loadToxSaveFilePath:nil
+                      importToxSaveFromPath:nil
                 initializeWithDefaultValues:initializeWithDefaultValues];
 }
 
 - (void)createToxManagerWithDirectoryPath:(NSString *)path
                                      name:(NSString *)name
-                      loadToxSaveFilePath:(NSString *)toxSaveFilePath
+                    importToxSaveFromPath:(NSString *)importToxSaveFromPath
               initializeWithDefaultValues:(BOOL)initializeWithDefaultValues
 {
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
@@ -237,13 +236,12 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
     configuration.options.IPv6Enabled = [AppContext sharedContext].userDefaults.uIpv6Enabled.boolValue;
     configuration.options.UDPEnabled = [AppContext sharedContext].userDefaults.uUDPEnabled.boolValue;
 
-    NSString *key = [NSString stringWithFormat:@"settingsStorage/%@", name];
-    configuration.settingsStorage = [[OCTDefaultSettingsStorage alloc] initWithUserDefaultsKey:key];
-
     configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
                                                                   temporaryDirectory:NSTemporaryDirectory()];
 
-    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration loadToxSaveFilePath:toxSaveFilePath error:nil];
+    configuration.importToxSaveFromPath = importToxSaveFromPath;
+
+    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration error:nil];
     self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
 
     if (initializeWithDefaultValues) {
