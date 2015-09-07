@@ -20,10 +20,9 @@
 #import "ProfileViewController.h"
 #import "UIAlertView+BlocksKit.h"
 #import "AppearanceManager.h"
-#import "ProfileManager.h"
 #import "OCTTox.h"
 #import "ErrorHandler.h"
-#import "TabBarViewController.h"
+#import "LifecycleManager.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -46,8 +45,7 @@
 
     [self configureLoggingStuff];
 
-    // initialize context
-    [[AppContext sharedContext] recreateTabBarController];
+    [[AppContext sharedContext].lifecycleManager start];
 
     if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
         UIUserNotificationType types =

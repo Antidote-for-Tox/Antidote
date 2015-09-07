@@ -10,6 +10,7 @@
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
 #import "ErrorHandler.h"
+#import "LifecycleManager.h"
 #import "UserDefaultsManager.h"
 #import "AppDelegate.h"
 #import "Helper.h"
@@ -20,6 +21,7 @@
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) ErrorHandler *errorHandler;
+@property (strong, nonatomic, readwrite) LifecycleManager *lifecycleManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
 @end
@@ -92,6 +94,17 @@
     return _errorHandler;
 }
 
+- (LifecycleManager *)lifecycleManager
+{
+    if (_lifecycleManager) {
+        return _lifecycleManager;
+    }
+
+    _lifecycleManager = [LifecycleManager new];
+
+    return _lifecycleManager;
+}
+
 - (UserDefaultsManager *)userDefaults
 {
     if (_userDefaults) {
@@ -114,7 +127,6 @@
     // self.profileManager = nil;
 
     [self recreateAppearance];
-    [self recreateTabBarController];
 }
 
 - (void)recreateAppearance
@@ -124,31 +136,6 @@
 
     // FIXME
     //    [self.notification resetAppearance];
-    // [self.profileManager updateInterface];
-}
-
-- (void)recreateTabBarController
-{
-    // FIXME
-    // self.tabBarController = nil;
-
-    // RBQFetchedResultsController *chats = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:nil];
-    // RBQFetchedResultsController *friends = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:nil];
-    // RBQFetchedResultsController *friendRequests = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest delegate:nil];
-
-    // if ([chats numberOfRowsForSectionIndex:0]) {
-    //     self.tabBarController.selectedIndex = TabBarViewControllerIndexChats;
-    // }
-    // else if ([friends numberOfRowsForSectionIndex:0] ||
-    //          [friendRequests numberOfRowsForSectionIndex:0]) {
-    //     self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
-    // }
-    // else {
-    //     self.tabBarController.selectedIndex = TabBarViewControllerIndexProfile;
-    // }
-
-    // AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    // delegate.window.rootViewController = self.tabBarController;
     // [self.profileManager updateInterface];
 }
 

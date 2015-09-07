@@ -18,7 +18,6 @@
 #import "ContentCellWithAvatar.h"
 #import "Helper.h"
 #import "UITableViewCell+Utilities.h"
-#import "ProfileManager.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
 #import "TabBarViewController.h"

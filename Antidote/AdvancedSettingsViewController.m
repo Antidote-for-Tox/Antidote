@@ -13,7 +13,6 @@
 #import "CellWithSwitch.h"
 #import "UserDefaultsManager.h"
 #import "AppearanceManager.h"
-#import "ProfileManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeIpv6Enabled,

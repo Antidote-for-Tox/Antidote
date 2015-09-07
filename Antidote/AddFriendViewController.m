@@ -15,7 +15,6 @@
 
 #import "AddFriendViewController.h"
 #import "QRScannerController.h"
-#import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "UIViewController+Utilities.h"

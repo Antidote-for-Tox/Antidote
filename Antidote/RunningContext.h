@@ -18,13 +18,14 @@
  */
 @interface RunningContext : NSObject
 
-@property (strong, nonatomic, readonly) OCTManager *toxManager;
+@property (weak, nonatomic, readonly) OCTManager *toxManager;
+@property (weak, nonatomic) TabBarViewController *tabBarController;
+
 @property (strong, nonatomic, readonly) NotificationManager *notificationManager;
-@property (strong, nonatomic, readonly) TabBarViewController *tabBarController;
 
 + (instancetype)context;
 
-+ (void)createWithManager:(OCTManager *)manager tabBarController:(TabBarViewController *)tabBarController;
++ (void)createWithManager:(OCTManager *)manager;
 + (void)kill;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;

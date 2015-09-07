@@ -9,13 +9,13 @@
 #import <BlocksKit/UIActionSheet+BlocksKit.h>
 #import <Masonry/Masonry.h>
 
+#import <objcTox/OCTManager.h>
 #import <objcTox/OCTFriendRequest.h>
 #import <objcTox/OCTSubmanagerFriends.h>
 
 #import "FriendRequestViewController.h"
 #import "AppearanceManager.h"
 #import "UIViewController+Utilities.h"
-#import "ProfileManager.h"
 #import "UIImage+Utilities.h"
 #import "ValueViewWithTitle.h"
 #import "ErrorHandler.h"

@@ -20,7 +20,6 @@
 #import "StatusCircleView.h"
 #import "Helper.h"
 #import "UIView+Utilities.h"
-#import "ProfileManager.h"
 #import "TimeFormatter.h"
 #import "ChatMessage.h"
 #import "AppearanceManager.h"

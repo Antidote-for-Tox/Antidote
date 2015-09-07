@@ -22,7 +22,6 @@
 #import "TimeFormatter.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
-#import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "AvatarsManager.h"

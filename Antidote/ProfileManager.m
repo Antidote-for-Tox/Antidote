@@ -7,26 +7,15 @@
 //
 
 #import <objcTox/OCTDefaultFileStorage.h>
-#import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
-#import <objcTox/OCTSubmanagerBootstrap.h>
-#import <objcTox/OCTSubmanagerUser.h>
 
 #import "ProfileManager.h"
 #import "NSArray+BlocksKit.h"
 #import "UserDefaultsManager.h"
-#import "ToxListener.h"
 
 static NSString *const kSaveDirectoryPath = @"saves";
-static NSString *const kDefaultProfileName = @"default";
-static NSString *const kSaveToxFileName = @"save.tox";
-
-static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 
 @interface ProfileManager ()
-
-@property (strong, nonatomic, readwrite) OCTManager *toxManager;
-@property (strong, nonatomic, readwrite) ToxListener *toxListener;
 
 @property (strong, nonatomic, readwrite) NSArray *allProfiles;
 
@@ -44,73 +33,33 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
         return nil;
     }
 
-    [self createDirectoryAtPathIfNotExist:[self saveDirectoryPath]];
     [self reloadAllProfiles];
-
-    if (self.allProfiles.count) {
-        NSString *name = [AppContext sharedContext].userDefaults.uCurrentProfileName;
-        [self switchToProfileWithName:name];
-    }
-    else {
-        [self switchToProfileWithName:kDefaultProfileName];
-    }
 
     return self;
 }
 
-#pragma mark -  Properties
-
-- (NSString *)currentProfileName
-{
-    return [AppContext sharedContext].userDefaults.uCurrentProfileName;
-}
-
 #pragma mark -  Methods
 
-- (void)switchToProfileWithName:(NSString *)name
+- (BOOL)createProfileWithName:(NSString *)name error:(NSError **)error
 {
     NSAssert(name.length > 0, @"name cannot be empty");
-
-    [AppContext sharedContext].userDefaults.uCurrentProfileName = name;
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
-    BOOL isNewDirectory = [self createDirectoryAtPathIfNotExist:path];
-    [self reloadAllProfiles];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
 
-    [self createToxManagerWithDirectoryPath:path name:name initializeWithDefaultValues:isNewDirectory];
-}
-
-- (void)createAndSwitchToProfileWithToxSave:(NSURL *)toxSaveURL name:(NSString *)name
-{
-    NSParameterAssert(toxSaveURL);
-    NSAssert(name.length > 0, @"name cannot be empty");
-
-    if ([self.allProfiles containsObject:name]) {
-        name = [self createUniqueNameFromName:name];
+    if (! [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:error]) {
+        return NO;
     }
 
-    [AppContext sharedContext].userDefaults.uCurrentProfileName = name;
-
-    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
-    BOOL isNewDirectory = [self createDirectoryAtPathIfNotExist:path];
     [self reloadAllProfiles];
 
-    [self createToxManagerWithDirectoryPath:path name:name
-                      importToxSaveFromPath:toxSaveURL.path
-                initializeWithDefaultValues:isNewDirectory];
+    return YES;
 }
 
 - (BOOL)deleteProfileWithName:(NSString *)name error:(NSError **)error
 {
     NSAssert(name.length > 0, @"name cannot be empty");
-
-    BOOL isCurrent = [[self currentProfileName] isEqualToString:name];
-
-    if (isCurrent) {
-        self.toxManager = nil;
-        self.toxListener = nil;
-    }
 
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
@@ -121,11 +70,6 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 
     [self reloadAllProfiles];
 
-    if (isCurrent) {
-        NSString *nameToSwitch = [self.allProfiles firstObject] ?: kDefaultProfileName;
-        [self switchToProfileWithName:nameToSwitch];
-    }
-
     return YES;
 }
 
@@ -133,13 +77,6 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 {
     NSAssert(name.length > 0, @"name cannot be empty");
     NSAssert(toName.length > 0, @"toName cannot be empty");
-
-    BOOL isCurrent = [[self currentProfileName] isEqualToString:name];
-
-    if (isCurrent) {
-        self.toxManager = nil;
-        self.toxListener = nil;
-    }
 
     NSString *fromPath = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
     NSString *toPath = [[self saveDirectoryPath] stringByAppendingPathComponent:toName];
@@ -150,25 +87,29 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 
     [self reloadAllProfiles];
 
-    if (isCurrent) {
-        [AppContext sharedContext].userDefaults.uCurrentProfileName = toName;
-
-        [self createToxManagerWithDirectoryPath:toPath name:toName initializeWithDefaultValues:NO];
-    }
-
     return YES;
 }
 
-- (NSURL *)exportProfileWithName:(NSString *)name error:(NSError **)error
+- (OCTManagerConfiguration *)configurationForProfileWithName:(NSString *)name
 {
-    NSString *path = [self.toxManager exportToxSaveFile:error];
+    NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
-    return path ? [NSURL fileURLWithPath : path] : nil;
-}
+    BOOL isDirectory = NO;
+    BOOL exists = [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDirectory];
 
-- (void)updateInterface
-{
-    [self.toxListener performUpdates];
+    if (! exists || ! isDirectory) {
+        return nil;
+    }
+
+    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
+
+    configuration.options.IPv6Enabled = [AppContext sharedContext].userDefaults.uIpv6Enabled.boolValue;
+    configuration.options.UDPEnabled = [AppContext sharedContext].userDefaults.uUDPEnabled.boolValue;
+
+    configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
+                                                                  temporaryDirectory:NSTemporaryDirectory()];
+
+    return configuration;
 }
 
 #pragma mark -  Private
@@ -177,27 +118,6 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 {
     NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     return [path stringByAppendingPathComponent:kSaveDirectoryPath];
-}
-
-// returns YES if directory was created, NO if it already existed
-- (BOOL)createDirectoryAtPathIfNotExist:(NSString *)path
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-
-    BOOL isDirectory;
-    BOOL exists = [fileManager fileExistsAtPath:path isDirectory:&isDirectory];
-
-    if (exists && ! isDirectory) {
-        [fileManager removeItemAtPath:path error:nil];
-        exists = NO;
-    }
-
-    if (exists) {
-        return NO;
-    }
-
-    [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-    return YES;
 }
 
 - (void)reloadAllProfiles
@@ -214,58 +134,6 @@ static NSString *const kDefaultUserStatusMessage = @"Toxing on Antidote";
 
         return isDirectory;
     }];
-}
-
-- (void)createToxManagerWithDirectoryPath:(NSString *)path
-                                     name:(NSString *)name
-              initializeWithDefaultValues:(BOOL)initializeWithDefaultValues
-{
-    [self createToxManagerWithDirectoryPath:path
-                                       name:name
-                      importToxSaveFromPath:nil
-                initializeWithDefaultValues:initializeWithDefaultValues];
-}
-
-- (void)createToxManagerWithDirectoryPath:(NSString *)path
-                                     name:(NSString *)name
-                    importToxSaveFromPath:(NSString *)importToxSaveFromPath
-              initializeWithDefaultValues:(BOOL)initializeWithDefaultValues
-{
-    OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
-
-    configuration.options.IPv6Enabled = [AppContext sharedContext].userDefaults.uIpv6Enabled.boolValue;
-    configuration.options.UDPEnabled = [AppContext sharedContext].userDefaults.uUDPEnabled.boolValue;
-
-    configuration.fileStorage = [[OCTDefaultFileStorage alloc] initWithBaseDirectory:path
-                                                                  temporaryDirectory:NSTemporaryDirectory()];
-
-    configuration.importToxSaveFromPath = importToxSaveFromPath;
-
-    self.toxManager = [[OCTManager alloc] initWithConfiguration:configuration error:nil];
-    self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
-
-    if (initializeWithDefaultValues) {
-        NSString *name = [UIDevice currentDevice].name;
-
-        [self.toxManager.user setUserName:name error:nil];
-        [self.toxManager.user setUserStatusMessage:kDefaultUserStatusMessage error:nil];
-    }
-
-    [self.toxManager.bootstrap addPredefinedNodes];
-    [self.toxManager.bootstrap bootstrap];
-}
-
-- (NSString *)createUniqueNameFromName:(NSString *)name
-{
-    NSString *result = name;
-    NSUInteger count = 1;
-
-    while ([self.allProfiles containsObject:result]) {
-
-        result = [name stringByAppendingFormat:@"-%lu", count++];
-    }
-
-    return result;
 }
 
 @end

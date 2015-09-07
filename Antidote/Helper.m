@@ -10,7 +10,6 @@
 #import <objcTox/OCTToxConstants.h>
 
 #import "Helper.h"
-#import "ProfileManager.h"
 #import "RunningContext.h"
 
 @implementation Helper

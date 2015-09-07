@@ -15,7 +15,6 @@
 #import "ProfileViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "AppContext.h"
-#import "ProfileManager.h"
 #import "QRViewerController.h"
 #import "AvatarsManager.h"
 #import "ContentCellWithTitleImmutable.h"

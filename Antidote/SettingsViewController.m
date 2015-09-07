@@ -18,7 +18,6 @@
 #import "CellWithColorscheme.h"
 #import "CellWithSwitch.h"
 #import "AdvancedSettingsViewController.h"
-#import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 #import "TabBarViewController.h"
 #import "AboutViewController.h"
@@ -178,7 +177,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     context.userDefaults.uCurrentColorscheme = @(scheme);
     [context recreateAppearance];
-    [context recreateTabBarController];
 
     [RunningContext context].tabBarController.selectedIndex = TabBarViewControllerIndexSettings;
 }

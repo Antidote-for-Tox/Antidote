@@ -17,9 +17,9 @@ static NSObject *_runningContextLock;
 
 @interface RunningContext ()
 
-@property (strong, nonatomic, readwrite) OCTManager *toxManager;
+@property (weak, nonatomic, readwrite) OCTManager *toxManager;
+
 @property (strong, nonatomic, readwrite) NotificationManager *notificationManager;
-@property (strong, nonatomic, readwrite) TabBarViewController *tabBarController;
 
 @end
 
@@ -34,13 +34,12 @@ static NSObject *_runningContextLock;
     }
 }
 
-+ (void)createWithManager:(OCTManager *)manager tabBarController:(TabBarViewController *)tabBarController
++ (void)createWithManager:(OCTManager *)manager
 {
     @synchronized(_runningContextLock) {
         _runningContext = [super new];
         _runningContext.toxManager = manager;
         _runningContext.notificationManager = [NotificationManager new];
-        _runningContext.tabBarController = tabBarController;
     }
 }
 
