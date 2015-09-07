@@ -106,9 +106,10 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
 
 - (void)reloadToxManager
 {
-    ProfileManager *profileManager = [AppContext sharedContext].profileManager;
-    [profileManager switchToProfileWithName:profileManager.currentProfileName];
-    [profileManager updateInterface];
+    // FIXME
+    // ProfileManager *profileManager = [AppContext sharedContext].profileManager;
+    // [profileManager switchToProfileWithName:profileManager.currentProfileName];
+    // [profileManager updateInterface];
 }
 
 - (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath type:(CellType)type

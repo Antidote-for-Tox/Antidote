@@ -26,6 +26,7 @@
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "AvatarsManager.h"
+#import "RunningContext.h"
 
 @interface AllChatsViewController () <UITableViewDataSource, UITableViewDelegate, RBQFetchedResultsControllerDelegate>
 
@@ -152,7 +153,7 @@
             strongself;
 
             OCTChat *chat = [self.chatsController objectAtIndexPath:indexPath];
-            [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
+            [[RunningContext context].toxManager.chats removeChatWithAllMessages:chat];
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Chats") handler:^{

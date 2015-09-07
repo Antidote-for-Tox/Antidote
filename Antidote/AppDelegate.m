@@ -24,7 +24,6 @@
 #import "OCTTox.h"
 #import "ErrorHandler.h"
 #import "TabBarViewController.h"
-#import "ProfilesListViewController.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -195,50 +194,51 @@
 
 - (void)handleIncomingFileAtUrl:(NSURL *)url isDataFile:(BOOL)isDataFile
 {
-    void (^removeFile)() = ^() {
-        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
-    };
+    // FIXME
+    // void (^removeFile)() = ^() {
+    //     [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
+    // };
 
-    if (isDataFile) {
-        NSString *message = [NSString stringWithFormat:
-                             NSLocalizedString(@"Use \"%@\" file as tox save file?", @"Incoming file"),
-                             [url lastPathComponent]];
+    // if (isDataFile) {
+    //     NSString *message = [NSString stringWithFormat:
+    //                          NSLocalizedString(@"Use \"%@\" file as tox save file?", @"Incoming file"),
+    //                          [url lastPathComponent]];
 
-        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
+    //     UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
 
-        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Incoming file") handler:^{
-            NSString *title = NSLocalizedString(@"Enter profile name", @"Incoming file");
+    //     [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Incoming file") handler:^{
+    //         NSString *title = NSLocalizedString(@"Enter profile name", @"Incoming file");
 
-            UIAlertView *nameAlert = [UIAlertView bk_alertViewWithTitle:title];
-            nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    //         UIAlertView *nameAlert = [UIAlertView bk_alertViewWithTitle:title];
+    //         nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
 
-            [nameAlert textFieldAtIndex:0].text = [[url lastPathComponent] stringByDeletingPathExtension];
+    //         [nameAlert textFieldAtIndex:0].text = [[url lastPathComponent] stringByDeletingPathExtension];
 
-            [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
-                NSString *name = [nameAlert textFieldAtIndex:0].text;
+    //         [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
+    //             NSString *name = [nameAlert textFieldAtIndex:0].text;
 
-                [[AppContext sharedContext].profileManager createAndSwitchToProfileWithToxSave:url name:name];
-                removeFile();
+    //             [[AppContext sharedContext].profileManager createAndSwitchToProfileWithToxSave:url name:name];
+    //             removeFile();
 
-                [[AppContext sharedContext] recreateTabBarController];
-                TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
-                [AppContext sharedContext].tabBarController.selectedIndex = index;
+    //             [[AppContext sharedContext] recreateTabBarController];
+    //             TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
+    //             [AppContext sharedContext].tabBarController.selectedIndex = index;
 
-                UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
-                [navCon pushViewController:[ProfilesListViewController new] animated:NO];
-            }];
+    //             UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
+    //             [navCon pushViewController:[ProfilesListViewController new] animated:NO];
+    //         }];
 
-            [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:removeFile];
-            [nameAlert show];
+    //         [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:removeFile];
+    //         [nameAlert show];
 
-        }];
+    //     }];
 
-        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Incoming file") handler:removeFile];
-        [alert show];
-    }
-    else {
-        removeFile();
-    }
+    //     [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Incoming file") handler:removeFile];
+    //     [alert show];
+    // }
+    // else {
+    //     removeFile();
+    // }
 }
 
 @end

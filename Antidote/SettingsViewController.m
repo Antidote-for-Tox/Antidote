@@ -17,12 +17,12 @@
 #import "UITableViewCell+Utilities.h"
 #import "CellWithColorscheme.h"
 #import "CellWithSwitch.h"
-#import "ProfilesListViewController.h"
 #import "AdvancedSettingsViewController.h"
 #import "ProfileManager.h"
 #import "UserDefaultsManager.h"
 #import "TabBarViewController.h"
 #import "AboutViewController.h"
+#import "RunningContext.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeColorscheme,
@@ -31,7 +31,6 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeShowMessageInLocalNotification,
     CellTypeAdvancedSettings,
     CellTypeAbout,
-    CellTypeProfile,
 };
 
 static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
@@ -50,9 +49,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     return [super initWithTitle:NSLocalizedString(@"Settings", @"Settings") tableStyle:UITableViewStyleGrouped tableStructure:@[
                 @[
                     @(CellTypeColorscheme),
-                ],
-                @[
-                    @(CellTypeProfile),
                 ],
                 @[
                     @(CellTypeTitleNotifications),
@@ -106,9 +102,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeAbout) {
         return [self cellWithArrowAtIndexPath:indexPath type:type];
     }
-    else if (type == CellTypeProfile) {
-        return [self profileCellAtIndexPath:indexPath];
-    }
     else if (type == CellTypeFeedback) {
         return [self feedbackCellAtIndexPath:indexPath];
     }
@@ -129,7 +122,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
              (type == CellTypeShowMessageInLocalNotification) ||
              (type == CellTypeAdvancedSettings) ||
              (type == CellTypeAbout) ||
-             (type == CellTypeProfile) ||
              (type == CellTypeFeedback) ) {
         return 44.0;
     }
@@ -143,10 +135,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeProfile) {
-        [self.navigationController pushViewController:[ProfilesListViewController new] animated:YES];
-    }
-    else if (type == CellTypeAdvancedSettings) {
+    if (type == CellTypeAdvancedSettings) {
         [self.navigationController pushViewController:[AdvancedSettingsViewController new] animated:YES];
     }
     else if (type == CellTypeAbout) {
@@ -191,7 +180,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     [context recreateAppearance];
     [context recreateTabBarController];
 
-    context.tabBarController.selectedIndex = TabBarViewControllerIndexSettings;
+    [RunningContext context].tabBarController.selectedIndex = TabBarViewControllerIndexSettings;
 }
 
 #pragma mark -  CellWithSwitchDelegate
@@ -287,20 +276,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     else if (type == CellTypeAbout) {
         cell.textLabel.text = NSLocalizedString(@"About", @"Settings");
     }
-
-    return cell;
-}
-
-- (UITableViewCell *)profileCellAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:kProfileReuseIdentifier
-                                                                 forIndexPath:indexPath];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",
-                           NSLocalizedString(@"Profile", @"Settings"),
-                           [AppContext sharedContext].profileManager.currentProfileName];
-
-    cell.textLabel.textAlignment = NSTextAlignmentCenter;
-    cell.textLabel.textColor = [[AppContext sharedContext].appearance textMainColor];
 
     return cell;
 }

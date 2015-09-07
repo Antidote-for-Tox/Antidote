@@ -24,6 +24,7 @@
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
 #import "TabBarViewController.h"
+#import "RunningContext.h"
 
 NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupIdentifierFriendRequest";
 
@@ -214,7 +215,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
         NotificationObject *notification = [self friendRequestNotificationWithPath:object.path];
 
         if (notification) {
-            [[AppContext sharedContext].notification addNotificationToQueue:notification];
+            [[RunningContext context].notificationManager addNotificationToQueue:notification];
         }
     }
 }
@@ -237,7 +238,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
         NotificationObject *notification = [self messageNotificationWithPath:object.path];
 
         if (notification) {
-            [[AppContext sharedContext].notification addNotificationToQueue:notification];
+            [[RunningContext context].notificationManager addNotificationToQueue:notification];
         }
     }
 }
@@ -245,15 +246,15 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 - (void)updateConnectionStatus:(OCTToxConnectionStatus)connectionStatus
 {
     if (connectionStatus == OCTToxConnectionStatusNone) {
-        [[AppContext sharedContext].notification showConnectingView];
+        [[RunningContext context].notificationManager showConnectingView];
     }
     else {
-        [[AppContext sharedContext].notification hideConnectingView];
+        [[RunningContext context].notificationManager hideConnectingView];
     }
 
     OCTToxUserStatus userStatus = self.manager.user.userStatus;
-    [AppContext sharedContext].tabBarController.connectionStatus = [Helper circleStatusFromConnectionStatus:connectionStatus
-                                                                                                 userStatus:userStatus];
+    [RunningContext context].tabBarController.connectionStatus = [Helper circleStatusFromConnectionStatus:connectionStatus
+                                                                                               userStatus:userStatus];
 }
 
 - (void)updateBadges
@@ -261,7 +262,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     NSUInteger friendRequestsNumber = [self.friendRequestsController numberOfRowsForSectionIndex:0];
     NSString *badge = (friendRequestsNumber > 0) ? [NSString stringWithFormat : @"%lu", friendRequestsNumber] : nil;
 
-    [[AppContext sharedContext].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexFriends];
+    [[RunningContext context].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexFriends];
 
     NSInteger chatsNumber = 0;
     for (OCTChat *chat in self.chatsController.fetchedObjects) {
@@ -272,7 +273,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 
     badge = (chatsNumber > 0) ? [NSString stringWithFormat : @"%lu", chatsNumber] : nil;
 
-    [[AppContext sharedContext].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexChats];
+    [[RunningContext context].tabBarController setBadge:badge atIndex:TabBarViewControllerIndexChats];
 
     [UIApplication sharedApplication].applicationIconBadgeNumber = friendRequestsNumber + chatsNumber;
 }

@@ -11,6 +11,7 @@
 
 #import "Helper.h"
 #import "ProfileManager.h"
+#import "RunningContext.h"
 
 @implementation Helper
 
@@ -74,7 +75,7 @@
                                                        sortDescriptors:(NSArray *)sortDescriptors
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate
 {
-    OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+    OCTSubmanagerObjects *submanager = [RunningContext context].toxManager.objects;
 
     RBQFetchRequest *fetchRequest = [submanager fetchRequestForType:type withPredicate:predicate];
     fetchRequest.sortDescriptors = sortDescriptors;

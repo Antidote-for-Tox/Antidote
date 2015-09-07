@@ -10,9 +10,6 @@
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
 #import "ErrorHandler.h"
-#import "NotificationManager.h"
-#import "ProfileManager.h"
-#import "TabBarViewController.h"
 #import "UserDefaultsManager.h"
 #import "AppDelegate.h"
 #import "Helper.h"
@@ -23,9 +20,6 @@
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) ErrorHandler *errorHandler;
-@property (strong, nonatomic, readwrite) NotificationManager *notification;
-@property (strong, nonatomic, readwrite) ProfileManager *profileManager;
-@property (strong, nonatomic, readwrite) TabBarViewController *tabBarController;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
 @end
@@ -98,36 +92,6 @@
     return _errorHandler;
 }
 
-- (NotificationManager *)notification
-{
-    if (_notification) {
-        return _notification;
-    }
-
-    _notification = [NotificationManager new];
-    return _notification;
-}
-
-- (ProfileManager *)profileManager
-{
-    if (_profileManager) {
-        return _profileManager;
-    }
-
-    _profileManager = [ProfileManager new];
-    return _profileManager;
-}
-
-- (TabBarViewController *)tabBarController
-{
-    if (_tabBarController) {
-        return _tabBarController;
-    }
-
-    _tabBarController = [TabBarViewController new];
-    return _tabBarController;
-}
-
 - (UserDefaultsManager *)userDefaults
 {
     if (_userDefaults) {
@@ -146,7 +110,8 @@
 {
     [self createUserDefaultsValuesAndRewrite:YES];
 
-    self.profileManager = nil;
+    // FIXME
+    // self.profileManager = nil;
 
     [self recreateAppearance];
     [self recreateTabBarController];
@@ -157,32 +122,34 @@
     self.appearance = nil;
     self.avatars = nil;
 
-    [self.notification resetAppearance];
-    [self.profileManager updateInterface];
+    // FIXME
+    //    [self.notification resetAppearance];
+    // [self.profileManager updateInterface];
 }
 
 - (void)recreateTabBarController
 {
-    self.tabBarController = nil;
+    // FIXME
+    // self.tabBarController = nil;
 
-    RBQFetchedResultsController *chats = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:nil];
-    RBQFetchedResultsController *friends = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:nil];
-    RBQFetchedResultsController *friendRequests = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest delegate:nil];
+    // RBQFetchedResultsController *chats = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:nil];
+    // RBQFetchedResultsController *friends = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:nil];
+    // RBQFetchedResultsController *friendRequests = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest delegate:nil];
 
-    if ([chats numberOfRowsForSectionIndex:0]) {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexChats;
-    }
-    else if ([friends numberOfRowsForSectionIndex:0] ||
-             [friendRequests numberOfRowsForSectionIndex:0]) {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
-    }
-    else {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexProfile;
-    }
+    // if ([chats numberOfRowsForSectionIndex:0]) {
+    //     self.tabBarController.selectedIndex = TabBarViewControllerIndexChats;
+    // }
+    // else if ([friends numberOfRowsForSectionIndex:0] ||
+    //          [friendRequests numberOfRowsForSectionIndex:0]) {
+    //     self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
+    // }
+    // else {
+    //     self.tabBarController.selectedIndex = TabBarViewControllerIndexProfile;
+    // }
 
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    delegate.window.rootViewController = self.tabBarController;
-    [self.profileManager updateInterface];
+    // AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    // delegate.window.rootViewController = self.tabBarController;
+    // [self.profileManager updateInterface];
 }
 
 #pragma mark -  Private

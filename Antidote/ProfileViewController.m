@@ -23,6 +23,7 @@
 #import "ContentCellWithAvatar.h"
 #import "ContentSeparatorCell.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -207,7 +208,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     if (type == CellTypeNameEditable) {
         NSError *error;
-        if (! [[AppContext sharedContext].profileManager.toxManager.user setUserName:cell.mainText error:&error]) {
+        if (! [[RunningContext context].toxManager.user setUserName:cell.mainText error:&error]) {
             [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSetUserName];
             return;
         }
@@ -222,7 +223,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     }
     else if (type == CellTypeStatusMessageEditable) {
         NSError *error;
-        if (! [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:cell.mainText error:&error]) {
+        if (! [[RunningContext context].toxManager.user setUserStatusMessage:cell.mainText error:&error]) {
             [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSetUserStatus];
             return;
         }
@@ -286,7 +287,7 @@ typedef NS_ENUM(NSInteger, CellType) {
                                                                        forIndexPath:indexPath];
     cell.delegate = self;
 
-    NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
+    NSString *userName = [RunningContext context].toxManager.user.userName;
     cell.avatar = [[AppContext sharedContext].avatars avatarFromString:userName diameter:kContentCellWithAvatarImageSize];
 
     return cell;
@@ -302,7 +303,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.delegate = self;
     cell.title = NSLocalizedString(@"Name", @"Profile");
     cell.buttonTitle = nil;
-    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userName;
+    cell.mainText = [RunningContext context].toxManager.user.userName;
 
     if (editable) {
         ContentCellWithTitleEditable *eCell = (ContentCellWithTitleEditable *)cell;
@@ -326,7 +327,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.delegate = self;
     cell.title = NSLocalizedString(@"Status Message", @"Profile");
     cell.buttonTitle = nil;
-    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
+    cell.mainText = [RunningContext context].toxManager.user.userStatusMessage;
 
     if (editable) {
         ContentCellWithTitleEditable *eCell = (ContentCellWithTitleEditable *)cell;
@@ -347,7 +348,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Profile");
     cell.buttonTitle = NSLocalizedString(@"Show QR", @"Profile");
-    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
+    cell.mainText = [RunningContext context].toxManager.user.userAddress;
     cell.showEditButton = NO;
 
     return cell;
