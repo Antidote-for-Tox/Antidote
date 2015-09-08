@@ -17,10 +17,12 @@
 #import "TabBarViewController.h"
 #import "Helper.h"
 #import "AppDelegate.h"
+#import "ToxListener.h"
 
 @interface LifecyclePhaseRunning ()
 
 @property (strong, nonatomic) OCTManager *toxManager;
+@property (strong, nonatomic) ToxListener *toxListener;
 
 @end
 
@@ -68,6 +70,9 @@
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.window.rootViewController = tabBarVC;
     [RunningContext context].tabBarController = tabBarVC;
+
+    self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
+    [self.toxListener performUpdates];
 }
 
 - (nonnull NSString *)name
