@@ -10,6 +10,7 @@
 
 @interface UIViewController (Utilities)
 
+- (void)loadViewWithBackgroundColor:(UIColor *)color;
 - (void)loadWhiteView;
 - (void)loadLightGrayView;
 

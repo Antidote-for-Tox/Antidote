@@ -15,6 +15,10 @@
 #import "ProfileManager.h"
 #import "AppDelegate.h"
 
+@interface LifecyclePhaseLogin () <UINavigationControllerDelegate>
+
+@end
+
 @implementation LifecyclePhaseLogin
 @synthesize delegate = _delegate;
 
@@ -68,12 +72,20 @@
     return @"Login";
 }
 
+#pragma mark -  UINavigationControllerDelegate
+
+- (NSUInteger)navigationControllerSupportedInterfaceOrientations:(UINavigationController *)navigationController
+{
+    return [navigationController.topViewController supportedInterfaceOrientations];
+}
+
 #pragma mark -  Private
 
 - (void)showLoginController
 {
     LoginViewController *loginVC = [LoginViewController new];
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:loginVC];
+    navCon.delegate = self;
     navCon.navigationBarHidden = YES;
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
