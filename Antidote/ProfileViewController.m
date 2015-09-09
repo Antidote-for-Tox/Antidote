@@ -23,6 +23,8 @@
 #import "ContentSeparatorCell.h"
 #import "ErrorHandler.h"
 #import "RunningContext.h"
+#import "LifecycleManager.h"
+#import "LifecyclePhaseRunning.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -33,6 +35,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeStatusMessageImmutable,
     CellTypeStatusMessageEditable,
     CellTypeToxId,
+    CellTypeLogout,
 };
 
 @interface ProfileViewController () <ContentCellWithTitleImmutableDelegate,
@@ -58,6 +61,9 @@ typedef NS_ENUM(NSInteger, CellType) {
                     @(CellTypeStatusMessageImmutable),
                     @(CellTypeSeparatorGray),
                     @(CellTypeToxId),
+                ],
+                @[
+                    @(CellTypeLogout),
                 ]
             ]];
 }
@@ -79,6 +85,7 @@ typedef NS_ENUM(NSInteger, CellType) {
            forCellReuseIdentifier:[ContentCellWithTitleImmutable reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithTitleEditable class]
            forCellReuseIdentifier:[ContentCellWithTitleEditable reuseIdentifier]];
+    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:[UITableViewCell reuseIdentifier]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -102,6 +109,22 @@ typedef NS_ENUM(NSInteger, CellType) {
             return [self cellWithStatusMessageAtIndexPath:indexPath editable:YES];
         case CellTypeToxId:
             return [self cellWithToxIdAtIndexPath:indexPath];
+        case CellTypeLogout:
+            return [self cellWithLogoutAtIndexPath:indexPath];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    if (type == CellTypeLogout) {
+        LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
+
+        NSAssert([running isKindOfClass:[LifecyclePhaseRunning class]],
+                 @"Something went terrible wrong, should be in running phase");
+
+        [running logout];
     }
 }
 
@@ -349,6 +372,15 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.buttonTitle = NSLocalizedString(@"Show QR", @"Profile");
     cell.mainText = [RunningContext context].toxManager.user.userAddress;
     cell.showEditButton = NO;
+
+    return cell;
+}
+
+- (UITableViewCell *)cellWithLogoutAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [UITableViewCell reuseIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    cell.textLabel.text = NSLocalizedString(@"Log Out", @"Profile");
 
     return cell;
 }
