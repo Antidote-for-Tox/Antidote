@@ -60,6 +60,7 @@
 		11A88ABD1BA0080D0032686F /* ImportProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88ABC1BA0080D0032686F /* ImportProfileViewController.m */; };
 		11A88AC01BA008160032686F /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88ABF1BA008160032686F /* CreateAccountViewController.m */; };
 		11A88AC41BA00F0C0032686F /* FullscreenPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88AC31BA00F0C0032686F /* FullscreenPicker.m */; };
+		11A88ACB1BA035460032686F /* LoginProfileFormView.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88ACA1BA035460032686F /* LoginProfileFormView.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
 		11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */; };
@@ -191,6 +192,8 @@
 		11A88ABF1BA008160032686F /* CreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
 		11A88AC21BA00F0C0032686F /* FullscreenPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenPicker.h; sourceTree = "<group>"; };
 		11A88AC31BA00F0C0032686F /* FullscreenPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenPicker.m; sourceTree = "<group>"; };
+		11A88AC91BA035460032686F /* LoginProfileFormView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginProfileFormView.h; sourceTree = "<group>"; };
+		11A88ACA1BA035460032686F /* LoginProfileFormView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginProfileFormView.m; sourceTree = "<group>"; };
 		11B9E6151993EBDB00FB20A6 /* TimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeFormatter.h; sourceTree = "<group>"; };
 		11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeFormatter.m; sourceTree = "<group>"; };
 		11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceManager.h; sourceTree = "<group>"; };
@@ -280,6 +283,7 @@
 		110FF3471B9E249200904D1D /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				11A88AC51BA034E30032686F /* Views */,
 				110FF3481B9E24A700904D1D /* LoginViewController.h */,
 				110FF3491B9E24A700904D1D /* LoginViewController.m */,
 			);
@@ -642,6 +646,15 @@
 				11A88AC31BA00F0C0032686F /* FullscreenPicker.m */,
 			);
 			name = FullscreenPicker;
+			sourceTree = "<group>";
+		};
+		11A88AC51BA034E30032686F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				11A88AC91BA035460032686F /* LoginProfileFormView.h */,
+				11A88ACA1BA035460032686F /* LoginProfileFormView.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		11B9E6141993EBCC00FB20A6 /* TimeFormatter */ = {
@@ -1042,6 +1055,7 @@
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
 				1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */,
+				11A88ACB1BA035460032686F /* LoginProfileFormView.m in Sources */,
 				110FF33B1B9E147900904D1D /* LifecycleManager.m in Sources */,
 				119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
