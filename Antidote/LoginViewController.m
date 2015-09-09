@@ -227,7 +227,11 @@ static const CGFloat kLogoBottomOffset = 40.0;
 
 - (void)createLogoImageView
 {
-    self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login-logo"]];
+    UIImage *image = [UIImage imageNamed:@"login-logo"];
+    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+
+    self.logoImageView = [[UIImageView alloc] initWithImage:image];
+    self.logoImageView.tintColor = [[AppContext sharedContext].appearance bubbleOutgoingColor];
     self.logoImageView.contentMode = UIViewContentModeScaleAspectFit;
     [self.containerView addSubview:self.logoImageView];
 }

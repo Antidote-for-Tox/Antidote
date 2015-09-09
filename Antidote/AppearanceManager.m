@@ -111,7 +111,7 @@
 {
     switch (self.colorscheme) {
         case AppearanceManagerColorschemeIce:
-            return [UIColor uColorOpaqueWithRed:199 green:225 blue:237];
+            return [UIColor uColorOpaqueWithRed:216 green:231 blue:239];
         case __AppearanceManagerColorschemeCount:
             NSAssert(NO, @"We shouldn't be here");
             return nil;
@@ -127,7 +127,7 @@
 {
     switch (self.colorscheme) {
         case AppearanceManagerColorschemeIce:
-            return [UIColor uColorWithRed:225 green:237 blue:242 alpha:alpha];
+            return [UIColor uColorWithRed:237 green:243 blue:245 alpha:alpha];
         case __AppearanceManagerColorschemeCount:
             NSAssert(NO, @"We shouldn't be here");
             return nil;
@@ -149,7 +149,7 @@
 {
     switch (scheme) {
         case AppearanceManagerColorschemeIce:
-            return [UIColor uColorOpaqueWithRed:255 green:247 blue:229];
+            return [UIColor uColorOpaqueWithRed:237 green:243 blue:245];
         case __AppearanceManagerColorschemeCount:
             NSAssert(NO, @"We shouldn't be here");
             return nil;
