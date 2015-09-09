@@ -221,6 +221,32 @@
     }
 }
 
+- (UIColor *)loginBackgroundColor
+{
+    return [self textMainColor];
+}
+
+- (UIColor *)loginButtonColor
+{
+    return [UIColor uColorWithRed:13 green:103 blue:140 alpha:1.0];
+}
+
+- (UIColor *)loginNavigationBarColor
+{
+    // https://developer.apple.com/library/ios/qa/qa1808/_index.html
+    CGFloat colorDelta = 0.08;
+
+    CGFloat red, green, blue, alpha;
+
+    [[self loginButtonColor] getRed:&red green:&green blue:&blue alpha:&alpha];
+
+    red = MAX(0.0, red - colorDelta);
+    green = MAX(0.0, green - colorDelta);
+    blue = MAX(0.0, blue - colorDelta);
+
+    return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
+}
+
 #pragma mark -  Private
 
 - (void)setColorscheme:(AppearanceManagerColorscheme)colorscheme

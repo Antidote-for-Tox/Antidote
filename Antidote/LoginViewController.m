@@ -18,6 +18,8 @@
 #import "AppearanceManager.h"
 #import "UIImage+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "CreateAccountViewController.h"
+#import "ImportProfileViewController.h"
 
 static const CGFloat kLogoTopOffset = 40.0;
 static const CGFloat kLogoBottomOffset = 20.0;
@@ -68,6 +70,18 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     [super viewDidAppear:animated];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+}
+
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
@@ -76,10 +90,14 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
 #pragma mark -  Actions
 
 - (void)createAccountButtonPressed
-{}
+{
+    [self.navigationController pushViewController:[CreateAccountViewController new] animated:YES];
+}
 
 - (void)importProfileButtonPressed
-{}
+{
+    [self.navigationController pushViewController:[ImportProfileViewController new] animated:YES];
+}
 
 - (void)loginButtonPressed
 {}
@@ -166,7 +184,7 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     self.loginButton.layer.masksToBounds = YES;
     [self.loginButton addTarget:self action:@selector(loginButtonPressed) forControlEvents:UIControlEventTouchUpInside];
 
-    UIColor *bgColor = [UIColor uColorWithRed:13 green:103 blue:140 alpha:1.0];
+    UIColor *bgColor = [[AppContext sharedContext].appearance loginButtonColor];
     UIImage *bgImage = [UIImage imageWithColor:bgColor size:CGSizeMake(1.0, 1.0)];
     [self.loginButton setBackgroundImage:bgImage forState:UIControlStateNormal];
 
@@ -262,7 +280,7 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.tintColor = [UIColor colorWithWhite:200.0/255.0 alpha:1.0];
+    imageView.tintColor = [UIColor uColorWithWhite:200 alpha:1];
 
     UIView *container = [UIView new];
     container.backgroundColor = [UIColor clearColor];

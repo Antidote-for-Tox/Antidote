@@ -14,6 +14,7 @@
 #import "UserDefaultsManager.h"
 #import "ProfileManager.h"
 #import "AppDelegate.h"
+#import "AppearanceManager.h"
 
 @interface LifecyclePhaseLogin () <UINavigationControllerDelegate>
 
@@ -86,7 +87,11 @@
     LoginViewController *loginVC = [LoginViewController new];
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:loginVC];
     navCon.delegate = self;
-    navCon.navigationBarHidden = YES;
+    navCon.navigationBar.tintColor = [UIColor whiteColor];
+    navCon.navigationBar.barTintColor = [[AppContext sharedContext].appearance loginNavigationBarColor];
+    [navCon.navigationBar setTitleTextAttributes:@{
+         NSForegroundColorAttributeName : [UIColor whiteColor]
+     }];
 
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.window.rootViewController = navCon;
