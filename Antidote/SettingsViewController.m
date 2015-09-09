@@ -15,16 +15,15 @@
 #import "MFMailComposeViewController+BlocksKit.h"
 #import "DDFileLogger.h"
 #import "UITableViewCell+Utilities.h"
-#import "CellWithColorscheme.h"
 #import "CellWithSwitch.h"
 #import "AdvancedSettingsViewController.h"
 #import "UserDefaultsManager.h"
 #import "TabBarViewController.h"
 #import "AboutViewController.h"
 #import "RunningContext.h"
+#import "AppearanceManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
-    CellTypeColorscheme,
     CellTypeFeedback,
     CellTypeTitleNotifications,
     CellTypeShowMessageInLocalNotification,
@@ -35,7 +34,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 static NSString *const kProfileReuseIdentifier = @"kProfileReuseIdentifier";
 static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
-@interface SettingsViewController () <CellWithColorschemeDelegate, CellWithSwitchDelegate>
+@interface SettingsViewController () <CellWithSwitchDelegate>
 
 @end
 
@@ -46,9 +45,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 - (instancetype)init
 {
     return [super initWithTitle:NSLocalizedString(@"Settings", @"Settings") tableStyle:UITableViewStyleGrouped tableStructure:@[
-                @[
-                    @(CellTypeColorscheme),
-                ],
                 @[
                     @(CellTypeTitleNotifications),
                     @(CellTypeShowMessageInLocalNotification),
@@ -73,9 +69,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 
 - (void)registerCellsForTableView
 {
-    [self.tableView registerClass:[CellWithColorscheme class]
-           forCellReuseIdentifier:[CellWithColorscheme reuseIdentifier]];
-
     [self.tableView registerClass:[CellWithSwitch class] forCellReuseIdentifier:[CellWithSwitch reuseIdentifier]];
 
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kProfileReuseIdentifier];
@@ -86,10 +79,7 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeColorscheme) {
-        return [self cellWithColorschemeIdAtIndexPath:indexPath];
-    }
-    else if (type == CellTypeTitleNotifications) {
+    if (type == CellTypeTitleNotifications) {
         return [self cellWithTitleAtIndexPath:indexPath withType:type];
     }
     else if (type == CellTypeShowMessageInLocalNotification) {
@@ -114,14 +104,11 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
 {
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeColorscheme) {
-        return [CellWithColorscheme height];
-    }
-    else if ((type == CellTypeTitleNotifications) ||
-             (type == CellTypeShowMessageInLocalNotification) ||
-             (type == CellTypeAdvancedSettings) ||
-             (type == CellTypeAbout) ||
-             (type == CellTypeFeedback) ) {
+    if ((type == CellTypeTitleNotifications) ||
+        (type == CellTypeShowMessageInLocalNotification) ||
+        (type == CellTypeAdvancedSettings) ||
+        (type == CellTypeAbout) ||
+        (type == CellTypeFeedback) ) {
         return 44.0;
     }
 
@@ -169,18 +156,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     }
 }
 
-#pragma mark -  CellWithColorschemeDelegate
-
-- (void)cellWithColorscheme:(CellWithColorscheme *)cell didSelectScheme:(AppearanceManagerColorscheme)scheme
-{
-    AppContext *context = [AppContext sharedContext];
-
-    context.userDefaults.uCurrentColorscheme = @(scheme);
-    [context recreateAppearance];
-
-    [RunningContext context].tabBarController.selectedIndex = TabBarViewControllerIndexSettings;
-}
-
 #pragma mark -  CellWithSwitchDelegate
 
 - (void)cellWithSwitchStateChanged:(CellWithSwitch *)cell
@@ -219,17 +194,6 @@ static NSString *const kFeedbackReuseIdentifier = @"kFeedbackReuseIdentifier";
     };
 
     [self presentViewController:vc animated:YES completion:nil];
-}
-
-- (CellWithColorscheme *)cellWithColorschemeIdAtIndexPath:(NSIndexPath *)indexPath
-{
-    CellWithColorscheme *cell = [self.tableView dequeueReusableCellWithIdentifier:[CellWithColorscheme reuseIdentifier]
-                                                                     forIndexPath:indexPath];
-    cell.delegate = self;
-
-    [cell redraw];
-
-    return cell;
 }
 
 - (UITableViewCell *)cellWithTitleAtIndexPath:(NSIndexPath *)indexPath withType:(CellType)type

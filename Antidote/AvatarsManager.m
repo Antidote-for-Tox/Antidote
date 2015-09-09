@@ -66,7 +66,7 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
     string = [self avatarsStringFromString:string];
 
     UILabel *label = [UILabel new];
-    label.backgroundColor = [[AppContext sharedContext].appearance bubbleOutgoingColor];
+    label.backgroundColor = [[AppContext sharedContext].appearance bubbleIncomingColor];
     label.layer.borderColor = [[AppContext sharedContext].appearance textMainColor].CGColor;
     label.layer.borderWidth = 1.0;
     label.layer.masksToBounds = YES;

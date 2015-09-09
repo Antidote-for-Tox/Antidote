@@ -10,9 +10,6 @@
 
 typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
     AppearanceManagerColorschemeIce = 0,
-    AppearanceManagerColorschemePurple,
-    AppearanceManagerColorschemeRed,
-    AppearanceManagerColorschemeOrange,
     __AppearanceManagerColorschemeCount,
 };
 
