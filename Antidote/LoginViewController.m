@@ -20,6 +20,7 @@
 #import "UIColor+Utilities.h"
 #import "CreateAccountViewController.h"
 #import "ImportProfileViewController.h"
+#import "FullscreenPicker.h"
 
 static const CGFloat kLogoTopOffset = 40.0;
 static const CGFloat kLogoBottomOffset = 20.0;
@@ -32,7 +33,7 @@ static const CGFloat kFormToButtonOffset = 10.0;
 
 static const CGFloat kBottomButtonsBottomOffset = -20.0;
 
-@interface LoginViewController () <UITextFieldDelegate>
+@interface LoginViewController () <UITextFieldDelegate, FullscreenPickerDelegate>
 
 @property (strong, nonatomic) UIImageView *logoImageView;
 
@@ -103,7 +104,17 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
 {}
 
 - (void)profileButtonPressed
-{}
+{
+    FullscreenPicker *picker = [[FullscreenPicker alloc] initWithStrings:@[
+                                    @"123",
+                                    @"Home",
+                                    @"Other",
+                                    @"Work",
+                                ] selectedIndex:1];
+    picker.delegate = self;
+
+    [picker showAnimatedInView:self.view];
+}
 
 - (void)hidePasswordFieldButtonPressed
 {
@@ -127,6 +138,11 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
 {
     self.hidePasswordFieldButton.userInteractionEnabled = NO;
 }
+
+#pragma mark -  FullscreenPickerDelegate
+
+- (void)fullscreenPicker:(FullscreenPicker *)picker willDismissWithSelectedIndex:(NSUInteger)index
+{}
 
 #pragma mark -  Private
 
@@ -220,8 +236,6 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     [self.logoImageView makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.view).offset(kLogoTopOffset);
-        // make.height.lessThanOrEqualTo(self.logoImageView.image.size.width);
-        // make.height.equalTo(self.logoImageView.image.size.width).priorityLow();
     }];
 
     [self.formView makeConstraints:^(MASConstraintMaker *make) {

@@ -59,6 +59,7 @@
 		11A7574B1B0BB74C005DAD82 /* UserDefaultsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A7574A1B0BB74C005DAD82 /* UserDefaultsManager.m */; };
 		11A88ABD1BA0080D0032686F /* ImportProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88ABC1BA0080D0032686F /* ImportProfileViewController.m */; };
 		11A88AC01BA008160032686F /* CreateAccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88ABF1BA008160032686F /* CreateAccountViewController.m */; };
+		11A88AC41BA00F0C0032686F /* FullscreenPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 11A88AC31BA00F0C0032686F /* FullscreenPicker.m */; };
 		11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */; };
 		11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 11B9E61E1993F3D700FB20A6 /* AppearanceManager.m */; };
 		11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C2AA0519C4979A003BE161 /* CellWithColorscheme.m */; };
@@ -188,6 +189,8 @@
 		11A88ABC1BA0080D0032686F /* ImportProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImportProfileViewController.m; sourceTree = "<group>"; };
 		11A88ABE1BA008160032686F /* CreateAccountViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountViewController.h; sourceTree = "<group>"; };
 		11A88ABF1BA008160032686F /* CreateAccountViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountViewController.m; sourceTree = "<group>"; };
+		11A88AC21BA00F0C0032686F /* FullscreenPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenPicker.h; sourceTree = "<group>"; };
+		11A88AC31BA00F0C0032686F /* FullscreenPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenPicker.m; sourceTree = "<group>"; };
 		11B9E6151993EBDB00FB20A6 /* TimeFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeFormatter.h; sourceTree = "<group>"; };
 		11B9E6161993EBDB00FB20A6 /* TimeFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TimeFormatter.m; sourceTree = "<group>"; };
 		11B9E61D1993F3D700FB20A6 /* AppearanceManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppearanceManager.h; sourceTree = "<group>"; };
@@ -503,6 +506,7 @@
 			children = (
 				11E57F4319C23CF100C8ACB8 /* Cells */,
 				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
+				11A88AC11BA00EF30032686F /* FullscreenPicker */,
 				11CFD0B71B401375002C59DB /* PassingGestures */,
 				F902D29C1ADED31E0070A3F5 /* QRScannerAimView */,
 				F902D29B1ADED3170070A3F5 /* StatusCircleView */,
@@ -629,6 +633,15 @@
 				11A88ABC1BA0080D0032686F /* ImportProfileViewController.m */,
 			);
 			name = ImportProfile;
+			sourceTree = "<group>";
+		};
+		11A88AC11BA00EF30032686F /* FullscreenPicker */ = {
+			isa = PBXGroup;
+			children = (
+				11A88AC21BA00F0C0032686F /* FullscreenPicker.h */,
+				11A88AC31BA00F0C0032686F /* FullscreenPicker.m */,
+			);
+			name = FullscreenPicker;
 			sourceTree = "<group>";
 		};
 		11B9E6141993EBCC00FB20A6 /* TimeFormatter */ = {
@@ -1017,6 +1030,7 @@
 				119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,
 				11B9E61F1993F3D700FB20A6 /* AppearanceManager.m in Sources */,
+				11A88AC41BA00F0C0032686F /* FullscreenPicker.m in Sources */,
 				118352B5197A72F10048CA64 /* QRViewerController.m in Sources */,
 				116625D41B63D6BF0036ABC2 /* ContentCellWithTitleBasic.m in Sources */,
 				11A88AC01BA008160032686F /* CreateAccountViewController.m in Sources */,
