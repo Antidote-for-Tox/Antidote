@@ -203,7 +203,8 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     self.createAccountButton = [UIButton new];
     [self.createAccountButton setTitle:NSLocalizedString(@"Create account", @"LoginViewController")
                               forState:UIControlStateNormal];
-    [self.createAccountButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.createAccountButton setTitleColor:[[AppContext sharedContext].appearance linkYellowColor]
+                                   forState:UIControlStateNormal];
     [self.createAccountButton addTarget:self
                                  action:@selector(createAccountButtonPressed)
                        forControlEvents:UIControlEventTouchUpInside];
@@ -213,7 +214,8 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     self.importProfileButton = [UIButton new];
     [self.importProfileButton setTitle:NSLocalizedString(@"Import profile", @"LoginViewController")
                               forState:UIControlStateNormal];
-    [self.importProfileButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.importProfileButton setTitleColor:[[AppContext sharedContext].appearance linkYellowColor]
+                                   forState:UIControlStateNormal];
     [self.importProfileButton addTarget:self
                                  action:@selector(importProfileButtonPressed)
                        forControlEvents:UIControlEventTouchUpInside];

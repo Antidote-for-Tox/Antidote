@@ -49,6 +49,11 @@
     return [UIFont fontWithName:@"HelveticaNeue-Bold" size:size];
 }
 
+- (UIColor *)linkYellowColor
+{
+    return [UIColor uColorWithRed:255 green:247 blue:229 alpha:1.0];
+}
+
 - (UIColor *)textMainColor
 {
     return [self textMainColorForScheme:self.colorscheme];

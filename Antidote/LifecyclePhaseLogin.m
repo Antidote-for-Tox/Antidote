@@ -27,6 +27,8 @@
 
 - (void)finishPhaseWithToxManager:(nonnull OCTManager *)manager profileName:(nonnull NSString *)profileName
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+
     [AppContext sharedContext].userDefaults.uIsUserLoggedIn = YES;
     [AppContext sharedContext].userDefaults.uLastActiveProfile = profileName;
 
@@ -87,6 +89,8 @@
 
 - (void)showLoginController
 {
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+
     NSString *activeProfile = [AppContext sharedContext].userDefaults.uLastActiveProfile;
 
     LoginViewController *loginVC = [[LoginViewController alloc] initWithActiveProfile:activeProfile];

@@ -23,8 +23,9 @@
 #import "ErrorHandler.h"
 #import "LoginProfileFormView.h"
 
-static const CGFloat kLogoTopOffset = 40.0;
-static const CGFloat kLogoBottomOffset = 20.0;
+static const CGFloat kLogoTopOffset = -200.0;
+static const CGFloat kLogoHeight = 100.0;
+static const CGFloat kLogoBottomOffset = 40.0;
 
 @interface LoginViewController () <FullscreenPickerDelegate, LoginProfileFormViewDelegate>
 
@@ -174,6 +175,7 @@ static const CGFloat kLogoBottomOffset = 20.0;
     textVC.backgroundColor = self.view.backgroundColor;
 
     NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"import-profile" ofType:@"html"];
+
     textVC.html = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
 
     [self.navigationController pushViewController:textVC animated:YES];
@@ -247,7 +249,8 @@ static const CGFloat kLogoBottomOffset = 20.0;
 
     [self.logoImageView makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.containerView);
-        make.top.equalTo(self.containerView).offset(kLogoTopOffset);
+        make.top.equalTo(self.containerView.centerY).offset(kLogoTopOffset);
+        make.height.equalTo(kLogoHeight);
     }];
 
     [self.profileFormView makeConstraints:^(MASConstraintMaker *make) {
