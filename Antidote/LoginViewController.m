@@ -18,7 +18,7 @@
 #import "UIViewController+Utilities.h"
 #import "AppearanceManager.h"
 #import "CreateAccountViewController.h"
-#import "ImportProfileViewController.h"
+#import "TextViewController.h"
 #import "FullscreenPicker.h"
 #import "ErrorHandler.h"
 #import "LoginProfileFormView.h"
@@ -170,7 +170,13 @@ static const CGFloat kLogoBottomOffset = 20.0;
 
 - (void)loginProfileFormViewImportProfileButtonPressed:(LoginProfileFormView *)view
 {
-    [self.navigationController pushViewController:[ImportProfileViewController new] animated:YES];
+    TextViewController *textVC = [TextViewController new];
+    textVC.backgroundColor = self.view.backgroundColor;
+
+    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"import-profile" ofType:@"html"];
+    textVC.html = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+
+    [self.navigationController pushViewController:textVC animated:YES];
 }
 
 #pragma mark -  Notifications
