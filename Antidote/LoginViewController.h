@@ -10,4 +10,6 @@
 
 @interface LoginViewController : UIViewController
 
+- (instancetype)initWithActiveProfile:(NSString *)activeProfile;
+
 @end

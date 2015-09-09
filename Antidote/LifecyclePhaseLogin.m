@@ -25,8 +25,11 @@
 
 #pragma mark -  Public
 
-- (void)finishPhaseWithToxManager:(nonnull OCTManager *)manager
+- (void)finishPhaseWithToxManager:(nonnull OCTManager *)manager profileName:(nonnull NSString *)profileName
 {
+    [AppContext sharedContext].userDefaults.uIsUserLoggedIn = YES;
+    [AppContext sharedContext].userDefaults.uLastActiveProfile = profileName;
+
     LifecyclePhaseRunning *running = [[LifecyclePhaseRunning alloc] initWithToxManager:manager];
 
     [self.delegate phaseDidFinish:self withNextPhase:running];
@@ -65,7 +68,7 @@
         return;
     }
 
-    [self finishPhaseWithToxManager:manager];
+    [self finishPhaseWithToxManager:manager profileName:lastActiveProfile];
 }
 
 - (nonnull NSString *)name
@@ -84,7 +87,9 @@
 
 - (void)showLoginController
 {
-    LoginViewController *loginVC = [LoginViewController new];
+    NSString *activeProfile = [AppContext sharedContext].userDefaults.uLastActiveProfile;
+
+    LoginViewController *loginVC = [[LoginViewController alloc] initWithActiveProfile:activeProfile];
     UINavigationController *navCon = [[UINavigationController alloc] initWithRootViewController:loginVC];
     navCon.delegate = self;
     navCon.navigationBar.tintColor = [UIColor whiteColor];

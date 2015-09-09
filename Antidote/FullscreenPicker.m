@@ -10,7 +10,7 @@
 #import "FullscreenPicker.h"
 #import "AppearanceManager.h"
 
-static const CGFloat kAnimationDuration = 0.3;
+static const NSTimeInterval kAnimationDuration = 0.3;
 static const CGFloat kToolbarHeight = 44.0;
 
 @interface FullscreenPicker () <UIPickerViewDelegate, UIPickerViewDataSource>

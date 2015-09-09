@@ -14,6 +14,7 @@
 #import "LifecycleManager.h"
 #import "LifecyclePhaseLogin.h"
 #import "ProfileManager.h"
+#import "UserDefaultsManager.h"
 #import "UIViewController+Utilities.h"
 #import "AppearanceManager.h"
 #import "UIImage+Utilities.h"
@@ -21,6 +22,7 @@
 #import "CreateAccountViewController.h"
 #import "ImportProfileViewController.h"
 #import "FullscreenPicker.h"
+#import "ErrorHandler.h"
 
 static const CGFloat kLogoTopOffset = 40.0;
 static const CGFloat kLogoBottomOffset = 20.0;
@@ -32,6 +34,8 @@ static const CGFloat kProfileToButtonOffset = 10.0;
 static const CGFloat kFormToButtonOffset = 10.0;
 
 static const CGFloat kBottomButtonsBottomOffset = -20.0;
+
+static const NSTimeInterval kAnimationDuration = 0.3;
 
 @interface LoginViewController () <UITextFieldDelegate, FullscreenPickerDelegate>
 
@@ -48,11 +52,32 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
 @property (strong, nonatomic) UIButton *createAccountButton;
 @property (strong, nonatomic) UIButton *importProfileButton;
 
+@property (strong, nonatomic) MASConstraint *profileButtonBottomToFormConstraint;
+@property (strong, nonatomic) MASConstraint *passwordFieldBottomToFormConstraint;
+
+@property (strong, nonatomic) ProfileManager *profileManager;
+@property (strong, nonatomic) NSString *activeProfile;
+
 @end
 
 @implementation LoginViewController
 
 #pragma mark -  Lifecycle
+
+- (instancetype)initWithActiveProfile:(NSString *)activeProfile
+{
+    self = [super init];
+
+    if (! self) {
+        return nil;
+    }
+
+    _profileManager = [ProfileManager new];
+
+    _activeProfile = activeProfile ?: [_profileManager.allProfiles firstObject];
+
+    return self;
+}
 
 - (void)loadView
 {
@@ -64,6 +89,8 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     [self createBottomButtons];
 
     [self installConstraints];
+
+    [self updateFormAnimated:NO];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -101,16 +128,33 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
 }
 
 - (void)loginButtonPressed
-{}
+{
+    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:self.activeProfile];
+
+    if (self.passwordField.text.length) {
+        configuration.passphrase = self.passwordField.text;
+    }
+
+    NSError *error;
+    OCTManager *manager = [[OCTManager alloc] initWithConfiguration:configuration error:&error];
+
+    if (! manager) {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeCreateOCTManager];
+        return;
+    }
+
+    LifecyclePhaseLogin *phase = (LifecyclePhaseLogin *) [[AppContext sharedContext].lifecycleManager currentPhase];
+
+    NSAssert([phase isKindOfClass:[LifecyclePhaseLogin class]], @"We should be in login phase, something went terrible wrong!");
+    [phase finishPhaseWithToxManager:manager profileName:self.activeProfile];
+}
 
 - (void)profileButtonPressed
 {
-    FullscreenPicker *picker = [[FullscreenPicker alloc] initWithStrings:@[
-                                    @"123",
-                                    @"Home",
-                                    @"Other",
-                                    @"Work",
-                                ] selectedIndex:1];
+    [self.view endEditing:YES];
+    NSUInteger index = [self.profileManager.allProfiles indexOfObject:self.activeProfile];
+
+    FullscreenPicker *picker = [[FullscreenPicker alloc] initWithStrings:self.profileManager.allProfiles selectedIndex:index];
     picker.delegate = self;
 
     [picker showAnimatedInView:self.view];
@@ -142,7 +186,10 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
 #pragma mark -  FullscreenPickerDelegate
 
 - (void)fullscreenPicker:(FullscreenPicker *)picker willDismissWithSelectedIndex:(NSUInteger)index
-{}
+{
+    self.activeProfile = self.profileManager.allProfiles[index];
+    [self updateFormAnimated:YES];
+}
 
 #pragma mark -  Private
 
@@ -161,7 +208,6 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     [self.view addSubview:self.formView];
 
     self.profileFakeTextField = [UITextField new];
-    self.profileFakeTextField.text = @"Home";
     self.profileFakeTextField.borderStyle = UITextBorderStyleRoundedRect;
     self.profileFakeTextField.leftViewMode = UITextFieldViewModeAlways;
     self.profileFakeTextField.leftView = [self iconContainerWithImage:@"login-profile-icon"];
@@ -246,22 +292,23 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     }];
 
     [self.profileFakeTextField makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.profileButton);
+    }];
+
+    [self.profileButton makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.formView).offset(kFormViewInsideOffset);
         make.left.equalTo(self.formView).offset(kFormViewInsideOffset);
         make.right.equalTo(self.formView).offset(-kFormViewInsideOffset);
         make.height.equalTo(kFieldHeight);
-    }];
-
-    [self.profileButton makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self.profileFakeTextField);
+        self.profileButtonBottomToFormConstraint = make.bottom.equalTo(self.formView).offset(-kFormViewInsideOffset);
     }];
 
     [self.passwordField makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.profileButton.bottom).offset(kProfileToButtonOffset);
         make.left.equalTo(self.formView).offset(kFormViewInsideOffset);
         make.right.equalTo(self.formView).offset(-kFormViewInsideOffset);
-        make.bottom.equalTo(self.formView).offset(-kFormViewInsideOffset);
         make.height.equalTo(kFieldHeight);
+        self.passwordFieldBottomToFormConstraint = make.bottom.equalTo(self.formView).offset(-kFormViewInsideOffset);
     }];
 
     [self.hidePasswordFieldButton makeConstraints:^(MASConstraintMaker *make) {
@@ -311,6 +358,45 @@ static const CGFloat kBottomButtonsBottomOffset = -20.0;
     imageView.frame = frame;
 
     return container;
+}
+
+- (void)updateFormAnimated:(BOOL)animated
+{
+    if (self.profileFakeTextField.text == self.activeProfile) {
+        return;
+    }
+
+    self.profileFakeTextField.text = self.activeProfile;
+    self.passwordField.text = nil;
+
+    if (! self.activeProfile) {
+        return;
+    }
+
+    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:self.activeProfile];
+    BOOL isEncrypted = [OCTManager isToxSaveEncryptedAtPath:configuration.fileStorage.pathForToxSaveFile];
+
+    void (^updateForm)() = ^() {
+        if (isEncrypted) {
+            [self.profileButtonBottomToFormConstraint deactivate];
+            [self.passwordFieldBottomToFormConstraint activate];
+            self.passwordField.alpha = 1.0;
+        }
+        else {
+            [self.profileButtonBottomToFormConstraint activate];
+            [self.passwordFieldBottomToFormConstraint deactivate];
+            self.passwordField.alpha = 0.0;
+        }
+
+        [self.view layoutIfNeeded];
+    };
+
+    if (animated) {
+        [UIView animateWithDuration:kAnimationDuration animations:updateForm];
+    }
+    else {
+        updateForm();
+    }
 }
 
 @end

@@ -12,6 +12,6 @@
 
 @interface LifecyclePhaseLogin : NSObject <LifecyclePhaseProtocol>
 
-- (void)finishPhaseWithToxManager:(nonnull OCTManager *)manager;
+- (void)finishPhaseWithToxManager:(nonnull OCTManager *)manager profileName:(nonnull NSString *)profileName;
 
 @end
