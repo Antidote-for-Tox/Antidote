@@ -28,8 +28,11 @@ static const CGFloat kLogoBottomOffset = 20.0;
 
 @interface LoginViewController () <FullscreenPickerDelegate, LoginProfileFormViewDelegate>
 
+@property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIImageView *logoImageView;
 @property (strong, nonatomic) LoginProfileFormView *profileFormView;
+
+@property (strong, nonatomic) MASConstraint *containerViewTopConstraint;
 
 @property (strong, nonatomic) ProfileManager *profileManager;
 @property (strong, nonatomic) NSString *activeProfile;
@@ -52,13 +55,29 @@ static const CGFloat kLogoBottomOffset = 20.0;
 
     _activeProfile = activeProfile ?: [_profileManager.allProfiles firstObject];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShowNotification:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHideNotification:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
 {
     [self loadViewWithBackgroundColor:[[AppContext sharedContext].appearance textMainColor]];
 
+    [self createContainerView];
     [self createLogoImageView];
     [self createProfileFormView];
 
@@ -91,6 +110,10 @@ static const CGFloat kLogoBottomOffset = 20.0;
 
 #pragma mark -  Actions
 
+- (void)tapOnContainerView
+{
+    [self.view endEditing:YES];
+}
 
 #pragma mark -  FullscreenPickerDelegate
 
@@ -150,34 +173,80 @@ static const CGFloat kLogoBottomOffset = 20.0;
     [self.navigationController pushViewController:[ImportProfileViewController new] animated:YES];
 }
 
+#pragma mark -  Notifications
+
+- (void)keyboardWillShowNotification:(NSNotification *)notification
+{
+    CGSize keyboardSize = [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    CGFloat underLoginHeight = self.containerView.frame.size.height -
+                               CGRectGetMinY(self.profileFormView.frame) -
+                               [self.profileFormView loginButtonBottomY];
+
+    CGFloat offset = MIN(0.0, underLoginHeight - keyboardSize.height);
+
+    weakself;
+    [self performAnimatedBlock:^{
+        strongself;
+
+        self.containerViewTopConstraint.offset(offset);
+        [self.view layoutIfNeeded];
+    } withKeyboardNotification:notification];
+}
+
+- (void)keyboardWillHideNotification:(NSNotification *)notification
+{
+    weakself;
+    [self performAnimatedBlock:^{
+        strongself;
+
+        self.containerViewTopConstraint.offset(0.0);
+        [self.view layoutIfNeeded];
+    } withKeyboardNotification:notification];
+}
+
 #pragma mark -  Private
+
+- (void)createContainerView
+{
+    self.containerView = [UIView new];
+    self.containerView.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:self.containerView];
+
+    UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnContainerView)];
+    [self.containerView addGestureRecognizer:tapGR];
+}
 
 - (void)createLogoImageView
 {
     self.logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"login-logo"]];
     self.logoImageView.contentMode = UIViewContentModeScaleAspectFit;
-    [self.view addSubview:self.logoImageView];
+    [self.containerView addSubview:self.logoImageView];
 }
 
 - (void)createProfileFormView
 {
     self.profileFormView = [LoginProfileFormView new];
     self.profileFormView.delegate = self;
-    [self.view addSubview:self.profileFormView];
+    [self.containerView addSubview:self.profileFormView];
 }
 
 - (void)installConstraints
 {
+    [self.containerView makeConstraints:^(MASConstraintMaker *make) {
+        self.containerViewTopConstraint = make.top.equalTo(self.view);
+        make.left.right.equalTo(self.view);
+        make.height.equalTo(self.view);
+    }];
+
     [self.logoImageView makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view).offset(kLogoTopOffset);
+        make.centerX.equalTo(self.containerView);
+        make.top.equalTo(self.containerView).offset(kLogoTopOffset);
     }];
 
     [self.profileFormView makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.logoImageView.bottom).offset(kLogoBottomOffset);
-        make.left.right.bottom.equalTo(self.view);
-        make.right.equalTo(self.view);
-        make.bottom.equalTo(self.view);
+        make.left.right.bottom.equalTo(self.containerView);
     }];
 }
 
@@ -194,6 +263,33 @@ static const CGFloat kLogoBottomOffset = 20.0;
     BOOL isEncrypted = [OCTManager isToxSaveEncryptedAtPath:configuration.fileStorage.pathForToxSaveFile];
 
     [self.profileFormView showPasswordField:isEncrypted animated:animated];
+}
+
+- (void)performAnimatedBlock:(void (^)())block withKeyboardNotification:(NSNotification *)notification
+{
+    NSDictionary *userInfo = [notification userInfo];
+
+    NSTimeInterval duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    UIViewAnimationCurve curve = [userInfo[UIKeyboardAnimationCurveUserInfoKey] integerValue];
+
+    UIViewAnimationOptions options = 0;
+
+    switch (curve) {
+        case UIViewAnimationCurveEaseInOut:
+            options |= UIViewAnimationOptionCurveEaseInOut;
+            break;
+        case UIViewAnimationCurveEaseIn:
+            options |= UIViewAnimationOptionCurveEaseIn;
+            break;
+        case UIViewAnimationCurveEaseOut:
+            options |= UIViewAnimationOptionCurveEaseOut;
+            break;
+        case UIViewAnimationCurveLinear:
+            options |= UIViewAnimationOptionCurveLinear;
+            break;
+    }
+
+    [UIView animateWithDuration:duration delay:0.0 options:options animations:block completion:nil];
 }
 
 @end

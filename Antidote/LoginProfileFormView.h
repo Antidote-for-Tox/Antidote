@@ -30,4 +30,6 @@
 
 - (void)showPasswordField:(BOOL)show animated:(BOOL)animated;
 
+- (CGFloat)loginButtonBottomY;
+
 @end

@@ -28,7 +28,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 @property (strong, nonatomic) UITextField *profileFakeTextField;
 @property (strong, nonatomic) UIButton *profileButton;
 @property (strong, nonatomic) UITextField *passwordField;
-@property (strong, nonatomic) UIButton *hidePasswordFieldButton;
 
 @property (strong, nonatomic) UIButton *loginButton;
 
@@ -138,22 +137,17 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     }
 }
 
+- (CGFloat)loginButtonBottomY
+{
+    return CGRectGetMaxY(self.loginButton.frame);
+}
+
 #pragma mark -  UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self loginButtonPressed];
     return YES;
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    self.hidePasswordFieldButton.userInteractionEnabled = YES;
-}
-
-- (void)textFieldDidEndEditing:(UITextField *)textField
-{
-    self.hidePasswordFieldButton.userInteractionEnabled = NO;
 }
 
 #pragma mark -  Private
@@ -185,14 +179,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     self.passwordField.leftView = [self iconContainerWithImage:@"login-password-icon"];
     [self.formView addSubview:self.passwordField];
-
-    self.hidePasswordFieldButton = [UIButton new];
-    self.hidePasswordFieldButton.userInteractionEnabled = NO;
-    [self.hidePasswordFieldButton addTarget:self
-                                     action:@selector(hidePasswordFieldButtonPressed)
-                           forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.hidePasswordFieldButton];
-    [self sendSubviewToBack:self.hidePasswordFieldButton];
 }
 
 - (void)createLoginButton
@@ -262,10 +248,6 @@ static const NSTimeInterval kAnimationDuration = 0.3;
         make.right.equalTo(self.formView).offset(-kOffsetInForm);
         make.height.equalTo(kFieldHeight);
         self.passwordFieldBottomToFormConstraint = make.bottom.equalTo(self.formView).offset(-kOffsetInForm);
-    }];
-
-    [self.hidePasswordFieldButton makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(self);
     }];
 
     [self.loginButton makeConstraints:^(MASConstraintMaker *make) {
