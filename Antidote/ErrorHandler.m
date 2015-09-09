@@ -101,7 +101,7 @@
             break;
         case OCTManagerInitErrorDecryptFailed:
             title = ELOCALIZED(@"Cannot decrypt tox save file");
-            message = ELOCALIZED(@"Password is wrong of file is corrupted.");
+            message = ELOCALIZED(@"Password is wrong or file is corrupted.");
             break;
         case OCTManagerInitErrorCreateToxUnknown:
             title = ELOCALIZED(@"Error");
