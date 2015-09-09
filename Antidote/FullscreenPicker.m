@@ -136,7 +136,7 @@ static const CGFloat kToolbarHeight = 44.0;
 - (void)show
 {
     self.blackoutButton.alpha = 0.0;
-    self.pickerBottomConstraint.offset(self.picker.frame.size.height);
+    self.pickerBottomConstraint.offset(self.picker.frame.size.height + kToolbarHeight);
 
     [self layoutIfNeeded];
 
@@ -152,7 +152,7 @@ static const CGFloat kToolbarHeight = 44.0;
 {
     [UIView animateWithDuration:kAnimationDuration animations:^{
         self.blackoutButton.alpha = 0.0;
-        self.pickerBottomConstraint.offset(self.picker.frame.size.height);
+        self.pickerBottomConstraint.offset(self.picker.frame.size.height + kToolbarHeight);
 
         [self layoutIfNeeded];
 
