@@ -56,22 +56,7 @@ static const CGFloat kLogoBottomOffset = 40.0;
 
     _activeProfile = activeProfile ?: [_profileManager.allProfiles firstObject];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShowNotification:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHideNotification:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)loadView
@@ -85,11 +70,6 @@ static const CGFloat kLogoBottomOffset = 40.0;
     [self installConstraints];
 
     [self updateFormAnimated:NO];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -107,6 +87,28 @@ static const CGFloat kLogoBottomOffset = 40.0;
 - (NSUInteger)supportedInterfaceOrientations
 {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+#pragma mark -  Inherited
+
+- (void)keyboardWillShowAnimated:(NSNotification *)keyboardNotification
+{
+    CGSize keyboardSize = [keyboardNotification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+
+    CGFloat underLoginHeight = self.containerView.frame.size.height -
+                               CGRectGetMinY(self.profileFormView.frame) -
+                               [self.profileFormView loginButtonBottomY];
+
+    CGFloat offset = MIN(0.0, underLoginHeight - keyboardSize.height);
+
+    self.containerViewTopConstraint.offset(offset);
+    [self.view layoutIfNeeded];
+}
+
+- (void)keyboardWillHideAnimated:(NSNotification *)keyboardNotification
+{
+    self.containerViewTopConstraint.offset(0.0);
+    [self.view layoutIfNeeded];
 }
 
 #pragma mark -  Actions
@@ -179,38 +181,6 @@ static const CGFloat kLogoBottomOffset = 40.0;
     textVC.html = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
 
     [self.navigationController pushViewController:textVC animated:YES];
-}
-
-#pragma mark -  Notifications
-
-- (void)keyboardWillShowNotification:(NSNotification *)notification
-{
-    CGSize keyboardSize = [notification.userInfo[UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-
-    CGFloat underLoginHeight = self.containerView.frame.size.height -
-                               CGRectGetMinY(self.profileFormView.frame) -
-                               [self.profileFormView loginButtonBottomY];
-
-    CGFloat offset = MIN(0.0, underLoginHeight - keyboardSize.height);
-
-    weakself;
-    [self performAnimatedBlock:^{
-        strongself;
-
-        self.containerViewTopConstraint.offset(offset);
-        [self.view layoutIfNeeded];
-    } withKeyboardNotification:notification];
-}
-
-- (void)keyboardWillHideNotification:(NSNotification *)notification
-{
-    weakself;
-    [self performAnimatedBlock:^{
-        strongself;
-
-        self.containerViewTopConstraint.offset(0.0);
-        [self.view layoutIfNeeded];
-    } withKeyboardNotification:notification];
 }
 
 #pragma mark -  Private

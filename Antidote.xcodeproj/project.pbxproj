@@ -35,6 +35,9 @@
 		116625E41B653F060036ABC2 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 116625E31B653F060036ABC2 /* AboutViewController.m */; };
 		1179E0691BA04E7C00D258C6 /* TextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0681BA04E7C00D258C6 /* TextViewController.m */; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
+		1179E06F1BA0CC8F00D258C6 /* CreateAccountSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E06E1BA0CC8F00D258C6 /* CreateAccountSectionView.m */; };
+		1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0721BA1FA9100D258C6 /* UIButton+Utilities.m */; };
+		1179E0771BA21A0C00D258C6 /* KeyboardNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
@@ -142,6 +145,12 @@
 		1179E0671BA04E7C00D258C6 /* TextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextViewController.h; sourceTree = "<group>"; };
 		1179E0681BA04E7C00D258C6 /* TextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextViewController.m; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
+		1179E06D1BA0CC8F00D258C6 /* CreateAccountSectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountSectionView.h; sourceTree = "<group>"; };
+		1179E06E1BA0CC8F00D258C6 /* CreateAccountSectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountSectionView.m; sourceTree = "<group>"; };
+		1179E0711BA1FA9100D258C6 /* UIButton+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+Utilities.h"; sourceTree = "<group>"; };
+		1179E0721BA1FA9100D258C6 /* UIButton+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Utilities.m"; sourceTree = "<group>"; };
+		1179E0751BA21A0C00D258C6 /* KeyboardNotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardNotificationController.h; sourceTree = "<group>"; };
+		1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardNotificationController.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -444,6 +453,33 @@
 			name = Text;
 			sourceTree = "<group>";
 		};
+		1179E06C1BA0CC7900D258C6 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1179E06D1BA0CC8F00D258C6 /* CreateAccountSectionView.h */,
+				1179E06E1BA0CC8F00D258C6 /* CreateAccountSectionView.m */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		1179E0701BA1FA7900D258C6 /* UIButton+Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				1179E0711BA1FA9100D258C6 /* UIButton+Utilities.h */,
+				1179E0721BA1FA9100D258C6 /* UIButton+Utilities.m */,
+			);
+			name = "UIButton+Utilities";
+			sourceTree = "<group>";
+		};
+		1179E0741BA219DB00D258C6 /* KeyboardNotificationController */ = {
+			isa = PBXGroup;
+			children = (
+				1179E0751BA21A0C00D258C6 /* KeyboardNotificationController.h */,
+				1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */,
+			);
+			name = KeyboardNotificationController;
+			sourceTree = "<group>";
+		};
 		1182AF371B4EE1EC0095B476 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -509,13 +545,14 @@
 				1182AF491B5116930095B476 /* FriendRequest */,
 				118352B6197A7AF60048CA64 /* Friends */,
 				11A88ABA1BA007FA0032686F /* ImportProfile */,
-				1179E0661BA04E4B00D258C6 /* Text */,
+				1179E0741BA219DB00D258C6 /* KeyboardNotificationController */,
 				110FF3471B9E249200904D1D /* Login */,
 				11300B651B4DB25200233052 /* Profile */,
 				114100751A3A3A1B00054859 /* QRScanner */,
 				118352B2197A72DE0048CA64 /* QRViewer */,
 				118352B1197A72D90048CA64 /* Settings */,
 				1182AF371B4EE1EC0095B476 /* TabBar */,
+				1179E0661BA04E4B00D258C6 /* Text */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -639,6 +676,7 @@
 		11A88AB91BA007EA0032686F /* CreateAccount */ = {
 			isa = PBXGroup;
 			children = (
+				1179E06C1BA0CC7900D258C6 /* Views */,
 				11A88ABE1BA008160032686F /* CreateAccountViewController.h */,
 				11A88ABF1BA008160032686F /* CreateAccountViewController.m */,
 			);
@@ -799,14 +837,15 @@
 		F902D28E1ADED2850070A3F5 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				F902D28F1ADED28D0070A3F5 /* AppDelegate+Utilities */,
+				F902D2901ADED2970070A3F5 /* NSIndexSet+Utilities */,
+				F902D2911ADED2A00070A3F5 /* NSString+Utilities */,
+				1179E0701BA1FA7900D258C6 /* UIButton+Utilities */,
 				F902D2931ADED2BC0070A3F5 /* UIColor+Utilities */,
 				F902D2941ADED2C90070A3F5 /* UIImage+Utilities */,
 				F902D2951ADED2D00070A3F5 /* UITableViewCell+Utilities */,
 				F902D2961ADED2D50070A3F5 /* UIView+Utilities */,
 				F902D2971ADED2E00070A3F5 /* UIViewController+Utilities */,
-				F902D2911ADED2A00070A3F5 /* NSString+Utilities */,
-				F902D2901ADED2970070A3F5 /* NSIndexSet+Utilities */,
-				F902D28F1ADED28D0070A3F5 /* AppDelegate+Utilities */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -1036,6 +1075,7 @@
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
+				1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */,
 				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				110FF34A1B9E24A700904D1D /* LoginViewController.m in Sources */,
@@ -1045,6 +1085,7 @@
 				116625CE1B62DA880036ABC2 /* ContentCellWithAvatar.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
+				1179E0771BA21A0C00D258C6 /* KeyboardNotificationController.m in Sources */,
 				116625DA1B63D7E50036ABC2 /* ContentCellWithTitleEditable.m in Sources */,
 				116625DD1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
@@ -1056,6 +1097,7 @@
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				11CFD0D11B407B57002C59DB /* UpdatesQueue.m in Sources */,
+				1179E06F1BA0CC8F00D258C6 /* CreateAccountSectionView.m in Sources */,
 				11CFD0BA1B401385002C59DB /* ViewPassingGestures.m in Sources */,
 				119DFAC21B3D4D75008CA975 /* ChatMessage.m in Sources */,
 				118352BC197A7B960048CA64 /* UIViewController+Utilities.m in Sources */,

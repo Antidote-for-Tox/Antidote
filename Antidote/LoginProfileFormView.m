@@ -10,8 +10,8 @@
 
 #import "LoginProfileFormView.h"
 #import "AppearanceManager.h"
-#import "UIImage+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "UIButton+Utilities.h"
 
 static const CGFloat kFormHorizontalOffset = 40.0;
 static const CGFloat kOffsetInForm = 20.0;
@@ -183,18 +183,9 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 
 - (void)createLoginButton
 {
-    self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.loginButton = [UIButton loginButton];
     [self.loginButton setTitle:NSLocalizedString(@"Log In", @"LoginViewController") forState:UIControlStateNormal];
-    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.loginButton.titleLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueBoldWithSize:18.0];
-    self.loginButton.layer.cornerRadius = 5.0;
-    self.loginButton.layer.masksToBounds = YES;
     [self.loginButton addTarget:self action:@selector(loginButtonPressed) forControlEvents:UIControlEventTouchUpInside];
-
-    UIColor *bgColor = [[AppContext sharedContext].appearance loginButtonColor];
-    UIImage *bgImage = [UIImage imageWithColor:bgColor size:CGSizeMake(1.0, 1.0)];
-    [self.loginButton setBackgroundImage:bgImage forState:UIControlStateNormal];
-
     [self addSubview:self.loginButton];
 }
 

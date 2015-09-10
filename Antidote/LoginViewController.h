@@ -6,9 +6,9 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "KeyboardNotificationController.h"
 
-@interface LoginViewController : UIViewController
+@interface LoginViewController : KeyboardNotificationController
 
 - (instancetype)initWithActiveProfile:(NSString *)activeProfile;
 
