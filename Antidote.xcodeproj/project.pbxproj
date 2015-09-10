@@ -38,6 +38,7 @@
 		1179E06F1BA0CC8F00D258C6 /* CreateAccountSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E06E1BA0CC8F00D258C6 /* CreateAccountSectionView.m */; };
 		1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0721BA1FA9100D258C6 /* UIButton+Utilities.m */; };
 		1179E0771BA21A0C00D258C6 /* KeyboardNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */; };
+		1179E07C1BA22F3500D258C6 /* FullscreenSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
@@ -151,6 +152,8 @@
 		1179E0721BA1FA9100D258C6 /* UIButton+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+Utilities.m"; sourceTree = "<group>"; };
 		1179E0751BA21A0C00D258C6 /* KeyboardNotificationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardNotificationController.h; sourceTree = "<group>"; };
 		1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardNotificationController.m; sourceTree = "<group>"; };
+		1179E07A1BA22F3500D258C6 /* FullscreenSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenSpinner.h; sourceTree = "<group>"; };
+		1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenSpinner.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -480,6 +483,15 @@
 			name = KeyboardNotificationController;
 			sourceTree = "<group>";
 		};
+		1179E0791BA22F2600D258C6 /* FullscreenSpinner */ = {
+			isa = PBXGroup;
+			children = (
+				1179E07A1BA22F3500D258C6 /* FullscreenSpinner.h */,
+				1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */,
+			);
+			name = FullscreenSpinner;
+			sourceTree = "<group>";
+		};
 		1182AF371B4EE1EC0095B476 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -563,6 +575,7 @@
 				11E57F4319C23CF100C8ACB8 /* Cells */,
 				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
 				11A88AC11BA00EF30032686F /* FullscreenPicker */,
+				1179E0791BA22F2600D258C6 /* FullscreenSpinner */,
 				11CFD0B71B401375002C59DB /* PassingGestures */,
 				F902D29C1ADED31E0070A3F5 /* QRScannerAimView */,
 				F902D29B1ADED3170070A3F5 /* StatusCircleView */,
@@ -1096,6 +1109,7 @@
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
+				1179E07C1BA22F3500D258C6 /* FullscreenSpinner.m in Sources */,
 				11CFD0D11B407B57002C59DB /* UpdatesQueue.m in Sources */,
 				1179E06F1BA0CC8F00D258C6 /* CreateAccountSectionView.m in Sources */,
 				11CFD0BA1B401385002C59DB /* ViewPassingGestures.m in Sources */,
