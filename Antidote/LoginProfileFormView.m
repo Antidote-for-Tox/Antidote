@@ -19,6 +19,7 @@ static const CGFloat kProfileToButtonOffset = 10.0;
 static const CGFloat kFieldHeight = 40.0;
 static const CGFloat kFormToButtonOffset = 10.0;
 static const CGFloat kBottomButtonsBottomOffset = -20.0;
+static const CGFloat kOrButtonOffset = 10.0;
 
 static const NSTimeInterval kAnimationDuration = 0.3;
 
@@ -31,7 +32,9 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 
 @property (strong, nonatomic) UIButton *loginButton;
 
+@property (strong, nonatomic) UIView *bottomButtonsContainer;
 @property (strong, nonatomic) UIButton *createAccountButton;
+@property (strong, nonatomic) UILabel *orLabel;
 @property (strong, nonatomic) UIButton *importProfileButton;
 
 @property (strong, nonatomic) MASConstraint *profileButtonBottomToFormConstraint;
@@ -191,8 +194,12 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 
 - (void)createBottomButtons
 {
+    self.bottomButtonsContainer = [UIView new];
+    self.bottomButtonsContainer.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.bottomButtonsContainer];
+
     self.createAccountButton = [UIButton new];
-    [self.createAccountButton setTitle:NSLocalizedString(@"Create account", @"LoginViewController")
+    [self.createAccountButton setTitle:NSLocalizedString(@"Create profile", @"LoginViewController")
                               forState:UIControlStateNormal];
     [self.createAccountButton setTitleColor:[[AppContext sharedContext].appearance linkYellowColor]
                                    forState:UIControlStateNormal];
@@ -200,10 +207,16 @@ static const NSTimeInterval kAnimationDuration = 0.3;
                                  action:@selector(createAccountButtonPressed)
                        forControlEvents:UIControlEventTouchUpInside];
     self.createAccountButton.titleLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
-    [self addSubview:self.createAccountButton];
+    [self.bottomButtonsContainer addSubview:self.createAccountButton];
+
+    self.orLabel = [UILabel new];
+    self.orLabel.text = NSLocalizedString(@"or", @"LoginViewController");
+    self.orLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+    self.orLabel.backgroundColor = [UIColor clearColor];
+    [self.bottomButtonsContainer addSubview:self.orLabel];
 
     self.importProfileButton = [UIButton new];
-    [self.importProfileButton setTitle:NSLocalizedString(@"Import profile", @"LoginViewController")
+    [self.importProfileButton setTitle:NSLocalizedString(@"Import to Antidote", @"LoginViewController")
                               forState:UIControlStateNormal];
     [self.importProfileButton setTitleColor:[[AppContext sharedContext].appearance linkYellowColor]
                                    forState:UIControlStateNormal];
@@ -211,7 +224,7 @@ static const NSTimeInterval kAnimationDuration = 0.3;
                                  action:@selector(importProfileButtonPressed)
                        forControlEvents:UIControlEventTouchUpInside];
     self.importProfileButton.titleLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:16.0];
-    [self addSubview:self.importProfileButton];
+    [self.bottomButtonsContainer addSubview:self.importProfileButton];
 }
 
 - (void)installConstraints
@@ -250,16 +263,24 @@ static const NSTimeInterval kAnimationDuration = 0.3;
         make.width.equalTo(self.formView);
     }];
 
-    [self.createAccountButton makeConstraints:^(MASConstraintMaker *make) {
+    [self.bottomButtonsContainer makeConstraints:^(MASConstraintMaker *make) {
         make.top.greaterThanOrEqualTo(self.loginButton.bottom).offset(30.0);
-        make.left.equalTo(self.formView);
+        make.centerX.equalTo(self);
         make.bottom.equalTo(self).offset(kBottomButtonsBottomOffset);
     }];
 
+    [self.createAccountButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.left.bottom.equalTo(self.bottomButtonsContainer);
+    }];
+
+    [self.orLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.bottomButtonsContainer);
+        make.left.equalTo(self.createAccountButton.right).offset(kOrButtonOffset);
+        make.right.equalTo(self.importProfileButton.left).offset(-kOrButtonOffset);
+    }];
+
     [self.importProfileButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.greaterThanOrEqualTo(self.loginButton.bottom).offset(30.0);
-        make.right.equalTo(self.formView);
-        make.bottom.equalTo(self).offset(kBottomButtonsBottomOffset);
+        make.top.right.bottom.equalTo(self.bottomButtonsContainer);
     }];
 }
 
