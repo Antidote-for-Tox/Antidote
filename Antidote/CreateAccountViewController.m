@@ -130,6 +130,7 @@ static const CGFloat kButtonHeight = 40.0;
     }
 
     [manager.user setUserName:name error:nil];
+    [manager.user setUserStatusMessage:NSLocalizedString(@"Toxing on Antidote", @"CreateAccountViewController") error:nil];
 
     LifecyclePhaseLogin *phase = (LifecyclePhaseLogin *) [[AppContext sharedContext].lifecycleManager currentPhase];
 
