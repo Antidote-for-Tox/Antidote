@@ -125,6 +125,7 @@ static const CGFloat kButtonHeight = 40.0;
     OCTManager *manager = [[OCTManager alloc] initWithConfiguration:configuration error:&error];
 
     if (! manager) {
+        [self.profileManager deleteProfileWithName:profile error:nil];
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeCreateOCTManager];
         return;
     }

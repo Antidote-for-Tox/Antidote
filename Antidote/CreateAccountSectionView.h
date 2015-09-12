@@ -25,6 +25,7 @@
 @property (strong, nonatomic) NSString *text;
 @property (assign, nonatomic) NSUInteger maxTextUTF8Length;
 @property (strong, nonatomic) NSString *hint;
+@property (assign, nonatomic) BOOL secureTextEntry;
 
 @property (assign, nonatomic) UIReturnKeyType returnKeyType;
 

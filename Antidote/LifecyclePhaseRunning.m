@@ -88,13 +88,14 @@
 {
     if ([url.pathExtension isEqualToString:kToxSaveFileExtension]) {
         NSString *message = [NSString stringWithFormat:
-                             NSLocalizedString(@"Use \"%@\" as profile?", @"LifecyclePhaseRunning"),
+                             NSLocalizedString(@"Import \"%@\" as tox profile?", @"LifecyclePhaseRunning"),
                              [url lastPathComponent]];
 
         UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
 
         [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"LifecyclePhaseRunning") handler:^{
             completionBlock(NO, options | LifecyclePhaseIncomingFileOptionImportProfile);
+            [self logout];
         }];
 
         [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"LifecyclePhaseRunning") handler:^{

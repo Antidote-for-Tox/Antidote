@@ -22,6 +22,7 @@
 #import "OCTTox.h"
 #import "ErrorHandler.h"
 #import "LifecycleManager.h"
+#import "FileManager.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -44,27 +45,29 @@
 
     [self configureLoggingStuff];
 
+    [[AppContext sharedContext].fileManager clearPendingFilesDirectory];
     [[AppContext sharedContext].lifecycleManager start];
 
-    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType types =
-            UIUserNotificationTypeAlert |
-            UIUserNotificationTypeBadge |
-            UIUserNotificationTypeSound;
+    // if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+    //     UIUserNotificationType types =
+    //         UIUserNotificationTypeAlert |
+    //         UIUserNotificationTypeBadge |
+    //         UIUserNotificationTypeSound;
 
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    //     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 
-        [application registerUserNotificationSettings:settings];
-    }
+    //     [application registerUserNotificationSettings:settings];
+    // }
 
-    if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
-        // FIXME
-        // UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    // if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+    // FIXME
+    // UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 
-        // [[AppContext sharedContext].events handleLocalNotification:notification];
-    }
+    // [[AppContext sharedContext].events handleLocalNotification:notification];
+    // }
 
     [self.window makeKeyAndVisible];
+
     return YES;
 }
 
@@ -74,7 +77,9 @@
            annotation:(id)annotation
 {
     if ([url isFileURL]) {
-        [[AppContext sharedContext].lifecycleManager handleIncomingFileURL:url];
+        NSURL *pendingURL = [[AppContext sharedContext].fileManager moveFileToPendingFiles:url];
+
+        [[AppContext sharedContext].lifecycleManager handleIncomingFileURL:pendingURL];
     }
 
     return YES;

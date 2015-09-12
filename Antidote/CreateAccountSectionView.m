@@ -83,6 +83,16 @@ static const CGFloat kVerticalOffset = 5.0;
     self.hintLabel.text = hint;
 }
 
+- (void)setSecureTextEntry:(BOOL)secure
+{
+    self.textField.secureTextEntry = YES;
+}
+
+- (BOOL)secureTextEntry
+{
+    return self.textField.secureTextEntry;
+}
+
 - (void)setReturnKeyType:(UIReturnKeyType)type
 {
     self.textField.returnKeyType = type;

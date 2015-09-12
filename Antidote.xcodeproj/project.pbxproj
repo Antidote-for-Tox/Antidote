@@ -40,6 +40,7 @@
 		1179E0771BA21A0C00D258C6 /* KeyboardNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */; };
 		1179E07C1BA22F3500D258C6 /* FullscreenSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */; };
 		1179E0801BA41F1400D258C6 /* GlobalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E07F1BA41F1400D258C6 /* GlobalConstants.m */; };
+		1179E0841BA84C0C00D258C6 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0831BA84C0C00D258C6 /* FileManager.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
 		1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF3F1B4EE31B0095B476 /* TabBarBadgeItem.m */; };
@@ -157,6 +158,8 @@
 		1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenSpinner.m; sourceTree = "<group>"; };
 		1179E07E1BA41F1400D258C6 /* GlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
 		1179E07F1BA41F1400D258C6 /* GlobalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalConstants.m; sourceTree = "<group>"; };
+		1179E0821BA84C0C00D258C6 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
+		1179E0831BA84C0C00D258C6 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
 		117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITableViewCell+Utilities.m"; sourceTree = "<group>"; };
 		1182AF381B4EE2070095B476 /* TabBarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBarViewController.h; sourceTree = "<group>"; };
@@ -495,6 +498,15 @@
 			name = FullscreenSpinner;
 			sourceTree = "<group>";
 		};
+		1179E0811BA84C0200D258C6 /* FileManager */ = {
+			isa = PBXGroup;
+			children = (
+				1179E0821BA84C0C00D258C6 /* FileManager.h */,
+				1179E0831BA84C0C00D258C6 /* FileManager.m */,
+			);
+			name = FileManager;
+			sourceTree = "<group>";
+		};
 		1182AF371B4EE1EC0095B476 /* TabBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -535,6 +547,7 @@
 				11A757441B0BB501005DAD82 /* Contexts */,
 				84B6628A19A250FF00328874 /* CustomLogFormatter */,
 				11E366631B6A40C500E7E8D2 /* ErrorHandler */,
+				1179E0811BA84C0200D258C6 /* FileManager */,
 				11C4B4CE1B25F8D600646A2E /* Helper */,
 				110FF3381B9E146100904D1D /* Lifecycle */,
 				119DFACB1B3EA331008CA975 /* NotificationManager */,
@@ -1136,6 +1149,7 @@
 				1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */,
 				11A88ACB1BA035460032686F /* LoginProfileFormView.m in Sources */,
 				110FF33B1B9E147900904D1D /* LifecycleManager.m in Sources */,
+				1179E0841BA84C0C00D258C6 /* FileManager.m in Sources */,
 				119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
 				110FF3371B9E0CE000904D1D /* RunningContext.m in Sources */,

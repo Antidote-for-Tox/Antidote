@@ -10,6 +10,7 @@
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
 #import "ErrorHandler.h"
+#import "FileManager.h"
 #import "LifecycleManager.h"
 #import "UserDefaultsManager.h"
 #import "AppDelegate.h"
@@ -21,6 +22,7 @@
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) ErrorHandler *errorHandler;
+@property (strong, nonatomic, readwrite) FileManager *fileManager;
 @property (strong, nonatomic, readwrite) LifecycleManager *lifecycleManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
@@ -92,6 +94,17 @@
     _errorHandler = [ErrorHandler new];
 
     return _errorHandler;
+}
+
+- (FileManager *)fileManager
+{
+    if (_fileManager) {
+        return _fileManager;
+    }
+
+    _fileManager = [FileManager new];
+
+    return _fileManager;
 }
 
 - (LifecycleManager *)lifecycleManager

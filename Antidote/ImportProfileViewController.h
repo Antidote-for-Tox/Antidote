@@ -10,4 +10,6 @@
 
 @interface ImportProfileViewController : UIViewController
 
+- (instancetype)initWithProfileURL:(NSURL *)url;
+
 @end

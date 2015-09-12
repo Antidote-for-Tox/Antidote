@@ -17,6 +17,7 @@
 #import "AppDelegate.h"
 #import "AppearanceManager.h"
 #import "GlobalConstants.h"
+#import "ImportProfileViewController.h"
 
 @interface LifecyclePhaseLogin () <UINavigationControllerDelegate>
 
@@ -84,14 +85,23 @@
                       options:(LifecyclePhaseIncomingFileOption)options
                    completion:(nonnull void (^)(BOOL didHandle, LifecyclePhaseIncomingFileOption options))completionBlock
 {
-    if (! [url.pathExtension isEqualToString:kToxSaveFileExtension]) {
+    void (^yesBlock)() = ^() {
+        [self importProfileWithURL:url];
+        completionBlock(YES, options);
+    };
+
+    void (^noBlock)() = ^() {
+        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
         completionBlock(NO, options);
+    };
+
+    if (! [url.pathExtension isEqualToString:kToxSaveFileExtension]) {
+        noBlock();
         return;
     }
 
     if (options & LifecyclePhaseIncomingFileOptionImportProfile) {
-        [self importProfileWithURL:url];
-        completionBlock(YES, options);
+        yesBlock();
         return;
     }
 
@@ -101,14 +111,9 @@
 
     UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
 
-    [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"LifecyclePhaseLogin") handler:^{
-        [self importProfileWithURL:url];
-        completionBlock(YES, options);
-    }];
+    [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"LifecyclePhaseLogin") handler:yesBlock];
+    [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"LifecyclePhaseLogin") handler:noBlock];
 
-    [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"LifecyclePhaseLogin") handler:^{
-        completionBlock(NO, options);
-    }];
     [alert show];
 }
 
@@ -141,6 +146,14 @@
 }
 
 - (void)importProfileWithURL:(NSURL *)url
-{}
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    UINavigationController *navCon = (UINavigationController *) delegate.window.rootViewController;
+
+    ImportProfileViewController *ipvc = [[ImportProfileViewController alloc] initWithProfileURL:url];
+
+    [navCon popToRootViewControllerAnimated:NO];
+    [navCon pushViewController:ipvc animated:YES];
+}
 
 @end
