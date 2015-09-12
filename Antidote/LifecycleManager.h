@@ -20,4 +20,6 @@
 
 - (nonnull id<LifecyclePhaseProtocol>)currentPhase;
 
+- (void)handleIncomingFileURL:(nonnull NSURL *)url;
+
 @end

@@ -16,6 +16,9 @@
 @property (strong, nonatomic) NSObject *phaseLockObject;
 @property (assign, nonatomic) dispatch_once_t startOnceToken;
 
+@property (strong, nonatomic) NSURL *fileToHandleURL;
+@property (assign, nonatomic) LifecyclePhaseIncomingFileOption fileToHandleOptions;
+
 @end
 
 @implementation LifecycleManager
@@ -37,6 +40,15 @@
     }
 }
 
+- (void)handleIncomingFileURL:(nonnull NSURL *)url
+{
+    @synchronized(self.phaseLockObject) {
+        self.fileToHandleURL = url;
+        self.fileToHandleOptions = LifecyclePhaseIncomingFileOptionNone;
+        [self handleFileURLIfNeeded];
+    }
+}
+
 #pragma mark -  LifecyclePhaseDelegate
 
 - (void)phaseDidFinish:(nonnull id<LifecyclePhaseProtocol>)phase withNextPhase:(nonnull id<LifecyclePhaseProtocol>)nextPhase
@@ -54,7 +66,34 @@
         self.phase = phase;
         phase.delegate = self;
         [phase start];
+
+        [self handleFileURLIfNeeded];
     }
+}
+
+- (void)handleFileURLIfNeeded
+{
+    NSURL *url = self.fileToHandleURL;
+    LifecyclePhaseIncomingFileOption options = self.fileToHandleOptions;
+
+    if (! url) {
+        return;
+    }
+    self.fileToHandleURL = nil;
+    self.fileToHandleOptions = LifecyclePhaseIncomingFileOptionNone;
+
+    weakself;
+    [self.phase handleIncomingFileURL:url options:options completion:^(BOOL didHandle, LifecyclePhaseIncomingFileOption options) {
+        strongself;
+
+        if (didHandle) {
+            return;
+        }
+
+        // url wasn't handled by this phase, leaving it for the next one.
+        self.fileToHandleURL = url;
+        self.fileToHandleOptions = options;
+    }];
 }
 
 @end

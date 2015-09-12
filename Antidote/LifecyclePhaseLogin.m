@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <objcTox/OCTManager.h>
 
 #import "LifecyclePhaseLogin.h"
@@ -15,6 +16,7 @@
 #import "ProfileManager.h"
 #import "AppDelegate.h"
 #import "AppearanceManager.h"
+#import "GlobalConstants.h"
 
 @interface LifecyclePhaseLogin () <UINavigationControllerDelegate>
 
@@ -78,6 +80,38 @@
     return @"Login";
 }
 
+- (void)handleIncomingFileURL:(nonnull NSURL *)url
+                      options:(LifecyclePhaseIncomingFileOption)options
+                   completion:(nonnull void (^)(BOOL didHandle, LifecyclePhaseIncomingFileOption options))completionBlock
+{
+    if (! [url.pathExtension isEqualToString:kToxSaveFileExtension]) {
+        completionBlock(NO, options);
+        return;
+    }
+
+    if (options & LifecyclePhaseIncomingFileOptionImportProfile) {
+        [self importProfileWithURL:url];
+        completionBlock(YES, options);
+        return;
+    }
+
+    NSString *message = [NSString stringWithFormat:
+                         NSLocalizedString(@"Import \"%@\"?", @"LifecyclePhaseLogin"),
+                         [url lastPathComponent]];
+
+    UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
+
+    [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"LifecyclePhaseLogin") handler:^{
+        [self importProfileWithURL:url];
+        completionBlock(YES, options);
+    }];
+
+    [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"LifecyclePhaseLogin") handler:^{
+        completionBlock(NO, options);
+    }];
+    [alert show];
+}
+
 #pragma mark -  UINavigationControllerDelegate
 
 - (NSUInteger)navigationControllerSupportedInterfaceOrientations:(UINavigationController *)navigationController
@@ -105,5 +139,8 @@
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     delegate.window.rootViewController = navCon;
 }
+
+- (void)importProfileWithURL:(NSURL *)url
+{}
 
 @end

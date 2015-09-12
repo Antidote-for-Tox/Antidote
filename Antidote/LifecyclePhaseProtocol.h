@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_OPTIONS(NSUInteger, LifecyclePhaseIncomingFileOption) {
+    LifecyclePhaseIncomingFileOptionNone = 0,
+    LifecyclePhaseIncomingFileOptionImportProfile = 1 << 0,
+};
+
 /**
  * Phases are used to represent some big logical app state. For example
  * - login phase is used for all startup flow (login, registration screens, etc.)
@@ -20,12 +25,18 @@
 
 @property (weak, nonatomic, nullable) id<LifecyclePhaseDelegate> delegate;
 
+- (nonnull NSString *)name;
+
+#pragma mark -  Methods for LifecycleManager
 /**
- * Start running phase. This method should be called only by LifecycleManager.
+ * Following methods should be called only by LifecycleManager.
  */
+
 - (void)start;
 
-- (nonnull NSString *)name;
+- (void)handleIncomingFileURL:(nonnull NSURL *)url
+                      options:(LifecyclePhaseIncomingFileOption)options
+                   completion:(nonnull void (^)(BOOL didHandle, LifecyclePhaseIncomingFileOption options))completionBlock;
 
 @end
 

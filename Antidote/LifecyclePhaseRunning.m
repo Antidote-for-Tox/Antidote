@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
 #import <objcTox/RBQFetchedResultsController.h>
@@ -18,6 +19,7 @@
 #import "Helper.h"
 #import "AppDelegate.h"
 #import "ToxListener.h"
+#import "GlobalConstants.h"
 
 @interface LifecyclePhaseRunning ()
 
@@ -78,6 +80,33 @@
 - (nonnull NSString *)name
 {
     return @"Running";
+}
+
+- (void)handleIncomingFileURL:(nonnull NSURL *)url
+                      options:(LifecyclePhaseIncomingFileOption)options
+                   completion:(nonnull void (^)(BOOL didHandle, LifecyclePhaseIncomingFileOption options))completionBlock
+{
+    if ([url.pathExtension isEqualToString:kToxSaveFileExtension]) {
+        NSString *message = [NSString stringWithFormat:
+                             NSLocalizedString(@"Use \"%@\" as profile?", @"LifecyclePhaseRunning"),
+                             [url lastPathComponent]];
+
+        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
+
+        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"LifecyclePhaseRunning") handler:^{
+            completionBlock(NO, options | LifecyclePhaseIncomingFileOptionImportProfile);
+        }];
+
+        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"LifecyclePhaseRunning") handler:^{
+            // TODO file transfers
+            completionBlock(YES, options);
+        }];
+        [alert show];
+    }
+    else {
+        // TODO file transfers
+        completionBlock(YES, options);
+    }
 }
 
 #pragma mark -  Private

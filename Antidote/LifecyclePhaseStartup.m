@@ -24,4 +24,11 @@
     return @"Startup";
 }
 
+- (void)handleIncomingFileURL:(nonnull NSURL *)url
+                      options:(LifecyclePhaseIncomingFileOption)options
+                   completion:(nonnull void (^)(BOOL didHandle, LifecyclePhaseIncomingFileOption options))completionBlock
+{
+    completionBlock(NO, options);
+}
+
 @end
