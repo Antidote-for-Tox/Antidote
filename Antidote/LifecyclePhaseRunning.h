@@ -12,8 +12,20 @@
 
 @interface LifecyclePhaseRunning : NSObject <LifecyclePhaseProtocol>
 
-- (instancetype)initWithToxManager:(OCTManager *)manager;
+- (nullable instancetype)initWithToxManager:(nonnull OCTManager *)manager;
 
+/**
+ * Running phase logs out and immediately creates new running phase with copy of the OCTManager.
+ * RunningContext and all related objects are recreated.
+ *
+ * @param block Block to perform after relogin. You can use is to perform custom actions, e.g. move to different
+ * tab, push some view controllers, etc.
+ */
+- (void)reloginAndPerformBlock:(nullable void (^)())block;
+
+/**
+ * Logs out switching to Login phase.
+ */
 - (void)logout;
 
 @end

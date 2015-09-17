@@ -27,6 +27,5 @@
 @property (strong, nonatomic, readonly) UserDefaultsManager *userDefaults;
 
 - (void)restoreDefaultSettings;
-- (void)recreateAppearance;
 
 @end

@@ -146,11 +146,10 @@ static const CGFloat kLogoBottomOffset = 40.0;
 
 - (void)loginProfileFormViewLoginButtonPressed:(LoginProfileFormView *)view
 {
-    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:self.activeProfile];
+    NSString *passphrase = self.profileFormView.passwordString.length ? self.profileFormView.passwordString : nil;
 
-    if (self.profileFormView.passwordString.length) {
-        configuration.passphrase = self.profileFormView.passwordString;
-    }
+    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:self.activeProfile
+                                                                                       passphrase:passphrase];
 
     NSError *error;
     OCTManager *manager = [[OCTManager alloc] initWithConfiguration:configuration error:&error];
@@ -242,7 +241,8 @@ static const CGFloat kLogoBottomOffset = 40.0;
         return;
     }
 
-    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:self.activeProfile];
+    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:self.activeProfile
+                                                                                       passphrase:nil];
     BOOL isEncrypted = [OCTManager isToxSaveEncryptedAtPath:configuration.fileStorage.pathForToxSaveFile];
 
     [self.profileFormView showPasswordField:isEncrypted animated:animated];

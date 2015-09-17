@@ -8,6 +8,7 @@
 
 #import <BlocksKit/UIAlertView+BlocksKit.h>
 #import <objcTox/OCTManager.h>
+#import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
 #import <objcTox/RBQFetchedResultsController.h>
 
@@ -20,6 +21,8 @@
 #import "AppDelegate.h"
 #import "ToxListener.h"
 #import "GlobalConstants.h"
+#import "ProfileManager.h"
+#import "ErrorHandler.h"
 
 @interface LifecyclePhaseRunning ()
 
@@ -33,7 +36,7 @@
 
 #pragma mark -  Lifecycle
 
-- (instancetype)initWithToxManager:(OCTManager *)manager
+- (nullable instancetype)initWithToxManager:(nonnull OCTManager *)manager
 {
     NSParameterAssert(manager);
 
@@ -50,9 +53,39 @@
 
 #pragma mark -  Public
 
+- (void)reloginAndPerformBlock:(nullable void (^)())block
+{
+    NSString *profileName = [AppContext sharedContext].userDefaults.uLastActiveProfile;
+    NSString *passphrase = self.toxManager.configuration.passphrase;
+
+    ProfileManager *profileManager = [ProfileManager new];
+
+    OCTManagerConfiguration *configuration = [profileManager configurationForProfileWithName:profileName
+                                                                                  passphrase:passphrase];
+
+    NSError *error;
+    OCTManager *manager = [[OCTManager alloc] initWithConfiguration:configuration error:&error];
+
+    if (manager) {
+        [self prepareToBeKilled];
+
+        LifecyclePhaseRunning *running = [[LifecyclePhaseRunning alloc] initWithToxManager:manager];
+        [self.delegate phaseDidFinish:self withNextPhase:running];
+
+        if (block) {
+            block();
+        }
+    }
+    else {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeCreateOCTManager];
+        [self logout];
+    }
+}
+
 - (void)logout
 {
-    [RunningContext kill];
+    [self prepareToBeKilled];
+
     [AppContext sharedContext].userDefaults.uIsUserLoggedIn = NO;
 
     [self.delegate phaseDidFinish:self withNextPhase:[LifecyclePhaseLogin new]];
@@ -132,6 +165,11 @@
     }
 
     return tabBarVC;
+}
+
+- (void)prepareToBeKilled
+{
+    [RunningContext kill];
 }
 
 @end

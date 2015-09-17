@@ -90,7 +90,7 @@ static NSString *const kSaveDirectoryPath = @"saves";
     return YES;
 }
 
-- (OCTManagerConfiguration *)configurationForProfileWithName:(NSString *)name
+- (OCTManagerConfiguration *)configurationForProfileWithName:(NSString *)name passphrase:(NSString *)passphrase
 {
     NSString *path = [[self saveDirectoryPath] stringByAppendingPathComponent:name];
 
@@ -102,6 +102,7 @@ static NSString *const kSaveDirectoryPath = @"saves";
     }
 
     OCTManagerConfiguration *configuration = [OCTManagerConfiguration defaultConfiguration];
+    configuration.passphrase = passphrase;
 
     configuration.options.IPv6Enabled = [AppContext sharedContext].userDefaults.uIpv6Enabled.boolValue;
     configuration.options.UDPEnabled = [AppContext sharedContext].userDefaults.uUDPEnabled.boolValue;

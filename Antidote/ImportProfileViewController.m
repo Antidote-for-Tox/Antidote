@@ -81,6 +81,7 @@ static const CGFloat kButtonHeight = 40.0;
 - (void)goButtonPressed
 {
     NSString *profile = self.profileView.text;
+    NSString *passphrase = self.isEncrypted ? self.passwordView.text : nil;
 
     if (! profile.length) {
         [self showErrorMessage:NSLocalizedString(@"Please enter profile name.", @"ImportProfileViewController)")];
@@ -98,12 +99,9 @@ static const CGFloat kButtonHeight = 40.0;
         return;
     }
 
-    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:profile];
+    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:profile
+                                                                                       passphrase:passphrase];
     configuration.importToxSaveFromPath = [self.url path];
-
-    if (self.isEncrypted) {
-        configuration.passphrase = self.passwordView.text;
-    }
 
     OCTManager *manager = [[OCTManager alloc] initWithConfiguration:configuration error:&error];
 

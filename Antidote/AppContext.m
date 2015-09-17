@@ -135,21 +135,6 @@
 - (void)restoreDefaultSettings
 {
     [self createUserDefaultsValuesAndRewrite:YES];
-
-    // FIXME
-    // self.profileManager = nil;
-
-    [self recreateAppearance];
-}
-
-- (void)recreateAppearance
-{
-    self.appearance = nil;
-    self.avatars = nil;
-
-    // FIXME
-    //    [self.notification resetAppearance];
-    // [self.profileManager updateInterface];
 }
 
 #pragma mark -  Private

@@ -59,7 +59,7 @@
         return;
     }
 
-    OCTManagerConfiguration *configuration = [profileManager configurationForProfileWithName:lastActiveProfile];
+    OCTManagerConfiguration *configuration = [profileManager configurationForProfileWithName:lastActiveProfile passphrase:nil];
 
     if (! configuration) {
         [self showLoginController];

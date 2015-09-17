@@ -13,6 +13,10 @@
 #import "CellWithSwitch.h"
 #import "UserDefaultsManager.h"
 #import "AppearanceManager.h"
+#import "LifecycleManager.h"
+#import "LifecyclePhaseRunning.h"
+#import "TabBarViewController.h"
+#import "RunningContext.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeIpv6Enabled,
@@ -75,9 +79,13 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
     CellType type = [self cellTypeForIndexPath:indexPath];
 
     if (type == CellTypeRestoreDefault) {
+        weakself;
+
         UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:NSLocalizedString(@"This will reset all settings. Are you sure?", @"Settings")];
         [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Restore", @"Settings") handler:^{
+            strongself;
             [[AppContext sharedContext] restoreDefaultSettings];
+            [self relogin];
         }];
         [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Settings") handler:nil];
         [sheet showInView:self.view];
@@ -98,17 +106,26 @@ static NSString *const kRestoreDefaultReuseIdentifier = @"kRestoreDefaultReuseId
         [AppContext sharedContext].userDefaults.uUDPEnabled = cell.on ? @(1) : @(0);
     }
 
-    [self reloadToxManager];
+    [self relogin];
 }
 
 #pragma mark -  Private
 
-- (void)reloadToxManager
+- (void)relogin
 {
-    // FIXME
-    // ProfileManager *profileManager = [AppContext sharedContext].profileManager;
-    // [profileManager switchToProfileWithName:profileManager.currentProfileName];
-    // [profileManager updateInterface];
+    LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
+
+    NSAssert([running isKindOfClass:[LifecyclePhaseRunning class]], @"Something went terrible wrong, wrong lifecycle phase");
+
+    [running reloginAndPerformBlock:^{
+        TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
+
+        TabBarViewController *tabBar = [RunningContext context].tabBarController;
+        tabBar.selectedIndex = index;
+
+        UINavigationController *navCon = [tabBar navigationControllerForIndex:index];
+        [navCon pushViewController:[AdvancedSettingsViewController new] animated:NO];
+    }];
 }
 
 - (CellWithSwitch *)cellWithSwitchAtIndexPath:(NSIndexPath *)indexPath type:(CellType)type

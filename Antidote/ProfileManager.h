@@ -31,7 +31,12 @@
 
 /**
  * Returns configuration for profile with given name. Returns nil if profile does not exist.
+ *
+ * @param name Name of profile to use for configuration
+ * @param passphrase Optional passphrase to be used for configuration.
+ *
+ * @return Configuration or nil if profile does not exist.
  */
-- (OCTManagerConfiguration *)configurationForProfileWithName:(NSString *)name;
+- (OCTManagerConfiguration *)configurationForProfileWithName:(NSString *)name passphrase:(NSString *)passphrase;
 
 @end

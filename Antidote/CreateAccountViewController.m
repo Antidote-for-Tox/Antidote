@@ -121,7 +121,7 @@ static const CGFloat kButtonHeight = 40.0;
         return;
     }
 
-    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:profile];
+    OCTManagerConfiguration *configuration = [self.profileManager configurationForProfileWithName:profile passphrase:nil];
     OCTManager *manager = [[OCTManager alloc] initWithConfiguration:configuration error:&error];
 
     if (! manager) {
