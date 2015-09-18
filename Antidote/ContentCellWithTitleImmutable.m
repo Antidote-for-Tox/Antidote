@@ -18,6 +18,8 @@ static const CGFloat kEditButtonTopOffset = -4.0;
 static const CGFloat kEditButtonRightOffset = 10.0;
 static const CGFloat kEditButtonSize = 30.0;
 
+static const CGFloat kMinumumMainLabelHeight = 20.0;
+
 @interface ContentCellWithTitleImmutable ()
 
 @property (strong, nonatomic) CopyLabel *mainLabel;
@@ -106,6 +108,7 @@ static const CGFloat kEditButtonSize = 30.0;
     [self.mainLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.bottom).offset(kLabelTopOffset);
         make.left.bottom.equalTo(self.customContentView);
+        make.height.greaterThanOrEqualTo(kMinumumMainLabelHeight);
     }];
 
     [self.editButton makeConstraints:^(MASConstraintMaker *make) {
