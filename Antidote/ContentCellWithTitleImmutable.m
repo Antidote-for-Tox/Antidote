@@ -64,6 +64,8 @@ static const CGFloat kMinumumMainLabelHeight = 20.0;
 
 - (void)setShowEditButton:(BOOL)show
 {
+    _showEditButton = show;
+
     self.editButton.hidden = ! show;
 
     if (show) {
@@ -72,6 +74,16 @@ static const CGFloat kMinumumMainLabelHeight = 20.0;
     else {
         [self.editButtonSizeConstraint deactivate];
     }
+}
+
+- (void)setCopyable:(BOOL)copyable
+{
+    self.mainLabel.copyable = copyable;
+}
+
+- (BOOL)copyable
+{
+    return self.mainLabel.copyable;
 }
 
 #pragma mark -  Actions

@@ -21,5 +21,6 @@
 @property (weak, nonatomic) id<ContentCellWithTitleImmutableDelegate> delegate;
 
 @property (assign, nonatomic) BOOL showEditButton;
+@property (assign, nonatomic) BOOL copyable;
 
 @end

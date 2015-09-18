@@ -334,6 +334,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     else {
         ContentCellWithTitleImmutable *iCell = (ContentCellWithTitleImmutable *)cell;
         iCell.showEditButton = YES;
+        iCell.copyable = NO;
     }
 
     return cell;
@@ -358,6 +359,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     else {
         ContentCellWithTitleImmutable *iCell = (ContentCellWithTitleImmutable *)cell;
         iCell.showEditButton = YES;
+        iCell.copyable = NO;
     }
 
     return cell;
