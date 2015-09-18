@@ -19,8 +19,12 @@
 
 + (StatusCircleStatus)circleStatusFromFriend:(OCTFriend *)friend;
 
++ (StatusCircleStatus)circleStatusFromUserStatus:(OCTToxUserStatus)userStatus;
+
 + (StatusCircleStatus)circleStatusFromConnectionStatus:(OCTToxConnectionStatus)connectionStatus
                                             userStatus:(OCTToxUserStatus)userStatus;
+
++ (NSString *)circleStatusToString:(StatusCircleStatus)status;
 
 + (RBQFetchedResultsController *)createFetchedResultsControllerForType:(OCTFetchRequestType)type
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate;

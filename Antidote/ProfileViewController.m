@@ -20,11 +20,14 @@
 #import "ContentCellWithTitleImmutable.h"
 #import "ContentCellWithTitleEditable.h"
 #import "ContentCellWithAvatar.h"
+#import "ContentCellSimple.h"
 #import "ContentSeparatorCell.h"
 #import "ErrorHandler.h"
 #import "RunningContext.h"
 #import "LifecycleManager.h"
 #import "LifecyclePhaseRunning.h"
+#import "AppearanceManager.h"
+#import "Helper.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -34,7 +37,9 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameEditable,
     CellTypeStatusMessageImmutable,
     CellTypeStatusMessageEditable,
+    CellTypeStatus,
     CellTypeToxId,
+    CellTypeProfileDetails,
     CellTypeLogout,
 };
 
@@ -56,14 +61,28 @@ typedef NS_ENUM(NSInteger, CellType) {
                 @[
                     @(CellTypeSeparatorTransparent),
                     @(CellTypeAvatar),
+                ],
+                @[
                     @(CellTypeSeparatorGray),
                     @(CellTypeNameImmutable),
                     @(CellTypeStatusMessageImmutable),
+                ],
+                @[
+                    @(CellTypeSeparatorGray),
+                    @(CellTypeStatus),
+                ],
+                @[
                     @(CellTypeSeparatorGray),
                     @(CellTypeToxId),
                 ],
                 @[
+                    @(CellTypeSeparatorGray),
+                    @(CellTypeProfileDetails),
+                ],
+                @[
+                    @(CellTypeSeparatorGray),
                     @(CellTypeLogout),
+                    @(CellTypeSeparatorTransparent),
                 ]
             ]];
 }
@@ -85,7 +104,7 @@ typedef NS_ENUM(NSInteger, CellType) {
            forCellReuseIdentifier:[ContentCellWithTitleImmutable reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithTitleEditable class]
            forCellReuseIdentifier:[ContentCellWithTitleEditable reuseIdentifier]];
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:[UITableViewCell reuseIdentifier]];
+    [self.tableView registerClass:[ContentCellSimple class] forCellReuseIdentifier:[ContentCellSimple reuseIdentifier]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -107,8 +126,12 @@ typedef NS_ENUM(NSInteger, CellType) {
             return [self cellWithStatusMessageAtIndexPath:indexPath editable:NO];
         case CellTypeStatusMessageEditable:
             return [self cellWithStatusMessageAtIndexPath:indexPath editable:YES];
+        case CellTypeStatus:
+            return [self cellWithStatusAtIndexPath:indexPath];
         case CellTypeToxId:
             return [self cellWithToxIdAtIndexPath:indexPath];
+        case CellTypeProfileDetails:
+            return [self cellWithProfileDetailsAtIndexPath:indexPath];
         case CellTypeLogout:
             return [self cellWithLogoutAtIndexPath:indexPath];
     }
@@ -116,9 +139,12 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeLogout) {
+    if (type == CellTypeProfileDetails) {}
+    else if (type == CellTypeLogout) {
         LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
 
         NSAssert([running isKindOfClass:[LifecyclePhaseRunning class]],
@@ -365,6 +391,28 @@ typedef NS_ENUM(NSInteger, CellType) {
     return cell;
 }
 
+- (ContentCellSimple *)cellWithStatusAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [ContentCellSimple reuseIdentifier];
+    ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.boldTitle = NO;
+
+    StatusCircleStatus status = [Helper circleStatusFromUserStatus:[RunningContext context].toxManager.user.userStatus];
+
+    cell.title = [Helper circleStatusToString:status];
+
+    StatusCircleView *statusView = [StatusCircleView new];
+    statusView.showWhiteBorder = NO;
+    statusView.status = status;
+    [statusView redraw];
+
+    cell.leftAccessoryView = statusView;
+    cell.leftAccessoryViewSize = CGSizeMake(statusView.side, statusView.side);
+
+    return cell;
+}
+
 - (ContentCellWithTitleImmutable *)cellWithToxIdAtIndexPath:(NSIndexPath *)indexPath
 {
     NSString *identifier = [ContentCellWithTitleImmutable reuseIdentifier];
@@ -378,11 +426,25 @@ typedef NS_ENUM(NSInteger, CellType) {
     return cell;
 }
 
-- (UITableViewCell *)cellWithLogoutAtIndexPath:(NSIndexPath *)indexPath
+- (ContentCellSimple *)cellWithProfileDetailsAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *identifier = [UITableViewCell reuseIdentifier];
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    cell.textLabel.text = NSLocalizedString(@"Log Out", @"Profile");
+    NSString *identifier = [ContentCellSimple reuseIdentifier];
+    ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    cell.title = NSLocalizedString(@"Profile Details", @"Profile");
+    cell.boldTitle = NO;
+    cell.leftAccessoryView = nil;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    return cell;
+}
+
+- (ContentCellSimple *)cellWithLogoutAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [ContentCellSimple reuseIdentifier];
+    ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    cell.title = NSLocalizedString(@"Log Out", @"Profile");
+    cell.boldTitle = YES;
+    cell.leftAccessoryView = nil;
 
     return cell;
 }

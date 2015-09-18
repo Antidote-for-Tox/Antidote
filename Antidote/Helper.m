@@ -36,6 +36,12 @@
     return [self circleStatusFromConnectionStatus:friend.connectionStatus userStatus:friend.status];
 }
 
++ (StatusCircleStatus)circleStatusFromUserStatus:(OCTToxUserStatus)userStatus
+{
+    // Using TCP as any "connected" status.
+    return [self circleStatusFromConnectionStatus:OCTToxConnectionStatusTCP userStatus:userStatus];
+}
+
 + (StatusCircleStatus)circleStatusFromConnectionStatus:(OCTToxConnectionStatus)connectionStatus
                                             userStatus:(OCTToxUserStatus)userStatus
 {
@@ -50,6 +56,20 @@
             return StatusCircleStatusAway;
         case OCTToxUserStatusBusy:
             return StatusCircleStatusBusy;
+    }
+}
+
++ (NSString *)circleStatusToString:(StatusCircleStatus)status
+{
+    switch (status) {
+        case StatusCircleStatusOffline:
+            return NSLocalizedString(@"Offline", @"User status");
+        case StatusCircleStatusOnline:
+            return NSLocalizedString(@"Online", @"User status");
+        case StatusCircleStatusAway:
+            return NSLocalizedString(@"Away", @"User status");
+        case StatusCircleStatusBusy:
+            return NSLocalizedString(@"Busy", @"User status");
     }
 }
 
