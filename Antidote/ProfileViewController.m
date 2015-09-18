@@ -132,34 +132,34 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (void)contentCellWithAvatarImagePressed:(ContentCellWithAvatar *)cell
 {
-    weakself;
-
-    void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
-        strongself;
-
-        UIImagePickerController *ipc = [UIImagePickerController new];
-        ipc.allowsEditing = NO;
-        ipc.sourceType = sourceType;
-        ipc.delegate = self;
-
-        [self presentViewController:ipc animated:YES completion:nil];
-    };
-
-    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Profile") handler:^{
-            photoHandler(UIImagePickerControllerSourceTypeCamera);
-        }];
-    }
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Profile") handler:^{
-            photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
-        }];
-    }
-
     // FIXME avatar
+    // weakself;
+
+    // void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
+    //     strongself;
+
+    //     UIImagePickerController *ipc = [UIImagePickerController new];
+    //     ipc.allowsEditing = NO;
+    //     ipc.sourceType = sourceType;
+    //     ipc.delegate = self;
+
+    //     [self presentViewController:ipc animated:YES completion:nil];
+    // };
+
+    // UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
+
+    // if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    //     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Profile") handler:^{
+    //         photoHandler(UIImagePickerControllerSourceTypeCamera);
+    //     }];
+    // }
+
+    // if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+    //     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Profile") handler:^{
+    //         photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
+    //     }];
+    // }
+
     // if ([[ToxManager sharedInstance] userHasAvatar]) {
     //     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Profile") handler:^{
     //         [[ToxManager sharedInstance] updateAvatar:nil];
@@ -169,9 +169,9 @@ typedef NS_ENUM(NSInteger, CellType) {
     //     }];
     // }
 
-    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profile") handler:nil];
+    // [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profile") handler:nil];
 
-    [sheet showInView:self.view];
+    // [sheet showInView:self.view];
 }
 
 #pragma mark -  ContentCellWithTitleBasicDelegate
