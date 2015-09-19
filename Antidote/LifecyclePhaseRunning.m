@@ -146,22 +146,8 @@
 
 - (TabBarViewController *)createTabBarController
 {
-    RBQFetchedResultsController *chats = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:nil];
-    RBQFetchedResultsController *friends = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:nil];
-    RBQFetchedResultsController *friendRequests = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest delegate:nil];
-
     TabBarViewController *tabBarVC = [TabBarViewController new];
-
-    if ([chats numberOfRowsForSectionIndex:0]) {
-        tabBarVC.selectedIndex = TabBarViewControllerIndexChats;
-    }
-    else if ([friends numberOfRowsForSectionIndex:0] ||
-             [friendRequests numberOfRowsForSectionIndex:0]) {
-        tabBarVC.selectedIndex = TabBarViewControllerIndexFriends;
-    }
-    else {
-        tabBarVC.selectedIndex = TabBarViewControllerIndexProfile;
-    }
+    tabBarVC.selectedIndex = TabBarViewControllerIndexChats;
 
     return tabBarVC;
 }
