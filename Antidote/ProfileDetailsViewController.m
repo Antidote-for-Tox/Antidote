@@ -6,6 +6,7 @@
 //  Copyright (c) 2015 dvor. All rights reserved.
 //
 
+#import <BlocksKit/UIActionSheet+BlocksKit.h>
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 
@@ -15,6 +16,10 @@
 #import "UITableViewCell+Utilities.h"
 #import "UserDefaultsManager.h"
 #import "RunningContext.h"
+#import "ErrorHandler.h"
+#import "LifecycleManager.h"
+#import "LifecyclePhaseRunning.h"
+#import "ProfileManager.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -26,7 +31,9 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeDeleteProfile,
 };
 
-@interface ProfileDetailsViewController ()
+@interface ProfileDetailsViewController () <UIDocumentInteractionControllerDelegate>
+
+@property (strong, nonatomic) UIDocumentInteractionController *documentInteractionController;
 
 @end
 
@@ -37,15 +44,17 @@ typedef NS_ENUM(NSInteger, CellType) {
 - (id)init
 {
     return [super initWithTitle:NSLocalizedString(@"Profile", @"Profile") tableStyle:UITableViewStylePlain tableStructure:@[
+                @[]
+                // @(CellTypeSeparatorTransparent),
+                // @(CellTypeProfileName),
+                // @(CellTypePassword),
+                // @(CellTypeNospam),
+                ,
                 @[
+                    // @(CellTypeSeparatorGray),
                     @(CellTypeSeparatorTransparent),
-                    @(CellTypeProfileName),
-                    @(CellTypePassword),
-                    @(CellTypeNospam),
-                ],
-                @[
-                    @(CellTypeSeparatorGray),
                     @(CellTypeExportProfile),
+                    @(CellTypeSeparatorGray),
                     @(CellTypeDeleteProfile),
                 ],
             ]];
@@ -87,6 +96,37 @@ typedef NS_ENUM(NSInteger, CellType) {
         case CellTypeDeleteProfile:
             return [self deleteProfileCellAtIndexPath:indexPath];
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    if (type == CellTypeExportProfile) {
+        [self exportProfile];
+    }
+    else if (type == CellTypeDeleteProfile) {
+        [self deleteProfile];
+    }
+}
+
+#pragma mark -  UIDocumentInteractionControllerDelegate
+
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller
+{
+    return self;
+}
+
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller
+{
+    return self.view.frame;
 }
 
 #pragma mark -  Private
@@ -139,7 +179,6 @@ typedef NS_ENUM(NSInteger, CellType) {
     ContentCellSimple *cell = [self simpleCellAtIndexPath:indexPath];
 
     cell.title = NSLocalizedString(@"Export Profile", @"ProfileDetailsViewController");
-    cell.boldTitle = YES;
 
     return cell;
 }
@@ -150,7 +189,6 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     cell.title = NSLocalizedString(@"Delete Profile", @"ProfileDetailsViewController");
     cell.boldTitle = YES;
-    cell.titleColor = [UIColor redColor];
 
     return cell;
 }
@@ -162,6 +200,76 @@ typedef NS_ENUM(NSInteger, CellType) {
     [cell resetCell];
 
     return cell;
+}
+
+- (void)exportProfile
+{
+    NSError *error;
+
+    NSString *path = [[RunningContext context].toxManager exportToxSaveFile:&error];
+
+    if (! path) {
+        [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeExportProfile];
+        return;
+    }
+
+    NSURL *url = [NSURL fileURLWithPath:path];
+
+    self.documentInteractionController = [UIDocumentInteractionController interactionControllerWithURL:url];
+    self.documentInteractionController.delegate = self;
+    self.documentInteractionController.name = [NSString stringWithFormat:@"%@.tox",
+                                               [AppContext sharedContext].userDefaults.uLastActiveProfile];
+
+    [self.documentInteractionController presentOptionsMenuFromRect:self.view.frame inView:self.view animated:YES];
+}
+
+- (void)deleteProfile
+{
+    NSString *firstTitle = NSLocalizedString(@"Are you sure you want to delete profile?\nThis operation cannot be undone!", @"ProfileDetailsViewController");
+    NSString *secondTitle = NSLocalizedString(@"Delete profile?", @"ProfileDetailsViewController");
+    NSString *delete = NSLocalizedString(@"Delete", @"ProfileDetailsViewController");
+    NSString *cancel = NSLocalizedString(@"Cancel", @"ProfileDetailsViewController");
+
+    UIActionSheet *firstSheet = [UIActionSheet bk_actionSheetWithTitle:firstTitle];
+
+    weakself;
+    [firstSheet bk_setDestructiveButtonWithTitle:delete handler:^{
+        UIActionSheet *secondSheet = [UIActionSheet bk_actionSheetWithTitle:secondTitle];
+
+        [secondSheet bk_setDestructiveButtonWithTitle:delete handler:^{
+            strongself;
+
+            [self reallyDeleteProfile];
+        }];
+        [secondSheet bk_setCancelButtonWithTitle:cancel handler:nil];
+
+        [secondSheet showInView:self.view];
+    }];
+    [firstSheet bk_setCancelButtonWithTitle:cancel handler:nil];
+
+    [firstSheet showInView:self.view];
+}
+
+- (void)reallyDeleteProfile
+{
+    LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
+
+    NSAssert([running isKindOfClass:[LifecyclePhaseRunning class]],
+             @"Something went terrible wrong, should be in running phase");
+
+    NSString *profileName = [AppContext sharedContext].userDefaults.uLastActiveProfile;
+
+    [running logoutWithCompletionBlock:^{
+        ProfileManager *profileManager = [ProfileManager new];
+
+        NSError *error;
+        if ([profileManager deleteProfileWithName:profileName error:&error]) {
+            [AppContext sharedContext].userDefaults.uLastActiveProfile = nil;
+        }
+        else {
+            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeDeleteProfile];
+        }
+    }];
 }
 
 @end

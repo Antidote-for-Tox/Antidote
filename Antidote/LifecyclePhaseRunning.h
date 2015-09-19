@@ -27,5 +27,6 @@
  * Logs out switching to Login phase.
  */
 - (void)logout;
+- (void)logoutWithCompletionBlock:(nullable void (^)())completionBlock;
 
 @end

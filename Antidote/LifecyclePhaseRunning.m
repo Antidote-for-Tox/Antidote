@@ -83,9 +83,18 @@
 
 - (void)logout
 {
+    [self logoutWithCompletionBlock:nil];
+}
+
+- (void)logoutWithCompletionBlock:(void (^)())completionBlock
+{
     [self prepareToBeKilled];
 
     [AppContext sharedContext].userDefaults.uIsUserLoggedIn = NO;
+
+    if (completionBlock) {
+        completionBlock();
+    }
 
     [self.delegate phaseDidFinish:self withNextPhase:[LifecyclePhaseLogin new]];
 }
