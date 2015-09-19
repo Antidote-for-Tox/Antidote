@@ -12,6 +12,8 @@
 #import "Helper.h"
 #import "RunningContext.h"
 
+NSString *const kToxSaveFileExtension = @"tox";
+
 @implementation Helper
 
 #pragma mark -  Public

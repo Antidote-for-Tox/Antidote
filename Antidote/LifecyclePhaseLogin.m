@@ -16,7 +16,7 @@
 #import "ProfileManager.h"
 #import "AppDelegate.h"
 #import "AppearanceManager.h"
-#import "GlobalConstants.h"
+#import "Helper.h"
 #import "ImportProfileViewController.h"
 
 @interface LifecyclePhaseLogin () <UINavigationControllerDelegate>

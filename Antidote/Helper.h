@@ -13,6 +13,8 @@
 #import "RBQFetchedResultsController.h"
 #import "OCTManager.h"
 
+extern NSString *const kToxSaveFileExtension;
+
 @interface Helper : NSObject
 
 + (BOOL)isAddressString:(NSString *)string;

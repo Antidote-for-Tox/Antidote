@@ -42,7 +42,6 @@
 		1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0721BA1FA9100D258C6 /* UIButton+Utilities.m */; };
 		1179E0771BA21A0C00D258C6 /* KeyboardNotificationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */; };
 		1179E07C1BA22F3500D258C6 /* FullscreenSpinner.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */; };
-		1179E0801BA41F1400D258C6 /* GlobalConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E07F1BA41F1400D258C6 /* GlobalConstants.m */; };
 		1179E0841BA84C0C00D258C6 /* FileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1179E0831BA84C0C00D258C6 /* FileManager.m */; };
 		117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 117FCFB019BCBFF80026C13B /* UITableViewCell+Utilities.m */; };
 		1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1182AF391B4EE2070095B476 /* TabBarViewController.m */; };
@@ -165,8 +164,6 @@
 		1179E0761BA21A0C00D258C6 /* KeyboardNotificationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeyboardNotificationController.m; sourceTree = "<group>"; };
 		1179E07A1BA22F3500D258C6 /* FullscreenSpinner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullscreenSpinner.h; sourceTree = "<group>"; };
 		1179E07B1BA22F3500D258C6 /* FullscreenSpinner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullscreenSpinner.m; sourceTree = "<group>"; };
-		1179E07E1BA41F1400D258C6 /* GlobalConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
-		1179E07F1BA41F1400D258C6 /* GlobalConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GlobalConstants.m; sourceTree = "<group>"; };
 		1179E0821BA84C0C00D258C6 /* FileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileManager.h; sourceTree = "<group>"; };
 		1179E0831BA84C0C00D258C6 /* FileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileManager.m; sourceTree = "<group>"; };
 		117FCFAF19BCBFF80026C13B /* UITableViewCell+Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITableViewCell+Utilities.h"; sourceTree = "<group>"; };
@@ -890,8 +887,6 @@
 				1164764219794D3300DB20B8 /* AppDelegate.m */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
 				1179E06A1BA0534600D258C6 /* import-profile.html */,
-				1179E07E1BA41F1400D258C6 /* GlobalConstants.h */,
-				1179E07F1BA41F1400D258C6 /* GlobalConstants.m */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -1138,7 +1133,6 @@
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
-				1179E0801BA41F1400D258C6 /* GlobalConstants.m in Sources */,
 				1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */,
 				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,

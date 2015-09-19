@@ -20,7 +20,6 @@
 #import "Helper.h"
 #import "AppDelegate.h"
 #import "ToxListener.h"
-#import "GlobalConstants.h"
 #import "ProfileManager.h"
 #import "ErrorHandler.h"
 
