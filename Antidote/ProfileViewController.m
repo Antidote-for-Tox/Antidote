@@ -28,6 +28,7 @@
 #import "LifecyclePhaseRunning.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
+#import "StatusViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -87,6 +88,13 @@ typedef NS_ENUM(NSInteger, CellType) {
             ]];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
+}
+
 #pragma mark -  Override
 
 - (void)configureTableView
@@ -143,7 +151,9 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeProfileDetails) {}
+    if (type == CellTypeStatus) {
+        [self.navigationController pushViewController:[StatusViewController new] animated:YES];
+    }
     else if (type == CellTypeLogout) {
         LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
 
