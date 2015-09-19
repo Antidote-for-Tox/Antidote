@@ -11,14 +11,17 @@
 #import "ContentCellSimple.h"
 #import "AppearanceManager.h"
 
-static const CGFloat kLeftAccessoryViewRightOffset = 10.0;
+static const CGFloat kHorizontalOffset = 10.0;
 
 static const CGFloat kLabelFontSize = 17.0;
 static const CGFloat kLabelMinimumHeight = 20.0;
 
+static const CGFloat kDetailLabelRightOffset = -20.0;
+
 @interface ContentCellSimple ()
 
 @property (strong, nonatomic) UILabel *label;
+@property (strong, nonatomic) UILabel *detailLabel;
 
 @end
 
@@ -50,6 +53,26 @@ static const CGFloat kLabelMinimumHeight = 20.0;
 - (NSString *)title
 {
     return self.label.text;
+}
+
+- (void)setDetailTitle:(NSString *)detail
+{
+    self.detailLabel.text = detail;
+}
+
+- (NSString *)detailTitle
+{
+    return self.detailLabel.text;
+}
+
+- (void)setTitleColor:(UIColor *)color
+{
+    self.label.textColor = color;
+}
+
+- (UIColor *)titleColor
+{
+    return self.label.textColor;
 }
 
 - (void)setBoldTitle:(BOOL)boldTitle
@@ -85,12 +108,28 @@ static const CGFloat kLabelMinimumHeight = 20.0;
     [self remakeConstraints];
 }
 
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    self.title = nil;
+    self.boldTitle = NO;
+    self.titleColor = [UIColor blackColor];
+    self.detailTitle = nil;
+    self.leftAccessoryView = nil;
+    self.leftAccessoryViewSize = CGSizeZero;
+    self.accessoryType = UITableViewCellAccessoryNone;
+}
+
 #pragma mark -  Private
 
 - (void)createViews
 {
     self.label = [UILabel new];
     [self.customContentView addSubview:self.label];
+
+    self.detailLabel = [UILabel new];
+    [self.customContentView addSubview:self.detailLabel];
 }
 
 - (void)remakeConstraints
@@ -106,11 +145,20 @@ static const CGFloat kLabelMinimumHeight = 20.0;
 
     [self.label remakeConstraints:^(MASConstraintMaker *make) {
         if (self.leftAccessoryView) {
-            make.left.equalTo(self.leftAccessoryView.right).offset(kLeftAccessoryViewRightOffset);
+            make.left.equalTo(self.leftAccessoryView.right).offset(kHorizontalOffset);
         }
         else {
             make.left.equalTo(self.customContentView);
         }
+        make.centerY.equalTo(self.customContentView);
+        make.top.greaterThanOrEqualTo(self.customContentView);
+        make.bottom.lessThanOrEqualTo(self.customContentView);
+        make.height.greaterThanOrEqualTo(kLabelMinimumHeight);
+    }];
+
+    [self.detailLabel remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.greaterThanOrEqualTo(self.label.right).offset(kHorizontalOffset);
+        make.right.equalTo(self.customContentView).offset(kDetailLabelRightOffset);
         make.centerY.equalTo(self.customContentView);
         make.top.greaterThanOrEqualTo(self.customContentView);
         make.bottom.lessThanOrEqualTo(self.customContentView);

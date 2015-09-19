@@ -45,7 +45,7 @@ static const CGFloat kMinumumMainLabelHeight = 20.0;
     [self createViews];
     [self installConstraints];
 
-    self.showEditButton = NO;
+    [self resetCell];
 
     return self;
 }
@@ -93,6 +93,16 @@ static const CGFloat kMinumumMainLabelHeight = 20.0;
     if ([self.delegate respondsToSelector:@selector(contentCellWithTitleImmutableEditButtonPressed:)]) {
         [self.delegate contentCellWithTitleImmutableEditButtonPressed:self];
     }
+}
+
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    [super resetCell];
+
+    self.showEditButton = NO;
+    self.copyable = YES;
 }
 
 #pragma mark -  Private

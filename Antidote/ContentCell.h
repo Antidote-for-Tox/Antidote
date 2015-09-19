@@ -20,4 +20,9 @@
  */
 @property (assign, nonatomic) BOOL enableRightOffset;
 
+/**
+ * Override this method in subclass.
+ */
+- (void)resetCell;
+
 @end

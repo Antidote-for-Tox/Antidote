@@ -66,4 +66,13 @@ static const CGFloat kContentYOffset = 5.0;
     }
 }
 
+#pragma mark -  Public
+
+- (void)resetCell
+{
+    NSString *reason = [NSString stringWithFormat:@"You must override %@ in a subclass", NSStringFromSelector(_cmd)];
+
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:reason userInfo:nil];
+}
+
 @end

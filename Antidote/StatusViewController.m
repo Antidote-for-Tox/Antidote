@@ -110,7 +110,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     NSString *identifier = [ContentCellSimple reuseIdentifier];
     ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
-    cell.boldTitle = NO;
+    [cell resetCell];
     cell.title = [Helper circleStatusToString:circleStatus];
     cell.accessoryType = ([RunningContext context].toxManager.user.userStatus == status) ?
                          UITableViewCellAccessoryCheckmark :

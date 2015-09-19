@@ -12,6 +12,9 @@
 
 @property (strong, nonatomic) NSString *title;
 @property (assign, nonatomic) BOOL boldTitle;
+@property (strong, nonatomic) UIColor *titleColor;
+
+@property (strong, nonatomic) NSString *detailTitle;
 
 @property (strong, nonatomic) UIView *leftAccessoryView;
 @property (assign, nonatomic) CGSize leftAccessoryViewSize;

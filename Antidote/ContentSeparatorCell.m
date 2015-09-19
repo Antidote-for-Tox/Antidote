@@ -42,10 +42,18 @@ static const CGFloat kYOffset = 10.0;
         make.height.equalTo(kSeparatorHeight);
     }];
 
-    self.separatorView.hidden = YES;
     self.enableRightOffset = NO;
 
+    [self resetCell];
+
     return self;
+}
+
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    self.showGraySeparator = YES;
 }
 
 #pragma mark -  Properties

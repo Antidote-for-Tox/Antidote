@@ -29,6 +29,7 @@
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "StatusViewController.h"
+#import "ProfileDetailsViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -153,6 +154,9 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     if (type == CellTypeStatus) {
         [self.navigationController pushViewController:[StatusViewController new] animated:YES];
+    }
+    else if (type == CellTypeProfileDetails) {
+        [self.navigationController pushViewController:[ProfileDetailsViewController new] animated:YES];
     }
     else if (type == CellTypeLogout) {
         LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
@@ -405,8 +409,8 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     NSString *identifier = [ContentCellSimple reuseIdentifier];
     ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    [cell resetCell];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.boldTitle = NO;
 
     StatusCircleStatus status = [Helper circleStatusFromUserStatus:[RunningContext context].toxManager.user.userStatus];
 
@@ -440,9 +444,8 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     NSString *identifier = [ContentCellSimple reuseIdentifier];
     ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    [cell resetCell];
     cell.title = NSLocalizedString(@"Profile Details", @"Profile");
-    cell.boldTitle = NO;
-    cell.leftAccessoryView = nil;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
@@ -452,9 +455,9 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     NSString *identifier = [ContentCellSimple reuseIdentifier];
     ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    [cell resetCell];
     cell.title = NSLocalizedString(@"Log Out", @"Profile");
     cell.boldTitle = YES;
-    cell.leftAccessoryView = nil;
 
     return cell;
 }
