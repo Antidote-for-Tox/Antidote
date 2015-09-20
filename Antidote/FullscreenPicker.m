@@ -129,6 +129,7 @@ static const CGFloat kToolbarHeight = 44.0;
     }];
 
     [self.picker makeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(self);
         self.pickerBottomConstraint = make.bottom.equalTo(self);
     }];
 }
