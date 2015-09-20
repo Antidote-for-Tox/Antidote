@@ -22,6 +22,7 @@
 #import "FullscreenPicker.h"
 #import "ErrorHandler.h"
 #import "LoginProfileFormView.h"
+#import "LoginChoiceView.h"
 
 static const CGFloat kLogoTopOffset = -200.0;
 static const CGFloat kLogoHeight = 100.0;
@@ -32,6 +33,7 @@ static const CGFloat kLogoBottomOffset = 40.0;
 @property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIImageView *logoImageView;
 @property (strong, nonatomic) LoginProfileFormView *profileFormView;
+@property (strong, nonatomic) LoginChoiceView *choiceView;
 
 @property (strong, nonatomic) MASConstraint *containerViewTopConstraint;
 
@@ -65,7 +67,13 @@ static const CGFloat kLogoBottomOffset = 40.0;
 
     [self createContainerView];
     [self createLogoImageView];
-    [self createProfileFormView];
+
+    if (self.profileManager.allProfiles.count) {
+        [self createProfileFormView];
+    }
+    else {
+        [self createChoiceView];
+    }
 
     [self installConstraints];
 
@@ -167,19 +175,24 @@ static const CGFloat kLogoBottomOffset = 40.0;
 
 - (void)loginProfileFormViewCreateAccountButtonPressed:(LoginProfileFormView *)view
 {
-    [self.navigationController pushViewController:[CreateAccountViewController new] animated:YES];
+    [self createAccount];
 }
 
 - (void)loginProfileFormViewImportProfileButtonPressed:(LoginProfileFormView *)view
 {
-    TextViewController *textVC = [TextViewController new];
-    textVC.backgroundColor = self.view.backgroundColor;
+    [self importProfile];
+}
 
-    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"import-profile" ofType:@"html"];
+#pragma mark -  LoginChoiceViewDelegate
 
-    textVC.html = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+- (void)loginChoiceViewCreateAccountButtonPressed:(LoginChoiceView *)view
+{
+    [self createAccount];
+}
 
-    [self.navigationController pushViewController:textVC animated:YES];
+- (void)loginChoiceViewImportProfileButtonPressed:(LoginChoiceView *)view
+{
+    [self importProfile];
 }
 
 #pragma mark -  Private
@@ -212,6 +225,13 @@ static const CGFloat kLogoBottomOffset = 40.0;
     [self.containerView addSubview:self.profileFormView];
 }
 
+- (void)createChoiceView
+{
+    self.choiceView = [LoginChoiceView new];
+    self.choiceView.delegate = self;
+    [self.containerView addSubview:self.choiceView];
+}
+
 - (void)installConstraints
 {
     [self.containerView makeConstraints:^(MASConstraintMaker *make) {
@@ -229,6 +249,11 @@ static const CGFloat kLogoBottomOffset = 40.0;
     [self.profileFormView makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.logoImageView.bottom).offset(kLogoBottomOffset);
         make.left.right.bottom.equalTo(self.containerView);
+    }];
+
+    [self.choiceView makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.logoImageView.bottom).offset(kLogoBottomOffset);
+        make.left.right.equalTo(self.containerView);
     }];
 }
 
@@ -273,6 +298,23 @@ static const CGFloat kLogoBottomOffset = 40.0;
     }
 
     [UIView animateWithDuration:duration delay:0.0 options:options animations:block completion:nil];
+}
+
+- (void)createAccount
+{
+    [self.navigationController pushViewController:[CreateAccountViewController new] animated:YES];
+}
+
+- (void)importProfile
+{
+    TextViewController *textVC = [TextViewController new];
+    textVC.backgroundColor = self.view.backgroundColor;
+
+    NSString *htmlFile = [[NSBundle mainBundle] pathForResource:@"import-profile" ofType:@"html"];
+
+    textVC.html = [NSString stringWithContentsOfFile:htmlFile encoding:NSUTF8StringEncoding error:nil];
+
+    [self.navigationController pushViewController:textVC animated:YES];
 }
 
 @end

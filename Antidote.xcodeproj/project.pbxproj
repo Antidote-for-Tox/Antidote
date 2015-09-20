@@ -13,6 +13,7 @@
 		110FF3431B9E1C7C00904D1D /* LifecyclePhaseLogin.m in Sources */ = {isa = PBXBuildFile; fileRef = 110FF3421B9E1C7C00904D1D /* LifecyclePhaseLogin.m */; };
 		110FF3461B9E1C8400904D1D /* LifecyclePhaseRunning.m in Sources */ = {isa = PBXBuildFile; fileRef = 110FF3451B9E1C8400904D1D /* LifecyclePhaseRunning.m */; };
 		110FF34A1B9E24A700904D1D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110FF3491B9E24A700904D1D /* LoginViewController.m */; };
+		111F92B31BAED2750065117A /* LoginChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F92B21BAED2750065117A /* LoginChoiceView.m */; settings = {ASSET_TAGS = (); }; };
 		1125CEDA1BAC1324002B17EC /* ContentCellSimple.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125CED91BAC1324002B17EC /* ContentCellSimple.m */; };
 		11300B681B4DB25E00233052 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11300B671B4DB25E00233052 /* ProfileViewController.m */; };
 		1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1137BDEA1B24438E00BA20C8 /* ProfileManager.m */; };
@@ -109,6 +110,8 @@
 		110FF3451B9E1C8400904D1D /* LifecyclePhaseRunning.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LifecyclePhaseRunning.m; sourceTree = "<group>"; };
 		110FF3481B9E24A700904D1D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		110FF3491B9E24A700904D1D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		111F92B11BAED2750065117A /* LoginChoiceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginChoiceView.h; sourceTree = "<group>"; };
+		111F92B21BAED2750065117A /* LoginChoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginChoiceView.m; sourceTree = "<group>"; };
 		1125CED81BAC1324002B17EC /* ContentCellSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCellSimple.h; sourceTree = "<group>"; };
 		1125CED91BAC1324002B17EC /* ContentCellSimple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellSimple.m; sourceTree = "<group>"; };
 		11300B661B4DB25E00233052 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
@@ -761,6 +764,8 @@
 		11A88AC51BA034E30032686F /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				111F92B11BAED2750065117A /* LoginChoiceView.h */,
+				111F92B21BAED2750065117A /* LoginChoiceView.m */,
 				11A88AC91BA035460032686F /* LoginProfileFormView.h */,
 				11A88ACA1BA035460032686F /* LoginProfileFormView.m */,
 			);
@@ -1189,6 +1194,7 @@
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
 				1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
+				111F92B31BAED2750065117A /* LoginChoiceView.m in Sources */,
 				110FF3461B9E1C8400904D1D /* LifecyclePhaseRunning.m in Sources */,
 				116625E01B63F4B80036ABC2 /* FriendCardViewController.m in Sources */,
 				1179E0691BA04E7C00D258C6 /* TextViewController.m in Sources */,
