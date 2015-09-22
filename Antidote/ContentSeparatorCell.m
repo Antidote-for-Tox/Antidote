@@ -11,11 +11,12 @@
 #import "ContentSeparatorCell.h"
 
 static const CGFloat kSeparatorHeight = 0.5;
-static const CGFloat kYOffset = 10.0;
+static const CGFloat kDefaultHeight = 20.0;
 
 @interface ContentSeparatorCell ()
 
 @property (strong, nonatomic) UIView *separatorView;
+@property (strong, nonatomic) MASConstraint *heightConstraint;
 
 @end
 
@@ -37,9 +38,12 @@ static const CGFloat kYOffset = 10.0;
 
     [self.separatorView makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.equalTo(self.customContentView);
-        make.top.equalTo(self.customContentView).offset(kYOffset);
-        make.bottom.equalTo(self.customContentView).offset(-kYOffset);
+        make.centerY.equalTo(self);
         make.height.equalTo(kSeparatorHeight);
+    }];
+
+    [self.customContentView makeConstraints:^(MASConstraintMaker *make) {
+        self.heightConstraint = make.height.equalTo(kDefaultHeight);
     }];
 
     self.enableRightOffset = NO;
@@ -66,6 +70,11 @@ static const CGFloat kYOffset = 10.0;
 - (BOOL)showGraySeparator
 {
     return ! self.separatorView.hidden;
+}
+
+- (void)setHeight:(CGFloat)height
+{
+    self.heightConstraint.offset(height);
 }
 
 @end

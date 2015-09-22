@@ -20,6 +20,7 @@
 #import "LifecycleManager.h"
 #import "LifecyclePhaseRunning.h"
 #import "ProfileManager.h"
+#import "PasswordViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -44,20 +45,26 @@ typedef NS_ENUM(NSInteger, CellType) {
 - (id)init
 {
     return [super initWithTitle:NSLocalizedString(@"Profile Details", @"ProfileDetailsViewController") tableStyle:UITableViewStylePlain tableStructure:@[
-                @[]
-                // @(CellTypeSeparatorTransparent),
-                // @(CellTypeProfileName),
-                // @(CellTypePassword),
-                // @(CellTypeNospam),
-                ,
                 @[
-                    // @(CellTypeSeparatorGray),
+                    @(CellTypeSeparatorTransparent),
+                    // @(CellTypeProfileName),
+                    @(CellTypePassword),
                     @(CellTypeSeparatorTransparent),
                     @(CellTypeExportProfile),
+                    // @(CellTypeNospam),
+                ],
+                @[
                     @(CellTypeSeparatorGray),
                     @(CellTypeDeleteProfile),
                 ],
             ]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
 }
 
 #pragma mark -  Override
@@ -104,7 +111,10 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     CellType type = [self cellTypeForIndexPath:indexPath];
 
-    if (type == CellTypeExportProfile) {
+    if (type == CellTypePassword) {
+        [self pushPasswordScreen];
+    }
+    else if (type == CellTypeExportProfile) {
         [self exportProfile];
     }
     else if (type == CellTypeDeleteProfile) {
@@ -136,6 +146,10 @@ typedef NS_ENUM(NSInteger, CellType) {
     ContentSeparatorCell *cell = [self.tableView dequeueReusableCellWithIdentifier:[ContentSeparatorCell reuseIdentifier]
                                                                       forIndexPath:indexPath];
     cell.showGraySeparator = isGray;
+
+    if (! isGray) {
+        [cell setHeight:6.0];
+    }
 
     return cell;
 }
@@ -199,6 +213,11 @@ typedef NS_ENUM(NSInteger, CellType) {
     [cell resetCell];
 
     return cell;
+}
+
+- (void)pushPasswordScreen
+{
+    [self.navigationController pushViewController:[PasswordViewController new] animated:YES];
 }
 
 - (void)exportProfile

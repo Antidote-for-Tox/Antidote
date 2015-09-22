@@ -15,6 +15,7 @@
 		110FF34A1B9E24A700904D1D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 110FF3491B9E24A700904D1D /* LoginViewController.m */; };
 		111F92B31BAED2750065117A /* LoginChoiceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 111F92B21BAED2750065117A /* LoginChoiceView.m */; settings = {ASSET_TAGS = (); }; };
 		1125CEDA1BAC1324002B17EC /* ContentCellSimple.m in Sources */ = {isa = PBXBuildFile; fileRef = 1125CED91BAC1324002B17EC /* ContentCellSimple.m */; };
+		11272ADF1BB1EDCE0080C8C9 /* WizardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11272ADE1BB1EDCE0080C8C9 /* WizardViewController.m */; settings = {ASSET_TAGS = (); }; };
 		11300B681B4DB25E00233052 /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11300B671B4DB25E00233052 /* ProfileViewController.m */; };
 		1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1137BDEA1B24438E00BA20C8 /* ProfileManager.m */; };
 		114100781A3A3A3700054859 /* QRScannerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 114100771A3A3A3700054859 /* QRScannerController.m */; };
@@ -22,6 +23,7 @@
 		1141BFB01BAD341300BF70BE /* ProfileDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1141BFAF1BAD341300BF70BE /* ProfileDetailsViewController.m */; };
 		1146309B1984E1AF0075DA16 /* AllChatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1146309A1984E1AF0075DA16 /* AllChatsViewController.m */; };
 		114630E0198555730075DA16 /* AllChatsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 114630DF198555730075DA16 /* AllChatsCell.m */; };
+		115315321BB1D186005160BC /* PasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 115315311BB1D186005160BC /* PasswordViewController.m */; settings = {ASSET_TAGS = (); }; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -114,6 +116,8 @@
 		111F92B21BAED2750065117A /* LoginChoiceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginChoiceView.m; sourceTree = "<group>"; };
 		1125CED81BAC1324002B17EC /* ContentCellSimple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentCellSimple.h; sourceTree = "<group>"; };
 		1125CED91BAC1324002B17EC /* ContentCellSimple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentCellSimple.m; sourceTree = "<group>"; };
+		11272ADD1BB1EDCE0080C8C9 /* WizardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WizardViewController.h; sourceTree = "<group>"; };
+		11272ADE1BB1EDCE0080C8C9 /* WizardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WizardViewController.m; sourceTree = "<group>"; };
 		11300B661B4DB25E00233052 /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileViewController.h; sourceTree = "<group>"; };
 		11300B671B4DB25E00233052 /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileViewController.m; sourceTree = "<group>"; };
 		1137BDE91B24438E00BA20C8 /* ProfileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileManager.h; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 		1146309A1984E1AF0075DA16 /* AllChatsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllChatsViewController.m; sourceTree = "<group>"; };
 		114630DE198555730075DA16 /* AllChatsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AllChatsCell.h; sourceTree = "<group>"; };
 		114630DF198555730075DA16 /* AllChatsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AllChatsCell.m; sourceTree = "<group>"; };
+		115315301BB1D186005160BC /* PasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordViewController.h; sourceTree = "<group>"; };
+		115315311BB1D186005160BC /* PasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PasswordViewController.m; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -322,6 +328,15 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
+		11272ADC1BB1EDB50080C8C9 /* WizardViewController */ = {
+			isa = PBXGroup;
+			children = (
+				11272ADD1BB1EDCE0080C8C9 /* WizardViewController.h */,
+				11272ADE1BB1EDCE0080C8C9 /* WizardViewController.m */,
+			);
+			name = WizardViewController;
+			sourceTree = "<group>";
+		};
 		11300B651B4DB25200233052 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +410,15 @@
 				119DFAC11B3D4D75008CA975 /* ChatMessage.m */,
 			);
 			name = Chat;
+			sourceTree = "<group>";
+		};
+		1153152F1BB1D178005160BC /* Password */ = {
+			isa = PBXGroup;
+			children = (
+				115315301BB1D186005160BC /* PasswordViewController.h */,
+				115315311BB1D186005160BC /* PasswordViewController.m */,
+			);
+			name = Password;
 			sourceTree = "<group>";
 		};
 		1164762619794D3300DB20B8 = {
@@ -604,6 +628,7 @@
 				11A88ABA1BA007FA0032686F /* ImportProfile */,
 				1179E0741BA219DB00D258C6 /* KeyboardNotificationController */,
 				110FF3471B9E249200904D1D /* Login */,
+				1153152F1BB1D178005160BC /* Password */,
 				11300B651B4DB25200233052 /* Profile */,
 				1141BFAD1BAD340100BF70BE /* ProfileDetails */,
 				114100751A3A3A1B00054859 /* QRScanner */,
@@ -612,6 +637,7 @@
 				1141BFA91BAD29DD00BF70BE /* StatusViewController */,
 				1182AF371B4EE1EC0095B476 /* TabBar */,
 				1179E0661BA04E4B00D258C6 /* Text */,
+				11272ADC1BB1EDB50080C8C9 /* WizardViewController */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -1140,6 +1166,7 @@
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
 				1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */,
 				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
+				11272ADF1BB1EDCE0080C8C9 /* WizardViewController.m in Sources */,
 				11C7C6B819840C3E001B849B /* NSIndexSet+Utilities.m in Sources */,
 				110FF34A1B9E24A700904D1D /* LoginViewController.m in Sources */,
 				116625C21B5B00BE0036ABC2 /* ContentCell.m in Sources */,
@@ -1172,6 +1199,7 @@
 				116625D41B63D6BF0036ABC2 /* ContentCellWithTitleBasic.m in Sources */,
 				11A88AC01BA008160032686F /* CreateAccountViewController.m in Sources */,
 				110FF3431B9E1C7C00904D1D /* LifecyclePhaseLogin.m in Sources */,
+				115315321BB1D186005160BC /* PasswordViewController.m in Sources */,
 				1182AF501B5458820095B476 /* ValueViewWithTitle.m in Sources */,
 				11E366661B6A40CF00E7E8D2 /* ErrorHandler.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
