@@ -12,4 +12,6 @@
 
 @property (assign, nonatomic) BOOL showGraySeparator;
 
+- (void)setHeight:(CGFloat)height;
+
 @end

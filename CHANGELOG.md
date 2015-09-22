@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Login/logout, create/import/delete profile features.
+- Encrypted profiles support (login with encrypted profile, change/remove password).
+- Status change support.
+
+### Changes
+- Icon updated.
+- Launch image updated.
+- objcTox updated to version 0.3.0.
+- Profiles list screen removed, login screens are used instead.
+- Themes removed.
 
 ## [0.5.0] - 2015-08-30
 ### Added

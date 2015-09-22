@@ -10,4 +10,6 @@
 
 @interface CopyLabel : UILabel
 
+@property (assign, nonatomic) BOOL copyable;
+
 @end

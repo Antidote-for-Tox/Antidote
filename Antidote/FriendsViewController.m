@@ -22,13 +22,13 @@
 #import "TimeFormatter.h"
 #import "UIColor+Utilities.h"
 #import "UITableViewCell+Utilities.h"
-#import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "AvatarsManager.h"
 #import "UserDefaultsManager.h"
 #import "FriendRequestViewController.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
 
 typedef NS_ENUM(NSInteger, FriendsSort) {
     FriendsSortByNickname = 0,
@@ -459,15 +459,15 @@ static const CGFloat kSegmentedControlHeight = 25.0;
         [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Remove", @"Friends") handler:^{
             strongself;
             OCTFriend *friend = [self.friendsController objectAtIndexPath:indexPath];
-            OCTChat *chat = [[AppContext sharedContext].profileManager.toxManager.chats getOrCreateChatWithFriend:friend];
+            OCTChat *chat = [[RunningContext context].toxManager.chats getOrCreateChatWithFriend:friend];
 
             NSError *error;
-            if (! [[AppContext sharedContext].profileManager.toxManager.friends removeFriend:friend error:&error]) {
+            if (! [[RunningContext context].toxManager.friends removeFriend:friend error:&error]) {
                 [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeRemoveFriend];
                 return;
             }
 
-            [[AppContext sharedContext].profileManager.toxManager.chats removeChatWithAllMessages:chat];
+            [[RunningContext context].toxManager.chats removeChatWithAllMessages:chat];
         }];
 
         [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friends") handler:^{
@@ -492,7 +492,7 @@ static const CGFloat kSegmentedControlHeight = 25.0;
             strongself;
 
             OCTFriendRequest *request = [self.friendRequestsController objectAtIndexPath:indexPath];
-            [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:request];
+            [[RunningContext context].toxManager.friends removeFriendRequest:request];
         }];
 
         [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Friends") handler:^{

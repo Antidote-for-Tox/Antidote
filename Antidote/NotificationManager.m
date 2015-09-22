@@ -63,6 +63,12 @@ static const CGFloat kConnectingLabelBlinkPeriod = 1.0;
     return self;
 }
 
+- (void)dealloc
+{
+    [self.notificationContentView removeFromSuperview];
+    [self.connectingContentView removeFromSuperview];
+}
+
 #pragma mark -  Public
 
 - (void)addNotificationToQueue:(NotificationObject *)notification

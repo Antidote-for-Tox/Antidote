@@ -55,6 +55,13 @@ const CGFloat kContentCellWithAvatarImageSize = 120.0;
     [self.delegate contentCellWithAvatarImagePressed:self];
 }
 
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    self.avatar = nil;
+}
+
 #pragma mark -  Private
 
 - (void)createViews

@@ -67,6 +67,15 @@ static const CGFloat kTitleHeight = 20.0;
     }
 }
 
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    self.title = nil;
+    self.buttonTitle = nil;
+    self.mainText = nil;
+}
+
 #pragma mark -  Private
 
 - (void)basic_createViews

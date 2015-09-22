@@ -10,7 +10,9 @@
 #import <objcTox/OCTToxConstants.h>
 
 #import "Helper.h"
-#import "ProfileManager.h"
+#import "RunningContext.h"
+
+NSString *const kToxSaveFileExtension = @"tox";
 
 @implementation Helper
 
@@ -36,6 +38,12 @@
     return [self circleStatusFromConnectionStatus:friend.connectionStatus userStatus:friend.status];
 }
 
++ (StatusCircleStatus)circleStatusFromUserStatus:(OCTToxUserStatus)userStatus
+{
+    // Using TCP as any "connected" status.
+    return [self circleStatusFromConnectionStatus:OCTToxConnectionStatusTCP userStatus:userStatus];
+}
+
 + (StatusCircleStatus)circleStatusFromConnectionStatus:(OCTToxConnectionStatus)connectionStatus
                                             userStatus:(OCTToxUserStatus)userStatus
 {
@@ -50,6 +58,20 @@
             return StatusCircleStatusAway;
         case OCTToxUserStatusBusy:
             return StatusCircleStatusBusy;
+    }
+}
+
++ (NSString *)circleStatusToString:(StatusCircleStatus)status
+{
+    switch (status) {
+        case StatusCircleStatusOffline:
+            return NSLocalizedString(@"Offline", @"User status");
+        case StatusCircleStatusOnline:
+            return NSLocalizedString(@"Online", @"User status");
+        case StatusCircleStatusAway:
+            return NSLocalizedString(@"Away", @"User status");
+        case StatusCircleStatusBusy:
+            return NSLocalizedString(@"Busy", @"User status");
     }
 }
 
@@ -74,7 +96,7 @@
                                                        sortDescriptors:(NSArray *)sortDescriptors
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate
 {
-    OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+    OCTSubmanagerObjects *submanager = [RunningContext context].toxManager.objects;
 
     RBQFetchRequest *fetchRequest = [submanager fetchRequestForType:type withPredicate:predicate];
     fetchRequest.sortDescriptors = sortDescriptors;

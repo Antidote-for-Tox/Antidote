@@ -18,6 +18,8 @@ static const CGFloat kEditButtonTopOffset = -4.0;
 static const CGFloat kEditButtonRightOffset = 10.0;
 static const CGFloat kEditButtonSize = 30.0;
 
+static const CGFloat kMinumumMainLabelHeight = 20.0;
+
 @interface ContentCellWithTitleImmutable ()
 
 @property (strong, nonatomic) CopyLabel *mainLabel;
@@ -43,7 +45,7 @@ static const CGFloat kEditButtonSize = 30.0;
     [self createViews];
     [self installConstraints];
 
-    self.showEditButton = NO;
+    [self resetCell];
 
     return self;
 }
@@ -62,6 +64,8 @@ static const CGFloat kEditButtonSize = 30.0;
 
 - (void)setShowEditButton:(BOOL)show
 {
+    _showEditButton = show;
+
     self.editButton.hidden = ! show;
 
     if (show) {
@@ -72,6 +76,16 @@ static const CGFloat kEditButtonSize = 30.0;
     }
 }
 
+- (void)setCopyable:(BOOL)copyable
+{
+    self.mainLabel.copyable = copyable;
+}
+
+- (BOOL)copyable
+{
+    return self.mainLabel.copyable;
+}
+
 #pragma mark -  Actions
 
 - (void)editButtonPressed
@@ -79,6 +93,16 @@ static const CGFloat kEditButtonSize = 30.0;
     if ([self.delegate respondsToSelector:@selector(contentCellWithTitleImmutableEditButtonPressed:)]) {
         [self.delegate contentCellWithTitleImmutableEditButtonPressed:self];
     }
+}
+
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    [super resetCell];
+
+    self.showEditButton = NO;
+    self.copyable = YES;
 }
 
 #pragma mark -  Private
@@ -106,6 +130,7 @@ static const CGFloat kEditButtonSize = 30.0;
     [self.mainLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.titleLabel.bottom).offset(kLabelTopOffset);
         make.left.bottom.equalTo(self.customContentView);
+        make.height.greaterThanOrEqualTo(kMinumumMainLabelHeight);
     }];
 
     [self.editButton makeConstraints:^(MASConstraintMaker *make) {

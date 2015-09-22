@@ -9,16 +9,17 @@
 #import <BlocksKit/UIActionSheet+BlocksKit.h>
 #import <Masonry/Masonry.h>
 
+#import <objcTox/OCTManager.h>
 #import <objcTox/OCTFriendRequest.h>
 #import <objcTox/OCTSubmanagerFriends.h>
 
 #import "FriendRequestViewController.h"
 #import "AppearanceManager.h"
 #import "UIViewController+Utilities.h"
-#import "ProfileManager.h"
 #import "UIImage+Utilities.h"
 #import "ValueViewWithTitle.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
 
 static const CGFloat kHorizontalIndentation = 10.0;
 static const CGFloat kVerticalIndentation = 20.0;
@@ -85,7 +86,7 @@ static const CGFloat kButtonWidth = 120.0;
 
     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Decline", @"Friend requests") handler:^{
         strongself;
-        [[AppContext sharedContext].profileManager.toxManager.friends removeFriendRequest:self.request];
+        [[RunningContext context].toxManager.friends removeFriendRequest:self.request];
 
         [self.delegate friendRequestViewControllerRemovedRequest:self];
         [self.navigationController popViewControllerAnimated:YES];
@@ -99,8 +100,8 @@ static const CGFloat kButtonWidth = 120.0;
 - (void)acceptButtonPressed
 {
     NSError *error;
-    BOOL result = [[AppContext sharedContext].profileManager.toxManager.friends approveFriendRequest:self.request
-                                                                                               error:&error];
+    BOOL result = [[RunningContext context].toxManager.friends approveFriendRequest:self.request
+                                                                              error:&error];
 
     if (! result) {
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeApproveFriendRequest];

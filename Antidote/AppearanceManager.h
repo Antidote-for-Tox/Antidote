@@ -10,9 +10,6 @@
 
 typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
     AppearanceManagerColorschemeIce = 0,
-    AppearanceManagerColorschemePurple,
-    AppearanceManagerColorschemeRed,
-    AppearanceManagerColorschemeOrange,
     __AppearanceManagerColorschemeCount,
 };
 
@@ -25,6 +22,8 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 - (UIFont *)fontHelveticaNeueWithSize:(CGFloat)size;
 - (UIFont *)fontHelveticaNeueLightWithSize:(CGFloat)size;
 - (UIFont *)fontHelveticaNeueBoldWithSize:(CGFloat)size;
+
+- (UIColor *)linkYellowColor;
 
 - (UIColor *)textMainColor;
 - (UIColor *)lightGrayBackground;
@@ -42,5 +41,10 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 
 - (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme;
 - (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
+
+- (UIColor *)loginBackgroundColor;
+- (UIColor *)loginButtonColor;
+- (UIColor *)loginNavigationBarColor;
+- (UIColor *)loginDescriptionTextColor;
 
 @end

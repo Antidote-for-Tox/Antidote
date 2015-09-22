@@ -9,6 +9,12 @@
 #import "CopyLabel.h"
 #import "AppDelegate.h"
 
+@interface CopyLabel ()
+
+@property (strong, nonatomic) UITapGestureRecognizer *recognizer;
+
+@end
+
 @implementation CopyLabel
 
 #pragma mark -  Lifecycle
@@ -19,12 +25,26 @@
     if (self) {
         self.userInteractionEnabled = YES;
 
-        UITapGestureRecognizer *tapGR = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                                action:@selector(tapGesture:)];
+        self.recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                  action:@selector(tapGesture:)];
 
-        [self addGestureRecognizer:tapGR];
+        [self addGestureRecognizer:self.recognizer];
+
+        self.copyable = YES;
     }
     return self;
+}
+
+#pragma mark -  Properties
+
+- (void)setCopyable:(BOOL)copyable
+{
+    self.recognizer.enabled = copyable;
+}
+
+- (BOOL)copyable
+{
+    return self.recognizer.enabled;
 }
 
 #pragma mark -  Gestures

@@ -11,9 +11,8 @@
 @class AppearanceManager;
 @class AvatarsManager;
 @class ErrorHandler;
-@class NotificationManager;
-@class ProfileManager;
-@class TabBarViewController;
+@class FileManager;
+@class LifecycleManager;
 @class UserDefaultsManager;
 
 @interface AppContext : NSObject
@@ -23,13 +22,10 @@
 @property (strong, nonatomic, readonly) AppearanceManager *appearance;
 @property (strong, nonatomic, readonly) AvatarsManager *avatars;
 @property (strong, nonatomic, readonly) ErrorHandler *errorHandler;
-@property (strong, nonatomic, readonly) NotificationManager *notification;
-@property (strong, nonatomic, readonly) ProfileManager *profileManager;
-@property (strong, nonatomic, readonly) TabBarViewController *tabBarController;
+@property (strong, nonatomic, readonly) FileManager *fileManager;
+@property (strong, nonatomic, readonly) LifecycleManager *lifecycleManager;
 @property (strong, nonatomic, readonly) UserDefaultsManager *userDefaults;
 
 - (void)restoreDefaultSettings;
-- (void)recreateAppearance;
-- (void)recreateTabBarController;
 
 @end

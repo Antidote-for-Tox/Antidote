@@ -15,12 +15,12 @@
 
 #import "AddFriendViewController.h"
 #import "QRScannerController.h"
-#import "ProfileManager.h"
 #import "AppearanceManager.h"
 #import "Helper.h"
 #import "UIViewController+Utilities.h"
 #import "NSString+Utilities.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
 
 static const CGFloat kTextViewTopOffset = 5.0;
 static const CGFloat kTextViewXOffset = 5.0;
@@ -132,7 +132,7 @@ static const CGFloat kSendAlertTextViewHeight = 70.0;
 
         self.cachedMessage = textView.text;
 
-        OCTSubmanagerFriends *submanager = [AppContext sharedContext].profileManager.toxManager.friends;
+        OCTSubmanagerFriends *submanager = [RunningContext context].toxManager.friends;
         NSString *message = textView.text.length ? textView.text : textView.placeholder;
         NSError *error;
 

@@ -7,6 +7,7 @@
 //
 
 #import "CellWithSwitch.h"
+#import "AppearanceManager.h"
 
 @interface CellWithSwitch ()
 
@@ -28,6 +29,7 @@
         [self.theSwitch addTarget:self
                            action:@selector(valueChanged)
                  forControlEvents:UIControlEventValueChanged];
+
 
         self.accessoryView = self.theSwitch;
     }

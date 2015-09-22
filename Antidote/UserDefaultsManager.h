@@ -16,7 +16,8 @@
 @property (strong, nonatomic) NSNumber *uCurrentColorscheme;
 @property (strong, nonatomic) NSNumber *uFriendsSort;
 
-@property (strong, nonatomic) NSString *uCurrentProfileName;
+@property (strong, nonatomic) NSString *uLastActiveProfile;
+@property (assign, nonatomic) BOOL uIsUserLoggedIn;
 
 @property (strong, nonatomic) NSNumber *uShowMessageInLocalNotification;
 @property (strong, nonatomic) NSNumber *uIpv6Enabled;

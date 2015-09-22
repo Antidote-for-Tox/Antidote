@@ -13,14 +13,20 @@
 #import "RBQFetchedResultsController.h"
 #import "OCTManager.h"
 
+extern NSString *const kToxSaveFileExtension;
+
 @interface Helper : NSObject
 
 + (BOOL)isAddressString:(NSString *)string;
 
 + (StatusCircleStatus)circleStatusFromFriend:(OCTFriend *)friend;
 
++ (StatusCircleStatus)circleStatusFromUserStatus:(OCTToxUserStatus)userStatus;
+
 + (StatusCircleStatus)circleStatusFromConnectionStatus:(OCTToxConnectionStatus)connectionStatus
                                             userStatus:(OCTToxUserStatus)userStatus;
+
++ (NSString *)circleStatusToString:(StatusCircleStatus)status;
 
 + (RBQFetchedResultsController *)createFetchedResultsControllerForType:(OCTFetchRequestType)type
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate;

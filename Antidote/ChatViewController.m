@@ -20,13 +20,13 @@
 #import "StatusCircleView.h"
 #import "Helper.h"
 #import "UIView+Utilities.h"
-#import "ProfileManager.h"
 #import "TimeFormatter.h"
 #import "ChatMessage.h"
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
 
 NSString *const kChatViewControllerUserIdentifier = @"user";
 
@@ -103,7 +103,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
     [self updateLastReadDate];
 
-    [[AppContext sharedContext].notification removeNotificationsFromQueueWithGroupIdentifier:self.chat.uniqueIdentifier];
+    [[RunningContext context].notificationManager removeNotificationsFromQueueWithGroupIdentifier:self.chat.uniqueIdentifier];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -113,7 +113,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     NSString *text = self.inputToolbar.contentView.textView.text;
 
     // TODO move this to textView did change callback
-    OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+    OCTSubmanagerObjects *submanager = [RunningContext context].toxManager.objects;
     [submanager changeChat:self.chat enteredText:text];
 }
 
@@ -136,10 +136,10 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 {
     NSError *error;
-    BOOL result = [[AppContext sharedContext].profileManager.toxManager.chats sendMessageToChat:self.chat
-                                                                                           text:text
-                                                                                           type:OCTToxMessageTypeNormal
-                                                                                          error:&error];
+    BOOL result = [[RunningContext context].toxManager.chats sendMessageToChat:self.chat
+                                                                          text:text
+                                                                          type:OCTToxMessageTypeNormal
+                                                                         error:&error];
 
     if (! result) {
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSendMessage];
@@ -401,7 +401,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 - (void)updateLastReadDate
 {
     NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
-    [[AppContext sharedContext].profileManager.toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
+    [[RunningContext context].toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
 }
 
 @end

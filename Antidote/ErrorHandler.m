@@ -8,6 +8,7 @@
 
 #import "ErrorHandler.h"
 #import "OCTToxConstants.h"
+#import "OCTManagerConstants.h"
 
 #define ELOCALIZED(string) NSLocalizedString(string, @"ErrorHandler")
 #define INTERNAL_ERROR ELOCALIZED(@"Internal error")
@@ -21,6 +22,9 @@
     DDLogWarn(@"ErrorHandler: handling type %lu, error %@", type, error);
 
     switch (type) {
+        case ErrorHandlerTypeCreateOCTManager:
+            [self handleCreateOCTManagerError:error];
+            break;
         case ErrorHandlerTypeSetUserName:
             [self handleSetUserNameError:error];
             break;
@@ -58,13 +62,86 @@
 
 - (void)showErrorWithMessage:(NSString *)message
 {
+    [self showErrorWithTitle:ELOCALIZED(@"Error") message:message];
+}
+
+- (void)showErrorWithTitle:(NSString *)title message:(NSString *)message
+{
     DDLogWarn(@"ErrorHandler: showing message \"%@\"", message);
 
-    [[[UIAlertView alloc] initWithTitle:ELOCALIZED(@"Error")
+    [[[UIAlertView alloc] initWithTitle:title
                                 message:message
                                delegate:nil
                       cancelButtonTitle:ELOCALIZED(@"OK")
                       otherButtonTitles:nil] show];
+}
+
+- (void)handleCreateOCTManagerError:(NSError *)error
+{
+    OCTManagerInitError code = error.code;
+    NSString *title;
+    NSString *message;
+
+    switch (code) {
+        case OCTManagerInitErrorPassphraseFailed:
+            title = ELOCALIZED(@"Wrong password");
+            message = ELOCALIZED(@"Password contains wrong symbols.");
+            break;
+        case OCTManagerInitErrorCannotImportToxSave:
+            title = ELOCALIZED(@"Cannot import tox save file");
+            message = ELOCALIZED(@"File does not exist.");
+            break;
+        case OCTManagerInitErrorDecryptNull:
+            title = ELOCALIZED(@"Cannot decrypt tox save file");
+            message = ELOCALIZED(@"Some input data was empty.");
+            break;
+        case OCTManagerInitErrorDecryptBadFormat:
+            title = ELOCALIZED(@"Cannot decrypt tox save file");
+            message = ELOCALIZED(@"File has bad format or is corrupted.");
+            break;
+        case OCTManagerInitErrorDecryptFailed:
+            title = ELOCALIZED(@"Cannot decrypt tox save file");
+            message = ELOCALIZED(@"Password is wrong or file is corrupted.");
+            break;
+        case OCTManagerInitErrorCreateToxUnknown:
+            title = ELOCALIZED(@"Error");
+            message = ELOCALIZED(@"Unknown error occured.");
+            break;
+        case OCTManagerInitErrorCreateToxMemoryError:
+            title = ELOCALIZED(@"Error");
+            message = ELOCALIZED(@"Not enought memory.");
+            break;
+        case OCTManagerInitErrorCreateToxPortAlloc:
+            title = ELOCALIZED(@"Error");
+            message = ELOCALIZED(@"Was unable to bind to a port.");
+            break;
+        case OCTManagerInitErrorCreateToxProxyBadType:
+            title = ELOCALIZED(@"Proxy error");
+            message = ELOCALIZED(@"Internal error.");
+            break;
+        case OCTManagerInitErrorCreateToxProxyBadHost:
+            title = ELOCALIZED(@"Proxy error");
+            message = ELOCALIZED(@"Proxy address has invalid format.");
+            break;
+        case OCTManagerInitErrorCreateToxProxyBadPort:
+            title = ELOCALIZED(@"Proxy error");
+            message = ELOCALIZED(@"Proxy port is invalid.");
+            break;
+        case OCTManagerInitErrorCreateToxProxyNotFound:
+            title = ELOCALIZED(@"Proxy error");
+            message = ELOCALIZED(@"Proxy host could not be resolved.");
+            break;
+        case OCTManagerInitErrorCreateToxEncrypted:
+            title = ELOCALIZED(@"Error");
+            message = ELOCALIZED(@"Profile is encrypted.");
+            break;
+        case OCTManagerInitErrorCreateToxBadFormat:
+            title = ELOCALIZED(@"Error");
+            message = ELOCALIZED(@"File has bad format or is corrupted.");
+            break;
+    }
+
+    [self showErrorWithTitle:title message:message];
 }
 
 - (void)handleSetUserNameError:(NSError *)error

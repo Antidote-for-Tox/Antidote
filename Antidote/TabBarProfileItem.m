@@ -62,6 +62,17 @@ static const CGFloat kStatusViewSize = 6.0;
     return self.statusView.status;
 }
 
+#pragma mark -  TabBarItemProtocol
+
+- (void)setSelected:(BOOL)selected
+{
+    _selected = selected;
+
+    self.imageView.tintColor = selected ?
+                               [[AppContext sharedContext].appearance bubbleOutgoingColor] :
+                               [UIColor colorWithWhite:0.75 alpha:1.0];
+}
+
 #pragma mark -  Private
 
 - (void)createImageView
@@ -72,9 +83,6 @@ static const CGFloat kStatusViewSize = 6.0;
     self.imageView = [[UIImageView alloc] initWithImage:image];
     self.imageView.backgroundColor = [UIColor clearColor];
     [self addSubview:self.imageView];
-
-    UIColor *color = [[AppContext sharedContext].appearance textMainColor];
-    self.imageView.tintColor = [color colorWithAlphaComponent:0.3];
 }
 
 - (void)createStatusView

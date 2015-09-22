@@ -10,9 +10,8 @@
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
 #import "ErrorHandler.h"
-#import "NotificationManager.h"
-#import "ProfileManager.h"
-#import "TabBarViewController.h"
+#import "FileManager.h"
+#import "LifecycleManager.h"
 #import "UserDefaultsManager.h"
 #import "AppDelegate.h"
 #import "Helper.h"
@@ -23,9 +22,8 @@
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
 @property (strong, nonatomic, readwrite) ErrorHandler *errorHandler;
-@property (strong, nonatomic, readwrite) NotificationManager *notification;
-@property (strong, nonatomic, readwrite) ProfileManager *profileManager;
-@property (strong, nonatomic, readwrite) TabBarViewController *tabBarController;
+@property (strong, nonatomic, readwrite) FileManager *fileManager;
+@property (strong, nonatomic, readwrite) LifecycleManager *lifecycleManager;
 @property (strong, nonatomic, readwrite) UserDefaultsManager *userDefaults;
 
 @end
@@ -98,34 +96,26 @@
     return _errorHandler;
 }
 
-- (NotificationManager *)notification
+- (FileManager *)fileManager
 {
-    if (_notification) {
-        return _notification;
+    if (_fileManager) {
+        return _fileManager;
     }
 
-    _notification = [NotificationManager new];
-    return _notification;
+    _fileManager = [FileManager new];
+
+    return _fileManager;
 }
 
-- (ProfileManager *)profileManager
+- (LifecycleManager *)lifecycleManager
 {
-    if (_profileManager) {
-        return _profileManager;
+    if (_lifecycleManager) {
+        return _lifecycleManager;
     }
 
-    _profileManager = [ProfileManager new];
-    return _profileManager;
-}
+    _lifecycleManager = [LifecycleManager new];
 
-- (TabBarViewController *)tabBarController
-{
-    if (_tabBarController) {
-        return _tabBarController;
-    }
-
-    _tabBarController = [TabBarViewController new];
-    return _tabBarController;
+    return _lifecycleManager;
 }
 
 - (UserDefaultsManager *)userDefaults
@@ -145,44 +135,6 @@
 - (void)restoreDefaultSettings
 {
     [self createUserDefaultsValuesAndRewrite:YES];
-
-    self.profileManager = nil;
-
-    [self recreateAppearance];
-    [self recreateTabBarController];
-}
-
-- (void)recreateAppearance
-{
-    self.appearance = nil;
-    self.avatars = nil;
-
-    [self.notification resetAppearance];
-    [self.profileManager updateInterface];
-}
-
-- (void)recreateTabBarController
-{
-    self.tabBarController = nil;
-
-    RBQFetchedResultsController *chats = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeChat delegate:nil];
-    RBQFetchedResultsController *friends = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriend delegate:nil];
-    RBQFetchedResultsController *friendRequests = [Helper createFetchedResultsControllerForType:OCTFetchRequestTypeFriendRequest delegate:nil];
-
-    if ([chats numberOfRowsForSectionIndex:0]) {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexChats;
-    }
-    else if ([friends numberOfRowsForSectionIndex:0] ||
-             [friendRequests numberOfRowsForSectionIndex:0]) {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexFriends;
-    }
-    else {
-        self.tabBarController.selectedIndex = TabBarViewControllerIndexProfile;
-    }
-
-    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
-    delegate.window.rootViewController = self.tabBarController;
-    [self.profileManager updateInterface];
 }
 
 #pragma mark -  Private
