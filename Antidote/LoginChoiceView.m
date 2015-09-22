@@ -10,14 +10,18 @@
 
 #import "LoginChoiceView.h"
 #import "UIButton+Utilities.h"
+#import "AppearanceManager.h"
 
 static const CGFloat kHorizontalOffset = 40.0;
 static const CGFloat kVerticalOffset = 20.0;
+static const CGFloat kOrVerticalOffset = 8.0;
 static const CGFloat kButtonHeight = 40.0;
 
 @interface LoginChoiceView ()
 
+@property (strong, nonatomic) UILabel *descriptionLabel;
 @property (strong, nonatomic) UIButton *createAccountButton;
+@property (strong, nonatomic) UILabel *orLabel;
 @property (strong, nonatomic) UIButton *importProfileButton;
 
 @end
@@ -34,6 +38,7 @@ static const CGFloat kButtonHeight = 40.0;
         return nil;
     }
 
+    [self createLabels];
     [self createButtons];
 
     [self installConstraints];
@@ -55,6 +60,23 @@ static const CGFloat kButtonHeight = 40.0;
 
 #pragma mark -  Private
 
+- (void)createLabels
+{
+    self.descriptionLabel = [UILabel new];
+    self.descriptionLabel.text = NSLocalizedString(@"Welcome to Antidote!", @"LoginViewController");
+    self.descriptionLabel.textColor = [[AppContext sharedContext].appearance loginDescriptionTextColor];
+    self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    self.descriptionLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.descriptionLabel];
+
+    self.orLabel = [UILabel new];
+    self.orLabel.text = NSLocalizedString(@"or", @"LoginViewController");
+    self.orLabel.textColor = [[AppContext sharedContext].appearance loginDescriptionTextColor];
+    self.orLabel.textAlignment = NSTextAlignmentCenter;
+    self.orLabel.backgroundColor = [UIColor clearColor];
+    [self addSubview:self.orLabel];
+}
+
 - (void)createButtons
 {
     self.createAccountButton = [UIButton loginButton];
@@ -74,17 +96,27 @@ static const CGFloat kButtonHeight = 40.0;
 
 - (void)installConstraints
 {
-    [self.createAccountButton makeConstraints:^(MASConstraintMaker *make) {
+    [self.descriptionLabel makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self);
-        make.centerX.equalTo(self);
+        make.left.equalTo(self).offset(kHorizontalOffset);
+        make.right.equalTo(self).offset(-kHorizontalOffset);
+    }];
+
+    [self.createAccountButton makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.descriptionLabel.bottom).offset(kVerticalOffset);
         make.left.equalTo(self).offset(kHorizontalOffset);
         make.right.equalTo(self).offset(-kHorizontalOffset);
         make.height.equalTo(kButtonHeight);
     }];
 
+    [self.orLabel makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.createAccountButton.bottom).offset(kOrVerticalOffset);
+        make.left.equalTo(self).offset(kHorizontalOffset);
+        make.right.equalTo(self).offset(-kHorizontalOffset);
+    }];
+
     [self.importProfileButton makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.createAccountButton.bottom).offset(kVerticalOffset);
-        make.centerX.equalTo(self);
+        make.top.equalTo(self.orLabel.bottom).offset(kOrVerticalOffset);
         make.left.equalTo(self).offset(kHorizontalOffset);
         make.right.equalTo(self).offset(-kHorizontalOffset);
         make.height.equalTo(kButtonHeight);

@@ -188,7 +188,7 @@ static const CGFloat kButtonHeight = 40.0;
 
     self.profileView = [CreateAccountSectionView new];
     self.profileView.delegate = self;
-    self.profileView.title = NSLocalizedString(@"Name of this profile", @"CreateAccountViewController");
+    self.profileView.title = NSLocalizedString(@"How to call this profile?", @"CreateAccountViewController");
     self.profileView.placeholder = NSLocalizedString(@"Profile name", @"CreateAccountViewController");
     self.profileView.hint = NSLocalizedString(@"e.g. Home, iPhone", @"CreateAccountViewController");
     self.profileView.returnKeyType = UIReturnKeyGo;

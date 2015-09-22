@@ -182,6 +182,11 @@
     return [UIColor colorWithRed:red green:green blue:blue alpha:alpha];
 }
 
+- (UIColor *)loginDescriptionTextColor
+{
+    return [UIColor uColorOpaqueWithRed:212 green:241 blue:252];
+}
+
 #pragma mark -  Private
 
 - (void)setColorscheme:(AppearanceManagerColorscheme)colorscheme

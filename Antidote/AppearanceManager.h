@@ -45,5 +45,6 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 - (UIColor *)loginBackgroundColor;
 - (UIColor *)loginButtonColor;
 - (UIColor *)loginNavigationBarColor;
+- (UIColor *)loginDescriptionTextColor;
 
 @end

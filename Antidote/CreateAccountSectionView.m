@@ -139,7 +139,7 @@ static const CGFloat kVerticalOffset = 5.0;
 - (void)createViews
 {
     self.titleLabel = [UILabel new];
-    self.titleLabel.textColor = [UIColor whiteColor];
+    self.titleLabel.textColor = [[AppContext sharedContext].appearance loginDescriptionTextColor];
     self.titleLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueWithSize:18.0];
     self.titleLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.titleLabel];
@@ -152,10 +152,9 @@ static const CGFloat kVerticalOffset = 5.0;
     [self addSubview:self.textField];
 
     self.hintLabel = [UILabel new];
-    self.hintLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
     self.hintLabel.font = [[AppContext sharedContext].appearance fontHelveticaNeueLightWithSize:14.0];
     self.hintLabel.numberOfLines = 0;
-    self.hintLabel.textColor = [UIColor whiteColor];
+    self.hintLabel.textColor = [[AppContext sharedContext].appearance loginDescriptionTextColor];
     self.hintLabel.backgroundColor = [UIColor clearColor];
     [self addSubview:self.hintLabel];
 }

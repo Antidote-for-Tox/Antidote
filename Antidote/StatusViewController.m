@@ -15,6 +15,7 @@
 #import "UITableViewCell+Utilities.h"
 #import "Helper.h"
 #import "RunningContext.h"
+#import "TabBarViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -153,6 +154,11 @@ typedef NS_ENUM(NSInteger, CellType) {
 {
     [RunningContext context].toxManager.user.userStatus = status;
     [self.tableView reloadData];
+
+    OCTToxConnectionStatus connectionStatus = [RunningContext context].toxManager.user.connectionStatus;
+
+    [RunningContext context].tabBarController.connectionStatus = [Helper circleStatusFromConnectionStatus:connectionStatus
+                                                                                               userStatus:status];
 }
 
 @end

@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (id)init
 {
-    return [super initWithTitle:NSLocalizedString(@"Profile", @"Profile") tableStyle:UITableViewStylePlain tableStructure:@[
+    return [super initWithTitle:NSLocalizedString(@"Profile Details", @"ProfileDetailsViewController") tableStyle:UITableViewStylePlain tableStructure:@[
                 @[]
                 // @(CellTypeSeparatorTransparent),
                 // @(CellTypeProfileName),
@@ -188,7 +188,6 @@ typedef NS_ENUM(NSInteger, CellType) {
     ContentCellSimple *cell = [self simpleCellAtIndexPath:indexPath];
 
     cell.title = NSLocalizedString(@"Delete Profile", @"ProfileDetailsViewController");
-    cell.boldTitle = YES;
 
     return cell;
 }

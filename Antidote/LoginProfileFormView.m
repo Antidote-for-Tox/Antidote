@@ -211,7 +211,7 @@ static const NSTimeInterval kAnimationDuration = 0.3;
 
     self.orLabel = [UILabel new];
     self.orLabel.text = NSLocalizedString(@"or", @"LoginViewController");
-    self.orLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+    self.orLabel.textColor = [[AppContext sharedContext].appearance loginDescriptionTextColor];
     self.orLabel.backgroundColor = [UIColor clearColor];
     [self.bottomButtonsContainer addSubview:self.orLabel];
 

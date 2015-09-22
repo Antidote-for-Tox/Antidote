@@ -28,6 +28,7 @@ static const CGFloat kOffset = 10.0;
     [self loadWhiteView];
 
     self.textView = [UITextView new];
+    self.textView.userInteractionEnabled = NO;
     self.textView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:self.textView];
 

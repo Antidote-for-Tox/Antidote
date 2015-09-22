@@ -28,7 +28,8 @@ static const CGFloat kLogoTopOffset = -200.0;
 static const CGFloat kLogoHeight = 100.0;
 static const CGFloat kLogoBottomOffset = 40.0;
 
-@interface LoginViewController () <FullscreenPickerDelegate, LoginProfileFormViewDelegate>
+@interface LoginViewController () <FullscreenPickerDelegate, LoginProfileFormViewDelegate,
+                                   LoginChoiceViewDelegate>
 
 @property (strong, nonatomic) UIView *containerView;
 @property (strong, nonatomic) UIImageView *logoImageView;
