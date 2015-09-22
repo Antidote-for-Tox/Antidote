@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [0.6.0] - 2015-09-22
 ### Added
 - Login/logout, create/import/delete profile features.
 - Encrypted profiles support (login with encrypted profile, change/remove password).
@@ -65,7 +67,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.5.0...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.6.0...master
+[0.6.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.4.0...0.5.0
 [0.4.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.3.0...0.4.0
 [0.3.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.2.5...0.3.0
