@@ -9,7 +9,6 @@
 #import "AppDelegate+Utilities.h"
 #import "FriendsViewController.h"
 #import "ChatViewController.h"
-#import "ProfilesListViewController.h"
 
 @implementation AppDelegate (Utilities)
 

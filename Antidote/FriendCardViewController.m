@@ -18,11 +18,11 @@
 #import "ContentCellWithAvatar.h"
 #import "Helper.h"
 #import "UITableViewCell+Utilities.h"
-#import "ProfileManager.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
 #import "TabBarViewController.h"
 #import "CallsManager.h"
+#import "RunningContext.h"
 
 static const CGFloat kFooterHeight = 50.0;
 static const CGFloat kFooterXOffset = 50.0;
@@ -86,15 +86,13 @@ typedef NS_ENUM(NSUInteger, CellType) {
 
 - (void)chatButtonPressed
 {
-    AppContext *context = [AppContext sharedContext];
-
-    OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+    OCTChat *chat = [[RunningContext context].toxManager.chats getOrCreateChatWithFriend:self.friend];
     ChatViewController *chatVC = [[ChatViewController alloc] initWithChat:chat];
 
     TabBarViewControllerIndex index = TabBarViewControllerIndexChats;
-    context.tabBarController.selectedIndex = index;
+    [RunningContext context].tabBarController.selectedIndex = index;
 
-    UINavigationController *navCon = [context.tabBarController navigationControllerForIndex:index];
+    UINavigationController *navCon = [[RunningContext context].tabBarController navigationControllerForIndex:index];
     [navCon popToRootViewControllerAnimated:NO];
     [navCon pushViewController:chatVC animated:NO];
 }
@@ -200,7 +198,7 @@ typedef NS_ENUM(NSUInteger, CellType) {
     if (type == CellTypeNicknameEditable) {
         self.ignoreNextFriendUpdate = YES;
 
-        [[AppContext sharedContext].profileManager.toxManager.objects changeFriend:self.friend nickname:cell.mainText];
+        [[RunningContext context].toxManager.objects changeFriend:self.friend nickname:cell.mainText];
 
         NSUInteger index = [arrayToChange indexOfObject:@(CellTypeNicknameEditable)];
         [arrayToChange replaceObjectAtIndex:index withObject:@(CellTypeNicknameImmutable)];

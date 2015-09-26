@@ -18,13 +18,11 @@
 #import "FriendsViewController.h"
 #import "SettingsViewController.h"
 #import "ProfileViewController.h"
-#import "UIAlertView+BlocksKit.h"
 #import "AppearanceManager.h"
-#import "ProfileManager.h"
 #import "OCTTox.h"
 #import "ErrorHandler.h"
-#import "TabBarViewController.h"
-#import "ProfilesListViewController.h"
+#import "LifecycleManager.h"
+#import "FileManager.h"
 
 #define LOG_IDENTIFIER @"AppDelegate"
 
@@ -47,28 +45,29 @@
 
     [self configureLoggingStuff];
 
-    // initialize context
-    [[AppContext sharedContext] recreateTabBarController];
+    [[AppContext sharedContext].fileManager clearPendingFilesDirectory];
+    [[AppContext sharedContext].lifecycleManager start];
 
-    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
-        UIUserNotificationType types =
-            UIUserNotificationTypeAlert |
-            UIUserNotificationTypeBadge |
-            UIUserNotificationTypeSound;
+    // if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
+    //     UIUserNotificationType types =
+    //         UIUserNotificationTypeAlert |
+    //         UIUserNotificationTypeBadge |
+    //         UIUserNotificationTypeSound;
 
-        UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
+    //     UIUserNotificationSettings *settings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
 
-        [application registerUserNotificationSettings:settings];
-    }
+    //     [application registerUserNotificationSettings:settings];
+    // }
 
-    if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
-        // FIXME
-        // UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    // if (launchOptions[UIApplicationLaunchOptionsLocalNotificationKey]) {
+    // FIXME
+    // UILocalNotification *notification = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
 
-        // [[AppContext sharedContext].events handleLocalNotification:notification];
-    }
+    // [[AppContext sharedContext].events handleLocalNotification:notification];
+    // }
 
     [self.window makeKeyAndVisible];
+
     return YES;
 }
 
@@ -78,29 +77,9 @@
            annotation:(id)annotation
 {
     if ([url isFileURL]) {
-        NSURLRequest *fileUrlRequest = [[NSURLRequest alloc] initWithURL:url
-                                                             cachePolicy:NSURLRequestUseProtocolCachePolicy
-                                                         timeoutInterval:.1];
+        NSURL *pendingURL = [[AppContext sharedContext].fileManager moveFileToPendingFiles:url];
 
-        NSURLResponse *response = nil;
-        NSError *error;
-
-        if (! [NSURLConnection sendSynchronousRequest:fileUrlRequest returningResponse:&response error:&error]) {
-            [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeOpenFileFromOtherApp];
-            return NO;
-        }
-
-        NSString *mimeType = [response MIMEType];
-
-        CFStringRef mimeTypeRef = (__bridge CFStringRef)mimeType;
-        CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeTypeRef, NULL);
-
-        if (CFStringCompare(UTI, kUTTypeData, 0) == kCFCompareEqualTo) {
-            [self handleIncomingFileAtUrl:url isDataFile:YES];
-        }
-        else {
-            [self handleIncomingFileAtUrl:url isDataFile:NO];
-        }
+        [[AppContext sharedContext].lifecycleManager handleIncomingFileURL:pendingURL];
     }
 
     return YES;
@@ -191,54 +170,6 @@
               [UIDevice currentDevice].model,
               [UIDevice currentDevice].systemVersion
     );
-}
-
-- (void)handleIncomingFileAtUrl:(NSURL *)url isDataFile:(BOOL)isDataFile
-{
-    void (^removeFile)() = ^() {
-        [[NSFileManager defaultManager] removeItemAtURL:url error:nil];
-    };
-
-    if (isDataFile) {
-        NSString *message = [NSString stringWithFormat:
-                             NSLocalizedString(@"Use \"%@\" file as tox save file?", @"Incoming file"),
-                             [url lastPathComponent]];
-
-        UIAlertView *alert = [UIAlertView bk_alertViewWithTitle:nil message:message];
-
-        [alert bk_addButtonWithTitle:NSLocalizedString(@"Yes", @"Incoming file") handler:^{
-            NSString *title = NSLocalizedString(@"Enter profile name", @"Incoming file");
-
-            UIAlertView *nameAlert = [UIAlertView bk_alertViewWithTitle:title];
-            nameAlert.alertViewStyle = UIAlertViewStylePlainTextInput;
-
-            [nameAlert textFieldAtIndex:0].text = [[url lastPathComponent] stringByDeletingPathExtension];
-
-            [nameAlert bk_addButtonWithTitle:NSLocalizedString(@"OK", @"Incoming file") handler:^{
-                NSString *name = [nameAlert textFieldAtIndex:0].text;
-
-                [[AppContext sharedContext].profileManager createAndSwitchToProfileWithToxSave:url name:name];
-                removeFile();
-
-                [[AppContext sharedContext] recreateTabBarController];
-                TabBarViewControllerIndex index = TabBarViewControllerIndexSettings;
-                [AppContext sharedContext].tabBarController.selectedIndex = index;
-
-                UINavigationController *navCon = [[AppContext sharedContext].tabBarController navigationControllerForIndex:index];
-                [navCon pushViewController:[ProfilesListViewController new] animated:NO];
-            }];
-
-            [nameAlert bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Incoming file") handler:removeFile];
-            [nameAlert show];
-
-        }];
-
-        [alert bk_setCancelButtonWithTitle:NSLocalizedString(@"No", @"Incoming file") handler:removeFile];
-        [alert show];
-    }
-    else {
-        removeFile();
-    }
 }
 
 @end

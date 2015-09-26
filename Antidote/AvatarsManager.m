@@ -44,7 +44,7 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
     return [self avatarFromString:string
                          diameter:diameter
                         textColor:[[AppContext sharedContext].appearance textMainColor]
-                  backgroundColor:[[AppContext sharedContext].appearance bubbleOutgoingColor]];
+                  backgroundColor:[UIColor whiteColor]];
 }
 
 - (UIImage *)avatarFromString:(NSString *)string

@@ -51,6 +51,15 @@ static const CGFloat kTextTopOffset = 2.0;
     return self.textView.text;
 }
 
+#pragma mark -  Override
+
+- (void)resetCell
+{
+    [super resetCell];
+
+    self.maxMainTextLength = 0;
+}
+
 #pragma mark -  Public
 
 - (void)startEditing

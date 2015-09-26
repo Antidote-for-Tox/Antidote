@@ -15,14 +15,21 @@
 #import "ProfileViewController.h"
 #import "UITableViewCell+Utilities.h"
 #import "AppContext.h"
-#import "ProfileManager.h"
 #import "QRViewerController.h"
 #import "AvatarsManager.h"
 #import "ContentCellWithTitleImmutable.h"
 #import "ContentCellWithTitleEditable.h"
 #import "ContentCellWithAvatar.h"
+#import "ContentCellSimple.h"
 #import "ContentSeparatorCell.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
+#import "LifecycleManager.h"
+#import "LifecyclePhaseRunning.h"
+#import "AppearanceManager.h"
+#import "Helper.h"
+#import "StatusViewController.h"
+#import "ProfileDetailsViewController.h"
 
 typedef NS_ENUM(NSInteger, CellType) {
     CellTypeSeparatorTransparent,
@@ -32,7 +39,10 @@ typedef NS_ENUM(NSInteger, CellType) {
     CellTypeNameEditable,
     CellTypeStatusMessageImmutable,
     CellTypeStatusMessageEditable,
+    CellTypeStatus,
     CellTypeToxId,
+    CellTypeProfileDetails,
+    CellTypeLogout,
 };
 
 @interface ProfileViewController () <ContentCellWithTitleImmutableDelegate,
@@ -53,13 +63,37 @@ typedef NS_ENUM(NSInteger, CellType) {
                 @[
                     @(CellTypeSeparatorTransparent),
                     @(CellTypeAvatar),
+                ],
+                @[
                     @(CellTypeSeparatorGray),
                     @(CellTypeNameImmutable),
                     @(CellTypeStatusMessageImmutable),
+                ],
+                @[
+                    @(CellTypeSeparatorGray),
+                    @(CellTypeStatus),
+                ],
+                @[
                     @(CellTypeSeparatorGray),
                     @(CellTypeToxId),
+                ],
+                @[
+                    @(CellTypeSeparatorGray),
+                    @(CellTypeProfileDetails),
+                ],
+                @[
+                    @(CellTypeSeparatorGray),
+                    @(CellTypeLogout),
+                    @(CellTypeSeparatorTransparent),
                 ]
             ]];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self.tableView reloadData];
 }
 
 #pragma mark -  Override
@@ -79,6 +113,7 @@ typedef NS_ENUM(NSInteger, CellType) {
            forCellReuseIdentifier:[ContentCellWithTitleImmutable reuseIdentifier]];
     [self.tableView registerClass:[ContentCellWithTitleEditable class]
            forCellReuseIdentifier:[ContentCellWithTitleEditable reuseIdentifier]];
+    [self.tableView registerClass:[ContentCellSimple class] forCellReuseIdentifier:[ContentCellSimple reuseIdentifier]];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -100,8 +135,36 @@ typedef NS_ENUM(NSInteger, CellType) {
             return [self cellWithStatusMessageAtIndexPath:indexPath editable:NO];
         case CellTypeStatusMessageEditable:
             return [self cellWithStatusMessageAtIndexPath:indexPath editable:YES];
+        case CellTypeStatus:
+            return [self cellWithStatusAtIndexPath:indexPath];
         case CellTypeToxId:
             return [self cellWithToxIdAtIndexPath:indexPath];
+        case CellTypeProfileDetails:
+            return [self cellWithProfileDetailsAtIndexPath:indexPath];
+        case CellTypeLogout:
+            return [self cellWithLogoutAtIndexPath:indexPath];
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    CellType type = [self cellTypeForIndexPath:indexPath];
+
+    if (type == CellTypeStatus) {
+        [self.navigationController pushViewController:[StatusViewController new] animated:YES];
+    }
+    else if (type == CellTypeProfileDetails) {
+        [self.navigationController pushViewController:[ProfileDetailsViewController new] animated:YES];
+    }
+    else if (type == CellTypeLogout) {
+        LifecyclePhaseRunning *running = (LifecyclePhaseRunning *) [[AppContext sharedContext].lifecycleManager currentPhase];
+
+        NSAssert([running isKindOfClass:[LifecyclePhaseRunning class]],
+                 @"Something went terrible wrong, should be in running phase");
+
+        [running logout];
     }
 }
 
@@ -109,34 +172,34 @@ typedef NS_ENUM(NSInteger, CellType) {
 
 - (void)contentCellWithAvatarImagePressed:(ContentCellWithAvatar *)cell
 {
-    weakself;
-
-    void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
-        strongself;
-
-        UIImagePickerController *ipc = [UIImagePickerController new];
-        ipc.allowsEditing = NO;
-        ipc.sourceType = sourceType;
-        ipc.delegate = self;
-
-        [self presentViewController:ipc animated:YES completion:nil];
-    };
-
-    UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Profile") handler:^{
-            photoHandler(UIImagePickerControllerSourceTypeCamera);
-        }];
-    }
-
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Profile") handler:^{
-            photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
-        }];
-    }
-
     // FIXME avatar
+    // weakself;
+
+    // void (^photoHandler)(UIImagePickerControllerSourceType) = ^(UIImagePickerControllerSourceType sourceType) {
+    //     strongself;
+
+    //     UIImagePickerController *ipc = [UIImagePickerController new];
+    //     ipc.allowsEditing = NO;
+    //     ipc.sourceType = sourceType;
+    //     ipc.delegate = self;
+
+    //     [self presentViewController:ipc animated:YES completion:nil];
+    // };
+
+    // UIActionSheet *sheet = [UIActionSheet bk_actionSheetWithTitle:nil];
+
+    // if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+    //     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Camera", @"Profile") handler:^{
+    //         photoHandler(UIImagePickerControllerSourceTypeCamera);
+    //     }];
+    // }
+
+    // if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+    //     [sheet bk_addButtonWithTitle:NSLocalizedString(@"Photo Library", @"Profile") handler:^{
+    //         photoHandler(UIImagePickerControllerSourceTypePhotoLibrary);
+    //     }];
+    // }
+
     // if ([[ToxManager sharedInstance] userHasAvatar]) {
     //     [sheet bk_setDestructiveButtonWithTitle:NSLocalizedString(@"Delete", @"Profile") handler:^{
     //         [[ToxManager sharedInstance] updateAvatar:nil];
@@ -146,9 +209,9 @@ typedef NS_ENUM(NSInteger, CellType) {
     //     }];
     // }
 
-    [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profile") handler:nil];
+    // [sheet bk_setCancelButtonWithTitle:NSLocalizedString(@"Cancel", @"Profile") handler:nil];
 
-    [sheet showInView:self.view];
+    // [sheet showInView:self.view];
 }
 
 #pragma mark -  ContentCellWithTitleBasicDelegate
@@ -207,7 +270,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 
     if (type == CellTypeNameEditable) {
         NSError *error;
-        if (! [[AppContext sharedContext].profileManager.toxManager.user setUserName:cell.mainText error:&error]) {
+        if (! [[RunningContext context].toxManager.user setUserName:cell.mainText error:&error]) {
             [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSetUserName];
             return;
         }
@@ -222,7 +285,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     }
     else if (type == CellTypeStatusMessageEditable) {
         NSError *error;
-        if (! [[AppContext sharedContext].profileManager.toxManager.user setUserStatusMessage:cell.mainText error:&error]) {
+        if (! [[RunningContext context].toxManager.user setUserStatusMessage:cell.mainText error:&error]) {
             [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeSetUserStatus];
             return;
         }
@@ -286,7 +349,7 @@ typedef NS_ENUM(NSInteger, CellType) {
                                                                        forIndexPath:indexPath];
     cell.delegate = self;
 
-    NSString *userName = [AppContext sharedContext].profileManager.toxManager.user.userName;
+    NSString *userName = [RunningContext context].toxManager.user.userName;
     cell.avatar = [[AppContext sharedContext].avatars avatarFromString:userName diameter:kContentCellWithAvatarImageSize];
 
     return cell;
@@ -302,7 +365,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.delegate = self;
     cell.title = NSLocalizedString(@"Name", @"Profile");
     cell.buttonTitle = nil;
-    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userName;
+    cell.mainText = [RunningContext context].toxManager.user.userName;
 
     if (editable) {
         ContentCellWithTitleEditable *eCell = (ContentCellWithTitleEditable *)cell;
@@ -311,6 +374,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     else {
         ContentCellWithTitleImmutable *iCell = (ContentCellWithTitleImmutable *)cell;
         iCell.showEditButton = YES;
+        iCell.copyable = NO;
     }
 
     return cell;
@@ -326,7 +390,7 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.delegate = self;
     cell.title = NSLocalizedString(@"Status Message", @"Profile");
     cell.buttonTitle = nil;
-    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userStatusMessage;
+    cell.mainText = [RunningContext context].toxManager.user.userStatusMessage;
 
     if (editable) {
         ContentCellWithTitleEditable *eCell = (ContentCellWithTitleEditable *)cell;
@@ -335,7 +399,30 @@ typedef NS_ENUM(NSInteger, CellType) {
     else {
         ContentCellWithTitleImmutable *iCell = (ContentCellWithTitleImmutable *)cell;
         iCell.showEditButton = YES;
+        iCell.copyable = NO;
     }
+
+    return cell;
+}
+
+- (ContentCellSimple *)cellWithStatusAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [ContentCellSimple reuseIdentifier];
+    ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    [cell resetCell];
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    StatusCircleStatus status = [Helper circleStatusFromUserStatus:[RunningContext context].toxManager.user.userStatus];
+
+    cell.title = [Helper circleStatusToString:status];
+
+    StatusCircleView *statusView = [StatusCircleView new];
+    statusView.showWhiteBorder = NO;
+    statusView.status = status;
+    [statusView redraw];
+
+    cell.leftAccessoryView = statusView;
+    cell.leftAccessoryViewSize = CGSizeMake(statusView.side, statusView.side);
 
     return cell;
 }
@@ -347,8 +434,30 @@ typedef NS_ENUM(NSInteger, CellType) {
     cell.delegate = self;
     cell.title = NSLocalizedString(@"My Tox ID", @"Profile");
     cell.buttonTitle = NSLocalizedString(@"Show QR", @"Profile");
-    cell.mainText = [AppContext sharedContext].profileManager.toxManager.user.userAddress;
+    cell.mainText = [RunningContext context].toxManager.user.userAddress;
     cell.showEditButton = NO;
+
+    return cell;
+}
+
+- (ContentCellSimple *)cellWithProfileDetailsAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [ContentCellSimple reuseIdentifier];
+    ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    [cell resetCell];
+    cell.title = NSLocalizedString(@"Profile Details", @"Profile");
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+
+    return cell;
+}
+
+- (ContentCellSimple *)cellWithLogoutAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *identifier = [ContentCellSimple reuseIdentifier];
+    ContentCellSimple *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    [cell resetCell];
+    cell.title = NSLocalizedString(@"Log Out", @"Profile");
+    cell.boldTitle = YES;
 
     return cell;
 }

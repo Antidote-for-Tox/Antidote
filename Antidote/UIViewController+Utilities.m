@@ -13,26 +13,24 @@
 
 #pragma mark -  Public
 
-- (void)loadWhiteView
-{
-    [self utilities_loadView];
-    self.view.backgroundColor = [UIColor whiteColor];
-}
-
-- (void)loadLightGrayView
-{
-    [self utilities_loadView];
-    self.view.backgroundColor = [[AppContext sharedContext].appearance lightGrayBackground];
-}
-
-#pragma mark -  Private
-
-- (void)utilities_loadView
+- (void)loadViewWithBackgroundColor:(UIColor *)color
 {
     CGRect frame = CGRectZero;
     frame.size = [[UIScreen mainScreen] applicationFrame].size;
 
     self.view = [[UIView alloc] initWithFrame:frame];
+
+    self.view.backgroundColor = color;
+}
+
+- (void)loadWhiteView
+{
+    [self loadViewWithBackgroundColor:[UIColor whiteColor]];
+}
+
+- (void)loadLightGrayView
+{
+    [self loadViewWithBackgroundColor:[[AppContext sharedContext].appearance lightGrayBackground]];
 }
 
 @end
