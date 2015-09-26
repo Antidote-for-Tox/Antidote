@@ -99,17 +99,17 @@ typedef NS_ENUM(NSUInteger, CellType) {
 
 - (void)callButtonPressed
 {
-    AppContext *context = [AppContext sharedContext];
+    RunningContext *context = [RunningContext context];
 
-    OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+    OCTChat *chat = [context.toxManager.chats getOrCreateChatWithFriend:self.friend];
     [context.calls callToChat:chat enableAudio:YES enableVideo:NO];
 }
 
 - (void)videoButtonPressed
 {
-    AppContext *context = [AppContext sharedContext];
+    RunningContext *context = [RunningContext context];
 
-    OCTChat *chat = [context.profileManager.toxManager.chats getOrCreateChatWithFriend:self.friend];
+    OCTChat *chat = [context.toxManager.chats getOrCreateChatWithFriend:self.friend];
     [context.calls callToChat:chat enableAudio:YES enableVideo:YES];
 }
 

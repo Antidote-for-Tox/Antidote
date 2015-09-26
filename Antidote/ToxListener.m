@@ -128,7 +128,7 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 #pragma mark - SubmanagerCalls delegate
 - (void)callSubmanager:(OCTSubmanagerCalls *)callSubmanager receiveCall:(OCTCall *)call audioEnabled:(BOOL)audioEnabled videoEnabled:(BOOL)videoEnabled
 {
-    [[AppContext sharedContext].calls handleIncomingCall:call];
+    [[RunningContext context].calls handleIncomingCall:call];
 }
 
 #pragma mark -  Private

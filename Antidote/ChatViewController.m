@@ -421,7 +421,7 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 
 - (void)startCallButtonPressed
 {
-    [[AppContext sharedContext].calls callToChat:self.chat enableAudio:YES enableVideo:NO];
+    [[RunningContext context].calls callToChat:self.chat enableAudio:YES enableVideo:NO];
 }
 
 @end

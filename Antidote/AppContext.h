@@ -10,7 +10,6 @@
 
 @class AppearanceManager;
 @class AvatarsManager;
-@class CallsManager;
 @class ErrorHandler;
 @class FileManager;
 @class LifecycleManager;
@@ -22,7 +21,6 @@
 
 @property (strong, nonatomic, readonly) AppearanceManager *appearance;
 @property (strong, nonatomic, readonly) AvatarsManager *avatars;
-@property (strong, nonatomic, readonly) CallsManager *calls;
 @property (strong, nonatomic, readonly) ErrorHandler *errorHandler;
 @property (strong, nonatomic, readonly) FileManager *fileManager;
 @property (strong, nonatomic, readonly) LifecycleManager *lifecycleManager;

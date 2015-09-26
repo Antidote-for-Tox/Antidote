@@ -10,6 +10,7 @@
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
+#import <objcTox/OCTSubmanagerCalls.h>
 #import <objcTox/RBQFetchedResultsController.h>
 
 #import "LifecyclePhaseRunning.h"

@@ -113,7 +113,7 @@ NSString *const kToxSaveFileExtension = @"tox";
                               withType:(OCTFetchRequestType)type
                              predicate:(NSPredicate *)predicate
 {
-    OCTSubmanagerObjects *submanager = [AppContext sharedContext].profileManager.toxManager.objects;
+    OCTSubmanagerObjects *submanager = [RunningContext context].toxManager.objects;
     RBQFetchRequest *fetchRequest = [submanager fetchRequestForType:type withPredicate:predicate];
 
     [controller updateFetchRequest:fetchRequest sectionNameKeyPath:nil andPeformFetch:YES];

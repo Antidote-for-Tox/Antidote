@@ -9,7 +9,6 @@
 #import "AppContext.h"
 #import "AppearanceManager.h"
 #import "AvatarsManager.h"
-#import "CallsManager.h"
 #import "ErrorHandler.h"
 #import "FileManager.h"
 #import "LifecycleManager.h"
@@ -22,7 +21,6 @@
 
 @property (strong, nonatomic, readwrite) AppearanceManager *appearance;
 @property (strong, nonatomic, readwrite) AvatarsManager *avatars;
-@property (strong, nonatomic, readwrite) CallsManager *calls;
 @property (strong, nonatomic, readwrite) ErrorHandler *errorHandler;
 @property (strong, nonatomic, readwrite) FileManager *fileManager;
 @property (strong, nonatomic, readwrite) LifecycleManager *lifecycleManager;
@@ -87,17 +85,6 @@
     return _avatars;
 }
 
-- (CallsManager *)calls
-{
-    if (_calls) {
-        return _calls;
-    }
-
-    _calls = [CallsManager new];
-
-    return _calls;
-}
-
 - (ErrorHandler *)errorHandler
 {
     if (_errorHandler) {
@@ -148,11 +135,6 @@
 - (void)restoreDefaultSettings
 {
     [self createUserDefaultsValuesAndRewrite:YES];
-}
-
-- (void)killCallsManager
-{
-    self.calls = nil;
 }
 
 #pragma mark -  Private

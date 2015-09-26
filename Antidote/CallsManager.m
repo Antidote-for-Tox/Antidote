@@ -23,6 +23,7 @@
 #import "AbstractCallViewController.h"
 #import "RingTonePlayer.h"
 #import "ErrorHandler.h"
+#import "RunningContext.h"
 
 #define LOG_IDENTIFIER self
 
@@ -80,7 +81,7 @@
                                                                           predicate:predicate
                                                                            delegate:self];
 
-    _manager = [AppContext sharedContext].profileManager.toxManager.calls;
+    _manager = [RunningContext context].toxManager.calls;
 
     _callNavigation = [UINavigationController new];
     _callNavigation.view.backgroundColor = [UIColor clearColor];
@@ -88,7 +89,7 @@
     _callNavigation.modalInPopover = YES;
     _callNavigation.modalPresentationStyle = UIModalPresentationOverCurrentContext;
 
-    [[AppContext sharedContext].tabBarController presentViewController:_callNavigation animated:YES completion:nil];
+    [[RunningContext context].tabBarController presentViewController:_callNavigation animated:YES completion:nil];
 
     _ringTonePlayer = [RingTonePlayer new];
 
@@ -124,7 +125,7 @@
     OCTCall *call = [self.manager callToChat:chat enableAudio:audio enableVideo:video error:&error];
 
     if (! call) {
-        [[AppContext sharedContext] killCallsManager];
+        [[RunningContext context] killCallsManager];
         [[AppContext sharedContext].errorHandler handleError:error type:ErrorHandlerTypeCallToChat];
         return;
     }
@@ -175,7 +176,7 @@
         case RBQFetchedResultsChangeDelete: {
 
             if ([self.allCallsController.fetchedObjects count] == 0) {
-                [[AppContext sharedContext] killCallsManager];
+                [[RunningContext context] killCallsManager];
                 return;
             }
 
