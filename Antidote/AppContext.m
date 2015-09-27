@@ -69,6 +69,10 @@
     }
 
     AppearanceManagerColorscheme colorscheme = self.userDefaults.uCurrentColorscheme.unsignedIntegerValue;
+    if (colorscheme >= __AppearanceManagerColorschemeCount) {
+        colorscheme = AppearanceManagerColorschemeIce;
+    }
+
     _appearance = [[AppearanceManager alloc] initWithColorscheme:colorscheme];
 
     return _appearance;
