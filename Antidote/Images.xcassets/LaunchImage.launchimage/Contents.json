@@ -22,7 +22,7 @@
       "orientation" : "portrait",
       "idiom" : "iphone",
       "extent" : "full-screen",
-      "minimum-system-version" : "7.0",
+      "minimum-system-version" : "8.0",
       "filename" : "LaunchScreen-3-7@2x.png",
       "scale" : "2x"
     },
@@ -31,7 +31,7 @@
       "idiom" : "iphone",
       "subtype" : "retina4",
       "filename" : "LaunchScreen-4@2x.png",
-      "minimum-system-version" : "7.0",
+      "minimum-system-version" : "8.0",
       "orientation" : "portrait",
       "scale" : "2x"
     }

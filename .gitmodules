@@ -1,0 +1,6 @@
+[submodule "submodules/Dollar.swift"]
+	path = submodules/Dollar.swift
+	url = https://github.com/ankurp/Dollar.swift.git
+[submodule "submodules/SnapKit"]
+	path = submodules/SnapKit
+	url = https://github.com/SnapKit/SnapKit.git

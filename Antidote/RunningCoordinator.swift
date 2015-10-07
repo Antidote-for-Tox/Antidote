@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Cent
 
 class RunningCoordinator {
     let window: UIWindow

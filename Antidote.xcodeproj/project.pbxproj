@@ -13,7 +13,8 @@
 		1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1164763B19794D3300DB20B8 /* InfoPlist.strings */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
 		1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
-		1173EFB11BC5C02300B88B7B /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFB01BC5C02300B88B7B /* ArrayExtensions.swift */; settings = {ASSET_TAGS = (); }; };
+		1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
+		1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
 		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
@@ -29,6 +30,51 @@
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1173EFC31BC5C65C00B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 924F92DC195F8338003DBB60;
+			remoteInfo = Cent;
+		};
+		1173EFC51BC5C65C00B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 92E6688119F0B89600BB4FB8;
+			remoteInfo = CentTests;
+		};
+		1173EFCF1BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEBCC9D819CC627D0083B827;
+			remoteInfo = "SnapKit iOS";
+		};
+		1173EFD11BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EECDB37A1AC0C9D4006BBC11;
+			remoteInfo = "SnapKit OSX";
+		};
+		1173EFD31BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EEBCC9E219CC627E0083B827;
+			remoteInfo = "SnapKit iOS Tests";
+		};
+		1173EFD51BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EECDB3841AC0C9D4006BBC11;
+			remoteInfo = "SnapKit OSX Tests";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -39,7 +85,8 @@
 		1164764419794D3300DB20B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabCoordinatorProtocol.swift; sourceTree = "<group>"; };
-		1173EFB01BC5C02300B88B7B /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
+		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
+		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
 		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
 		11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +110,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */,
+				1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */,
 				1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */,
 				1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */,
 				1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */,
@@ -78,8 +127,9 @@
 			children = (
 				1164763819794D3300DB20B8 /* Antidote */,
 				1164763119794D3300DB20B8 /* Frameworks */,
-				1164763019794D3300DB20B8 /* Products */,
 				454BE7B91D6EF3C677425911 /* Pods */,
+				1164763019794D3300DB20B8 /* Products */,
+				1173EFB21BC5C40100B88B7B /* Submodules */,
 			);
 			sourceTree = "<group>";
 		};
@@ -108,18 +158,38 @@
 			children = (
 				F902D28D1ADED27A0070A3F5 /* Application */,
 				11FA0ED61BC584A300F3DA5B /* Coordinators */,
-				1173EFAD1BC5BFD100B88B7B /* Extensions */,
 				11FA0EDF1BC591EA00F3DA5B /* Functions */,
 			);
 			path = Antidote;
 			sourceTree = "<group>";
 		};
-		1173EFAD1BC5BFD100B88B7B /* Extensions */ = {
+		1173EFB21BC5C40100B88B7B /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
-				1173EFB01BC5C02300B88B7B /* ArrayExtensions.swift */,
+				1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */,
+				1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */,
 			);
-			name = Extensions;
+			name = Submodules;
+			sourceTree = "<group>";
+		};
+		1173EFBE1BC5C65C00B88B7B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1173EFC41BC5C65C00B88B7B /* Cent.framework */,
+				1173EFC61BC5C65C00B88B7B /* CentTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1173EFC91BC5C6B300B88B7B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1173EFD01BC5C6B300B88B7B /* SnapKit.framework */,
+				1173EFD21BC5C6B300B88B7B /* SnapKit.framework */,
+				1173EFD41BC5C6B300B88B7B /* SnapKit iOS Tests.xctest */,
+				1173EFD61BC5C6B300B88B7B /* SnapKit OSX Tests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
@@ -219,12 +289,67 @@
 			mainGroup = 1164762619794D3300DB20B8;
 			productRefGroup = 1164763019794D3300DB20B8 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 1173EFBE1BC5C65C00B88B7B /* Products */;
+					ProjectRef = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
+				},
+				{
+					ProductGroup = 1173EFC91BC5C6B300B88B7B /* Products */;
+					ProjectRef = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				1164762E19794D3300DB20B8 /* Antidote */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		1173EFC41BC5C65C00B88B7B /* Cent.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Cent.framework;
+			remoteRef = 1173EFC31BC5C65C00B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFC61BC5C65C00B88B7B /* CentTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = CentTests.xctest;
+			remoteRef = 1173EFC51BC5C65C00B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFD01BC5C6B300B88B7B /* SnapKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SnapKit.framework;
+			remoteRef = 1173EFCF1BC5C6B300B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFD21BC5C6B300B88B7B /* SnapKit.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SnapKit.framework;
+			remoteRef = 1173EFD11BC5C6B300B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFD41BC5C6B300B88B7B /* SnapKit iOS Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SnapKit iOS Tests.xctest";
+			remoteRef = 1173EFD31BC5C6B300B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFD61BC5C6B300B88B7B /* SnapKit OSX Tests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SnapKit OSX Tests.xctest";
+			remoteRef = 1173EFD51BC5C6B300B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		1164762D19794D3300DB20B8 /* Resources */ = {
@@ -277,7 +402,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1173EFB11BC5C02300B88B7B /* ArrayExtensions.swift in Sources */,
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
@@ -338,7 +462,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -369,7 +493,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

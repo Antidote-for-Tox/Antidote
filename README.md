@@ -1,6 +1,6 @@
 [![Circle CI](https://circleci.com/gh/Antidote-for-Tox/Antidote.svg?style=svg)](https://circleci.com/gh/Antidote-for-Tox/Antidote)
 
-[Tox](https://tox.chat/) client for iOS 7.0+;
+[Tox](https://tox.chat/) client for iOS 8.0+;
 
 ![](https://i.imgur.com/5HF5RMX.png)
 
@@ -18,7 +18,7 @@ Antidote is available for beta testing via TestFlight. If you wish to participat
 Clone repo, install [CocoaPods](https://cocoapods.org/) and open `Antidote.xcworkspace` file with Xcode 7.
 
 ```
-git clone https://github.com/Antidote-for-Tox/Antidote.git
+git clone https://github.com/Antidote-for-Tox/Antidote.git --recursive
 cd Antidote
 pod install
 open Antidote.xcworkspace
