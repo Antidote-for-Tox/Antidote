@@ -12,7 +12,20 @@
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
 		1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1164763B19794D3300DB20B8 /* InfoPlist.strings */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
+		1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
+		1173EFB11BC5C02300B88B7B /* ArrayExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFB01BC5C02300B88B7B /* ArrayExtensions.swift */; settings = {ASSET_TAGS = (); }; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
+		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE01BC591FC00F3DA5B /* Logger.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -25,7 +38,21 @@
 		1164763C19794D3300DB20B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1164764419794D3300DB20B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		1173EFB01BC5C02300B88B7B /* ArrayExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayExtensions.swift; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
+		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
+		11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordinatorProtocol.swift; sourceTree = "<group>"; };
+		11FA0EE01BC591FC00F3DA5B /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTabCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTabCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTabCoordinator.swift; sourceTree = "<group>"; };
+		11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsTabCoordinator.swift; sourceTree = "<group>"; };
 		4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
@@ -80,18 +107,52 @@
 			isa = PBXGroup;
 			children = (
 				F902D28D1ADED27A0070A3F5 /* Application */,
-				1164763919794D3300DB20B8 /* Supporting Files */,
+				11FA0ED61BC584A300F3DA5B /* Coordinators */,
+				1173EFAD1BC5BFD100B88B7B /* Extensions */,
+				11FA0EDF1BC591EA00F3DA5B /* Functions */,
 			);
 			path = Antidote;
 			sourceTree = "<group>";
 		};
-		1164763919794D3300DB20B8 /* Supporting Files */ = {
+		1173EFAD1BC5BFD100B88B7B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1164763A19794D3300DB20B8 /* Antidote-Info.plist */,
-				1164763B19794D3300DB20B8 /* InfoPlist.strings */,
+				1173EFB01BC5C02300B88B7B /* ArrayExtensions.swift */,
 			);
-			name = "Supporting Files";
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
+			isa = PBXGroup;
+			children = (
+				11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */,
+				11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */,
+				11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */,
+				11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */,
+				11FA0EE31BC59A9B00F3DA5B /* Running */,
+			);
+			name = Coordinators;
+			sourceTree = "<group>";
+		};
+		11FA0EDF1BC591EA00F3DA5B /* Functions */ = {
+			isa = PBXGroup;
+			children = (
+				11FA0EE01BC591FC00F3DA5B /* Logger.swift */,
+			);
+			name = Functions;
+			sourceTree = "<group>";
+		};
+		11FA0EE31BC59A9B00F3DA5B /* Running */ = {
+			isa = PBXGroup;
+			children = (
+				11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */,
+				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
+				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
+				11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */,
+				11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */,
+				1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */,
+			);
+			name = Running;
 			sourceTree = "<group>";
 		};
 		454BE7B91D6EF3C677425911 /* Pods */ = {
@@ -106,8 +167,12 @@
 		F902D28D1ADED27A0070A3F5 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */,
+				1164763A19794D3300DB20B8 /* Antidote-Info.plist */,
+				11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
 				1179E06A1BA0534600D258C6 /* import-profile.html */,
+				1164763B19794D3300DB20B8 /* InfoPlist.strings */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -140,6 +205,7 @@
 		1164762719794D3300DB20B8 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = dvor;
 			};
@@ -211,6 +277,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1173EFB11BC5C02300B88B7B /* ArrayExtensions.swift in Sources */,
+				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
+				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
+				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
+				11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */,
+				1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */,
+				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,
+				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
+				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
+				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
+				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
+				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
+				11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,6 +381,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -310,9 +390,12 @@
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
 				GCC_WARN_SIGN_COMPARE = YES;
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Antidote/Antidote-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -324,6 +407,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
@@ -332,9 +416,11 @@
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
 				GCC_WARN_SIGN_COMPARE = YES;
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Antidote/Antidote-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
