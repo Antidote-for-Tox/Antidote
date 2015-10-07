@@ -15,6 +15,7 @@
 		1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
 		1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
 		1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
+		1173EFF31BC5CF6E00B88B7B /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
 		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
@@ -73,6 +74,34 @@
 			remoteGlobalIDString = EECDB3841AC0C9D4006BBC11;
 			remoteInfo = "SnapKit OSX Tests";
 		};
+		1173EFEB1BC5CF5D00B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8E1D76211B258FEE0022C013;
+			remoteInfo = "Yaml OSX";
+		};
+		1173EFED1BC5CF5D00B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8E1D762C1B258FEE0022C013;
+			remoteInfo = "YamlTests OSX";
+		};
+		1173EFEF1BC5CF5D00B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F32DF2581B73054C0011046A;
+			remoteInfo = "Yaml iOS";
+		};
+		1173EFF11BC5CF5D00B88B7B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = F32DF2611B73054C0011046A;
+			remoteInfo = "YamlTests iOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -87,6 +116,7 @@
 		1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
+		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
 		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
 		11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1173EFF31BC5CF6E00B88B7B /* Yaml.framework in Frameworks */,
 				1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */,
 				1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */,
 				1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */,
@@ -168,6 +199,7 @@
 			children = (
 				1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */,
 				1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */,
+				1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */,
 			);
 			name = Submodules;
 			sourceTree = "<group>";
@@ -188,6 +220,17 @@
 				1173EFD21BC5C6B300B88B7B /* SnapKit.framework */,
 				1173EFD41BC5C6B300B88B7B /* SnapKit iOS Tests.xctest */,
 				1173EFD61BC5C6B300B88B7B /* SnapKit OSX Tests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1173EFE51BC5CF5D00B88B7B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1173EFEC1BC5CF5D00B88B7B /* Yaml.framework */,
+				1173EFEE1BC5CF5D00B88B7B /* YamlTests.xctest */,
+				1173EFF01BC5CF5D00B88B7B /* Yaml.framework */,
+				1173EFF21BC5CF5D00B88B7B /* YamlTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -298,6 +341,10 @@
 					ProductGroup = 1173EFC91BC5C6B300B88B7B /* Products */;
 					ProjectRef = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
 				},
+				{
+					ProductGroup = 1173EFE51BC5CF5D00B88B7B /* Products */;
+					ProjectRef = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -347,6 +394,34 @@
 			fileType = wrapper.cfbundle;
 			path = "SnapKit OSX Tests.xctest";
 			remoteRef = 1173EFD51BC5C6B300B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFEC1BC5CF5D00B88B7B /* Yaml.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Yaml.framework;
+			remoteRef = 1173EFEB1BC5CF5D00B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFEE1BC5CF5D00B88B7B /* YamlTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = YamlTests.xctest;
+			remoteRef = 1173EFED1BC5CF5D00B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFF01BC5CF5D00B88B7B /* Yaml.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = Yaml.framework;
+			remoteRef = 1173EFEF1BC5CF5D00B88B7B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		1173EFF21BC5CF5D00B88B7B /* YamlTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = YamlTests.xctest;
+			remoteRef = 1173EFF11BC5CF5D00B88B7B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
