@@ -30,6 +30,9 @@
 		1173F0691BC5D95400B88B7B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
 		1173F06A1BC5D95400B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
 		1173F06B1BC5D95400B88B7B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE01BC591FC00F3DA5B /* Logger.swift */; settings = {ASSET_TAGS = (); }; };
+		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; settings = {ASSET_TAGS = (); }; };
+		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; settings = {ASSET_TAGS = (); }; };
+		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; settings = {ASSET_TAGS = (); }; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
 		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
@@ -212,6 +215,9 @@
 		1173F0401BC5D91A00B88B7B /* Nimble.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Nimble.xcodeproj; path = submodules/Nimble/Nimble.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1173F05A1BC5D94400B88B7B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1173F06D1BC5D9BA00B88B7B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTest.swift; sourceTree = "<group>"; };
+		1173F0711BC5D9DA00B88B7B /* default-theme.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "default-theme.yaml"; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
 		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
 		11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -294,6 +300,7 @@
 			isa = PBXGroup;
 			children = (
 				F902D28D1ADED27A0070A3F5 /* Application */,
+				1173F06C1BC5D9B000B88B7B /* Classes */,
 				11FA0ED61BC584A300F3DA5B /* Coordinators */,
 				11FA0EDF1BC591EA00F3DA5B /* Functions */,
 			);
@@ -371,8 +378,17 @@
 			isa = PBXGroup;
 			children = (
 				1173F05A1BC5D94400B88B7B /* Info.plist */,
+				1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */,
 			);
 			path = AntidoteTests;
+			sourceTree = "<group>";
+		};
+		1173F06C1BC5D9B000B88B7B /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
@@ -425,6 +441,7 @@
 				11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
 				1179E06A1BA0534600D258C6 /* import-profile.html */,
+				1173F0711BC5D9DA00B88B7B /* default-theme.yaml */,
 				1164763B19794D3300DB20B8 /* InfoPlist.strings */,
 			);
 			name = Application;
@@ -674,6 +691,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
 				1179E06B1BA0534600D258C6 /* import-profile.html in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
@@ -731,6 +749,7 @@
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
 				11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */,
+				1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */,
 				1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */,
 				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
@@ -757,6 +776,7 @@
 				1173F0631BC5D95400B88B7B /* LoginCoordinator.swift in Sources */,
 				1173F06B1BC5D95400B88B7B /* Logger.swift in Sources */,
 				1173F0691BC5D95400B88B7B /* SettingsTabCoordinator.swift in Sources */,
+				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
 				1173F0611BC5D95400B88B7B /* CoordinatorProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -969,6 +989,7 @@
 				1173F05F1BC5D94400B88B7B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
