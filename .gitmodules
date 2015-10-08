@@ -10,3 +10,6 @@
 [submodule "submodules/Nimble"]
 	path = submodules/Nimble
 	url = https://github.com/Quick/Nimble.git
+[submodule "submodules/YamlSwift"]
+	path = submodules/YamlSwift
+	url = https://github.com/behrang/YamlSwift.git
