@@ -19,17 +19,6 @@
 		1173F0501BC5D92F00B88B7B /* Nimble.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173F0481BC5D91A00B88B7B /* Nimble.framework */; };
 		1173F0511BC5D93600B88B7B /* Quick.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173F0331BC5D91400B88B7B /* Quick.framework */; };
 		1173F0601BC5D95400B88B7B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0611BC5D95400B88B7B /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0621BC5D95400B88B7B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0631BC5D95400B88B7B /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0641BC5D95400B88B7B /* RunningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0651BC5D95400B88B7B /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0661BC5D95400B88B7B /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0671BC5D95400B88B7B /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0681BC5D95400B88B7B /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F0691BC5D95400B88B7B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F06A1BC5D95400B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
-		1173F06B1BC5D95400B88B7B /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE01BC591FC00F3DA5B /* Logger.swift */; settings = {ASSET_TAGS = (); }; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; settings = {ASSET_TAGS = (); }; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; settings = {ASSET_TAGS = (); }; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; settings = {ASSET_TAGS = (); }; };
@@ -45,6 +34,21 @@
 		11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C7475C01BC698110098B1A4 /* Localizable.strings */; };
+		9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E21BC6ABE60098B1A4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E31BC6ABE60098B1A4 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E41BC6ABE60098B1A4 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E51BC6ABE60098B1A4 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E61BC6ABE60098B1A4 /* RunningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E71BC6ABE60098B1A4 /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E81BC6ABE60098B1A4 /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475E91BC6ABE60098B1A4 /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475EA1BC6ABE60098B1A4 /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475EB1BC6ABE60098B1A4 /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475EC1BC6ABE60098B1A4 /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475ED1BC6ABE60098B1A4 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		9C7475EE1BC6ABE60098B1A4 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE01BC591FC00F3DA5B /* Logger.swift */; settings = {ASSET_TAGS = (); }; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -233,6 +237,8 @@
 		11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsTabCoordinator.swift; sourceTree = "<group>"; };
 		4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		7E7D2AE7333141D09DEE1E40 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		9C7475C41BC698510098B1A4 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -302,6 +308,7 @@
 				F902D28D1ADED27A0070A3F5 /* Application */,
 				1173F06C1BC5D9B000B88B7B /* Classes */,
 				11FA0ED61BC584A300F3DA5B /* Coordinators */,
+				9C7475C11BC698240098B1A4 /* Extensions */,
 				11FA0EDF1BC591EA00F3DA5B /* Functions */,
 			);
 			path = Antidote;
@@ -433,6 +440,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9C7475C11BC698240098B1A4 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
 		F902D28D1ADED27A0070A3F5 /* Application */ = {
 			isa = PBXGroup;
 			children = (
@@ -443,6 +458,7 @@
 				1179E06A1BA0534600D258C6 /* import-profile.html */,
 				1173F0711BC5D9DA00B88B7B /* default-theme.yaml */,
 				1164763B19794D3300DB20B8 /* InfoPlist.strings */,
+				9C7475C01BC698110098B1A4 /* Localizable.strings */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -691,6 +707,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */,
 				1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
 				1179E06B1BA0534600D258C6 /* import-profile.html in Resources */,
@@ -753,6 +770,7 @@
 				1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */,
 				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
+				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
@@ -765,19 +783,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1173F06A1BC5D95400B88B7B /* TabCoordinatorProtocol.swift in Sources */,
-				1173F0641BC5D95400B88B7B /* RunningCoordinator.swift in Sources */,
-				1173F0671BC5D95400B88B7B /* FriendsTabCoordinator.swift in Sources */,
-				1173F0681BC5D95400B88B7B /* ProfileTabCoordinator.swift in Sources */,
-				1173F0621BC5D95400B88B7B /* AppCoordinator.swift in Sources */,
-				1173F0661BC5D95400B88B7B /* ChatsTabCoordinator.swift in Sources */,
-				1173F0651BC5D95400B88B7B /* ChangePasswordCoordinator.swift in Sources */,
+				9C7475E51BC6ABE60098B1A4 /* LoginCoordinator.swift in Sources */,
+				9C7475E21BC6ABE60098B1A4 /* Theme.swift in Sources */,
+				9C7475E81BC6ABE60098B1A4 /* ChatsTabCoordinator.swift in Sources */,
+				9C7475EB1BC6ABE60098B1A4 /* SettingsTabCoordinator.swift in Sources */,
+				9C7475EC1BC6ABE60098B1A4 /* TabCoordinatorProtocol.swift in Sources */,
 				1173F0601BC5D95400B88B7B /* AppDelegate.swift in Sources */,
-				1173F0631BC5D95400B88B7B /* LoginCoordinator.swift in Sources */,
-				1173F06B1BC5D95400B88B7B /* Logger.swift in Sources */,
-				1173F0691BC5D95400B88B7B /* SettingsTabCoordinator.swift in Sources */,
+				9C7475E41BC6ABE60098B1A4 /* AppCoordinator.swift in Sources */,
+				9C7475E61BC6ABE60098B1A4 /* RunningCoordinator.swift in Sources */,
+				9C7475ED1BC6ABE60098B1A4 /* StringExtension.swift in Sources */,
+				9C7475E91BC6ABE60098B1A4 /* FriendsTabCoordinator.swift in Sources */,
+				9C7475EE1BC6ABE60098B1A4 /* Logger.swift in Sources */,
+				9C7475EA1BC6ABE60098B1A4 /* ProfileTabCoordinator.swift in Sources */,
+				9C7475E31BC6ABE60098B1A4 /* CoordinatorProtocol.swift in Sources */,
 				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
-				1173F0611BC5D95400B88B7B /* CoordinatorProtocol.swift in Sources */,
+				9C7475E71BC6ABE60098B1A4 /* ChangePasswordCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -798,6 +818,14 @@
 				1164763C19794D3300DB20B8 /* en */,
 			);
 			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9C7475C01BC698110098B1A4 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9C7475BF1BC698110098B1A4 /* en */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

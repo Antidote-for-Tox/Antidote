@@ -1,5 +1,5 @@
 colors:
-    - skyblue: 2685AC
+  skyblue: 2685AC
 
 values:
-    - login-background: skyblue
+  login-background: skyblue
