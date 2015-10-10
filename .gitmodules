@@ -4,12 +4,6 @@
 [submodule "submodules/SnapKit"]
 	path = submodules/SnapKit
 	url = https://github.com/SnapKit/SnapKit.git
-[submodule "submodules/Quick"]
-	path = submodules/Quick
-	url = https://github.com/Quick/Quick.git
-[submodule "submodules/Nimble"]
-	path = submodules/Nimble
-	url = https://github.com/Quick/Nimble.git
 [submodule "submodules/YamlSwift"]
 	path = submodules/YamlSwift
 	url = https://github.com/behrang/YamlSwift.git
