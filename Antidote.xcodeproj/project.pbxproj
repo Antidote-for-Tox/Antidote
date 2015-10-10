@@ -12,6 +12,7 @@
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
 		1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1164763B19794D3300DB20B8 /* InfoPlist.strings */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
+		1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */; settings = {ASSET_TAGS = (); }; };
 		1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
 		1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
 		1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
@@ -139,6 +140,7 @@
 		1164763C19794D3300DB20B8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1164764419794D3300DB20B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
 		1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
@@ -292,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
+				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -593,6 +596,7 @@
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
+				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
 				11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */,
