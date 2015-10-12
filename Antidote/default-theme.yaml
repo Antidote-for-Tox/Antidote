@@ -1,5 +1,13 @@
+version: 1
+
 colors:
+  white: FFFFFF
+  lightblue: D8E7EF
   skyblue: 2685AC
+  darkblue: 0D678C
 
 values:
   login-background: skyblue
+  login-tox-logo: lightblue
+  login-button-text: white
+  login-button-background: darkblue

@@ -13,6 +13,16 @@
 		1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 1164763B19794D3300DB20B8 /* InfoPlist.strings */; };
 		1164764519794D3300DB20B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
 		1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8E71BC929C500B91107 /* LoginBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8E61BC929C500B91107 /* LoginBaseController.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8E81BC929F700B91107 /* LoginChoiceController.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8EE1BC9801200B91107 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8F11BC982FF00B91107 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8F41BC9880000B91107 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		1164C8F71BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
 		1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
 		1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
@@ -141,6 +151,12 @@
 		1164764419794D3300DB20B8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1164764B19794D3300DB20B8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		1164C8E61BC929C500B91107 /* LoginBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginBaseController.swift; sourceTree = "<group>"; };
+		1164C8E81BC929F700B91107 /* LoginChoiceController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginChoiceController.swift; sourceTree = "<group>"; };
+		1164C8EC1BC9801200B91107 /* LoginButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
+		1164C8EF1BC982FF00B91107 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
+		1164C8F21BC9880000B91107 /* LoginLogoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLogoController.swift; sourceTree = "<group>"; };
+		1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		1173EFAB1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabCoordinatorProtocol.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
@@ -233,11 +249,39 @@
 			children = (
 				F902D28D1ADED27A0070A3F5 /* Application */,
 				1173F06C1BC5D9B000B88B7B /* Classes */,
+				1164C8E31BC9279500B91107 /* Controllers */,
 				11FA0ED61BC584A300F3DA5B /* Coordinators */,
 				9C7475C11BC698240098B1A4 /* Extensions */,
 				11FA0EDF1BC591EA00F3DA5B /* Functions */,
+				1164C8EA1BC97FF600B91107 /* Views */,
 			);
 			path = Antidote;
+			sourceTree = "<group>";
+		};
+		1164C8E31BC9279500B91107 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1164C8E61BC929C500B91107 /* LoginBaseController.swift */,
+				1164C8E81BC929F700B91107 /* LoginChoiceController.swift */,
+				1164C8F21BC9880000B91107 /* LoginLogoController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		1164C8EA1BC97FF600B91107 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1164C8EB1BC9800200B91107 /* Login */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		1164C8EB1BC9800200B91107 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1164C8EC1BC9801200B91107 /* LoginButton.swift */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		1173EFB21BC5C40100B88B7B /* Submodules */ = {
@@ -344,7 +388,9 @@
 		9C7475C11BC698240098B1A4 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				1164C8EF1BC982FF00B91107 /* ImageExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
+				1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -586,20 +632,26 @@
 			buildActionMask = 2147483647;
 			files = (
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
+				1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */,
+				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
+				1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */,
 				11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */,
 				1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */,
 				1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */,
 				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
+				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
+				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
 				11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */,
+				1164C8E71BC929C500B91107 /* LoginBaseController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -608,6 +660,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C7475E51BC6ABE60098B1A4 /* LoginCoordinator.swift in Sources */,
+				1164C8EE1BC9801200B91107 /* LoginButton.swift in Sources */,
 				9C7475E21BC6ABE60098B1A4 /* Theme.swift in Sources */,
 				9C7475E81BC6ABE60098B1A4 /* ChatsTabCoordinator.swift in Sources */,
 				9C7475EB1BC6ABE60098B1A4 /* SettingsTabCoordinator.swift in Sources */,
@@ -615,11 +668,14 @@
 				1173F0601BC5D95400B88B7B /* AppDelegate.swift in Sources */,
 				9C7475E41BC6ABE60098B1A4 /* AppCoordinator.swift in Sources */,
 				9C7475E61BC6ABE60098B1A4 /* RunningCoordinator.swift in Sources */,
+				1164C8F11BC982FF00B91107 /* ImageExtension.swift in Sources */,
 				9C7475ED1BC6ABE60098B1A4 /* StringExtension.swift in Sources */,
 				9C7475E91BC6ABE60098B1A4 /* FriendsTabCoordinator.swift in Sources */,
+				1164C8F41BC9880000B91107 /* LoginLogoController.swift in Sources */,
 				9C7475EE1BC6ABE60098B1A4 /* Logger.swift in Sources */,
 				9C7475EA1BC6ABE60098B1A4 /* ProfileTabCoordinator.swift in Sources */,
 				9C7475E31BC6ABE60098B1A4 /* CoordinatorProtocol.swift in Sources */,
+				1164C8F71BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */,
 				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
 				9C7475E71BC6ABE60098B1A4 /* ChangePasswordCoordinator.swift in Sources */,
 			);

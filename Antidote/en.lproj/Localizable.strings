@@ -5,3 +5,13 @@
   Created by Dmytro Vorobiov on 08/10/15.
   Copyright © 2015 dvor. All rights reserved.
 */
+
+"theme_error_wrong_top_object" = "Top object should be dictionary";
+"theme_error_version_not_found" = "Version key not found";
+"theme_error_color_not_found" = "%@ color not found in colors dictionary";
+"theme_error_no_dictionary_for_key" = "Dictionary not found for key %@";
+"theme_error_wrong_object_for_key" = "Wrong object for key %@, value %@";
+"theme_error_no_mapping_for_type" = "Mapping for type %@ not found";
+"theme_error_version_too_high" = "Version of theme is too high";
+"theme_error_version_too_low" = "Version of theme is too low";
+

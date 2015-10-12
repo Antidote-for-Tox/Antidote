@@ -10,23 +10,29 @@ import UIKit
 import Yaml
 
 enum ErrorTheme: ErrorType {
-    case CannotParseFile
-    case VersionTooLow
-    case VersionTooHigh
+    case CannotParseFile(String)
+    case WrongVersion(String)
 }
 
 class Theme {
     enum Type: String {
         case LoginBackground = "login-background"
+        case LoginToxLogo = "login-tox-logo"
         case LoginButtonText = "login-button-text"
+        case LoginButtonBackground = "login-button-background"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
-        static let allValues = [LoginBackground, LoginButtonText]
+        static let allValues = [
+            LoginBackground,
+            LoginToxLogo,
+            LoginButtonText,
+            LoginButtonBackground,
+        ]
     }
 
     init(yamlString: String) throws {
         guard let dictionary = Yaml.load(yamlString).value?.dictionary else {
-            throw ErrorTheme.CannotParseFile
+            throw ErrorTheme.CannotParseFile(String(localized:"theme_error_wrong_top_object"))
         }
 
         try checkVersion(dictionary)
@@ -52,11 +58,13 @@ private extension Theme {
 
     func checkVersion(dictionary: [Yaml: Yaml]) throws {
         guard let version = dictionary[Yaml.String(Constants.VersionKey)]?.int else {
-            throw ErrorTheme.CannotParseFile
+            throw ErrorTheme.CannotParseFile(String(localized:"theme_error_version_not_found"))
         }
 
         guard version == Constants.VersionValue else {
-            throw version > Constants.VersionValue ? ErrorTheme.VersionTooHigh : ErrorTheme.VersionTooLow
+            throw version > Constants.VersionValue ?
+                ErrorTheme.WrongVersion(String(localized: "theme_error_version_too_high")) :
+                ErrorTheme.WrongVersion(String(localized: "theme_error_version_too_low"))
         }
     }
 
@@ -72,7 +80,7 @@ private extension Theme {
 
         for (key, value) in valuesDict {
             guard let color = colorsDict[value] else {
-                throw ErrorTheme.CannotParseFile
+                throw ErrorTheme.CannotParseFile(String(localized: "theme_error_color_not_found", value))
             }
 
             mappedColors[key] = color
@@ -83,7 +91,7 @@ private extension Theme {
 
     func parseDictionary<T>(dictionary: [Yaml: Yaml], forKey key: String, modifyValue: String -> T?) throws -> [String: T] {
         guard let yamlDict = dictionary[Yaml.String(key)]?.dictionary else {
-            throw ErrorTheme.CannotParseFile
+            throw ErrorTheme.CannotParseFile(String(localized: "theme_error_no_dictionary_for_key", key))
         }
 
         var resultDict = [String: T]()
@@ -92,7 +100,7 @@ private extension Theme {
             guard let key = keyYaml.string,
                   let originalValue = valueYaml.string,
                   let valueToSet = modifyValue(originalValue) else {
-                throw ErrorTheme.CannotParseFile
+                throw ErrorTheme.CannotParseFile(String(localized: "theme_error_wrong_object_for_key", keyYaml.description, valueYaml.description))
             }
 
             resultDict[key] = valueToSet
@@ -104,7 +112,7 @@ private extension Theme {
     func validateMappedColors(dictionary: [String: UIColor]) throws {
         for type in Type.allValues {
             guard let _ = dictionary[type.rawValue] else {
-                throw ErrorTheme.CannotParseFile
+                throw ErrorTheme.CannotParseFile(String(localized: "theme_error_no_mapping_for_type", type.rawValue))
             }
         }
     }
