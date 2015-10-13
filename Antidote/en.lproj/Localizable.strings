@@ -15,3 +15,8 @@
 "theme_error_version_too_high" = "Version of theme is too high";
 "theme_error_version_too_low" = "Version of theme is too low";
 
+"login_welcome_text" = "Welcome to Antidote!";
+"or_text" = "or";
+
+"create_account" = "Create Account";
+"import_profile" = "Import Profile";

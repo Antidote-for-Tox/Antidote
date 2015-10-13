@@ -9,8 +9,18 @@
 import UIKit
 import SnapKit
 
+private struct Constants {
+    static let LogoTopOffset = -200.0
+    static let LogoBottomOffset = 40.0
+    static let LogoHeight = 100.0
+}
+
 class LoginLogoController: LoginBaseController {
     var logoImageView: UIImageView!
+
+    /**
+     * Use this container to add subviews in subclasses.
+     */
     var containerView: UIView!
 
     override func loadView() {
@@ -21,6 +31,16 @@ class LoginLogoController: LoginBaseController {
 
         installConstraints()
     }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated:animated)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated:animated)
+    }
 }
 
 private extension LoginLogoController {
@@ -29,17 +49,26 @@ private extension LoginLogoController {
 
         logoImageView = UIImageView(image: image)
         logoImageView.tintColor = theme.colorForType(.LoginToxLogo)
-        logoImageView.contentMode = UIViewContentMode.ScaleAspectFit
+        logoImageView.contentMode = .ScaleAspectFit
         view.addSubview(logoImageView)
     }
 
     func createContainerView() {
         containerView = UIView()
-        containerView.backgroundColor = UIColor.clearColor()
+        containerView.backgroundColor = .clearColor()
         view.addSubview(containerView)
     }
 
     func installConstraints() {
-        // logoImageView
+        logoImageView.snp_makeConstraints { (make) -> Void in
+            make.centerX.equalTo(view)
+            make.top.equalTo(view.snp_centerY).offset(Constants.LogoTopOffset)
+            make.height.equalTo(Constants.LogoHeight)
+        }
+
+        containerView.snp_makeConstraints { (make) -> Void in
+            make.top.equalTo(logoImageView.snp_bottom).offset(Constants.LogoBottomOffset)
+            make.left.right.equalTo(view)
+        }
     }
 }

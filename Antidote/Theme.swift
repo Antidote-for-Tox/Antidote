@@ -20,6 +20,7 @@ class Theme {
         case LoginToxLogo = "login-tox-logo"
         case LoginButtonText = "login-button-text"
         case LoginButtonBackground = "login-button-background"
+        case LoginDescriptionLabel = "login-description-label"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -27,6 +28,7 @@ class Theme {
             LoginToxLogo,
             LoginButtonText,
             LoginButtonBackground,
+            LoginDescriptionLabel,
         ]
     }
 
@@ -43,6 +45,24 @@ class Theme {
 
     func colorForType(type: Type) -> UIColor {
         return mappedColors[type.rawValue]!
+    }
+
+    var loginNavigationBarColor: UIColor {
+        // https://developer.apple.com/library/ios/qa/qa1808/_index.html
+        let colorDelta: CGFloat = 0.08
+        var red: CGFloat = 0.0
+        var green: CGFloat = 0.0
+        var blue: CGFloat = 0.0
+        var alpha: CGFloat = 0.0
+
+        let buttonBackground = colorForType(.LoginButtonBackground)
+        buttonBackground.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+
+        red = max(0.0, red - colorDelta)
+        green = max(0.0, green - colorDelta)
+        blue = max(0.0, blue - colorDelta)
+
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
     }
 
     private var mappedColors: [String: UIColor]!
@@ -125,7 +145,7 @@ private extension UIColor {
         var blue: CGFloat = 0.0
         var alpha: CGFloat = 1.0
 
-        guard let number = Int(hexString, radix: 16) else {
+        guard let number = CLongLong(hexString, radix: 16) else {
             return nil
         }
 

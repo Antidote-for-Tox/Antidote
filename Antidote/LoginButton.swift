@@ -8,6 +8,10 @@
 
 import UIKit
 
+private struct Constants {
+    static let Height = 40.0
+}
+
 class LoginButton: UIButton {
     init(theme: Theme) {
         super.init(frame: CGRectZero)
@@ -24,5 +28,9 @@ class LoginButton: UIButton {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    override func intrinsicContentSize() -> CGSize {
+        return CGSize(width: 0.0, height: Constants.Height)
     }
 }

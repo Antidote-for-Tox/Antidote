@@ -11,6 +11,7 @@
 [AppCoordinator] -> [LoginCoordinator]
 
 [LoginCoordinator] -.-> [LoginChoiceController]
+[LoginCoordinator] -.-> [LoginFormController]
 [LoginCoordinator] -.-> [LoginCreateProfileController]
 [LoginCoordinator] -.-> [LoginImportInstructionController]
 [LoginCoordinator] -.-> [LoginImportProfileController]
