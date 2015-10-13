@@ -9,12 +9,6 @@
 import UIKit
 import SnapKit
 
-private struct Constants {
-    static let HorizontalOffset = 40.0
-    static let VerticalOffset = 40.0
-    static let OrVerticalOffset = 8.0
-}
-
 protocol LoginChoiceControllerDelegate {
     func loginChoiceControllerCreateAccount(controller: LoginChoiceController)
     func loginChoiceControllerImportProfile(controller: LoginChoiceController)
@@ -23,10 +17,10 @@ protocol LoginChoiceControllerDelegate {
 class LoginChoiceController: LoginLogoController {
     var delegate: LoginChoiceControllerDelegate?
 
-    var welcomeLabel: UILabel!
-    var createAccountButton: UIButton!
-    var orLabel: UILabel!
-    var importProfileButton: UIButton!
+    private var welcomeLabel: UILabel!
+    private var createAccountButton: LoginButton!
+    private var orLabel: UILabel!
+    private var importProfileButton: LoginButton!
 
     override func loadView() {
         super.loadView()
@@ -52,7 +46,7 @@ private extension LoginChoiceController {
 private extension LoginChoiceController {
     func createLabels() {
         welcomeLabel = createLabelWithText(String(localized:"login_welcome_text"))
-        orLabel = createLabelWithText(String(localized:"or_text"))
+        orLabel = createLabelWithText(String(localized:"or"))
     }
 
     func createButtons() {
@@ -73,12 +67,12 @@ private extension LoginChoiceController {
         }
 
         orLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(createAccountButton.snp_bottom).offset(Constants.OrVerticalOffset)
+            make.top.equalTo(createAccountButton.snp_bottom).offset(Constants.SmallVerticalOffset)
             make.left.right.equalTo(welcomeLabel)
         }
 
         importProfileButton.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(orLabel.snp_bottom).offset(Constants.OrVerticalOffset)
+            make.top.equalTo(orLabel.snp_bottom).offset(Constants.SmallVerticalOffset)
             make.left.right.equalTo(welcomeLabel)
         }
     }
@@ -95,9 +89,9 @@ private extension LoginChoiceController {
         return label
     }
 
-    func createButtonWithTitle(title: String, action: Selector) -> UIButton {
+    func createButtonWithTitle(title: String, action: Selector) -> LoginButton {
         let button = LoginButton(theme: theme)
-        button.setTitle(title, forState:.Normal)
+        button.setTitle(title, forState: .Normal)
         button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
 
         containerView.addSubview(button)

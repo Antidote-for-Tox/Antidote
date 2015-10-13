@@ -2,6 +2,8 @@ version: 1
 
 colors:
   white: FFFFFF
+  black: "000000"
+  lightgray: EDF3F5
   lightgrayblue: D8E7EF
   lightblue: D4F1FC
   skyblue: 2685AC
@@ -13,3 +15,7 @@ values:
   login-button-text: white
   login-button-background: darkblue
   login-description-label: lightblue
+  login-form-background: white
+  login-form-text: black
+  login-link-color: lightgray
+

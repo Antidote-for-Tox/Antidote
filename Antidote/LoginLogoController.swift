@@ -9,9 +9,8 @@
 import UIKit
 import SnapKit
 
-private struct Constants {
+private struct PrivateConstants {
     static let LogoTopOffset = -200.0
-    static let LogoBottomOffset = 40.0
     static let LogoHeight = 100.0
 }
 
@@ -62,12 +61,12 @@ private extension LoginLogoController {
     func installConstraints() {
         logoImageView.snp_makeConstraints { (make) -> Void in
             make.centerX.equalTo(view)
-            make.top.equalTo(view.snp_centerY).offset(Constants.LogoTopOffset)
-            make.height.equalTo(Constants.LogoHeight)
+            make.top.equalTo(view.snp_centerY).offset(PrivateConstants.LogoTopOffset)
+            make.height.equalTo(PrivateConstants.LogoHeight)
         }
 
         containerView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(logoImageView.snp_bottom).offset(Constants.LogoBottomOffset)
+            make.top.equalTo(logoImageView.snp_bottom).offset(Constants.VerticalOffset)
             make.left.right.equalTo(view)
         }
     }

@@ -9,6 +9,14 @@
 import UIKit
 
 class LoginBaseController: UIViewController {
+    struct Constants {
+        static let HorizontalOffset = 40.0
+        static let VerticalOffset = 40.0
+        static let SmallVerticalOffset = 8.0
+
+        static let TextFieldHeight: CGFloat = 40.0
+    }
+
     let theme: Theme
 
     init(theme: Theme) {
@@ -17,7 +25,7 @@ class LoginBaseController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder aDecoder: NSCoder) {
+    required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

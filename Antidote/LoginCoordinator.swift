@@ -28,7 +28,7 @@ class LoginCoordinator {
 // MARK: CoordinatorProtocol
 extension LoginCoordinator : CoordinatorProtocol {
     func start() {
-        let choiceVC = LoginChoiceController(theme: theme)
+        let choiceVC = LoginFormController(theme: theme)
 
         navigationController.pushViewController(choiceVC, animated: false)
         window.rootViewController = navigationController
