@@ -12,7 +12,7 @@ class UserDefaultsManager {
             return stringForKey(Keys.lastActiveProfile)
         }
         set {
-            setObject(newValue, forKey:Keys.lastActiveProfile)
+            setObject(newValue, forKey: Keys.lastActiveProfile)
         }
     }
 
@@ -21,7 +21,25 @@ class UserDefaultsManager {
             return boolForKey(Keys.isUserLoggedIn)
         }
         set {
-            setBool(newValue, forKey:Keys.isUserLoggedIn)
+            setBool(newValue, forKey: Keys.isUserLoggedIn)
+        }
+    }
+
+    var IPv6Enabled: Bool {
+        get {
+            return boolForKey(Keys.IPv6Enabled)
+        }
+        set {
+            setBool(newValue, forKey: Keys.IPv6Enabled)
+        }
+    }
+
+    var UDPEnabled: Bool {
+        get {
+            return boolForKey(Keys.UDPEnabled)
+        }
+        set {
+            setBool(newValue, forKey: Keys.UDPEnabled)
         }
     }
 }
@@ -30,6 +48,8 @@ private extension UserDefaultsManager {
     struct Keys {
         static let lastActiveProfile = "user-info/last-active-profile"
         static let isUserLoggedIn = "user-info/is-user-logged-in"
+        static let IPv6Enabled = "user-info/ipv6-enabled"
+        static let UDPEnabled = "user-info/udp-enabled"
     }
 
     func setObject(object: AnyObject?, forKey key: String) {
