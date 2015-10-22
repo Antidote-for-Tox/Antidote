@@ -9,14 +9,26 @@
 import UIKit
 import SnapKit
 
-class LoginFormController: LoginLogoController, UITextFieldDelegate {
+protocol LoginFormControllerDelegate: class {
+    func loginFormControllerLogin(controller: LoginFormController, profileName: String, password: String?)
+    func loginFormControllerCreateAccount(controller: LoginFormController)
+    func loginFormControllerImportProfile(controller: LoginFormController)
+
+    func loginFormController(controller: LoginFormController, isProfileEncrypted profile: String) -> Bool
+}
+
+class LoginFormController: LoginLogoController {
     private struct PrivateConstants {
         static let IconContainerWidth: CGFloat = Constants.TextFieldHeight - 15.0
         static let IconContainerHeight: CGFloat = Constants.TextFieldHeight
 
         static let FormOffset = 20.0
         static let FormSmallOffset = 10.0
+
+        static let AnimationDuration = 0.3
     }
+
+    weak var delegate: LoginFormControllerDelegate?
 
     private var formView: UIView!
     private var profileFakeTextField: UITextField!
@@ -33,22 +45,89 @@ class LoginFormController: LoginLogoController, UITextFieldDelegate {
     private var profileButtonBottomToFormConstraint: Constraint!
     private var passwordFieldBottomToFormConstraint: Constraint!
 
-    override init(theme: Theme) {
+    private let profileNames: [String]
+    private var selectedIndex: Int
+
+    init(theme: Theme, profileNames: [String], selectedIndex: Int) {
+        self.profileNames = profileNames
+        self.selectedIndex = selectedIndex
+
         super.init(theme: theme)
+    }
+
+    required convenience init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func loadView() {
         super.loadView()
 
+        createGestureRecognizers()
         createFormViews()
         createLoginButton()
         createBottomButtons()
 
         installConstraints()
+
+        updateFormAnimated(false)
+    }
+}
+
+// MARK: Actions
+extension LoginFormController {
+    func profileButtonPressed() {
+        view.endEditing(true)
+
+        let picker = FullscreenPicker(theme: theme, strings: profileNames, selectedIndex: selectedIndex)
+        picker.delegate = self
+
+        picker.showAnimatedInView(view)
+    }
+
+    func loginButtonPressed() {
+        let isEmpty = (passwordField.text == nil) || passwordField.text!.isEmpty
+        let password = isEmpty ? nil : passwordField.text
+
+        delegate?.loginFormControllerLogin(self, profileName: profileNames[selectedIndex], password: password)
+    }
+
+    func createAccountButtonPressed() {
+        delegate?.loginFormControllerCreateAccount(self)
+    }
+
+    func importProfileButtonPressed() {
+        delegate?.loginFormControllerImportProfile(self)
+    }
+
+    func tapOnView() {
+        view.endEditing(true)
+    }
+}
+
+extension LoginFormController: UITextFieldDelegate {
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        loginButtonPressed()
+        return true
+    }
+}
+
+extension LoginFormController: FullscreenPickerDelegate {
+    func fullscreenPicker(picker: FullscreenPicker, willDismissWithSelectedIndex index: Int) {
+        if index == selectedIndex {
+            return
+        }
+        selectedIndex = index
+
+        updateFormAnimated(true)
     }
 }
 
 private extension LoginFormController {
+    func createGestureRecognizers() {
+        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnView")
+        view.addGestureRecognizer(tapGR)
+    }
+
     func createFormViews() {
         formView = UIView()
         formView.backgroundColor = theme.colorForType(.LoginFormBackground)
@@ -167,5 +246,40 @@ private extension LoginFormController {
         button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
 
         return button
+    }
+
+    func updateFormAnimated(animated: Bool) {
+        let profileName = profileNames[selectedIndex]
+
+        profileFakeTextField.text = profileName
+        passwordField.text = nil
+
+        let isEncrypted = delegate?.loginFormController(self, isProfileEncrypted: profileName) ?? false
+
+        showPasswordField(isEncrypted, animated: animated)
+    }
+
+    func showPasswordField(show: Bool, animated: Bool) {
+        func updateForm() {
+            if (show) {
+                profileButtonBottomToFormConstraint.deactivate()
+                passwordFieldBottomToFormConstraint.activate()
+                passwordField.alpha = 1.0
+            }
+            else {
+                profileButtonBottomToFormConstraint.activate()
+                passwordFieldBottomToFormConstraint.deactivate()
+                passwordField.alpha = 0.0
+            }
+
+            view.layoutIfNeeded()
+        }
+
+        if animated {
+            UIView.animateWithDuration(PrivateConstants.AnimationDuration, animations: updateForm)
+        }
+        else {
+            updateForm()
+        }
     }
 }

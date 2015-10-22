@@ -7,11 +7,11 @@
 //
 
 extension OCTManagerConfiguration {
-    static func configurationWithBaseDirectory(baseDirectory: String, passphrase: String) -> OCTManagerConfiguration? {
+    static func configurationWithBaseDirectory(baseDirectory: String, passphrase: String?) -> OCTManagerConfiguration? {
         var isDirectory: ObjCBool = false
         let exists = NSFileManager.defaultManager().fileExistsAtPath(baseDirectory, isDirectory:&isDirectory)
 
-        guard exists && !isDirectory else {
+        guard exists && isDirectory else {
             return nil
         }
 

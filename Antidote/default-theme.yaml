@@ -2,6 +2,7 @@ version: 1
 
 colors:
   white: FFFFFF
+  transparent_white: FFFFFF55
   black: "000000"
   lightgray: EDF3F5
   lightgrayblue: D8E7EF
@@ -18,4 +19,7 @@ values:
   login-form-background: white
   login-form-text: black
   login-link-color: lightgray
+
+  # Color used for fullscreen translucent views background, e.g. fullscreen picker
+  translucent-background: transparent_white
 

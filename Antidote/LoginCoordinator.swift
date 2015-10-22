@@ -26,11 +26,57 @@ class LoginCoordinator {
 }
 
 // MARK: CoordinatorProtocol
-extension LoginCoordinator : CoordinatorProtocol {
+extension LoginCoordinator: CoordinatorProtocol {
     func start() {
-        let choiceVC = LoginFormController(theme: theme)
+        let profileNames = ProfileManager().allProfileNames
 
-        navigationController.pushViewController(choiceVC, animated: false)
+        let controller: UIViewController = (profileNames.count > 0) ? createFormController() : createChoiceController()
+
+        navigationController.pushViewController(controller, animated: false)
         window.rootViewController = navigationController
+    }
+}
+
+extension LoginCoordinator: LoginFormControllerDelegate {
+    func loginFormControllerLogin(controller: LoginFormController, profileName: String, password: String?) {
+        print("login")
+    }
+
+    func loginFormControllerCreateAccount(controller: LoginFormController) {
+        print("create")
+    }
+
+    func loginFormControllerImportProfile(controller: LoginFormController) {
+        print("import")
+    }
+
+    func loginFormController(controller: LoginFormController, isProfileEncrypted profile: String) -> Bool {
+        let path = ProfileManager().pathForProfileWithName(profile)
+
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
+
+        return OCTManager.isToxSaveEncryptedAtPath(configuration.fileStorage.pathForToxSaveFile)
+    }
+}
+
+private extension LoginCoordinator {
+    func createFormController() -> LoginFormController {
+        let profileNames = ProfileManager().allProfileNames
+        var selectedIndex = 0
+
+        if let activeProfile = UserDefaultsManager().lastActiveProfile {
+            selectedIndex = profileNames.indexOf(activeProfile) ?? 0
+        }
+
+        let controller = LoginFormController(theme: theme, profileNames: profileNames, selectedIndex: selectedIndex)
+        controller.delegate = self
+
+        return controller
+    }
+
+    func createChoiceController() -> LoginChoiceController {
+        let controller = LoginChoiceController(theme: theme)
+
+        return controller
     }
 }

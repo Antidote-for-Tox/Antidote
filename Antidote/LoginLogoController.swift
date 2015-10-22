@@ -67,6 +67,7 @@ private extension LoginLogoController {
 
         containerView.snp_makeConstraints { (make) -> Void in
             make.top.equalTo(logoImageView.snp_bottom).offset(Constants.VerticalOffset)
+            make.bottom.equalTo(view)
             make.left.right.equalTo(view)
         }
     }

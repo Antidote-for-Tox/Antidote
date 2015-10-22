@@ -33,6 +33,7 @@
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; settings = {ASSET_TAGS = (); }; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; settings = {ASSET_TAGS = (); }; };
+		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; settings = {ASSET_TAGS = (); }; };
 		11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; settings = {ASSET_TAGS = (); }; };
@@ -172,6 +173,7 @@
 		1173F0711BC5D9DA00B88B7B /* default-theme.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "default-theme.yaml"; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
+		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
 		11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			isa = PBXGroup;
 			children = (
 				1164C8EB1BC9800200B91107 /* Login */,
+				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -651,6 +654,7 @@
 				1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */,
 				11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */,
 				1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */,
+				11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */,
 				9C07151D1BCD2E5B003A27B5 /* PortraitNavigationController.swift in Sources */,
 				1173EFAC1BC5BD2800B88B7B /* TabCoordinatorProtocol.swift in Sources */,
 				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,

@@ -25,6 +25,8 @@ class Theme {
         case LoginFormText = "login-form-text"
         case LoginLinkColor = "login-link-color"
 
+        case TranslucentBackground = "translucent-background"
+
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
             LoginBackground,
@@ -35,6 +37,7 @@ class Theme {
             LoginFormBackground,
             LoginFormText,
             LoginLinkColor,
+            TranslucentBackground,
         ]
     }
 

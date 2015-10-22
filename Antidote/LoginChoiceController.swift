@@ -9,13 +9,13 @@
 import UIKit
 import SnapKit
 
-protocol LoginChoiceControllerDelegate {
+protocol LoginChoiceControllerDelegate: class {
     func loginChoiceControllerCreateAccount(controller: LoginChoiceController)
     func loginChoiceControllerImportProfile(controller: LoginChoiceController)
 }
 
 class LoginChoiceController: LoginLogoController {
-    var delegate: LoginChoiceControllerDelegate?
+    weak var delegate: LoginChoiceControllerDelegate?
 
     private var welcomeLabel: UILabel!
     private var createAccountButton: LoginButton!
@@ -33,7 +33,7 @@ class LoginChoiceController: LoginLogoController {
 }
 
 // MARK: Actions
-private extension LoginChoiceController {
+extension LoginChoiceController {
     func createAccountButtonPressed() {
         delegate?.loginChoiceControllerCreateAccount(self)
     }
