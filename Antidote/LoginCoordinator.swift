@@ -18,6 +18,7 @@ class LoginCoordinator {
         self.navigationController = PortraitNavigationController()
         self.theme = theme
 
+        navigationController.navigationBar.tintColor = theme.colorForType(.LoginButtonText)
         navigationController.navigationBar.barTintColor = theme.loginNavigationBarColor
         navigationController.navigationBar.titleTextAttributes = [
             NSForegroundColorAttributeName: theme.colorForType(.LoginButtonText)
