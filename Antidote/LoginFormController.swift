@@ -71,6 +71,23 @@ class LoginFormController: LoginLogoController {
 
         updateFormAnimated(false)
     }
+
+    override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
+        let underLoginHeight =
+            mainContainerView.frame.size.height -
+            contentContainerView.frame.origin.y -
+            CGRectGetMaxY(loginButton.frame)
+
+        let offset = min(0.0, underLoginHeight - frame.height)
+
+        mainContainerViewTopConstraint.updateOffset(offset)
+        view.layoutIfNeeded()
+    }
+
+    override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
+        mainContainerViewTopConstraint.updateOffset(0.0)
+        view.layoutIfNeeded()
+    }
 }
 
 // MARK: Actions
@@ -133,7 +150,7 @@ private extension LoginFormController {
         formView.backgroundColor = theme.colorForType(.LoginFormBackground)
         formView.layer.cornerRadius = 5.0
         formView.layer.masksToBounds = true
-        containerView.addSubview(formView)
+        contentContainerView.addSubview(formView)
 
         profileFakeTextField = UITextField()
         profileFakeTextField.borderStyle = .RoundedRect
@@ -160,13 +177,13 @@ private extension LoginFormController {
         loginButton = LoginButton(theme: theme)
         loginButton.setTitle(String(localized:"log_in"), forState: .Normal)
         loginButton.addTarget(self, action: "loginButtonPressed", forControlEvents: .TouchUpInside)
-        containerView.addSubview(loginButton)
+        contentContainerView.addSubview(loginButton)
     }
 
     func createBottomButtons() {
         bottomButtonsContainer = UIView()
         bottomButtonsContainer.backgroundColor = .clearColor()
-        containerView.addSubview(bottomButtonsContainer)
+        contentContainerView.addSubview(bottomButtonsContainer)
 
         createAccountButton = createDescriptionButtonWithTitle(
             String(localized: "create_profile"),
@@ -187,9 +204,9 @@ private extension LoginFormController {
 
     func installConstraints() {
         formView.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(containerView)
-            make.left.equalTo(containerView).offset(Constants.HorizontalOffset)
-            make.right.equalTo(containerView).offset(-Constants.HorizontalOffset)
+            make.top.equalTo(contentContainerView)
+            make.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
+            make.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
         }
 
         profileFakeTextField.snp_makeConstraints{ (make) -> Void in
@@ -216,6 +233,26 @@ private extension LoginFormController {
         loginButton.snp_makeConstraints{ (make) -> Void in
             make.top.equalTo(formView.snp_bottom).offset(PrivateConstants.FormSmallOffset)
             make.left.right.equalTo(formView)
+        }
+
+        bottomButtonsContainer.snp_makeConstraints{ (make) -> Void in
+            make.top.greaterThanOrEqualTo(loginButton.snp_bottom).offset(PrivateConstants.FormOffset)
+            make.centerX.equalTo(view)
+            make.bottom.equalTo(view).offset(-PrivateConstants.FormOffset)
+        }
+
+        createAccountButton.snp_makeConstraints{ (make) -> Void in
+            make.top.left.bottom.equalTo(bottomButtonsContainer)
+        }
+
+        orLabel.snp_makeConstraints{ (make) -> Void in
+            make.centerY.equalTo(bottomButtonsContainer)
+            make.left.equalTo(createAccountButton.snp_right).offset(PrivateConstants.FormSmallOffset)
+            make.right.equalTo(importProfileButton.snp_left).offset(-PrivateConstants.FormSmallOffset)
+        }
+
+        importProfileButton.snp_makeConstraints{ (make) -> Void in
+            make.top.right.bottom.equalTo(bottomButtonsContainer)
         }
     }
 

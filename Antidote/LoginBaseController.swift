@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginBaseController: UIViewController {
+class LoginBaseController: KeyboardNotificationController {
     struct Constants {
         static let HorizontalOffset = 40.0
         static let VerticalOffset = 40.0
@@ -22,7 +22,7 @@ class LoginBaseController: UIViewController {
     init(theme: Theme) {
         self.theme = theme
 
-        super.init(nibName: nil, bundle: nil)
+        super.init()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {

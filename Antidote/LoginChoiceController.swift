@@ -56,9 +56,9 @@ private extension LoginChoiceController {
 
     func installConstraints() {
         welcomeLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(containerView)
-            make.left.equalTo(containerView).offset(Constants.HorizontalOffset)
-            make.right.equalTo(containerView).offset(-Constants.HorizontalOffset)
+            make.top.equalTo(contentContainerView)
+            make.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
+            make.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
         }
 
         createAccountButton.snp_makeConstraints{ (make) -> Void in
@@ -84,7 +84,7 @@ private extension LoginChoiceController {
         label.textAlignment = .Center
         label.backgroundColor = .clearColor()
 
-        containerView.addSubview(label)
+        contentContainerView.addSubview(label)
 
         return label
     }
@@ -94,7 +94,7 @@ private extension LoginChoiceController {
         button.setTitle(title, forState: .Normal)
         button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
 
-        containerView.addSubview(button)
+        contentContainerView.addSubview(button)
 
         return button
     }
