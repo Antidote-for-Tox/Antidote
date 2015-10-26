@@ -59,13 +59,8 @@ class Theme {
     var loginNavigationBarColor: UIColor {
         // https://developer.apple.com/library/ios/qa/qa1808/_index.html
         let colorDelta: CGFloat = 0.08
-        var red: CGFloat = 0.0
-        var green: CGFloat = 0.0
-        var blue: CGFloat = 0.0
-        var alpha: CGFloat = 0.0
 
-        let buttonBackground = colorForType(.LoginButtonBackground)
-        buttonBackground.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        var (red, green, blue, alpha) = colorForType(.LoginButtonBackground).components()
 
         red = max(0.0, red - colorDelta)
         green = max(0.0, green - colorDelta)
@@ -144,35 +139,6 @@ private extension Theme {
                 throw ErrorTheme.CannotParseFile(String(localized: "theme_error_no_mapping_for_type", type.rawValue))
             }
         }
-    }
-}
-
-private extension UIColor {
-    convenience init?(hexString: String) {
-        var red: CGFloat = 0.0
-        var green: CGFloat = 0.0
-        var blue: CGFloat = 0.0
-        var alpha: CGFloat = 1.0
-
-        guard let number = CLongLong(hexString, radix: 16) else {
-            return nil
-        }
-
-        switch(hexString.length) {
-            case 6:
-                red   = CGFloat((number & 0xFF0000) >> 16) / 255.0
-                green = CGFloat((number & 0x00FF00) >> 8) / 255.0
-                blue  = CGFloat((number & 0x0000FF) >> 0) / 255.0
-            case 8:
-                red   = CGFloat((number & 0xFF000000) >> 24) / 255.0
-                green = CGFloat((number & 0x00FF0000) >> 16) / 255.0
-                blue  = CGFloat((number & 0x0000FF00) >> 8) / 255.0
-                alpha = CGFloat((number & 0x000000FF) >> 0) / 255.0
-            default:
-                return nil
-        }
-
-        self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }
 

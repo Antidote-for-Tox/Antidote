@@ -43,11 +43,11 @@ extension LoginCoordinator: LoginFormControllerDelegate {
     }
 
     func loginFormControllerCreateAccount(controller: LoginFormController) {
-        print("create")
+        showCreateAccountController()
     }
 
     func loginFormControllerImportProfile(controller: LoginFormController) {
-        print("import")
+        showImportProfileController()
     }
 
     func loginFormController(controller: LoginFormController, isProfileEncrypted profile: String) -> Bool {
@@ -56,6 +56,16 @@ extension LoginCoordinator: LoginFormControllerDelegate {
         let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
 
         return OCTManager.isToxSaveEncryptedAtPath(configuration.fileStorage.pathForToxSaveFile)
+    }
+}
+
+extension LoginCoordinator: LoginChoiceControllerDelegate {
+    func loginChoiceControllerCreateAccount(controller: LoginChoiceController) {
+        showCreateAccountController()
+    }
+
+    func loginChoiceControllerImportProfile(controller: LoginChoiceController) {
+        showImportProfileController()
     }
 }
 
@@ -76,7 +86,22 @@ private extension LoginCoordinator {
 
     func createChoiceController() -> LoginChoiceController {
         let controller = LoginChoiceController(theme: theme)
+        controller.delegate = self
 
         return controller
+    }
+
+    func showCreateAccountController() {
+        print("create")
+    }
+
+    func showImportProfileController() {
+        let controller = TextViewController(
+                resourceName: "import-profile",
+                backgroundColor: theme.colorForType(.LoginBackground),
+                titleColor: theme.colorForType(.LoginButtonText),
+                textColor: theme.colorForType(.LoginDescriptionLabel))
+
+        navigationController.pushViewController(controller, animated: true)
     }
 }
