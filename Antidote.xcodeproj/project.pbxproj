@@ -280,12 +280,9 @@
 			isa = PBXGroup;
 			children = (
 				112422651BDD2032004D7926 /* KeyboardNotificationController.swift */,
-				1164C8E61BC929C500B91107 /* LoginBaseController.swift */,
-				1164C8E81BC929F700B91107 /* LoginChoiceController.swift */,
-				9C07151E1BCD501D003A27B5 /* LoginFormController.swift */,
-				1164C8F21BC9880000B91107 /* LoginLogoController.swift */,
 				9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */,
 				119AD1BD1BDED261000C5CB8 /* TextViewController.swift */,
+				119AD1CD1BDEE4A2000C5CB8 /* Login */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -293,8 +290,8 @@
 		1164C8EA1BC97FF600B91107 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				1164C8EB1BC9800200B91107 /* Login */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
+				1164C8EB1BC9800200B91107 /* Login */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -365,6 +362,17 @@
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		119AD1CD1BDEE4A2000C5CB8 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				1164C8E61BC929C500B91107 /* LoginBaseController.swift */,
+				1164C8E81BC929F700B91107 /* LoginChoiceController.swift */,
+				9C07151E1BCD501D003A27B5 /* LoginFormController.swift */,
+				1164C8F21BC9880000B91107 /* LoginLogoController.swift */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
