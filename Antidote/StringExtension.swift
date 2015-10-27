@@ -18,4 +18,24 @@ extension String {
         let format = NSLocalizedString(localized, tableName: nil, bundle: NSBundle.mainBundle(), value: "", comment: comment)
         self.init(format: format, arguments: arguments)
     }
+
+    func substringToByteLength(length: Int, encoding: NSStringEncoding) -> String {
+        guard length > 0 else {
+            return ""
+        }
+
+        var substring = self as NSString
+
+        while substring.lengthOfBytesUsingEncoding(encoding) > length {
+            let newLength = substring.length - 1
+
+            guard newLength > 0 else {
+                return ""
+            }
+
+            substring = substring.substringToIndex(newLength)
+        }
+
+        return substring as String
+    }
 }
