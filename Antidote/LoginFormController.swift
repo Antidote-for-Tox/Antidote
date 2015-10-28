@@ -191,7 +191,7 @@ private extension LoginFormController {
         bottomButtonsContainer.addSubview(createAccountButton)
 
         orLabel = UILabel()
-        orLabel.text = String(localized: "or")
+        orLabel.text = String(localized: "login_or_label")
         orLabel.textColor = theme.colorForType(.LoginDescriptionLabel)
         orLabel.backgroundColor = .clearColor()
         bottomButtonsContainer.addSubview(orLabel)

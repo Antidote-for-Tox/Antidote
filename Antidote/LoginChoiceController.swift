@@ -46,7 +46,7 @@ extension LoginChoiceController {
 private extension LoginChoiceController {
     func createLabels() {
         welcomeLabel = createLabelWithText(String(localized:"login_welcome_text"))
-        orLabel = createLabelWithText(String(localized:"or"))
+        orLabel = createLabelWithText(String(localized:"login_or_label"))
     }
 
     func createButtons() {
