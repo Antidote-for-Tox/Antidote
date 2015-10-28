@@ -64,12 +64,8 @@ extension LoginCreateAccountController {
     }
 
     func goButtonPressed() {
-        guard let name = usernameView.text where !name.isEmpty,
-              let profile = profileView.text where !profile.isEmpty
-              else {
-            UIAlertView.showWithTitle("", message: String(localized: "enter_username_and_profile"))
-            return
-        }
+        let name = usernameView.text ?? ""
+        let profile = profileView.text ?? ""
 
         delegate?.loginCreateAccountControllerCreate(self, name: name, profile: profile)
     }

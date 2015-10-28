@@ -36,6 +36,7 @@
 		119AD1BE1BDED261000C5CB8 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1BD1BDED261000C5CB8 /* TextViewController.swift */; };
 		119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */; };
 		119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
+		119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; settings = {ASSET_TAGS = (); }; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
@@ -182,6 +183,7 @@
 		119AD1BD1BDED261000C5CB8 /* TextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertViewExtension.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 				1164C8EF1BC982FF00B91107 /* ImageExtension.swift */,
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
+				119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */,
 				119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */,
 				1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */,
 			);
@@ -689,6 +692,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */,
+				119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */,
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
 				1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,

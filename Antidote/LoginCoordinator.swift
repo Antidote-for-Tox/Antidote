@@ -8,7 +8,13 @@
 
 import UIKit
 
+protocol LoginCoordinatorDelegate: class {
+    func loginCoordinatorDidLogin(coordinator: LoginCoordinator)
+}
+
 class LoginCoordinator {
+    var delegate: LoginCoordinatorDelegate?
+
     let window: UIWindow
     let navigationController: UINavigationController
     let theme: Theme
@@ -70,6 +76,48 @@ extension LoginCoordinator: LoginChoiceControllerDelegate {
     }
 }
 
+extension LoginCoordinator: LoginCreateAccountControllerDelegate {
+    func loginCreateAccountControllerCreate(controller: LoginCreateAccountController, name: String, profile: String) {
+        let profileManager = ProfileManager()
+
+        if name.isEmpty || profile.isEmpty {
+            UIAlertView.showWithTitle("", message: String(localized: "login_enter_username_and_profile"))
+            return
+        }
+
+        if profileManager.allProfileNames.contains(profile) {
+            UIAlertView.showWithTitle("", message: String(localized: "login_profile_already_exists"))
+            return
+        }
+
+        do {
+            try profileManager.createProfileWithName(profile)
+        }
+        catch let error as NSError {
+            UIAlertView.showErrorWithMessage(String(localized: error.localizedDescription))
+            return
+        }
+
+        let path = profileManager.pathForProfileWithName(profile)
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
+        let manager: OCTManager
+
+        do {
+            manager = try OCTManager(configuration: configuration)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.CreateOCTManager, error: error)
+            _ = try? profileManager.deleteProfileWithName(profile)
+            return
+        }
+
+        _ = try? manager.user.setUserName(name)
+        _ = try? manager.user.setUserStatusMessage(String(localized: "default_user_status_message"))
+
+        loginWithProfile(profile)
+    }
+}
+
 private extension LoginCoordinator {
     func createFormController() -> LoginFormController {
         let profileNames = ProfileManager().allProfileNames
@@ -94,6 +142,7 @@ private extension LoginCoordinator {
 
     func showCreateAccountController() {
         let controller = LoginCreateAccountController(theme: theme)
+        controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
     }
@@ -106,5 +155,13 @@ private extension LoginCoordinator {
                 textColor: theme.colorForType(.LoginDescriptionLabel))
 
         navigationController.pushViewController(controller, animated: true)
+    }
+
+    func loginWithProfile(profile: String) {
+        let manager = UserDefaultsManager()
+        manager.isUserLoggedIn = true
+        manager.lastActiveProfile = profile
+
+        delegate?.loginCoordinatorDidLogin(self)
     }
 }

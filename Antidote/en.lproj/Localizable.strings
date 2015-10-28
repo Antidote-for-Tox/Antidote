@@ -30,9 +30,31 @@
 "create_account_profile_placeholder" = "Profile name";
 "create_account_profile_hint" = "e.g. Home, iPhone";
 "create_account_go_button" = "Go";
+"default_user_status_message" = "Toxing on Antidote";
 
-"enter_username_and_profile" = "Please enter both username and profile name.";
+"login_enter_username_and_profile" = "Please enter both username and profile name.";
+"login_profile_already_exists" = "Profile with given name already exists";
 
 "error_title" = "Error";
 "error_ok_button" = "OK";
 "error_file_not_found" = "File not found";
+
+"manager_error_wrong_password_title" = "Wrong password";
+"manager_error_wrong_password_message" = "Password contains wrong symbols.";
+"manager_error_import_not_exist_title" = "Cannot import tox save file";
+"manager_error_import_not_exist_message" = "File does not exist.";
+"manager_error_decrypt_title" = "Cannot decrypt tox save file";
+"manager_error_decrypt_empty_data_message" = "Some input data was empty.";
+"manager_error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
+"manager_error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
+"manager_error_general_title" = "Error";
+"manager_error_general_unknown_message" = "Unknown error occured.";
+"manager_error_general_no_memory_message" = "Not enought memory.";
+"manager_error_general_bind_port_message" = "Was unable to bind to a port.";
+"manager_error_general_profile_encrypted_message" = "Profile is encrypted.";
+"manager_error_general_bad_format_message" = "File has bad format or is corrupted.";
+"manager_error_proxy_title" = "Proxy error";
+"manager_error_proxy_internal_message" = "Internal error.";
+"manager_error_proxy_invalid_address_message" = "Proxy address has invalid format.";
+"manager_error_proxy_invalid_port_message" = "Proxy port is invalid.";
+"manager_error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";

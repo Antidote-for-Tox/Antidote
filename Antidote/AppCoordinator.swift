@@ -21,15 +21,20 @@ class AppCoordinator {
         let yamlString = try! NSString(contentsOfFile:filepath, encoding:NSUTF8StringEncoding) as String
 
         self.theme = try! Theme(yamlString: yamlString)
-
-        activeCoordinator = createActualCoordinator()
     }
 }
 
 // MARK: CoordinatorProtocol
-extension AppCoordinator : CoordinatorProtocol {
+extension AppCoordinator: CoordinatorProtocol {
     func start() {
+        activeCoordinator = createActualCoordinator()
         activeCoordinator.start()
+    }
+}
+
+extension AppCoordinator: LoginCoordinatorDelegate {
+    func loginCoordinatorDidLogin(coordinator: LoginCoordinator) {
+        start()
     }
 }
 
@@ -37,16 +42,18 @@ extension AppCoordinator : CoordinatorProtocol {
 private extension AppCoordinator {
     func createActualCoordinator() -> CoordinatorProtocol {
         let userDefaults = UserDefaultsManager()
-        var coordinator: CoordinatorProtocol
 
         if userDefaults.isUserLoggedIn && (userDefaults.lastActiveProfile != nil) {
-            coordinator = RunningCoordinator(window: window)
+            let coordinator = RunningCoordinator(window: window)
+
+            return coordinator
         }
         else {
-            coordinator = LoginCoordinator(window: window, theme: theme)
-        }
+            let coordinator = LoginCoordinator(window: window, theme: theme)
+            coordinator.delegate = self
 
-        return coordinator
+            return coordinator
+        }
     }
 }
 
