@@ -1,6 +1,6 @@
 [![Circle CI](https://circleci.com/gh/Antidote-for-Tox/Antidote.svg?style=svg)](https://circleci.com/gh/Antidote-for-Tox/Antidote)
 
-[Tox](https://tox.chat/) client for iOS 8.0+;
+[Tox](https://tox.chat/) client for iOS 8.2+;
 
 ![](https://i.imgur.com/5HF5RMX.png)
 
