@@ -122,7 +122,7 @@ private extension LoginExtendedTextField {
     func createViews() {
         titleLabel = UILabel()
         titleLabel.textColor = theme.colorForType(.LoginDescriptionLabel)
-        titleLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
+        titleLabel.font = UIFont.systemFontOfSize(18.0)
         titleLabel.backgroundColor = .clearColor()
         addSubview(titleLabel)
 
@@ -135,7 +135,7 @@ private extension LoginExtendedTextField {
 
         hintLabel = UILabel()
         hintLabel.textColor = theme.colorForType(.LoginDescriptionLabel)
-        hintLabel.font = UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
+        hintLabel.font = UIFont.systemFontOfSize(14.0, weight: UIFontWeightLight)
         hintLabel.numberOfLines = 0
         hintLabel.backgroundColor = .clearColor()
         addSubview(hintLabel)
@@ -146,7 +146,7 @@ private extension LoginExtendedTextField {
             make.top.left.right.equalTo(self)
         }
 
-        titleLabel.snp_makeConstraints{ (make) -> Void in
+        textField.snp_makeConstraints{ (make) -> Void in
             make.top.equalTo(titleLabel.snp_bottom).offset(Constants.VerticalOffset)
             make.left.right.equalTo(self)
             make.height.equalTo(Constants.TextFieldHeight)

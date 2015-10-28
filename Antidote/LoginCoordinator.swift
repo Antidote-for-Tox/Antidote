@@ -93,7 +93,9 @@ private extension LoginCoordinator {
     }
 
     func showCreateAccountController() {
-        print("create")
+        let controller = LoginCreateAccountController(theme: theme)
+
+        navigationController.pushViewController(controller, animated: true)
     }
 
     func showImportProfileController() {

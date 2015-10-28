@@ -15,14 +15,20 @@ enum ErrorHandlerType {
 func handleErrorWithType(type: ErrorHandlerType) {
     switch type {
         case .CannotLoadHTML:
-            showErrorWithMessage(String(localized: "error_file_not_found"))
+            UIAlertView.showErrorWithMessage(String(localized: "error_file_not_found"))
     }
 }
 
-private func showErrorWithMessage(message: String) {
-    UIAlertView(
-            title: String(localized: "error_title"),
-            message: message,
-            delegate: nil,
-            cancelButtonTitle: String(localized: "error_ok_button")).show()
+extension UIAlertView {
+    class func showErrorWithMessage(message: String) {
+        showWithTitle(String(localized: "error_title"), message: message)
+    }
+
+    class func showWithTitle(title: String, message: String) {
+        let alertView = UIAlertView(
+                title: title,
+                message: message,
+                delegate: nil,
+                cancelButtonTitle: String(localized: "error_ok_button")).show()
+    }
 }

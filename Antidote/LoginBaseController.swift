@@ -23,6 +23,8 @@ class LoginBaseController: KeyboardNotificationController {
         self.theme = theme
 
         super.init()
+
+        edgesForExtendedLayout = .None
     }
 
     required convenience init?(coder aDecoder: NSCoder) {

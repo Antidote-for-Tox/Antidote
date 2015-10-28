@@ -24,6 +24,14 @@
 "log_in" = "Log In";
 "create_profile" = "Create profile";
 "import_to_antidote" = "Import to Antidote";
+"create_account_username_title" = "How friends will see you?";
+"create_account_username_placeholder" = "Username";
+"create_account_profile_title" = "How to call this profile?";
+"create_account_profile_placeholder" = "Profile name";
+"create_account_profile_hint" = "e.g. Home, iPhone";
+"create_account_go_button" = "Go";
+
+"enter_username_and_profile" = "Please enter both username and profile name.";
 
 "error_title" = "Error";
 "error_ok_button" = "OK";

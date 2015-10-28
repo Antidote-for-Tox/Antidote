@@ -5,3 +5,4 @@
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTDefaultFileStorage.h>
+#import <objcTox/OCTToxConstants.h>
