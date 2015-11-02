@@ -13,13 +13,13 @@ protocol LoginCoordinatorDelegate: class {
 }
 
 class LoginCoordinator {
-    var delegate: LoginCoordinatorDelegate?
+    weak var delegate: LoginCoordinatorDelegate?
 
     let window: UIWindow
     let navigationController: UINavigationController
     let theme: Theme
 
-    init(window: UIWindow, theme: Theme) {
+    init(theme: Theme, window: UIWindow) {
         self.window = window
         self.navigationController = PortraitNavigationController()
         self.theme = theme

@@ -23,3 +23,5 @@ values:
   # Color used for fullscreen translucent views background, e.g. fullscreen picker
   translucent-background: transparent_white
 
+  # normal background color used all over application
+  normal-background: white

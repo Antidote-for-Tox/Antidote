@@ -8,16 +8,32 @@
 
 import UIKit
 
+protocol ProfileTabCoordinatorDelegate: class {
+    func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
+}
+
 class ProfileTabCoordinator {
+    weak var delegate: ProfileTabCoordinatorDelegate?
+
+    let theme: Theme
     let navigationController = UINavigationController()
+
+    init(theme: Theme) {
+        self.theme = theme
+    }
+}
+
+extension ProfileTabCoordinator: ProfileMainControllerDelegate {
+    func profileMainControllerLogout(controller: ProfileMainController) {
+        delegate?.profileTabCoordinatorDelegateLogout(self)
+    }
 }
 
 // MARK: CoordinatorProtocol
 extension ProfileTabCoordinator : TabCoordinatorProtocol {
     func start() {
-        let controller = UIViewController()
-        controller.title = "Profile"
-
+        let controller = ProfileMainController(theme: theme)
+        controller.delegate = self
         navigationController.pushViewController(controller, animated: false)
     }
 }

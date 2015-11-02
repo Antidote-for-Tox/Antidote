@@ -32,6 +32,12 @@ extension AppCoordinator: CoordinatorProtocol {
     }
 }
 
+extension AppCoordinator: RunningCoordinatorDelegate {
+    func runningCoordinatorDidLogout(coordinator: RunningCoordinator) {
+        start()
+    }
+}
+
 extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator) {
         start()
@@ -44,12 +50,13 @@ private extension AppCoordinator {
         let userDefaults = UserDefaultsManager()
 
         if userDefaults.isUserLoggedIn && (userDefaults.lastActiveProfile != nil) {
-            let coordinator = RunningCoordinator(window: window)
+            let coordinator = RunningCoordinator(theme: theme, window: window)
+            coordinator.delegate = self
 
             return coordinator
         }
         else {
-            let coordinator = LoginCoordinator(window: window, theme: theme)
+            let coordinator = LoginCoordinator(theme: theme, window: window)
             coordinator.delegate = self
 
             return coordinator
