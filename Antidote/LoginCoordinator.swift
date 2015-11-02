@@ -46,7 +46,7 @@ extension LoginCoordinator: CoordinatorProtocol {
 
 extension LoginCoordinator: LoginFormControllerDelegate {
     func loginFormControllerLogin(controller: LoginFormController, profileName: String, password: String?) {
-        print("login")
+        loginWithProfile(profileName, password: password)
     }
 
     func loginFormControllerCreateAccount(controller: LoginFormController) {
@@ -98,23 +98,12 @@ extension LoginCoordinator: LoginCreateAccountControllerDelegate {
             return
         }
 
-        let path = profileManager.pathForProfileWithName(profile)
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
-        let manager: OCTManager
-
-        do {
-            manager = try OCTManager(configuration: configuration)
-        }
-        catch let error as NSError {
-            handleErrorWithType(.CreateOCTManager, error: error)
+        loginWithProfile(profile, password: nil, configurationClosure:{
+            _ = try? $0.user.setUserName(name)
+            _ = try? $0.user.setUserStatusMessage(String(localized: "default_user_status_message"))
+        }, errorClosure:{
             _ = try? profileManager.deleteProfileWithName(profile)
-            return
-        }
-
-        _ = try? manager.user.setUserName(name)
-        _ = try? manager.user.setUserStatusMessage(String(localized: "default_user_status_message"))
-
-        loginWithProfile(profile)
+        })
     }
 }
 
@@ -157,10 +146,35 @@ private extension LoginCoordinator {
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func loginWithProfile(profile: String) {
-        let manager = UserDefaultsManager()
-        manager.isUserLoggedIn = true
-        manager.lastActiveProfile = profile
+    /**
+     * @param profile The name of profile.
+     * @param configurationClosure Closure called after login to configure profile.
+     * @param errorClosure Closure called if any error occured during login.
+     */
+    func loginWithProfile(
+            profile: String,
+            password: String?,
+            configurationClosure: ((manager: OCTManager) -> Void)? = nil,
+            errorClosure: (() -> Void)? = nil)
+    {
+        let path = ProfileManager().pathForProfileWithName(profile)
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
+        let manager: OCTManager
+
+        do {
+            manager = try OCTManager(configuration: configuration)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.CreateOCTManager, error: error)
+            errorClosure?()
+            return
+        }
+
+        configurationClosure?(manager: manager)
+
+        let userDefaults = UserDefaultsManager()
+        userDefaults.isUserLoggedIn = true
+        userDefaults.lastActiveProfile = profile
 
         delegate?.loginCoordinatorDidLogin(self)
     }
