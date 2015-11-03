@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Audio and video calls.
 
 ## [0.6.1] - 2015-09-26
 ### Fixed
