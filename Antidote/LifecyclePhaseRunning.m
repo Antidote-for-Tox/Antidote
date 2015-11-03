@@ -10,6 +10,7 @@
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
+#import <objcTox/OCTSubmanagerCalls.h>
 #import <objcTox/RBQFetchedResultsController.h>
 
 #import "LifecyclePhaseRunning.h"
@@ -115,6 +116,7 @@
     [RunningContext context].tabBarController = tabBarVC;
 
     self.toxListener = [[ToxListener alloc] initWithManager:self.toxManager];
+    self.toxManager.calls.delegate = self.toxListener;
     [self.toxListener performUpdates];
 }
 

@@ -21,4 +21,20 @@
  */
 - (UIImage *)avatarFromString:(NSString *)string diameter:(CGFloat)diameter;
 
+/**
+ * Returns round avatar from string with a given diameter. Search in cache for avatar first,
+ * if not found creates it.
+ *
+ * @param string String to create avatar from
+ * @param diameter Diameter of circle with avatar
+ * @param textColor Color of the text and C
+ * @param backgroundColor Color of the background.
+ *
+ * @return Avatar from given string with given size.
+ */
+- (UIImage *)avatarFromString:(NSString *)string
+                     diameter:(CGFloat)diameter
+                    textColor:(UIColor *)textColor
+              backgroundColor:(UIColor *)backgroundColor;
+
 @end

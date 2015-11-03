@@ -94,6 +94,21 @@
 		11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 11FE3FFE1A7D8E2800E19766 /* BasicSettingsViewController.m */; };
 		84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B6628C19A2510A00328874 /* CustomLogFormatter.m */; };
 		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		F0028B011B6194E800B42D9C /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = F0028B001B6194E800B42D9C /* ringback.wav */; };
+		F015E2591B794FDA0052E1B3 /* CompactControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F015E2581B794FDA0052E1B3 /* CompactControlsView.m */; };
+		F04234F61B54254800B93009 /* CallsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F04234F51B54254800B93009 /* CallsManager.m */; };
+		F066F7D61B5F56B3002B2ADF /* IncomingCallNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */; };
+		F06C76C21B82B43D00FACC99 /* VideoCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C76C11B82B43D00FACC99 /* VideoCallViewController.m */; };
+		F06C76C51B82BAFE00FACC99 /* AudioCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F06C76C41B82BAFE00FACC99 /* AudioCallViewController.m */; };
+		F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */; };
+		F0889AE21B7A733C0042BE06 /* VideoAndPreviewView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0889AE11B7A733C0042BE06 /* VideoAndPreviewView.m */; };
+		F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */; };
+		F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */; };
+		F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */; };
+		F0A37E391B6758610099B225 /* ExpandedControlsView.m in Sources */ = {isa = PBXBuildFile; fileRef = F0A37E381B6758610099B225 /* ExpandedControlsView.m */; };
+		F0B6BEA71B603C2000A54B25 /* RingTonePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = F0B6BEA61B603C2000A54B25 /* RingTonePlayer.m */; };
+		F0B6BEAA1B60472900A54B25 /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = F0B6BEA91B60472900A54B25 /* ringtone.wav */; };
+		F0D127DD1B445B2700E2E7B8 /* DialingCallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */; };
 		F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */ = {isa = PBXBuildFile; fileRef = F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */; };
 		F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FB7D591ADED01A004FA894 /* PortraitNavigationController.m */; };
 /* End PBXBuildFile section */
@@ -273,6 +288,35 @@
 		84B6628B19A2510A00328874 /* CustomLogFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomLogFormatter.h; sourceTree = "<group>"; };
 		84B6628C19A2510A00328874 /* CustomLogFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomLogFormatter.m; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		F0028B001B6194E800B42D9C /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
+		F015E2551B794DCC0052E1B3 /* CompactControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompactControlsView.h; sourceTree = "<group>"; };
+		F015E2581B794FDA0052E1B3 /* CompactControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompactControlsView.m; sourceTree = "<group>"; };
+		F04234F41B54254800B93009 /* CallsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallsManager.h; sourceTree = "<group>"; };
+		F04234F51B54254800B93009 /* CallsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CallsManager.m; sourceTree = "<group>"; };
+		F066F7D41B5F56B3002B2ADF /* IncomingCallNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IncomingCallNotificationView.h; sourceTree = "<group>"; };
+		F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IncomingCallNotificationView.m; sourceTree = "<group>"; };
+		F06C76C01B82B43D00FACC99 /* VideoCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoCallViewController.h; sourceTree = "<group>"; };
+		F06C76C11B82B43D00FACC99 /* VideoCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoCallViewController.m; sourceTree = "<group>"; };
+		F06C76C31B82BAFE00FACC99 /* AudioCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioCallViewController.h; sourceTree = "<group>"; };
+		F06C76C41B82BAFE00FACC99 /* AudioCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AudioCallViewController.m; sourceTree = "<group>"; };
+		F08766471B58379700D2B9D7 /* PauseCallTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseCallTableViewCell.h; sourceTree = "<group>"; };
+		F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PauseCallTableViewCell.m; sourceTree = "<group>"; };
+		F0889AE01B7A733C0042BE06 /* VideoAndPreviewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VideoAndPreviewView.h; sourceTree = "<group>"; };
+		F0889AE11B7A733C0042BE06 /* VideoAndPreviewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VideoAndPreviewView.m; sourceTree = "<group>"; };
+		F0889AE31B7A96B90042BE06 /* CallControlsViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CallControlsViewProtocol.h; sourceTree = "<group>"; };
+		F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingingCallViewController.h; sourceTree = "<group>"; };
+		F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingingCallViewController.m; sourceTree = "<group>"; };
+		F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActiveCallViewController.h; sourceTree = "<group>"; };
+		F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActiveCallViewController.m; sourceTree = "<group>"; };
+		F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractCallViewController.h; sourceTree = "<group>"; };
+		F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractCallViewController.m; sourceTree = "<group>"; };
+		F0A37E371B6758610099B225 /* ExpandedControlsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExpandedControlsView.h; sourceTree = "<group>"; };
+		F0A37E381B6758610099B225 /* ExpandedControlsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExpandedControlsView.m; sourceTree = "<group>"; };
+		F0B6BEA51B603C2000A54B25 /* RingTonePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RingTonePlayer.h; sourceTree = "<group>"; };
+		F0B6BEA61B603C2000A54B25 /* RingTonePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RingTonePlayer.m; sourceTree = "<group>"; };
+		F0B6BEA91B60472900A54B25 /* ringtone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringtone.wav; sourceTree = "<group>"; };
+		F0D127DB1B445B2700E2E7B8 /* DialingCallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DialingCallViewController.h; sourceTree = "<group>"; };
+		F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DialingCallViewController.m; sourceTree = "<group>"; };
 		F970DEA71ADA39B500EE2EE4 /* QRScannerAimView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QRScannerAimView.h; sourceTree = "<group>"; };
 		F970DEA81ADA39B500EE2EE4 /* QRScannerAimView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QRScannerAimView.m; sourceTree = "<group>"; };
 		F9FB7D581ADED01A004FA894 /* PortraitNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PortraitNavigationController.h; sourceTree = "<group>"; };
@@ -595,6 +639,8 @@
 		11835292197993F90048CA64 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				F0B6BEA41B603C0D00A54B25 /* RingTonePlayer */,
+				F04234F31B54208B00B93009 /* CallsManager */,
 				11B9E61C1993F3C700FB20A6 /* AppearanceManager */,
 				119DFAC31B3DDFF2008CA975 /* AvatarsManager */,
 				11A757441B0BB501005DAD82 /* Contexts */,
@@ -617,6 +663,7 @@
 		118352A5197A3DB50048CA64 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F0D127DA1B445AC800E2E7B8 /* Call */,
 				116625E11B653EC80036ABC2 /* About */,
 				119BB11F198BE76600380557 /* AddFriend */,
 				114630981984E19A0075DA16 /* AllChats */,
@@ -645,6 +692,7 @@
 		118352A9197A6C210048CA64 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F0889ADF1B7A73060042BE06 /* Calls */,
 				11E57F4319C23CF100C8ACB8 /* Cells */,
 				F902D29A1ADED30B0070A3F5 /* CopyLabel */,
 				11A88AC11BA00EF30032686F /* FullscreenPicker */,
@@ -911,9 +959,82 @@
 			name = CustomLogFormatter;
 			sourceTree = "<group>";
 		};
+		F04234F31B54208B00B93009 /* CallsManager */ = {
+			isa = PBXGroup;
+			children = (
+				F04234F41B54254800B93009 /* CallsManager.h */,
+				F04234F51B54254800B93009 /* CallsManager.m */,
+			);
+			name = CallsManager;
+			sourceTree = "<group>";
+		};
+		F08766461B58377500D2B9D7 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F08766471B58379700D2B9D7 /* PauseCallTableViewCell.h */,
+				F08766481B58379700D2B9D7 /* PauseCallTableViewCell.m */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
+		F0889ADF1B7A73060042BE06 /* Calls */ = {
+			isa = PBXGroup;
+			children = (
+				F08766461B58377500D2B9D7 /* Cells */,
+				F066F7D41B5F56B3002B2ADF /* IncomingCallNotificationView.h */,
+				F066F7D51B5F56B3002B2ADF /* IncomingCallNotificationView.m */,
+				F0A37E371B6758610099B225 /* ExpandedControlsView.h */,
+				F0A37E381B6758610099B225 /* ExpandedControlsView.m */,
+				F015E2551B794DCC0052E1B3 /* CompactControlsView.h */,
+				F015E2581B794FDA0052E1B3 /* CompactControlsView.m */,
+				F0889AE01B7A733C0042BE06 /* VideoAndPreviewView.h */,
+				F0889AE11B7A733C0042BE06 /* VideoAndPreviewView.m */,
+				F0889AE31B7A96B90042BE06 /* CallControlsViewProtocol.h */,
+			);
+			name = Calls;
+			sourceTree = "<group>";
+		};
+		F0B6BEA41B603C0D00A54B25 /* RingTonePlayer */ = {
+			isa = PBXGroup;
+			children = (
+				F0B6BEA51B603C2000A54B25 /* RingTonePlayer.h */,
+				F0B6BEA61B603C2000A54B25 /* RingTonePlayer.m */,
+			);
+			name = RingTonePlayer;
+			sourceTree = "<group>";
+		};
+		F0B6BEA81B603EAA00A54B25 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				F0028B001B6194E800B42D9C /* ringback.wav */,
+				F0B6BEA91B60472900A54B25 /* ringtone.wav */,
+			);
+			name = Sounds;
+			sourceTree = "<group>";
+		};
+		F0D127DA1B445AC800E2E7B8 /* Call */ = {
+			isa = PBXGroup;
+			children = (
+				F0D127DB1B445B2700E2E7B8 /* DialingCallViewController.h */,
+				F0D127DC1B445B2700E2E7B8 /* DialingCallViewController.m */,
+				F09B9A261B45AF3800F74A46 /* RingingCallViewController.h */,
+				F09B9A271B45AF3800F74A46 /* RingingCallViewController.m */,
+				F09B9A291B45AF4300F74A46 /* ActiveCallViewController.h */,
+				F09B9A2A1B45AF4300F74A46 /* ActiveCallViewController.m */,
+				F09B9A2C1B45B26600F74A46 /* AbstractCallViewController.h */,
+				F09B9A2D1B45B26600F74A46 /* AbstractCallViewController.m */,
+				F06C76C01B82B43D00FACC99 /* VideoCallViewController.h */,
+				F06C76C11B82B43D00FACC99 /* VideoCallViewController.m */,
+				F06C76C31B82BAFE00FACC99 /* AudioCallViewController.h */,
+				F06C76C41B82BAFE00FACC99 /* AudioCallViewController.m */,
+			);
+			name = Call;
+			sourceTree = "<group>";
+		};
 		F902D28D1ADED27A0070A3F5 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				F0B6BEA81B603EAA00A54B25 /* Sounds */,
 				1164764119794D3300DB20B8 /* AppDelegate.h */,
 				1164764219794D3300DB20B8 /* AppDelegate.m */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
@@ -1058,6 +1179,7 @@
 				1164762C19794D3300DB20B8 /* Frameworks */,
 				1164762D19794D3300DB20B8 /* Resources */,
 				765330FB0A1142E6A0B97483 /* Copy Pods Resources */,
+				15D917AC31D50E2D55C19DD2 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1076,6 +1198,15 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = dvor;
+				TargetAttributes = {
+					1164762E19794D3300DB20B8 = {
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
+					};
+				};
 			};
 			buildConfigurationList = 1164762A19794D3300DB20B8 /* Build configuration list for PBXProject "Antidote" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1100,8 +1231,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
+				F0028B011B6194E800B42D9C /* ringback.wav in Resources */,
 				1179E06B1BA0534600D258C6 /* import-profile.html in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
+				F0B6BEAA1B60472900A54B25 /* ringtone.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1121,6 +1254,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		15D917AC31D50E2D55C19DD2 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		765330FB0A1142E6A0B97483 /* Copy Pods Resources */ = {
@@ -1164,6 +1312,7 @@
 				84B6628D19A2510A00328874 /* CustomLogFormatter.m in Sources */,
 				11E82AA219CD72E6001561CA /* PreviewItem.m in Sources */,
 				1195D6011B28C2D6004E59FD /* ChatViewController.m in Sources */,
+				F09B9A2E1B45B26600F74A46 /* AbstractCallViewController.m in Sources */,
 				1179E0731BA1FA9100D258C6 /* UIButton+Utilities.m in Sources */,
 				F970DEA91ADA39B500EE2EE4 /* QRScannerAimView.m in Sources */,
 				11272ADF1BB1EDCE0080C8C9 /* WizardViewController.m in Sources */,
@@ -1174,17 +1323,22 @@
 				11300B681B4DB25E00233052 /* ProfileViewController.m in Sources */,
 				116625CE1B62DA880036ABC2 /* ContentCellWithAvatar.m in Sources */,
 				118352C6197A802D0048CA64 /* UIView+Utilities.m in Sources */,
+				F0889AE21B7A733C0042BE06 /* VideoAndPreviewView.m in Sources */,
+				F0D127DD1B445B2700E2E7B8 /* DialingCallViewController.m in Sources */,
+				F066F7D61B5F56B3002B2ADF /* IncomingCallNotificationView.m in Sources */,
 				11C4B4D11B25F8DF00646A2E /* Helper.m in Sources */,
 				1125CEDA1BAC1324002B17EC /* ContentCellSimple.m in Sources */,
 				1179E0771BA21A0C00D258C6 /* KeyboardNotificationController.m in Sources */,
 				116625DA1B63D7E50036ABC2 /* ContentCellWithTitleEditable.m in Sources */,
 				116625DD1B63D7F00036ABC2 /* ContentCellWithTitleImmutable.m in Sources */,
 				11B9E6171993EBDB00FB20A6 /* TimeFormatter.m in Sources */,
+				F08766491B58379700D2B9D7 /* PauseCallTableViewCell.m in Sources */,
 				110FF3401B9E17E000904D1D /* LifecyclePhaseStartup.m in Sources */,
 				11FE3FFF1A7D8E2800E19766 /* BasicSettingsViewController.m in Sources */,
 				11A88ABD1BA0080D0032686F /* ImportProfileViewController.m in Sources */,
 				11E366621B6A2D0400E7E8D2 /* AddFriendViewController.m in Sources */,
 				114630E0198555730075DA16 /* AllChatsCell.m in Sources */,
+				F06C76C51B82BAFE00FACC99 /* AudioCallViewController.m in Sources */,
 				1164763F19794D3300DB20B8 /* main.m in Sources */,
 				117FCFB119BCBFF80026C13B /* UITableViewCell+Utilities.m in Sources */,
 				1179E07C1BA22F3500D258C6 /* FullscreenSpinner.m in Sources */,
@@ -1204,6 +1358,7 @@
 				11E366661B6A40CF00E7E8D2 /* ErrorHandler.m in Sources */,
 				118352C0197A7CE80048CA64 /* FriendsCell.m in Sources */,
 				11C3A756198D3E460029A7A0 /* UIImage+Utilities.m in Sources */,
+				F09B9A281B45AF3800F74A46 /* RingingCallViewController.m in Sources */,
 				11A757471B0BB50F005DAD82 /* AppContext.m in Sources */,
 				F9FB7D5A1ADED01A004FA894 /* PortraitNavigationController.m in Sources */,
 				1182AF401B4EE31B0095B476 /* TabBarBadgeItem.m in Sources */,
@@ -1212,16 +1367,22 @@
 				1179E0841BA84C0C00D258C6 /* FileManager.m in Sources */,
 				119DFAC61B3DDFFE008CA975 /* AvatarsManager.m in Sources */,
 				1137BDEB1B24438E00BA20C8 /* ProfileManager.m in Sources */,
+				F04234F61B54254800B93009 /* CallsManager.m in Sources */,
 				110FF3371B9E0CE000904D1D /* RunningContext.m in Sources */,
 				118352AC197A6C410048CA64 /* CopyLabel.m in Sources */,
 				11C2AA0619C4979A003BE161 /* CellWithColorscheme.m in Sources */,
 				118352A8197A64B70048CA64 /* SettingsViewController.m in Sources */,
 				119BB11E198B536300380557 /* AppDelegate+Utilities.m in Sources */,
+				F09B9A2B1B45AF4300F74A46 /* ActiveCallViewController.m in Sources */,
+				F06C76C21B82B43D00FACC99 /* VideoCallViewController.m in Sources */,
+				F0A37E391B6758610099B225 /* ExpandedControlsView.m in Sources */,
+				F0B6BEA71B603C2000A54B25 /* RingTonePlayer.m in Sources */,
 				119DFAD11B3EA462008CA975 /* NotificationObject.m in Sources */,
 				11CFD0BD1B401394002C59DB /* WindowPassingGestures.m in Sources */,
 				119DFACE1B3EA34F008CA975 /* NotificationManager.m in Sources */,
 				1182AF3A1B4EE2070095B476 /* TabBarViewController.m in Sources */,
 				118352C3197A7D3A0048CA64 /* StatusCircleView.m in Sources */,
+				F015E2591B794FDA0052E1B3 /* CompactControlsView.m in Sources */,
 				111F92B31BAED2750065117A /* LoginChoiceView.m in Sources */,
 				110FF3461B9E1C8400904D1D /* LifecyclePhaseRunning.m in Sources */,
 				116625E01B63F4B80036ABC2 /* FriendCardViewController.m in Sources */,
@@ -1260,6 +1421,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1277,6 +1439,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1307,6 +1470,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};

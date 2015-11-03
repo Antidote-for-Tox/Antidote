@@ -23,6 +23,8 @@
 #import "NotificationObject.h"
 #import "AvatarsManager.h"
 #import "ChatViewController.h"
+#import "CallsManager.h"
+#import "OCTCall.h"
 #import "TabBarViewController.h"
 #import "RunningContext.h"
 
@@ -123,6 +125,12 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
     }
 }
 
+#pragma mark - SubmanagerCalls delegate
+- (void)callSubmanager:(OCTSubmanagerCalls *)callSubmanager receiveCall:(OCTCall *)call audioEnabled:(BOOL)audioEnabled videoEnabled:(BOOL)videoEnabled
+{
+    [[RunningContext context].calls handleIncomingCall:call];
+}
+
 #pragma mark -  Private
 
 - (RBQFetchedResultsController *)createFetchedResultsControllerForType:(OCTFetchRequestType)type
@@ -186,6 +194,10 @@ NSString *const kToxListenerGroupIdentifierFriendRequest = @"kToxListenerGroupId
 {
     AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     UIViewController *visibleVC = [delegate visibleViewController];
+
+    if (message.messageCall) {
+        return NO;
+    }
 
     if (! [visibleVC isKindOfClass:[ChatViewController class]]) {
         return YES;

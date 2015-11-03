@@ -8,6 +8,9 @@
 
 #import <objcTox/OCTDefaultFileStorage.h>
 #import <objcTox/OCTManagerConfiguration.h>
+#import <objcTox/OCTSubmanagerBootstrap.h>
+#import <objcTox/OCTSubmanagerCalls.h>
+#import <objcTox/OCTSubmanagerUser.h>
 
 #import "ProfileManager.h"
 #import "NSArray+BlocksKit.h"
