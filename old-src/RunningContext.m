@@ -10,6 +10,7 @@
 
 #import "RunningContext.h"
 #import "NotificationManager.h"
+#import "CallsManager.h"
 #import "TabBarViewController.h"
 
 static RunningContext *_runningContext;
@@ -20,6 +21,7 @@ static NSObject *_runningContextLock;
 @property (weak, nonatomic, readwrite) OCTManager *toxManager;
 
 @property (strong, nonatomic, readwrite) NotificationManager *notificationManager;
+@property (strong, nonatomic, readwrite) CallsManager *calls;
 
 @end
 
@@ -48,6 +50,24 @@ static NSObject *_runningContextLock;
     @synchronized(_runningContextLock) {
         _runningContext = nil;
     }
+}
+
+#pragma mark -  Properties
+
+- (CallsManager *)calls
+{
+    if (_calls) {
+        return _calls;
+    }
+
+    _calls = [CallsManager new];
+
+    return _calls;
+}
+
+- (void)killCallsManager
+{
+    self.calls = nil;
 }
 
 @end

@@ -10,6 +10,7 @@
 #import <BlocksKit/NSArray+BlocksKit.h>
 
 #import <objcTox/OCTMessageAbstract.h>
+#import <objcTox/OCTMessageCall.h>
 #import <objcTox/OCTMessageFile.h>
 #import <objcTox/OCTMessageText.h>
 #import <objcTox/OCTSubmanagerChats.h>
@@ -20,6 +21,7 @@
 #import "ChatViewController.h"
 #import "UIImage+Utilities.h"
 #import "UIColor+Utilities.h"
+#import "NSString+Utilities.h"
 #import "TimeFormatter.h"
 #import "UITableViewCell+Utilities.h"
 #import "AppearanceManager.h"
@@ -122,6 +124,22 @@
         }
 
         message = [NSString stringWithFormat:format, chat.lastMessage.messageFile.fileName];
+    }
+
+    else if  (chat.lastMessage.messageCall) {
+
+        OCTMessageCall *messageCall = chat.lastMessage.messageCall;
+        NSString *timeString = [NSString stringFromTimeInterval:messageCall.callDuration];
+
+        switch (messageCall.callEvent) {
+            case OCTMessageCallEventAnswered:
+                message = [NSString stringWithFormat:NSLocalizedString(@"Call finished - %@", @"Calls"),
+                           timeString];
+                break;
+            case OCTMessageCallEventUnanswered:
+                message = NSLocalizedString(@"Unanswered call", @"Calls");
+                break;
+        }
     }
 
     [cell setMessage:message andDate:dateString];

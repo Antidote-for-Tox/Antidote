@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "OCTManager.h"
+#import <objcTox/OCTManager.h>
+#import <objcTox/OCTSubmanagerCallsDelegate.h>
 
 extern NSString *const kToxListenerGroupIdentifierFriendRequest;
 
@@ -19,7 +20,7 @@ extern NSString *const kToxListenerGroupIdentifierFriendRequest;
  * For friend request update group identifier is kToxListenerGroupIdentifierFriendRequest.
  * For messages friend identifier is chat uniqueIdentifier.
  */
-@interface ToxListener : NSObject
+@interface ToxListener : NSObject <OCTSubmanagerCallDelegate>
 
 - (instancetype)init NS_UNAVAILABLE;
 + (instancetype)new NS_UNAVAILABLE;

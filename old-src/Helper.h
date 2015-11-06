@@ -40,4 +40,8 @@ extern NSString *const kToxSaveFileExtension;
                                                        sortDescriptors:(NSArray *)sortDescriptors
                                                               delegate:(id<RBQFetchedResultsControllerDelegate>)delegate;
 
++ (void)updateFetchedResultsController:(RBQFetchedResultsController *)controller
+                              withType:(OCTFetchRequestType)type
+                             predicate:(NSPredicate *)predicate;
+
 @end

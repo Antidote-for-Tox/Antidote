@@ -8,6 +8,7 @@
 
 #import "ErrorHandler.h"
 #import "OCTToxConstants.h"
+#import "OCTToxAVConstants.h"
 #import "OCTManagerConstants.h"
 
 #define ELOCALIZED(string) NSLocalizedString(string, @"ErrorHandler")
@@ -54,6 +55,18 @@
             break;
         case ErrorHandlerTypeExportProfile:
             [self handleExportProfileError:error];
+            break;
+        case ErrorHandlerTypeSendCallControl:
+            [self handleSendCallControlError:error];
+            break;
+        case ErrorHandlerTypeCallToChat:
+            [self handleCallToChatError:error];
+            break;
+        case ErrorHandlerTypeAnswerCall:
+            [self handleAnswerCallError:error];
+            break;
+        case ErrorHandlerTypeRouteAudio:
+            [self handleRouteCallToSpeakerError:error];
             break;
     }
 }
@@ -298,6 +311,73 @@
 - (void)handleExportProfileError:(NSError *)error
 {
     [self showErrorWithMessage:[error localizedDescription]];
+}
+
+- (void)handleSendCallControlError:(NSError *)error
+{
+    OCTToxErrorCallControl code = error.code;
+    NSString *message;
+
+    switch (code) {
+        case OCTToxAVErrorControlFriendNotFound:
+        case OCTToxAVErrorControlFriendNotInCall:
+        case OCTToxAVErrorControlInvaldTransition:
+        case OCTToxAVErrorControlUnknown:
+            message = INTERNAL_ERROR;
+            break;
+    }
+
+    [self showErrorWithMessage:message];
+}
+
+- (void)handleCallToChatError:(NSError *)error
+{
+    OCTToxAVErrorCall code = error.code;
+    NSString *message;
+
+    switch (code) {
+        case OCTToxAVErrorCallAlreadyInCall:
+            message = ELOCALIZED(@"Already in a call");
+            break;
+        case OCTToxAVErrorCallFriendNotConnected:
+            message = ELOCALIZED(@"Friend is offline");
+            break;
+        case OCTToxAVErrorCallFriendNotFound:
+        case OCTToxAVErrorCallInvalidBitRate:
+        case OCTToxAVErrorCallMalloc:
+        case OCTToxAVErrorCallUnknown:
+            message = INTERNAL_ERROR;
+            break;
+    }
+
+    [self showErrorWithMessage:message];
+}
+
+- (void)handleAnswerCallError:(NSError *)error
+{
+    OCTToxAVErrorAnswer code = error.code;
+    NSString *message;
+
+    switch (code) {
+        case OCTToxAVErrorAnswerCodecInitialization:
+        case OCTToxAVErrorAnswerInvalidBitRate:
+        case OCTToxAVErrorAnswerUnknown:
+        case OCTToxAVErrorAnswerFriendNotFound:
+            message = INTERNAL_ERROR;
+            break;
+        case OCTToxAVErrorAnswerFriendNotCalling:
+            message = ELOCALIZED(@"Friend is not calling");
+            break;
+    }
+
+    [self showErrorWithMessage:message];
+}
+
+- (void)handleRouteCallToSpeakerError:(NSError *)error
+{
+    NSString *message = INTERNAL_ERROR;
+
+    [self showErrorWithMessage:message];
 }
 
 @end

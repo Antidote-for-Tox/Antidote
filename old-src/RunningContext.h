@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class OCTManager;
+@class CallsManager;
 @class NotificationManager;
 @class TabBarViewController;
 
@@ -22,6 +23,7 @@
 @property (weak, nonatomic) TabBarViewController *tabBarController;
 
 @property (strong, nonatomic, readonly) NotificationManager *notificationManager;
+@property (strong, nonatomic, readonly) CallsManager *calls;
 
 + (instancetype)context;
 
@@ -29,5 +31,7 @@
 + (void)kill;
 + (instancetype)new NS_UNAVAILABLE;
 - (instancetype)init NS_UNAVAILABLE;
+
+- (void)killCallsManager;
 
 @end

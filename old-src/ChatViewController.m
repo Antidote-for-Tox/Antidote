@@ -25,6 +25,7 @@
 #import "AppearanceManager.h"
 #import "UpdatesQueue.h"
 #import "NotificationManager.h"
+#import "CallsManager.h"
 #import "ErrorHandler.h"
 #import "RunningContext.h"
 
@@ -93,6 +94,8 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self createBubbleImages];
 
     [self configureInputToolbar];
+
+    [self createPhoneCallBarButton];
 
     [self updateFriendRelatedInformation];
 }
@@ -346,6 +349,15 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
     [self updateTitleView];
 }
 
+- (void)createPhoneCallBarButton
+{
+    UIImage *phoneImage = [UIImage imageNamed:@"call-phone"];
+
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:phoneImage
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(startCallButtonPressed)];
+}
 - (void)updateInputToolbar
 {
     // files are disabled for now
@@ -356,12 +368,15 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
         self.inputToolbar.contentView.textView.editable = NO;
         self.inputToolbar.contentView.rightBarButtonItem.hidden = YES;
         self.friendIsOfflineLabel.hidden = NO;
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+
     }
     else {
         self.inputToolbar.contentView.textView.hidden = NO;
         self.inputToolbar.contentView.textView.editable = YES;
         self.inputToolbar.contentView.rightBarButtonItem.hidden = NO;
         self.friendIsOfflineLabel.hidden = YES;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }
 
@@ -402,6 +417,11 @@ NSString *const kChatViewControllerUserIdentifier = @"user";
 {
     NSTimeInterval interval = [[NSDate date] timeIntervalSince1970];
     [[RunningContext context].toxManager.objects changeChat:self.chat lastReadDateInterval:interval];
+}
+
+- (void)startCallButtonPressed
+{
+    [[RunningContext context].calls callToChat:self.chat enableAudio:YES enableVideo:NO];
 }
 
 @end

@@ -42,6 +42,9 @@ typedef NS_ENUM(NSUInteger, AppearanceManagerColorscheme) {
 - (UIColor *)textMainColorForScheme:(AppearanceManagerColorscheme)scheme;
 - (UIColor *)bubbleIncomingColorForScheme:(AppearanceManagerColorscheme)scheme;
 
+- (UIColor *)callRedColor;
+- (UIColor *)callGreenColor;
+
 - (UIColor *)loginBackgroundColor;
 - (UIColor *)loginButtonColor;
 - (UIColor *)loginNavigationBarColor;

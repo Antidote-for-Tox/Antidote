@@ -41,14 +41,25 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
 
 - (UIImage *)avatarFromString:(NSString *)string diameter:(CGFloat)diameter
 {
-    NSString *key = [self keyFromString:string diameter:diameter];
+    return [self avatarFromString:string
+                         diameter:diameter
+                        textColor:[[AppContext sharedContext].appearance textMainColor]
+                  backgroundColor:[UIColor whiteColor]];
+}
+
+- (UIImage *)avatarFromString:(NSString *)string
+                     diameter:(CGFloat)diameter
+                    textColor:(UIColor *)textColor
+              backgroundColor:(UIColor *)backgroundColor
+{
+    NSString *key = [self keyFromString:string diameter:diameter textColor:textColor backgroundColor:backgroundColor];
     UIImage *avatar = [self.cache objectForKey:key];
 
     if (avatar) {
         return avatar;
     }
 
-    avatar = [self createAvatarFromString:string diameter:diameter];
+    avatar = [self createAvatarFromString:string diameter:diameter textColor:textColor backgroundColor:backgroundColor];
     [self.cache setObject:avatar forKey:key];
 
     return avatar;
@@ -56,21 +67,27 @@ static const NSUInteger kNumberOfLettersInAvatar = 2;
 
 #pragma mark -  Private
 
-- (NSString *)keyFromString:(NSString *)string diameter:(CGFloat)diameter
+- (NSString *)keyFromString:(NSString *)string
+                   diameter:(CGFloat)diameter
+                  textColor:(UIColor *)textColor
+            backgroundColor:(UIColor *)backgroundColor
 {
-    return [NSString stringWithFormat:@"%@-%f", string, diameter];
+    return [NSString stringWithFormat:@"%@-%f-%@-%@", string, diameter, textColor, backgroundColor];
 }
 
-- (UIImage *)createAvatarFromString:(NSString *)string diameter:(CGFloat)diameter
+- (UIImage *)createAvatarFromString:(NSString *)string
+                           diameter:(CGFloat)diameter
+                          textColor:(UIColor *)textColor
+                    backgroundColor:(UIColor *)backgroundColor
 {
     string = [self avatarsStringFromString:string];
 
     UILabel *label = [UILabel new];
-    label.backgroundColor = [UIColor whiteColor];
-    label.layer.borderColor = [[AppContext sharedContext].appearance textMainColor].CGColor;
+    label.backgroundColor = backgroundColor;
+    label.layer.borderColor = textColor.CGColor;
     label.layer.borderWidth = 1.0;
     label.layer.masksToBounds = YES;
-    label.textColor = [[AppContext sharedContext].appearance textMainColor];
+    label.textColor = textColor;
     label.textAlignment = NSTextAlignmentCenter;
     label.text = string;
 
