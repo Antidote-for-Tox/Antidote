@@ -27,7 +27,17 @@ class AppCoordinator {
 // MARK: CoordinatorProtocol
 extension AppCoordinator: CoordinatorProtocol {
     func start() {
-        activeCoordinator = createActualCoordinator()
+        var coordinator: CoordinatorProtocol?
+
+        if UserDefaultsManager().isUserLoggedIn {
+            coordinator = createRunningCoordinatorWithManager(nil)
+        }
+
+        if coordinator == nil {
+            coordinator = createLoginCoordinator()
+        }
+
+        activeCoordinator = coordinator
         activeCoordinator.start()
     }
 }
@@ -39,28 +49,33 @@ extension AppCoordinator: RunningCoordinatorDelegate {
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
-    func loginCoordinatorDidLogin(coordinator: LoginCoordinator) {
+    func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
         start()
     }
 }
 
 // MARK: Private
 private extension AppCoordinator {
-    func createActualCoordinator() -> CoordinatorProtocol {
-        let userDefaults = UserDefaultsManager()
-
-        if userDefaults.isUserLoggedIn && (userDefaults.lastActiveProfile != nil) {
-            let coordinator = RunningCoordinator(theme: theme, window: window)
-            coordinator.delegate = self
-
-            return coordinator
+    func createRunningCoordinatorWithManager(var manager: OCTManager?) -> RunningCoordinator? {
+        if manager == nil {
+            manager =  LoginCoordinator.loginWithActiveProfile()
         }
-        else {
-            let coordinator = LoginCoordinator(theme: theme, window: window)
-            coordinator.delegate = self
 
-            return coordinator
+        if manager == nil {
+            return nil
         }
+
+        let coordinator = RunningCoordinator(theme: theme, window: window)
+        coordinator.delegate = self
+
+        return coordinator
+    }
+
+    func createLoginCoordinator() -> LoginCoordinator {
+        let coordinator = LoginCoordinator(theme: theme, window: window)
+        coordinator.delegate = self
+
+        return coordinator
     }
 }
 

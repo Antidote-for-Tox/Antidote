@@ -9,7 +9,7 @@
 import UIKit
 
 protocol LoginCoordinatorDelegate: class {
-    func loginCoordinatorDidLogin(coordinator: LoginCoordinator)
+    func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager)
 }
 
 class LoginCoordinator {
@@ -29,6 +29,20 @@ class LoginCoordinator {
         navigationController.navigationBar.titleTextAttributes = [
             NSForegroundColorAttributeName: theme.colorForType(.LoginButtonText)
         ]
+    }
+
+    /**
+     * Tries to login with active profile. Returns nil
+     * - if there is no active profile.
+     * - if profile is encrypted.
+     * - if there was some error during login.
+     */
+    class func loginWithActiveProfile() -> OCTManager? {
+        guard let profile = UserDefaultsManager().lastActiveProfile else {
+            return nil
+        }
+
+        return try? createOCTManagerWithProfile(profile, password: nil)
     }
 }
 
@@ -148,6 +162,7 @@ private extension LoginCoordinator {
 
     /**
      * @param profile The name of profile.
+     * @param password Password to decrypt profile.
      * @param configurationClosure Closure called after login to configure profile.
      * @param errorClosure Closure called if any error occured during login.
      */
@@ -157,12 +172,10 @@ private extension LoginCoordinator {
             configurationClosure: ((manager: OCTManager) -> Void)? = nil,
             errorClosure: (() -> Void)? = nil)
     {
-        let path = ProfileManager().pathForProfileWithName(profile)
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
         let manager: OCTManager
 
         do {
-            manager = try OCTManager(configuration: configuration)
+            manager = try LoginCoordinator.createOCTManagerWithProfile(profile, password: password)
         }
         catch let error as NSError {
             handleErrorWithType(.CreateOCTManager, error: error)
@@ -176,6 +189,13 @@ private extension LoginCoordinator {
         userDefaults.isUserLoggedIn = true
         userDefaults.lastActiveProfile = profile
 
-        delegate?.loginCoordinatorDidLogin(self)
+        delegate?.loginCoordinatorDidLogin(self, manager: manager)
+    }
+
+    class func createOCTManagerWithProfile(profile: String, password: String?) throws -> OCTManager {
+        let path = ProfileManager().pathForProfileWithName(profile)
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
+
+        return try OCTManager(configuration: configuration)
     }
 }
