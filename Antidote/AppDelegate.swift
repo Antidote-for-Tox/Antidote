@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame:UIScreen.mainScreen().bounds)
 
+        configureLoggingStuff()
+
         coordinator = AppCoordinator(window: window!)
         coordinator?.start()
 
@@ -25,5 +27,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
 
         return true
+    }
+
+    func configureLoggingStuff() {
+        DDLog.addLogger(DDASLLogger.sharedInstance())
+        DDLog.addLogger(DDTTYLogger.sharedInstance())
     }
 }

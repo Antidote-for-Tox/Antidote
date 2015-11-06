@@ -19,11 +19,14 @@ class RunningCoordinator {
     let window: UIWindow
     let tabBarController: UITabBarController
 
+    let manager: OCTManager
+
     let tabCoordinators: [TabCoordinatorProtocol];
 
-    init(theme: Theme, window: UIWindow) {
+    init(theme: Theme, window: UIWindow, manager: OCTManager) {
         self.window = window
         self.tabBarController = UITabBarController()
+        self.manager = manager
 
         let profile = ProfileTabCoordinator(theme: theme)
 
@@ -35,6 +38,9 @@ class RunningCoordinator {
         ]
 
         profile.delegate = self
+
+        manager.bootstrap.addPredefinedNodes()
+        manager.bootstrap.bootstrap()
     }
 }
 
