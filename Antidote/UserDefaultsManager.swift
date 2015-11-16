@@ -18,7 +18,7 @@ class UserDefaultsManager {
 
     var isUserLoggedIn: Bool {
         get {
-            return boolForKey(Keys.isUserLoggedIn)
+            return boolForKey(Keys.isUserLoggedIn, defaultValue: false)
         }
         set {
             setBool(newValue, forKey: Keys.isUserLoggedIn)
@@ -27,7 +27,7 @@ class UserDefaultsManager {
 
     var IPv6Enabled: Bool {
         get {
-            return boolForKey(Keys.IPv6Enabled)
+            return boolForKey(Keys.IPv6Enabled, defaultValue: true)
         }
         set {
             setBool(newValue, forKey: Keys.IPv6Enabled)
@@ -36,7 +36,7 @@ class UserDefaultsManager {
 
     var UDPEnabled: Bool {
         get {
-            return boolForKey(Keys.UDPEnabled)
+            return boolForKey(Keys.UDPEnabled, defaultValue: true)
         }
         set {
             setBool(newValue, forKey: Keys.UDPEnabled)
@@ -69,8 +69,14 @@ private extension UserDefaultsManager {
         defaults.synchronize()
     }
 
-    func boolForKey(key: String) -> Bool {
+    func boolForKey(key: String, defaultValue: Bool) -> Bool {
         let defaults = NSUserDefaults.standardUserDefaults()
-        return defaults.boolForKey(key)
+
+        if let result = defaults.objectForKey(key) {
+            return result.boolValue
+        }
+        else {
+            return defaultValue
+        }
     }
 }
