@@ -21,6 +21,8 @@ class ProfileMainController: UIViewController {
         self.theme = theme
 
         super.init(nibName: nil, bundle: nil)
+
+        edgesForExtendedLayout = .None
     }
 
     required convenience init?(coder aDecoder: NSCoder) {

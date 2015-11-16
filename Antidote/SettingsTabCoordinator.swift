@@ -8,13 +8,8 @@
 
 import UIKit
 
-class SettingsTabCoordinator {
-    let navigationController = UINavigationController()
-}
-
-// MARK: CoordinatorProtocol
-extension SettingsTabCoordinator : TabCoordinatorProtocol {
-    func start() {
+class SettingsTabCoordinator: RunningBasicCoordinator {
+    override func start() {
         let controller = UIViewController()
         controller.title = "Settings"
 

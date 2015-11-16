@@ -25,3 +25,5 @@ values:
 
   # normal background color used all over application
   normal-background: white
+  connecting-background: skyblue
+  connecting-text: white

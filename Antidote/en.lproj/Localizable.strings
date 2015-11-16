@@ -58,3 +58,5 @@
 "manager_error_proxy_invalid_address_message" = "Proxy address has invalid format.";
 "manager_error_proxy_invalid_port_message" = "Proxy port is invalid.";
 "manager_error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
+
+"connecting_label" = "Connecting...";

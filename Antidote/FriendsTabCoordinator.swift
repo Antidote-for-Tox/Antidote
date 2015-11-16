@@ -6,15 +6,10 @@
 //  Copyright © 2015 dvor. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-class FriendsTabCoordinator {
-    let navigationController = UINavigationController()
-}
-
-// MARK: CoordinatorProtocol
-extension FriendsTabCoordinator : TabCoordinatorProtocol {
-    func start() {
+class FriendsTabCoordinator: RunningBasicCoordinator {
+    override func start() {
         let controller = UIViewController()
         controller.title = "Friends"
 

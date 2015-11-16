@@ -13,7 +13,7 @@ protocol RunningCoordinatorDelegate: class {
     func runningCoordinatorDidLogout(coordinator: RunningCoordinator)
 }
 
-class RunningCoordinator {
+class RunningCoordinator: NSObject {
     weak var delegate: RunningCoordinatorDelegate?
 
     let window: UIWindow
@@ -21,36 +21,49 @@ class RunningCoordinator {
 
     let manager: OCTManager
 
-    let tabCoordinators: [TabCoordinatorProtocol];
+    let tabCoordinators: [RunningBasicCoordinator];
 
     init(theme: Theme, window: UIWindow, manager: OCTManager) {
         self.window = window
         self.tabBarController = UITabBarController()
         self.manager = manager
 
+        let friends = FriendsTabCoordinator(theme: theme)
+        let chats = ChatsTabCoordinator(theme: theme)
+        let settings = SettingsTabCoordinator(theme: theme)
         let profile = ProfileTabCoordinator(theme: theme)
 
         self.tabCoordinators = [
-            FriendsTabCoordinator(),
-            ChatsTabCoordinator(),
-            SettingsTabCoordinator(),
+            friends,
+            chats,
+            settings,
             profile,
         ]
 
-        profile.delegate = self
+        super.init()
 
-        manager.bootstrap.addPredefinedNodes()
-        manager.bootstrap.bootstrap()
+        manager.user.delegate = self
+        profile.delegate = self
     }
 }
 
-// MARK: CoordinatorProtocol
 extension RunningCoordinator: CoordinatorProtocol {
     func start() {
         tabCoordinators.each{ $0.start() }
         tabBarController.viewControllers = tabCoordinators.map{ $0.navigationController }
 
         window.rootViewController = tabBarController
+
+        updateTabCoordinatorsWithConnecting(true)
+
+        manager.bootstrap.addPredefinedNodes()
+        manager.bootstrap.bootstrap()
+    }
+}
+
+extension RunningCoordinator: OCTSubmanagerUserDelegate {
+    func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
+        updateTabCoordinatorsWithConnecting(connectionStatus == .None)
     }
 }
 
@@ -59,5 +72,11 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         UserDefaultsManager().isUserLoggedIn = false
 
         delegate?.runningCoordinatorDidLogout(self)
+    }
+
+    func updateTabCoordinatorsWithConnecting(connecting: Bool) {
+        tabCoordinators.each {
+            $0.toggleConnectingStatus(show: connecting)
+        }
     }
 }

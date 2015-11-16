@@ -12,28 +12,18 @@ protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
 }
 
-class ProfileTabCoordinator {
+class ProfileTabCoordinator: RunningBasicCoordinator {
     weak var delegate: ProfileTabCoordinatorDelegate?
 
-    let theme: Theme
-    let navigationController = UINavigationController()
-
-    init(theme: Theme) {
-        self.theme = theme
+    override func start() {
+        let controller = ProfileMainController(theme: theme)
+        controller.delegate = self
+        navigationController.pushViewController(controller, animated: false)
     }
 }
 
 extension ProfileTabCoordinator: ProfileMainControllerDelegate {
     func profileMainControllerLogout(controller: ProfileMainController) {
         delegate?.profileTabCoordinatorDelegateLogout(self)
-    }
-}
-
-// MARK: CoordinatorProtocol
-extension ProfileTabCoordinator : TabCoordinatorProtocol {
-    func start() {
-        let controller = ProfileMainController(theme: theme)
-        controller.delegate = self
-        navigationController.pushViewController(controller, animated: false)
     }
 }

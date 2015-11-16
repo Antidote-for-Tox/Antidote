@@ -8,13 +8,8 @@
 
 import UIKit
 
-class ChatsTabCoordinator {
-    let navigationController = UINavigationController()
-}
-
-// MARK: CoordinatorProtocol
-extension ChatsTabCoordinator : TabCoordinatorProtocol {
-    func start() {
+class ChatsTabCoordinator: RunningBasicCoordinator {
+    override func start() {
         let controller = UIViewController()
         controller.title = "Chats"
 
