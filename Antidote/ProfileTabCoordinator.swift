@@ -27,3 +27,6 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
         delegate?.profileTabCoordinatorDelegateLogout(self)
     }
 }
+
+private extension ProfileTabCoordinator {
+}

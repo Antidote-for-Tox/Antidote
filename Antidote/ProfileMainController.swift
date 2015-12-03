@@ -12,35 +12,29 @@ protocol ProfileMainControllerDelegate: class {
     func profileMainControllerLogout(controller: ProfileMainController)
 }
 
-class ProfileMainController: UIViewController {
+class ProfileMainController: StaticTableController {
     weak var delegate: ProfileMainControllerDelegate?
 
-    let theme: Theme
-
     init(theme: Theme) {
-        self.theme = theme
+        let logoutButton = StaticTableButtonModel()
 
-        super.init(nibName: nil, bundle: nil)
+        super.init(theme: theme, model: [
+            [
+                logoutButton,
+            ]
+        ])
 
-        edgesForExtendedLayout = .None
+        logoutButton.title = String(localized: "logout_button")
+        logoutButton.didSelectHandler = logout
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
-    override func loadView() {
-        loadViewWithBackgroundColor(theme.colorForType(.NormalBackground))
-
-        let button = UIButton()
-        button.setTitle("logout", forState: .Normal)
-        button.setTitleColor(.blackColor(), forState: .Normal)
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
-        button.frame = CGRect(x: 30, y: 150, width: 200, height: 50)
-        view.addSubview(button)
-    }
-
-    func buttonPressed() {
+private extension ProfileMainController {
+    func logout() {
         delegate?.profileMainControllerLogout(self)
     }
 }
