@@ -15,8 +15,16 @@ protocol ProfileTabCoordinatorDelegate: class {
 class ProfileTabCoordinator: RunningBasicCoordinator {
     weak var delegate: ProfileTabCoordinatorDelegate?
 
+    let toxManager: OCTManager
+
+    init(theme: Theme, toxManager: OCTManager) {
+        self.toxManager = toxManager
+
+        super.init(theme: theme)
+    }
+
     override func start() {
-        let controller = ProfileMainController(theme: theme)
+        let controller = ProfileMainController(theme: theme, submanagerUser: toxManager.user)
         controller.delegate = self
         navigationController.pushViewController(controller, animated: false)
     }

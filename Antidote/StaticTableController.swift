@@ -43,7 +43,11 @@ extension StaticTableController: UITableViewDataSource {
         switch model {
             case let model as StaticTableButtonModel:
                 let cell = tableView.dequeueReusableCellWithIdentifier(StaticTableButtonCell.staticReuseIdentifier) as! StaticTableButtonCell
-                cell.setupWithModel(model)
+                cell.setupWithTheme(theme, model: model)
+                return cell
+            case let model as StaticTableAvatarModel:
+                let cell = tableView.dequeueReusableCellWithIdentifier(StaticTableAvatarCell.staticReuseIdentifier) as! StaticTableAvatarCell
+                cell.setupWithTheme(theme, model: model)
                 return cell
             default:
                 fatalError("Static model class \(model) has not been implemented")
@@ -78,9 +82,14 @@ private extension StaticTableController {
         tableView = UITableView(frame: CGRectZero, style: .Plain)
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = theme.colorForType(.NormalBackground)
+        tableView.estimatedRowHeight = 44.0;
+        tableView.separatorStyle = .None;
+
         view.addSubview(tableView)
 
         tableView.registerClass(StaticTableButtonCell.self, forCellReuseIdentifier: StaticTableButtonCell.staticReuseIdentifier)
+        tableView.registerClass(StaticTableAvatarCell.self, forCellReuseIdentifier: StaticTableAvatarCell.staticReuseIdentifier)
     }
 
     func installConstraints() {

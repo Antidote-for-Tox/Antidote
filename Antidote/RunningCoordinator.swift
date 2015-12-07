@@ -19,19 +19,19 @@ class RunningCoordinator: NSObject {
     let window: UIWindow
     let tabBarController: UITabBarController
 
-    let manager: OCTManager
+    let toxManager: OCTManager
 
     let tabCoordinators: [RunningBasicCoordinator];
 
-    init(theme: Theme, window: UIWindow, manager: OCTManager) {
+    init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
         self.window = window
         self.tabBarController = UITabBarController()
-        self.manager = manager
+        self.toxManager = toxManager
 
         let friends = FriendsTabCoordinator(theme: theme)
         let chats = ChatsTabCoordinator(theme: theme)
         let settings = SettingsTabCoordinator(theme: theme)
-        let profile = ProfileTabCoordinator(theme: theme)
+        let profile = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
 
         self.tabCoordinators = [
             friends,
@@ -42,7 +42,7 @@ class RunningCoordinator: NSObject {
 
         super.init()
 
-        manager.user.delegate = self
+        toxManager.user.delegate = self
         profile.delegate = self
     }
 }
@@ -56,8 +56,8 @@ extension RunningCoordinator: CoordinatorProtocol {
 
         updateTabCoordinatorsWithConnecting(true)
 
-        manager.bootstrap.addPredefinedNodes()
-        manager.bootstrap.bootstrap()
+        toxManager.bootstrap.addPredefinedNodes()
+        toxManager.bootstrap.bootstrap()
     }
 }
 

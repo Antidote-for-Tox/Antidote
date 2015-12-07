@@ -15,14 +15,19 @@ protocol ProfileMainControllerDelegate: class {
 class ProfileMainController: StaticTableController {
     weak var delegate: ProfileMainControllerDelegate?
 
-    init(theme: Theme) {
+    init(theme: Theme, submanagerUser: OCTSubmanagerUser) {
+        let avatar = StaticTableAvatarModel()
         let logoutButton = StaticTableButtonModel()
 
         super.init(theme: theme, model: [
             [
+                avatar,
                 logoutButton,
             ]
         ])
+
+        // avatar.avatar = 
+        avatar.userInteractionEnabled = false
 
         logoutButton.title = String(localized: "logout_button")
         logoutButton.didSelectHandler = logout

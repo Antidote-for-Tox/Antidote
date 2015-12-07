@@ -9,7 +9,10 @@
 import UIKit
 
 class StaticTableButtonCell: UITableViewCell {
-    func setupWithModel(model: StaticTableButtonModel) {
+    func setupWithTheme(theme: Theme, model: StaticTableButtonModel) {
         textLabel?.text = model.title
+
+        textLabel?.textAlignment = .Center
+        textLabel?.textColor = theme.colorForType(.NormalText)
     }
 }

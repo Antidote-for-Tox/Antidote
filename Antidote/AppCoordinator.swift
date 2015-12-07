@@ -65,7 +65,7 @@ private extension AppCoordinator {
             return nil
         }
 
-        let coordinator = RunningCoordinator(theme: theme, window: window, manager: manager!)
+        let coordinator = RunningCoordinator(theme: theme, window: window, toxManager: manager!)
         coordinator.delegate = self
 
         return coordinator

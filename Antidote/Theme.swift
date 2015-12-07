@@ -28,6 +28,7 @@ class Theme {
         case TranslucentBackground = "translucent-background"
 
         case NormalBackground = "normal-background"
+        case NormalText = "normal-text"
         case ConnectingBackground = "connecting-background"
         case ConnectingText = "connecting-text"
 
@@ -43,6 +44,7 @@ class Theme {
             LoginLinkColor,
             TranslucentBackground,
             NormalBackground,
+            NormalText,
             ConnectingBackground,
             ConnectingText,
         ]

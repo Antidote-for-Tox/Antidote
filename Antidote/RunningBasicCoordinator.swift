@@ -12,10 +12,9 @@ class RunningBasicCoordinator {
     let theme: Theme
     let navigationController: UINavigationController
 
-    convenience init(theme: Theme) {
-        let navigation = UINavigationController(statusNavigationBarWithTheme: theme)
-
-        self.init(theme: theme, navigationController: navigation)
+    init(theme: Theme) {
+        self.theme = theme
+        self.navigationController = UINavigationController(statusNavigationBarWithTheme: theme)
     }
 
     init(theme: Theme, navigationController: UINavigationController) {
