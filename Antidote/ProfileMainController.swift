@@ -26,7 +26,11 @@ class ProfileMainController: StaticTableController {
             ]
         ])
 
-        // avatar.avatar = 
+        let avatarManager = AvatarManager(theme: theme)
+
+        avatar.avatar = avatarManager.avatarFromString(
+                submanagerUser.userName(),
+                diameter: StaticTableAvatarModel.Constants.AvatarImageSize)
         avatar.userInteractionEnabled = false
 
         logoutButton.title = String(localized: "logout_button")

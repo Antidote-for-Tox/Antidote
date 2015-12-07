@@ -9,6 +9,10 @@
 import Foundation
 
 class StaticTableAvatarModel: StaticTableBaseModel {
+    struct Constants {
+        static let AvatarImageSize: CGFloat = 120.0
+    }
+
     var avatar: UIImage?
     var didTapOnAvatar: (Void -> Void)?
 

@@ -38,4 +38,18 @@ extension String {
 
         return substring as String
     }
+
+    func stringSizeWithFont(font: UIFont) -> CGSize {
+        return stringSizeWithFont(font, constrainedToSize:CGSize(width: CGFloat.max, height: CGFloat.max))
+    }
+
+    func stringSizeWithFont(font: UIFont, constrainedToSize size: CGSize) -> CGSize {
+        let boundingRect = (self as NSString).boundingRectWithSize(
+            size,
+            options: .UsesLineFragmentOrigin,
+            attributes: [NSFontAttributeName : font],
+            context: nil)
+
+        return CGSize(width: ceil(boundingRect.size.width), height: ceil(boundingRect.size.height))
+    }
 }

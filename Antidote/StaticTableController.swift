@@ -72,7 +72,8 @@ extension StaticTableController: UITableViewDelegate {
             case let model as StaticTableSelectableModel:
                 model.didSelectHandler?()
             default:
-                fatalError("Static model class \(model) has not been implemented")
+                // nop
+                break;
         }
     }
 }

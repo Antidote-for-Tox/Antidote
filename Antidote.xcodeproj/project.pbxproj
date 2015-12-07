@@ -53,6 +53,7 @@
 		1156A4831C1026F4005AC8C6 /* UITableViewCellExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4821C1026F4005AC8C6 /* UITableViewCellExtension.swift */; };
 		1156A4851C10D119005AC8C6 /* StaticTableAvatarModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4841C10D119005AC8C6 /* StaticTableAvatarModel.swift */; };
 		1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */; };
+		1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
 		115DAFA91BECB71500FEB006 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DAFA81BECB71500FEB006 /* UINavigationControllerExtension.swift */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
@@ -195,6 +196,7 @@
 		1156A4821C1026F4005AC8C6 /* UITableViewCellExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UITableViewCellExtension.swift; sourceTree = "<group>"; };
 		1156A4841C10D119005AC8C6 /* StaticTableAvatarModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableAvatarModel.swift; sourceTree = "<group>"; };
 		1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableAvatarCell.swift; sourceTree = "<group>"; };
+		1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarManager.swift; sourceTree = "<group>"; };
 		115DAFA81BECB71500FEB006 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -424,10 +426,11 @@
 		1173F06C1BC5D9B000B88B7B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
+				110E424A1BFCF86B001A3CA2 /* StaticTable */,
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
-				110E424A1BFCF86B001A3CA2 /* StaticTable */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -787,6 +790,7 @@
 				1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
+				1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */,
 				119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */,
 				1156A4811C0FA0A4005AC8C6 /* StaticTableButtonCell.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
