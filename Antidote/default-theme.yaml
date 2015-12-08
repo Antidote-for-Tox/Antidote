@@ -28,3 +28,4 @@ values:
   normal-text: skyblue
   connecting-background: skyblue
   connecting-text: white
+  table-separator: lightgray

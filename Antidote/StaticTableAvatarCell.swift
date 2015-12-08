@@ -9,7 +9,11 @@
 import UIKit
 import SnapKit
 
-class StaticTableAvatarCell: UITableViewCell {
+private struct Constants {
+    static let AvatarVerticalOffset = 10.0
+}
+
+class StaticTableAvatarCell: StaticTableBaseCell {
     var didTapOnAvatar: (Void -> Void)?
 
     private var button: UIButton!
@@ -25,10 +29,17 @@ class StaticTableAvatarCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func setupWithTheme(theme: Theme, model: StaticTableAvatarModel) {
-        button.userInteractionEnabled = model.userInteractionEnabled
-        button.setImage(model.avatar, forState: .Normal)
-        didTapOnAvatar = model.didTapOnAvatar
+    override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
+        super.setupWithTheme(theme, model: model)
+
+        guard let avatarModel = model as? StaticTableAvatarModel else {
+            assert(false, "Wrong model \(model) passed to cell \(self)")
+            return
+        }
+
+        button.userInteractionEnabled = avatarModel.userInteractionEnabled
+        button.setImage(avatarModel.avatar, forState: .Normal)
+        didTapOnAvatar = avatarModel.didTapOnAvatar
     }
 }
 
@@ -50,7 +61,8 @@ private extension StaticTableAvatarCell {
     func installConstraints() {
         button.snp_makeConstraints{ (make) -> Void in
             make.centerX.equalTo(contentView)
-            make.top.bottom.equalTo(contentView)
+            make.top.equalTo(contentView).offset(Constants.AvatarVerticalOffset)
+            make.bottom.equalTo(contentView).offset(-Constants.AvatarVerticalOffset)
             make.size.equalTo(StaticTableAvatarModel.Constants.AvatarImageSize)
         }
     }

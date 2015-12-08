@@ -8,9 +8,16 @@
 
 import UIKit
 
-class StaticTableButtonCell: UITableViewCell {
-    func setupWithTheme(theme: Theme, model: StaticTableButtonModel) {
-        textLabel?.text = model.title
+class StaticTableButtonCell: StaticTableBaseCell {
+    override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
+        super.setupWithTheme(theme, model: model)
+
+        guard let buttonModel = model as? StaticTableButtonModel else {
+            assert(false, "Wrong model \(model) passed to cell \(self)")
+            return
+        }
+
+        textLabel?.text = buttonModel.title
 
         textLabel?.textAlignment = .Center
         textLabel?.textColor = theme.colorForType(.NormalText)

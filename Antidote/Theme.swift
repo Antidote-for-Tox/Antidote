@@ -31,6 +31,7 @@ class Theme {
         case NormalText = "normal-text"
         case ConnectingBackground = "connecting-background"
         case ConnectingText = "connecting-text"
+        case TableSeparator = "table-separator"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -47,6 +48,7 @@ class Theme {
             NormalText,
             ConnectingBackground,
             ConnectingText,
+            TableSeparator,
         ]
     }
 

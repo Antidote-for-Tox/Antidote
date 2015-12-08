@@ -39,19 +39,25 @@ class StaticTableController: UIViewController {
 extension StaticTableController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let model = modelArray[indexPath.section][indexPath.row]
+        let cell: StaticTableBaseCell
 
         switch model {
             case let model as StaticTableButtonModel:
-                let cell = tableView.dequeueReusableCellWithIdentifier(StaticTableButtonCell.staticReuseIdentifier) as! StaticTableButtonCell
-                cell.setupWithTheme(theme, model: model)
-                return cell
+                cell = tableView.dequeueReusableCellWithIdentifier(StaticTableButtonCell.staticReuseIdentifier) as! StaticTableBaseCell
             case let model as StaticTableAvatarModel:
-                let cell = tableView.dequeueReusableCellWithIdentifier(StaticTableAvatarCell.staticReuseIdentifier) as! StaticTableAvatarCell
-                cell.setupWithTheme(theme, model: model)
-                return cell
+                cell = tableView.dequeueReusableCellWithIdentifier(StaticTableAvatarCell.staticReuseIdentifier) as! StaticTableBaseCell
             default:
                 fatalError("Static model class \(model) has not been implemented")
         }
+
+        cell.setupWithTheme(theme, model: model)
+
+        let isLastRow = (indexPath.row == (modelArray[indexPath.section].count - 1))
+        let isLastSection = (indexPath.section == (modelArray.count - 1))
+
+        cell.setBottomSeparatorHidden(!isLastRow || isLastSection)
+
+        return cell
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
