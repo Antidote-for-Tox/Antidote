@@ -18,17 +18,6 @@ class StaticTableAvatarCell: StaticTableBaseCell {
 
     private var button: UIButton!
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        createButton()
-        installConstraints()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
         super.setupWithTheme(theme, model: model)
 
@@ -37,33 +26,37 @@ class StaticTableAvatarCell: StaticTableBaseCell {
             return
         }
 
+        selectionStyle = .None
+
         button.userInteractionEnabled = avatarModel.userInteractionEnabled
         button.setImage(avatarModel.avatar, forState: .Normal)
         didTapOnAvatar = avatarModel.didTapOnAvatar
+    }
+
+    override func createViews() {
+        super.createViews()
+
+        button = UIButton()
+        button.layer.cornerRadius = StaticTableAvatarModel.Constants.AvatarImageSize / 2
+        button.layer.masksToBounds = true
+        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        customContentView.addSubview(button)
+    }
+
+    override func installConstraints() {
+        super.installConstraints()
+
+        button.snp_makeConstraints{ (make) -> Void in
+            make.centerX.equalTo(customContentView)
+            make.top.equalTo(customContentView).offset(Constants.AvatarVerticalOffset)
+            make.bottom.equalTo(customContentView).offset(-Constants.AvatarVerticalOffset)
+            make.size.equalTo(StaticTableAvatarModel.Constants.AvatarImageSize)
+        }
     }
 }
 
 extension StaticTableAvatarCell {
     func buttonPressed() {
         didTapOnAvatar?()
-    }
-}
-
-private extension StaticTableAvatarCell {
-    func createButton() {
-        button = UIButton()
-        button.layer.cornerRadius = StaticTableAvatarModel.Constants.AvatarImageSize / 2
-        button.layer.masksToBounds = true
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
-        contentView.addSubview(button)
-    }
-
-    func installConstraints() {
-        button.snp_makeConstraints{ (make) -> Void in
-            make.centerX.equalTo(contentView)
-            make.top.equalTo(contentView).offset(Constants.AvatarVerticalOffset)
-            make.bottom.equalTo(contentView).offset(-Constants.AvatarVerticalOffset)
-            make.size.equalTo(StaticTableAvatarModel.Constants.AvatarImageSize)
-        }
     }
 }

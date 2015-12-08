@@ -8,7 +8,13 @@
 
 import UIKit
 
+private struct Constants {
+    static let VerticalOffset = 12.0
+}
+
 class StaticTableButtonCell: StaticTableBaseCell {
+    private var label: UILabel!
+
     override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
         super.setupWithTheme(theme, model: model)
 
@@ -17,9 +23,24 @@ class StaticTableButtonCell: StaticTableBaseCell {
             return
         }
 
-        textLabel?.text = buttonModel.title
+        label.text = buttonModel.title
+        label.textColor = theme.colorForType(.NormalText)
+    }
 
-        textLabel?.textAlignment = .Center
-        textLabel?.textColor = theme.colorForType(.NormalText)
+    override func createViews() {
+        super.createViews()
+
+        label = UILabel()
+        customContentView.addSubview(label)
+    }
+
+    override func installConstraints() {
+        super.installConstraints()
+
+        label.snp_makeConstraints{ (make) -> Void in
+            make.left.right.equalTo(customContentView)
+            make.top.equalTo(customContentView).offset(Constants.VerticalOffset)
+            make.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
+        }
     }
 }

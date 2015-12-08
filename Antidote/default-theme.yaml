@@ -5,6 +5,7 @@ colors:
   transparent_white: FFFFFF55
   black: "000000"
   lightgray: EDF3F5
+  darkgray: CCCCCC
   lightgrayblue: D8E7EF
   lightblue: D4F1FC
   skyblue: 2685AC
@@ -28,4 +29,4 @@ values:
   normal-text: skyblue
   connecting-background: skyblue
   connecting-text: white
-  table-separator: lightgray
+  table-separator: darkgray

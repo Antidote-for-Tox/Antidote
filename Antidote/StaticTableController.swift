@@ -42,9 +42,9 @@ extension StaticTableController: UITableViewDataSource {
         let cell: StaticTableBaseCell
 
         switch model {
-            case let model as StaticTableButtonModel:
+            case _ as StaticTableButtonModel:
                 cell = tableView.dequeueReusableCellWithIdentifier(StaticTableButtonCell.staticReuseIdentifier) as! StaticTableBaseCell
-            case let model as StaticTableAvatarModel:
+            case _ as StaticTableAvatarModel:
                 cell = tableView.dequeueReusableCellWithIdentifier(StaticTableAvatarCell.staticReuseIdentifier) as! StaticTableBaseCell
             default:
                 fatalError("Static model class \(model) has not been implemented")

@@ -22,8 +22,10 @@ class ProfileMainController: StaticTableController {
         super.init(theme: theme, model: [
             [
                 avatar,
+            ],
+            [
                 logoutButton,
-            ]
+            ],
         ])
 
         let avatarManager = AvatarManager(theme: theme)
