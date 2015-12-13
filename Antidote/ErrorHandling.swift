@@ -11,6 +11,7 @@ import UIKit
 enum ErrorHandlerType {
     case CannotLoadHTML
     case CreateOCTManager
+    case ToxSetInfoCode
 }
 
 
@@ -20,6 +21,9 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showErrorWithMessage(String(localized: "error_file_not_found"))
         case .CreateOCTManager:
             let (title, message) = OCTManagerInitError(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .ToxSetInfoCode:
+            let (title, message) = OCTToxErrorSetInfoCode(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
     }
 }
@@ -53,7 +57,7 @@ extension OCTManagerInitError {
                         String(localized: "manager_error_general_bind_port_message"))
             case .CreateToxProxyBadType:
                 return (String(localized: "manager_error_proxy_title"),
-                        String(localized: "manager_error_proxy_internal_message"))
+                        String(localized: "error_internal_message"))
             case .CreateToxProxyBadHost:
                 return (String(localized: "manager_error_proxy_title"),
                         String(localized: "manager_error_proxy_invalid_address_message"))
@@ -69,6 +73,19 @@ extension OCTManagerInitError {
             case .CreateToxBadFormat:
                 return (String(localized: "manager_error_general_title"),
                         String(localized: "manager_error_general_bad_format_message"))
+        }
+    }
+}
+
+extension OCTToxErrorSetInfoCode {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .Unknow:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+            case .TooLong:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_name_too_long"))
         }
     }
 }

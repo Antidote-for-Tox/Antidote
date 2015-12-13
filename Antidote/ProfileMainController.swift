@@ -10,6 +10,10 @@ import UIKit
 
 protocol ProfileMainControllerDelegate: class {
     func profileMainControllerLogout(controller: ProfileMainController)
+    func profileMainControllerChangeUserName(controller: ProfileMainController)
+    func profileMainControllerChangeStatusMessage(controller: ProfileMainController)
+    func profileMainController(controller: ProfileMainController, showQRCodeWithText text: String)
+    func profileMainControllerShowProfileDetails(controller: ProfileMainController)
 }
 
 class ProfileMainController: StaticTableController {
@@ -107,18 +111,18 @@ private extension ProfileMainController {
     }
 
     func changeUserName() {
-        print("changeUserName")
+        delegate?.profileMainControllerChangeUserName(self)
     }
 
     func changeStatusMessage() {
-        print("changeStatusMessage")
+        delegate?.profileMainControllerChangeStatusMessage(self)
     }
 
     func showToxIdQR() {
-        print("showToxIdQR")
+        delegate?.profileMainController(self, showQRCodeWithText: submanagerUser.userAddress)
     }
 
     func showProfileDetails() {
-        print("showProfileDetails")
+        delegate?.profileMainControllerShowProfileDetails(self)
     }
 }

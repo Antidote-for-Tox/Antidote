@@ -39,6 +39,8 @@
 "error_ok_button" = "OK";
 "error_file_not_found" = "File not found";
 
+"error_internal_message" = "Internal error.";
+
 "manager_error_wrong_password_title" = "Wrong password";
 "manager_error_wrong_password_message" = "Password contains wrong symbols.";
 "manager_error_import_not_exist_title" = "Cannot import tox save file";
@@ -54,10 +56,11 @@
 "manager_error_general_profile_encrypted_message" = "Profile is encrypted.";
 "manager_error_general_bad_format_message" = "File has bad format or is corrupted.";
 "manager_error_proxy_title" = "Proxy error";
-"manager_error_proxy_internal_message" = "Internal error.";
 "manager_error_proxy_invalid_address_message" = "Proxy address has invalid format.";
 "manager_error_proxy_invalid_port_message" = "Proxy port is invalid.";
 "manager_error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
+
+"tox_error_name_too_long" = "Name is too long.";
 
 "connecting_label" = "Connecting...";
 
