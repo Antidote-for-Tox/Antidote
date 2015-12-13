@@ -59,8 +59,8 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         }
 
         if defaultModel.title != nil {
-            valueLabelToTitleConstraint.activate()
             valueLabelToContentTopConstraint.deactivate()
+            valueLabelToTitleConstraint.activate()
         }
         else {
             valueLabelToTitleConstraint.deactivate()
@@ -68,8 +68,8 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         }
 
         if defaultModel.showArrow {
-            valueLabelToArrowConstraint.activate()
             valueLabelToContentRightConstraint.deactivate()
+            valueLabelToArrowConstraint.activate()
         }
         else {
             valueLabelToArrowConstraint.deactivate()
@@ -111,13 +111,17 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
         valueLabel.snp_makeConstraints{ (make) -> Void in
             valueLabelToTitleConstraint = make.top.equalTo(titleLabel.snp_bottom).offset(Constants.TitleToValueOffset).constraint
-            valueLabelToContentTopConstraint = make.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset).constraint
 
             valueLabelToContentRightConstraint = make.right.equalTo(customContentView).constraint
 
             make.left.equalTo(customContentView)
             make.bottom.equalTo(customContentView).offset(-Constants.EdgesVerticalOffset)
             make.height.greaterThanOrEqualTo(Constants.MinValueLabelHeight)
+        }
+
+        valueLabelToTitleConstraint.deactivate()
+        valueLabel.snp_updateConstraints{ (make) -> Void in
+            valueLabelToContentTopConstraint = make.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset).constraint
         }
 
         rightButton.snp_makeConstraints{ (make) -> Void in
