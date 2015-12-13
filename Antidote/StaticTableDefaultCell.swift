@@ -135,7 +135,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
             make.centerY.equalTo(customContentView)
             make.right.equalTo(customContentView)
 
-            valueLabelToArrowConstraint = make.left.greaterThanOrEqualTo(valueLabel).constraint
+            valueLabelToArrowConstraint = make.left.greaterThanOrEqualTo(valueLabel.snp_right).constraint
         }
     }
 }
