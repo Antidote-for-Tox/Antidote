@@ -29,6 +29,7 @@ class Theme {
 
         case NormalBackground = "normal-background"
         case NormalText = "normal-text"
+        case LinkText = "link-text"
         case ConnectingBackground = "connecting-background"
         case ConnectingText = "connecting-text"
         case TableSeparator = "table-separator"
@@ -46,6 +47,7 @@ class Theme {
             TranslucentBackground,
             NormalBackground,
             NormalText,
+            LinkText,
             ConnectingBackground,
             ConnectingText,
             TableSeparator,

@@ -24,7 +24,7 @@ class StaticTableButtonCell: StaticTableBaseCell {
         }
 
         label.text = buttonModel.title
-        label.textColor = theme.colorForType(.NormalText)
+        label.textColor = theme.colorForType(.LinkText)
     }
 
     override func createViews() {

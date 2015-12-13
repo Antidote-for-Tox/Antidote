@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 private struct Constants {
-    static let LeftOffset = 20.0
+    static let HorizontalOffset = 20.0
 }
 
 class StaticTableBaseCell: UITableViewCell {
@@ -52,7 +52,7 @@ class StaticTableBaseCell: UITableViewCell {
         contentView.addSubview(customContentView)
 
         bottomSeparatorView = UIView()
-        customContentView.addSubview(bottomSeparatorView)
+        contentView.addSubview(bottomSeparatorView)
     }
 
     /**
@@ -60,12 +60,15 @@ class StaticTableBaseCell: UITableViewCell {
      */
     func installConstraints() {
         customContentView.snp_makeConstraints{ (make) -> Void in
-            make.left.equalTo(contentView).offset(Constants.LeftOffset)
-            make.top.bottom.right.equalTo(contentView)
+            make.left.equalTo(contentView).offset(Constants.HorizontalOffset)
+            make.right.equalTo(contentView).offset(-Constants.HorizontalOffset)
+            make.top.equalTo(contentView)
         }
 
         bottomSeparatorView.snp_makeConstraints{ (make) -> Void in
-            make.left.right.bottom.equalTo(customContentView)
+            make.left.equalTo(customContentView)
+            make.top.equalTo(customContentView.snp_bottom)
+            make.right.bottom.equalTo(contentView)
             make.height.equalTo(0.5)
         }
     }

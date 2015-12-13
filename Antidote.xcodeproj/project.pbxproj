@@ -55,6 +55,8 @@
 		1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */; };
 		1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
 		115DAFA91BECB71500FEB006 /* UINavigationControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DAFA81BECB71500FEB006 /* UINavigationControllerExtension.swift */; };
+		115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */; };
+		115DFB961C177F6500F18DB5 /* StaticTableDefaultModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB951C177F6500F18DB5 /* StaticTableDefaultModel.swift */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -199,6 +201,8 @@
 		1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableAvatarCell.swift; sourceTree = "<group>"; };
 		1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarManager.swift; sourceTree = "<group>"; };
 		115DAFA81BECB71500FEB006 /* UINavigationControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UINavigationControllerExtension.swift; sourceTree = "<group>"; };
+		115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCell.swift; sourceTree = "<group>"; };
+		115DFB951C177F6500F18DB5 /* StaticTableDefaultModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultModel.swift; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -292,6 +296,8 @@
 				1156A4781C0E478D005AC8C6 /* StaticTableBaseModel.swift */,
 				1156A4801C0FA0A4005AC8C6 /* StaticTableButtonCell.swift */,
 				1156A47A1C0F6178005AC8C6 /* StaticTableButtonModel.swift */,
+				115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */,
+				115DFB951C177F6500F18DB5 /* StaticTableDefaultModel.swift */,
 				1156A47C1C0F632C005AC8C6 /* StaticTableSelectableModel.swift */,
 			);
 			name = StaticTable;
@@ -812,8 +818,10 @@
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
 				119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */,
+				115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */,
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				1156A47D1C0F632C005AC8C6 /* StaticTableSelectableModel.swift in Sources */,
+				115DFB961C177F6500F18DB5 /* StaticTableDefaultModel.swift in Sources */,
 				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				119AD1BE1BDED261000C5CB8 /* TextViewController.swift in Sources */,

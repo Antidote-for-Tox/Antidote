@@ -61,4 +61,9 @@
 
 "connecting_label" = "Connecting...";
 
+"name" = "Name";
+"status_message" = "Status Message";
+"my_tox_id" = "My Tox ID";
+"show_qr" = "Show QR";
+"profile_details" = "Profile Details";
 "logout_button" = "Log Out";

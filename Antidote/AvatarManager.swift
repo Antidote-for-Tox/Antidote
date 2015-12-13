@@ -51,10 +51,10 @@ private extension AvatarManager {
 
         let label = UILabel()
         label.backgroundColor = theme.colorForType(.NormalBackground)
-        label.layer.borderColor = theme.colorForType(.NormalText).CGColor
+        label.layer.borderColor = theme.colorForType(.LinkText).CGColor
         label.layer.borderWidth = 1.0
         label.layer.masksToBounds = true
-        label.textColor = theme.colorForType(.NormalText)
+        label.textColor = theme.colorForType(.LinkText)
         label.textAlignment = .Center
         label.text = avatarString
 

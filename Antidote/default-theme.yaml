@@ -26,7 +26,8 @@ values:
 
   # normal background color used all over application
   normal-background: white
-  normal-text: skyblue
+  normal-text: black
+  link-text: skyblue
   connecting-background: skyblue
   connecting-text: white
   table-separator: darkgray
