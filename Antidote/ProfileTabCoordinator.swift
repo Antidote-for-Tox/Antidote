@@ -43,10 +43,15 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
         showTextEditController(title: String(localized: "name"), defaultValue: toxManager.user.userName()) {
             newName -> Bool in
 
-            if (try? self.toxManager.user.setUserName(newName)) != nil {
-                return true
+            do {
+                try self.toxManager.user.setUserName(newName)
             }
-            return false
+            catch let error as NSError {
+                handleErrorWithType(.ToxSetInfoCode, error: error)
+                return false
+            }
+
+            return true
         }
     }
 
@@ -54,10 +59,15 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
         showTextEditController(title: String(localized: "status_message"), defaultValue: toxManager.user.userStatusMessage()) {
             newStatusMessage -> Bool in
 
-            if (try? self.toxManager.user.setUserStatusMessage(newStatusMessage)) != nil {
-                return true
+            do {
+                try self.toxManager.user.setUserStatusMessage(newStatusMessage)
             }
-            return false
+            catch let error as NSError {
+                handleErrorWithType(.ToxSetInfoCode, error: error)
+                return false
+            }
+
+            return true
         }
     }
 
