@@ -72,11 +72,22 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
     }
 
     func profileMainController(controller: ProfileMainController, showQRCodeWithText text: String) {
+        let controller = QRViewerController(theme: theme, text: text)
+        controller.delegate = self
 
+        let toPresent = UINavigationController(rootViewController: controller)
+
+        navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 
     func profileMainControllerShowProfileDetails(controller: ProfileMainController) {
 
+    }
+}
+
+extension ProfileTabCoordinator: QRViewerControllerDelegate {
+    func qrViewerControllerDidFinishPresenting() {
+        navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

@@ -70,3 +70,5 @@
 "show_qr" = "Show QR";
 "profile_details" = "Profile Details";
 "logout_button" = "Log Out";
+
+"qr_close_button" = "Close";
