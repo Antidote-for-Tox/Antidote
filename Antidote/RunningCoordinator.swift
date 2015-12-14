@@ -28,7 +28,7 @@ class RunningCoordinator: NSObject {
         self.tabBarController = UITabBarController()
         self.toxManager = toxManager
 
-        let friends = FriendsTabCoordinator(theme: theme)
+        let friends = FriendsTabCoordinator(theme: theme, toxManager: toxManager)
         let chats = ChatsTabCoordinator(theme: theme)
         let settings = SettingsTabCoordinator(theme: theme)
         let profile = ProfileTabCoordinator(theme: theme, toxManager: toxManager)

@@ -61,6 +61,8 @@ class ProfileMainController: StaticTableController {
         ])
 
         updateModels()
+
+        title = String(localized: "profile_title")
     }
 
     override func viewWillAppear(animated: Bool) {

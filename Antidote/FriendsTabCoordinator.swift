@@ -9,9 +9,16 @@
 import Foundation
 
 class FriendsTabCoordinator: RunningBasicCoordinator {
+    private let toxManager: OCTManager
+
+    init(theme: Theme, toxManager: OCTManager) {
+        self.toxManager = toxManager
+
+        super.init(theme: theme)
+    }
+
     override func start() {
-        let controller = UIViewController()
-        controller.title = "Friends"
+        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects)
 
         navigationController.pushViewController(controller, animated: false)
     }

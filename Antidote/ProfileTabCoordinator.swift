@@ -15,7 +15,7 @@ protocol ProfileTabCoordinatorDelegate: class {
 class ProfileTabCoordinator: RunningBasicCoordinator {
     weak var delegate: ProfileTabCoordinatorDelegate?
 
-    let toxManager: OCTManager
+    private let toxManager: OCTManager
 
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager

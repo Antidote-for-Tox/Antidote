@@ -64,6 +64,11 @@
 
 "connecting_label" = "Connecting...";
 
+"friends_title" = "Friends";
+"profile_title" = "Profile";
+
+"friend_requests_section" = "Friend Requests";
+
 "name" = "Name";
 "status_message" = "Status Message";
 "my_tox_id" = "My Tox ID";
