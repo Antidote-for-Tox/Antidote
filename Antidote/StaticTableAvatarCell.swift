@@ -18,10 +18,10 @@ class StaticTableAvatarCell: StaticTableBaseCell {
 
     private var button: UIButton!
 
-    override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
+    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
-        guard let avatarModel = model as? StaticTableAvatarModel else {
+        guard let avatarModel = model as? StaticTableAvatarCellModel else {
             assert(false, "Wrong model \(model) passed to cell \(self)")
             return
         }
@@ -37,7 +37,7 @@ class StaticTableAvatarCell: StaticTableBaseCell {
         super.createViews()
 
         button = UIButton()
-        button.layer.cornerRadius = StaticTableAvatarModel.Constants.AvatarImageSize / 2
+        button.layer.cornerRadius = StaticTableAvatarCellModel.Constants.AvatarImageSize / 2
         button.layer.masksToBounds = true
         button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
         customContentView.addSubview(button)
@@ -50,7 +50,7 @@ class StaticTableAvatarCell: StaticTableBaseCell {
             make.centerX.equalTo(customContentView)
             make.top.equalTo(customContentView).offset(Constants.AvatarVerticalOffset)
             make.bottom.equalTo(customContentView).offset(-Constants.AvatarVerticalOffset)
-            make.size.equalTo(StaticTableAvatarModel.Constants.AvatarImageSize)
+            make.size.equalTo(StaticTableAvatarCellModel.Constants.AvatarImageSize)
         }
     }
 }

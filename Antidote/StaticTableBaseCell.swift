@@ -13,24 +13,13 @@ private struct Constants {
     static let HorizontalOffset = 20.0
 }
 
-class StaticTableBaseCell: UITableViewCell {
+class StaticTableBaseCell: BaseCell {
     /**
         View to add all content to.
      */
     var customContentView: UIView!
 
     private var bottomSeparatorView: UIView!
-
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        createViews()
-        installConstraints()
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     func setBottomSeparatorHidden(hidden: Bool) {
         bottomSeparatorView.hidden = hidden
@@ -39,14 +28,18 @@ class StaticTableBaseCell: UITableViewCell {
     /**
         Override this method in subclass.
      */
-    func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
+    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+        super.setupWithTheme(theme, model: model)
+
         bottomSeparatorView.backgroundColor = theme.colorForType(.TableSeparator)
     }
 
     /**
         Override this method in subclass.
      */
-    func createViews() {
+    override func createViews() {
+        super.createViews()
+
         customContentView = UIView()
         customContentView.backgroundColor = UIColor.clearColor()
         contentView.addSubview(customContentView)
@@ -58,7 +51,9 @@ class StaticTableBaseCell: UITableViewCell {
     /**
         Override this method in subclass.
      */
-    func installConstraints() {
+    override func installConstraints() {
+        super.installConstraints()
+
         customContentView.snp_makeConstraints{ (make) -> Void in
             make.left.equalTo(contentView).offset(Constants.HorizontalOffset)
             make.right.equalTo(contentView).offset(-Constants.HorizontalOffset)

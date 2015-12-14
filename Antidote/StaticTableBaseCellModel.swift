@@ -1,5 +1,5 @@
 //
-//  StaticTableBaseModel.swift
+//  StaticTableBaseCellModel.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 01/12/15.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-class StaticTableBaseModel {
+class StaticTableBaseCellModel: BaseCellModel {
 
 }

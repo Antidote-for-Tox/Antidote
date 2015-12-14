@@ -1,5 +1,5 @@
 //
-//  StaticTableAvatarModel.swift
+//  StaticTableAvatarCellModel.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 03/12/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class StaticTableAvatarModel: StaticTableBaseModel {
+class StaticTableAvatarCellModel: StaticTableBaseCellModel {
     struct Constants {
         static let AvatarImageSize: CGFloat = 120.0
     }

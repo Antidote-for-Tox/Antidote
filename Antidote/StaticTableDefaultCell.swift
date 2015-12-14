@@ -30,10 +30,10 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
     private var rightButtonHandler: (Void -> Void)?
 
-    override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
+    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
-        guard let defaultModel = model as? StaticTableDefaultModel else {
+        guard let defaultModel = model as? StaticTableDefaultCellModel else {
             assert(false, "Wrong model \(model) passed to cell \(self)")
             return
         }

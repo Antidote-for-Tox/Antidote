@@ -1,5 +1,5 @@
 //
-//  StaticTableButtonModel.swift
+//  StaticTableButtonCellModel.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 02/12/15.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-class StaticTableButtonModel: StaticTableSelectableModel {
+class StaticTableButtonCellModel: StaticTableSelectableCellModel {
     var title: String?
 }

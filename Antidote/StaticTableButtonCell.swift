@@ -15,10 +15,10 @@ private struct Constants {
 class StaticTableButtonCell: StaticTableBaseCell {
     private var label: UILabel!
 
-    override func setupWithTheme(theme: Theme, model: StaticTableBaseModel) {
+    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
-        guard let buttonModel = model as? StaticTableButtonModel else {
+        guard let buttonModel = model as? StaticTableButtonCellModel else {
             assert(false, "Wrong model \(model) passed to cell \(self)")
             return
         }

@@ -11,10 +11,10 @@ import SnapKit
 
 class StaticTableController: UIViewController {
     private let theme: Theme
-    private let modelArray: [[StaticTableBaseModel]]
+    private let modelArray: [[StaticTableBaseCellModel]]
     private var tableView: UITableView?
 
-    init(theme: Theme, model: [[StaticTableBaseModel]]) {
+    init(theme: Theme, model: [[StaticTableBaseCellModel]]) {
         self.theme = theme
         self.modelArray = model
 
@@ -46,11 +46,11 @@ extension StaticTableController: UITableViewDataSource {
         let cell: StaticTableBaseCell
 
         switch model {
-            case _ as StaticTableButtonModel:
+            case _ as StaticTableButtonCellModel:
                 cell = tableView.dequeueReusableCellWithIdentifier(StaticTableButtonCell.staticReuseIdentifier) as! StaticTableBaseCell
-            case _ as StaticTableAvatarModel:
+            case _ as StaticTableAvatarCellModel:
                 cell = tableView.dequeueReusableCellWithIdentifier(StaticTableAvatarCell.staticReuseIdentifier) as! StaticTableBaseCell
-            case _ as StaticTableDefaultModel:
+            case _ as StaticTableDefaultCellModel:
                 cell = tableView.dequeueReusableCellWithIdentifier(StaticTableDefaultCell.staticReuseIdentifier) as! StaticTableBaseCell
             default:
                 fatalError("Static model class \(model) has not been implemented")
@@ -81,7 +81,7 @@ extension StaticTableController: UITableViewDelegate {
         let model = modelArray[indexPath.section][indexPath.row]
 
         switch model {
-            case let model as StaticTableSelectableModel:
+            case let model as StaticTableSelectableCellModel:
                 model.didSelectHandler?()
             default:
                 // nop

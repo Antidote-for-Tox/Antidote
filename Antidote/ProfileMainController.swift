@@ -22,24 +22,24 @@ class ProfileMainController: StaticTableController {
     private let submanagerUser: OCTSubmanagerUser
     private let avatarManager: AvatarManager
 
-    private let avatarModel: StaticTableAvatarModel
-    private let userNameModel: StaticTableDefaultModel
-    private let statusMessageModel: StaticTableDefaultModel
-    private let toxIdModel: StaticTableDefaultModel
-    private let profileDetailsModel: StaticTableDefaultModel
-    private let logoutModel: StaticTableButtonModel
+    private let avatarModel: StaticTableAvatarCellModel
+    private let userNameModel: StaticTableDefaultCellModel
+    private let statusMessageModel: StaticTableDefaultCellModel
+    private let toxIdModel: StaticTableDefaultCellModel
+    private let profileDetailsModel: StaticTableDefaultCellModel
+    private let logoutModel: StaticTableButtonCellModel
 
     init(theme: Theme, submanagerUser: OCTSubmanagerUser) {
         self.submanagerUser = submanagerUser
 
         avatarManager = AvatarManager(theme: theme)
 
-        avatarModel = StaticTableAvatarModel()
-        userNameModel = StaticTableDefaultModel()
-        statusMessageModel = StaticTableDefaultModel()
-        toxIdModel = StaticTableDefaultModel()
-        profileDetailsModel = StaticTableDefaultModel()
-        logoutModel = StaticTableButtonModel()
+        avatarModel = StaticTableAvatarCellModel()
+        userNameModel = StaticTableDefaultCellModel()
+        statusMessageModel = StaticTableDefaultCellModel()
+        toxIdModel = StaticTableDefaultCellModel()
+        profileDetailsModel = StaticTableDefaultCellModel()
+        logoutModel = StaticTableButtonCellModel()
 
         super.init(theme: theme, model: [
             [
@@ -81,7 +81,7 @@ private extension ProfileMainController {
     func updateModels() {
         avatarModel.avatar = avatarManager.avatarFromString(
                 submanagerUser.userName(),
-                diameter: StaticTableAvatarModel.Constants.AvatarImageSize)
+                diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
         avatarModel.userInteractionEnabled = false
 
         userNameModel.title = String(localized: "name")

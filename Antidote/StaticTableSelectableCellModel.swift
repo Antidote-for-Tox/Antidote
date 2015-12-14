@@ -1,5 +1,5 @@
 //
-//  StaticTableSelectableModel.swift
+//  StaticTableSelectableCellModel.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 02/12/15.
@@ -8,6 +8,6 @@
 
 import Foundation
 
-class StaticTableSelectableModel: StaticTableBaseModel {
+class StaticTableSelectableCellModel: StaticTableBaseCellModel {
     var didSelectHandler: (Void -> Void)?
 }

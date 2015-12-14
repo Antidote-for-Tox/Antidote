@@ -1,5 +1,5 @@
 //
-//  StaticTableDefaultModel.swift
+//  StaticTableDefaultCellModel.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 08/12/15.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-class StaticTableDefaultModel: StaticTableSelectableModel {
+class StaticTableDefaultCellModel: StaticTableSelectableCellModel {
     var title: String?
     var value: String?
 
