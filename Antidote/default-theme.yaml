@@ -5,11 +5,16 @@ colors:
   transparent_white: FFFFFF55
   black: "000000"
   lightgray: EDF3F5
-  darkgray: CCCCCC
+  gray: CCCCCC
+  darkgray: AAAAAA
+  darkgray2: 8C8C8C
   lightgrayblue: D8E7EF
   lightblue: D4F1FC
   skyblue: 2685AC
   darkblue: 0D678C
+  green: 85B452
+  yellow: DECF4E
+  red: C56258
 
 values:
   login-background: skyblue
@@ -30,4 +35,10 @@ values:
   link-text: skyblue
   connecting-background: skyblue
   connecting-text: white
-  table-separator: darkgray
+  table-separator: gray
+  offline-status: darkgray
+  online-status: green
+  away-status: yellow
+  busy-status: red
+  status-background: white
+  friend-cell-status: darkgray2

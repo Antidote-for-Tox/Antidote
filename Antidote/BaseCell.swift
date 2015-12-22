@@ -40,5 +40,4 @@ class BaseCell: UITableViewCell {
         Override this method in subclass.
      */
     func installConstraints() {}
-
 }

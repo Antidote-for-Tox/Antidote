@@ -3,6 +3,8 @@
 //
 
 #import <objcTox/OCTDefaultFileStorage.h>
+#import <objcTox/OCTFriend.h>
+#import <objcTox/OCTFriendRequest.h>
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>

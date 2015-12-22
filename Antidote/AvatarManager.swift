@@ -22,12 +22,16 @@ class AvatarManager {
         if not found creates it.
 
         - Parameters:
-          - string: String to create avatar from.
-          - diameter: Diameter of circle with avatar
+          - string: String to create avatar from. In case of empty string avatar will be set to "?".
+          - diameter: Diameter of circle with avatar.
 
         - Returns: Avatar from given string with given size.
      */
-    func avatarFromString(string: String, diameter: CGFloat) -> UIImage {
+    func avatarFromString(var string: String, diameter: CGFloat) -> UIImage {
+        if string.isEmpty {
+            string = "?"
+        }
+
         let key = keyFromString(string, diameter: diameter)
 
         if let avatar = cache.objectForKey(key) as? UIImage {

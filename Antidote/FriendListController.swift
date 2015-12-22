@@ -54,8 +54,17 @@ extension FriendListController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let request = requestsFetchedController.objectAtIndexPath(indexPath)
 
-        let cell = UITableViewCell()
-        cell.textLabel?.text = request.publicKey
+        let avatarManager = AvatarManager(theme: theme)
+
+        let model = FriendListCellModel()
+        model.avatar = avatarManager.avatarFromString("", diameter: CGFloat(FriendListCell.Constants.AvatarSize))
+        model.topText = request.publicKey
+        model.bottomText = request.message
+        model.multilineBottomtext = true
+        model.hideStatus = true
+
+        let cell = FriendListCell()
+        cell.setupWithTheme(theme, model: model)
 
         return cell
     }
@@ -79,7 +88,7 @@ extension FriendListController: UITableViewDataSource {
 
 extension FriendListController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
 }
 
@@ -90,6 +99,8 @@ private extension FriendListController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = theme.colorForType(.NormalBackground)
+        // removing separators on empty lines
+        tableView.tableFooterView = UIView()
 
         view.addSubview(tableView)
     }
