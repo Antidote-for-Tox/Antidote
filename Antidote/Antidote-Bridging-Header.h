@@ -8,6 +8,7 @@
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
+#import <objcTox/OCTSubmanagerFriends.h>
 #import <objcTox/OCTSubmanagerObjects.h>
 #import <objcTox/OCTSubmanagerUser.h>
 #import <objcTox/OCTToxConstants.h>

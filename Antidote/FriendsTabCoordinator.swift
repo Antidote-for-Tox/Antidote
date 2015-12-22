@@ -18,7 +18,7 @@ class FriendsTabCoordinator: RunningBasicCoordinator {
     }
 
     override func start() {
-        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects)
+        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends)
 
         navigationController.pushViewController(controller, animated: false)
     }
