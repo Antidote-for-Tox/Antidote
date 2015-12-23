@@ -68,6 +68,7 @@
 "profile_title" = "Profile";
 
 "friend_requests_section" = "Friend Requests";
+"friend_last_seen" = "Last seen: %@";
 
 "name" = "Name";
 "status_message" = "Status Message";

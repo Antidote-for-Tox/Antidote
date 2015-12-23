@@ -15,6 +15,9 @@ class FriendListCell: BaseCell {
         static let AvatarLeftOffset = 10.0
         static let AvatarRightOffset = 16.0
 
+        static let TopLabelHeight = 22.0
+        static let MinimumBottomLabelHeight = 15.0
+
         static let VerticalOffset = 3.0
     }
 
@@ -77,18 +80,20 @@ class FriendListCell: BaseCell {
 
         topLabel.snp_makeConstraints{ (make) -> Void in
             make.left.equalTo(avatarView.snp_right).offset(Constants.AvatarRightOffset)
-            make.right.equalTo(arrowImageView.snp_left)
             make.top.equalTo(contentView).offset(Constants.VerticalOffset)
+            make.height.equalTo(Constants.TopLabelHeight)
         }
 
         bottomLabel.snp_makeConstraints{ (make) -> Void in
             make.left.right.equalTo(topLabel)
             make.top.equalTo(topLabel.snp_bottom)
             make.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
+            make.height.greaterThanOrEqualTo(Constants.MinimumBottomLabelHeight)
         }
 
         arrowImageView.snp_makeConstraints{ (make) -> Void in
             make.centerY.equalTo(contentView)
+            make.left.greaterThanOrEqualTo(topLabel.snp_right)
             make.right.equalTo(contentView)
         }
     }
