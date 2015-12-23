@@ -68,10 +68,15 @@
 		1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; };
 		1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; };
 		1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
+		116512FD1C2B4B180066AF06 /* Dollar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 116512FC1C2B4B180066AF06 /* Dollar.framework */; };
+		116512FE1C2B4B180066AF06 /* Dollar.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 116512FC1C2B4B180066AF06 /* Dollar.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116512FF1C2B4B180066AF06 /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
+		116513001C2B4B180066AF06 /* Cent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
+		116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
+		116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1172A51F1BEC952C002400CA /* StatusNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172A51E1BEC952C002400CA /* StatusNavigationBar.swift */; };
-		1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
-		1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
-		1173EFF31BC5CF6E00B88B7B /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -120,6 +125,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		116513011C2B4B180066AF06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 924F92DB195F8338003DBB60;
+			remoteInfo = Cent;
+		};
+		116513051C2B4B180066AF06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EEBCC9D719CC627D0083B827;
+			remoteInfo = "SnapKit iOS";
+		};
+		116513091C2B4B180066AF06 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = F32DF2571B73054C0011046A;
+			remoteInfo = "Yaml iOS";
+		};
 		1173EFC31BC5C65C00B88B7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
@@ -199,6 +225,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1165130B1C2B4B190066AF06 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */,
+				116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */,
+				116513001C2B4B180066AF06 /* Cent.framework in Embed Frameworks */,
+				116512FE1C2B4B180066AF06 /* Dollar.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningBasicCoordinator.swift; sourceTree = "<group>"; };
@@ -228,6 +271,7 @@
 		1164C8EF1BC982FF00B91107 /* ImageExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageExtension.swift; sourceTree = "<group>"; };
 		1164C8F21BC9880000B91107 /* LoginLogoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLogoController.swift; sourceTree = "<group>"; };
 		1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
+		116512FC1C2B4B180066AF06 /* Dollar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Dollar.framework; path = "/Users/dvor/Library/Developer/Xcode/DerivedData/Antidote-civfamlhkaufwogzntvuhmuzqnpu/Build/Products/Debug-iphoneos/Dollar.framework"; sourceTree = "<absolute>"; };
 		1172A51E1BEC952C002400CA /* StatusNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusNavigationBar.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
@@ -289,11 +333,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1173EFF31BC5CF6E00B88B7B /* Yaml.framework in Frameworks */,
-				1173EFD71BC5C6C700B88B7B /* SnapKit.framework in Frameworks */,
-				1173EFC71BC5C66200B88B7B /* Cent.framework in Frameworks */,
 				1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */,
 				1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */,
+				116512FF1C2B4B180066AF06 /* Cent.framework in Frameworks */,
+				116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */,
+				116512FD1C2B4B180066AF06 /* Dollar.framework in Frameworks */,
+				116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */,
 				1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */,
 				A268447630F941ADA4541F0C /* libPods.a in Frameworks */,
 			);
@@ -333,6 +378,7 @@
 		1164763119794D3300DB20B8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				116512FC1C2B4B180066AF06 /* Dollar.framework */,
 				1164763219794D3300DB20B8 /* Foundation.framework */,
 				1164763419794D3300DB20B8 /* CoreGraphics.framework */,
 				1164763619794D3300DB20B8 /* UIKit.framework */,
@@ -601,10 +647,14 @@
 				1164762D19794D3300DB20B8 /* Resources */,
 				765330FB0A1142E6A0B97483 /* Copy Pods Resources */,
 				F5E1FE60DBC020F5C63A3835 /* Embed Pods Frameworks */,
+				1165130B1C2B4B190066AF06 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				116513021C2B4B180066AF06 /* PBXTargetDependency */,
+				116513061C2B4B180066AF06 /* PBXTargetDependency */,
+				1165130A1C2B4B180066AF06 /* PBXTargetDependency */,
 			);
 			name = Antidote;
 			productName = Antidote;
@@ -941,6 +991,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		116513021C2B4B180066AF06 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Cent;
+			targetProxy = 116513011C2B4B180066AF06 /* PBXContainerItemProxy */;
+		};
+		116513061C2B4B180066AF06 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SnapKit iOS";
+			targetProxy = 116513051C2B4B180066AF06 /* PBXContainerItemProxy */;
+		};
+		1165130A1C2B4B180066AF06 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Yaml iOS";
+			targetProxy = 116513091C2B4B180066AF06 /* PBXContainerItemProxy */;
+		};
 		1173F05C1BC5D94400B88B7B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 1164762E19794D3300DB20B8 /* Antidote */;
@@ -1048,6 +1113,7 @@
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
@@ -1075,6 +1141,7 @@
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
