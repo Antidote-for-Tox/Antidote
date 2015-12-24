@@ -127,7 +127,11 @@ extension FriendListController: UITableViewDataSource {
             array.append(friendsFetchedController.titleForHeaderInSection(i))
         }
 
-        return array
+        return array.filter {
+            !$0.isEmpty
+        }.map {
+            $0.substringToIndex($0.startIndex.advancedBy(1))
+        }
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
