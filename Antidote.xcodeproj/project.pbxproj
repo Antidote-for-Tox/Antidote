@@ -76,6 +76,7 @@
 		116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
 		116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513181C2C6C980066AF06 /* FriendCardController.swift */; };
 		1172A51F1BEC952C002400CA /* StatusNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172A51E1BEC952C002400CA /* StatusNavigationBar.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
@@ -272,6 +273,7 @@
 		1164C8F21BC9880000B91107 /* LoginLogoController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginLogoController.swift; sourceTree = "<group>"; };
 		1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		116512FC1C2B4B180066AF06 /* Dollar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Dollar.framework; path = "/Users/dvor/Library/Developer/Xcode/DerivedData/Antidote-civfamlhkaufwogzntvuhmuzqnpu/Build/Products/Debug-iphoneos/Dollar.framework"; sourceTree = "<absolute>"; };
+		116513181C2C6C980066AF06 /* FriendCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendCardController.swift; sourceTree = "<group>"; };
 		1172A51E1BEC952C002400CA /* StatusNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusNavigationBar.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
@@ -610,6 +612,7 @@
 		9C9A06F51BE792E60003D6C7 /* Running */ = {
 			isa = PBXGroup;
 			children = (
+				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
 				1193AB411C1E2075006AA9E5 /* QRViewerController.swift */,
@@ -913,6 +916,7 @@
 				1156A4851C10D119005AC8C6 /* StaticTableAvatarCellModel.swift in Sources */,
 				1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */,
 				112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */,
+				116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */,
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,

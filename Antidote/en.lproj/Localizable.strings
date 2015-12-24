@@ -71,8 +71,10 @@
 "friend_last_seen" = "Last seen: %@";
 
 "name" = "Name";
+"nickname" = "Nickname";
 "status_message" = "Status Message";
 "my_tox_id" = "My Tox ID";
+"public_key" = "Public Key";
 "show_qr" = "Show QR";
 "profile_details" = "Profile Details";
 "logout_button" = "Log Out";

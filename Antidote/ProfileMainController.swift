@@ -65,15 +65,15 @@ class ProfileMainController: StaticTableController {
         title = String(localized: "profile_title")
     }
 
+    required convenience init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         updateModels()
         reloadTableView()
-    }
-
-    required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 

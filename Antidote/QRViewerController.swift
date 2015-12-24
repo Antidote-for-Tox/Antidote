@@ -14,7 +14,7 @@ protocol QRViewerControllerDelegate: class {
 }
 
 class QRViewerController: UIViewController {
-    var delegate: QRViewerControllerDelegate?
+    weak var delegate: QRViewerControllerDelegate?
 
     private let theme: Theme
     private let text: String

@@ -13,7 +13,13 @@ private struct Constants {
     static let FriendRequestsSection = 0
 }
 
+protocol FriendListControllerDelegate: class {
+    func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend)
+}
+
 class FriendListController: UIViewController {
+    weak var delegate: FriendListControllerDelegate?
+
     private let theme: Theme
 
     private let requestsFetchedController: RBQFetchedResultsController
@@ -144,7 +150,8 @@ extension FriendListController: UITableViewDelegate {
             didSelectFriendRequest(request)
         }
         else {
-            // friends
+            let friend = friendAtIndexPath(indexPath)
+            delegate?.friendListController(self, didSelectFriend: friend)
         }
     }
 }
