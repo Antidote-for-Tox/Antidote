@@ -20,7 +20,8 @@ class AppCoordinator {
         let filepath = NSBundle.mainBundle().pathForResource("default-theme", ofType: "yaml")!
         let yamlString = try! NSString(contentsOfFile:filepath, encoding:NSUTF8StringEncoding) as String
 
-        self.theme = try! Theme(yamlString: yamlString)
+        theme = try! Theme(yamlString: yamlString)
+        applyTheme(theme)
     }
 }
 
@@ -56,6 +57,11 @@ extension AppCoordinator: LoginCoordinatorDelegate {
 
 // MARK: Private
 private extension AppCoordinator {
+    func applyTheme(theme: Theme) {
+        UIButton.appearance().tintColor = theme.colorForType(.LinkText)
+        UISwitch.appearance().onTintColor = theme.colorForType(.LinkText)
+    }
+
     func createRunningCoordinatorWithManager(var manager: OCTManager?) -> RunningCoordinator? {
         if manager == nil {
             manager =  LoginCoordinator.loginWithActiveProfile()

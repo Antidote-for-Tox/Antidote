@@ -14,5 +14,6 @@ extension UINavigationController {
 
         let bar = navigationBar as! StatusNavigationBar
         bar.configureWithTheme(theme, navigationController: self)
+        bar.tintColor = theme.colorForType(.LinkText)
     }
 }
