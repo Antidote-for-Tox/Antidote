@@ -35,19 +35,29 @@ extension FriendsTabCoordinator: FriendListControllerDelegate {
 }
 
 extension FriendsTabCoordinator: FriendCardControllerDelegate {
-    func friendCardControllerChangeNickname(controller: FriendCardController) {
-        let friend = controller.friend
-
+    func friendCardControllerChangeNickname(controller: FriendCardController, forFriend friend: OCTFriend) {
         let title = String(localized: "nickname")
         let defaultValue = friend.nickname
 
         let textController = TextEditController(theme: theme, title: title, defaultValue: defaultValue) {
             [unowned self] newValue -> Void in
 
-            self.toxManager.objects.changeFriend(controller.friend, nickname: newValue)
+            self.toxManager.objects.changeFriend(friend, nickname: newValue)
             self.navigationController.popViewControllerAnimated(true)
         }
 
         navigationController.pushViewController(textController, animated: true)
+    }
+
+    func friendCardControllerOpenChat(controller: FriendCardController, forFriend friend: OCTFriend) {
+        print("open chat")
+    }
+
+    func friendCardControllerCallFriend(controller: FriendCardController, forFriend friend: OCTFriend) {
+        print("call")
+    }
+
+    func friendCardControllerVideoCallFriend(controller: FriendCardController, forFriend friend: OCTFriend) {
+        print("video call")
     }
 }

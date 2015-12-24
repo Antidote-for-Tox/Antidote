@@ -77,6 +77,8 @@
 		116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
 		116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513181C2C6C980066AF06 /* FriendCardController.swift */; };
+		116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */; };
+		116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */; };
 		1172A51F1BEC952C002400CA /* StatusNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1172A51E1BEC952C002400CA /* StatusNavigationBar.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
@@ -274,6 +276,8 @@
 		1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtension.swift; sourceTree = "<group>"; };
 		116512FC1C2B4B180066AF06 /* Dollar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = Dollar.framework; path = "/Users/dvor/Library/Developer/Xcode/DerivedData/Antidote-civfamlhkaufwogzntvuhmuzqnpu/Build/Products/Debug-iphoneos/Dollar.framework"; sourceTree = "<absolute>"; };
 		116513181C2C6C980066AF06 /* FriendCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendCardController.swift; sourceTree = "<group>"; };
+		116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCell.swift; sourceTree = "<group>"; };
+		116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCellModel.swift; sourceTree = "<group>"; };
 		1172A51E1BEC952C002400CA /* StatusNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusNavigationBar.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
@@ -515,6 +519,8 @@
 				1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */,
 				1156A4801C0FA0A4005AC8C6 /* StaticTableButtonCell.swift */,
 				1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */,
+				116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */,
+				116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */,
 				115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */,
 				115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */,
 				1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */,
@@ -887,6 +893,7 @@
 			files = (
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
+				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */,
 				11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */,
@@ -938,6 +945,7 @@
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
+				116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */,
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,

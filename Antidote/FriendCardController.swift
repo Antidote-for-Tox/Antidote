@@ -9,18 +9,22 @@
 import UIKit
 
 protocol FriendCardControllerDelegate: class {
-    func friendCardControllerChangeNickname(controller: FriendCardController)
+    func friendCardControllerChangeNickname(controller: FriendCardController, forFriend friend: OCTFriend)
+    func friendCardControllerOpenChat(controller: FriendCardController, forFriend friend: OCTFriend)
+    func friendCardControllerCallFriend(controller: FriendCardController, forFriend friend: OCTFriend)
+    func friendCardControllerVideoCallFriend(controller: FriendCardController, forFriend friend: OCTFriend)
 }
 
 class FriendCardController: StaticTableController {
     weak var delegate: FriendCardControllerDelegate?
 
-    let friend: OCTFriend
+    private let friend: OCTFriend
 
     private let avatarManager: AvatarManager
     private let friendController: RBQFetchedResultsController
 
     private let avatarModel: StaticTableAvatarCellModel
+    private let chatButtonsModel: StaticTableChatButtonsCellModel
     private let nicknameModel: StaticTableDefaultCellModel
     private let nameModel: StaticTableDefaultCellModel
     private let statusMessageModel: StaticTableDefaultCellModel
@@ -35,6 +39,7 @@ class FriendCardController: StaticTableController {
         friendController = submanagerObjects.fetchedResultsControllerForType(.Friend, predicate: predicate)
 
         avatarModel = StaticTableAvatarCellModel()
+        chatButtonsModel = StaticTableChatButtonsCellModel()
         nicknameModel = StaticTableDefaultCellModel()
         nameModel = StaticTableDefaultCellModel()
         statusMessageModel = StaticTableDefaultCellModel()
@@ -43,6 +48,7 @@ class FriendCardController: StaticTableController {
         super.init(theme: theme, model: [
             [
                 avatarModel,
+                chatButtonsModel,
             ],
             [
                 nicknameModel,
@@ -79,10 +85,25 @@ private extension FriendCardController {
                 diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
         avatarModel.userInteractionEnabled = false
 
+        chatButtonsModel.chatButtonHandler = { [unowned self] in
+            self.delegate?.friendCardControllerOpenChat(self, forFriend: self.friend)
+        }
+        chatButtonsModel.callButtonHandler = { [unowned self] in
+            self.delegate?.friendCardControllerCallFriend(self, forFriend: self.friend)
+        }
+        chatButtonsModel.videoButtonHandler = { [unowned self] in
+            self.delegate?.friendCardControllerVideoCallFriend(self, forFriend: self.friend)
+        }
+        chatButtonsModel.chatButtonEnabled = true
+        chatButtonsModel.callButtonEnabled = friend.isConnected
+        chatButtonsModel.videoButtonEnabled = friend.isConnected
+
         nicknameModel.title = String(localized: "nickname")
         nicknameModel.value = friend.nickname
         nicknameModel.showArrow = true
-        nicknameModel.didSelectHandler = changeNickname
+        nicknameModel.didSelectHandler = { [unowned self] in
+            self.delegate?.friendCardControllerChangeNickname(self, forFriend: self.friend)
+        }
 
         nameModel.title = String(localized: "name")
         nameModel.value = friend.name
@@ -98,9 +119,5 @@ private extension FriendCardController {
         publicKeyModel.value = friend.publicKey
         publicKeyModel.showArrow = false
         publicKeyModel.userInteractionEnabled = false
-    }
-
-    func changeNickname() {
-        delegate?.friendCardControllerChangeNickname(self)
     }
 }
