@@ -76,6 +76,7 @@
 		116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513181C2C6C980066AF06 /* FriendCardController.swift */; };
 		116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */; };
 		116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */; };
+		116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513251C2D636A0066AF06 /* NotificationWindow.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -100,6 +101,7 @@
 		11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */; };
 		11CFCD0F1C27499D0046BD94 /* UserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */; };
 		11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */; };
+		11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
 		11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
 		11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; };
 		11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; };
@@ -273,6 +275,7 @@
 		116513181C2C6C980066AF06 /* FriendCardController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendCardController.swift; sourceTree = "<group>"; };
 		116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCell.swift; sourceTree = "<group>"; };
 		116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCellModel.swift; sourceTree = "<group>"; };
+		116513251C2D636A0066AF06 /* NotificationWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationWindow.swift; sourceTree = "<group>"; };
 		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
@@ -302,6 +305,7 @@
 		11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewWithStatus.swift; sourceTree = "<group>"; };
 		11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusView.swift; sourceTree = "<group>"; };
 		11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticBackgroundView.swift; sourceTree = "<group>"; };
+		11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPassingGestures.swift; sourceTree = "<group>"; };
 		11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Bridging-Header.h"; sourceTree = "<group>"; };
 		11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
@@ -422,8 +426,10 @@
 			children = (
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
+				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
 				11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */,
 				11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */,
+				11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */,
 				1164C8EB1BC9800200B91107 /* Login */,
 			);
 			name = Views;
@@ -565,8 +571,8 @@
 		11FA0EDF1BC591EA00F3DA5B /* Functions */ = {
 			isa = PBXGroup;
 			children = (
-				11FA0EE01BC591FC00F3DA5B /* Logger.swift */,
 				119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */,
+				11FA0EE01BC591FC00F3DA5B /* Logger.swift */,
 			);
 			name = Functions;
 			sourceTree = "<group>";
@@ -894,6 +900,7 @@
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
 				1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */,
 				1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
+				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
 				1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */,
@@ -936,6 +943,7 @@
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
+				11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */,
 				116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */,
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,

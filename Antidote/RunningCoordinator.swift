@@ -17,6 +17,7 @@ class RunningCoordinator: NSObject {
     weak var delegate: RunningCoordinatorDelegate?
 
     let window: UIWindow
+    let notificationWindow: NotificationWindow
     let tabBarController: UITabBarController
 
     let toxManager: OCTManager
@@ -25,6 +26,7 @@ class RunningCoordinator: NSObject {
 
     init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
         self.window = window
+        self.notificationWindow = NotificationWindow(theme: theme)
         self.tabBarController = UITabBarController()
         self.toxManager = toxManager
 
@@ -54,7 +56,7 @@ extension RunningCoordinator: CoordinatorProtocol {
 
         window.rootViewController = tabBarController
 
-        updateTabCoordinatorsWithConnecting(true)
+        notificationWindow.showConnectingView(true, animated: false)
 
         toxManager.bootstrap.addPredefinedNodes()
         toxManager.bootstrap.bootstrap()
@@ -63,7 +65,7 @@ extension RunningCoordinator: CoordinatorProtocol {
 
 extension RunningCoordinator: OCTSubmanagerUserDelegate {
     func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
-        updateTabCoordinatorsWithConnecting(connectionStatus == .None)
+        notificationWindow.showConnectingView(connectionStatus == .None, animated: true)
     }
 }
 
@@ -72,8 +74,5 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         UserDefaultsManager().isUserLoggedIn = false
 
         delegate?.runningCoordinatorDidLogout(self)
-    }
-
-    func updateTabCoordinatorsWithConnecting(connecting: Bool) {
     }
 }
