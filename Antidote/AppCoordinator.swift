@@ -58,8 +58,11 @@ extension AppCoordinator: LoginCoordinatorDelegate {
 // MARK: Private
 private extension AppCoordinator {
     func applyTheme(theme: Theme) {
-        UIButton.appearance().tintColor = theme.colorForType(.LinkText)
-        UISwitch.appearance().onTintColor = theme.colorForType(.LinkText)
+        let linkTextColor = theme.colorForType(.LinkText)
+
+        UIButton.appearance().tintColor = linkTextColor
+        UISwitch.appearance().onTintColor = linkTextColor
+        UINavigationBar.appearance().tintColor = linkTextColor
     }
 
     func createRunningCoordinatorWithManager(var manager: OCTManager?) -> RunningCoordinator? {

@@ -167,12 +167,13 @@ private extension FriendListController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = theme.colorForType(.NormalBackground)
+        tableView.sectionIndexColor = theme.colorForType(.LinkText)
         // removing separators on empty lines
         tableView.tableFooterView = UIView()
 
         view.addSubview(tableView)
 
-        tableView!.registerClass(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
+        tableView.registerClass(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
     }
 
     func installConstraints() {
