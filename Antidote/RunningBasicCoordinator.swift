@@ -14,7 +14,7 @@ class RunningBasicCoordinator {
 
     init(theme: Theme) {
         self.theme = theme
-        self.navigationController = UINavigationController(statusNavigationBarWithTheme: theme)
+        self.navigationController = UINavigationController()
     }
 
     init(theme: Theme, navigationController: UINavigationController) {
@@ -24,18 +24,5 @@ class RunningBasicCoordinator {
 
     func start() {
         preconditionFailure("This method must be overridden")
-    }
-
-    func toggleConnectingStatus(show show: Bool) {
-        guard let statusBar = navigationController.navigationBar as? StatusNavigationBar else {
-            return
-        }
-
-        if show {
-            statusBar.showStatusView()
-        }
-        else {
-            statusBar.hideStatusView()
-        }
     }
 }

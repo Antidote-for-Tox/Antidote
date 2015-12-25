@@ -75,8 +75,5 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
     }
 
     func updateTabCoordinatorsWithConnecting(connecting: Bool) {
-        tabCoordinators.each {
-            $0.toggleConnectingStatus(show: connecting)
-        }
     }
 }
