@@ -44,6 +44,8 @@
 		110E4A201BF92AF200D1FE6F /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; };
 		110E4A211BF92AF200D1FE6F /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
+		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
+		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
 		1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
 		1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
@@ -246,6 +248,8 @@
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningBasicCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
+		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
+		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCellModel.swift; sourceTree = "<group>"; };
 		1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableButtonCellModel.swift; sourceTree = "<group>"; };
 		1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSelectableCellModel.swift; sourceTree = "<group>"; };
@@ -424,6 +428,7 @@
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
+				113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */,
 				11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */,
 				11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */,
 				11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */,
@@ -618,6 +623,7 @@
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
+				113D56551C2F459E00B3D3E8 /* QRScannerController.swift */,
 				1193AB411C1E2075006AA9E5 /* QRViewerController.swift */,
 				110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */,
 				1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */,
@@ -890,6 +896,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
+				113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
 				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
@@ -923,6 +930,7 @@
 				1156A4851C10D119005AC8C6 /* StaticTableAvatarCellModel.swift in Sources */,
 				1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */,
 				112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */,
+				113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */,
 				116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */,
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,

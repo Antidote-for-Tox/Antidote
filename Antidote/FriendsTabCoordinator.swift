@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Cent
 
 class FriendsTabCoordinator: RunningBasicCoordinator {
     private let toxManager: OCTManager
@@ -70,8 +71,43 @@ extension FriendsTabCoordinator: FriendCardControllerDelegate {
 }
 
 extension FriendsTabCoordinator: AddFriendControllerDelegate {
-    func addFriendController(controller: AddFriendController, scanQRWithHandler: [String] -> Bool) {
+    func addFriendControllerScanQRCode(
+            controller: AddFriendController,
+            validateCodeHandler: String -> Bool,
+            didScanHander: String -> Void) {
 
+        let scanner = QRScannerController(theme: theme)
+
+        scanner.didScanStringsBlock = { [unowned self, scanner] in
+            let qrCode = $0.filter { validateCodeHandler($0) }.first
+
+            if let code = qrCode {
+                didScanHander(code)
+                self.navigationController.dismissViewControllerAnimated(true, completion: nil)
+            }
+            else {
+                scanner.pauseScanning = true
+
+                let title = String(localized:"error_title")
+                let message = String(localized:"add_friend_wrong_qr")
+                let button = String(localized:"error_ok_button")
+
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+
+                alert.addAction(UIAlertAction(title: button, style: .Default) { [unowned scanner ] _ -> Void in
+                    scanner.pauseScanning = false
+                })
+
+                scanner.presentViewController(alert, animated: true, completion: nil)
+            }
+        }
+
+        scanner.cancelBlock = { [unowned self] in
+            self.navigationController.dismissViewControllerAnimated(true, completion: nil)
+        }
+
+        let scannerNavCon = UINavigationController(rootViewController: scanner)
+        navigationController.presentViewController(scannerNavCon, animated: true, completion: nil)
     }
 
     func addFriendControllerDidFinish(controller: AddFriendController) {

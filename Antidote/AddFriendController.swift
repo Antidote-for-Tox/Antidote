@@ -20,15 +20,11 @@ private struct Constants {
 }
 
 protocol AddFriendControllerDelegate: class {
-    /**
-        Ask delegate to scan QR code.
+    func addFriendControllerScanQRCode(
+            controller: AddFriendController,
+            validateCodeHandler: String -> Bool,
+            didScanHander: String -> Void)
 
-        - Parameters:
-          - scanQRWithHandler: handler to be called on successful scan:
-            - [String] - array with scanned strings.
-            - -> Bool - return true if scanning should be finished, false otherwise.
-     */
-    func addFriendController(controller: AddFriendController, scanQRWithHandler: [String] -> Bool)
     func addFriendControllerDidFinish(controller: AddFriendController)
 }
 
@@ -76,26 +72,22 @@ class AddFriendController: UIViewController {
 
 extension AddFriendController {
     func qrCodeButtonPressed() {
-        delegate?.addFriendController(self, scanQRWithHandler: { [unowned self] stringValues in
-            let ids = stringValues.map {
-                $0.uppercaseString
-            }.map {
-                $0.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            }.map {
-                $0.hasPrefix("TOX:") ? $0.substringToIndex($0.startIndex.advancedBy(4)) : $0
-            }.filter {
-                isAddressString($0)
+        func prepareString(var string: String) -> String {
+            string = string.uppercaseString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+
+            if string.hasPrefix("TOX:") {
+                return string.substringFromIndex(string.startIndex.advancedBy(4))
             }
 
-            guard ids.count > 0 else {
-                UIAlertView.showErrorWithMessage(String(localized: "add_friend_wrong_qr"))
-                return false
-            }
+            return string
+        }
 
-            self.textView.text = ids[0]
+        delegate?.addFriendControllerScanQRCode(self, validateCodeHandler: {
+            return isAddressString(prepareString($0))
+
+        }, didScanHander: { [unowned self] in
+            self.textView.text = prepareString($0)
             self.updateSendButton()
-
-            return true
         })
     }
 
