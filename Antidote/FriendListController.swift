@@ -212,9 +212,9 @@ private extension FriendListController {
     }
 
     func friendAtIndexPath(indexPath: NSIndexPath) -> OCTFriend {
-        assert(indexPath.section != Constants.FriendRequestsSection, "Wrong section used for accessing friend")
+        assert(!isRequestsSectionVisible() || indexPath.section != Constants.FriendRequestsSection, "Wrong section used for accessing friend")
 
-        var section = friendsNormalizedSectionFromSection(indexPath.section)
+        let section = friendsNormalizedSectionFromSection(indexPath.section)
 
         let normalized = NSIndexPath(forRow: indexPath.row, inSection: section)
 
