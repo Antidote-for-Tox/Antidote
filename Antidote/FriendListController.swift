@@ -149,7 +149,9 @@ extension FriendListController: UITableViewDataSource {
         }
         else {
             let normalized = friendsNormalizedSectionFromSection(section)
-            return friendsFetchedController.titleForHeaderInSection(normalized)
+            let title = friendsFetchedController.titleForHeaderInSection(normalized)
+
+            return title.isEmpty ? "" : title.substringToIndex(title.startIndex.advancedBy(1))
         }
     }
 }
