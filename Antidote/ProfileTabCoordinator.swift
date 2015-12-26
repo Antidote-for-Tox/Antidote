@@ -47,7 +47,7 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
                 try self.toxManager.user.setUserName(newName)
             }
             catch let error as NSError {
-                handleErrorWithType(.ToxSetInfoCode, error: error)
+                handleErrorWithType(.ToxSetInfoCodeName, error: error)
                 return false
             }
 
@@ -63,7 +63,7 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
                 try self.toxManager.user.setUserStatusMessage(newStatusMessage)
             }
             catch let error as NSError {
-                handleErrorWithType(.ToxSetInfoCode, error: error)
+                handleErrorWithType(.ToxSetInfoCodeStatusMessage, error: error)
                 return false
             }
 

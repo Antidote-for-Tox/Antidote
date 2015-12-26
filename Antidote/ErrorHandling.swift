@@ -11,7 +11,9 @@ import UIKit
 enum ErrorHandlerType {
     case CannotLoadHTML
     case CreateOCTManager
-    case ToxSetInfoCode
+    case ToxSetInfoCodeName
+    case ToxSetInfoCodeStatusMessage
+    case ToxAddFriend
 }
 
 
@@ -22,8 +24,14 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
         case .CreateOCTManager:
             let (title, message) = OCTManagerInitError(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
-        case .ToxSetInfoCode:
-            let (title, message) = OCTToxErrorSetInfoCode(rawValue: error!.code)!.strings()
+        case .ToxSetInfoCodeName:
+            let (title, message) = OCTToxErrorSetInfoCode(rawValue: error!.code)!.nameStrings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .ToxSetInfoCodeStatusMessage:
+            let (title, message) = OCTToxErrorSetInfoCode(rawValue: error!.code)!.statusMessageStrings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .ToxAddFriend:
+            let (title, message) = OCTToxErrorFriendAdd(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
     }
 }
@@ -78,7 +86,7 @@ extension OCTManagerInitError {
 }
 
 extension OCTToxErrorSetInfoCode {
-    func strings() -> (title: String, message: String) {
+    func nameStrings() -> (title: String, message: String) {
         switch self {
             case .Unknow:
                 return (String(localized: "error_title"),
@@ -86,6 +94,47 @@ extension OCTToxErrorSetInfoCode {
             case .TooLong:
                 return (String(localized: "error_title"),
                         String(localized: "tox_error_name_too_long"))
+        }
+    }
+
+    func statusMessageStrings() -> (title: String, message: String) {
+        switch self {
+            case .Unknow:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+            case .TooLong:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_status_message_too_long"))
+        }
+    }
+}
+
+extension OCTToxErrorFriendAdd {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .TooLong:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_friend_request_too_long"))
+            case .NoMessage:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_friend_request_no_message"))
+            case .OwnKey:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_friend_request_own_key"))
+            case .AlreadySent:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_friend_request_already_sent"))
+            case .BadChecksum:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_friend_request_bad_checksum"))
+            case .SetNewNospam:
+                return (String(localized: "error_title"),
+                        String(localized: "tox_error_friend_request_new_nospam"))
+            case .Malloc:
+                fallthrough
+            case .Unknown:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
         }
     }
 }

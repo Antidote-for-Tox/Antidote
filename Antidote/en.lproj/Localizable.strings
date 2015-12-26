@@ -39,7 +39,7 @@
 "error_ok_button" = "OK";
 "error_file_not_found" = "File not found";
 
-"error_internal_message" = "Internal error.";
+"error_internal_message" = "Internal error";
 
 "manager_error_wrong_password_title" = "Wrong password";
 "manager_error_wrong_password_message" = "Password contains wrong symbols.";
@@ -61,6 +61,14 @@
 "manager_error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
 
 "tox_error_name_too_long" = "Name is too long.";
+"tox_error_status_message_too_long" = "Status message is too long";
+
+"tox_error_friend_request_too_long" = "Message is too long";
+"tox_error_friend_request_no_message" = "No message specified";
+"tox_error_friend_request_own_key" = "Cannot add myself to friend list";
+"tox_error_friend_request_already_sent" = "Friend request was already sent";
+"tox_error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
+"tox_error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
 
 "connecting_label" = "Connecting...";
 
@@ -69,6 +77,16 @@
 
 "friend_requests_section" = "Friend Requests";
 "friend_last_seen" = "Last seen: %@";
+
+"add_friend_title" = "Add Friend";
+"add_friend_send" = "Send";
+"add_friend_cancel" = "Cancel";
+"add_friend_tox_id_placeholder" = "Enter Tox ID";
+"add_friend_or_label" = "or";
+"add_friend_use_qr" = "Use QR code";
+"add_friend_default_message_title" = "Message";
+"add_friend_default_message_text" = "Hello! Could you please add me to your friendlist?";
+"add_friend_wrong_qr" = "Wrong QR code. It should contain Tox ID";
 
 "name" = "Name";
 "nickname" = "Nickname";

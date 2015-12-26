@@ -15,6 +15,7 @@ private struct Constants {
 
 protocol FriendListControllerDelegate: class {
     func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend)
+    func friendListControllerAddFriend(controller: FriendListController)
 }
 
 class FriendListController: UIViewController {
@@ -43,8 +44,10 @@ class FriendListController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        self.requestsFetchedController.delegate = self
-        self.friendsFetchedController.delegate = self
+        requestsFetchedController.delegate = self
+        friendsFetchedController.delegate = self
+
+        addNavigationButtons()
 
         edgesForExtendedLayout = .None
         title = String(localized: "friends_title")
@@ -59,6 +62,12 @@ class FriendListController: UIViewController {
 
         createTableView()
         installConstraints()
+    }
+}
+
+extension FriendListController {
+    func addFriendButtonPressed() {
+        delegate?.friendListControllerAddFriend(self)
     }
 }
 
@@ -161,6 +170,13 @@ extension FriendListController: UITableViewDelegate {
 }
 
 private extension FriendListController {
+    func addNavigationButtons() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .Add,
+                target: self,
+                action: "addFriendButtonPressed")
+    }
+
     func createTableView() {
         tableView = UITableView()
         tableView.estimatedRowHeight = 44.0

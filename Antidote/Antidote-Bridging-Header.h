@@ -17,3 +17,6 @@
 #import "DDLog.h"
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
+
+#import <SDCAlertView/SDCAlertController.h>
+#import <UITextView+Placeholder/UITextView+Placeholder.h>
