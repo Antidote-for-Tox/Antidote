@@ -27,17 +27,65 @@ class ThemeTest: XCTestCase {
             "  second: \"55667788\"\n" +
             "values:\n" +
             "  login-background: first\n" +
-            "  login-button-text: second\n"
+            "  login-tox-logo: second\n" +
+            "  login-button-text: first\n" +
+            "  login-button-background: second\n" +
+            "  login-description-label: first\n" +
+            "  login-form-background: second\n" +
+            "  login-form-text: first\n" +
+            "  login-link-color: second\n" +
+
+            "  translucent-background: first\n" +
+
+            "  normal-background: second\n" +
+            "  normal-text: first\n" +
+            "  link-text: second\n" +
+            "  connecting-background: first\n" +
+            "  connecting-text: second\n" +
+            "  table-separator: first\n" +
+            "  offline-status: second\n" +
+            "  online-status: first\n" +
+            "  away-status: second\n" +
+            "  busy-status: first\n" +
+            "  status-background: second\n" +
+            "  friend-cell-status: first\n"
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
 
-        let theme = try? Theme(yamlString: string)
+        do {
+            let theme = try Theme(yamlString: string)
 
-        XCTAssertNotNil(theme)
+            XCTAssertEqual(first, theme.colorForType(.LoginBackground))
+            XCTAssertEqual(second, theme.colorForType(.LoginToxLogo))
+            XCTAssertEqual(first, theme.colorForType(.LoginButtonText))
+            XCTAssertEqual(second, theme.colorForType(.LoginButtonBackground))
+            XCTAssertEqual(first, theme.colorForType(.LoginDescriptionLabel))
+            XCTAssertEqual(second, theme.colorForType(.LoginFormBackground))
+            XCTAssertEqual(first, theme.colorForType(.LoginFormText))
+            XCTAssertEqual(second, theme.colorForType(.LoginLinkColor))
 
-        XCTAssertEqual(first, theme?.colorForType(.LoginBackground))
-        XCTAssertEqual(second, theme?.colorForType(.LoginButtonText))
+            XCTAssertEqual(first, theme.colorForType(.TranslucentBackground))
+
+            XCTAssertEqual(second, theme.colorForType(.NormalBackground))
+            XCTAssertEqual(first, theme.colorForType(.NormalText))
+            XCTAssertEqual(second, theme.colorForType(.LinkText))
+            XCTAssertEqual(first, theme.colorForType(.ConnectingBackground))
+            XCTAssertEqual(second, theme.colorForType(.ConnectingText))
+            XCTAssertEqual(first, theme.colorForType(.TableSeparator))
+            XCTAssertEqual(second, theme.colorForType(.OfflineStatus))
+            XCTAssertEqual(first, theme.colorForType(.OnlineStatus))
+            XCTAssertEqual(second, theme.colorForType(.AwayStatus))
+            XCTAssertEqual(first, theme.colorForType(.BusyStatus))
+            XCTAssertEqual(second, theme.colorForType(.StatusBackground))
+            XCTAssertEqual(first, theme.colorForType(.FriendCellStatus))
+        }
+        catch let error as ErrorTheme {
+            XCTFail(error.debugDescription())
+        }
+        catch {
+            XCTFail("Theme init failed for unknown reason")
+        }
     }
 
     func testVersionToHight() {
@@ -53,8 +101,8 @@ class ThemeTest: XCTestCase {
         do {
             let _ = try Theme(yamlString: string)
         }
-        catch ErrorTheme.VersionTooHigh {
-            didThrow = true
+        catch ErrorTheme.WrongVersion(let description) {
+            didThrow = description == String(localized: "theme_error_version_too_high")
         }
         catch {
             didThrow = false
@@ -76,8 +124,8 @@ class ThemeTest: XCTestCase {
         do {
             let _ = try Theme(yamlString: string)
         }
-        catch ErrorTheme.VersionTooLow {
-            didThrow = true
+        catch ErrorTheme.WrongVersion(let description) {
+            didThrow = description == String(localized: "theme_error_version_too_low")
         }
         catch {
             didThrow = false

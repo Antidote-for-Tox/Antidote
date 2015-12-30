@@ -12,6 +12,15 @@ import Yaml
 enum ErrorTheme: ErrorType {
     case CannotParseFile(String)
     case WrongVersion(String)
+
+    func debugDescription() -> String {
+        switch self {
+            case .CannotParseFile(let string):
+                return "Parse error: \(string)"
+            case .WrongVersion(let string):
+                return "Version error: \(string)"
+        }
+    }
 }
 
 class Theme {
