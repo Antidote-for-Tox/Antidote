@@ -1,4 +1,4 @@
 #!/bin/sh
 
-git submodule update
+git submodule update --init
 pod install
