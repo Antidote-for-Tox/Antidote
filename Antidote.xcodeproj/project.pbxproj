@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		08E035429B6451EE74F53641 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
 		110E49E01BF925FD00D1FE6F /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
@@ -82,6 +81,8 @@
 		11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; };
 		11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; };
 		11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
+		24B56823048809489AF08EE7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
+		948DBE3D945322968EE9D84B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 		9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */; };
 		9C07151D1BCD2E5B003A27B5 /* PortraitNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */; };
 		9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151E1BCD501D003A27B5 /* LoginFormController.swift */; };
@@ -162,7 +163,6 @@
 		9CFF60F91C33E38D00800262 /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
 		9CFF60FA1C33E38D00800262 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; };
 		9CFF60FB1C33E38D00800262 /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
-		A268447630F941ADA4541F0C /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -390,7 +390,7 @@
 				116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */,
 				116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */,
 				1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */,
-				A268447630F941ADA4541F0C /* libPods.a in Frameworks */,
+				24B56823048809489AF08EE7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -398,7 +398,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				08E035429B6451EE74F53641 /* libPods.a in Frameworks */,
+				948DBE3D945322968EE9D84B /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
