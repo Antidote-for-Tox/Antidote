@@ -1,4 +1,4 @@
-[![Circle CI](https://circleci.com/gh/Antidote-for-Tox/Antidote.svg?style=svg)](https://circleci.com/gh/Antidote-for-Tox/Antidote)
+[![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote)
 
 [Tox](https://tox.chat/) client for iOS 7.0+;
 
