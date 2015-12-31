@@ -22,7 +22,6 @@ extension OCTSubmanagerObjects {
                 cacheName: nil)
 
         controller.delegate = delegate
-        controller.performFetch()
 
         return controller
     }

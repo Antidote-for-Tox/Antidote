@@ -9,10 +9,6 @@
 import UIKit
 import SnapKit
 
-private struct Constants {
-    static let FriendRequestsSection = 0
-}
-
 protocol FriendListControllerDelegate: class {
     func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend)
     func friendListControllerAddFriend(controller: FriendListController)
@@ -25,7 +21,6 @@ class FriendListController: UIViewController {
 
     private let dataSource: FriendListDataSource
 
-    private let avatarManager: AvatarManager
     private let submanagerFriends: OCTSubmanagerFriends
 
     private var tableView: UITableView!
@@ -36,9 +31,11 @@ class FriendListController: UIViewController {
         let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
         let friendsController = submanagerObjects.fetchedResultsControllerForType(.Friend, sectionNameKeyPath: "nickname")
 
-        self.dataSource = FriendListDataSource(requestsController: requestsController, friendsController: friendsController)
+        self.dataSource = FriendListDataSource(
+                theme: theme,
+                requestsController: requestsController,
+                friendsController: friendsController)
 
-        self.avatarManager = AvatarManager(theme: theme)
         self.submanagerFriends = submanagerFriends
 
         super.init(nibName: nil, bundle: nil)
@@ -113,31 +110,6 @@ extension FriendListController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCellWithIdentifier(FriendListCell.staticReuseIdentifier) as! FriendListCell
         let model = dataSource.modelAtIndexPath(indexPath)
 
-        // if indexPath.section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-        //     let request = requestAtIndexPath(indexPath)
-
-        //     model.avatar = avatarManager.avatarFromString("", diameter: CGFloat(FriendListCell.Constants.AvatarSize))
-        //     model.topText = request.publicKey
-        //     model.bottomText = request.message
-        //     model.multilineBottomtext = true
-        //     model.hideStatus = true
-        // }
-        // else {
-        //     let friend = friendAtIndexPath(indexPath)
-
-        //     model.avatar = avatarManager.avatarFromString(friend.nickname, diameter: CGFloat(FriendListCell.Constants.AvatarSize))
-        //     model.topText = friend.nickname
-
-        //     if friend.isConnected {
-        //         model.bottomText = friend.statusMessage
-        //     }
-        //     else if friend.lastSeenOnline() != nil {
-        //         model.bottomText = String(localized: "friend_last_seen", friend.lastSeenOnline())
-        //     }
-
-        //     model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
-        // }
-
         cell.setupWithTheme(theme, model: model)
 
         return cell
@@ -145,49 +117,18 @@ extension FriendListController: UITableViewDataSource {
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return dataSource.numberOfSections()
-        // let requests = isRequestsSectionVisible() ? 1 : 0
-        // let friends = friendsFetchedController.numberOfSections()
-
-        // return requests + friends
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.numberOfRowsInSection(section)
-        // if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-        //     return requestsFetchedController.numberOfRowsForSectionIndex(0)
-        // }
-        // else {
-        //     let normalized = friendsNormalizedSectionFromSection(section)
-        //     return friendsFetchedController.numberOfRowsForSectionIndex(normalized)
-        // }
     }
 
     func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
         return dataSource.sectionIndexTitles()
-        // var array = [String]()
-
-        // for i in 0..<friendsFetchedController.numberOfSections() {
-        //     array.append(friendsFetchedController.titleForHeaderInSection(i))
-        // }
-
-        // return array.filter {
-        //     !$0.isEmpty
-        // }.map {
-        //     $0.substringToIndex($0.startIndex.advancedBy(1))
-        // }
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return dataSource.titleForHeaderInSection(section)
-        // if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-        //     return String(localized: "friend_requests_section")
-        // }
-        // else {
-        //     let normalized = friendsNormalizedSectionFromSection(section)
-        //     let title = friendsFetchedController.titleForHeaderInSection(normalized)
-
-        //     return title.isEmpty ? "" : title.substringToIndex(title.startIndex.advancedBy(1))
-        // }
     }
 }
 
@@ -232,37 +173,6 @@ private extension FriendListController {
             make.edges.equalTo(view)
         }
     }
-
-    // func isRequestsSectionVisible() -> Bool {
-    //     return requestsFetchedController.numberOfRowsForSectionIndex(0) > 0
-    // }
-
-    // func requestAtIndexPath(indexPath: NSIndexPath) -> OCTFriendRequest {
-    //     assert(isRequestsSectionVisible(), "Friend requests shouldn't be visible at the moment")
-    //     assert(indexPath.section == Constants.FriendRequestsSection, "Wrong section used for accessing friend request")
-
-    //     let normalized = NSIndexPath(forRow: indexPath.row, inSection: 0)
-
-    //     return requestsFetchedController.objectAtIndexPath(normalized) as! OCTFriendRequest
-    // }
-
-    // func friendAtIndexPath(indexPath: NSIndexPath) -> OCTFriend {
-    //     assert(!isRequestsSectionVisible() || indexPath.section != Constants.FriendRequestsSection, "Wrong section used for accessing friend")
-
-    //     let section = friendsNormalizedSectionFromSection(indexPath.section)
-
-    //     let normalized = NSIndexPath(forRow: indexPath.row, inSection: section)
-
-    //     return friendsFetchedController.objectAtIndexPath(normalized) as! OCTFriend
-    // }
-
-    // func friendsNormalizedSectionFromSection(section: Int) -> Int {
-    //     if isRequestsSectionVisible() && section > Constants.FriendRequestsSection {
-    //         return section - 1
-    //     }
-
-    //     return section
-    // }
 
     func didSelectFriendRequest(request: OCTFriendRequest) {
         // FIXME: replace with request controller or some buttons on cell

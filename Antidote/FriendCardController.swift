@@ -37,6 +37,7 @@ class FriendCardController: StaticTableController {
 
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
         friendController = submanagerObjects.fetchedResultsControllerForType(.Friend, predicate: predicate)
+        friendController.performFetch()
 
         avatarModel = StaticTableAvatarCellModel()
         chatButtonsModel = StaticTableChatButtonsCellModel()
