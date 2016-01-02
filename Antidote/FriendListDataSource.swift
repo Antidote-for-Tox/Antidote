@@ -34,6 +34,7 @@ class FriendListDataSource: NSObject {
     weak var delegate: FriendListDataSourceDelegate?
 
     private let avatarManager: AvatarManager
+    private let dateFormatter: NSDateFormatter
 
     private let requestsControllerStorage: RBQFetchedResultsController
     private let friendsControllerStorage: RBQFetchedResultsController
@@ -50,6 +51,7 @@ class FriendListDataSource: NSObject {
 
     init(theme: Theme, requestsController: RBQFetchedResultsController, friendsController: RBQFetchedResultsController) {
         self.avatarManager = AvatarManager(theme: theme)
+        self.dateFormatter = NSDateFormatter(type: .RelativeDateAndTime)
 
         self.requestsControllerStorage = requestsController
         self.friendsControllerStorage = friendsController
@@ -95,7 +97,9 @@ class FriendListDataSource: NSObject {
                     model.bottomText = friend.statusMessage
                 }
                 else if friend.lastSeenOnline() != nil {
-                    model.bottomText = String(localized: "friend_last_seen", friend.lastSeenOnline())
+                    model.bottomText = String(
+                            localized: "friend_last_seen",
+                            dateFormatter.stringFromDate(friend.lastSeenOnline()))
                 }
 
                 model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
