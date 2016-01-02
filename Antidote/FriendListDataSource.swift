@@ -30,7 +30,7 @@ enum FriendListObject {
     case Friend(OCTFriend)
 }
 
-class FriendListDataSource {
+class FriendListDataSource: NSObject {
     weak var delegate: FriendListDataSourceDelegate?
 
     private let avatarManager: AvatarManager
@@ -53,10 +53,15 @@ class FriendListDataSource {
 
         self.requestsControllerStorage = requestsController
         self.friendsControllerStorage = friendsController
+
+        super.init()
+
+        requestsController.delegate = self
+        friendsController.delegate = self
     }
 
     func numberOfSections() -> Int {
-        let requests = isRequestsSectionVisible() ? 1 : 0
+        let requests = fetchedRequestsController.numberOfSections()
         let friends = fetchedFriendsController.numberOfSections()
 
         return requests + friends
@@ -146,9 +151,64 @@ class FriendListDataSource {
     }
 }
 
+extension FriendListDataSource: RBQFetchedResultsControllerDelegate {
+    func controllerWillChangeContent(controller: RBQFetchedResultsController) {
+        delegate?.friendListDataSourceBeginUpdates()
+    }
+
+   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
+       delegate?.friendListDataSourceEndUpdates()
+   }
+
+    func controller(
+            controller: RBQFetchedResultsController,
+            didChangeObject anObject: RBQSafeRealmObject,
+            atIndexPath indexPath: NSIndexPath?,
+            forChangeType type: RBQFetchedResultsChangeType,
+            newIndexPath: NSIndexPath?) {
+
+        let denormalizedPath = denormalizeIndexPath(indexPath, forController: controller)
+        let newDenormalizedPath = denormalizeIndexPath(newIndexPath, forController: controller)
+
+        switch type {
+            case .Insert:
+                delegate?.friendListDataSourceInsertRowsAtIndexPaths([newDenormalizedPath!])
+            case .Delete:
+                delegate?.friendListDataSourceDeleteRowsAtIndexPaths([denormalizedPath!])
+            case .Move:
+                delegate?.friendListDataSourceDeleteRowsAtIndexPaths([denormalizedPath!])
+                delegate?.friendListDataSourceInsertRowsAtIndexPaths([newDenormalizedPath!])
+            case .Update:
+                delegate?.friendListDataSourceReloadRowsAtIndexPaths([denormalizedPath!])
+        }
+    }
+
+    func controller(
+            controller: RBQFetchedResultsController,
+            didChangeSection section: RBQFetchedResultsSectionInfo,
+            atIndex sectionIndex: UInt,
+            forChangeType type: RBQFetchedResultsChangeType) {
+
+        let denormalizedIndex = denormalizeSectionIndex(Int(sectionIndex), forController: controller)
+        let indexSet = NSIndexSet(index: denormalizedIndex)
+
+        switch type {
+            case .Insert:
+                delegate?.friendListDataSourceInsertSections(indexSet)
+            case .Delete:
+                delegate?.friendListDataSourceDeleteSections(indexSet)
+            case .Move:
+                // nop
+                break
+            case .Update:
+                delegate?.friendListDataSourceReloadSections(indexSet)
+        }
+    }
+}
+
 private extension FriendListDataSource {
     func isRequestsSectionVisible() -> Bool {
-        return fetchedRequestsController.numberOfRowsForSectionIndex(0) > 0
+        return fetchedRequestsController.numberOfSections() > 0
     }
 
     func friendsNormalizedSectionFromSection(section: Int) -> Int {
@@ -159,4 +219,21 @@ private extension FriendListDataSource {
         return section
     }
 
+    func denormalizeIndexPath(indexPath: NSIndexPath?, forController controller: RBQFetchedResultsController) -> NSIndexPath? {
+        guard indexPath != nil else {
+            return nil
+        }
+
+        let denormalizedIndex = denormalizeSectionIndex(indexPath!.section, forController: controller)
+        return NSIndexPath(forRow: indexPath!.row, inSection: denormalizedIndex)
+    }
+
+    func denormalizeSectionIndex(index: Int, forController controller: RBQFetchedResultsController) -> Int {
+        if controller == fetchedRequestsController {
+            return index
+        }
+
+        // friends controller
+        return isRequestsSectionVisible() ? (index - 1) : index
+    }
 }
