@@ -24,6 +24,8 @@ class RunningCoordinator: NSObject {
 
     let tabCoordinators: [RunningBasicCoordinator];
 
+    var callCoordinator: CallCoordinator
+
     init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
         self.window = window
         self.notificationWindow = NotificationWindow(theme: theme)
@@ -42,9 +44,16 @@ class RunningCoordinator: NSObject {
             profile,
         ]
 
+        self.callCoordinator = CallCoordinator(
+                theme: theme,
+                presentingController: tabBarController,
+                submanagerCalls: toxManager.calls,
+                submanagerObjects: toxManager.objects)
+
         super.init()
 
         toxManager.user.delegate = self
+        friends.delegate = self
         profile.delegate = self
     }
 }
@@ -52,6 +61,8 @@ class RunningCoordinator: NSObject {
 extension RunningCoordinator: CoordinatorProtocol {
     func start() {
         tabCoordinators.each{ $0.start() }
+        callCoordinator.start()
+
         tabBarController.viewControllers = tabCoordinators.map{ $0.navigationController }
 
         window.rootViewController = tabBarController
@@ -66,6 +77,23 @@ extension RunningCoordinator: CoordinatorProtocol {
 extension RunningCoordinator: OCTSubmanagerUserDelegate {
     func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
         notificationWindow.showConnectingView(connectionStatus == .None, animated: true)
+    }
+}
+
+extension RunningCoordinator: FriendsTabCoordinatorDelegate {
+    func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend) {
+    }
+
+    func friendsTabCoordinatorCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
+        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+
+        callCoordinator.callToChat(chat, enableVideo: false)
+    }
+
+    func friendsTabCoordinatorVideoCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
+        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+
+        callCoordinator.callToChat(chat, enableVideo: true)
     }
 }
 

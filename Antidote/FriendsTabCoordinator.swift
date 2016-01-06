@@ -9,7 +9,15 @@
 import Foundation
 import Cent
 
+protocol FriendsTabCoordinatorDelegate: class {
+    func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend)
+    func friendsTabCoordinatorCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
+    func friendsTabCoordinatorVideoCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
+}
+
 class FriendsTabCoordinator: RunningBasicCoordinator {
+    weak var delegate: FriendsTabCoordinatorDelegate?
+
     private let toxManager: OCTManager
 
     init(theme: Theme, toxManager: OCTManager) {
@@ -58,15 +66,15 @@ extension FriendsTabCoordinator: FriendCardControllerDelegate {
     }
 
     func friendCardControllerOpenChat(controller: FriendCardController, forFriend friend: OCTFriend) {
-        print("open chat")
+        delegate?.friendsTabCoordinatorOpenChat(self, forFriend: friend)
     }
 
-    func friendCardControllerCallFriend(controller: FriendCardController, forFriend friend: OCTFriend) {
-        print("call")
+    func friendCardControllerCall(controller: FriendCardController, toFriend friend: OCTFriend) {
+        delegate?.friendsTabCoordinatorCall(self, toFriend: friend)
     }
 
-    func friendCardControllerVideoCallFriend(controller: FriendCardController, forFriend friend: OCTFriend) {
-        print("video call")
+    func friendCardControllerVideoCall(controller: FriendCardController, toFriend friend: OCTFriend) {
+        delegate?.friendsTabCoordinatorVideoCall(self, toFriend: friend)
     }
 }
 

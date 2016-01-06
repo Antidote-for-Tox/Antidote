@@ -10,6 +10,8 @@
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
 		110E49E01BF925FD00D1FE6F /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
+		112DA6D31C457CE4004FB1E6 /* DialingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */; };
+		112DA6D41C457CE4004FB1E6 /* DialingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
@@ -48,6 +50,10 @@
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
 		1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */; };
+		1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */; };
+		118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
+		118703D41C39475F00DBC29A /* AbstractCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703D31C39475F00DBC29A /* AbstractCallController.swift */; };
+		118703D61C39476A00DBC29A /* RingingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703D51C39476A00DBC29A /* RingingCallController.swift */; };
 		1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
 		1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB411C1E2075006AA9E5 /* QRViewerController.swift */; };
 		1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */; };
@@ -62,6 +68,9 @@
 		119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
 		119AD2151BEC719A000C5CB8 /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2131BEC719A000C5CB8 /* ringback.wav */; };
 		119AD2161BEC719A000C5CB8 /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2141BEC719A000C5CB8 /* ringtone.wav */; };
+		11A6B85F1C45830500865328 /* AudioCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B85E1C45830500865328 /* AudioCallController.swift */; };
+		11A6B8681C45830C00865328 /* VideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8671C45830C00865328 /* VideoCallController.swift */; };
+		11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8691C45887E00865328 /* ActiveCallController.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -287,6 +296,7 @@
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningBasicCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
+		112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialingCallController.swift; sourceTree = "<group>"; };
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCellModel.swift; sourceTree = "<group>"; };
@@ -327,6 +337,10 @@
 		1173F0711BC5D9DA00B88B7B /* default-theme.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "default-theme.yaml"; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
 		1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatterExtension.swift; sourceTree = "<group>"; };
+		1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCoordinator.swift; sourceTree = "<group>"; };
+		118703C61C3942C700DBC29A /* LazyStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyStorage.swift; sourceTree = "<group>"; };
+		118703D31C39475F00DBC29A /* AbstractCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractCallController.swift; sourceTree = "<group>"; };
+		118703D51C39476A00DBC29A /* RingingCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RingingCallController.swift; sourceTree = "<group>"; };
 		1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditController.swift; sourceTree = "<group>"; };
 		1193AB411C1E2075006AA9E5 /* QRViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewerController.swift; sourceTree = "<group>"; };
 		1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerObjectsExtension.swift; sourceTree = "<group>"; };
@@ -341,6 +355,9 @@
 		119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertViewExtension.swift; sourceTree = "<group>"; };
 		119AD2131BEC719A000C5CB8 /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
 		119AD2141BEC719A000C5CB8 /* ringtone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringtone.wav; sourceTree = "<group>"; };
+		11A6B85E1C45830500865328 /* AudioCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallController.swift; sourceTree = "<group>"; };
+		11A6B8671C45830C00865328 /* VideoCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallController.swift; sourceTree = "<group>"; };
+		11A6B8691C45887E00865328 /* ActiveCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveCallController.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -548,6 +565,7 @@
 			children = (
 				1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
+				118703C61C3942C700DBC29A /* LazyStorage.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
@@ -633,6 +651,7 @@
 		11FA0EE31BC59A9B00F3DA5B /* Running */ = {
 			isa = PBXGroup;
 			children = (
+				1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */,
 				11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */,
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
@@ -670,15 +689,21 @@
 		9C9A06F51BE792E60003D6C7 /* Running */ = {
 			isa = PBXGroup;
 			children = (
+				118703D31C39475F00DBC29A /* AbstractCallController.swift */,
+				11A6B8691C45887E00865328 /* ActiveCallController.swift */,
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
+				11A6B85E1C45830500865328 /* AudioCallController.swift */,
+				112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
 				113D56551C2F459E00B3D3E8 /* QRScannerController.swift */,
 				1193AB411C1E2075006AA9E5 /* QRViewerController.swift */,
+				118703D51C39476A00DBC29A /* RingingCallController.swift */,
 				110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */,
 				1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */,
 				119AD1BD1BDED261000C5CB8 /* TextViewController.swift */,
+				11A6B8671C45830C00865328 /* VideoCallController.swift */,
 			);
 			name = Running;
 			sourceTree = "<group>";
@@ -995,6 +1020,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				118703D61C39476A00DBC29A /* RingingCallController.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
 				113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
@@ -1003,6 +1029,7 @@
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
 				9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
 				11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */,
+				118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */,
 				11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */,
 				9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */,
 				119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */,
@@ -1013,6 +1040,7 @@
 				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
+				118703D41C39475F00DBC29A /* AbstractCallController.swift in Sources */,
 				1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */,
 				119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */,
 				1156A4811C0FA0A4005AC8C6 /* StaticTableButtonCell.swift in Sources */,
@@ -1025,9 +1053,11 @@
 				11CFCD0F1C27499D0046BD94 /* UserStatusView.swift in Sources */,
 				1193AB6A1C1F5C28006AA9E5 /* FriendListCell.swift in Sources */,
 				9CBBC7CD1BDFC6C600099A5E /* LoginExtendedTextField.swift in Sources */,
+				11A6B85F1C45830500865328 /* AudioCallController.swift in Sources */,
 				11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */,
 				9C07151D1BCD2E5B003A27B5 /* PortraitNavigationController.swift in Sources */,
 				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,
+				112DA6D31C457CE4004FB1E6 /* DialingCallController.swift in Sources */,
 				1156A4851C10D119005AC8C6 /* StaticTableAvatarCellModel.swift in Sources */,
 				1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */,
 				112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */,
@@ -1036,6 +1066,7 @@
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
+				11A6B8681C45830C00865328 /* VideoCallController.swift in Sources */,
 				119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */,
 				115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */,
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
@@ -1051,6 +1082,7 @@
 				11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				110E49E01BF925FD00D1FE6F /* RunningBasicCoordinator.swift in Sources */,
 				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
+				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
@@ -1060,6 +1092,7 @@
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
+				11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
 				11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */,
 				1164C8E71BC929C500B91107 /* LoginBaseController.swift in Sources */,
@@ -1107,6 +1140,7 @@
 				9CFF60DA1C33E38D00800262 /* QRViewerController.swift in Sources */,
 				9CFF60E01C33E38D00800262 /* LoginCoordinator.swift in Sources */,
 				9CFF60DB1C33E38D00800262 /* StaticTableController.swift in Sources */,
+				112DA6D41C457CE4004FB1E6 /* DialingCallController.swift in Sources */,
 				9CFF60C41C33E38D00800262 /* StaticTableButtonCellModel.swift in Sources */,
 				9CFF60D11C33E38D00800262 /* LoginChoiceController.swift in Sources */,
 				9CFF60C61C33E38D00800262 /* StaticTableChatButtonsCellModel.swift in Sources */,

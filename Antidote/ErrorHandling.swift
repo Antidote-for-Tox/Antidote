@@ -14,6 +14,7 @@ enum ErrorHandlerType {
     case ToxSetInfoCodeName
     case ToxSetInfoCodeStatusMessage
     case ToxAddFriend
+    case CallToChat
 }
 
 
@@ -32,6 +33,9 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showWithTitle(title, message: message)
         case .ToxAddFriend:
             let (title, message) = OCTToxErrorFriendAdd(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .CallToChat:
+            let (title, message) = OCTToxAVErrorCall(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
     }
 }
@@ -131,6 +135,30 @@ extension OCTToxErrorFriendAdd {
                 return (String(localized: "error_title"),
                         String(localized: "tox_error_friend_request_new_nospam"))
             case .Malloc:
+                fallthrough
+            case .Unknown:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+        }
+    }
+}
+
+extension OCTToxAVErrorCall {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .AlreadyInCall:
+                return (String(localized: "error_title"),
+                        String(localized: "call_error_already_in_call"))
+            case .FriendNotConnected:
+                return (String(localized: "error_title"),
+                        String(localized: "call_error_friend_is_offline"))
+            case .FriendNotFound:
+                fallthrough
+            case .InvalidBitRate:
+                fallthrough
+            case .Malloc:
+                fallthrough
+            case .Sync:
                 fallthrough
             case .Unknown:
                 return (String(localized: "error_title"),

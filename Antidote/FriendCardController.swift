@@ -11,8 +11,8 @@ import UIKit
 protocol FriendCardControllerDelegate: class {
     func friendCardControllerChangeNickname(controller: FriendCardController, forFriend friend: OCTFriend)
     func friendCardControllerOpenChat(controller: FriendCardController, forFriend friend: OCTFriend)
-    func friendCardControllerCallFriend(controller: FriendCardController, forFriend friend: OCTFriend)
-    func friendCardControllerVideoCallFriend(controller: FriendCardController, forFriend friend: OCTFriend)
+    func friendCardControllerCall(controller: FriendCardController, toFriend friend: OCTFriend)
+    func friendCardControllerVideoCall(controller: FriendCardController, toFriend friend: OCTFriend)
 }
 
 class FriendCardController: StaticTableController {
@@ -90,10 +90,10 @@ private extension FriendCardController {
             self.delegate?.friendCardControllerOpenChat(self, forFriend: self.friend)
         }
         chatButtonsModel.callButtonHandler = { [unowned self] in
-            self.delegate?.friendCardControllerCallFriend(self, forFriend: self.friend)
+            self.delegate?.friendCardControllerCall(self, toFriend: self.friend)
         }
         chatButtonsModel.videoButtonHandler = { [unowned self] in
-            self.delegate?.friendCardControllerVideoCallFriend(self, forFriend: self.friend)
+            self.delegate?.friendCardControllerVideoCall(self, toFriend: self.friend)
         }
         chatButtonsModel.chatButtonEnabled = true
         chatButtonsModel.callButtonEnabled = friend.isConnected
