@@ -33,7 +33,7 @@ class RunningCoordinator: NSObject {
         self.toxManager = toxManager
 
         let friends = FriendsTabCoordinator(theme: theme, toxManager: toxManager)
-        let chats = ChatsTabCoordinator(theme: theme)
+        let chats = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects)
         let settings = SettingsTabCoordinator(theme: theme)
         let profile = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
 
@@ -64,6 +64,7 @@ extension RunningCoordinator: CoordinatorProtocol {
         callCoordinator.start()
 
         tabBarController.viewControllers = tabCoordinators.map{ $0.navigationController }
+        tabBarController.selectedIndex = 1
 
         window.rootViewController = tabBarController
 
@@ -82,6 +83,10 @@ extension RunningCoordinator: OCTSubmanagerUserDelegate {
 
 extension RunningCoordinator: FriendsTabCoordinatorDelegate {
     func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend) {
+        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+
+        // TODO fix me
+        tabBarController.selectedIndex = 2
     }
 
     func friendsTabCoordinatorCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {

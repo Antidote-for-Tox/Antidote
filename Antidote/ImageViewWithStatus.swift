@@ -10,13 +10,16 @@ import UIKit
 import SnapKit
 
 private struct Constants {
-    static let UserStatusViewSize = 8.0
-    static let UserStatusViewOffset = -1.0
+    static let UserStatusViewSize = 10.0
+
+    static let Sqrt2:CGFloat = 1.4142135623731
 }
 
 class ImageViewWithStatus: UIView {
     var imageView: UIImageView!
     var userStatusView: UserStatusView!
+
+    private var userStatusViewCenterConstrant: Constraint!
 
     init() {
         super.init(frame: CGRectZero)
@@ -32,7 +35,10 @@ class ImageViewWithStatus: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        updateCornerRadius()
+        imageView.layer.cornerRadius = frame.size.width / 2
+
+        let offset = bounds.size.width / (2 * Constants.Sqrt2)
+        userStatusViewCenterConstrant.updateOffset(offset)
     }
 }
 
@@ -53,13 +59,8 @@ private extension ImageViewWithStatus {
         }
 
         userStatusView.snp_makeConstraints{ (make) -> Void in
-            make.right.equalTo(self).offset(Constants.UserStatusViewOffset)
-            make.bottom.equalTo(self).offset(Constants.UserStatusViewOffset)
+            userStatusViewCenterConstrant = make.center.equalTo(self).constraint
             make.size.equalTo(Constants.UserStatusViewSize)
         }
-    }
-
-    func updateCornerRadius() {
-        imageView.layer.cornerRadius = frame.size.width / 2
     }
 }

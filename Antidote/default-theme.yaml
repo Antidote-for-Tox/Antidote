@@ -42,3 +42,5 @@ values:
   busy-status: red
   status-background: white
   friend-cell-status: darkgray2
+  chat-list-cell-message: darkgray
+  chat-list-cell-unread-background: lightgray

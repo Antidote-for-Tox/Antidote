@@ -9,6 +9,13 @@
 import Foundation
 
 extension String {
+    init(timeInterval: NSTimeInterval) {
+        let minutes = Int(timeInterval / 60)
+        let seconds = Int(timeInterval) - minutes * 60
+
+        self.init(format: "%02d:%02d", minutes, seconds)
+    }
+
     init(localized: String, _ arguments: CVarArgType...) {
         let format = NSLocalizedString(localized, tableName: nil, bundle: NSBundle.mainBundle(), value: "", comment: "")
         self.init(format: format, arguments: arguments)

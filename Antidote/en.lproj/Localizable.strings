@@ -98,3 +98,12 @@
 "logout_button" = "Log Out";
 
 "qr_close_button" = "Close";
+
+"call_error_already_in_call" = "Already in a call";
+"call_error_friend_is_offline" = "Friend is offline";
+
+"chats_title" = "Chats";
+"chat_outgoing_file" = "Outgoing file:";
+"chat_incoming_file" = "Incoming file:";
+"chat_call_finished" = "Call finished";
+"chat_unanwered_call" = "Unanswered call";

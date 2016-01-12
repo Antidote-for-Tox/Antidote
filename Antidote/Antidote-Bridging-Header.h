@@ -9,6 +9,11 @@
 #import <objcTox/OCTFriendRequest.h>
 #import <objcTox/OCTManager.h>
 #import <objcTox/OCTManagerConfiguration.h>
+#import <objcTox/OCTManagerConstants.h>
+#import <objcTox/OCTMessageAbstract.h>
+#import <objcTox/OCTMessageCall.h>
+#import <objcTox/OCTMessageFile.h>
+#import <objcTox/OCTMessageText.h>
 #import <objcTox/OCTSubmanagerBootstrap.h>
 #import <objcTox/OCTSubmanagerCalls.h>
 #import <objcTox/OCTSubmanagerCallsDelegate.h>

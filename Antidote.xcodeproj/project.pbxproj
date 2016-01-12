@@ -107,6 +107,12 @@
 		9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */; };
 		9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */; };
 		9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
+		9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
+		9CE0BDE71C45229500DCE357 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
+		9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
+		9CE0BDF11C4522BF00DCE357 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
+		9CE0BDF31C4522C800DCE357 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
+		9CE0BDF41C4522C800DCE357 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
 		9CFF60BA1C33E38D00800262 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
 		9CFF60BB1C33E38D00800262 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB651C1F5694006AA9E5 /* BaseCell.swift */; };
 		9CFF60BC1C33E38D00800262 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */; };
@@ -395,6 +401,9 @@
 		9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExceptionHandling.m; sourceTree = "<group>"; };
 		9CDC093D1C3415DE00DC0D63 /* Antidote-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Prefix.pch"; sourceTree = "<group>"; };
 		9CDDB2051BD5376200B65D79 /* ProfileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
+		9CE0BDE51C45229500DCE357 /* ChatListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListController.swift; sourceTree = "<group>"; };
+		9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
+		9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCellModel.swift; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -578,6 +587,8 @@
 			children = (
 				1193AB651C1F5694006AA9E5 /* BaseCell.swift */,
 				1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */,
+				9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */,
+				9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */,
 				1193AB691C1F5C28006AA9E5 /* FriendListCell.swift */,
 				1193AB6B1C1F5C31006AA9E5 /* FriendListCellModel.swift */,
 				1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */,
@@ -694,6 +705,7 @@
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
 				11A6B85E1C45830500865328 /* AudioCallController.swift */,
 				112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */,
+				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
@@ -1028,6 +1040,7 @@
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
 				9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
+				9CE0BDF31C4522C800DCE357 /* ChatListCellModel.swift in Sources */,
 				11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */,
 				118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */,
 				11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */,
@@ -1036,6 +1049,7 @@
 				11E640781C2DC15400D24C6D /* HelperFunctions.swift in Sources */,
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
 				1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */,
+				9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */,
 				1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,
@@ -1086,6 +1100,7 @@
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
+				9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */,
 				11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */,
 				116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */,
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
@@ -1119,6 +1134,7 @@
 				9CFF60F51C33E38D00800262 /* NotificationWindow.swift in Sources */,
 				9CFF60C21C33E38D00800262 /* StaticTableBaseCellModel.swift in Sources */,
 				9CFF60C31C33E38D00800262 /* StaticTableButtonCell.swift in Sources */,
+				9CE0BDE71C45229500DCE357 /* ChatListController.swift in Sources */,
 				9CFF60BB1C33E38D00800262 /* BaseCell.swift in Sources */,
 				9CFF60BD1C33E38D00800262 /* FriendListCell.swift in Sources */,
 				9CFF60F31C33E38D00800262 /* FullscreenPicker.swift in Sources */,
@@ -1134,6 +1150,7 @@
 				9CFF60D81C33E38D00800262 /* ProfileMainController.swift in Sources */,
 				9CFF60F71C33E38D00800262 /* StaticBackgroundView.swift in Sources */,
 				9CFF60C11C33E38D00800262 /* StaticTableBaseCell.swift in Sources */,
+				9CE0BDF41C4522C800DCE357 /* ChatListCellModel.swift in Sources */,
 				9CFF60EC1C33E38D00800262 /* StringExtension.swift in Sources */,
 				9CFF60D71C33E38D00800262 /* FriendListController.swift in Sources */,
 				9CFF60FB1C33E38D00800262 /* LoginExtendedTextField.swift in Sources */,
@@ -1161,6 +1178,7 @@
 				9CFF60D01C33E38D00800262 /* LoginBaseController.swift in Sources */,
 				9CFF60DE1C33E38D00800262 /* CoordinatorProtocol.swift in Sources */,
 				9CFF60EE1C33E38D00800262 /* UIColorExtension.swift in Sources */,
+				9CE0BDF11C4522BF00DCE357 /* ChatListCell.swift in Sources */,
 				9CFF60EF1C33E38D00800262 /* UIViewControllerExtension.swift in Sources */,
 				9CFF60CC1C33E38D00800262 /* Theme.swift in Sources */,
 				9CFF60D21C33E38D00800262 /* LoginCreateAccountController.swift in Sources */,
