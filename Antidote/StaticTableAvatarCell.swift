@@ -46,11 +46,11 @@ class StaticTableAvatarCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        button.snp_makeConstraints{ (make) -> Void in
-            make.centerX.equalTo(customContentView)
-            make.top.equalTo(customContentView).offset(Constants.AvatarVerticalOffset)
-            make.bottom.equalTo(customContentView).offset(-Constants.AvatarVerticalOffset)
-            make.size.equalTo(StaticTableAvatarCellModel.Constants.AvatarImageSize)
+        button.snp_makeConstraints {
+            $0.centerX.equalTo(customContentView)
+            $0.top.equalTo(customContentView).offset(Constants.AvatarVerticalOffset)
+            $0.bottom.equalTo(customContentView).offset(-Constants.AvatarVerticalOffset)
+            $0.size.equalTo(StaticTableAvatarCellModel.Constants.AvatarImageSize)
         }
     }
 }

@@ -54,13 +54,13 @@ private extension ImageViewWithStatus {
     }
 
     func installConstraints() {
-        imageView.snp_makeConstraints{ (make) -> Void in
-            make.edges.equalTo(self)
+        imageView.snp_makeConstraints {
+            $0.edges.equalTo(self)
         }
 
-        userStatusView.snp_makeConstraints{ (make) -> Void in
-            userStatusViewCenterConstrant = make.center.equalTo(self).constraint
-            make.size.equalTo(Constants.UserStatusViewSize)
+        userStatusView.snp_makeConstraints {
+            userStatusViewCenterConstrant = $0.center.equalTo(self).constraint
+            $0.size.equalTo(Constants.UserStatusViewSize)
         }
     }
 }

@@ -49,9 +49,9 @@ private extension UserStatusView {
         roundView.layer.masksToBounds = true
         addSubview(roundView)
 
-        roundView.snp_makeConstraints{ (make) -> Void in
-            make.center.equalTo(self)
-            make.size.equalTo(self).offset(-2.0)
+        roundView.snp_makeConstraints {
+            $0.center.equalTo(self)
+            $0.size.equalTo(self).offset(-2.0)
         }
     }
 

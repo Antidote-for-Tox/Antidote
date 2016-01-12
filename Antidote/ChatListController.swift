@@ -173,7 +173,7 @@ private extension ChatListController {
     }
 
     func installConstraints() {
-        tableView.snp_makeConstraints{
+        tableView.snp_makeConstraints {
             $0.edges.equalTo(view)
         }
     }

@@ -37,10 +37,10 @@ class StaticTableButtonCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        label.snp_makeConstraints{ (make) -> Void in
-            make.left.right.equalTo(customContentView)
-            make.top.equalTo(customContentView).offset(Constants.VerticalOffset)
-            make.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
+        label.snp_makeConstraints {
+            $0.left.right.equalTo(customContentView)
+            $0.top.equalTo(customContentView).offset(Constants.VerticalOffset)
+            $0.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
         }
     }
 }

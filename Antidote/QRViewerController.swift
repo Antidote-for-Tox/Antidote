@@ -79,11 +79,11 @@ private extension QRViewerController {
     }
 
     func installConstraints() {
-        imageView.snp_makeConstraints{ (make) -> Void in
-            make.center.equalTo(view)
-            make.width.lessThanOrEqualTo(view.snp_width)
-            make.width.lessThanOrEqualTo(view.snp_height)
-            make.width.equalTo(imageView.snp_height)
+        imageView.snp_makeConstraints {
+            $0.center.equalTo(view)
+            $0.width.lessThanOrEqualTo(view.snp_width)
+            $0.width.lessThanOrEqualTo(view.snp_height)
+            $0.width.equalTo(imageView.snp_height)
         }
     }
 

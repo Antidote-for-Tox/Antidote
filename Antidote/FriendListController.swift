@@ -169,8 +169,8 @@ private extension FriendListController {
     }
 
     func installConstraints() {
-        tableView.snp_makeConstraints{ make -> Void in
-            make.edges.equalTo(view)
+        tableView.snp_makeConstraints {
+            $0.edges.equalTo(view)
         }
     }
 

@@ -55,25 +55,25 @@ private extension LoginChoiceController {
     }
 
     func installConstraints() {
-        welcomeLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(contentContainerView)
-            make.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
-            make.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
+        welcomeLabel.snp_makeConstraints {
+            $0.top.equalTo(contentContainerView)
+            $0.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
+            $0.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
         }
 
-        createAccountButton.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(welcomeLabel.snp_bottom).offset(Constants.VerticalOffset)
-            make.left.right.equalTo(welcomeLabel)
+        createAccountButton.snp_makeConstraints {
+            $0.top.equalTo(welcomeLabel.snp_bottom).offset(Constants.VerticalOffset)
+            $0.left.right.equalTo(welcomeLabel)
         }
 
-        orLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(createAccountButton.snp_bottom).offset(Constants.SmallVerticalOffset)
-            make.left.right.equalTo(welcomeLabel)
+        orLabel.snp_makeConstraints {
+            $0.top.equalTo(createAccountButton.snp_bottom).offset(Constants.SmallVerticalOffset)
+            $0.left.right.equalTo(welcomeLabel)
         }
 
-        importProfileButton.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(orLabel.snp_bottom).offset(Constants.SmallVerticalOffset)
-            make.left.right.equalTo(welcomeLabel)
+        importProfileButton.snp_makeConstraints {
+            $0.top.equalTo(orLabel.snp_bottom).offset(Constants.SmallVerticalOffset)
+            $0.left.right.equalTo(welcomeLabel)
         }
     }
 

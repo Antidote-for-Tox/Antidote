@@ -130,31 +130,31 @@ private extension LoginCreateAccountController {
     }
 
     func installConstraints() {
-        containerView.snp_makeConstraints{ (make) -> Void in
-            containerViewTopConstraint = make.top.equalTo(view).constraint
-            make.left.right.equalTo(view)
-            make.height.equalTo(view)
+        containerView.snp_makeConstraints {
+            containerViewTopConstraint = $0.top.equalTo(view).constraint
+            $0.left.right.equalTo(view)
+            $0.height.equalTo(view)
         }
 
-        titleLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(containerView).offset(PrivateConstants.VerticalOffset)
-            make.centerX.equalTo(containerView)
+        titleLabel.snp_makeConstraints {
+            $0.top.equalTo(containerView).offset(PrivateConstants.VerticalOffset)
+            $0.centerX.equalTo(containerView)
         }
 
-        usernameView.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
-            make.left.equalTo(containerView).offset(PrivateConstants.HorizontalOffset)
-            make.right.equalTo(containerView).offset(-PrivateConstants.HorizontalOffset)
+        usernameView.snp_makeConstraints {
+            $0.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
+            $0.left.equalTo(containerView).offset(PrivateConstants.HorizontalOffset)
+            $0.right.equalTo(containerView).offset(-PrivateConstants.HorizontalOffset)
         }
 
-        profileView.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(usernameView.snp_bottom).offset(PrivateConstants.FieldsOffset)
-            make.left.right.equalTo(usernameView)
+        profileView.snp_makeConstraints {
+            $0.top.equalTo(usernameView.snp_bottom).offset(PrivateConstants.FieldsOffset)
+            $0.left.right.equalTo(usernameView)
         }
 
-        goButton.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(profileView.snp_bottom).offset(PrivateConstants.VerticalOffset)
-            make.left.right.equalTo(usernameView)
+        goButton.snp_makeConstraints {
+            $0.top.equalTo(profileView.snp_bottom).offset(PrivateConstants.VerticalOffset)
+            $0.left.right.equalTo(usernameView)
         }
     }
 }

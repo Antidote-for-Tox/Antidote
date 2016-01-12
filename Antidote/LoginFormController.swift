@@ -203,56 +203,56 @@ private extension LoginFormController {
     }
 
     func installConstraints() {
-        formView.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(contentContainerView)
-            make.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
-            make.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
+        formView.snp_makeConstraints {
+            $0.top.equalTo(contentContainerView)
+            $0.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
+            $0.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
         }
 
-        profileFakeTextField.snp_makeConstraints{ (make) -> Void in
-            make.edges.equalTo(profileButton)
+        profileFakeTextField.snp_makeConstraints {
+            $0.edges.equalTo(profileButton)
         }
 
-        profileButton.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(formView).offset(PrivateConstants.FormOffset)
-            make.left.equalTo(formView).offset(PrivateConstants.FormOffset)
-            make.right.equalTo(formView).offset(-PrivateConstants.FormOffset)
-            profileButtonBottomToFormConstraint = make.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
+        profileButton.snp_makeConstraints {
+            $0.top.equalTo(formView).offset(PrivateConstants.FormOffset)
+            $0.left.equalTo(formView).offset(PrivateConstants.FormOffset)
+            $0.right.equalTo(formView).offset(-PrivateConstants.FormOffset)
+            profileButtonBottomToFormConstraint = $0.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
 
-            make.height.equalTo(Constants.TextFieldHeight)
+            $0.height.equalTo(Constants.TextFieldHeight)
         }
 
-        passwordField.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(profileButton.snp_bottom).offset(PrivateConstants.FormSmallOffset)
-            make.left.right.equalTo(profileButton)
-            passwordFieldBottomToFormConstraint = make.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
+        passwordField.snp_makeConstraints {
+            $0.top.equalTo(profileButton.snp_bottom).offset(PrivateConstants.FormSmallOffset)
+            $0.left.right.equalTo(profileButton)
+            passwordFieldBottomToFormConstraint = $0.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
 
-            make.height.equalTo(Constants.TextFieldHeight)
+            $0.height.equalTo(Constants.TextFieldHeight)
         }
 
-        loginButton.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(formView.snp_bottom).offset(PrivateConstants.FormSmallOffset)
-            make.left.right.equalTo(formView)
+        loginButton.snp_makeConstraints {
+            $0.top.equalTo(formView.snp_bottom).offset(PrivateConstants.FormSmallOffset)
+            $0.left.right.equalTo(formView)
         }
 
-        bottomButtonsContainer.snp_makeConstraints{ (make) -> Void in
-            make.top.greaterThanOrEqualTo(loginButton.snp_bottom).offset(PrivateConstants.FormOffset)
-            make.centerX.equalTo(view)
-            make.bottom.equalTo(view).offset(-PrivateConstants.FormOffset)
+        bottomButtonsContainer.snp_makeConstraints {
+            $0.top.greaterThanOrEqualTo(loginButton.snp_bottom).offset(PrivateConstants.FormOffset)
+            $0.centerX.equalTo(view)
+            $0.bottom.equalTo(view).offset(-PrivateConstants.FormOffset)
         }
 
-        createAccountButton.snp_makeConstraints{ (make) -> Void in
-            make.top.left.bottom.equalTo(bottomButtonsContainer)
+        createAccountButton.snp_makeConstraints {
+            $0.top.left.bottom.equalTo(bottomButtonsContainer)
         }
 
-        orLabel.snp_makeConstraints{ (make) -> Void in
-            make.centerY.equalTo(bottomButtonsContainer)
-            make.left.equalTo(createAccountButton.snp_right).offset(PrivateConstants.FormSmallOffset)
-            make.right.equalTo(importProfileButton.snp_left).offset(-PrivateConstants.FormSmallOffset)
+        orLabel.snp_makeConstraints {
+            $0.centerY.equalTo(bottomButtonsContainer)
+            $0.left.equalTo(createAccountButton.snp_right).offset(PrivateConstants.FormSmallOffset)
+            $0.right.equalTo(importProfileButton.snp_left).offset(-PrivateConstants.FormSmallOffset)
         }
 
-        importProfileButton.snp_makeConstraints{ (make) -> Void in
-            make.top.right.bottom.equalTo(bottomButtonsContainer)
+        importProfileButton.snp_makeConstraints {
+            $0.top.right.bottom.equalTo(bottomButtonsContainer)
         }
     }
 

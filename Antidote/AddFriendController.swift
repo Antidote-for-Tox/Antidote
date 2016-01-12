@@ -107,12 +107,12 @@ extension AddFriendController {
                 preferredStyle: .Alert)
 
         alert.contentView.addSubview(messageView)
-        messageView.snp_makeConstraints{ make -> Void in
-            make.top.equalTo(alert.contentView)
-            make.bottom.equalTo(alert.contentView).offset(Constants.SendAlertTextViewBottomOffset);
-            make.left.equalTo(alert.contentView).offset(Constants.SendAlertTextViewXOffset);
-            make.right.equalTo(alert.contentView).offset(-Constants.SendAlertTextViewXOffset);
-            make.height.equalTo(Constants.SendAlertTextViewHeight);
+        messageView.snp_makeConstraints {
+            $0.top.equalTo(alert.contentView)
+            $0.bottom.equalTo(alert.contentView).offset(Constants.SendAlertTextViewBottomOffset);
+            $0.left.equalTo(alert.contentView).offset(Constants.SendAlertTextViewXOffset);
+            $0.right.equalTo(alert.contentView).offset(-Constants.SendAlertTextViewXOffset);
+            $0.height.equalTo(Constants.SendAlertTextViewHeight);
         }
 
         alert.addAction(SDCAlertAction(title: String(localized: "add_friend_cancel"), style: .Default, handler: nil))
@@ -208,31 +208,31 @@ private extension AddFriendController {
     }
 
     func installConstraints() {
-        textView.snp_makeConstraints{ make -> Void in
-            make.top.equalTo(view).offset(Constants.TextViewTopOffset)
-            make.left.equalTo(view).offset(Constants.TextViewXOffset)
-            make.right.equalTo(view).offset(-Constants.TextViewXOffset)
-            make.bottom.equalTo(view.snp_centerY)
+        textView.snp_makeConstraints {
+            $0.top.equalTo(view).offset(Constants.TextViewTopOffset)
+            $0.left.equalTo(view).offset(Constants.TextViewXOffset)
+            $0.right.equalTo(view).offset(-Constants.TextViewXOffset)
+            $0.bottom.equalTo(view.snp_centerY)
         }
 
-        orTopSpacer.snp_makeConstraints{ make -> Void in
-            make.top.equalTo(textView.snp_bottom)
+        orTopSpacer.snp_makeConstraints {
+            $0.top.equalTo(textView.snp_bottom)
         }
 
-        orLabel.snp_makeConstraints{ make -> Void in
-            make.top.equalTo(orTopSpacer.snp_bottom)
-            make.centerX.equalTo(view)
+        orLabel.snp_makeConstraints {
+            $0.top.equalTo(orTopSpacer.snp_bottom)
+            $0.centerX.equalTo(view)
         }
 
-        qrCodeButton.snp_makeConstraints{ make -> Void in
-            make.top.equalTo(orLabel.snp_bottom)
-            make.centerX.equalTo(view)
+        qrCodeButton.snp_makeConstraints {
+            $0.top.equalTo(orLabel.snp_bottom)
+            $0.centerX.equalTo(view)
         }
 
-        qrCodeBottomSpacer.snp_makeConstraints{ make -> Void in
-            make.top.equalTo(qrCodeButton.snp_bottom)
-            make.bottom.equalTo(view)
-            make.height.equalTo(orTopSpacer)
+        qrCodeBottomSpacer.snp_makeConstraints {
+            $0.top.equalTo(qrCodeButton.snp_bottom)
+            $0.bottom.equalTo(view)
+            $0.height.equalTo(orTopSpacer)
         }
     }
 

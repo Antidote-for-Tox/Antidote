@@ -96,7 +96,7 @@ class ChatListCell: BaseCell {
             $0.height.equalTo(Constants.NicknameLabelHeight)
         }
 
-        messageLabel.snp_makeConstraints{
+        messageLabel.snp_makeConstraints {
             $0.left.equalTo(nicknameLabel)
             $0.right.equalTo(contentView).offset(Constants.RightOffset)
             $0.top.equalTo(nicknameLabel.snp_bottom)
@@ -110,7 +110,7 @@ class ChatListCell: BaseCell {
             $0.height.equalTo(nicknameLabel)
         }
 
-        arrowImageView.snp_makeConstraints{
+        arrowImageView.snp_makeConstraints {
             $0.centerY.equalTo(dateLabel)
             $0.left.greaterThanOrEqualTo(dateLabel.snp_right).offset(Constants.DateToArrowOffset)
             $0.right.equalTo(contentView).offset(Constants.RightOffset)

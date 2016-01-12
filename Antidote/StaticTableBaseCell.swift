@@ -54,17 +54,17 @@ class StaticTableBaseCell: BaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        customContentView.snp_makeConstraints{ (make) -> Void in
-            make.left.equalTo(contentView).offset(Constants.HorizontalOffset)
-            make.right.equalTo(contentView).offset(-Constants.HorizontalOffset)
-            make.top.equalTo(contentView)
+        customContentView.snp_makeConstraints {
+            $0.left.equalTo(contentView).offset(Constants.HorizontalOffset)
+            $0.right.equalTo(contentView).offset(-Constants.HorizontalOffset)
+            $0.top.equalTo(contentView)
         }
 
-        bottomSeparatorView.snp_makeConstraints{ (make) -> Void in
-            make.left.equalTo(customContentView)
-            make.top.equalTo(customContentView.snp_bottom)
-            make.right.bottom.equalTo(contentView)
-            make.height.equalTo(0.5)
+        bottomSeparatorView.snp_makeConstraints {
+            $0.left.equalTo(customContentView)
+            $0.top.equalTo(customContentView.snp_bottom)
+            $0.right.bottom.equalTo(contentView)
+            $0.height.equalTo(0.5)
         }
     }
 }

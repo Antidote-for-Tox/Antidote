@@ -103,20 +103,20 @@ class StaticTableDefaultCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        titleLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset)
-            make.left.equalTo(customContentView)
-            make.height.equalTo(Constants.TitleHeight)
+        titleLabel.snp_makeConstraints {
+            $0.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset)
+            $0.left.equalTo(customContentView)
+            $0.height.equalTo(Constants.TitleHeight)
         }
 
-        valueLabel.snp_makeConstraints{ (make) -> Void in
-            valueLabelToTitleConstraint = make.top.equalTo(titleLabel.snp_bottom).offset(Constants.TitleToValueOffset).constraint
+        valueLabel.snp_makeConstraints {
+            valueLabelToTitleConstraint = $0.top.equalTo(titleLabel.snp_bottom).offset(Constants.TitleToValueOffset).constraint
 
-            valueLabelToContentRightConstraint = make.right.equalTo(customContentView).constraint
+            valueLabelToContentRightConstraint = $0.right.equalTo(customContentView).constraint
 
-            make.left.equalTo(customContentView)
-            make.bottom.equalTo(customContentView).offset(-Constants.EdgesVerticalOffset)
-            make.height.greaterThanOrEqualTo(Constants.MinValueLabelHeight)
+            $0.left.equalTo(customContentView)
+            $0.bottom.equalTo(customContentView).offset(-Constants.EdgesVerticalOffset)
+            $0.height.greaterThanOrEqualTo(Constants.MinValueLabelHeight)
         }
 
         valueLabelToTitleConstraint.deactivate()
@@ -124,18 +124,18 @@ class StaticTableDefaultCell: StaticTableBaseCell {
             valueLabelToContentTopConstraint = make.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset).constraint
         }
 
-        rightButton.snp_makeConstraints{ (make) -> Void in
-            make.left.greaterThanOrEqualTo(titleLabel.snp_right)
-            make.right.equalTo(customContentView)
-            make.centerY.equalTo(titleLabel)
-            make.bottom.lessThanOrEqualTo(customContentView)
+        rightButton.snp_makeConstraints {
+            $0.left.greaterThanOrEqualTo(titleLabel.snp_right)
+            $0.right.equalTo(customContentView)
+            $0.centerY.equalTo(titleLabel)
+            $0.bottom.lessThanOrEqualTo(customContentView)
         }
 
-        arrowImageView.snp_makeConstraints{ (make) -> Void in
-            make.centerY.equalTo(customContentView)
-            make.right.equalTo(customContentView)
+        arrowImageView.snp_makeConstraints {
+            $0.centerY.equalTo(customContentView)
+            $0.right.equalTo(customContentView)
 
-            valueLabelToArrowConstraint = make.left.greaterThanOrEqualTo(valueLabel.snp_right).constraint
+            valueLabelToArrowConstraint = $0.left.greaterThanOrEqualTo(valueLabel.snp_right).constraint
         }
     }
 }

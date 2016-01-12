@@ -112,14 +112,14 @@ private extension NotificationWindow {
             label.alpha = 1.0
         }, completion: nil)
 
-        connectingView!.snp_makeConstraints{ (make) -> Void in
-            connectingViewTopConstraint = make.top.equalTo(self).constraint
-            make.left.right.equalTo(self)
-            make.height.equalTo(UIApplication.sharedApplication().statusBarFrame.size.height)
+        connectingView!.snp_makeConstraints {
+            connectingViewTopConstraint = $0.top.equalTo(self).constraint
+            $0.left.right.equalTo(self)
+            $0.height.equalTo(UIApplication.sharedApplication().statusBarFrame.size.height)
         }
 
-        label.snp_makeConstraints{ (make) -> Void in
-            make.edges.equalTo(connectingView!)
+        label.snp_makeConstraints {
+            $0.edges.equalTo(connectingView!)
         }
     }
 }

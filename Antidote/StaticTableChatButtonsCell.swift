@@ -65,17 +65,17 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
 
         var previous: UIView? = nil
         for (index, sep) in separators.enumerate() {
-            sep.snp_makeConstraints{ (make) -> Void in
+            sep.snp_makeConstraints {
                 if previous != nil {
-                    make.width.equalTo(previous!.snp_width)
+                    $0.width.equalTo(previous!.snp_width)
                 }
 
                 if index == 0 {
-                    make.left.equalTo(customContentView)
+                    $0.left.equalTo(customContentView)
                 }
 
                 if index == (separators.count-1) {
-                    make.right.equalTo(customContentView)
+                    $0.right.equalTo(customContentView)
                 }
             }
 
@@ -83,14 +83,14 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
         }
 
         func installForButton(button: UIButton, index: Int) {
-            button.snp_makeConstraints{ (make) -> Void in
-                make.top.equalTo(customContentView).offset(Constants.VerticalOffset)
-                make.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
+            button.snp_makeConstraints {
+                $0.top.equalTo(customContentView).offset(Constants.VerticalOffset)
+                $0.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
 
-                make.left.equalTo(separators[index].snp_right)
-                make.right.equalTo(separators[index+1].snp_left)
+                $0.left.equalTo(separators[index].snp_right)
+                $0.right.equalTo(separators[index+1].snp_left)
 
-                make.size.equalTo(Constants.ButtonSize)
+                $0.size.equalTo(Constants.ButtonSize)
             }
         }
 

@@ -72,29 +72,29 @@ class FriendListCell: BaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        avatarView.snp_makeConstraints{ (make) -> Void in
-            make.left.equalTo(contentView).offset(Constants.AvatarLeftOffset)
-            make.centerY.equalTo(contentView)
-            make.size.equalTo(Constants.AvatarSize)
+        avatarView.snp_makeConstraints {
+            $0.left.equalTo(contentView).offset(Constants.AvatarLeftOffset)
+            $0.centerY.equalTo(contentView)
+            $0.size.equalTo(Constants.AvatarSize)
         }
 
-        topLabel.snp_makeConstraints{ (make) -> Void in
-            make.left.equalTo(avatarView.snp_right).offset(Constants.AvatarRightOffset)
-            make.top.equalTo(contentView).offset(Constants.VerticalOffset)
-            make.height.equalTo(Constants.TopLabelHeight)
+        topLabel.snp_makeConstraints {
+            $0.left.equalTo(avatarView.snp_right).offset(Constants.AvatarRightOffset)
+            $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
+            $0.height.equalTo(Constants.TopLabelHeight)
         }
 
-        bottomLabel.snp_makeConstraints{ (make) -> Void in
-            make.left.right.equalTo(topLabel)
-            make.top.equalTo(topLabel.snp_bottom)
-            make.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
-            make.height.greaterThanOrEqualTo(Constants.MinimumBottomLabelHeight)
+        bottomLabel.snp_makeConstraints {
+            $0.left.right.equalTo(topLabel)
+            $0.top.equalTo(topLabel.snp_bottom)
+            $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
+            $0.height.greaterThanOrEqualTo(Constants.MinimumBottomLabelHeight)
         }
 
-        arrowImageView.snp_makeConstraints{ (make) -> Void in
-            make.centerY.equalTo(contentView)
-            make.left.greaterThanOrEqualTo(topLabel.snp_right)
-            make.right.equalTo(contentView)
+        arrowImageView.snp_makeConstraints {
+            $0.centerY.equalTo(contentView)
+            $0.left.greaterThanOrEqualTo(topLabel.snp_right)
+            $0.right.equalTo(contentView)
         }
     }
 }

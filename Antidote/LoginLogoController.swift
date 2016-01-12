@@ -73,22 +73,22 @@ private extension LoginLogoController {
     }
 
     func installConstraints() {
-        mainContainerView.snp_makeConstraints { (make) -> Void in
-            mainContainerViewTopConstraint = make.top.equalTo(view).constraint
-            make.left.right.equalTo(view)
-            make.height.equalTo(view)
+        mainContainerView.snp_makeConstraints {
+            mainContainerViewTopConstraint = $0.top.equalTo(view).constraint
+            $0.left.right.equalTo(view)
+            $0.height.equalTo(view)
         }
 
-        logoImageView.snp_makeConstraints { (make) -> Void in
-            make.centerX.equalTo(mainContainerView)
-            make.top.equalTo(mainContainerView.snp_centerY).offset(PrivateConstants.LogoTopOffset)
-            make.height.equalTo(PrivateConstants.LogoHeight)
+        logoImageView.snp_makeConstraints {
+            $0.centerX.equalTo(mainContainerView)
+            $0.top.equalTo(mainContainerView.snp_centerY).offset(PrivateConstants.LogoTopOffset)
+            $0.height.equalTo(PrivateConstants.LogoHeight)
         }
 
-        contentContainerView.snp_makeConstraints { (make) -> Void in
-            make.top.equalTo(logoImageView.snp_bottom).offset(Constants.VerticalOffset)
-            make.bottom.equalTo(mainContainerView)
-            make.left.right.equalTo(mainContainerView)
+        contentContainerView.snp_makeConstraints {
+            $0.top.equalTo(logoImageView.snp_bottom).offset(Constants.VerticalOffset)
+            $0.bottom.equalTo(mainContainerView)
+            $0.left.right.equalTo(mainContainerView)
         }
     }
 }

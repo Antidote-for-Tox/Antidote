@@ -51,8 +51,8 @@ class FullscreenPicker: UIView {
     func showAnimatedInView(view: UIView) {
         view.addSubview(self)
 
-        snp_makeConstraints{ (make) -> Void in
-            make.edges.equalTo(view)
+        snp_makeConstraints {
+            $0.edges.equalTo(view)
         }
 
         show()
@@ -116,19 +116,19 @@ private extension FullscreenPicker {
     }
 
     func installConstraints() {
-        blackoutButton.snp_makeConstraints{ (make) -> Void in
-            make.edges.equalTo(self)
+        blackoutButton.snp_makeConstraints {
+            $0.edges.equalTo(self)
         }
 
-        toolbar.snp_makeConstraints{ (make) -> Void in
-            make.bottom.equalTo(self.picker.snp_top)
-            make.height.equalTo(Constants.ToolbarHeight)
-            make.width.equalTo(self)
+        toolbar.snp_makeConstraints {
+            $0.bottom.equalTo(self.picker.snp_top)
+            $0.height.equalTo(Constants.ToolbarHeight)
+            $0.width.equalTo(self)
         }
 
-        picker.snp_makeConstraints{ (make) -> Void in
-            make.width.equalTo(self)
-            pickerBottomConstraint = make.bottom.equalTo(self).constraint
+        picker.snp_makeConstraints {
+            $0.width.equalTo(self)
+            pickerBottomConstraint = $0.bottom.equalTo(self).constraint
         }
     }
 

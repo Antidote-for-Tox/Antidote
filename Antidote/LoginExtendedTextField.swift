@@ -142,20 +142,20 @@ private extension LoginExtendedTextField {
     }
 
     func installConstraints() {
-        titleLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.left.right.equalTo(self)
+        titleLabel.snp_makeConstraints {
+            $0.top.left.right.equalTo(self)
         }
 
-        textField.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(titleLabel.snp_bottom).offset(Constants.VerticalOffset)
-            make.left.right.equalTo(self)
-            make.height.equalTo(Constants.TextFieldHeight)
+        textField.snp_makeConstraints {
+            $0.top.equalTo(titleLabel.snp_bottom).offset(Constants.VerticalOffset)
+            $0.left.right.equalTo(self)
+            $0.height.equalTo(Constants.TextFieldHeight)
         }
 
-        hintLabel.snp_makeConstraints{ (make) -> Void in
-            make.top.equalTo(textField.snp_bottom).offset(Constants.VerticalOffset)
-            make.left.right.equalTo(self)
-            make.bottom.equalTo(self)
+        hintLabel.snp_makeConstraints {
+            $0.top.equalTo(textField.snp_bottom).offset(Constants.VerticalOffset)
+            $0.left.right.equalTo(self)
+            $0.bottom.equalTo(self)
         }
     }
 }
