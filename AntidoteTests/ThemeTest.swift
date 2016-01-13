@@ -72,7 +72,7 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.LinkText))
             XCTAssertEqual(first, theme.colorForType(.ConnectingBackground))
             XCTAssertEqual(second, theme.colorForType(.ConnectingText))
-            XCTAssertEqual(first, theme.colorForType(.TableSeparator))
+            XCTAssertEqual(first, theme.colorForType(.SeparatorsAndBorders))
             XCTAssertEqual(second, theme.colorForType(.OfflineStatus))
             XCTAssertEqual(first, theme.colorForType(.OnlineStatus))
             XCTAssertEqual(second, theme.colorForType(.AwayStatus))

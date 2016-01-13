@@ -10,9 +10,11 @@ import UIKit
 
 class ChatsTabCoordinator: RunningBasicCoordinator {
     private let submanagerObjects: OCTSubmanagerObjects
+    private let submanagerChats: OCTSubmanagerChats
 
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
+    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerChats: OCTSubmanagerChats) {
         self.submanagerObjects = submanagerObjects
+        self.submanagerChats = submanagerChats
 
         super.init(theme: theme)
     }
@@ -27,6 +29,8 @@ class ChatsTabCoordinator: RunningBasicCoordinator {
 
 extension ChatsTabCoordinator: ChatListControllerDelegate {
     func chatListController(controller: ChatListController, didSelectChat chat: OCTChat) {
+        let controller = ChatPrivateController(theme: theme, chat: chat, submanagerChats: submanagerChats)
 
+        navigationController.pushViewController(controller, animated: true)
     }
 }

@@ -107,3 +107,4 @@
 "chat_incoming_file" = "Incoming file:";
 "chat_call_finished" = "Call finished";
 "chat_unanwered_call" = "Unanswered call";
+"chat_send_button" = "Send";

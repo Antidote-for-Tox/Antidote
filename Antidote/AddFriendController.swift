@@ -179,7 +179,7 @@ private extension AddFriendController {
         textView.returnKeyType = .Done
         textView.layer.cornerRadius = 5.0
         textView.layer.borderWidth = 0.5
-        textView.layer.borderColor = theme.colorForType(.TableSeparator).CGColor
+        textView.layer.borderColor = theme.colorForType(.SeparatorsAndBorders).CGColor
         textView.layer.masksToBounds = true
         view.addSubview(textView)
 

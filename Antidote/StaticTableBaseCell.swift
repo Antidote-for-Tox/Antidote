@@ -31,7 +31,7 @@ class StaticTableBaseCell: BaseCell {
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
-        bottomSeparatorView.backgroundColor = theme.colorForType(.TableSeparator)
+        bottomSeparatorView.backgroundColor = theme.colorForType(.SeparatorsAndBorders)
     }
 
     /**

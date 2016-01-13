@@ -41,7 +41,7 @@ class Theme {
         case LinkText = "link-text"
         case ConnectingBackground = "connecting-background"
         case ConnectingText = "connecting-text"
-        case TableSeparator = "table-separator"
+        case SeparatorsAndBorders = "separators-and-borders"
         case OfflineStatus = "offline-status"
         case OnlineStatus = "online-status"
         case AwayStatus = "away-status"
@@ -50,6 +50,7 @@ class Theme {
         case FriendCellStatus = "friend-cell-status"
         case ChatListCellMessage = "chat-list-cell-message"
         case ChatListCellUnreadBackground = "chat-list-cell-unread-background"
+        case ChatInputBackground = "chat-input-background"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -67,7 +68,7 @@ class Theme {
             LinkText,
             ConnectingBackground,
             ConnectingText,
-            TableSeparator,
+            SeparatorsAndBorders,
             OfflineStatus,
             OnlineStatus,
             AwayStatus,
@@ -76,6 +77,7 @@ class Theme {
             FriendCellStatus,
             ChatListCellMessage,
             ChatListCellUnreadBackground,
+            ChatInputBackground,
         ]
     }
 

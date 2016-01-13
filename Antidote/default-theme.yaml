@@ -35,7 +35,7 @@ values:
   link-text: skyblue
   connecting-background: skyblue
   connecting-text: white
-  table-separator: gray
+  separators-and-borders: gray
   offline-status: darkgray
   online-status: green
   away-status: yellow
@@ -44,3 +44,4 @@ values:
   friend-cell-status: darkgray2
   chat-list-cell-message: darkgray
   chat-list-cell-unread-background: lightgray
+  chat-input-background: lightgray

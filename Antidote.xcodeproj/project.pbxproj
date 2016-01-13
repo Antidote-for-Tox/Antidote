@@ -68,6 +68,8 @@
 		119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
 		119AD2151BEC719A000C5CB8 /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2131BEC719A000C5CB8 /* ringback.wav */; };
 		119AD2161BEC719A000C5CB8 /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2141BEC719A000C5CB8 /* ringtone.wav */; };
+		11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */; };
+		11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */; };
 		11A6B85F1C45830500865328 /* AudioCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B85E1C45830500865328 /* AudioCallController.swift */; };
 		11A6B8681C45830C00865328 /* VideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8671C45830C00865328 /* VideoCallController.swift */; };
 		11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8691C45887E00865328 /* ActiveCallController.swift */; };
@@ -361,6 +363,8 @@
 		119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertViewExtension.swift; sourceTree = "<group>"; };
 		119AD2131BEC719A000C5CB8 /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
 		119AD2141BEC719A000C5CB8 /* ringtone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringtone.wav; sourceTree = "<group>"; };
+		11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPrivateController.swift; sourceTree = "<group>"; };
+		11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
 		11A6B85E1C45830500865328 /* AudioCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallController.swift; sourceTree = "<group>"; };
 		11A6B8671C45830C00865328 /* VideoCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallController.swift; sourceTree = "<group>"; };
 		11A6B8691C45887E00865328 /* ActiveCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveCallController.swift; sourceTree = "<group>"; };
@@ -497,6 +501,7 @@
 		1164C8EA1BC97FF600B91107 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
@@ -704,8 +709,9 @@
 				11A6B8691C45887E00865328 /* ActiveCallController.swift */,
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
 				11A6B85E1C45830500865328 /* AudioCallController.swift */,
-				112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */,
 				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
+				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
+				112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
@@ -1033,6 +1039,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				118703D61C39476A00DBC29A /* RingingCallController.swift in Sources */,
+				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
 				113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
@@ -1106,6 +1113,7 @@
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
+				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
