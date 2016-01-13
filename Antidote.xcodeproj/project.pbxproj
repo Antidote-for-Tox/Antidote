@@ -11,7 +11,6 @@
 		110E49E01BF925FD00D1FE6F /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
 		112DA6D31C457CE4004FB1E6 /* DialingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */; };
-		112DA6D41C457CE4004FB1E6 /* DialingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
@@ -70,6 +69,87 @@
 		119AD2161BEC719A000C5CB8 /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2141BEC719A000C5CB8 /* ringtone.wav */; };
 		11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */; };
 		11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */; };
+		11A21F081C46CDF600E80A89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
+		11A21F091C46CDF600E80A89 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB651C1F5694006AA9E5 /* BaseCell.swift */; };
+		11A21F0A1C46CDF600E80A89 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */; };
+		11A21F0B1C46CDF600E80A89 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
+		11A21F0C1C46CDF600E80A89 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
+		11A21F0D1C46CDF600E80A89 /* FriendListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB691C1F5C28006AA9E5 /* FriendListCell.swift */; };
+		11A21F0E1C46CDF600E80A89 /* FriendListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB6B1C1F5C31006AA9E5 /* FriendListCellModel.swift */; };
+		11A21F0F1C46CDF600E80A89 /* StaticTableAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */; };
+		11A21F101C46CDF600E80A89 /* StaticTableAvatarCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4841C10D119005AC8C6 /* StaticTableAvatarCellModel.swift */; };
+		11A21F111C46CDF600E80A89 /* StaticTableBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */; };
+		11A21F121C46CDF600E80A89 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
+		11A21F131C46CDF600E80A89 /* StaticTableButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4801C0FA0A4005AC8C6 /* StaticTableButtonCell.swift */; };
+		11A21F141C46CDF600E80A89 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
+		11A21F151C46CDF600E80A89 /* StaticTableChatButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */; };
+		11A21F161C46CDF600E80A89 /* StaticTableChatButtonsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */; };
+		11A21F171C46CDF600E80A89 /* StaticTableDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */; };
+		11A21F181C46CDF600E80A89 /* StaticTableDefaultCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */; };
+		11A21F191C46CDF600E80A89 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
+		11A21F1A1C46CDF600E80A89 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
+		11A21F1B1C46CDF600E80A89 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */; };
+		11A21F1C1C46CDF600E80A89 /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
+		11A21F1D1C46CDF600E80A89 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
+		11A21F1E1C46CDF600E80A89 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
+		11A21F1F1C46CDF600E80A89 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */; };
+		11A21F201C46CDF600E80A89 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
+		11A21F211C46CDF600E80A89 /* PortraitNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */; };
+		11A21F221C46CDF600E80A89 /* LoginBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8E61BC929C500B91107 /* LoginBaseController.swift */; };
+		11A21F231C46CDF600E80A89 /* LoginChoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8E81BC929F700B91107 /* LoginChoiceController.swift */; };
+		11A21F241C46CDF600E80A89 /* LoginCreateAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */; };
+		11A21F251C46CDF600E80A89 /* LoginFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151E1BCD501D003A27B5 /* LoginFormController.swift */; };
+		11A21F261C46CDF600E80A89 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; };
+		11A21F271C46CDF600E80A89 /* AbstractCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703D31C39475F00DBC29A /* AbstractCallController.swift */; };
+		11A21F281C46CDF600E80A89 /* ActiveCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8691C45887E00865328 /* ActiveCallController.swift */; };
+		11A21F291C46CDF600E80A89 /* AddFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640751C2DBAE200D24C6D /* AddFriendController.swift */; };
+		11A21F2A1C46CDF600E80A89 /* AudioCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B85E1C45830500865328 /* AudioCallController.swift */; };
+		11A21F2B1C46CDF600E80A89 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
+		11A21F2C1C46CDF600E80A89 /* ChatPrivateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */; };
+		11A21F2D1C46CDF600E80A89 /* DialingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */; };
+		11A21F2E1C46CDF600E80A89 /* FriendCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513181C2C6C980066AF06 /* FriendCardController.swift */; };
+		11A21F2F1C46CDF600E80A89 /* FriendListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB471C1F4164006AA9E5 /* FriendListController.swift */; };
+		11A21F301C46CDF600E80A89 /* ProfileMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */; };
+		11A21F311C46CDF600E80A89 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
+		11A21F321C46CDF600E80A89 /* QRViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB411C1E2075006AA9E5 /* QRViewerController.swift */; };
+		11A21F331C46CDF600E80A89 /* RingingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703D51C39476A00DBC29A /* RingingCallController.swift */; };
+		11A21F341C46CDF600E80A89 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
+		11A21F351C46CDF600E80A89 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
+		11A21F361C46CDF600E80A89 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1BD1BDED261000C5CB8 /* TextViewController.swift */; };
+		11A21F371C46CDF600E80A89 /* VideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8671C45830C00865328 /* VideoCallController.swift */; };
+		11A21F381C46CDF600E80A89 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; };
+		11A21F391C46CDF600E80A89 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; };
+		11A21F3A1C46CDF600E80A89 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; };
+		11A21F3B1C46CDF600E80A89 /* RunningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */; };
+		11A21F3C1C46CDF600E80A89 /* CallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */; };
+		11A21F3D1C46CDF600E80A89 /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; };
+		11A21F3E1C46CDF600E80A89 /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
+		11A21F3F1C46CDF600E80A89 /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; };
+		11A21F401C46CDF600E80A89 /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; };
+		11A21F411C46CDF600E80A89 /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
+		11A21F421C46CDF600E80A89 /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; };
+		11A21F431C46CDF600E80A89 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
+		11A21F441C46CDF600E80A89 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; };
+		11A21F451C46CDF600E80A89 /* NSDateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */; };
+		11A21F461C46CDF600E80A89 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
+		11A21F471C46CDF600E80A89 /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */; };
+		11A21F481C46CDF600E80A89 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
+		11A21F491C46CDF600E80A89 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
+		11A21F4A1C46CDF600E80A89 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
+		11A21F4B1C46CDF600E80A89 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
+		11A21F4C1C46CDF600E80A89 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */; };
+		11A21F4D1C46CDF600E80A89 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640771C2DC15400D24C6D /* HelperFunctions.swift */; };
+		11A21F4E1C46CDF600E80A89 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE01BC591FC00F3DA5B /* Logger.swift */; };
+		11A21F4F1C46CDF600E80A89 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */; };
+		11A21F501C46CDF600E80A89 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
+		11A21F511C46CDF600E80A89 /* ImageViewWithStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */; };
+		11A21F521C46CDF600E80A89 /* NotificationWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513251C2D636A0066AF06 /* NotificationWindow.swift */; };
+		11A21F531C46CDF600E80A89 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
+		11A21F541C46CDF600E80A89 /* StaticBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */; };
+		11A21F551C46CDF600E80A89 /* UserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */; };
+		11A21F561C46CDF600E80A89 /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
+		11A21F571C46CDF600E80A89 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; };
+		11A21F581C46CDF600E80A89 /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
 		11A6B85F1C45830500865328 /* AudioCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B85E1C45830500865328 /* AudioCallController.swift */; };
 		11A6B8681C45830C00865328 /* VideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8671C45830C00865328 /* VideoCallController.swift */; };
 		11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8691C45887E00865328 /* ActiveCallController.swift */; };
@@ -104,83 +184,13 @@
 		9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */; };
 		9CBBC7CD1BDFC6C600099A5E /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
 		9CDC091B1C34081900DC0D63 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */; };
-		9CDC09231C34082200DC0D63 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */; };
 		9CDC09251C34083100DC0D63 /* FriendListDataSourceTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC09241C34083100DC0D63 /* FriendListDataSourceTest.swift */; };
 		9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */; };
 		9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */; };
 		9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
 		9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
-		9CE0BDE71C45229500DCE357 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
 		9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
-		9CE0BDF11C4522BF00DCE357 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
 		9CE0BDF31C4522C800DCE357 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
-		9CE0BDF41C4522C800DCE357 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
-		9CFF60BA1C33E38D00800262 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
-		9CFF60BB1C33E38D00800262 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB651C1F5694006AA9E5 /* BaseCell.swift */; };
-		9CFF60BC1C33E38D00800262 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */; };
-		9CFF60BD1C33E38D00800262 /* FriendListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB691C1F5C28006AA9E5 /* FriendListCell.swift */; };
-		9CFF60BE1C33E38D00800262 /* FriendListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB6B1C1F5C31006AA9E5 /* FriendListCellModel.swift */; };
-		9CFF60BF1C33E38D00800262 /* StaticTableAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */; };
-		9CFF60C01C33E38D00800262 /* StaticTableAvatarCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4841C10D119005AC8C6 /* StaticTableAvatarCellModel.swift */; };
-		9CFF60C11C33E38D00800262 /* StaticTableBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */; };
-		9CFF60C21C33E38D00800262 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
-		9CFF60C31C33E38D00800262 /* StaticTableButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4801C0FA0A4005AC8C6 /* StaticTableButtonCell.swift */; };
-		9CFF60C41C33E38D00800262 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
-		9CFF60C51C33E38D00800262 /* StaticTableChatButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */; };
-		9CFF60C61C33E38D00800262 /* StaticTableChatButtonsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */; };
-		9CFF60C71C33E38D00800262 /* StaticTableDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */; };
-		9CFF60C81C33E38D00800262 /* StaticTableDefaultCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */; };
-		9CFF60C91C33E38D00800262 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
-		9CFF60CA1C33E38D00800262 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
-		9CFF60CB1C33E38D00800262 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
-		9CFF60CC1C33E38D00800262 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
-		9CFF60CD1C33E38D00800262 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */; };
-		9CFF60CE1C33E38D00800262 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
-		9CFF60CF1C33E38D00800262 /* PortraitNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */; };
-		9CFF60D01C33E38D00800262 /* LoginBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8E61BC929C500B91107 /* LoginBaseController.swift */; };
-		9CFF60D11C33E38D00800262 /* LoginChoiceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8E81BC929F700B91107 /* LoginChoiceController.swift */; };
-		9CFF60D21C33E38D00800262 /* LoginCreateAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */; };
-		9CFF60D31C33E38D00800262 /* LoginFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151E1BCD501D003A27B5 /* LoginFormController.swift */; };
-		9CFF60D41C33E38D00800262 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; };
-		9CFF60D51C33E38D00800262 /* AddFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640751C2DBAE200D24C6D /* AddFriendController.swift */; };
-		9CFF60D61C33E38D00800262 /* FriendCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513181C2C6C980066AF06 /* FriendCardController.swift */; };
-		9CFF60D71C33E38D00800262 /* FriendListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB471C1F4164006AA9E5 /* FriendListController.swift */; };
-		9CFF60D81C33E38D00800262 /* ProfileMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */; };
-		9CFF60D91C33E38D00800262 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
-		9CFF60DA1C33E38D00800262 /* QRViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB411C1E2075006AA9E5 /* QRViewerController.swift */; };
-		9CFF60DB1C33E38D00800262 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
-		9CFF60DC1C33E38D00800262 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
-		9CFF60DD1C33E38D00800262 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1BD1BDED261000C5CB8 /* TextViewController.swift */; };
-		9CFF60DE1C33E38D00800262 /* CoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */; };
-		9CFF60DF1C33E38D00800262 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */; };
-		9CFF60E01C33E38D00800262 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; };
-		9CFF60E11C33E38D00800262 /* RunningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */; };
-		9CFF60E21C33E38D00800262 /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; };
-		9CFF60E31C33E38D00800262 /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
-		9CFF60E41C33E38D00800262 /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; };
-		9CFF60E51C33E38D00800262 /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; };
-		9CFF60E61C33E38D00800262 /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
-		9CFF60E71C33E38D00800262 /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; };
-		9CFF60E81C33E38D00800262 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
-		9CFF60E91C33E38D00800262 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; };
-		9CFF60EA1C33E38D00800262 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
-		9CFF60EB1C33E38D00800262 /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */; };
-		9CFF60EC1C33E38D00800262 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
-		9CFF60ED1C33E38D00800262 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
-		9CFF60EE1C33E38D00800262 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
-		9CFF60EF1C33E38D00800262 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
-		9CFF60F01C33E38D00800262 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */; };
-		9CFF60F11C33E38D00800262 /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640771C2DC15400D24C6D /* HelperFunctions.swift */; };
-		9CFF60F21C33E38D00800262 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE01BC591FC00F3DA5B /* Logger.swift */; };
-		9CFF60F31C33E38D00800262 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
-		9CFF60F41C33E38D00800262 /* ImageViewWithStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */; };
-		9CFF60F51C33E38D00800262 /* NotificationWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513251C2D636A0066AF06 /* NotificationWindow.swift */; };
-		9CFF60F61C33E38D00800262 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
-		9CFF60F71C33E38D00800262 /* StaticBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */; };
-		9CFF60F81C33E38D00800262 /* UserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */; };
-		9CFF60F91C33E38D00800262 /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
-		9CFF60FA1C33E38D00800262 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; };
-		9CFF60FB1C33E38D00800262 /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1127,80 +1137,90 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9CFF60D31C33E38D00800262 /* LoginFormController.swift in Sources */,
-				9CFF60D61C33E38D00800262 /* FriendCardController.swift in Sources */,
-				9CFF60D91C33E38D00800262 /* QRScannerController.swift in Sources */,
-				9CFF60BA1C33E38D00800262 /* AppDelegate.swift in Sources */,
-				9CFF60D41C33E38D00800262 /* LoginLogoController.swift in Sources */,
-				9CFF60F21C33E38D00800262 /* Logger.swift in Sources */,
-				9CFF60F11C33E38D00800262 /* HelperFunctions.swift in Sources */,
-				9CFF60C91C33E38D00800262 /* StaticTableSelectableCellModel.swift in Sources */,
-				9CFF60F61C33E38D00800262 /* QRScannerAimView.swift in Sources */,
-				9CFF60C71C33E38D00800262 /* StaticTableDefaultCell.swift in Sources */,
-				9CFF60EB1C33E38D00800262 /* OCTSubmanagerObjectsExtension.swift in Sources */,
-				9CFF60E71C33E38D00800262 /* SettingsTabCoordinator.swift in Sources */,
-				9CFF60F51C33E38D00800262 /* NotificationWindow.swift in Sources */,
-				9CFF60C21C33E38D00800262 /* StaticTableBaseCellModel.swift in Sources */,
-				9CFF60C31C33E38D00800262 /* StaticTableButtonCell.swift in Sources */,
-				9CE0BDE71C45229500DCE357 /* ChatListController.swift in Sources */,
-				9CFF60BB1C33E38D00800262 /* BaseCell.swift in Sources */,
-				9CFF60BD1C33E38D00800262 /* FriendListCell.swift in Sources */,
-				9CFF60F31C33E38D00800262 /* FullscreenPicker.swift in Sources */,
-				9CFF60C81C33E38D00800262 /* StaticTableDefaultCellModel.swift in Sources */,
-				9CFF60CA1C33E38D00800262 /* AvatarManager.swift in Sources */,
-				9CFF60C51C33E38D00800262 /* StaticTableChatButtonsCell.swift in Sources */,
-				9CFF60BE1C33E38D00800262 /* FriendListCellModel.swift in Sources */,
-				9CFF60E61C33E38D00800262 /* RunningBasicCoordinator.swift in Sources */,
-				9CFF60EA1C33E38D00800262 /* OCTManagerConfigurationExtension.swift in Sources */,
-				9CFF60DF1C33E38D00800262 /* AppCoordinator.swift in Sources */,
-				9CFF60CE1C33E38D00800262 /* KeyboardNotificationController.swift in Sources */,
-				9CFF60BC1C33E38D00800262 /* BaseCellModel.swift in Sources */,
-				9CFF60D81C33E38D00800262 /* ProfileMainController.swift in Sources */,
-				9CFF60F71C33E38D00800262 /* StaticBackgroundView.swift in Sources */,
-				9CFF60C11C33E38D00800262 /* StaticTableBaseCell.swift in Sources */,
-				9CE0BDF41C4522C800DCE357 /* ChatListCellModel.swift in Sources */,
-				9CFF60EC1C33E38D00800262 /* StringExtension.swift in Sources */,
-				9CFF60D71C33E38D00800262 /* FriendListController.swift in Sources */,
-				9CFF60FB1C33E38D00800262 /* LoginExtendedTextField.swift in Sources */,
-				9CFF60DA1C33E38D00800262 /* QRViewerController.swift in Sources */,
-				9CFF60E01C33E38D00800262 /* LoginCoordinator.swift in Sources */,
-				9CFF60DB1C33E38D00800262 /* StaticTableController.swift in Sources */,
-				112DA6D41C457CE4004FB1E6 /* DialingCallController.swift in Sources */,
-				9CFF60C41C33E38D00800262 /* StaticTableButtonCellModel.swift in Sources */,
-				9CFF60D11C33E38D00800262 /* LoginChoiceController.swift in Sources */,
-				9CFF60C61C33E38D00800262 /* StaticTableChatButtonsCellModel.swift in Sources */,
-				9CFF60D51C33E38D00800262 /* AddFriendController.swift in Sources */,
-				9CDC09231C34082200DC0D63 /* FriendListDataSource.swift in Sources */,
-				9CFF60CF1C33E38D00800262 /* PortraitNavigationController.swift in Sources */,
-				9CFF60E91C33E38D00800262 /* ImageExtension.swift in Sources */,
-				9CFF60BF1C33E38D00800262 /* StaticTableAvatarCell.swift in Sources */,
+				11A21F3C1C46CDF600E80A89 /* CallCoordinator.swift in Sources */,
+				11A21F371C46CDF600E80A89 /* VideoCallController.swift in Sources */,
+				11A21F1A1C46CDF600E80A89 /* AvatarManager.swift in Sources */,
+				11A21F351C46CDF600E80A89 /* TextEditController.swift in Sources */,
+				11A21F1D1C46CDF600E80A89 /* ProfileManager.swift in Sources */,
+				11A21F321C46CDF600E80A89 /* QRViewerController.swift in Sources */,
+				11A21F141C46CDF600E80A89 /* StaticTableButtonCellModel.swift in Sources */,
+				11A21F3A1C46CDF600E80A89 /* LoginCoordinator.swift in Sources */,
+				11A21F511C46CDF600E80A89 /* ImageViewWithStatus.swift in Sources */,
+				11A21F481C46CDF600E80A89 /* StringExtension.swift in Sources */,
+				11A21F0A1C46CDF600E80A89 /* BaseCellModel.swift in Sources */,
+				11A21F2B1C46CDF600E80A89 /* ChatListController.swift in Sources */,
+				11A21F261C46CDF600E80A89 /* LoginLogoController.swift in Sources */,
+				11A21F2F1C46CDF600E80A89 /* FriendListController.swift in Sources */,
+				11A21F0F1C46CDF600E80A89 /* StaticTableAvatarCell.swift in Sources */,
+				11A21F4B1C46CDF600E80A89 /* UIViewControllerExtension.swift in Sources */,
+				11A21F0E1C46CDF600E80A89 /* FriendListCellModel.swift in Sources */,
+				11A21F4F1C46CDF600E80A89 /* ChatInputView.swift in Sources */,
+				11A21F561C46CDF600E80A89 /* ViewPassingGestures.swift in Sources */,
+				11A21F0D1C46CDF600E80A89 /* FriendListCell.swift in Sources */,
+				11A21F441C46CDF600E80A89 /* ImageExtension.swift in Sources */,
+				11A21F241C46CDF600E80A89 /* LoginCreateAccountController.swift in Sources */,
+				11A21F281C46CDF600E80A89 /* ActiveCallController.swift in Sources */,
+				11A21F081C46CDF600E80A89 /* AppDelegate.swift in Sources */,
+				11A21F461C46CDF600E80A89 /* OCTManagerConfigurationExtension.swift in Sources */,
+				11A21F171C46CDF600E80A89 /* StaticTableDefaultCell.swift in Sources */,
+				11A21F211C46CDF600E80A89 /* PortraitNavigationController.swift in Sources */,
+				11A21F471C46CDF600E80A89 /* OCTSubmanagerObjectsExtension.swift in Sources */,
+				11A21F501C46CDF600E80A89 /* FullscreenPicker.swift in Sources */,
+				11A21F161C46CDF600E80A89 /* StaticTableChatButtonsCellModel.swift in Sources */,
+				11A21F4D1C46CDF600E80A89 /* HelperFunctions.swift in Sources */,
+				11A21F1B1C46CDF600E80A89 /* FriendListDataSource.swift in Sources */,
+				11A21F191C46CDF600E80A89 /* StaticTableSelectableCellModel.swift in Sources */,
+				11A21F3F1C46CDF600E80A89 /* FriendsTabCoordinator.swift in Sources */,
 				9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
-				9CFF60C01C33E38D00800262 /* StaticTableAvatarCellModel.swift in Sources */,
-				9CFF60F01C33E38D00800262 /* ErrorHandling.swift in Sources */,
-				9CFF60CD1C33E38D00800262 /* UserDefaultsManager.swift in Sources */,
-				9CFF60F81C33E38D00800262 /* UserStatusView.swift in Sources */,
-				9CFF60F91C33E38D00800262 /* ViewPassingGestures.swift in Sources */,
+				11A21F221C46CDF600E80A89 /* LoginBaseController.swift in Sources */,
+				11A21F2E1C46CDF600E80A89 /* FriendCardController.swift in Sources */,
+				11A21F521C46CDF600E80A89 /* NotificationWindow.swift in Sources */,
+				11A21F421C46CDF600E80A89 /* SettingsTabCoordinator.swift in Sources */,
+				11A21F151C46CDF600E80A89 /* StaticTableChatButtonsCell.swift in Sources */,
+				11A21F2D1C46CDF600E80A89 /* DialingCallController.swift in Sources */,
+				11A21F491C46CDF600E80A89 /* UIAlertViewExtension.swift in Sources */,
+				11A21F551C46CDF600E80A89 /* UserStatusView.swift in Sources */,
+				11A21F131C46CDF600E80A89 /* StaticTableButtonCell.swift in Sources */,
+				11A21F301C46CDF600E80A89 /* ProfileMainController.swift in Sources */,
+				11A21F251C46CDF600E80A89 /* LoginFormController.swift in Sources */,
+				11A21F581C46CDF600E80A89 /* LoginExtendedTextField.swift in Sources */,
+				11A21F411C46CDF600E80A89 /* RunningBasicCoordinator.swift in Sources */,
+				11A21F271C46CDF600E80A89 /* AbstractCallController.swift in Sources */,
+				11A21F231C46CDF600E80A89 /* LoginChoiceController.swift in Sources */,
+				11A21F0B1C46CDF600E80A89 /* ChatListCell.swift in Sources */,
+				11A21F111C46CDF600E80A89 /* StaticTableBaseCell.swift in Sources */,
+				11A21F1E1C46CDF600E80A89 /* Theme.swift in Sources */,
+				11A21F4C1C46CDF600E80A89 /* ErrorHandling.swift in Sources */,
 				9CDC09251C34083100DC0D63 /* FriendListDataSourceTest.swift in Sources */,
-				9CFF60F41C33E38D00800262 /* ImageViewWithStatus.swift in Sources */,
-				9CFF60DC1C33E38D00800262 /* TextEditController.swift in Sources */,
-				9CFF60D01C33E38D00800262 /* LoginBaseController.swift in Sources */,
-				9CFF60DE1C33E38D00800262 /* CoordinatorProtocol.swift in Sources */,
-				9CFF60EE1C33E38D00800262 /* UIColorExtension.swift in Sources */,
-				9CE0BDF11C4522BF00DCE357 /* ChatListCell.swift in Sources */,
-				9CFF60EF1C33E38D00800262 /* UIViewControllerExtension.swift in Sources */,
-				9CFF60CC1C33E38D00800262 /* Theme.swift in Sources */,
-				9CFF60D21C33E38D00800262 /* LoginCreateAccountController.swift in Sources */,
-				9CFF60FA1C33E38D00800262 /* LoginButton.swift in Sources */,
-				9CFF60ED1C33E38D00800262 /* UIAlertViewExtension.swift in Sources */,
-				9CFF60E31C33E38D00800262 /* ChatsTabCoordinator.swift in Sources */,
-				9CFF60E21C33E38D00800262 /* ChangePasswordCoordinator.swift in Sources */,
-				9CFF60E11C33E38D00800262 /* RunningCoordinator.swift in Sources */,
-				9CFF60E41C33E38D00800262 /* FriendsTabCoordinator.swift in Sources */,
+				11A21F311C46CDF600E80A89 /* QRScannerController.swift in Sources */,
+				11A21F201C46CDF600E80A89 /* KeyboardNotificationController.swift in Sources */,
+				11A21F1C1C46CDF600E80A89 /* LazyStorage.swift in Sources */,
+				11A21F181C46CDF600E80A89 /* StaticTableDefaultCellModel.swift in Sources */,
+				11A21F541C46CDF600E80A89 /* StaticBackgroundView.swift in Sources */,
+				11A21F401C46CDF600E80A89 /* ProfileTabCoordinator.swift in Sources */,
+				11A21F091C46CDF600E80A89 /* BaseCell.swift in Sources */,
+				11A21F291C46CDF600E80A89 /* AddFriendController.swift in Sources */,
+				11A21F571C46CDF600E80A89 /* LoginButton.swift in Sources */,
+				11A21F331C46CDF600E80A89 /* RingingCallController.swift in Sources */,
+				11A21F531C46CDF600E80A89 /* QRScannerAimView.swift in Sources */,
 				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
-				9CFF60E51C33E38D00800262 /* ProfileTabCoordinator.swift in Sources */,
-				9CFF60DD1C33E38D00800262 /* TextViewController.swift in Sources */,
-				9CFF60E81C33E38D00800262 /* UserStatus.swift in Sources */,
-				9CFF60CB1C33E38D00800262 /* ProfileManager.swift in Sources */,
+				11A21F431C46CDF600E80A89 /* UserStatus.swift in Sources */,
+				11A21F1F1C46CDF600E80A89 /* UserDefaultsManager.swift in Sources */,
+				11A21F3D1C46CDF600E80A89 /* ChangePasswordCoordinator.swift in Sources */,
+				11A21F4A1C46CDF600E80A89 /* UIColorExtension.swift in Sources */,
+				11A21F341C46CDF600E80A89 /* StaticTableController.swift in Sources */,
+				11A21F2A1C46CDF600E80A89 /* AudioCallController.swift in Sources */,
+				11A21F4E1C46CDF600E80A89 /* Logger.swift in Sources */,
+				11A21F381C46CDF600E80A89 /* CoordinatorProtocol.swift in Sources */,
+				11A21F361C46CDF600E80A89 /* TextViewController.swift in Sources */,
+				11A21F101C46CDF600E80A89 /* StaticTableAvatarCellModel.swift in Sources */,
+				11A21F2C1C46CDF600E80A89 /* ChatPrivateController.swift in Sources */,
+				11A21F391C46CDF600E80A89 /* AppCoordinator.swift in Sources */,
+				11A21F3E1C46CDF600E80A89 /* ChatsTabCoordinator.swift in Sources */,
+				11A21F0C1C46CDF600E80A89 /* ChatListCellModel.swift in Sources */,
+				11A21F3B1C46CDF600E80A89 /* RunningCoordinator.swift in Sources */,
+				11A21F451C46CDF600E80A89 /* NSDateFormatterExtension.swift in Sources */,
+				11A21F121C46CDF600E80A89 /* StaticTableBaseCellModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -42,13 +42,16 @@ class ThemeTest: XCTestCase {
             "  link-text: second\n" +
             "  connecting-background: first\n" +
             "  connecting-text: second\n" +
-            "  table-separator: first\n" +
+            "  separators-and-borders: first\n" +
             "  offline-status: second\n" +
             "  online-status: first\n" +
             "  away-status: second\n" +
             "  busy-status: first\n" +
             "  status-background: second\n" +
-            "  friend-cell-status: first\n"
+            "  friend-cell-status: first\n" +
+            "  chat-list-cell-message: second\n" +
+            "  chat-list-cell-unread-background: first\n" +
+            "  chat-input-background: second\n"
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
@@ -79,6 +82,9 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(first, theme.colorForType(.BusyStatus))
             XCTAssertEqual(second, theme.colorForType(.StatusBackground))
             XCTAssertEqual(first, theme.colorForType(.FriendCellStatus))
+            XCTAssertEqual(second, theme.colorForType(.ChatListCellMessage))
+            XCTAssertEqual(first, theme.colorForType(.ChatListCellUnreadBackground))
+            XCTAssertEqual(second, theme.colorForType(.ChatInputBackground))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())
