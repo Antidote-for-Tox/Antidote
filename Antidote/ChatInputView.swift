@@ -56,13 +56,16 @@ class ChatInputView: UIView {
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    override func resignFirstResponder() -> Bool {
+        return textView.resignFirstResponder()
+    }
 }
 
 // MARK: Actions
 extension ChatInputView {
     func sendButtonPressed() {
         delegate?.chatInputViewSendButtonPressed(self)
-            print("qq")
     }
 }
 

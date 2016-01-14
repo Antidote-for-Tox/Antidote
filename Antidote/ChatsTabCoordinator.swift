@@ -29,7 +29,11 @@ class ChatsTabCoordinator: RunningBasicCoordinator {
 
 extension ChatsTabCoordinator: ChatListControllerDelegate {
     func chatListController(controller: ChatListController, didSelectChat chat: OCTChat) {
-        let controller = ChatPrivateController(theme: theme, chat: chat, submanagerChats: submanagerChats)
+        let controller = ChatPrivateController(
+                theme: theme,
+                chat: chat,
+                submanagerChats: submanagerChats,
+                submanagerObjects: submanagerObjects)
 
         navigationController.pushViewController(controller, animated: true)
     }

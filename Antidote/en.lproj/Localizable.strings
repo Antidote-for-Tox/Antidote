@@ -108,3 +108,4 @@
 "chat_call_finished" = "Call finished";
 "chat_unanwered_call" = "Unanswered call";
 "chat_send_button" = "Send";
+"chat_new_messages" = "↓ New messages";
