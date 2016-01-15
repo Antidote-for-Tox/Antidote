@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 
 private struct Constants {
+    static let MessagesPortionSize = 50
+
+    static let PrependingTableOffsetY: CGFloat = 100.0
+
     static let InputViewTopOffset: CGFloat = 50.0
 
     static let NewMessageViewAllowedDelta: CGFloat = 20.0
@@ -23,7 +27,7 @@ class ChatPrivateController: KeyboardNotificationController {
     private let chat: OCTChat
     private let submanagerChats: OCTSubmanagerChats
 
-    private let messagesController: RBQFetchedResultsController
+    private let dataSource: PortionDataSource
 
     private var tableView: UITableView!
     private var newMessagesView: UIView!
@@ -40,15 +44,15 @@ class ChatPrivateController: KeyboardNotificationController {
         self.chat = chat
         self.submanagerChats = submanagerChats
 
-        self.messagesController = submanagerObjects.fetchedResultsControllerForType(
+        let messagesController = submanagerObjects.fetchedResultsControllerForType(
                 .MessageAbstract,
                 predicate: NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier),
                 sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: true)])
+        self.dataSource = PortionDataSource(controller: messagesController, portionSize:Constants.MessagesPortionSize)
 
         super.init()
 
-        messagesController.delegate = self
-        messagesController.performFetch()
+        dataSource.delegate = self
 
         addNavigationButtons()
 
@@ -75,6 +79,7 @@ class ChatPrivateController: KeyboardNotificationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.reloadData()
         scrollToLastMessage(animated: false)
     }
 
@@ -110,9 +115,9 @@ class ChatPrivateController: KeyboardNotificationController {
 
 extension ChatPrivateController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let message = messagesController.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
 
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCellWithIdentifier(BaseCell.staticReuseIdentifier)!
 
         if message.messageText != nil {
             cell.textLabel?.text = message.messageText.text
@@ -122,12 +127,18 @@ extension ChatPrivateController: UITableViewDataSource {
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messagesController.numberOfRowsForSectionIndex(section)
+        return dataSource.numberOfObjects()
     }
 }
 
 extension ChatPrivateController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    }
+
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == (dataSource.numberOfObjects() - 1) {
+            toggleNewMessageView(show: false)
+        }
     }
 }
 
@@ -137,24 +148,45 @@ extension ChatPrivateController: UIScrollViewDelegate {
             return
         }
 
-        let maxOffset = tableView.contentSize.height - tableView.frame.size.height - Constants.NewMessageViewAllowedDelta
+        if (tableView.contentOffset.y < Constants.PrependingTableOffsetY) {
+            let heightBefore = tableView.contentSize.height
+            let numberBefore = dataSource.numberOfObjects()
 
-        if tableView.contentOffset.y > maxOffset {
-            toggleNewMessageView(show: false)
+            if dataSource.increaseLimit() {
+                let animations = UIView.areAnimationsEnabled()
+                UIView.setAnimationsEnabled(false)
+
+                let numberDelta = dataSource.numberOfObjects() - numberBefore
+                let indexPaths = (0..<numberDelta).map {
+                    return NSIndexPath(forRow: $0, inSection: 0)
+                }
+
+                tableView.beginUpdates()
+                tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+                tableView.endUpdates()
+
+                let delta = tableView.contentSize.height - heightBefore
+
+                var offset = tableView.contentOffset
+                offset.y += delta
+                tableView.setContentOffset(offset, animated: false)
+
+                UIView.setAnimationsEnabled(animations)
+            }
         }
     }
 }
 
-extension ChatPrivateController: RBQFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(controller: RBQFetchedResultsController) {
+extension ChatPrivateController: PortionDataSourceDelegate {
+    func portionDataSourceBeginUpdates() {
         tableView.beginUpdates()
     }
 
-   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
+    func portionDataSourceEndUpdates() {
         ExceptionHandling.tryWithBlock({ [unowned self] in
             self.tableView.endUpdates()
         }) { [unowned self] _ in
-            controller.reset()
+            self.dataSource.reset()
             self.tableView.reloadData()
         }
 
@@ -162,30 +194,29 @@ extension ChatPrivateController: RBQFetchedResultsControllerDelegate {
             didAddNewMessageInLastUpdate = false
             handleNewMessage()
         }
-   }
-
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeObject anObject: RBQSafeRealmObject,
-            atIndexPath indexPath: NSIndexPath?,
-            forChangeType type: RBQFetchedResultsChangeType,
-            newIndexPath: NSIndexPath?) {
-        switch type {
-            case .Insert:
-                if newIndexPath!.row == messagesController.numberOfRowsForSectionIndex(0) {
-                    didAddNewMessageInLastUpdate = true
-                }
-
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
-            case .Delete:
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-            case .Move:
-                tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-                tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
-            case .Update:
-                tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-        }
     }
+
+    func portionDataSourceInsertObjectAtIndexPath(indexPath: NSIndexPath) {
+        if indexPath.row == (dataSource.numberOfObjects() - 1) {
+            didAddNewMessageInLastUpdate = true
+        }
+
+        tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    }
+
+    func portionDataSourceDeleteObjectAtIndexPath(indexPath: NSIndexPath) {
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    }
+
+    func portionDataSourceReloadObjectAtIndexPath(indexPath: NSIndexPath) {
+        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+    }
+
+    func portionDataSourceMoveObjectAtIndexPath(indexPath: NSIndexPath, toIndexPath: NSIndexPath) {
+        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        tableView.insertRowsAtIndexPaths([toIndexPath], withRowAnimation: .Automatic)
+    }
+
 }
 
 extension ChatPrivateController: ChatInputViewDelegate {
@@ -221,7 +252,7 @@ private extension ChatPrivateController {
 
         view.addSubview(tableView)
 
-        tableView.registerClass(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
+        tableView.registerClass(BaseCell.self, forCellReuseIdentifier: BaseCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -287,9 +318,13 @@ private extension ChatPrivateController {
     }
 
     func handleNewMessage() {
-        let maxOffset = tableView.contentSize.height - tableView.frame.size.height - Constants.NewMessageViewAllowedDelta
+        guard let visible = tableView.indexPathsForVisibleRows else {
+            return
+        }
 
-        if tableView.contentOffset.y > maxOffset {
+        let penultimate = NSIndexPath(forRow: dataSource.numberOfObjects() - 2, inSection: 0)
+
+        if visible.contains(penultimate) {
             scrollToLastMessage(animated: true)
         }
         else {
@@ -298,7 +333,7 @@ private extension ChatPrivateController {
     }
 
     func scrollToLastMessage(animated animated: Bool) {
-        let count = messagesController.numberOfRowsForSectionIndex(0)
+        let count = dataSource.numberOfObjects()
 
         guard count > 0 else {
             return
