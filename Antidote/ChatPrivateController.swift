@@ -34,6 +34,7 @@ class ChatPrivateController: KeyboardNotificationController {
 
     private let timeFormatter: NSDateFormatter
 
+    private var titleView: ChatPrivateTitleView!
     private var tableView: UITableView!
     private var newMessagesView: UIView!
     private var chatInputView: ChatInputView!
@@ -69,7 +70,7 @@ class ChatPrivateController: KeyboardNotificationController {
         friendController.delegate = self
         friendController.performFetch()
 
-        addNavigationButtons()
+        createNavigationViews()
 
         edgesForExtendedLayout = .None
         hidesBottomBarWhenPushed = true
@@ -335,7 +336,10 @@ extension ChatPrivateController: UIGestureRecognizerDelegate {
 }
 
 private extension ChatPrivateController {
-    func addNavigationButtons() {}
+    func createNavigationViews() {
+        titleView = ChatPrivateTitleView(theme: theme)
+        navigationItem.titleView = titleView
+    }
 
     func createTableView() {
         tableView = UITableView()
@@ -466,7 +470,9 @@ private extension ChatPrivateController {
     }
 
     func friendWasUpdated() {
-        title = friend.nickname
+        titleView.name = friend.nickname
+        titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
+
         chatInputView.sendButtonEnabled = friend.isConnected
     }
 }

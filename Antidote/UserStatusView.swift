@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 class UserStatusView: StaticBackgroundView {
-    private var roundView: StaticBackgroundView!
+    private var roundView: StaticBackgroundView?
 
     var theme: Theme? {
         didSet {
@@ -18,15 +18,19 @@ class UserStatusView: StaticBackgroundView {
         }
     }
 
-    var userStatus: UserStatus {
+    var showExternalCircle: Bool = true {
+        didSet {
+            userStatusWasUpdated()
+        }
+    }
+
+    var userStatus: UserStatus = .Offline {
         didSet {
             userStatusWasUpdated()
         }
     }
 
     init() {
-        userStatus = .Offline
-
         super.init(frame: CGRectZero)
 
         createRoundView()
@@ -41,35 +45,45 @@ class UserStatusView: StaticBackgroundView {
 
         userStatusWasUpdated()
     }
+
+    override var frame: CGRect {
+        didSet {
+            userStatusWasUpdated()
+        }
+    }
 }
 
 private extension UserStatusView {
     func createRoundView() {
         roundView = StaticBackgroundView()
-        roundView.layer.masksToBounds = true
-        addSubview(roundView)
+        roundView!.layer.masksToBounds = true
+        addSubview(roundView!)
 
-        roundView.snp_makeConstraints {
+        roundView!.snp_makeConstraints {
             $0.center.equalTo(self)
             $0.size.equalTo(self).offset(-2.0)
         }
     }
 
     func userStatusWasUpdated() {
-        switch userStatus {
-            case .Offline:
-                roundView.setStaticBackgroundColor(theme?.colorForType(.OfflineStatus))
-            case .Online:
-                roundView.setStaticBackgroundColor(theme?.colorForType(.OnlineStatus))
-            case .Away:
-                roundView.setStaticBackgroundColor(theme?.colorForType(.AwayStatus))
-            case .Busy:
-                roundView.setStaticBackgroundColor(theme?.colorForType(.BusyStatus))
+        if let theme = theme {
+            switch userStatus {
+                case .Offline:
+                    roundView?.setStaticBackgroundColor(theme.colorForType(.OfflineStatus))
+                case .Online:
+                    roundView?.setStaticBackgroundColor(theme.colorForType(.OnlineStatus))
+                case .Away:
+                    roundView?.setStaticBackgroundColor(theme.colorForType(.AwayStatus))
+                case .Busy:
+                    roundView?.setStaticBackgroundColor(theme.colorForType(.BusyStatus))
+            }
+
+            let background = showExternalCircle ? theme.colorForType(.StatusBackground) : .clearColor()
+            setStaticBackgroundColor(background)
         }
 
-        setStaticBackgroundColor(theme?.colorForType(.StatusBackground))
         layer.cornerRadius = frame.size.width / 2
 
-        roundView.layer.cornerRadius = roundView.frame.size.width / 2
+        roundView?.layer.cornerRadius = roundView!.frame.size.width / 2
     }
 }

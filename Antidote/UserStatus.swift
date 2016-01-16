@@ -26,4 +26,17 @@ enum UserStatus {
                 self = .Busy
         }
     }
+
+    func toString() -> String {
+        switch self {
+            case .Offline:
+                return String(localized: "status_offline")
+            case .Online:
+                return String(localized: "status_online")
+            case .Away:
+                return String(localized: "status_away")
+            case .Busy:
+                return String(localized: "status_busy")
+        }
+    }
 }

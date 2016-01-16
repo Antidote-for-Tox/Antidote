@@ -171,6 +171,7 @@
 		11B253521C4AD9CF0068F47C /* isotoxin_NewMessage.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534B1C4AD23A0068F47C /* isotoxin_NewMessage.aac */; };
 		11B253531C4AD9CF0068F47C /* isotoxin_Ringtone.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */; };
 		11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */; };
+		11B253561C4AEA400068F47C /* ChatPrivateTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -409,6 +410,7 @@
 		11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_Ringtone.aac; sourceTree = "<group>"; };
 		11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_RingtoneWhileCall.aac; sourceTree = "<group>"; };
 		11B2534E1C4AD2550068F47C /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPrivateTitleView.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -545,6 +547,7 @@
 			children = (
 				11B253131C4A79A50068F47C /* BubbleView.swift */,
 				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
+				11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
@@ -1132,6 +1135,7 @@
 				11B253041C4A61D50068F47C /* ChatMovableDateCellModel.swift in Sources */,
 				1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */,
 				11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */,
+				11B253561C4AEA400068F47C /* ChatPrivateTitleView.swift in Sources */,
 				1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */,
 				11B253001C4A61630068F47C /* ChatOutgoingTextCellModel.swift in Sources */,
 				1193AB481C1F4164006AA9E5 /* FriendListController.swift in Sources */,

@@ -109,3 +109,8 @@
 "chat_unanwered_call" = "Unanswered call";
 "chat_send_button" = "Send";
 "chat_new_messages" = "↓ New messages";
+
+"status_offline" = "Offline";
+"status_online" = "Online";
+"status_away" = "Away";
+"status_busy" = "Busy";
