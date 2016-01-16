@@ -48,8 +48,6 @@ class PortionDataSource: NSObject {
     }
 
     func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject {
-        let indexPath = toInnerIndexPath(indexPath)
-
         return controller.objectAtIndexPath(indexPath) as! AnyObject
     }
 
@@ -90,29 +88,24 @@ extension PortionDataSource: RBQFetchedResultsControllerDelegate {
             newIndexPath: NSIndexPath?) {
         switch type {
             case .Insert:
-                let outer = toOuterIndexPath(newIndexPath!)
                 currentLimit++
-                delegate?.portionDataSourceInsertObjectAtIndexPath(outer)
+                guard newIndexPath!.row < currentLimit else { return }
+
+                delegate?.portionDataSourceInsertObjectAtIndexPath(newIndexPath!)
             case .Delete:
-                let outer = toOuterIndexPath(indexPath!)
                 currentLimit--
-                delegate?.portionDataSourceDeleteObjectAtIndexPath(outer)
+                guard indexPath!.row < currentLimit else { return }
+
+                delegate?.portionDataSourceDeleteObjectAtIndexPath(indexPath!)
             case .Update:
-                delegate?.portionDataSourceReloadObjectAtIndexPath(toOuterIndexPath(indexPath!))
+                guard indexPath!.row < currentLimit else { return }
+
+                delegate?.portionDataSourceReloadObjectAtIndexPath(indexPath!)
             case .Move:
-                delegate?.portionDataSourceMoveObjectAtIndexPath(toOuterIndexPath(indexPath!), toIndexPath: toOuterIndexPath(newIndexPath!))
+                guard indexPath!.row < currentLimit else { return }
+                guard newIndexPath!.row < currentLimit else { return }
+
+                delegate?.portionDataSourceMoveObjectAtIndexPath(indexPath!, toIndexPath: newIndexPath!)
         }
-    }
-}
-
-private extension PortionDataSource {
-    func toInnerIndexPath(indexPath: NSIndexPath) -> NSIndexPath {
-        let row = indexPath.row + (controller.numberOfRowsForSectionIndex(0) - currentLimit)
-        return NSIndexPath(forRow: row, inSection: 0)
-    }
-
-    func toOuterIndexPath(indexPath: NSIndexPath) -> NSIndexPath {
-        let row = indexPath.row - (controller.numberOfRowsForSectionIndex(0) - currentLimit)
-        return NSIndexPath(forRow: row, inSection: 0)
     }
 }

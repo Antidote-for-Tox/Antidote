@@ -12,8 +12,6 @@ import SnapKit
 private struct Constants {
     static let MessagesPortionSize = 50
 
-    static let PrependingTableOffsetY: CGFloat = 100.0
-
     static let InputViewTopOffset: CGFloat = 50.0
 
     static let NewMessageViewAllowedDelta: CGFloat = 20.0
@@ -51,7 +49,7 @@ class ChatPrivateController: KeyboardNotificationController {
         let messagesController = submanagerObjects.fetchedResultsControllerForType(
                 .MessageAbstract,
                 predicate: NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier),
-                sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: true)])
+                sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: false)])
         self.dataSource = PortionDataSource(controller: messagesController, portionSize:Constants.MessagesPortionSize)
 
         self.timeFormatter = NSDateFormatter(type: .Time)
@@ -82,27 +80,11 @@ class ChatPrivateController: KeyboardNotificationController {
         installConstraints()
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        tableView.reloadData()
-        scrollToLastMessage(animated: false)
-    }
-
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         super.keyboardWillShowAnimated(keyboardFrame: frame)
 
         chatInputViewBottomConstraint.updateOffset(-frame.size.height)
         view.layoutIfNeeded()
-
-        let maxOffsetY = max(0.0, tableView.contentSize.height - tableView.frame.size.height)
-
-        var offsetY = tableView.contentOffset.y + frame.size.height
-
-        if offsetY > maxOffsetY {
-            offsetY = maxOffsetY
-        }
-        tableView.contentOffset.y = offsetY
     }
 
     override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
@@ -157,6 +139,7 @@ extension ChatPrivateController: UITableViewDataSource {
         model.dateString = timeFormatter.stringFromDate(message.date())
 
         cell.setupWithTheme(theme, model: model)
+        cell.transform = tableView.transform;
 
         return cell
     }
@@ -167,46 +150,23 @@ extension ChatPrivateController: UITableViewDataSource {
 }
 
 extension ChatPrivateController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    }
-
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if indexPath.row == (dataSource.numberOfObjects() - 1) {
+        if indexPath.row == 0 {
             toggleNewMessageView(show: false)
         }
     }
 }
 
-extension ChatPrivateController: UIScrollViewDelegate {
+extension ChatPrivateController: UIScrollViewDelegate
+{
     func scrollViewDidScroll(scrollView: UIScrollView) {
         guard scrollView === tableView else {
             return
         }
 
-        if (tableView.contentOffset.y < Constants.PrependingTableOffsetY) {
-            let heightBefore = tableView.contentSize.height
-            let numberBefore = dataSource.numberOfObjects()
-
+        if tableView.contentOffset.y > (tableView.contentSize.height - tableView.frame.size.height) {
             if dataSource.increaseLimit() {
-                let animations = UIView.areAnimationsEnabled()
-                UIView.setAnimationsEnabled(false)
-
-                let numberDelta = dataSource.numberOfObjects() - numberBefore
-                let indexPaths = (0..<numberDelta).map {
-                    return NSIndexPath(forRow: $0, inSection: 0)
-                }
-
-                tableView.beginUpdates()
-                tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
-                tableView.endUpdates()
-
-                let delta = tableView.contentSize.height - heightBefore
-
-                var offset = tableView.contentOffset
-                offset.y += delta
-                tableView.setContentOffset(offset, animated: false)
-
-                UIView.setAnimationsEnabled(animations)
+                tableView.reloadData()
             }
         }
     }
@@ -232,11 +192,11 @@ extension ChatPrivateController: PortionDataSourceDelegate {
     }
 
     func portionDataSourceInsertObjectAtIndexPath(indexPath: NSIndexPath) {
-        if indexPath.row == (dataSource.numberOfObjects() - 1) {
+        if indexPath.row == 0 {
             didAddNewMessageInLastUpdate = true
         }
 
-        tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
     }
 
     func portionDataSourceDeleteObjectAtIndexPath(indexPath: NSIndexPath) {
@@ -300,7 +260,14 @@ extension ChatPrivateController: ChatInputViewDelegate {
     }
 
     func newMessagesViewPressed() {
-        scrollToLastMessage(animated: true)
+        tableView.setContentOffset(CGPointZero, animated: true)
+
+        // iOS is broken =\
+        // See https://stackoverflow.com/a/30804874
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+            self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+        }
     }
 }
 
@@ -323,6 +290,8 @@ private extension ChatPrivateController {
         tableView = UITableView()
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0)
+        tableView.scrollsToTop = false
         tableView.allowsSelection = false
         tableView.estimatedRowHeight = 44.0
         tableView.backgroundColor = theme.colorForType(.NormalBackground)
@@ -386,7 +355,7 @@ private extension ChatPrivateController {
 
         newMessagesView.snp_makeConstraints {
             $0.centerX.equalTo(tableView)
-            newMessageViewTopConstraint = $0.top.equalTo(tableView.snp_bottom).constraint
+            newMessageViewTopConstraint = $0.top.equalTo(chatInputView.snp_top).constraint
         }
 
         chatInputView.snp_makeConstraints {
@@ -406,25 +375,11 @@ private extension ChatPrivateController {
             return
         }
 
-        let penultimate = NSIndexPath(forRow: dataSource.numberOfObjects() - 2, inSection: 0)
+        let first = NSIndexPath(forRow: 0, inSection: 0)
 
-        if visible.contains(penultimate) {
-            scrollToLastMessage(animated: true)
-        }
-        else {
+        if !visible.contains(first) {
             toggleNewMessageView(show: true)
         }
-    }
-
-    func scrollToLastMessage(animated animated: Bool) {
-        let count = dataSource.numberOfObjects()
-
-        guard count > 0 else {
-            return
-        }
-
-        let path = NSIndexPath(forRow: count-1, inSection: 0)
-        tableView.scrollToRowAtIndexPath(path, atScrollPosition: .Bottom, animated: animated)
     }
 
     func toggleNewMessageView(show show: Bool) {
