@@ -65,8 +65,6 @@
 		119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */; };
 		119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
 		119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
-		119AD2151BEC719A000C5CB8 /* ringback.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2131BEC719A000C5CB8 /* ringback.wav */; };
-		119AD2161BEC719A000C5CB8 /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 119AD2141BEC719A000C5CB8 /* ringtone.wav */; };
 		11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */; };
 		11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */; };
 		11A21F081C46CDF600E80A89 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
@@ -387,8 +385,6 @@
 		119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertViewExtension.swift; sourceTree = "<group>"; };
-		119AD2131BEC719A000C5CB8 /* ringback.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringback.wav; sourceTree = "<group>"; };
-		119AD2141BEC719A000C5CB8 /* ringtone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringtone.wav; sourceTree = "<group>"; };
 		11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPrivateController.swift; sourceTree = "<group>"; };
 		11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
 		11A6B85E1C45830500865328 /* AudioCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallController.swift; sourceTree = "<group>"; };
@@ -401,6 +397,11 @@
 		11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMovableDateCell.swift; sourceTree = "<group>"; };
 		11B253031C4A61D50068F47C /* ChatMovableDateCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMovableDateCellModel.swift; sourceTree = "<group>"; };
 		11B253131C4A79A50068F47C /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
+		11B253491C4AD2200068F47C /* isotoxin_Calltone.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_Calltone.aac; sourceTree = "<group>"; };
+		11B2534A1C4AD23A0068F47C /* isotoxin_Hangup.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_Hangup.aac; sourceTree = "<group>"; };
+		11B2534B1C4AD23A0068F47C /* isotoxin_NewMessage.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_NewMessage.aac; sourceTree = "<group>"; };
+		11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_Ringtone.aac; sourceTree = "<group>"; };
+		11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_RingtoneWhileCall.aac; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -668,8 +669,11 @@
 		119AD2081BEC718C000C5CB8 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				119AD2131BEC719A000C5CB8 /* ringback.wav */,
-				119AD2141BEC719A000C5CB8 /* ringtone.wav */,
+				11B253491C4AD2200068F47C /* isotoxin_Calltone.aac */,
+				11B2534A1C4AD23A0068F47C /* isotoxin_Hangup.aac */,
+				11B2534B1C4AD23A0068F47C /* isotoxin_NewMessage.aac */,
+				11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */,
+				11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -964,10 +968,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */,
-				119AD2161BEC719A000C5CB8 /* ringtone.wav in Resources */,
 				1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
-				119AD2151BEC719A000C5CB8 /* ringback.wav in Resources */,
 				1179E06B1BA0534600D258C6 /* import-profile.html in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
 			);
