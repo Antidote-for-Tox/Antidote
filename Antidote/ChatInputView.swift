@@ -39,6 +39,12 @@ class ChatInputView: UIView {
         }
     }
 
+    var sendButtonEnabled: Bool = true{
+        didSet {
+            updateViews()
+        }
+    }
+
     private var topBorder: UIView!
     private var textView: UITextView!
     private var sendButton: UIButton!
@@ -138,6 +144,6 @@ private extension ChatInputView {
             textView.scrollEnabled = false
         }
 
-        sendButton.enabled = !textView.text.isEmpty
+        sendButton.enabled = sendButtonEnabled && !textView.text.isEmpty
     }
 }

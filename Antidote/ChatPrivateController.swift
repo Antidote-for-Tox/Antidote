@@ -25,10 +25,12 @@ private struct Constants {
 class ChatPrivateController: KeyboardNotificationController {
     private let theme: Theme
     private let chat: OCTChat
+    private let friend: OCTFriend
     private let submanagerChats: OCTSubmanagerChats
     private let submanagerObjects: OCTSubmanagerObjects
 
     private let dataSource: PortionDataSource
+    private let friendController: RBQFetchedResultsController
 
     private let timeFormatter: NSDateFormatter
 
@@ -45,6 +47,7 @@ class ChatPrivateController: KeyboardNotificationController {
     init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
         self.chat = chat
+        self.friend = chat.friends.lastObject() as! OCTFriend
         self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
 
@@ -54,19 +57,22 @@ class ChatPrivateController: KeyboardNotificationController {
                 sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: false)])
         self.dataSource = PortionDataSource(controller: messagesController, portionSize:Constants.MessagesPortionSize)
 
+        self.friendController = submanagerObjects.fetchedResultsControllerForType(
+                .Friend,
+                predicate: NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier))
+
         self.timeFormatter = NSDateFormatter(type: .Time)
 
         super.init()
 
         dataSource.delegate = self
+        friendController.delegate = self
+        friendController.performFetch()
 
         addNavigationButtons()
 
         edgesForExtendedLayout = .None
         hidesBottomBarWhenPushed = true
-
-        let friend = chat.friends.lastObject() as! OCTFriend
-        title = friend.nickname
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -80,6 +86,12 @@ class ChatPrivateController: KeyboardNotificationController {
         createNewMessagesView()
         createInputView()
         installConstraints()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        friendWasUpdated()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -127,7 +139,7 @@ extension ChatPrivateController {
         let translation = recognizer.translationInView(recognizer.view)
         recognizer.setTranslation(CGPointZero, inView: recognizer.view)
 
-        let cells = tableView.visibleCells.filter {
+        _ = tableView.visibleCells.filter {
             $0 is ChatMovableDateCell
         }.map {
             $0 as! ChatMovableDateCell
@@ -282,6 +294,14 @@ extension ChatPrivateController: PortionDataSourceDelegate {
         tableView.insertRowsAtIndexPaths([toIndexPath], withRowAnimation: .Automatic)
     }
 
+}
+
+extension ChatPrivateController: RBQFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(controller: RBQFetchedResultsController) {
+        if controller === friendController {
+            friendWasUpdated()
+        }
+    }
 }
 
 extension ChatPrivateController: ChatInputViewDelegate {
@@ -443,5 +463,10 @@ private extension ChatPrivateController {
 
     func updateLastReadDate() {
         submanagerObjects.changeChat(chat, lastReadDateInterval: NSDate().timeIntervalSince1970)
+    }
+
+    func friendWasUpdated() {
+        title = friend.nickname
+        chatInputView.sendButtonEnabled = friend.isConnected
     }
 }
