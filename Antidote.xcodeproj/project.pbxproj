@@ -172,6 +172,7 @@
 		11B253531C4AD9CF0068F47C /* isotoxin_Ringtone.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */; };
 		11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */; };
 		11B253561C4AEA400068F47C /* ChatPrivateTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */; };
+		11B253571C4AF6A60068F47C /* ChatPrivateTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -1223,6 +1224,7 @@
 				11A21F281C46CDF600E80A89 /* ActiveCallController.swift in Sources */,
 				11A21F081C46CDF600E80A89 /* AppDelegate.swift in Sources */,
 				11A21F461C46CDF600E80A89 /* OCTManagerConfigurationExtension.swift in Sources */,
+				11B253571C4AF6A60068F47C /* ChatPrivateTitleView.swift in Sources */,
 				11A21F171C46CDF600E80A89 /* StaticTableDefaultCell.swift in Sources */,
 				11A21F211C46CDF600E80A89 /* PortraitNavigationController.swift in Sources */,
 				11A21F471C46CDF600E80A89 /* OCTSubmanagerObjectsExtension.swift in Sources */,
