@@ -20,6 +20,8 @@ private struct Constants {
     static let NewMessageViewEdgesOffset: CGFloat = 5.0
     static let NewMessageViewTopOffset: CGFloat = -15.0
     static let NewMessageViewAnimationDuration = 0.2
+
+    static let ResetPanAnimationDuration = 0.3
 }
 
 class ChatPrivateController: KeyboardNotificationController {
@@ -28,6 +30,8 @@ class ChatPrivateController: KeyboardNotificationController {
     private let submanagerChats: OCTSubmanagerChats
 
     private let dataSource: PortionDataSource
+
+    private let timeFormatter: NSDateFormatter
 
     private var tableView: UITableView!
     private var newMessagesView: UIView!
@@ -49,6 +53,8 @@ class ChatPrivateController: KeyboardNotificationController {
                 predicate: NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier),
                 sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: true)])
         self.dataSource = PortionDataSource(controller: messagesController, portionSize:Constants.MessagesPortionSize)
+
+        self.timeFormatter = NSDateFormatter(type: .Time)
 
         super.init()
 
@@ -117,11 +123,40 @@ extension ChatPrivateController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
 
-        let cell = tableView.dequeueReusableCellWithIdentifier(BaseCell.staticReuseIdentifier)!
+        let model: ChatMovableDateCellModel
+        let cell: ChatMovableDateCell
 
-        if message.messageText != nil {
-            cell.textLabel?.text = message.messageText.text
+        if message.isOutgoing() {
+            if message.messageText != nil {
+                let outgoingModel = ChatOutgoingTextCellModel()
+                outgoingModel.message = message.messageText.text
+                model = outgoingModel
+
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingTextCell.staticReuseIdentifier) as! ChatOutgoingTextCell
+            }
+            else {
+                model = ChatMovableDateCellModel()
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
+            }
         }
+        else {
+            if message.messageText != nil {
+                let incomingModel = ChatIncomingTextCellModel()
+                incomingModel.message = message.messageText.text
+                model = incomingModel
+
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingTextCell.staticReuseIdentifier) as! ChatIncomingTextCell
+            }
+            else {
+                model = ChatMovableDateCellModel()
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
+            }
+        }
+
+
+        model.dateString = timeFormatter.stringFromDate(message.date())
+
+        cell.setupWithTheme(theme, model: model)
 
         return cell
     }
@@ -234,8 +269,50 @@ extension ChatPrivateController: ChatInputViewDelegate {
         chatInputView.resignFirstResponder()
     }
 
+    func panOnTableView(recognizer: UIPanGestureRecognizer) {
+        let translation = recognizer.translationInView(recognizer.view)
+        recognizer.setTranslation(CGPointZero, inView: recognizer.view)
+
+        let cells = tableView.visibleCells.filter {
+            $0 is ChatMovableDateCell
+        }.map {
+            $0 as! ChatMovableDateCell
+        }.each {
+            switch recognizer.state {
+                case .Possible:
+                    fallthrough
+                case .Began:
+                    // nop
+                    break
+                case .Changed:
+                    $0.movableOffset += translation.x
+                case .Ended:
+                    fallthrough
+                case .Cancelled:
+                    fallthrough
+                case .Failed:
+                    let cell = $0
+                    UIView.animateWithDuration(Constants.ResetPanAnimationDuration) {
+                        cell.movableOffset = 0.0
+                    }
+            }
+        }
+    }
+
     func newMessagesViewPressed() {
         scrollToLastMessage(animated: true)
+    }
+}
+
+extension ChatPrivateController: UIGestureRecognizerDelegate {
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        guard let panGR = gestureRecognizer as? UIPanGestureRecognizer else {
+            return false
+        }
+
+        let translation = panGR.translationInView(panGR.view)
+
+        return fabsf(Float(translation.x)) > fabsf(Float(translation.y))
     }
 }
 
@@ -244,18 +321,25 @@ private extension ChatPrivateController {
 
     func createTableView() {
         tableView = UITableView()
-        tableView.estimatedRowHeight = 44.0
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.allowsSelection = false
+        tableView.estimatedRowHeight = 44.0
         tableView.backgroundColor = theme.colorForType(.NormalBackground)
         tableView.separatorStyle = .None
 
         view.addSubview(tableView)
 
-        tableView.registerClass(BaseCell.self, forCellReuseIdentifier: BaseCell.staticReuseIdentifier)
+        tableView.registerClass(ChatMovableDateCell.self, forCellReuseIdentifier: ChatMovableDateCell.staticReuseIdentifier)
+        tableView.registerClass(ChatIncomingTextCell.self, forCellReuseIdentifier: ChatIncomingTextCell.staticReuseIdentifier)
+        tableView.registerClass(ChatOutgoingTextCell.self, forCellReuseIdentifier: ChatOutgoingTextCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
+
+        let panGR = UIPanGestureRecognizer(target: self, action: "panOnTableView:")
+        panGR.delegate = self
+        tableView.addGestureRecognizer(panGR)
     }
 
     func createNewMessagesView() {

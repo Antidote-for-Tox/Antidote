@@ -51,7 +51,9 @@ class ThemeTest: XCTestCase {
             "  friend-cell-status: first\n" +
             "  chat-list-cell-message: second\n" +
             "  chat-list-cell-unread-background: first\n" +
-            "  chat-input-background: second\n"
+            "  chat-input-background: second\n" +
+            "  chat-incoming-bubble: first\n" +
+            "  chat-outgoing-bubble: second\n"
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
@@ -85,6 +87,8 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.ChatListCellMessage))
             XCTAssertEqual(first, theme.colorForType(.ChatListCellUnreadBackground))
             XCTAssertEqual(second, theme.colorForType(.ChatInputBackground))
+            XCTAssertEqual(first, theme.colorForType(.ChatIncomingBubble))
+            XCTAssertEqual(second, theme.colorForType(.ChatOutgoingBubble))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

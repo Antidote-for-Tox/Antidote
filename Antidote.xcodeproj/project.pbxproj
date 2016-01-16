@@ -153,6 +153,20 @@
 		11A6B85F1C45830500865328 /* AudioCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B85E1C45830500865328 /* AudioCallController.swift */; };
 		11A6B8681C45830C00865328 /* VideoCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8671C45830C00865328 /* VideoCallController.swift */; };
 		11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A6B8691C45887E00865328 /* ActiveCallController.swift */; };
+		11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */; };
+		11B252FC1C4A61550068F47C /* ChatIncomingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FB1C4A61550068F47C /* ChatIncomingTextCellModel.swift */; };
+		11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */; };
+		11B253001C4A61630068F47C /* ChatOutgoingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FF1C4A61630068F47C /* ChatOutgoingTextCellModel.swift */; };
+		11B253021C4A61D00068F47C /* ChatMovableDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */; };
+		11B253041C4A61D50068F47C /* ChatMovableDateCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253031C4A61D50068F47C /* ChatMovableDateCellModel.swift */; };
+		11B253051C4A61DE0068F47C /* ChatIncomingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */; };
+		11B253061C4A61DE0068F47C /* ChatIncomingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FB1C4A61550068F47C /* ChatIncomingTextCellModel.swift */; };
+		11B253071C4A61DE0068F47C /* ChatMovableDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */; };
+		11B253081C4A61DE0068F47C /* ChatMovableDateCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253031C4A61D50068F47C /* ChatMovableDateCellModel.swift */; };
+		11B253091C4A61DE0068F47C /* ChatOutgoingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */; };
+		11B2530A1C4A61DE0068F47C /* ChatOutgoingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FF1C4A61630068F47C /* ChatOutgoingTextCellModel.swift */; };
+		11B253141C4A79A50068F47C /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253131C4A79A50068F47C /* BubbleView.swift */; };
+		11B2531C1C4A932E0068F47C /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253131C4A79A50068F47C /* BubbleView.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -380,6 +394,13 @@
 		11A6B85E1C45830500865328 /* AudioCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCallController.swift; sourceTree = "<group>"; };
 		11A6B8671C45830C00865328 /* VideoCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoCallController.swift; sourceTree = "<group>"; };
 		11A6B8691C45887E00865328 /* ActiveCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveCallController.swift; sourceTree = "<group>"; };
+		11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingTextCell.swift; sourceTree = "<group>"; };
+		11B252FB1C4A61550068F47C /* ChatIncomingTextCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingTextCellModel.swift; sourceTree = "<group>"; };
+		11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingTextCell.swift; sourceTree = "<group>"; };
+		11B252FF1C4A61630068F47C /* ChatOutgoingTextCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingTextCellModel.swift; sourceTree = "<group>"; };
+		11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMovableDateCell.swift; sourceTree = "<group>"; };
+		11B253031C4A61D50068F47C /* ChatMovableDateCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMovableDateCellModel.swift; sourceTree = "<group>"; };
+		11B253131C4A79A50068F47C /* BubbleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BubbleView.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -514,6 +535,7 @@
 		1164C8EA1BC97FF600B91107 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				11B253131C4A79A50068F47C /* BubbleView.swift */,
 				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
@@ -606,8 +628,14 @@
 			children = (
 				1193AB651C1F5694006AA9E5 /* BaseCell.swift */,
 				1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */,
+				11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */,
+				11B252FB1C4A61550068F47C /* ChatIncomingTextCellModel.swift */,
 				9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */,
 				9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */,
+				11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */,
+				11B253031C4A61D50068F47C /* ChatMovableDateCellModel.swift */,
+				11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */,
+				11B252FF1C4A61630068F47C /* ChatOutgoingTextCellModel.swift */,
 				1193AB691C1F5C28006AA9E5 /* FriendListCell.swift */,
 				1193AB6B1C1F5C31006AA9E5 /* FriendListCellModel.swift */,
 				1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */,
@@ -1058,6 +1086,7 @@
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
 				113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
+				11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */,
 				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
@@ -1081,10 +1110,15 @@
 				119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */,
 				1156A4811C0FA0A4005AC8C6 /* StaticTableButtonCell.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
+				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
+				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
 				11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */,
+				11B253021C4A61D00068F47C /* ChatMovableDateCell.swift in Sources */,
+				11B253041C4A61D50068F47C /* ChatMovableDateCellModel.swift in Sources */,
 				1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */,
 				11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */,
 				1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */,
+				11B253001C4A61630068F47C /* ChatOutgoingTextCellModel.swift in Sources */,
 				1193AB481C1F4164006AA9E5 /* FriendListController.swift in Sources */,
 				11CFCD0F1C27499D0046BD94 /* UserStatusView.swift in Sources */,
 				1193AB6A1C1F5C28006AA9E5 /* FriendListCell.swift in Sources */,
@@ -1108,6 +1142,7 @@
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				1193AB661C1F5694006AA9E5 /* BaseCell.swift in Sources */,
 				1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */,
+				11B252FC1C4A61550068F47C /* ChatIncomingTextCellModel.swift in Sources */,
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
@@ -1148,6 +1183,7 @@
 				11A21F351C46CDF600E80A89 /* TextEditController.swift in Sources */,
 				11A21F1D1C46CDF600E80A89 /* ProfileManager.swift in Sources */,
 				11A21F321C46CDF600E80A89 /* QRViewerController.swift in Sources */,
+				11B253051C4A61DE0068F47C /* ChatIncomingTextCell.swift in Sources */,
 				11A21F141C46CDF600E80A89 /* StaticTableButtonCellModel.swift in Sources */,
 				11A21F3A1C46CDF600E80A89 /* LoginCoordinator.swift in Sources */,
 				11A21F511C46CDF600E80A89 /* ImageViewWithStatus.swift in Sources */,
@@ -1173,6 +1209,8 @@
 				11A21F501C46CDF600E80A89 /* FullscreenPicker.swift in Sources */,
 				11A21F161C46CDF600E80A89 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				11A21F4D1C46CDF600E80A89 /* HelperFunctions.swift in Sources */,
+				11B253071C4A61DE0068F47C /* ChatMovableDateCell.swift in Sources */,
+				11B253081C4A61DE0068F47C /* ChatMovableDateCellModel.swift in Sources */,
 				11A21F1B1C46CDF600E80A89 /* FriendListDataSource.swift in Sources */,
 				11A21F191C46CDF600E80A89 /* StaticTableSelectableCellModel.swift in Sources */,
 				11A21F3F1C46CDF600E80A89 /* FriendsTabCoordinator.swift in Sources */,
@@ -1193,6 +1231,7 @@
 				11A21F411C46CDF600E80A89 /* RunningBasicCoordinator.swift in Sources */,
 				11A21F271C46CDF600E80A89 /* AbstractCallController.swift in Sources */,
 				11A21F231C46CDF600E80A89 /* LoginChoiceController.swift in Sources */,
+				11B253091C4A61DE0068F47C /* ChatOutgoingTextCell.swift in Sources */,
 				11A21F0B1C46CDF600E80A89 /* ChatListCell.swift in Sources */,
 				11A21F111C46CDF600E80A89 /* StaticTableBaseCell.swift in Sources */,
 				11A21F1E1C46CDF600E80A89 /* Theme.swift in Sources */,
@@ -1200,12 +1239,15 @@
 				9CDC09251C34083100DC0D63 /* FriendListDataSourceTest.swift in Sources */,
 				11A21F311C46CDF600E80A89 /* QRScannerController.swift in Sources */,
 				11A21F201C46CDF600E80A89 /* KeyboardNotificationController.swift in Sources */,
+				11B253061C4A61DE0068F47C /* ChatIncomingTextCellModel.swift in Sources */,
 				11A21F1C1C46CDF600E80A89 /* LazyStorage.swift in Sources */,
 				11A21F181C46CDF600E80A89 /* StaticTableDefaultCellModel.swift in Sources */,
 				11A21F541C46CDF600E80A89 /* StaticBackgroundView.swift in Sources */,
 				11A21F401C46CDF600E80A89 /* ProfileTabCoordinator.swift in Sources */,
+				11B2530A1C4A61DE0068F47C /* ChatOutgoingTextCellModel.swift in Sources */,
 				11A21F091C46CDF600E80A89 /* BaseCell.swift in Sources */,
 				11A21F291C46CDF600E80A89 /* AddFriendController.swift in Sources */,
+				11B2531C1C4A932E0068F47C /* BubbleView.swift in Sources */,
 				11A21F571C46CDF600E80A89 /* LoginButton.swift in Sources */,
 				11A21F331C46CDF600E80A89 /* RingingCallController.swift in Sources */,
 				11A21F531C46CDF600E80A89 /* QRScannerAimView.swift in Sources */,

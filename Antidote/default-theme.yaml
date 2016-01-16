@@ -45,3 +45,5 @@ values:
   chat-list-cell-message: darkgray
   chat-list-cell-unread-background: lightgray
   chat-input-background: lightgray
+  chat-incoming-bubble: lightgray
+  chat-outgoing-bubble: lightgrayblue
