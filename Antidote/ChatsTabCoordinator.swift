@@ -25,16 +25,21 @@ class ChatsTabCoordinator: RunningBasicCoordinator {
 
         navigationController.pushViewController(controller, animated: false)
     }
-}
 
-extension ChatsTabCoordinator: ChatListControllerDelegate {
-    func chatListController(controller: ChatListController, didSelectChat chat: OCTChat) {
+    func showChat(chat: OCTChat, animated: Bool) {
         let controller = ChatPrivateController(
                 theme: theme,
                 chat: chat,
                 submanagerChats: submanagerChats,
                 submanagerObjects: submanagerObjects)
 
-        navigationController.pushViewController(controller, animated: true)
+        navigationController.popToRootViewControllerAnimated(false)
+        navigationController.pushViewController(controller, animated: animated)
+    }
+}
+
+extension ChatsTabCoordinator: ChatListControllerDelegate {
+    func chatListController(controller: ChatListController, didSelectChat chat: OCTChat) {
+        showChat(chat, animated: true)
     }
 }

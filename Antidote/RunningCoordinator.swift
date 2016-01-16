@@ -85,8 +85,10 @@ extension RunningCoordinator: FriendsTabCoordinatorDelegate {
     func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend) {
         let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
 
-        // TODO fix me
-        tabBarController.selectedIndex = 2
+        let (index, coordinator) = findCoordinator(ChatsTabCoordinator)!
+
+        tabBarController.selectedIndex = index
+        coordinator.showChat(chat, animated: false)
     }
 
     func friendsTabCoordinatorCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
@@ -107,5 +109,16 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         UserDefaultsManager().isUserLoggedIn = false
 
         delegate?.runningCoordinatorDidLogout(self)
+    }
+}
+
+private extension RunningCoordinator {
+    func findCoordinator<T>(coordinator: T.Type) -> (Int, T)? {
+        guard let index = tabCoordinators.findIndex({ $0 is T }) else {
+            return nil
+        }
+
+        let coordinator = tabCoordinators[index] as! T
+        return (index, coordinator)
     }
 }
