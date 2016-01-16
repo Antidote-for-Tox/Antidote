@@ -17,6 +17,7 @@ private struct Constants {
 
 protocol ChatInputViewDelegate: class {
     func chatInputViewSendButtonPressed(view: ChatInputView)
+    func chatInputViewTextDidChange(view: ChatInputView)
 }
 
 class ChatInputView: UIView {
@@ -28,6 +29,7 @@ class ChatInputView: UIView {
         }
         set {
             textView.text = newValue
+            updateViews()
         }
     }
 
@@ -57,6 +59,10 @@ class ChatInputView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func becomeFirstResponder() -> Bool {
+        return textView.becomeFirstResponder()
+    }
+
     override func resignFirstResponder() -> Bool {
         return textView.resignFirstResponder()
     }
@@ -72,6 +78,7 @@ extension ChatInputView {
 extension ChatInputView: UITextViewDelegate {
     func textViewDidChange(textView: UITextView) {
         updateViews()
+        delegate?.chatInputViewTextDidChange(self)
     }
 }
 

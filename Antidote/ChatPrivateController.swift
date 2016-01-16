@@ -88,6 +88,14 @@ class ChatPrivateController: KeyboardNotificationController {
         updateLastReadDate()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if !chatInputView.text.isEmpty {
+            chatInputView.becomeFirstResponder()
+        }
+    }
+
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         super.keyboardWillShowAnimated(keyboardFrame: frame)
 
@@ -106,6 +114,54 @@ class ChatPrivateController: KeyboardNotificationController {
         super.viewDidLayoutSubviews()
 
         updateInputViewMaxHeight()
+    }
+}
+
+// MARK: Actions
+extension ChatPrivateController {
+    func tapOnTableView() {
+        chatInputView.resignFirstResponder()
+    }
+
+    func panOnTableView(recognizer: UIPanGestureRecognizer) {
+        let translation = recognizer.translationInView(recognizer.view)
+        recognizer.setTranslation(CGPointZero, inView: recognizer.view)
+
+        let cells = tableView.visibleCells.filter {
+            $0 is ChatMovableDateCell
+        }.map {
+            $0 as! ChatMovableDateCell
+        }.each {
+            switch recognizer.state {
+                case .Possible:
+                    fallthrough
+                case .Began:
+                    // nop
+                    break
+                case .Changed:
+                    $0.movableOffset += translation.x
+                case .Ended:
+                    fallthrough
+                case .Cancelled:
+                    fallthrough
+                case .Failed:
+                    let cell = $0
+                    UIView.animateWithDuration(Constants.ResetPanAnimationDuration) {
+                        cell.movableOffset = 0.0
+                    }
+            }
+        }
+    }
+
+    func newMessagesViewPressed() {
+        tableView.setContentOffset(CGPointZero, animated: true)
+
+        // iOS is broken =\
+        // See https://stackoverflow.com/a/30804874
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+            self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+        }
     }
 }
 
@@ -232,56 +288,17 @@ extension ChatPrivateController: ChatInputViewDelegate {
     func chatInputViewSendButtonPressed(view: ChatInputView) {
         do {
             try submanagerChats.sendMessageToChat(chat, text: view.text, type: .Normal)
+
             view.text = ""
+            submanagerObjects.changeChat(chat, enteredText: "")
         }
         catch {
 
         }
     }
 
-    func tapOnTableView() {
-        chatInputView.resignFirstResponder()
-    }
-
-    func panOnTableView(recognizer: UIPanGestureRecognizer) {
-        let translation = recognizer.translationInView(recognizer.view)
-        recognizer.setTranslation(CGPointZero, inView: recognizer.view)
-
-        let cells = tableView.visibleCells.filter {
-            $0 is ChatMovableDateCell
-        }.map {
-            $0 as! ChatMovableDateCell
-        }.each {
-            switch recognizer.state {
-                case .Possible:
-                    fallthrough
-                case .Began:
-                    // nop
-                    break
-                case .Changed:
-                    $0.movableOffset += translation.x
-                case .Ended:
-                    fallthrough
-                case .Cancelled:
-                    fallthrough
-                case .Failed:
-                    let cell = $0
-                    UIView.animateWithDuration(Constants.ResetPanAnimationDuration) {
-                        cell.movableOffset = 0.0
-                    }
-            }
-        }
-    }
-
-    func newMessagesViewPressed() {
-        tableView.setContentOffset(CGPointZero, animated: true)
-
-        // iOS is broken =\
-        // See https://stackoverflow.com/a/30804874
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
-            self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
-        }
+    func chatInputViewTextDidChange(view: ChatInputView) {
+        submanagerObjects.changeChat(chat, enteredText: view.text)
     }
 }
 
@@ -358,6 +375,7 @@ private extension ChatPrivateController {
 
     func createInputView() {
         chatInputView = ChatInputView(theme: theme)
+        chatInputView.text = chat.enteredText
         chatInputView.delegate = self
         view.addSubview(chatInputView)
     }
