@@ -165,6 +165,12 @@
 		11B2530A1C4A61DE0068F47C /* ChatOutgoingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FF1C4A61630068F47C /* ChatOutgoingTextCellModel.swift */; };
 		11B253141C4A79A50068F47C /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253131C4A79A50068F47C /* BubbleView.swift */; };
 		11B2531C1C4A932E0068F47C /* BubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253131C4A79A50068F47C /* BubbleView.swift */; };
+		11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2534E1C4AD2550068F47C /* AudioPlayer.swift */; };
+		11B253501C4AD9CF0068F47C /* isotoxin_Calltone.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B253491C4AD2200068F47C /* isotoxin_Calltone.aac */; };
+		11B253511C4AD9CF0068F47C /* isotoxin_Hangup.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534A1C4AD23A0068F47C /* isotoxin_Hangup.aac */; };
+		11B253521C4AD9CF0068F47C /* isotoxin_NewMessage.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534B1C4AD23A0068F47C /* isotoxin_NewMessage.aac */; };
+		11B253531C4AD9CF0068F47C /* isotoxin_Ringtone.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */; };
+		11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -402,6 +408,7 @@
 		11B2534B1C4AD23A0068F47C /* isotoxin_NewMessage.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_NewMessage.aac; sourceTree = "<group>"; };
 		11B2534C1C4AD23A0068F47C /* isotoxin_Ringtone.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_Ringtone.aac; sourceTree = "<group>"; };
 		11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_RingtoneWhileCall.aac; sourceTree = "<group>"; };
+		11B2534E1C4AD2550068F47C /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -613,6 +620,7 @@
 		1173F06C1BC5D9B000B88B7B /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				11B2534E1C4AD2550068F47C /* AudioPlayer.swift */,
 				1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
 				118703C61C3942C700DBC29A /* LazyStorage.swift */,
@@ -967,11 +975,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */,
+				11B253501C4AD9CF0068F47C /* isotoxin_Calltone.aac in Resources */,
+				11B253531C4AD9CF0068F47C /* isotoxin_Ringtone.aac in Resources */,
 				9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */,
 				1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
 				1179E06B1BA0534600D258C6 /* import-profile.html in Resources */,
+				11B253521C4AD9CF0068F47C /* isotoxin_NewMessage.aac in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
+				11B253511C4AD9CF0068F47C /* isotoxin_Hangup.aac in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1158,6 +1171,7 @@
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
+				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
 				9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */,
 				11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */,
