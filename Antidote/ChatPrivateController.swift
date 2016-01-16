@@ -26,6 +26,7 @@ class ChatPrivateController: KeyboardNotificationController {
     private let theme: Theme
     private let chat: OCTChat
     private let submanagerChats: OCTSubmanagerChats
+    private let submanagerObjects: OCTSubmanagerObjects
 
     private let dataSource: PortionDataSource
 
@@ -45,6 +46,7 @@ class ChatPrivateController: KeyboardNotificationController {
         self.theme = theme
         self.chat = chat
         self.submanagerChats = submanagerChats
+        self.submanagerObjects = submanagerObjects
 
         let messagesController = submanagerObjects.fetchedResultsControllerForType(
                 .MessageAbstract,
@@ -78,6 +80,12 @@ class ChatPrivateController: KeyboardNotificationController {
         createNewMessagesView()
         createInputView()
         installConstraints()
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateLastReadDate()
     }
 
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
@@ -188,6 +196,12 @@ extension ChatPrivateController: PortionDataSourceDelegate {
         if didAddNewMessageInLastUpdate {
             didAddNewMessageInLastUpdate = false
             handleNewMessage()
+        }
+
+        // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.0 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+            self?.updateLastReadDate()
         }
     }
 
@@ -407,5 +421,9 @@ private extension ChatPrivateController {
                 self.newMessagesView.hidden = true
             }
         })
+    }
+
+    func updateLastReadDate() {
+        submanagerObjects.changeChat(chat, lastReadDateInterval: NSDate().timeIntervalSince1970)
     }
 }
