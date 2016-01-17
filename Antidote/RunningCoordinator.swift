@@ -85,7 +85,7 @@ extension RunningCoordinator: FriendsTabCoordinatorDelegate {
     func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend) {
         let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
 
-        let (index, coordinator) = findCoordinator(ChatsTabCoordinator)!
+        let (index, coordinator) = findTabCoordinator(ChatsTabCoordinator)!
 
         tabBarController.selectedIndex = index
         coordinator.showChat(chat, animated: false)
@@ -113,7 +113,7 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
 }
 
 private extension RunningCoordinator {
-    func findCoordinator<T>(coordinator: T.Type) -> (Int, T)? {
+    func findTabCoordinator<T>(coordinator: T.Type) -> (Int, T)? {
         guard let index = tabCoordinators.findIndex({ $0 is T }) else {
             return nil
         }
