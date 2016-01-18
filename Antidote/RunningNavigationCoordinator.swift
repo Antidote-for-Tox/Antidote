@@ -1,5 +1,5 @@
 //
-//  RunningBasicCoordinator.swift
+//  RunningNavigationCoordinator.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 15/11/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RunningBasicCoordinator {
+class RunningNavigationCoordinator {
     let theme: Theme
     let navigationController: UINavigationController
 

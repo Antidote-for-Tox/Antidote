@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SettingsTabCoordinator: RunningBasicCoordinator {
+class SettingsTabCoordinator: RunningNavigationCoordinator {
     override func start() {
         let controller = UIViewController()
         controller.title = "Settings"

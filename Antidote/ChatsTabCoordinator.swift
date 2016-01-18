@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatsTabCoordinator: RunningBasicCoordinator {
+class ChatsTabCoordinator: RunningNavigationCoordinator {
     private let submanagerObjects: OCTSubmanagerObjects
     private let submanagerChats: OCTSubmanagerChats
 

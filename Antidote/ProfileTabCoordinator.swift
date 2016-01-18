@@ -12,7 +12,7 @@ protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
 }
 
-class ProfileTabCoordinator: RunningBasicCoordinator {
+class ProfileTabCoordinator: RunningNavigationCoordinator {
     weak var delegate: ProfileTabCoordinatorDelegate?
 
     private let toxManager: OCTManager

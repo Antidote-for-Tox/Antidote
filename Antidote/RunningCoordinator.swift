@@ -22,7 +22,7 @@ class RunningCoordinator: NSObject {
 
     let toxManager: OCTManager
 
-    let tabCoordinators: [RunningBasicCoordinator];
+    let tabCoordinators: [RunningNavigationCoordinator];
 
     var callCoordinator: CallCoordinator!
 
@@ -120,7 +120,7 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
 }
 
 private extension RunningCoordinator {
-    func tabBarItemForCoordinator(coordinator: RunningBasicCoordinator, theme: Theme) -> TabBarAbstractItem {
+    func tabBarItemForCoordinator(coordinator: RunningNavigationCoordinator, theme: Theme) -> TabBarAbstractItem {
         if coordinator is FriendsTabCoordinator {
             let item = TabBarBadgeItem(theme: theme)
             item.image = UIImage(named: "tab-bar-friends")

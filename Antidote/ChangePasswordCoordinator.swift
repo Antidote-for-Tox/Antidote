@@ -8,6 +8,6 @@
 
 import Foundation
 
-class ChangePasswordCoordinator: RunningBasicCoordinator {
+class ChangePasswordCoordinator: RunningNavigationCoordinator {
 
 }

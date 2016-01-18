@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
-		110E49E01BF925FD00D1FE6F /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
+		110E49E01BF925FD00D1FE6F /* RunningNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
 		112DA6D31C457CE4004FB1E6 /* DialingCallController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
@@ -124,7 +124,7 @@
 		11A21F3E1C46CDF600E80A89 /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
 		11A21F3F1C46CDF600E80A89 /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; };
 		11A21F401C46CDF600E80A89 /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; };
-		11A21F411C46CDF600E80A89 /* RunningBasicCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */; };
+		11A21F411C46CDF600E80A89 /* RunningNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */; };
 		11A21F421C46CDF600E80A89 /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; };
 		11A21F431C46CDF600E80A89 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
 		11A21F441C46CDF600E80A89 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; };
@@ -342,7 +342,7 @@
 
 /* Begin PBXFileReference section */
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
-		110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningBasicCoordinator.swift; sourceTree = "<group>"; };
+		110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningNavigationCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
 		112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialingCallController.swift; sourceTree = "<group>"; };
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
@@ -745,7 +745,7 @@
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
 				11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */,
-				110E49DF1BF925FD00D1FE6F /* RunningBasicCoordinator.swift */,
+				110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */,
 				11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */,
 			);
 			name = Running;
@@ -1190,7 +1190,7 @@
 				119AD1BE1BDED261000C5CB8 /* TextViewController.swift in Sources */,
 				1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */,
 				11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */,
-				110E49E01BF925FD00D1FE6F /* RunningBasicCoordinator.swift in Sources */,
+				110E49E01BF925FD00D1FE6F /* RunningNavigationCoordinator.swift in Sources */,
 				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
@@ -1273,7 +1273,7 @@
 				11A21F251C46CDF600E80A89 /* LoginFormController.swift in Sources */,
 				11A21F581C46CDF600E80A89 /* LoginExtendedTextField.swift in Sources */,
 				9C2EF3641C4945B1006E7AB1 /* PortionDataSource.swift in Sources */,
-				11A21F411C46CDF600E80A89 /* RunningBasicCoordinator.swift in Sources */,
+				11A21F411C46CDF600E80A89 /* RunningNavigationCoordinator.swift in Sources */,
 				11A21F271C46CDF600E80A89 /* AbstractCallController.swift in Sources */,
 				11A21F231C46CDF600E80A89 /* LoginChoiceController.swift in Sources */,
 				11B253091C4A61DE0068F47C /* ChatOutgoingTextCell.swift in Sources */,

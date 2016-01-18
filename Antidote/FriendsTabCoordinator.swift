@@ -15,7 +15,7 @@ protocol FriendsTabCoordinatorDelegate: class {
     func friendsTabCoordinatorVideoCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
 }
 
-class FriendsTabCoordinator: RunningBasicCoordinator {
+class FriendsTabCoordinator: RunningNavigationCoordinator {
     weak var delegate: FriendsTabCoordinatorDelegate?
 
     private let toxManager: OCTManager
