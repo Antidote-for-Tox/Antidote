@@ -47,3 +47,7 @@ values:
   chat-input-background: lightgray
   chat-incoming-bubble: lightgray
   chat-outgoing-bubble: lightgrayblue
+  tab-badge-background: red
+  tab-badge-text: white
+  tab-item-active: skyblue
+  tab-item-inactive: darkgray2

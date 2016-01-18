@@ -73,6 +73,8 @@
 "connecting_label" = "Connecting...";
 
 "friends_title" = "Friends";
+"chats_title" = "Chats";
+"settings_title" = "Settings";
 "profile_title" = "Profile";
 
 "friend_requests_section" = "Friend Requests";
@@ -102,7 +104,6 @@
 "call_error_already_in_call" = "Already in a call";
 "call_error_friend_is_offline" = "Friend is offline";
 
-"chats_title" = "Chats";
 "chat_outgoing_file" = "Outgoing file:";
 "chat_incoming_file" = "Incoming file:";
 "chat_call_finished" = "Call finished";

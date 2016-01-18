@@ -173,6 +173,14 @@
 		11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */ = {isa = PBXBuildFile; fileRef = 11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */; };
 		11B253561C4AEA400068F47C /* ChatPrivateTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */; };
 		11B253571C4AF6A60068F47C /* ChatPrivateTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */; };
+		11B2535D1C4BACDB0068F47C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2535C1C4BACDB0068F47C /* TabBarController.swift */; };
+		11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */; };
+		11B253671C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */; };
+		11B253681C4BAD410068F47C /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2535C1C4BACDB0068F47C /* TabBarController.swift */; };
+		11B2536A1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */; };
+		11B2536B1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */; };
+		11B2536D1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */; };
+		11B2536E1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -412,6 +420,10 @@
 		11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */ = {isa = PBXFileReference; lastKnownFileType = file; path = isotoxin_RingtoneWhileCall.aac; sourceTree = "<group>"; };
 		11B2534E1C4AD2550068F47C /* AudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPrivateTitleView.swift; sourceTree = "<group>"; };
+		11B2535C1C4BACDB0068F47C /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarAbstractItem.swift; sourceTree = "<group>"; };
+		11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarBadgeItem.swift; sourceTree = "<group>"; };
+		11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarProfileItem.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -630,6 +642,9 @@
 				118703C61C3942C700DBC29A /* LazyStorage.swift */,
 				9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
+				11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */,
+				11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */,
+				11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */,
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
 			);
@@ -777,6 +792,7 @@
 				1193AB411C1E2075006AA9E5 /* QRViewerController.swift */,
 				118703D51C39476A00DBC29A /* RingingCallController.swift */,
 				110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */,
+				11B2535C1C4BACDB0068F47C /* TabBarController.swift */,
 				1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */,
 				119AD1BD1BDED261000C5CB8 /* TextViewController.swift */,
 				11A6B8671C45830C00865328 /* VideoCallController.swift */,
@@ -1114,6 +1130,7 @@
 				11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */,
 				118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */,
 				11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */,
+				11B2535D1C4BACDB0068F47C /* TabBarController.swift in Sources */,
 				9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */,
 				119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */,
 				11E640781C2DC15400D24C6D /* HelperFunctions.swift in Sources */,
@@ -1128,6 +1145,7 @@
 				1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */,
 				119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */,
 				1156A4811C0FA0A4005AC8C6 /* StaticTableButtonCell.swift in Sources */,
+				11B2536D1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
 				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
 				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
@@ -1151,6 +1169,7 @@
 				1156A4851C10D119005AC8C6 /* StaticTableAvatarCellModel.swift in Sources */,
 				1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */,
 				112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */,
+				11B2536A1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */,
 				113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */,
 				116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */,
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
@@ -1176,6 +1195,7 @@
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
+				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
 				9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */,
@@ -1213,6 +1233,7 @@
 				11A21F2B1C46CDF600E80A89 /* ChatListController.swift in Sources */,
 				11A21F261C46CDF600E80A89 /* LoginLogoController.swift in Sources */,
 				11A21F2F1C46CDF600E80A89 /* FriendListController.swift in Sources */,
+				11B2536E1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */,
 				11A21F0F1C46CDF600E80A89 /* StaticTableAvatarCell.swift in Sources */,
 				11A21F4B1C46CDF600E80A89 /* UIViewControllerExtension.swift in Sources */,
 				11A21F0E1C46CDF600E80A89 /* FriendListCellModel.swift in Sources */,
@@ -1228,6 +1249,7 @@
 				11A21F171C46CDF600E80A89 /* StaticTableDefaultCell.swift in Sources */,
 				11A21F211C46CDF600E80A89 /* PortraitNavigationController.swift in Sources */,
 				11A21F471C46CDF600E80A89 /* OCTSubmanagerObjectsExtension.swift in Sources */,
+				11B2536B1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */,
 				11A21F501C46CDF600E80A89 /* FullscreenPicker.swift in Sources */,
 				11A21F161C46CDF600E80A89 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				11A21F4D1C46CDF600E80A89 /* HelperFunctions.swift in Sources */,
@@ -1246,6 +1268,7 @@
 				11A21F491C46CDF600E80A89 /* UIAlertViewExtension.swift in Sources */,
 				11A21F551C46CDF600E80A89 /* UserStatusView.swift in Sources */,
 				11A21F131C46CDF600E80A89 /* StaticTableButtonCell.swift in Sources */,
+				11B253681C4BAD410068F47C /* TabBarController.swift in Sources */,
 				11A21F301C46CDF600E80A89 /* ProfileMainController.swift in Sources */,
 				11A21F251C46CDF600E80A89 /* LoginFormController.swift in Sources */,
 				11A21F581C46CDF600E80A89 /* LoginExtendedTextField.swift in Sources */,
@@ -1276,6 +1299,7 @@
 				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
 				11A21F431C46CDF600E80A89 /* UserStatus.swift in Sources */,
 				11A21F1F1C46CDF600E80A89 /* UserDefaultsManager.swift in Sources */,
+				11B253671C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
 				11A21F3D1C46CDF600E80A89 /* ChangePasswordCoordinator.swift in Sources */,
 				11A21F4A1C46CDF600E80A89 /* UIColorExtension.swift in Sources */,
 				11A21F341C46CDF600E80A89 /* StaticTableController.swift in Sources */,

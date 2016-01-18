@@ -48,7 +48,7 @@ class PortionDataSource: NSObject {
     }
 
     func objectAtIndexPath(indexPath: NSIndexPath) -> AnyObject {
-        return controller.objectAtIndexPath(indexPath) as! AnyObject
+        return controller.objectAtIndexPath(indexPath) as AnyObject
     }
 
     /**

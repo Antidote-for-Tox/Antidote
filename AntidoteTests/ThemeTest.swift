@@ -53,7 +53,11 @@ class ThemeTest: XCTestCase {
             "  chat-list-cell-unread-background: first\n" +
             "  chat-input-background: second\n" +
             "  chat-incoming-bubble: first\n" +
-            "  chat-outgoing-bubble: second\n"
+            "  chat-outgoing-bubble: second\n" +
+            "  tab-badge-background: first\n" +
+            "  tab-badge-text: second\n" +
+            "  tab-item-active: first\n" +
+            "  tab-item-inactive: second\n"
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
@@ -89,6 +93,10 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.ChatInputBackground))
             XCTAssertEqual(first, theme.colorForType(.ChatIncomingBubble))
             XCTAssertEqual(second, theme.colorForType(.ChatOutgoingBubble))
+            XCTAssertEqual(first, theme.colorForType(.TabBadgeBackground))
+            XCTAssertEqual(second, theme.colorForType(.TabBadgeText))
+            XCTAssertEqual(first, theme.colorForType(.TabItemActive))
+            XCTAssertEqual(second, theme.colorForType(.TabItemInactive))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

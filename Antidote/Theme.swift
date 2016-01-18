@@ -53,6 +53,10 @@ class Theme {
         case ChatInputBackground = "chat-input-background"
         case ChatIncomingBubble = "chat-incoming-bubble"
         case ChatOutgoingBubble = "chat-outgoing-bubble"
+        case TabBadgeBackground = "tab-badge-background"
+        case TabBadgeText = "tab-badge-text"
+        case TabItemActive = "tab-item-active"
+        case TabItemInactive = "tab-item-inactive"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -82,6 +86,10 @@ class Theme {
             ChatInputBackground,
             ChatIncomingBubble,
             ChatOutgoingBubble,
+            TabBadgeBackground,
+            TabBadgeText,
+            TabItemActive,
+            TabItemInactive,
         ]
     }
 
