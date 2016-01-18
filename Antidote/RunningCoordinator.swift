@@ -17,7 +17,7 @@ class RunningCoordinator: NSObject {
     weak var delegate: RunningCoordinatorDelegate?
 
     let window: UIWindow
-    let notificationWindow: NotificationWindow
+    let notificationCoordinator: NotificationCoordinator
     var tabBarController: TabBarController!
 
     let toxManager: OCTManager
@@ -30,8 +30,9 @@ class RunningCoordinator: NSObject {
 
     init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
         self.window = window
-        self.notificationWindow = NotificationWindow(theme: theme)
         self.toxManager = toxManager
+
+        self.notificationCoordinator = NotificationCoordinator(theme: theme)
 
         let friends = FriendsTabCoordinator(theme: theme, toxManager: toxManager)
         let chats = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
@@ -73,7 +74,7 @@ extension RunningCoordinator: CoordinatorProtocol {
         let (index, _) = findTabCoordinator(ChatsTabCoordinator)!
         tabBarController.selectedIndex = index
 
-        notificationWindow.showConnectingView(true, animated: false)
+        notificationCoordinator.toggleConnectingView(show: true, animated: false)
 
         toxManager.bootstrap.addPredefinedNodes()
         toxManager.bootstrap.bootstrap()
@@ -84,7 +85,8 @@ extension RunningCoordinator: OCTSubmanagerUserDelegate {
     func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
         profileTabItem.userStatus = UserStatus(connectionStatus: connectionStatus, userStatus: submanager.userStatus)
 
-        notificationWindow.showConnectingView(connectionStatus == .None, animated: true)
+        let show = (connectionStatus == .None)
+        notificationCoordinator.toggleConnectingView(show: show, animated: false)
     }
 }
 
