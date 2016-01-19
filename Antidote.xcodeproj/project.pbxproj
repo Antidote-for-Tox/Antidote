@@ -209,6 +209,8 @@
 		9C2EF34E1C493A07006E7AB1 /* PortionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */; };
 		9C2EF3641C4945B1006E7AB1 /* PortionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */; };
 		9C2EF3711C4D4D5C006E7AB1 /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */; };
+		9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
+		9C2EF3861C4E369A006E7AB1 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
 		9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C7475C01BC698110098B1A4 /* Localizable.strings */; };
 		9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
 		9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */; };
@@ -453,6 +455,7 @@
 		9C07151E1BCD501D003A27B5 /* LoginFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFormController.swift; sourceTree = "<group>"; };
 		9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortionDataSource.swift; sourceTree = "<group>"; };
 		9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCoordinator.swift; sourceTree = "<group>"; };
+		9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListTableManager.swift; sourceTree = "<group>"; };
 		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9C7475C41BC698510098B1A4 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMainController.swift; sourceTree = "<group>"; };
@@ -640,12 +643,13 @@
 			children = (
 				11B2534E1C4AD2550068F47C /* AudioPlayer.swift */,
 				1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */,
+				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
 				118703C61C3942C700DBC29A /* LazyStorage.swift */,
 				9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
-				11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */,
 				11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */,
+				11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */,
 				11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */,
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
@@ -1208,6 +1212,7 @@
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
+				9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */,
 				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				11A6B86A1C45887E00865328 /* ActiveCallController.swift in Sources */,
@@ -1300,6 +1305,7 @@
 				11A21F571C46CDF600E80A89 /* LoginButton.swift in Sources */,
 				11A21F331C46CDF600E80A89 /* RingingCallController.swift in Sources */,
 				11A21F531C46CDF600E80A89 /* QRScannerAimView.swift in Sources */,
+				9C2EF3861C4E369A006E7AB1 /* ChatListTableManager.swift in Sources */,
 				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
 				11A21F431C46CDF600E80A89 /* UserStatus.swift in Sources */,
 				11A21F1F1C46CDF600E80A89 /* UserDefaultsManager.swift in Sources */,
