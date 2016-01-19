@@ -124,7 +124,7 @@ extension TabBarController {
             customTabBarViewVisibleConstraint = $0.bottom.equalTo(view.snp_bottom).constraint
             customTabBarViewHiddenConstraint = $0.top.equalTo(view.snp_bottom).constraint
             $0.left.right.equalTo(view)
-            $0.height.equalTo(tabBar)
+            $0.height.equalTo(tabBar.frame.size.height)
         }
 
         customTabBarViewHiddenConstraint.deactivate()
