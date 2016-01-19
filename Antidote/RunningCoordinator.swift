@@ -13,21 +13,6 @@ protocol RunningCoordinatorDelegate: class {
     func runningCoordinatorDidLogout(coordinator: RunningCoordinator)
 }
 
-private enum Idiom {
-    case iPhone
-    case iPad
-
-    static func current() -> Idiom {
-        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
-            return .iPad
-        }
-        else {
-            // assume that we are on iPhone
-            return .iPhone
-        }
-    }
-}
-
 private struct IpadObjects {
     let splitController: UISplitViewController
 
@@ -100,7 +85,7 @@ class RunningCoordinator: NSObject {
 
 extension RunningCoordinator: CoordinatorProtocol {
     func start() {
-        switch Idiom.current() {
+        switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.tabCoordinators.each{ $0.start() }
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
@@ -121,7 +106,7 @@ extension RunningCoordinator: CoordinatorProtocol {
 
 extension RunningCoordinator: OCTSubmanagerUserDelegate {
     func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
-        switch Idiom.current() {
+        switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.profileTabBarItem.userStatus = UserStatus(connectionStatus: connectionStatus, userStatus: submanager.userStatus)
             case .iPad:
@@ -199,7 +184,7 @@ extension RunningCoordinator: PrimaryIpadControllerDelegate {
 
 private extension RunningCoordinator {
     func createDeviceSpecificObjects() {
-        switch Idiom.current() {
+        switch InterfaceIdiom.current() {
             case .iPhone:
                 let tabCoordinators = createTabCoordinators()
                 let tabBarItems = createTabBarItems()
@@ -274,7 +259,7 @@ private extension RunningCoordinator {
     func createCallCoordinator() {
         let presentingController: UIViewController
 
-        switch Idiom.current() {
+        switch InterfaceIdiom.current() {
             case .iPhone:
                 presentingController = iPhone.tabBarController
             case .iPad:
@@ -290,7 +275,7 @@ private extension RunningCoordinator {
     }
 
     func showChat(chat: OCTChat) {
-        switch Idiom.current() {
+        switch InterfaceIdiom.current() {
             case .iPhone:
                 let index = IphoneObjects.TabCoordinator.Chats.rawValue
                 let coordinator = iPhone.tabCoordinators[index] as! ChatsTabCoordinator

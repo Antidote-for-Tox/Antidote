@@ -12,7 +12,6 @@ import SnapKit
 private struct PrivateConstants {
     static let FieldsOffset = 20.0
     static let VerticalOffset = 30.0
-    static let HorizontalOffset = 40.0
 }
 
 protocol LoginCreateAccountControllerDelegate: class {
@@ -22,7 +21,7 @@ protocol LoginCreateAccountControllerDelegate: class {
 class LoginCreateAccountController: LoginBaseController {
     weak var delegate: LoginCreateAccountControllerDelegate?
 
-    private var containerView: UIView!
+    private var containerView: IncompressibleView!
     private var containerViewTopConstraint: Constraint!
 
     private var titleLabel: UILabel!
@@ -90,7 +89,7 @@ private extension LoginCreateAccountController {
     }
 
     func createContainerView() {
-        containerView = UIView()
+        containerView = IncompressibleView()
         containerView.backgroundColor = .clearColor()
         view.addSubview(containerView)
     }
@@ -130,9 +129,12 @@ private extension LoginCreateAccountController {
     }
 
     func installConstraints() {
+        containerView.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
         containerView.snp_makeConstraints {
             containerViewTopConstraint = $0.top.equalTo(view).constraint
-            $0.left.right.equalTo(view)
+            $0.centerX.equalTo(view)
+            $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
+            $0.width.lessThanOrEqualTo(view).offset(-2 * Constants.HorizontalOffset)
             $0.height.equalTo(view)
         }
 
@@ -143,8 +145,8 @@ private extension LoginCreateAccountController {
 
         usernameView.snp_makeConstraints {
             $0.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
-            $0.left.equalTo(containerView).offset(PrivateConstants.HorizontalOffset)
-            $0.right.equalTo(containerView).offset(-PrivateConstants.HorizontalOffset)
+            $0.left.equalTo(containerView)
+            $0.right.equalTo(containerView)
         }
 
         profileView.snp_makeConstraints {

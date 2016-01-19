@@ -21,8 +21,14 @@ class LoginCoordinator {
 
     init(theme: Theme, window: UIWindow) {
         self.window = window
-        self.navigationController = PortraitNavigationController()
         self.theme = theme
+
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                self.navigationController = PortraitNavigationController()
+            case .iPad:
+                self.navigationController = UINavigationController()
+        }
 
         navigationController.navigationBar.tintColor = theme.colorForType(.LoginButtonText)
         navigationController.navigationBar.barTintColor = theme.loginNavigationBarColor

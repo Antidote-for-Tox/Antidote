@@ -30,7 +30,7 @@ class LoginFormController: LoginLogoController {
 
     weak var delegate: LoginFormControllerDelegate?
 
-    private var formView: UIView!
+    private var formView: IncompressibleView!
     private var profileFakeTextField: UITextField!
     private var profileButton: UIButton!
     private var passwordField: UITextField!
@@ -146,7 +146,7 @@ private extension LoginFormController {
     }
 
     func createFormViews() {
-        formView = UIView()
+        formView = IncompressibleView()
         formView.backgroundColor = theme.colorForType(.LoginFormBackground)
         formView.layer.cornerRadius = 5.0
         formView.layer.masksToBounds = true
@@ -203,10 +203,12 @@ private extension LoginFormController {
     }
 
     func installConstraints() {
+        formView.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
         formView.snp_makeConstraints {
             $0.top.equalTo(contentContainerView)
-            $0.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
-            $0.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
+            $0.centerX.equalTo(contentContainerView)
+            $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
+            $0.width.lessThanOrEqualTo(contentContainerView).offset(-2 * Constants.HorizontalOffset)
         }
 
         profileFakeTextField.snp_makeConstraints {

@@ -17,6 +17,7 @@ protocol LoginChoiceControllerDelegate: class {
 class LoginChoiceController: LoginLogoController {
     weak var delegate: LoginChoiceControllerDelegate?
 
+    private var incompressibleContainer: IncompressibleView!
     private var welcomeLabel: UILabel!
     private var createAccountButton: LoginButton!
     private var orLabel: UILabel!
@@ -25,6 +26,7 @@ class LoginChoiceController: LoginLogoController {
     override func loadView() {
         super.loadView()
 
+        createContainer()
         createLabels()
         createButtons()
 
@@ -44,6 +46,12 @@ extension LoginChoiceController {
 }
 
 private extension LoginChoiceController {
+    func createContainer() {
+        incompressibleContainer = IncompressibleView()
+        incompressibleContainer.backgroundColor = .clearColor()
+        contentContainerView.addSubview(incompressibleContainer)
+    }
+
     func createLabels() {
         welcomeLabel = createLabelWithText(String(localized:"login_welcome_text"))
         orLabel = createLabelWithText(String(localized:"login_or_label"))
@@ -55,10 +63,18 @@ private extension LoginChoiceController {
     }
 
     func installConstraints() {
-        welcomeLabel.snp_makeConstraints {
+        incompressibleContainer.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
+        incompressibleContainer.snp_makeConstraints {
             $0.top.equalTo(contentContainerView)
-            $0.left.equalTo(contentContainerView).offset(Constants.HorizontalOffset)
-            $0.right.equalTo(contentContainerView).offset(-Constants.HorizontalOffset)
+            $0.centerX.equalTo(contentContainerView)
+            $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
+            $0.width.lessThanOrEqualTo(contentContainerView).offset(-2 * Constants.HorizontalOffset)
+            $0.height.equalTo(contentContainerView)
+        }
+
+        welcomeLabel.snp_makeConstraints {
+            $0.top.equalTo(incompressibleContainer)
+            $0.left.right.equalTo(incompressibleContainer)
         }
 
         createAccountButton.snp_makeConstraints {
@@ -84,7 +100,7 @@ private extension LoginChoiceController {
         label.textAlignment = .Center
         label.backgroundColor = .clearColor()
 
-        contentContainerView.addSubview(label)
+        incompressibleContainer.addSubview(label)
 
         return label
     }
@@ -94,7 +110,7 @@ private extension LoginChoiceController {
         button.setTitle(title, forState: .Normal)
         button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
 
-        contentContainerView.addSubview(button)
+        incompressibleContainer.addSubview(button)
 
         return button
     }

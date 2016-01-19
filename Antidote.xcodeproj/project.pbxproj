@@ -88,6 +88,10 @@
 		11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */; };
 		11B2536A1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */; };
 		11B2536D1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */; };
+		11B253A41C4EA8040068F47C /* InterfaceIdiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253A31C4EA8040068F47C /* InterfaceIdiom.swift */; };
+		11B253A51C4EA8040068F47C /* InterfaceIdiom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253A31C4EA8040068F47C /* InterfaceIdiom.swift */; };
+		11B253AE1C4EC47D0068F47C /* IncompressibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */; };
+		11B253AF1C4EC47D0068F47C /* IncompressibleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -431,6 +435,8 @@
 		11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarAbstractItem.swift; sourceTree = "<group>"; };
 		11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarBadgeItem.swift; sourceTree = "<group>"; };
 		11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarProfileItem.swift; sourceTree = "<group>"; };
+		11B253A31C4EA8040068F47C /* InterfaceIdiom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterfaceIdiom.swift; sourceTree = "<group>"; };
+		11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncompressibleView.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -573,6 +579,7 @@
 				11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
+				11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
 				113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */,
 				11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */,
@@ -719,6 +726,7 @@
 		11CFCD091C2744E10046BD94 /* Enums */ = {
 			isa = PBXGroup;
 			children = (
+				11B253A31C4EA8040068F47C /* InterfaceIdiom.swift */,
 				11CFCD0A1C2745230046BD94 /* UserStatus.swift */,
 			);
 			name = Enums;
@@ -1152,6 +1160,7 @@
 				9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */,
 				1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
+				11B253AE1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* LoginButton.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
 				118703D41C39475F00DBC29A /* AbstractCallController.swift in Sources */,
@@ -1160,6 +1169,7 @@
 				9C2EF3711C4D4D5C006E7AB1 /* NotificationCoordinator.swift in Sources */,
 				1156A4811C0FA0A4005AC8C6 /* StaticTableButtonCell.swift in Sources */,
 				11B2536D1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */,
+				11B253A41C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
 				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
 				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
@@ -1240,6 +1250,7 @@
 				9CEE6AD91C4E8FDC00A1ECB5 /* TabBarProfileItem.swift in Sources */,
 				9CEE6AFB1C4E8FDC00A1ECB5 /* ChangePasswordCoordinator.swift in Sources */,
 				9CEE6B181C4E8FDC00A1ECB5 /* LoginButton.swift in Sources */,
+				11B253A51C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
 				9CEE6B161C4E8FDC00A1ECB5 /* UserStatusView.swift in Sources */,
 				9CEE6AE21C4E8FDC00A1ECB5 /* LoginLogoController.swift in Sources */,
 				9CEE6B191C4E8FDC00A1ECB5 /* LoginExtendedTextField.swift in Sources */,
@@ -1329,6 +1340,7 @@
 				9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,
 				9CEE6AED1C4E8FDC00A1ECB5 /* ProfileMainController.swift in Sources */,
+				11B253AF1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				9CEE6B061C4E8FDC00A1ECB5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				9CEE6AC11C4E8FDC00A1ECB5 /* ChatOutgoingTextCell.swift in Sources */,
 				9CEE6ABF1C4E8FDC00A1ECB5 /* ChatMovableDateCell.swift in Sources */,

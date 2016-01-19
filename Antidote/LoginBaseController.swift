@@ -15,6 +15,8 @@ class LoginBaseController: KeyboardNotificationController {
         static let SmallVerticalOffset = 8.0
 
         static let TextFieldHeight: CGFloat = 40.0
+
+        static let MaxFormWidth = 350.0
     }
 
     let theme: Theme
