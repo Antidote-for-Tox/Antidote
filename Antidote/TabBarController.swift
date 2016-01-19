@@ -30,26 +30,22 @@ class TabBarController: UITabBarController {
         }
     }
 
-    private let theme: Theme
     private let items: [TabBarAbstractItem]
+
+    private let theme: Theme
 
     private var customTabBarView: UIView!
 
     private var customTabBarViewVisibleConstraint: Constraint!
     private var customTabBarViewHiddenConstraint: Constraint!
 
-    init(theme: Theme, controllersAndItems: [(UINavigationController, TabBarAbstractItem)]) {
+    init(theme: Theme, controllers: [UINavigationController], tabBarItems: [TabBarAbstractItem]) {
         self.theme = theme
-
-        self.items = controllersAndItems.map { (controller, item) in
-            return item
-        }
+        self.items = tabBarItems
 
         super.init(nibName: nil, bundle: nil)
 
-        viewControllers = controllersAndItems.map { (controller, item) in
-            return controller
-        }
+        viewControllers = controllers
 
         delegate = self
     }
