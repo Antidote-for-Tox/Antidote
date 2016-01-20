@@ -3,6 +3,7 @@ version: 1
 colors:
   white: FFFFFF
   transparent_white: FFFFFF55
+  transparent_dark_gray: 413839DD
   black: "000000"
   lightgray: EDF3F5
   gray: CCCCCC
@@ -51,3 +52,5 @@ values:
   tab-badge-text: white
   tab-item-active: skyblue
   tab-item-inactive: darkgray2
+  notification-background: transparent_dark_gray
+  notification-text: white

@@ -71,7 +71,7 @@ class RunningCoordinator: NSObject {
         self.window = window
         self.toxManager = toxManager
 
-        self.notificationCoordinator = NotificationCoordinator(theme: theme)
+        self.notificationCoordinator = NotificationCoordinator(theme: theme, submanagerObjects: toxManager.objects)
 
         super.init()
 
@@ -80,6 +80,7 @@ class RunningCoordinator: NSObject {
         createCallCoordinator()
 
         toxManager.user.delegate = self
+        notificationCoordinator.delegate = self
     }
 }
 
@@ -97,8 +98,6 @@ extension RunningCoordinator: CoordinatorProtocol {
 
         callCoordinator.start()
 
-        notificationCoordinator.toggleConnectingView(show: true, animated: false)
-
         toxManager.bootstrap.addPredefinedNodes()
         toxManager.bootstrap.bootstrap()
     }
@@ -115,7 +114,17 @@ extension RunningCoordinator: OCTSubmanagerUserDelegate {
         }
 
         let show = (connectionStatus == .None)
-        notificationCoordinator.toggleConnectingView(show: show, animated: false)
+        notificationCoordinator.toggleConnectingView(show: show, animated: true)
+    }
+}
+
+extension RunningCoordinator: NotificationCoordinatorDelegate {
+    func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat) {
+        showChat(chat)
+    }
+
+    func notificationCoordinator(coordinator: NotificationCoordinator, showFriendRequest request: OCTFriendRequest) {
+        // TODO
     }
 }
 
@@ -136,6 +145,16 @@ extension RunningCoordinator: FriendsTabCoordinatorDelegate {
         let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
 
         callCoordinator.callToChat(chat, enableVideo: true)
+    }
+}
+
+extension RunningCoordinator: ChatsTabCoordinatorDelegate {
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat) {
+        notificationCoordinator.banNotificationsForChat(chat)
+    }
+
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat) {
+        notificationCoordinator.unbanNotificationsForChat(chat)
     }
 }
 
@@ -182,6 +201,16 @@ extension RunningCoordinator: PrimaryIpadControllerDelegate {
     }
 }
 
+extension RunningCoordinator: ChatPrivateControllerDelegate {
+    func chatPrivateControllerWillAppear(controller: ChatPrivateController) {
+        notificationCoordinator.banNotificationsForChat(controller.chat)
+    }
+
+    func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
+        notificationCoordinator.unbanNotificationsForChat(controller.chat)
+    }
+}
+
 private extension RunningCoordinator {
     func createDeviceSpecificObjects() {
         switch InterfaceIdiom.current() {
@@ -221,7 +250,9 @@ private extension RunningCoordinator {
                     friends.delegate = self
                     return friends
                 case .Chats:
-                    return ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
+                    let chats = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
+                    chats.delegate = self
+                    return chats
                 case .Settings:
                     return SettingsTabCoordinator(theme: theme)
                 case .Profile:
@@ -287,7 +318,8 @@ private extension RunningCoordinator {
                         theme: theme,
                         chat: chat,
                         submanagerChats: toxManager.chats,
-                        submanagerObjects: toxManager.objects)
+                        submanagerObjects: toxManager.objects,
+                        delegate: self)
                 let navigation = UINavigationController(rootViewController: controller)
 
                 iPad.splitController.showDetailViewController(navigation, sender: nil)

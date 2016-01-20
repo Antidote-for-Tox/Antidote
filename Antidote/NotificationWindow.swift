@@ -12,6 +12,9 @@ import SnapKit
 private struct Constants {
     static let AnimationDuration = 0.3
     static let ConnectingBlinkPeriod = 1.0
+
+    static let NotificationAnimationDuration = 0.3
+    static let NotificationContainerHeight = 44.0
 }
 
 class NotificationWindow: UIWindow {
@@ -19,6 +22,9 @@ class NotificationWindow: UIWindow {
 
     private var connectingView: UIView!
     private var connectingViewTopConstraint: Constraint!
+
+    private var notificationContainer: UIView!
+    private var previousNotificationViewWithTopConstraint: (NotificationView, Constraint)?
 
     init(theme: Theme) {
         self.theme = theme
@@ -30,6 +36,7 @@ class NotificationWindow: UIWindow {
 
         createRootViewController()
         createConnectingView()
+        createNotificationContainer()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -85,6 +92,22 @@ class NotificationWindow: UIWindow {
             show ? showCompletion() : hideCompletion()
         }
     }
+
+    /**
+        Pushes notification view from top. Previous notification view (if any) will be replaced with passed one.
+        If nil is passed, simply removes previous view.
+     */
+    func pushNotificationView(next: NotificationView?) {
+        if let (previous, topConstraint) = previousNotificationViewWithTopConstraint {
+            hideNotificationView(previous, topConstraint: topConstraint)
+            previousNotificationViewWithTopConstraint = nil
+        }
+
+        if let next = next {
+            let topConstraint = showNotificationView(next)
+            previousNotificationViewWithTopConstraint = (next, topConstraint)
+        }
+    }
 }
 
 private extension NotificationWindow {
@@ -121,5 +144,50 @@ private extension NotificationWindow {
         label.snp_makeConstraints {
             $0.edges.equalTo(connectingView!)
         }
+    }
+
+    func createNotificationContainer() {
+        notificationContainer = UIView()
+        notificationContainer.backgroundColor = .clearColor()
+        notificationContainer.clipsToBounds = true
+        addSubview(notificationContainer)
+
+        notificationContainer.snp_makeConstraints {
+            $0.top.equalTo(connectingView.snp_bottom)
+            $0.left.right.equalTo(self)
+            $0.height.equalTo(Constants.NotificationContainerHeight)
+        }
+    }
+
+    /**
+        Returns view's top constraint.
+     */
+    func showNotificationView(view: NotificationView) -> Constraint {
+        notificationContainer.addSubview(view)
+
+        var topConstraint: Constraint!
+
+        view.snp_makeConstraints {
+            topConstraint = $0.top.equalTo(notificationContainer).offset(-Constants.NotificationContainerHeight).constraint
+            $0.left.right.equalTo(notificationContainer)
+            $0.height.equalTo(notificationContainer)
+        }
+        notificationContainer.layoutIfNeeded()
+
+        UIView.animateWithDuration(Constants.NotificationAnimationDuration) { [unowned self] in
+            topConstraint.updateOffset(0.0)
+            self.notificationContainer.layoutIfNeeded()
+        }
+
+        return topConstraint
+    }
+
+    func hideNotificationView(view: NotificationView, topConstraint: Constraint) {
+        UIView.animateWithDuration(Constants.NotificationAnimationDuration, animations: { [unowned self] in
+            topConstraint.updateOffset(Constants.NotificationContainerHeight)
+            self.notificationContainer.layoutIfNeeded()
+        }, completion: { finished in
+            view.removeFromSuperview()
+        })
     }
 }

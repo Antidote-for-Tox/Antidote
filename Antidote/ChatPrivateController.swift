@@ -22,9 +22,17 @@ private struct Constants {
     static let ResetPanAnimationDuration = 0.3
 }
 
+protocol ChatPrivateControllerDelegate: class {
+    func chatPrivateControllerWillAppear(controller: ChatPrivateController)
+    func chatPrivateControllerWillDisappear(controller: ChatPrivateController)
+}
+
 class ChatPrivateController: KeyboardNotificationController {
+    let chat: OCTChat
+
+    private weak var delegate: ChatPrivateControllerDelegate?
+
     private let theme: Theme
-    private let chat: OCTChat
     private let friend: OCTFriend
     private let submanagerChats: OCTSubmanagerChats
     private let submanagerObjects: OCTSubmanagerObjects
@@ -45,12 +53,13 @@ class ChatPrivateController: KeyboardNotificationController {
     private var didAddNewMessageInLastUpdate = false
     private var newMessagesViewVisible = false
 
-    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
+    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, delegate: ChatPrivateControllerDelegate) {
         self.theme = theme
         self.chat = chat
         self.friend = chat.friends.lastObject() as! OCTFriend
         self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
+        self.delegate = delegate
 
         let messagesController = submanagerObjects.fetchedResultsControllerForType(
                 .MessageAbstract,
@@ -99,6 +108,13 @@ class ChatPrivateController: KeyboardNotificationController {
         super.viewWillAppear(animated)
 
         updateLastReadDate()
+        delegate?.chatPrivateControllerWillAppear(self)
+    }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        delegate?.chatPrivateControllerWillDisappear(self)
     }
 
     override func viewDidAppear(animated: Bool) {

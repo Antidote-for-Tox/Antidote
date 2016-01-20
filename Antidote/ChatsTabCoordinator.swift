@@ -8,7 +8,14 @@
 
 import UIKit
 
+protocol ChatsTabCoordinatorDelegate: class {
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat)
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat)
+}
+
 class ChatsTabCoordinator: RunningNavigationCoordinator {
+    weak var delegate: ChatsTabCoordinatorDelegate?
+
     private let submanagerObjects: OCTSubmanagerObjects
     private let submanagerChats: OCTSubmanagerChats
 
@@ -31,7 +38,8 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
                 theme: theme,
                 chat: chat,
                 submanagerChats: submanagerChats,
-                submanagerObjects: submanagerObjects)
+                submanagerObjects: submanagerObjects,
+                delegate: self)
 
         navigationController.popToRootViewControllerAnimated(false)
         navigationController.pushViewController(controller, animated: animated)
@@ -41,5 +49,15 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
 extension ChatsTabCoordinator: ChatListControllerDelegate {
     func chatListController(controller: ChatListController, didSelectChat chat: OCTChat) {
         showChat(chat, animated: true)
+    }
+}
+
+extension ChatsTabCoordinator: ChatPrivateControllerDelegate {
+    func chatPrivateControllerWillAppear(controller: ChatPrivateController) {
+        delegate?.chatsTabCoordinator(self, chatWillAppear: controller.chat)
+    }
+
+    func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
+        delegate?.chatsTabCoordinator(self, chatWillDisapper: controller.chat)
     }
 }
