@@ -19,7 +19,7 @@ extension UIColor {
             return nil
         }
 
-        switch(hexString.length) {
+        switch(hexString.characters.count) {
             case 6:
                 red   = CGFloat((number & 0xFF0000) >> 16) / 255.0
                 green = CGFloat((number & 0x00FF00) >> 8) / 255.0

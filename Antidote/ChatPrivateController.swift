@@ -160,7 +160,7 @@ extension ChatPrivateController {
             $0 is ChatMovableDateCell
         }.map {
             $0 as! ChatMovableDateCell
-        }.each {
+        }.map {
             switch recognizer.state {
                 case .Possible:
                     fallthrough

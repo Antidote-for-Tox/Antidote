@@ -6,7 +6,7 @@
 //  Copyright © 2015 dvor. All rights reserved.
 //
 
-import Cent
+import Foundation
 
 private struct Constants {
     static let SaveDirectoryPath = "saves"
@@ -53,7 +53,7 @@ class ProfileManager {
 
 private extension ProfileManager {
     func saveDirectoryPath() -> String {
-        let path: NSString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first()!
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
         return path.stringByAppendingPathComponent(Constants.SaveDirectoryPath)
     }
 

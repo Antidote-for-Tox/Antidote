@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Cent
 
 protocol RunningCoordinatorDelegate: class {
     func runningCoordinatorDidLogout(coordinator: RunningCoordinator)
@@ -92,7 +91,7 @@ extension RunningCoordinator: CoordinatorProtocol {
     func start() {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.tabCoordinators.each{ $0.start() }
+                _ = iPhone.tabCoordinators.map { $0.start() }
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
 
                 window.rootViewController = iPhone.tabBarController

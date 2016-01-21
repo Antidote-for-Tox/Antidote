@@ -19,5 +19,5 @@ func isAddressString(string: String) -> Bool {
     let components = nsstring.componentsSeparatedByCharactersInSet(validChars)
     let leftChars = components.joinWithSeparator("")
 
-    return leftChars.length == 0
+    return leftChars.isEmpty
 }

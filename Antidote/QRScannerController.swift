@@ -142,7 +142,7 @@ private extension QRScannerController {
 
             output.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
 
-            if output.availableMetadataObjectTypes.contains(AVMetadataObjectTypeQRCode) {
+            if output.availableMetadataObjectTypes.contains({ $0 as! String == AVMetadataObjectTypeQRCode }) {
                 output.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
             }
         }

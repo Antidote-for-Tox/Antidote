@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Cent
 
 protocol FriendsTabCoordinatorDelegate: class {
     func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend)

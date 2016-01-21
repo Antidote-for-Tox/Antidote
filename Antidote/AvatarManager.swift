@@ -83,7 +83,7 @@ private extension AvatarManager {
     }
 
     func avatarStringFromString(string: String) -> String {
-        guard string.length > 0 else {
+        guard !string.isEmpty else {
             return ""
         }
 

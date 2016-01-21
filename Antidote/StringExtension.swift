@@ -59,4 +59,10 @@ extension String {
 
         return CGSize(width: ceil(boundingRect.size.width), height: ceil(boundingRect.size.height))
     }
+
+    subscript (r: Range<Int>) -> String {
+        let start = startIndex.advancedBy(r.startIndex)
+            let end = start.advancedBy(r.endIndex - r.startIndex)
+            return self[Range(start: start, end: end)]
+    }
 }

@@ -34,8 +34,6 @@
 		1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* ImageExtension.swift */; };
 		1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; };
 		1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
-		116512FF1C2B4B180066AF06 /* Cent.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; };
-		116513001C2B4B180066AF06 /* Cent.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFC41BC5C65C00B88B7B /* Cent.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
 		116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
@@ -241,13 +239,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		116513011C2B4B180066AF06 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 924F92DB195F8338003DBB60;
-			remoteInfo = Cent;
-		};
 		116513051C2B4B180066AF06 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
@@ -261,20 +252,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = F32DF2571B73054C0011046A;
 			remoteInfo = "Yaml iOS";
-		};
-		1173EFC31BC5C65C00B88B7B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 924F92DC195F8338003DBB60;
-			remoteInfo = Cent;
-		};
-		1173EFC51BC5C65C00B88B7B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 92E6688119F0B89600BB4FB8;
-			remoteInfo = CentTests;
 		};
 		1173EFCF1BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -350,7 +327,6 @@
 			files = (
 				116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */,
 				116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */,
-				116513001C2B4B180066AF06 /* Cent.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,7 +368,6 @@
 		116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCell.swift; sourceTree = "<group>"; };
 		116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCellModel.swift; sourceTree = "<group>"; };
 		116513251C2D636A0066AF06 /* NotificationWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationWindow.swift; sourceTree = "<group>"; };
-		1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Cent.xcodeproj; path = submodules/Dollar.swift/Cent/Cent.xcodeproj; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -500,7 +475,6 @@
 			files = (
 				1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */,
 				1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */,
-				116512FF1C2B4B180066AF06 /* Cent.framework in Frameworks */,
 				116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */,
 				116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */,
 				1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */,
@@ -612,20 +586,10 @@
 		1173EFB21BC5C40100B88B7B /* Submodules */ = {
 			isa = PBXGroup;
 			children = (
-				1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */,
 				1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */,
 				1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */,
 			);
 			name = Submodules;
-			sourceTree = "<group>";
-		};
-		1173EFBE1BC5C65C00B88B7B /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				1173EFC41BC5C65C00B88B7B /* Cent.framework */,
-				1173EFC61BC5C65C00B88B7B /* CentTests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		1173EFC91BC5C6B300B88B7B /* Products */ = {
@@ -867,7 +831,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				116513021C2B4B180066AF06 /* PBXTargetDependency */,
 				116513061C2B4B180066AF06 /* PBXTargetDependency */,
 				1165130A1C2B4B180066AF06 /* PBXTargetDependency */,
 			);
@@ -930,10 +893,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 1173EFBE1BC5C65C00B88B7B /* Products */;
-					ProjectRef = 1173EFBD1BC5C65C00B88B7B /* Cent.xcodeproj */;
-				},
-				{
 					ProductGroup = 1173EFC91BC5C6B300B88B7B /* Products */;
 					ProjectRef = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
 				},
@@ -951,20 +910,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		1173EFC41BC5C65C00B88B7B /* Cent.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = Cent.framework;
-			remoteRef = 1173EFC31BC5C65C00B88B7B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1173EFC61BC5C65C00B88B7B /* CentTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = CentTests.xctest;
-			remoteRef = 1173EFC51BC5C65C00B88B7B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		1173EFD01BC5C6B300B88B7B /* SnapKit.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1371,11 +1316,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		116513021C2B4B180066AF06 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = Cent;
-			targetProxy = 116513011C2B4B180066AF06 /* PBXContainerItemProxy */;
-		};
 		116513061C2B4B180066AF06 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "SnapKit iOS";
