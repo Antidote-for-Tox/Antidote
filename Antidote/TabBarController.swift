@@ -87,8 +87,8 @@ extension TabBarController: UINavigationControllerDelegate {
             customTabBarViewHiddenConstraint.activate()
         }
         else {
-            customTabBarViewVisibleConstraint.activate()
             customTabBarViewHiddenConstraint.deactivate()
+            customTabBarViewVisibleConstraint.activate()
         }
     }
 }
