@@ -23,7 +23,7 @@ class NotificationWindow: UIWindow {
     private var connectingView: UIView!
     private var connectingViewTopConstraint: Constraint!
 
-    private var notificationContainer: UIView!
+    private var notificationContainer: ViewPassingGestures!
     private var previousNotificationViewWithTopConstraint: (NotificationView, Constraint)?
 
     init(theme: Theme) {
@@ -147,7 +147,7 @@ private extension NotificationWindow {
     }
 
     func createNotificationContainer() {
-        notificationContainer = UIView()
+        notificationContainer = ViewPassingGestures()
         notificationContainer.backgroundColor = .clearColor()
         notificationContainer.clipsToBounds = true
         addSubview(notificationContainer)
