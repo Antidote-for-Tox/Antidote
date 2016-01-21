@@ -236,6 +236,8 @@
 		9CEE6B171C4E8FDC00A1ECB5 /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
 		9CEE6B181C4E8FDC00A1ECB5 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EC1BC9801200B91107 /* LoginButton.swift */; };
 		9CEE6B191C4E8FDC00A1ECB5 /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
+		9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */; };
+		9CEE6B201C510A1E00A1ECB5 /* NotificationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -487,6 +489,7 @@
 		9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
 		9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCellModel.swift; sourceTree = "<group>"; };
 		9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryIpadController.swift; sourceTree = "<group>"; };
+		9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObject.swift; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -665,6 +668,7 @@
 				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
 				118703C61C3942C700DBC29A /* LazyStorage.swift */,
+				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
 				9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
 				11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */,
@@ -1153,6 +1157,7 @@
 				11B253B41C5027930068F47C /* NotificationView.swift in Sources */,
 				11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */,
 				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
+				9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
 				9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
@@ -1261,6 +1266,7 @@
 				9CEE6AFB1C4E8FDC00A1ECB5 /* ChangePasswordCoordinator.swift in Sources */,
 				9CEE6B181C4E8FDC00A1ECB5 /* LoginButton.swift in Sources */,
 				11B253A51C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
+				9CEE6B201C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				9CEE6B161C4E8FDC00A1ECB5 /* UserStatusView.swift in Sources */,
 				9CEE6AE21C4E8FDC00A1ECB5 /* LoginLogoController.swift in Sources */,
 				9CEE6B191C4E8FDC00A1ECB5 /* LoginExtendedTextField.swift in Sources */,

@@ -29,6 +29,7 @@ class NotificationCoordinator: NSObject {
 
     private let notificationWindow: NotificationWindow
 
+    private let submanagerObjects: OCTSubmanagerObjects
     private let messagesController: RBQFetchedResultsController
     private let avatarManager: AvatarManager
 
@@ -40,6 +41,7 @@ class NotificationCoordinator: NSObject {
         self.theme = theme
         self.notificationWindow = NotificationWindow(theme: theme)
 
+        self.submanagerObjects = submanagerObjects
         self.messagesController = submanagerObjects.fetchedResultsControllerForType(.MessageAbstract)
         self.avatarManager = AvatarManager(theme: theme)
 
@@ -79,11 +81,24 @@ class NotificationCoordinator: NSObject {
     func unbanNotificationsForChat(chat: OCTChat) {
         bannedChatIdentifiers.remove(chat.uniqueIdentifier)
     }
+
+    func handleLocalNotification(notification: UILocalNotification) {
+        guard let userInfo = notification.userInfo as? [String: String] else {
+            return
+        }
+
+        guard let action = NotificationAction(dictionary: userInfo) else {
+            return
+        }
+
+        performAction(action)
+    }
 }
 
 extension NotificationCoordinator: CoordinatorProtocol {
     func start() {
-        // nop
+        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }
 }
 
@@ -119,7 +134,8 @@ private extension NotificationCoordinator {
             return false
         }
 
-        if bannedChatIdentifiers.contains(message.chat.uniqueIdentifier) {
+        if UIApplication.sharedApplication().applicationState == .Active &&
+           bannedChatIdentifiers.contains(message.chat.uniqueIdentifier) {
             return false
         }
 
@@ -149,53 +165,90 @@ private extension NotificationCoordinator {
             return
         }
 
+        let notification = notificationQueue.removeFirst()
+
+        switch UIApplication.sharedApplication().applicationState {
+            case .Active:
+                showInAppNotification(notification)
+            case .Inactive:
+                fallthrough
+            case .Background:
+                showLocalNotification(notification)
+        }
+    }
+
+    func showInAppNotification(notification: NotificationType) {
         let timer = NSTimer.scheduledTimerWithTimeInterval(Constants.NotificationVisibleDuration, block: { [weak self] _ in
             self?.showNextNotification()
         }, repeats: false)
 
-        let notification = notificationQueue.removeFirst()
-        let view: NotificationView
         let closeHandler = { [weak self] in
             timer.invalidate()
             self?.showNextNotification()
         }
 
-        switch notification {
-            case .FriendRequest(let request):
-                view = notificationViewFromFriendRequest(request, closeHandler: closeHandler)
-            case .NewMessage(let message):
-                view = notificationViewFromMessage(message, closeHandler: closeHandler)
-        }
+        let object = notificationObjectFromNotification(notification)
+
+        let view = NotificationView(theme: theme, image: object.image, topText: object.title, bottomText: object.body, tapHandler: { [weak self] in
+            self?.performAction(object.action)
+            closeHandler()
+        }, closeHandler: closeHandler)
 
         notificationWindow.pushNotificationView(view)
     }
 
-    func notificationViewFromFriendRequest(request: OCTFriendRequest, closeHandler: Void -> Void) -> NotificationView {
-        // FIXME
+    func showLocalNotification(notification: NotificationType) {
+        let object = notificationObjectFromNotification(notification)
 
-        return NotificationView(theme: theme, image: UIImage(), topText: "", bottomText: "", tapHandler: { [weak self] in
-            self?.delegate?.notificationCoordinator(self!, showFriendRequest: request)
-            closeHandler()
-        }, closeHandler: {
-            closeHandler()
-        })
+        let local = UILocalNotification()
+        local.alertTitle = object.title
+        local.alertBody = object.body
+        local.userInfo = object.action.archive()
+
+        UIApplication.sharedApplication().presentLocalNotificationNow(local)
+
+        showNextNotification()
     }
 
-    func notificationViewFromMessage(message: OCTMessageAbstract, closeHandler: Void -> Void) -> NotificationView {
+    func notificationObjectFromNotification(notification: NotificationType) -> NotificationObject {
+        switch notification {
+            case .FriendRequest(let request):
+                return notificationObjectFromRequest(request)
+            case .NewMessage(let message):
+                return notificationObjectFromMessage(message)
+        }
+    }
+
+    func notificationObjectFromRequest(request: OCTFriendRequest) -> NotificationObject {
+        // TODO
+
+        return NotificationObject(image: UIImage(), title: "", body: "", action: .OpenRequests)
+    }
+
+    func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
         let image = avatarManager.avatarFromString(message.sender.nickname, diameter: NotificationView.Constants.ImageSize)
-        let topText = message.sender.nickname
-        var bottomText: String = ""
+        let title = message.sender.nickname
+        var body: String = ""
 
         if message.messageText != nil {
-            bottomText = message.messageText.text
+            body = message.messageText.text
         }
 
-        return NotificationView(theme: theme, image: image, topText: topText, bottomText: bottomText, tapHandler: { [weak self] in
-            self?.delegate?.notificationCoordinator(self!, showChat: message.chat)
-            self?.banNotificationsForChat(message.chat)
-            closeHandler()
-        }, closeHandler: {
-            closeHandler()
-        })
+        return NotificationObject(image: image, title: title, body: body, action: .OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier))
+    }
+
+    func performAction(action: NotificationAction) {
+        switch action {
+            case .OpenChat(let identifier):
+                guard let chat = submanagerObjects.objectWithUniqueIdentifier(identifier, forType: .Chat) as? OCTChat else {
+                    return
+                }
+
+                delegate?.notificationCoordinator(self, showChat: chat)
+                banNotificationsForChat(chat)
+            case .OpenRequests:
+                // TODO
+                break
+        }
     }
 }

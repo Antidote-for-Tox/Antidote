@@ -7,5 +7,8 @@
 //
 
 protocol CoordinatorProtocol {
+    /**
+        This method will be called when coordinator should start working.
+     */
     func start()
 }

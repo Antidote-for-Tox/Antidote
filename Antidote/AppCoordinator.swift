@@ -9,10 +9,11 @@
 import UIKit
 
 class AppCoordinator {
-    var window: UIWindow
-    var activeCoordinator: CoordinatorProtocol!
-    var theme: Theme
+    private let window: UIWindow
+    private var activeCoordinator: CoordinatorProtocol!
+    private var theme: Theme
 
+    private var cachedLocalNotification: UILocalNotification?
 
     init(window: UIWindow) {
         self.window = window
@@ -22,6 +23,15 @@ class AppCoordinator {
 
         theme = try! Theme(yamlString: yamlString)
         applyTheme(theme)
+    }
+
+    func handleLocalNotification(notification: UILocalNotification) {
+        if let running = activeCoordinator as? RunningCoordinator {
+            running.handleLocalNotification(notification)
+        }
+        else {
+            cachedLocalNotification = notification
+        }
     }
 }
 
@@ -40,6 +50,12 @@ extension AppCoordinator: CoordinatorProtocol {
 
         activeCoordinator = coordinator
         activeCoordinator.start()
+
+        // Trying to handle cached notification with new coordinator.
+        if let notification = cachedLocalNotification {
+            cachedLocalNotification = nil
+            handleLocalNotification(notification)
+        }
     }
 }
 
@@ -67,7 +83,7 @@ private extension AppCoordinator {
 
     func createRunningCoordinatorWithManager(var manager: OCTManager?) -> RunningCoordinator? {
         if manager == nil {
-            manager =  LoginCoordinator.loginWithActiveProfile()
+            manager = LoginCoordinator.loginWithActiveProfile()
         }
 
         if manager == nil {

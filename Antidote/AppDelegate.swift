@@ -10,10 +10,9 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
     var window: UIWindow?
-    var coordinator: CoordinatorProtocol?
-
+    var coordinator: AppCoordinator!
+    var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame:UIScreen.mainScreen().bounds)
@@ -21,7 +20,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureLoggingStuff()
 
         coordinator = AppCoordinator(window: window!)
-        coordinator?.start()
+        coordinator.start()
+
+        if let notification = launchOptions?[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
+            coordinator.handleLocalNotification(notification)
+        }
 
         window?.backgroundColor = UIColor.whiteColor()
         window?.makeKeyAndVisible()
@@ -29,6 +32,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func applicationDidEnterBackground(application: UIApplication) {
+        backgroundTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler { [unowned self] in
+            UIApplication.sharedApplication().endBackgroundTask(self.backgroundTask)
+            self.backgroundTask = UIBackgroundTaskInvalid
+        }
+    }
+
+    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+        coordinator.handleLocalNotification(notification)
+    }
+}
+
+private extension AppDelegate {
     func configureLoggingStuff() {
         DDLog.addLogger(DDASLLogger.sharedInstance())
         DDLog.addLogger(DDTTYLogger.sharedInstance())

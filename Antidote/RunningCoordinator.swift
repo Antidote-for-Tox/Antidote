@@ -82,6 +82,10 @@ class RunningCoordinator: NSObject {
         toxManager.user.delegate = self
         notificationCoordinator.delegate = self
     }
+
+    func handleLocalNotification(notification: UILocalNotification) {
+        notificationCoordinator.handleLocalNotification(notification)
+    }
 }
 
 extension RunningCoordinator: CoordinatorProtocol {
@@ -96,6 +100,7 @@ extension RunningCoordinator: CoordinatorProtocol {
                 window.rootViewController = iPad.splitController
         }
 
+        notificationCoordinator.start()
         callCoordinator.start()
 
         toxManager.bootstrap.addPredefinedNodes()
