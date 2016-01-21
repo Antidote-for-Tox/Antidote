@@ -32,6 +32,10 @@ class FriendsTabCoordinator: RunningNavigationCoordinator {
 
         navigationController.pushViewController(controller, animated: false)
     }
+
+    func showFriendListAnimated(animated: Bool) {
+        navigationController.popToRootViewControllerAnimated(animated)
+    }
 }
 
 extension FriendsTabCoordinator: FriendListControllerDelegate {

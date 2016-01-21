@@ -128,8 +128,8 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
         showChat(chat)
     }
 
-    func notificationCoordinator(coordinator: NotificationCoordinator, showFriendRequest request: OCTFriendRequest) {
-        // TODO
+    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator) {
+        showFriendList()
     }
 }
 
@@ -308,6 +308,21 @@ private extension RunningCoordinator {
                 submanagerCalls: toxManager.calls,
                 submanagerObjects: toxManager.objects)
 
+    }
+
+    func showFriendList() {
+        let friendsCoordinator: FriendsTabCoordinator
+
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Friends.rawValue
+                friendsCoordinator = iPhone.tabCoordinators[IphoneObjects.TabCoordinator.Friends.rawValue] as! FriendsTabCoordinator
+            case .iPad:
+                primaryIpadControllerShowFriends(iPad.primaryController)
+                friendsCoordinator = iPad.friendsCoordinator!
+        }
+
+        friendsCoordinator.showFriendListAnimated(false)
     }
 
     func showChat(chat: OCTChat) {

@@ -19,7 +19,7 @@ private struct Constants {
 
 protocol NotificationCoordinatorDelegate: class {
     func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat)
-    func notificationCoordinator(coordinator: NotificationCoordinator, showFriendRequest request: OCTFriendRequest)
+    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator)
 }
 
 class NotificationCoordinator: NSObject {
@@ -31,6 +31,7 @@ class NotificationCoordinator: NSObject {
 
     private let submanagerObjects: OCTSubmanagerObjects
     private let messagesController: RBQFetchedResultsController
+    private let requestsController: RBQFetchedResultsController
     private let avatarManager: AvatarManager
 
     private var notificationQueue = [NotificationType]()
@@ -43,12 +44,15 @@ class NotificationCoordinator: NSObject {
 
         self.submanagerObjects = submanagerObjects
         self.messagesController = submanagerObjects.fetchedResultsControllerForType(.MessageAbstract)
+        self.requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
         self.avatarManager = AvatarManager(theme: theme)
 
         super.init()
 
         messagesController.delegate = self
         messagesController.performFetch()
+        requestsController.delegate = self
+        requestsController.performFetch()
     }
 
     /**
@@ -111,19 +115,27 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
             newIndexPath: NSIndexPath?) {
         switch type {
             case .Insert:
-                let message = anObject.RLMObject() as! OCTMessageAbstract
-                if shouldEnqueueMessage(message) {
-                    enqueueNotification(.NewMessage(message))
-                }
+                // we're good
+                break
             case .Delete:
-                // nop
-                break
+                return
             case .Move:
-                // nop
-                break
+                return
             case .Update:
-                // nop
-                break
+                return
+        }
+
+        if controller === messagesController {
+            let message = anObject.RLMObject() as! OCTMessageAbstract
+
+            if shouldEnqueueMessage(message) {
+                enqueueNotification(.NewMessage(message))
+            }
+        }
+        else if controller === requestsController {
+            let request = anObject.RLMObject() as! OCTFriendRequest
+
+            enqueueNotification(.FriendRequest(request))
         }
     }
 }
@@ -220,21 +232,24 @@ private extension NotificationCoordinator {
     }
 
     func notificationObjectFromRequest(request: OCTFriendRequest) -> NotificationObject {
-        // TODO
+        let image = avatarManager.avatarFromString("", diameter: NotificationView.Constants.ImageSize)
+        let title = String(localized: "notification_incoming_friend_request")
+        let body = request.message
 
-        return NotificationObject(image: UIImage(), title: "", body: "", action: .OpenRequests)
+        return NotificationObject(image: image, title: title, body: body, action: .OpenRequests)
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
         let image = avatarManager.avatarFromString(message.sender.nickname, diameter: NotificationView.Constants.ImageSize)
         let title = message.sender.nickname
         var body: String = ""
+        let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier)
 
         if message.messageText != nil {
             body = message.messageText.text
         }
 
-        return NotificationObject(image: image, title: title, body: body, action: .OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier))
+        return NotificationObject(image: image, title: title, body: body, action: action)
     }
 
     func performAction(action: NotificationAction) {
@@ -247,7 +262,7 @@ private extension NotificationCoordinator {
                 delegate?.notificationCoordinator(self, showChat: chat)
                 banNotificationsForChat(chat)
             case .OpenRequests:
-                // TODO
+                delegate?.notificationCoordinatorShowFriendRequest(self)
                 break
         }
     }

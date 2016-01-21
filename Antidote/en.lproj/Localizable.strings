@@ -115,3 +115,5 @@
 "status_online" = "Online";
 "status_away" = "Away";
 "status_busy" = "Busy";
+
+"notification_incoming_friend_request" = "Incoming friend request";
