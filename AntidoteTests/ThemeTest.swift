@@ -59,7 +59,8 @@ class ThemeTest: XCTestCase {
             "  tab-item-active: first\n" +
             "  tab-item-inactive: second\n" +
             "  notification-background: first\n" +
-            "  notification-text: second\n"
+            "  notification-text: second\n" +
+            "  settings-background: first\n"
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
@@ -101,6 +102,7 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.TabItemInactive))
             XCTAssertEqual(first, theme.colorForType(.NotificationBackground))
             XCTAssertEqual(second, theme.colorForType(.NotificationText))
+            XCTAssertEqual(first, theme.colorForType(.SettingsBackground))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

@@ -21,6 +21,7 @@
 #import <objcTox/OCTSubmanagerFriends.h>
 #import <objcTox/OCTSubmanagerObjects.h>
 #import <objcTox/OCTSubmanagerUser.h>
+#import <objcTox/OCTTox.h>
 #import <objcTox/OCTToxConstants.h>
 #import <objcTox/RBQFetchedResultsController.h>
 

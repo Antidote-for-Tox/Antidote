@@ -11,12 +11,17 @@ import SnapKit
 
 class StaticTableController: UIViewController {
     private let theme: Theme
+    private let tableViewStyle: UITableViewStyle
     private let modelArray: [[StaticTableBaseCellModel]]
+    private let footerArray: [String?]?
+
     private var tableView: UITableView?
 
-    init(theme: Theme, model: [[StaticTableBaseCellModel]]) {
+    init(theme: Theme, style: UITableViewStyle, model: [[StaticTableBaseCellModel]], footers: [String?]? = nil) {
         self.theme = theme
+        self.tableViewStyle = style
         self.modelArray = model
+        self.footerArray = footers
 
         super.init(nibName: nil, bundle: nil)
 
@@ -47,13 +52,15 @@ extension StaticTableController: UITableViewDataSource {
 
         switch model {
             case _ as StaticTableButtonCellModel:
-                cell = tableView.dequeueReusableCellWithIdentifier(StaticTableButtonCell.staticReuseIdentifier) as! StaticTableBaseCell
+                cell = dequeueCellForClass(StaticTableButtonCell.staticReuseIdentifier)
             case _ as StaticTableAvatarCellModel:
-                cell = tableView.dequeueReusableCellWithIdentifier(StaticTableAvatarCell.staticReuseIdentifier) as! StaticTableBaseCell
+                cell = dequeueCellForClass(StaticTableAvatarCell.staticReuseIdentifier)
             case _ as StaticTableDefaultCellModel:
-                cell = tableView.dequeueReusableCellWithIdentifier(StaticTableDefaultCell.staticReuseIdentifier) as! StaticTableBaseCell
+                cell = dequeueCellForClass(StaticTableDefaultCell.staticReuseIdentifier)
             case _ as StaticTableChatButtonsCellModel:
-                cell = tableView.dequeueReusableCellWithIdentifier(StaticTableChatButtonsCell.staticReuseIdentifier) as! StaticTableBaseCell
+                cell = dequeueCellForClass(StaticTableChatButtonsCell.staticReuseIdentifier)
+            case _ as StaticTableSwitchCellModel:
+                cell = dequeueCellForClass(StaticTableSwitchCell.staticReuseIdentifier)
             default:
                 fatalError("Static model class \(model) has not been implemented")
         }
@@ -63,7 +70,13 @@ extension StaticTableController: UITableViewDataSource {
         let isLastRow = (indexPath.row == (modelArray[indexPath.section].count - 1))
         let isLastSection = (indexPath.section == (modelArray.count - 1))
 
-        cell.setBottomSeparatorHidden(!isLastRow || isLastSection)
+        switch tableViewStyle {
+            case .Plain:
+                cell.setBottomSeparatorHidden(!isLastRow || isLastSection)
+            case .Grouped:
+                cell.setBottomSeparatorHidden(isLastRow)
+
+        }
 
         return cell
     }
@@ -71,8 +84,21 @@ extension StaticTableController: UITableViewDataSource {
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return modelArray.count
     }
+
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return modelArray[section].count
+    }
+
+    func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        guard let array = footerArray else {
+            return nil
+        }
+
+        guard section < array.count else {
+            return nil
+        }
+
+        return array[section]
     }
 }
 
@@ -94,12 +120,18 @@ extension StaticTableController: UITableViewDelegate {
 
 private extension StaticTableController {
     func createTableView() {
-        tableView = UITableView(frame: CGRectZero, style: .Plain)
+        tableView = UITableView(frame: CGRectZero, style: tableViewStyle)
         tableView!.dataSource = self
         tableView!.delegate = self
-        tableView!.backgroundColor = theme.colorForType(.NormalBackground)
         tableView!.estimatedRowHeight = 44.0;
         tableView!.separatorStyle = .None;
+
+        switch tableViewStyle {
+            case .Plain:
+                tableView!.backgroundColor = theme.colorForType(.NormalBackground)
+            case .Grouped:
+                tableView!.backgroundColor = theme.colorForType(.SettingsBackground)
+        }
 
         view.addSubview(tableView!)
 
@@ -107,11 +139,16 @@ private extension StaticTableController {
         tableView!.registerClass(StaticTableAvatarCell.self, forCellReuseIdentifier: StaticTableAvatarCell.staticReuseIdentifier)
         tableView!.registerClass(StaticTableDefaultCell.self, forCellReuseIdentifier: StaticTableDefaultCell.staticReuseIdentifier)
         tableView!.registerClass(StaticTableChatButtonsCell.self, forCellReuseIdentifier: StaticTableChatButtonsCell.staticReuseIdentifier)
+        tableView!.registerClass(StaticTableSwitchCell.self, forCellReuseIdentifier: StaticTableSwitchCell.staticReuseIdentifier)
     }
 
     func installConstraints() {
         tableView!.snp_makeConstraints {
             $0.edges.equalTo(view)
         }
+    }
+
+    func dequeueCellForClass(identifier: String) -> StaticTableBaseCell {
+        return tableView!.dequeueReusableCellWithIdentifier(identifier) as! StaticTableBaseCell
     }
 }

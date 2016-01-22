@@ -5,11 +5,12 @@ colors:
   transparent_white: FFFFFF55
   transparent_dark_gray: 413839DD
   black: "000000"
-  lightgray: EDF3F5
   gray: CCCCCC
+  lightgraypink: EFEFF4
   darkgray: AAAAAA
   darkgray2: 8C8C8C
-  lightgrayblue: D8E7EF
+  lightgrayblue: EDF3F5
+  lightgrayblue2: D8E7EF
   lightblue: D4F1FC
   skyblue: 2685AC
   darkblue: 0D678C
@@ -19,13 +20,13 @@ colors:
 
 values:
   login-background: skyblue
-  login-tox-logo: lightgrayblue
+  login-tox-logo: lightgrayblue2
   login-button-text: white
   login-button-background: darkblue
   login-description-label: lightblue
   login-form-background: white
   login-form-text: black
-  login-link-color: lightgray
+  login-link-color: lightgrayblue
 
   # Color used for fullscreen translucent views background, e.g. fullscreen picker
   translucent-background: transparent_white
@@ -44,13 +45,14 @@ values:
   status-background: white
   friend-cell-status: darkgray2
   chat-list-cell-message: darkgray
-  chat-list-cell-unread-background: lightgray
-  chat-input-background: lightgray
-  chat-incoming-bubble: lightgray
-  chat-outgoing-bubble: lightgrayblue
+  chat-list-cell-unread-background: lightgrayblue
+  chat-input-background: lightgrayblue
+  chat-incoming-bubble: lightgrayblue
+  chat-outgoing-bubble: lightgrayblue2
   tab-badge-background: red
   tab-badge-text: white
   tab-item-active: skyblue
   tab-item-inactive: darkgray2
   notification-background: transparent_dark_gray
   notification-text: white
+  settings-background: lightgraypink

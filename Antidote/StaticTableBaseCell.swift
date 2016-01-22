@@ -11,6 +11,7 @@ import SnapKit
 
 private struct Constants {
     static let HorizontalOffset = 20.0
+    static let MinHeight = 50.0
 }
 
 class StaticTableBaseCell: BaseCell {
@@ -58,6 +59,7 @@ class StaticTableBaseCell: BaseCell {
             $0.left.equalTo(contentView).offset(Constants.HorizontalOffset)
             $0.right.equalTo(contentView).offset(-Constants.HorizontalOffset)
             $0.top.equalTo(contentView)
+            $0.height.greaterThanOrEqualTo(Constants.MinHeight)
         }
 
         bottomSeparatorView.snp_makeConstraints {

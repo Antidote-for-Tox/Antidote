@@ -117,3 +117,20 @@
 "status_busy" = "Busy";
 
 "notification_incoming_friend_request" = "Incoming friend request";
+
+"settings_about" = "About";
+"settings_beta_tester_menu" = "Beta Tester Menu";
+"settings_advanced_settings" = "Advanced Settings";
+"settings_feedback" = "Feedback";
+"settings_configure_email" = "Please configure your mail settings";
+"settings_add_log_files" = "Add log files?";
+"settings_no" = "No";
+"settings_yes" = "Yes";
+"settings_antidote_version" = "Antidote Version";
+"settings_antidote_build" = "Antidote Build";
+"settings_toxcore_version" = "Toxcore Version";
+"settings_notifications_message_preview" = "Notification Preview";
+"settings_notifications_description" = "When application goes to background, you will still receive notifications up to 10 minutes.";
+"settings_ipv6_enabled" = "IPv6 Enabled";
+"settings_udp_enabled" = "UDP Enabled";
+"settings_restore_default" = "Restore Default Settings";

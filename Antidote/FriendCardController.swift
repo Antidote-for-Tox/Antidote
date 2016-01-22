@@ -46,7 +46,7 @@ class FriendCardController: StaticTableController {
         statusMessageModel = StaticTableDefaultCellModel()
         publicKeyModel = StaticTableDefaultCellModel()
 
-        super.init(theme: theme, model: [
+        super.init(theme: theme, style: .Plain, model: [
             [
                 avatarModel,
                 chatButtonsModel,

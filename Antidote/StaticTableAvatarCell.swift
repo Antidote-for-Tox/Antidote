@@ -14,7 +14,7 @@ private struct Constants {
 }
 
 class StaticTableAvatarCell: StaticTableBaseCell {
-    var didTapOnAvatar: (Void -> Void)?
+    private var didTapOnAvatar: (Void -> Void)?
 
     private var button: UIButton!
 

@@ -59,6 +59,7 @@ class Theme {
         case TabItemInactive = "tab-item-inactive"
         case NotificationBackground = "notification-background"
         case NotificationText = "notification-text"
+        case SettingsBackground = "settings-background"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -94,6 +95,7 @@ class Theme {
             TabItemInactive,
             NotificationBackground,
             NotificationText,
+            SettingsBackground,
         ]
     }
 

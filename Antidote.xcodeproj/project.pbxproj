@@ -94,6 +94,12 @@
 		11B253B51C5027930068F47C /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253B31C5027930068F47C /* NotificationView.swift */; };
 		11B253B71C503FA10068F47C /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253B61C503FA10068F47C /* NSTimerExtension.swift */; };
 		11B253B81C503FA10068F47C /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253B61C503FA10068F47C /* NSTimerExtension.swift */; };
+		11B253F21C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */; };
+		11B253F31C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */; };
+		11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */; };
+		11B253FC1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */; };
+		11B253FE1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */; };
+		11B253FF1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
@@ -236,6 +242,12 @@
 		9CEE6B191C4E8FDC00A1ECB5 /* LoginExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* LoginExtendedTextField.swift */; };
 		9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */; };
 		9CEE6B201C510A1E00A1ECB5 /* NotificationObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */; };
+		9CEE6B461C5289E200A1ECB5 /* SettingsMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B451C5289E200A1ECB5 /* SettingsMainController.swift */; };
+		9CEE6B471C5289E200A1ECB5 /* SettingsMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B451C5289E200A1ECB5 /* SettingsMainController.swift */; };
+		9CEE6B4F1C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B4E1C528AAA00A1ECB5 /* SettingsAboutController.swift */; };
+		9CEE6B501C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B4E1C528AAA00A1ECB5 /* SettingsAboutController.swift */; };
+		9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */; };
+		9CEE6B531C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -420,6 +432,9 @@
 		11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncompressibleView.swift; sourceTree = "<group>"; };
 		11B253B31C5027930068F47C /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		11B253B61C503FA10068F47C /* NSTimerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimerExtension.swift; sourceTree = "<group>"; };
+		11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetaTestersMenuController.swift; sourceTree = "<group>"; };
+		11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSwitchCell.swift; sourceTree = "<group>"; };
+		11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSwitchCellModel.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
@@ -465,6 +480,9 @@
 		9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCellModel.swift; sourceTree = "<group>"; };
 		9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryIpadController.swift; sourceTree = "<group>"; };
 		9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObject.swift; sourceTree = "<group>"; };
+		9CEE6B451C5289E200A1ECB5 /* SettingsMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsMainController.swift; sourceTree = "<group>"; };
+		9CEE6B4E1C528AAA00A1ECB5 /* SettingsAboutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAboutController.swift; sourceTree = "<group>"; };
+		9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAdvancedController.swift; sourceTree = "<group>"; };
 		B256424EA3A055BD47F475CD /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -670,6 +688,8 @@
 				115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */,
 				115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */,
 				1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */,
+				11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */,
+				11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */,
 			);
 			name = Cells;
 			sourceTree = "<group>";
@@ -778,6 +798,7 @@
 				11A6B8691C45887E00865328 /* ActiveCallController.swift */,
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
 				11A6B85E1C45830500865328 /* AudioCallController.swift */,
+				11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */,
 				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
 				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
 				112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */,
@@ -788,6 +809,9 @@
 				113D56551C2F459E00B3D3E8 /* QRScannerController.swift */,
 				1193AB411C1E2075006AA9E5 /* QRViewerController.swift */,
 				118703D51C39476A00DBC29A /* RingingCallController.swift */,
+				9CEE6B4E1C528AAA00A1ECB5 /* SettingsAboutController.swift */,
+				9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */,
+				9CEE6B451C5289E200A1ECB5 /* SettingsMainController.swift */,
 				110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */,
 				11B2535C1C4BACDB0068F47C /* TabBarController.swift */,
 				1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */,
@@ -1116,6 +1140,7 @@
 				11E640781C2DC15400D24C6D /* HelperFunctions.swift in Sources */,
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
 				1164C8F01BC982FF00B91107 /* ImageExtension.swift in Sources */,
+				9CEE6B461C5289E200A1ECB5 /* SettingsMainController.swift in Sources */,
 				9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */,
 				1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
@@ -1142,6 +1167,7 @@
 				11B253001C4A61630068F47C /* ChatOutgoingTextCellModel.swift in Sources */,
 				1193AB481C1F4164006AA9E5 /* FriendListController.swift in Sources */,
 				11CFCD0F1C27499D0046BD94 /* UserStatusView.swift in Sources */,
+				9CEE6B4F1C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */,
 				1193AB6A1C1F5C28006AA9E5 /* FriendListCell.swift in Sources */,
 				9CBBC7CD1BDFC6C600099A5E /* LoginExtendedTextField.swift in Sources */,
 				11A6B85F1C45830500865328 /* AudioCallController.swift in Sources */,
@@ -1159,6 +1185,7 @@
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* RunningCoordinator.swift in Sources */,
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
+				11B253FE1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */,
 				11A6B8681C45830C00865328 /* VideoCallController.swift in Sources */,
 				119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */,
 				115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */,
@@ -1168,9 +1195,11 @@
 				11B252FC1C4A61550068F47C /* ChatIncomingTextCellModel.swift in Sources */,
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
+				11B253F21C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
+				9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
 				119AD1BE1BDED261000C5CB8 /* TextViewController.swift in Sources */,
 				1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */,
 				11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */,
@@ -1178,6 +1207,7 @@
 				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
+				11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
@@ -1219,6 +1249,7 @@
 				9CEE6AD41C4E8FDC00A1ECB5 /* LazyStorage.swift in Sources */,
 				9CEE6ABA1C4E8FDC00A1ECB5 /* BaseCellModel.swift in Sources */,
 				9CEE6B0C1C4E8FDC00A1ECB5 /* HelperFunctions.swift in Sources */,
+				9CEE6B531C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
 				9CEE6AEB1C4E8FDC00A1ECB5 /* FriendListController.swift in Sources */,
 				9CEE6AC81C4E8FDC00A1ECB5 /* StaticTableBaseCellModel.swift in Sources */,
 				9CEE6AD71C4E8FDC00A1ECB5 /* TabBarAbstractItem.swift in Sources */,
@@ -1228,6 +1259,7 @@
 				9CEE6AE11C4E8FDC00A1ECB5 /* LoginFormController.swift in Sources */,
 				9CEE6ACE1C4E8FDC00A1ECB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				9CEE6B091C4E8FDC00A1ECB5 /* UIColorExtension.swift in Sources */,
+				9CEE6B501C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */,
 				9CEE6AC61C4E8FDC00A1ECB5 /* StaticTableAvatarCellModel.swift in Sources */,
 				9CEE6AF21C4E8FDC00A1ECB5 /* TabBarController.swift in Sources */,
 				9CEE6B081C4E8FDC00A1ECB5 /* UIAlertViewExtension.swift in Sources */,
@@ -1243,6 +1275,7 @@
 				9CEE6B0A1C4E8FDC00A1ECB5 /* UIViewControllerExtension.swift in Sources */,
 				9CEE6AC21C4E8FDC00A1ECB5 /* ChatOutgoingTextCellModel.swift in Sources */,
 				9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
+				11B253FC1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
 				9CEE6ABC1C4E8FDC00A1ECB5 /* ChatIncomingTextCellModel.swift in Sources */,
 				9CEE6AF41C4E8FDC00A1ECB5 /* TextViewController.swift in Sources */,
 				9CEE6B171C4E8FDC00A1ECB5 /* ViewPassingGestures.swift in Sources */,
@@ -1258,6 +1291,7 @@
 				9CEE6AC41C4E8FDC00A1ECB5 /* FriendListCellModel.swift in Sources */,
 				9CEE6B131C4E8FDC00A1ECB5 /* NotificationWindow.swift in Sources */,
 				9CEE6ACB1C4E8FDC00A1ECB5 /* StaticTableChatButtonsCell.swift in Sources */,
+				9CEE6B471C5289E200A1ECB5 /* SettingsMainController.swift in Sources */,
 				9CEE6AEC1C4E8FDC00A1ECB5 /* PrimaryIpadController.swift in Sources */,
 				9CEE6AE61C4E8FDC00A1ECB5 /* AudioCallController.swift in Sources */,
 				9CEE6AF81C4E8FDC00A1ECB5 /* LoginCoordinator.swift in Sources */,
@@ -1268,6 +1302,7 @@
 				9CEE6AD51C4E8FDC00A1ECB5 /* PortionDataSource.swift in Sources */,
 				9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
+				11B253F31C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
 				9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */,
 				9CEE6AEE1C4E8FDC00A1ECB5 /* QRScannerController.swift in Sources */,
 				9CEE6ADD1C4E8FDC00A1ECB5 /* PortraitNavigationController.swift in Sources */,
@@ -1275,6 +1310,7 @@
 				9CEE6AE41C4E8FDC00A1ECB5 /* ActiveCallController.swift in Sources */,
 				1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */,
 				9CEE6AF11C4E8FDC00A1ECB5 /* StaticTableController.swift in Sources */,
+				11B253FF1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */,
 				9CEE6ABE1C4E8FDC00A1ECB5 /* ChatListCellModel.swift in Sources */,
 				9CEE6AEF1C4E8FDC00A1ECB5 /* QRViewerController.swift in Sources */,
 				9CEE6AC71C4E8FDC00A1ECB5 /* StaticTableBaseCell.swift in Sources */,

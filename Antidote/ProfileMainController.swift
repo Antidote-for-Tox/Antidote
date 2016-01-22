@@ -22,26 +22,19 @@ class ProfileMainController: StaticTableController {
     private let submanagerUser: OCTSubmanagerUser
     private let avatarManager: AvatarManager
 
-    private let avatarModel: StaticTableAvatarCellModel
-    private let userNameModel: StaticTableDefaultCellModel
-    private let statusMessageModel: StaticTableDefaultCellModel
-    private let toxIdModel: StaticTableDefaultCellModel
-    private let profileDetailsModel: StaticTableDefaultCellModel
-    private let logoutModel: StaticTableButtonCellModel
+    private let avatarModel = StaticTableAvatarCellModel()
+    private let userNameModel = StaticTableDefaultCellModel()
+    private let statusMessageModel = StaticTableDefaultCellModel()
+    private let toxIdModel = StaticTableDefaultCellModel()
+    private let profileDetailsModel = StaticTableDefaultCellModel()
+    private let logoutModel = StaticTableButtonCellModel()
 
     init(theme: Theme, submanagerUser: OCTSubmanagerUser) {
         self.submanagerUser = submanagerUser
 
         avatarManager = AvatarManager(theme: theme)
 
-        avatarModel = StaticTableAvatarCellModel()
-        userNameModel = StaticTableDefaultCellModel()
-        statusMessageModel = StaticTableDefaultCellModel()
-        toxIdModel = StaticTableDefaultCellModel()
-        profileDetailsModel = StaticTableDefaultCellModel()
-        logoutModel = StaticTableButtonCellModel()
-
-        super.init(theme: theme, model: [
+        super.init(theme: theme, style: .Plain, model: [
             [
                 avatarModel,
             ],
