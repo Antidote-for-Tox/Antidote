@@ -37,7 +37,7 @@ class AppCoordinator {
 
 // MARK: CoordinatorProtocol
 extension AppCoordinator: CoordinatorProtocol {
-    func start() {
+    func startWithOptions(options: CoordinatorOptions?) {
         var coordinator: CoordinatorProtocol?
 
         if UserDefaultsManager().isUserLoggedIn {
@@ -49,7 +49,7 @@ extension AppCoordinator: CoordinatorProtocol {
         }
 
         activeCoordinator = coordinator
-        activeCoordinator.start()
+        activeCoordinator.startWithOptions(nil)
 
         // Trying to handle cached notification with new coordinator.
         if let notification = cachedLocalNotification {
@@ -61,13 +61,18 @@ extension AppCoordinator: CoordinatorProtocol {
 
 extension AppCoordinator: RunningCoordinatorDelegate {
     func runningCoordinatorDidLogout(coordinator: RunningCoordinator) {
-        start()
+        startWithOptions(nil)
+    }
+
+    func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions) {
+        activeCoordinator = createRunningCoordinatorWithManager(nil)
+        activeCoordinator.startWithOptions(options)
     }
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
-        start()
+        startWithOptions(nil)
     }
 }
 

@@ -26,7 +26,7 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
         super.init(theme: theme)
     }
 
-    override func start() {
+    override func startWithOptions(options: CoordinatorOptions?) {
         let controller = ChatListController(theme: theme, submanagerObjects: submanagerObjects)
         controller.delegate = self
 

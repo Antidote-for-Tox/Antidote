@@ -8,8 +8,12 @@
 
 import Foundation
 
+protocol SettingsAdvancedControllerDelegate: class {
+    func settingsAdvancedControllerToxOptionsChanged(controller: SettingsAdvancedController)
+}
+
 class SettingsAdvancedController: StaticTableController {
-    weak var delegate: SettingsMainControllerDelegate?
+    weak var delegate: SettingsAdvancedControllerDelegate?
 
     private let theme: Theme
     private let userDefaults = UserDefaultsManager()
@@ -55,14 +59,18 @@ private extension SettingsAdvancedController {
     }
 
     func IPv6Changed(on: Bool) {
-
+        userDefaults.IPv6Enabled = on
+        delegate?.settingsAdvancedControllerToxOptionsChanged(self)
     }
 
     func UDPChanged(on: Bool) {
-
+        userDefaults.UDPEnabled = on
+        delegate?.settingsAdvancedControllerToxOptionsChanged(self)
     }
 
     func restoreDefaultsSettings() {
-
+        userDefaults.resetIPv6Enabled()
+        userDefaults.resetUDPEnabled()
+        delegate?.settingsAdvancedControllerToxOptionsChanged(self)
     }
 }

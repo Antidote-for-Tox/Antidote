@@ -42,6 +42,14 @@ class UserDefaultsManager {
             setBool(newValue, forKey: Keys.UDPEnabled)
         }
     }
+
+    func resetIPv6Enabled() {
+        removeObjectForKey(Keys.IPv6Enabled)
+    }
+
+    func resetUDPEnabled() {
+        removeObjectForKey(Keys.UDPEnabled)
+    }
 }
 
 private extension UserDefaultsManager {
@@ -78,5 +86,9 @@ private extension UserDefaultsManager {
         else {
             return defaultValue
         }
+    }
+
+    func removeObjectForKey(key: String) {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
     }
 }

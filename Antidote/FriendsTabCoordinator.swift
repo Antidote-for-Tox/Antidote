@@ -25,7 +25,7 @@ class FriendsTabCoordinator: RunningNavigationCoordinator {
         super.init(theme: theme)
     }
 
-    override func start() {
+    override func startWithOptions(options: CoordinatorOptions?) {
         let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends)
         controller.delegate = self
 

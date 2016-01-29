@@ -54,7 +54,7 @@ class LoginCoordinator {
 
 // MARK: CoordinatorProtocol
 extension LoginCoordinator: CoordinatorProtocol {
-    func start() {
+    func startWithOptions(options: CoordinatorOptions?) {
         let profileNames = ProfileManager().allProfileNames
 
         let controller: UIViewController = (profileNames.count > 0) ? createFormController() : createChoiceController()

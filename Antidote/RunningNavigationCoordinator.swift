@@ -22,7 +22,7 @@ class RunningNavigationCoordinator {
         self.navigationController = navigationController
     }
 
-    func start() {
+    func startWithOptions(options: CoordinatorOptions?) {
         preconditionFailure("This method must be overridden")
     }
 }

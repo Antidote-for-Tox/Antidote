@@ -10,25 +10,23 @@ import UIKit
 
 protocol RunningCoordinatorDelegate: class {
     func runningCoordinatorDidLogout(coordinator: RunningCoordinator)
+    func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions)
+}
+
+private struct Options {
+    static let ToShowKey = "ToShowKey"
+    static let StoredOptions = "StoredOptions"
+
+    enum Coordinator {
+        case None
+        case Settings
+    }
 }
 
 private struct IpadObjects {
     let splitController: UISplitViewController
 
     let primaryController: PrimaryIpadController
-
-    var friendsCoordinator: FriendsTabCoordinator?
-    var settingsCoordinator: SettingsTabCoordinator?
-    var profileCoordinator: ProfileTabCoordinator?
-
-    init(splitController: UISplitViewController, primaryController: PrimaryIpadController) {
-        self.splitController = splitController
-        self.primaryController = primaryController
-
-        self.friendsCoordinator = nil
-        self.settingsCoordinator = nil
-        self.profileCoordinator = nil
-    }
 }
 
 private struct IphoneObjects {
@@ -43,7 +41,7 @@ private struct IphoneObjects {
         }
     }
 
-    let tabCoordinators: [RunningNavigationCoordinator]
+    let chatsCoordinator: ChatsTabCoordinator
 
     let tabBarController: TabBarController
     let profileTabBarItem: TabBarProfileItem
@@ -55,6 +53,10 @@ class RunningCoordinator: NSObject {
     private let theme: Theme
     private let window: UIWindow
     private let toxManager: OCTManager
+
+    private let friendsCoordinator: FriendsTabCoordinator
+    private let settingsCoordinator: SettingsTabCoordinator
+    private let profileCoordinator: ProfileTabCoordinator
 
     private let notificationCoordinator: NotificationCoordinator
     private var callCoordinator: CallCoordinator!
@@ -70,6 +72,9 @@ class RunningCoordinator: NSObject {
         self.window = window
         self.toxManager = toxManager
 
+        self.friendsCoordinator = FriendsTabCoordinator(theme: theme, toxManager: toxManager)
+        self.settingsCoordinator = SettingsTabCoordinator(theme: theme)
+        self.profileCoordinator = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
         self.notificationCoordinator = NotificationCoordinator(theme: theme, submanagerObjects: toxManager.objects)
 
         super.init()
@@ -79,6 +84,10 @@ class RunningCoordinator: NSObject {
         createCallCoordinator()
 
         toxManager.user.delegate = self
+
+        friendsCoordinator.delegate = self
+        settingsCoordinator.delegate = self
+        profileCoordinator.delegate = self
         notificationCoordinator.delegate = self
     }
 
@@ -88,22 +97,43 @@ class RunningCoordinator: NSObject {
 }
 
 extension RunningCoordinator: CoordinatorProtocol {
-    func start() {
+    func startWithOptions(options: CoordinatorOptions?) {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                _ = iPhone.tabCoordinators.map { $0.start() }
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
+                iPhone.chatsCoordinator.startWithOptions(nil)
 
                 window.rootViewController = iPhone.tabBarController
             case .iPad:
+
                 window.rootViewController = iPad.splitController
         }
 
-        notificationCoordinator.start()
-        callCoordinator.start()
+        var settingsOptions: CoordinatorOptions?
+
+        let toShow = options?[Options.ToShowKey] as? Options.Coordinator ?? .None
+        switch toShow {
+            case .None:
+                break
+            case .Settings:
+                settingsOptions = options?[Options.StoredOptions] as? CoordinatorOptions
+        }
+
+        friendsCoordinator.startWithOptions(nil)
+        settingsCoordinator.startWithOptions(settingsOptions)
+        profileCoordinator.startWithOptions(nil)
+        notificationCoordinator.startWithOptions(nil)
+        callCoordinator.startWithOptions(nil)
 
         toxManager.bootstrap.addPredefinedNodes()
         toxManager.bootstrap.bootstrap()
+
+        switch toShow {
+            case .None:
+                break
+            case .Settings:
+                showSettings()
+        }
     }
 }
 
@@ -162,6 +192,15 @@ extension RunningCoordinator: ChatsTabCoordinatorDelegate {
     }
 }
 
+extension RunningCoordinator: SettingsTabCoordinatorDelegate {
+    func settingsTabCoordinatorRecreateCoordinatorsStack(coordinator: SettingsTabCoordinator, options settingsOptions: CoordinatorOptions) {
+        delegate?.runningCoordinatorRecreateCoordinatorsStack(self, options: [
+            Options.ToShowKey: Options.Coordinator.Settings,
+            Options.StoredOptions: settingsOptions,
+        ])
+    }
+}
+
 extension RunningCoordinator: ProfileTabCoordinatorDelegate {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator) {
         UserDefaultsManager().isUserLoggedIn = false
@@ -176,32 +215,15 @@ extension RunningCoordinator: PrimaryIpadControllerDelegate {
     }
 
     func primaryIpadControllerShowFriends(controller: PrimaryIpadController) {
-        if iPad.friendsCoordinator == nil {
-            iPad.friendsCoordinator = FriendsTabCoordinator(theme: theme, toxManager: toxManager)
-            iPad.friendsCoordinator!.delegate = self
-            iPad.friendsCoordinator!.start()
-        }
-
-        iPad.splitController.showDetailViewController(iPad.friendsCoordinator!.navigationController, sender: nil)
+        iPad.splitController.showDetailViewController(friendsCoordinator.navigationController, sender: nil)
     }
 
     func primaryIpadControllerShowSettings(controller: PrimaryIpadController) {
-        if iPad.settingsCoordinator == nil {
-            iPad.settingsCoordinator = SettingsTabCoordinator(theme: theme)
-            iPad.settingsCoordinator!.start()
-        }
-
-        iPad.splitController.showDetailViewController(iPad.settingsCoordinator!.navigationController, sender: nil)
+        iPad.splitController.showDetailViewController(settingsCoordinator.navigationController, sender: nil)
     }
 
     func primaryIpadControllerShowProfile(controller: PrimaryIpadController) {
-        if iPad.profileCoordinator == nil {
-            iPad.profileCoordinator = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
-            iPad.profileCoordinator!.delegate = self
-            iPad.profileCoordinator!.start()
-        }
-
-        iPad.splitController.showDetailViewController(iPad.profileCoordinator!.navigationController, sender: nil)
+        iPad.splitController.showDetailViewController(profileCoordinator.navigationController, sender: nil)
     }
 }
 
@@ -219,19 +241,27 @@ private extension RunningCoordinator {
     func createDeviceSpecificObjects() {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                let tabCoordinators = createTabCoordinators()
+                let chatsCoordinator = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
+
+                let tabBarControllers = IphoneObjects.TabCoordinator.allValues().map { object -> UINavigationController in
+                    switch object {
+                        case .Friends:
+                            return friendsCoordinator.navigationController
+                        case .Chats:
+                            return chatsCoordinator.navigationController
+                        case .Settings:
+                            return settingsCoordinator.navigationController
+                        case .Profile:
+                            return profileCoordinator.navigationController
+                    }
+                }
+
                 let tabBarItems = createTabBarItems()
                 let profileTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Profile.rawValue] as! TabBarProfileItem
 
-                let tabBarController = TabBarController(theme: theme, controllers: tabCoordinators.map {
-                    $0.navigationController
-                }, tabBarItems: tabBarItems)
+                let tabBarController = TabBarController(theme: theme, controllers: tabBarControllers, tabBarItems: tabBarItems)
 
-
-                iPhone = IphoneObjects(
-                        tabCoordinators: tabCoordinators,
-                        tabBarController: tabBarController,
-                        profileTabBarItem: profileTabBarItem)
+                iPhone = IphoneObjects(chatsCoordinator: chatsCoordinator, tabBarController: tabBarController, profileTabBarItem: profileTabBarItem)
             case .iPad:
                 let splitController = UISplitViewController()
                 splitController.preferredDisplayMode = .AllVisible
@@ -240,31 +270,26 @@ private extension RunningCoordinator {
                 primaryController.delegate = self
                 splitController.viewControllers = [UINavigationController(rootViewController: primaryController)]
 
-                iPad = IpadObjects(
-                        splitController: splitController,
-                        primaryController: primaryController)
+                iPad = IpadObjects(splitController: splitController, primaryController: primaryController)
         }
     }
 
-    func createTabCoordinators() -> [RunningNavigationCoordinator] {
-        return IphoneObjects.TabCoordinator.allValues().map {
-            switch $0 {
-                case .Friends:
-                    let friends = FriendsTabCoordinator(theme: theme, toxManager: toxManager)
-                    friends.delegate = self
-                    return friends
-                case .Chats:
-                    let chats = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
-                    chats.delegate = self
-                    return chats
-                case .Settings:
-                    return SettingsTabCoordinator(theme: theme)
-                case .Profile:
-                    let profile = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
-                    profile.delegate = self
-                    return profile
-            }
+    func createCallCoordinator() {
+        let presentingController: UIViewController
+
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                presentingController = iPhone.tabBarController
+            case .iPad:
+                presentingController = iPad.splitController
         }
+
+        self.callCoordinator = CallCoordinator(
+                theme: theme,
+                presentingController: presentingController,
+                submanagerCalls: toxManager.calls,
+                submanagerObjects: toxManager.objects)
+
     }
 
     func createTabBarItems() -> [TabBarAbstractItem] {
@@ -291,34 +316,12 @@ private extension RunningCoordinator {
         }
     }
 
-    func createCallCoordinator() {
-        let presentingController: UIViewController
-
-        switch InterfaceIdiom.current() {
-            case .iPhone:
-                presentingController = iPhone.tabBarController
-            case .iPad:
-                presentingController = iPad.splitController
-        }
-
-        self.callCoordinator = CallCoordinator(
-                theme: theme,
-                presentingController: presentingController,
-                submanagerCalls: toxManager.calls,
-                submanagerObjects: toxManager.objects)
-
-    }
-
     func showFriendList() {
-        let friendsCoordinator: FriendsTabCoordinator
-
         switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Friends.rawValue
-                friendsCoordinator = iPhone.tabCoordinators[IphoneObjects.TabCoordinator.Friends.rawValue] as! FriendsTabCoordinator
             case .iPad:
                 primaryIpadControllerShowFriends(iPad.primaryController)
-                friendsCoordinator = iPad.friendsCoordinator!
         }
 
         friendsCoordinator.showFriendListAnimated(false)
@@ -327,11 +330,8 @@ private extension RunningCoordinator {
     func showChat(chat: OCTChat) {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                let index = IphoneObjects.TabCoordinator.Chats.rawValue
-                let coordinator = iPhone.tabCoordinators[index] as! ChatsTabCoordinator
-
-                iPhone.tabBarController.selectedIndex = index
-                coordinator.showChat(chat, animated: false)
+                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
+                iPhone.chatsCoordinator.showChat(chat, animated: false)
             case .iPad:
                 let controller = ChatPrivateController(
                         theme: theme,
@@ -342,6 +342,15 @@ private extension RunningCoordinator {
                 let navigation = UINavigationController(rootViewController: controller)
 
                 iPad.splitController.showDetailViewController(navigation, sender: nil)
+        }
+    }
+
+    func showSettings() {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Settings.rawValue
+            case .iPad:
+                primaryIpadControllerShowFriends(iPad.primaryController)
         }
     }
 }

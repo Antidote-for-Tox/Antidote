@@ -100,7 +100,7 @@ class NotificationCoordinator: NSObject {
 }
 
 extension NotificationCoordinator: CoordinatorProtocol {
-    func start() {
+    func startWithOptions(options: CoordinatorOptions?) {
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
         UIApplication.sharedApplication().registerUserNotificationSettings(settings)
     }

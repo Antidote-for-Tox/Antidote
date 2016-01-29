@@ -99,7 +99,7 @@ class CallCoordinator: NSObject {
 }
 
 extension CallCoordinator: CoordinatorProtocol {
-    func start() {
+    func startWithOptions(options: CoordinatorOptions?) {
         // nothing to do here
     }
 }

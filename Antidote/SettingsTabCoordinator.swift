@@ -8,12 +8,36 @@
 
 import UIKit
 
+private struct Options {
+    static let ToShowKey = "ToShowKey"
+
+    enum Controller {
+        case AdvancedSettings
+    }
+}
+
+protocol SettingsTabCoordinatorDelegate: class {
+    func settingsTabCoordinatorRecreateCoordinatorsStack(coordinator: SettingsTabCoordinator, options: CoordinatorOptions)
+}
+
 class SettingsTabCoordinator: RunningNavigationCoordinator {
-    override func start() {
+    weak var delegate: SettingsTabCoordinatorDelegate?
+
+    override func startWithOptions(options: CoordinatorOptions?) {
         let controller = SettingsMainController(theme: theme)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)
+
+        if let toShow = options?[Options.ToShowKey] as? Options.Controller {
+            switch toShow {
+                case .AdvancedSettings:
+                    let advanced = SettingsAdvancedController(theme: theme)
+                    advanced.delegate = self
+
+                    navigationController.pushViewController(advanced, animated: false)
+            }
+        }
     }
 }
 
@@ -32,7 +56,16 @@ extension SettingsTabCoordinator: SettingsMainControllerDelegate {
 
     func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController) {
         let controller = SettingsAdvancedController(theme: theme)
+        controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
+    }
+}
+
+extension SettingsTabCoordinator: SettingsAdvancedControllerDelegate {
+    func settingsAdvancedControllerToxOptionsChanged(controller: SettingsAdvancedController) {
+        delegate?.settingsTabCoordinatorRecreateCoordinatorsStack(self, options: [
+            Options.ToShowKey: Options.Controller.AdvancedSettings
+        ])
     }
 }

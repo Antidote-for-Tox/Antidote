@@ -20,7 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureLoggingStuff()
 
         coordinator = AppCoordinator(window: window!)
-        coordinator.start()
+        coordinator.startWithOptions(nil)
 
         if let notification = launchOptions?[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
             coordinator.handleLocalNotification(notification)

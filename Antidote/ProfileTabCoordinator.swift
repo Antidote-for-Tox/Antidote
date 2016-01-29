@@ -23,7 +23,7 @@ class ProfileTabCoordinator: RunningNavigationCoordinator {
         super.init(theme: theme)
     }
 
-    override func start() {
+    override func startWithOptions(options: CoordinatorOptions?) {
         let controller = ProfileMainController(theme: theme, submanagerUser: toxManager.user)
         controller.delegate = self
         navigationController.pushViewController(controller, animated: false)
