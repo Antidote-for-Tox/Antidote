@@ -43,6 +43,15 @@ class UserDefaultsManager {
         }
     }
 
+    var showNotificationPreview: Bool {
+        get {
+            return boolForKey(Keys.ShowNotificationsPreview, defaultValue: true)
+        }
+        set {
+            setBool(newValue, forKey: Keys.ShowNotificationsPreview)
+        }
+    }
+
     func resetIPv6Enabled() {
         removeObjectForKey(Keys.IPv6Enabled)
     }
@@ -58,6 +67,7 @@ private extension UserDefaultsManager {
         static let isUserLoggedIn = "user-info/is-user-logged-in"
         static let IPv6Enabled = "user-info/ipv6-enabled"
         static let UDPEnabled = "user-info/udp-enabled"
+        static let ShowNotificationsPreview = "user-info/snow-notification-preview"
     }
 
     func setObject(object: AnyObject?, forKey key: String) {
@@ -89,6 +99,8 @@ private extension UserDefaultsManager {
     }
 
     func removeObjectForKey(key: String) {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(key)
+        let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.removeObjectForKey(key)
+        defaults.synchronize()
     }
 }

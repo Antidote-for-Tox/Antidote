@@ -26,6 +26,7 @@ class NotificationCoordinator: NSObject {
     weak var delegate: NotificationCoordinatorDelegate?
 
     private let theme: Theme
+    private let userDefaults = UserDefaultsManager()
 
     private let notificationWindow: NotificationWindow
 
@@ -213,8 +214,7 @@ private extension NotificationCoordinator {
         let object = notificationObjectFromNotification(notification)
 
         let local = UILocalNotification()
-        local.alertTitle = object.title
-        local.alertBody = object.body
+        local.alertBody = "\(object.title): \(object.body)"
         local.userInfo = object.action.archive()
 
         UIApplication.sharedApplication().presentLocalNotificationNow(local)
@@ -246,7 +246,7 @@ private extension NotificationCoordinator {
         let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier)
 
         if message.messageText != nil {
-            body = message.messageText.text
+            body = userDefaults.showNotificationPreview ? message.messageText.text : String(localized: "notification_new_message")
         }
 
         return NotificationObject(image: image, title: title, body: body, action: action)

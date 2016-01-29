@@ -116,6 +116,7 @@
 "status_away" = "Away";
 "status_busy" = "Busy";
 
+"notification_new_message" = "New message";
 "notification_incoming_friend_request" = "Incoming friend request";
 
 "settings_about" = "About";

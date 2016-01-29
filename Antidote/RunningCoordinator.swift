@@ -242,6 +242,7 @@ private extension RunningCoordinator {
         switch InterfaceIdiom.current() {
             case .iPhone:
                 let chatsCoordinator = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
+                chatsCoordinator.delegate = self
 
                 let tabBarControllers = IphoneObjects.TabCoordinator.allValues().map { object -> UINavigationController in
                     switch object {

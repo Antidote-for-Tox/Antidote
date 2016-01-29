@@ -19,6 +19,7 @@ class SettingsMainController: StaticTableController {
     weak var delegate: SettingsMainControllerDelegate?
 
     private let theme: Theme
+    private let userDefaults = UserDefaultsManager()
 
     private let aboutModel = StaticTableDefaultCellModel()
     private let betaTesterMenuModel = StaticTableDefaultCellModel()
@@ -74,7 +75,7 @@ private extension SettingsMainController{
         betaTesterMenuModel.didSelectHandler = showBetaTesterMenu
 
         notificationsModel.title = String(localized: "settings_notifications_message_preview")
-        notificationsModel.on = true
+        notificationsModel.on = userDefaults.showNotificationPreview
         notificationsModel.valueChangedHandler = notificationsValueChanged
 
         advancedSettingsModel.value = String(localized: "settings_advanced_settings")
@@ -93,7 +94,7 @@ private extension SettingsMainController{
     }
 
     func notificationsValueChanged(on: Bool) {
-        print("changed \(on)")
+        userDefaults.showNotificationPreview = on
     }
 
     func showAdvancedSettings() {
