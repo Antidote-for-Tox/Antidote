@@ -54,6 +54,12 @@ class NotificationCoordinator: NSObject {
         messagesController.performFetch()
         requestsController.delegate = self
         requestsController.performFetch()
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidBecomeActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     /**
@@ -103,7 +109,17 @@ class NotificationCoordinator: NSObject {
 extension NotificationCoordinator: CoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
         let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
-        UIApplication.sharedApplication().registerUserNotificationSettings(settings)
+
+        let application = UIApplication.sharedApplication()
+        application.registerUserNotificationSettings(settings)
+        application.cancelAllLocalNotifications()
+    }
+}
+
+// MARK: Notifications
+extension NotificationCoordinator {
+    func applicationDidBecomeActive() {
+        UIApplication.sharedApplication().cancelAllLocalNotifications()
     }
 }
 
