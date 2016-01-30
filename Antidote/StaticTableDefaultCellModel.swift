@@ -9,6 +9,8 @@
 import Foundation
 
 class StaticTableDefaultCellModel: StaticTableSelectableCellModel {
+    var userStatus: UserStatus?
+
     var title: String?
     var value: String?
 

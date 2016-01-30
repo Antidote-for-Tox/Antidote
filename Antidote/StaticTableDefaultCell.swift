@@ -12,15 +12,20 @@ import SnapKit
 private struct Constants {
     static let EdgesVerticalOffset = 10.0
     static let TitleHeight = 20.0
+    static let TitleToUserStatusOffset = 7.0
     static let TitleToValueOffset = 2.0
     static let MinValueLabelHeight = 20.0
 }
 
 class StaticTableDefaultCell: StaticTableBaseCell {
+    private var userStatusView: UserStatusView!
     private var titleLabel: UILabel!
     private var valueLabel: UILabel!
     private var rightButton: UIButton!
     private var arrowImageView: UIImageView!
+
+    private var userStatusViewVisibleConstraint: Constraint!
+    private var userStatusViewHiddenConstraint: Constraint!
 
     private var valueLabelToTitleConstraint: Constraint!
     private var valueLabelToContentTopConstraint: Constraint!
@@ -36,6 +41,21 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         guard let defaultModel = model as? StaticTableDefaultCellModel else {
             assert(false, "Wrong model \(model) passed to cell \(self)")
             return
+        }
+
+        if let userStatus = defaultModel.userStatus {
+            userStatusView.theme = theme
+            userStatusView.userStatus = userStatus
+            userStatusView.hidden = false
+
+            userStatusViewHiddenConstraint.deactivate()
+            userStatusViewVisibleConstraint.activate()
+        }
+        else {
+            userStatusView.hidden = true
+
+            userStatusViewVisibleConstraint.deactivate()
+            userStatusViewHiddenConstraint.activate()
         }
 
         titleLabel.textColor = theme.colorForType(.LinkText)
@@ -80,6 +100,10 @@ class StaticTableDefaultCell: StaticTableBaseCell {
     override func createViews() {
         super.createViews()
 
+        userStatusView = UserStatusView()
+        userStatusView.showExternalCircle = false
+        customContentView.addSubview(userStatusView)
+
         titleLabel = UILabel()
         titleLabel.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightLight)
         titleLabel.backgroundColor = UIColor.clearColor()
@@ -103,10 +127,23 @@ class StaticTableDefaultCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
+        userStatusView.snp_makeConstraints {
+            $0.centerY.equalTo(customContentView)
+            $0.left.equalTo(customContentView)
+            $0.size.equalTo(UserStatusView.Constants.DefaultSize)
+        }
+
         titleLabel.snp_makeConstraints {
             $0.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset)
-            $0.left.equalTo(customContentView)
             $0.height.equalTo(Constants.TitleHeight)
+
+            userStatusViewVisibleConstraint = $0.left.equalTo(userStatusView.snp_right).offset(Constants.TitleToUserStatusOffset).constraint
+        }
+
+        userStatusViewVisibleConstraint.deactivate()
+
+        titleLabel.snp_makeConstraints {
+            userStatusViewHiddenConstraint = $0.left.equalTo(customContentView).constraint
         }
 
         valueLabel.snp_makeConstraints {
@@ -114,7 +151,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
             valueLabelToContentRightConstraint = $0.right.equalTo(customContentView).constraint
 
-            $0.left.equalTo(customContentView)
+            $0.left.equalTo(titleLabel)
             $0.bottom.equalTo(customContentView).offset(-Constants.EdgesVerticalOffset)
             $0.height.greaterThanOrEqualTo(Constants.MinValueLabelHeight)
         }

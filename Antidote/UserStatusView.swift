@@ -10,6 +10,10 @@ import UIKit
 import SnapKit
 
 class UserStatusView: StaticBackgroundView {
+    struct Constants {
+        static let DefaultSize = 10.0
+    }
+
     private var roundView: StaticBackgroundView?
 
     var theme: Theme? {

@@ -10,8 +10,6 @@ import UIKit
 import SnapKit
 
 private struct Constants {
-    static let UserStatusViewSize = 10.0
-
     static let Sqrt2:CGFloat = 1.4142135623731
 }
 
@@ -60,7 +58,7 @@ private extension ImageViewWithStatus {
 
         userStatusView.snp_makeConstraints {
             userStatusViewCenterConstrant = $0.center.equalTo(self).constraint
-            $0.size.equalTo(Constants.UserStatusViewSize)
+            $0.size.equalTo(UserStatusView.Constants.DefaultSize)
         }
     }
 }

@@ -11,6 +11,7 @@ import UIKit
 protocol ProfileMainControllerDelegate: class {
     func profileMainControllerLogout(controller: ProfileMainController)
     func profileMainControllerChangeUserName(controller: ProfileMainController)
+    func profileMainControllerChangeUserStatus(controller: ProfileMainController)
     func profileMainControllerChangeStatusMessage(controller: ProfileMainController)
     func profileMainController(controller: ProfileMainController, showQRCodeWithText text: String)
     func profileMainControllerShowProfileDetails(controller: ProfileMainController)
@@ -25,6 +26,7 @@ class ProfileMainController: StaticTableController {
     private let avatarModel = StaticTableAvatarCellModel()
     private let userNameModel = StaticTableDefaultCellModel()
     private let statusMessageModel = StaticTableDefaultCellModel()
+    private let userStatusModel = StaticTableDefaultCellModel()
     private let toxIdModel = StaticTableDefaultCellModel()
     private let profileDetailsModel = StaticTableDefaultCellModel()
     private let logoutModel = StaticTableButtonCellModel()
@@ -41,6 +43,9 @@ class ProfileMainController: StaticTableController {
             [
                 userNameModel,
                 statusMessageModel,
+            ],
+            [
+                userStatusModel,
             ],
             [
                 toxIdModel,
@@ -82,6 +87,14 @@ private extension ProfileMainController {
         userNameModel.showArrow = true
         userNameModel.didSelectHandler = changeUserName
 
+        // Hardcoding any connected status to show only online/away/busy statuses here.
+        let userStatus = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: submanagerUser.userStatus)
+
+        userStatusModel.userStatus = userStatus
+        userStatusModel.value = userStatus.toString()
+        userStatusModel.showArrow = true
+        userStatusModel.didSelectHandler = changeUserStatus
+
         statusMessageModel.title = String(localized: "status_message")
         statusMessageModel.value = submanagerUser.userStatusMessage()
         statusMessageModel.showArrow = true
@@ -107,6 +120,10 @@ private extension ProfileMainController {
 
     func changeUserName() {
         delegate?.profileMainControllerChangeUserName(self)
+    }
+
+    func changeUserStatus() {
+        delegate?.profileMainControllerChangeUserStatus(self)
     }
 
     func changeStatusMessage() {

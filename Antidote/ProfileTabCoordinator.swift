@@ -55,6 +55,10 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
         }
     }
 
+    func profileMainControllerChangeUserStatus(controller: ProfileMainController) {
+        // TODO
+    }
+
     func profileMainControllerChangeStatusMessage(controller: ProfileMainController) {
         showTextEditController(title: String(localized: "status_message"), defaultValue: toxManager.user.userStatusMessage()) {
             newStatusMessage -> Bool in
