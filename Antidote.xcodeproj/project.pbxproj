@@ -15,6 +15,8 @@
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
 		1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
+		114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */; };
+		114962761C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
 		1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
 		1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
@@ -355,6 +357,7 @@
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
+		114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailsController.swift; sourceTree = "<group>"; };
 		1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCellModel.swift; sourceTree = "<group>"; };
 		1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableButtonCellModel.swift; sourceTree = "<group>"; };
 		1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSelectableCellModel.swift; sourceTree = "<group>"; };
@@ -809,6 +812,7 @@
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */,
+				114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
 				113D56551C2F459E00B3D3E8 /* QRScannerController.swift */,
 				1193AB411C1E2075006AA9E5 /* QRViewerController.swift */,
@@ -1125,6 +1129,7 @@
 				118703D61C39476A00DBC29A /* RingingCallController.swift in Sources */,
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
+				114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */,
 				113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
 				11B253B41C5027930068F47C /* NotificationView.swift in Sources */,
@@ -1331,6 +1336,7 @@
 				9CEE6AFE1C4E8FDC00A1ECB5 /* NotificationCoordinator.swift in Sources */,
 				9CEE6AD21C4E8FDC00A1ECB5 /* ChatListTableManager.swift in Sources */,
 				9CEE6B011C4E8FDC00A1ECB5 /* SettingsTabCoordinator.swift in Sources */,
+				114962761C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */,
 				9CEE6B151C4E8FDC00A1ECB5 /* StaticBackgroundView.swift in Sources */,
 				9CEE6AFD1C4E8FDC00A1ECB5 /* FriendsTabCoordinator.swift in Sources */,
 				9CEE6ACF1C4E8FDC00A1ECB5 /* StaticTableSelectableCellModel.swift in Sources */,

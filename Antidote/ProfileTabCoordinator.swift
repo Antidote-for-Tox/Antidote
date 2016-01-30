@@ -88,7 +88,9 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
     }
 
     func profileMainControllerShowProfileDetails(controller: ProfileMainController) {
-
+        let controller = ProfileDetailsController(theme: theme, toxManager: toxManager)
+        controller.delegate = self
+        navigationController.pushViewController(controller, animated: true)
     }
 }
 
@@ -104,6 +106,16 @@ extension ProfileTabCoordinator: ChangeUserStatusControllerDelegate {
 extension ProfileTabCoordinator: QRViewerControllerDelegate {
     func qrViewerControllerDidFinishPresenting() {
         navigationController.dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
+    func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
+
+    }
+
+    func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
+
     }
 }
 

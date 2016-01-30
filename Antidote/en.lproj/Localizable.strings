@@ -136,3 +136,13 @@
 "settings_ipv6_enabled" = "IPv6 Enabled";
 "settings_udp_enabled" = "UDP Enabled";
 "settings_restore_default" = "Restore Default Settings";
+
+"set_password" = "Set Password";
+"change_password" = "Change Password";
+"export_profile" = "Export Profile";
+"delete_profile" = "Delete Profile";
+"delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";
+"delete_profile_confirmation_title_2" = "Delete profile?";
+"delete_profile_confirmation_message" = "This operation cannot be undone!";
+"delete_profile_yes" = "Delete";
+"delete_profile_cancel" = "Cancel";
