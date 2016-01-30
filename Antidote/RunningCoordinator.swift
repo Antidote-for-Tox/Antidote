@@ -10,6 +10,7 @@ import UIKit
 
 protocol RunningCoordinatorDelegate: class {
     func runningCoordinatorDidLogout(coordinator: RunningCoordinator)
+    func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator)
     func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions)
 }
 
@@ -202,7 +203,13 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         delegate?.runningCoordinatorDidLogout(self)
     }
 
-    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator) 
+    func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator) {
+        UserDefaultsManager().isUserLoggedIn = false
+
+        delegate?.runningCoordinatorDeleteProfile(self)
+    }
+
+    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
     {
         updateUserStatusView()
     }

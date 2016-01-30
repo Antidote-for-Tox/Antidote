@@ -16,7 +16,7 @@ protocol ProfileDetailsControllerDelegate: class {
 class ProfileDetailsController: StaticTableController {
     weak var delegate: ProfileDetailsControllerDelegate?
 
-    private let toxManager: OCTManager
+    private weak var toxManager: OCTManager?
 
     private let passwordModel = StaticTableDefaultCellModel()
     private let exportProfileModel = StaticTableButtonCellModel()
@@ -70,7 +70,7 @@ extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
 
 private extension ProfileDetailsController {
     func updateModels() {
-        if let passphrase = toxManager.configuration().passphrase where !passphrase.isEmpty {
+        if let passphrase = toxManager?.configuration().passphrase where !passphrase.isEmpty {
             passwordModel.value = String(localized: "change_password")
         }
         else {
@@ -91,6 +91,10 @@ private extension ProfileDetailsController {
     }
 
     func exportProfile() {
+        guard let toxManager = toxManager else {
+            return
+        }
+
         do {
             let path = try toxManager.exportToxSaveFile()
 

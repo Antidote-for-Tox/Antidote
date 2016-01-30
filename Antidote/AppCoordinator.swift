@@ -64,6 +64,23 @@ extension AppCoordinator: RunningCoordinatorDelegate {
         startWithOptions(nil)
     }
 
+    func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator) {
+        let userDefaults = UserDefaultsManager()
+        let profileManager = ProfileManager()
+
+        let name = userDefaults.lastActiveProfile!
+
+        do {
+            try profileManager.deleteProfileWithName(name)
+
+            userDefaults.lastActiveProfile = nil
+            startWithOptions(nil)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.DeleteProfile, error: error)
+        }
+    }
+
     func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions) {
         activeCoordinator = createRunningCoordinatorWithManager(nil)
         activeCoordinator.startWithOptions(options)

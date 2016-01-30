@@ -10,6 +10,7 @@ import UIKit
 
 protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
+    func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator)
     func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
 }
 
@@ -115,7 +116,7 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
     }
 
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
-
+        delegate?.profileTabCoordinatorDelegateDeleteProfile(self)
     }
 }
 

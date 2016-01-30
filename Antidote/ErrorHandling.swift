@@ -16,6 +16,7 @@ enum ErrorHandlerType {
     case ToxAddFriend
     case CallToChat
     case ExportProfile
+    case DeleteProfile
 }
 
 
@@ -39,6 +40,8 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             let (title, message) = OCTToxAVErrorCall(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
         case .ExportProfile:
+            UIAlertView.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription)
+        case .DeleteProfile:
             UIAlertView.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription)
     }
 }
