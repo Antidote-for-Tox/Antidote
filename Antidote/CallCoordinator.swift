@@ -10,7 +10,7 @@ import Foundation
 
 class CallCoordinator: NSObject {
     private let theme: Theme
-    private let submanagerCalls: OCTSubmanagerCalls
+    private weak var submanagerCalls: OCTSubmanagerCalls!
 
     private let navigationControllerStorage: LazyStorage<UINavigationController>
 

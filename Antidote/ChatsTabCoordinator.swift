@@ -16,8 +16,8 @@ protocol ChatsTabCoordinatorDelegate: class {
 class ChatsTabCoordinator: RunningNavigationCoordinator {
     weak var delegate: ChatsTabCoordinatorDelegate?
 
-    private let submanagerObjects: OCTSubmanagerObjects
-    private let submanagerChats: OCTSubmanagerChats
+    private weak var submanagerObjects: OCTSubmanagerObjects!
+    private weak var submanagerChats: OCTSubmanagerChats!
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerChats: OCTSubmanagerChats) {
         self.submanagerObjects = submanagerObjects

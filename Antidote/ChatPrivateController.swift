@@ -34,8 +34,8 @@ class ChatPrivateController: KeyboardNotificationController {
 
     private let theme: Theme
     private let friend: OCTFriend
-    private let submanagerChats: OCTSubmanagerChats
-    private let submanagerObjects: OCTSubmanagerObjects
+    private weak var submanagerChats: OCTSubmanagerChats!
+    private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private let dataSource: PortionDataSource
     private let friendController: RBQFetchedResultsController

@@ -16,7 +16,7 @@ class ChatListController: UIViewController {
     weak var delegate: ChatListControllerDelegate?
 
     private let theme: Theme
-    private let submanagerObjects: OCTSubmanagerObjects
+    private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var tableManager: ChatListTableManager!
 

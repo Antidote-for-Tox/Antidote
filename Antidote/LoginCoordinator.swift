@@ -16,8 +16,8 @@ class LoginCoordinator {
     weak var delegate: LoginCoordinatorDelegate?
 
     let window: UIWindow
-    let navigationController: UINavigationController
     let theme: Theme
+    let navigationController: UINavigationController
 
     init(theme: Theme, window: UIWindow) {
         self.window = window

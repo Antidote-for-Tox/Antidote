@@ -21,7 +21,7 @@ class FriendListController: UIViewController {
 
     private let dataSource: FriendListDataSource
 
-    private let submanagerFriends: OCTSubmanagerFriends
+    private weak var submanagerFriends: OCTSubmanagerFriends!
 
     private var tableView: UITableView!
 

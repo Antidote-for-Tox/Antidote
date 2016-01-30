@@ -32,7 +32,7 @@ class AddFriendController: UIViewController {
     weak var delegate: AddFriendControllerDelegate?
 
     private let theme: Theme
-    private let submanagerFriends: OCTSubmanagerFriends
+    private weak var submanagerFriends: OCTSubmanagerFriends!
 
     private var textView: UITextView!
 

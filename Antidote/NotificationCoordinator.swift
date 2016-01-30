@@ -30,7 +30,7 @@ class NotificationCoordinator: NSObject {
 
     private let notificationWindow: NotificationWindow
 
-    private let submanagerObjects: OCTSubmanagerObjects
+    private weak var submanagerObjects: OCTSubmanagerObjects!
     private let messagesController: RBQFetchedResultsController
     private let requestsController: RBQFetchedResultsController
     private let avatarManager: AvatarManager

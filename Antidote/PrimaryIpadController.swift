@@ -22,7 +22,7 @@ class PrimaryIpadController: UIViewController {
     weak var delegate: PrimaryIpadControllerDelegate?
 
     private let theme: Theme
-    private let submanagerObjects: OCTSubmanagerObjects
+    private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var friendsButton: UIButton!
     private var settingsButton: UIButton!

@@ -53,6 +53,8 @@ class RunningCoordinator: NSObject {
 
     private let theme: Theme
     private let window: UIWindow
+
+    // Tox manager is stored here
     private let toxManager: OCTManager
 
     private let friendsCoordinator: FriendsTabCoordinator

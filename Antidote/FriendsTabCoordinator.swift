@@ -17,7 +17,7 @@ protocol FriendsTabCoordinatorDelegate: class {
 class FriendsTabCoordinator: RunningNavigationCoordinator {
     weak var delegate: FriendsTabCoordinatorDelegate?
 
-    private let toxManager: OCTManager
+    private weak var toxManager: OCTManager!
 
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager

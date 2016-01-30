@@ -20,7 +20,7 @@ protocol ProfileMainControllerDelegate: class {
 class ProfileMainController: StaticTableController {
     weak var delegate: ProfileMainControllerDelegate?
 
-    private let submanagerUser: OCTSubmanagerUser
+    private weak var submanagerUser: OCTSubmanagerUser!
     private let avatarManager: AvatarManager
 
     private let avatarModel = StaticTableAvatarCellModel()
