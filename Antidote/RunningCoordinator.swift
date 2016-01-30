@@ -139,13 +139,7 @@ extension RunningCoordinator: CoordinatorProtocol {
 
 extension RunningCoordinator: OCTSubmanagerUserDelegate {
     func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
-        switch InterfaceIdiom.current() {
-            case .iPhone:
-                iPhone.profileTabBarItem.userStatus = UserStatus(connectionStatus: connectionStatus, userStatus: submanager.userStatus)
-            case .iPad:
-                // TODO
-                break
-        }
+        updateUserStatusView()
 
         let show = (connectionStatus == .None)
         notificationCoordinator.toggleConnectingView(show: show, animated: true)
@@ -206,6 +200,11 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         UserDefaultsManager().isUserLoggedIn = false
 
         delegate?.runningCoordinatorDidLogout(self)
+    }
+
+    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator) 
+    {
+        updateUserStatusView()
     }
 }
 
@@ -352,6 +351,18 @@ private extension RunningCoordinator {
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Settings.rawValue
             case .iPad:
                 primaryIpadControllerShowFriends(iPad.primaryController)
+        }
+    }
+
+    func updateUserStatusView() {
+        let status = UserStatus(connectionStatus: toxManager.user.connectionStatus, userStatus: toxManager.user.userStatus)
+
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                iPhone.profileTabBarItem.userStatus = status
+            case .iPad:
+                // TODO
+                break
         }
     }
 }

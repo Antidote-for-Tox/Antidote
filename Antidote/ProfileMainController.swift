@@ -84,7 +84,7 @@ private extension ProfileMainController {
 
         userNameModel.title = String(localized: "name")
         userNameModel.value = submanagerUser.userName()
-        userNameModel.showArrow = true
+        userNameModel.rightImageType = .Arrow
         userNameModel.didSelectHandler = changeUserName
 
         // Hardcoding any connected status to show only online/away/busy statuses here.
@@ -92,23 +92,23 @@ private extension ProfileMainController {
 
         userStatusModel.userStatus = userStatus
         userStatusModel.value = userStatus.toString()
-        userStatusModel.showArrow = true
+        userStatusModel.rightImageType = .Arrow
         userStatusModel.didSelectHandler = changeUserStatus
 
         statusMessageModel.title = String(localized: "status_message")
         statusMessageModel.value = submanagerUser.userStatusMessage()
-        statusMessageModel.showArrow = true
+        statusMessageModel.rightImageType = .Arrow
         statusMessageModel.didSelectHandler = changeStatusMessage
 
         toxIdModel.title = String(localized: "my_tox_id")
         toxIdModel.value = submanagerUser.userAddress
         toxIdModel.rightButton = String(localized: "show_qr")
         toxIdModel.rightButtonHandler = showToxIdQR
-        toxIdModel.showArrow = false
         toxIdModel.userInteractionEnabled = false
 
         profileDetailsModel.value = String(localized: "profile_details")
         profileDetailsModel.didSelectHandler = showProfileDetails
+        profileDetailsModel.rightImageType = .Arrow
 
         logoutModel.title = String(localized: "logout_button")
         logoutModel.didSelectHandler = logout

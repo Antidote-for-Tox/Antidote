@@ -70,9 +70,11 @@ private extension SettingsMainController{
     func updateModels() {
         aboutModel.value = String(localized: "settings_about")
         aboutModel.didSelectHandler = showAboutScreen
+        aboutModel.rightImageType = .Arrow
 
         betaTesterMenuModel.value = String(localized: "settings_beta_tester_menu")
         betaTesterMenuModel.didSelectHandler = showBetaTesterMenu
+        betaTesterMenuModel.rightImageType = .Arrow
 
         notificationsModel.title = String(localized: "settings_notifications_message_preview")
         notificationsModel.on = userDefaults.showNotificationPreview
@@ -80,6 +82,7 @@ private extension SettingsMainController{
 
         advancedSettingsModel.value = String(localized: "settings_advanced_settings")
         advancedSettingsModel.didSelectHandler = showAdvancedSettings
+        advancedSettingsModel.rightImageType = .Arrow
 
         feedbackModel.title = String(localized: "settings_feedback")
         feedbackModel.didSelectHandler = feedback

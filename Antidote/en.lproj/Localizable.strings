@@ -93,6 +93,7 @@
 "name" = "Name";
 "nickname" = "Nickname";
 "status_message" = "Status Message";
+"status_title" = "Status";
 "my_tox_id" = "My Tox ID";
 "public_key" = "Public Key";
 "show_qr" = "Show QR";

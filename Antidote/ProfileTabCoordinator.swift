@@ -10,6 +10,7 @@ import UIKit
 
 protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
+    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
 }
 
 class ProfileTabCoordinator: RunningNavigationCoordinator {
@@ -56,7 +57,9 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
     }
 
     func profileMainControllerChangeUserStatus(controller: ProfileMainController) {
-        // TODO
+        let controller = ChangeUserStatusController(theme: theme, selectedStatus: toxManager.user.userStatus)
+        controller.delegate = self
+        navigationController.pushViewController(controller, animated: true)
     }
 
     func profileMainControllerChangeStatusMessage(controller: ProfileMainController) {
@@ -86,6 +89,15 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
 
     func profileMainControllerShowProfileDetails(controller: ProfileMainController) {
 
+    }
+}
+
+extension ProfileTabCoordinator: ChangeUserStatusControllerDelegate {
+    func changeUserStatusController(controller: ChangeUserStatusController, selectedStatus: OCTToxUserStatus) {
+        toxManager.user.userStatus = selectedStatus
+        navigationController.popViewControllerAnimated(true)
+
+        delegate?.profileTabCoordinatorDelegateDidChangeUserStatus(self)
     }
 }
 

@@ -22,7 +22,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
     private var titleLabel: UILabel!
     private var valueLabel: UILabel!
     private var rightButton: UIButton!
-    private var arrowImageView: UIImageView!
+    private var rightImageView: UIImageView!
 
     private var userStatusViewVisibleConstraint: Constraint!
     private var userStatusViewHiddenConstraint: Constraint!
@@ -69,7 +69,17 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         rightButton.setTitle(defaultModel.rightButton, forState: .Normal)
         rightButtonHandler = defaultModel.rightButtonHandler
 
-        arrowImageView.hidden = !defaultModel.showArrow
+        let showRightImageView: Bool
+        switch defaultModel.rightImageType {
+            case .None:
+                showRightImageView = false
+            case .Arrow:
+                showRightImageView = true
+                rightImageView.image = UIImage(named: "right-arrow")!
+            case .Checkmark:
+                showRightImageView = true
+                rightImageView.image = UIImage(named: "checkmark")!
+        }
 
         if defaultModel.userInteractionEnabled {
             selectionStyle = .Default
@@ -87,11 +97,15 @@ class StaticTableDefaultCell: StaticTableBaseCell {
             valueLabelToContentTopConstraint.activate()
         }
 
-        if defaultModel.showArrow {
+        if showRightImageView {
+            rightImageView.hidden = false
+
             valueLabelToContentRightConstraint.deactivate()
             valueLabelToArrowConstraint.activate()
         }
         else {
+            rightImageView.hidden = true
+
             valueLabelToArrowConstraint.deactivate()
             valueLabelToContentRightConstraint.activate()
         }
@@ -119,9 +133,8 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         rightButton.addTarget(self, action: "rightButtonPressed", forControlEvents: .TouchUpInside)
         customContentView.addSubview(rightButton)
 
-        let image = UIImage(named: "right-arrow")!
-        arrowImageView = UIImageView(image: image)
-        customContentView.addSubview(arrowImageView)
+        rightImageView = UIImageView()
+        customContentView.addSubview(rightImageView)
     }
 
     override func installConstraints() {
@@ -168,7 +181,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
             $0.bottom.lessThanOrEqualTo(customContentView)
         }
 
-        arrowImageView.snp_makeConstraints {
+        rightImageView.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.right.equalTo(customContentView)
 

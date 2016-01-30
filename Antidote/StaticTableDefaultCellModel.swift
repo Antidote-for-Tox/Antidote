@@ -9,6 +9,12 @@
 import Foundation
 
 class StaticTableDefaultCellModel: StaticTableSelectableCellModel {
+    enum RightImageType {
+        case None
+        case Arrow
+        case Checkmark
+    }
+
     var userStatus: UserStatus?
 
     var title: String?
@@ -17,7 +23,7 @@ class StaticTableDefaultCellModel: StaticTableSelectableCellModel {
     var rightButton: String?
     var rightButtonHandler: (Void -> Void)?
 
-    var showArrow: Bool = true
+    var rightImageType: RightImageType = .None
 
     var userInteractionEnabled: Bool = true
 }

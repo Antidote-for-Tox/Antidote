@@ -101,24 +101,21 @@ private extension FriendCardController {
 
         nicknameModel.title = String(localized: "nickname")
         nicknameModel.value = friend.nickname
-        nicknameModel.showArrow = true
+        nicknameModel.rightImageType = .Arrow
         nicknameModel.didSelectHandler = { [unowned self] in
             self.delegate?.friendCardControllerChangeNickname(self, forFriend: self.friend)
         }
 
         nameModel.title = String(localized: "name")
         nameModel.value = friend.name
-        nameModel.showArrow = false
         nameModel.userInteractionEnabled = false
 
         statusMessageModel.title = String(localized: "status_message")
         statusMessageModel.value = friend.statusMessage
-        statusMessageModel.showArrow = false
         statusMessageModel.userInteractionEnabled = false
 
         publicKeyModel.title = String(localized: "public_key")
         publicKeyModel.value = friend.publicKey
-        publicKeyModel.showArrow = false
         publicKeyModel.userInteractionEnabled = false
     }
 }

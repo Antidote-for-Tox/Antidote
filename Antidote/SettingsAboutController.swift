@@ -37,17 +37,14 @@ private extension SettingsAboutController {
     func updateModels() {
         antidoteVersionModel.title = String(localized: "settings_antidote_version")
         antidoteVersionModel.value =  NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
-        antidoteVersionModel.showArrow = false
         antidoteVersionModel.userInteractionEnabled = false
 
         antidoteBuildModel.title = String(localized: "settings_antidote_build")
         antidoteBuildModel.value = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String
-        antidoteBuildModel.showArrow = false
         antidoteBuildModel.userInteractionEnabled = false
 
         toxcoreVersionModel.title = String(localized: "settings_toxcore_version")
         toxcoreVersionModel.value = OCTTox.version()
-        toxcoreVersionModel.showArrow = false
         toxcoreVersionModel.userInteractionEnabled = false
     }
 }
