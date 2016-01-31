@@ -1,5 +1,5 @@
 //
-//  LoginExtendedTextField.swift
+//  ExtendedTextField.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 27/10/15.
@@ -14,12 +14,16 @@ private struct Constants {
     static let VerticalOffset = 5.0
 }
 
-protocol LoginExtendedTextFieldDelegate: class {
-    func loginExtendedTextFieldReturnKeyPressed(field: LoginExtendedTextField)
+protocol ExtendedTextFieldDelegate: class {
+    func loginExtendedTextFieldReturnKeyPressed(field: ExtendedTextField)
 }
 
-class LoginExtendedTextField: UIView {
-    weak var delegate: LoginExtendedTextFieldDelegate?
+class ExtendedTextField: UIView {
+    enum Type {
+        case Login
+    }
+
+    weak var delegate: ExtendedTextFieldDelegate?
 
     var maxTextUTF8Length: Int = Int.max
 
@@ -77,17 +81,14 @@ class LoginExtendedTextField: UIView {
         }
     }
 
-    private let theme: Theme
     private var titleLabel: UILabel!
     private var textField: UITextField!
     private var hintLabel: UILabel!
 
-    init(theme: Theme) {
-        self.theme = theme
-
+    init(theme: Theme, type: Type) {
         super.init(frame: CGRectZero)
 
-        createViews()
+        createViews(theme: theme, type: type)
         installConstraints()
     }
 
@@ -100,7 +101,7 @@ class LoginExtendedTextField: UIView {
     }
 }
 
-extension LoginExtendedTextField: UITextFieldDelegate {
+extension ExtendedTextField: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         delegate?.loginExtendedTextFieldReturnKeyPressed(self)
         return false
@@ -118,10 +119,17 @@ extension LoginExtendedTextField: UITextFieldDelegate {
     }
 }
 
-private extension LoginExtendedTextField {
-    func createViews() {
+private extension ExtendedTextField {
+    func createViews(theme theme: Theme, type: Type) {
+        let textColor: UIColor
+
+        switch type {
+            case .Login:
+                textColor = theme.colorForType(.LoginDescriptionLabel)
+        }
+
         titleLabel = UILabel()
-        titleLabel.textColor = theme.colorForType(.LoginDescriptionLabel)
+        titleLabel.textColor = textColor
         titleLabel.font = UIFont.systemFontOfSize(18.0)
         titleLabel.backgroundColor = .clearColor()
         addSubview(titleLabel)
@@ -134,7 +142,7 @@ private extension LoginExtendedTextField {
         addSubview(textField)
 
         hintLabel = UILabel()
-        hintLabel.textColor = theme.colorForType(.LoginDescriptionLabel)
+        hintLabel.textColor = textColor
         hintLabel.font = UIFont.systemFontOfSize(14.0, weight: UIFontWeightLight)
         hintLabel.numberOfLines = 0
         hintLabel.backgroundColor = .clearColor()

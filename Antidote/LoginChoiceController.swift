@@ -19,9 +19,9 @@ class LoginChoiceController: LoginLogoController {
 
     private var incompressibleContainer: IncompressibleView!
     private var welcomeLabel: UILabel!
-    private var createAccountButton: LoginButton!
+    private var createAccountButton: RoundedButton!
     private var orLabel: UILabel!
-    private var importProfileButton: LoginButton!
+    private var importProfileButton: RoundedButton!
 
     override func loadView() {
         super.loadView()
@@ -105,8 +105,8 @@ private extension LoginChoiceController {
         return label
     }
 
-    func createButtonWithTitle(title: String, action: Selector) -> LoginButton {
-        let button = LoginButton(theme: theme)
+    func createButtonWithTitle(title: String, action: Selector) -> RoundedButton {
+        let button = RoundedButton(theme: theme, type: .Login)
         button.setTitle(title, forState: .Normal)
         button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
 

@@ -25,9 +25,9 @@ class LoginCreateAccountController: LoginBaseController {
     private var containerViewTopConstraint: Constraint!
 
     private var titleLabel: UILabel!
-    private var usernameView: LoginExtendedTextField!
-    private var profileView: LoginExtendedTextField!
-    private var goButton: LoginButton!
+    private var usernameView: ExtendedTextField!
+    private var profileView: ExtendedTextField!
+    private var goButton: RoundedButton!
 
     override func loadView() {
         super.loadView()
@@ -70,8 +70,8 @@ extension LoginCreateAccountController {
     }
 }
 
-extension LoginCreateAccountController: LoginExtendedTextFieldDelegate {
-    func loginExtendedTextFieldReturnKeyPressed(field: LoginExtendedTextField) {
+extension LoginCreateAccountController: ExtendedTextFieldDelegate {
+    func loginExtendedTextFieldReturnKeyPressed(field: ExtendedTextField) {
         if field == usernameView {
             profileView.becomeFirstResponder()
         }
@@ -104,7 +104,7 @@ private extension LoginCreateAccountController {
     }
 
     func createExtendedTextFields() {
-        usernameView = LoginExtendedTextField(theme: theme)
+        usernameView = ExtendedTextField(theme: theme, type: .Login)
         usernameView.delegate = self
         usernameView.title = String(localized: "create_account_username_title")
         usernameView.placeholder = String(localized: "create_account_username_placeholder")
@@ -112,7 +112,7 @@ private extension LoginCreateAccountController {
         usernameView.maxTextUTF8Length = Int(kOCTToxMaxNameLength)
         containerView.addSubview(usernameView)
 
-        profileView = LoginExtendedTextField(theme: theme)
+        profileView = ExtendedTextField(theme: theme, type: .Login)
         profileView.delegate = self
         profileView.title = String(localized: "create_account_profile_title")
         profileView.placeholder = String(localized: "create_account_profile_placeholder")
@@ -122,7 +122,7 @@ private extension LoginCreateAccountController {
     }
 
     func createGoButton() {
-        goButton = LoginButton(theme: theme)
+        goButton = RoundedButton(theme: theme, type: .Login)
         goButton.setTitle(String(localized: "create_account_go_button"), forState: .Normal)
         goButton.addTarget(self, action: "goButtonPressed", forControlEvents: .TouchUpInside)
         containerView.addSubview(goButton)

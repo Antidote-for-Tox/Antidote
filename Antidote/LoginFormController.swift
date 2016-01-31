@@ -35,7 +35,7 @@ class LoginFormController: LoginLogoController {
     private var profileButton: UIButton!
     private var passwordField: UITextField!
 
-    private var loginButton: LoginButton!
+    private var loginButton: RoundedButton!
 
     private var bottomButtonsContainer: UIView!
     private var createAccountButton: UIButton!
@@ -174,7 +174,7 @@ private extension LoginFormController {
     }
 
     func createLoginButton() {
-        loginButton = LoginButton(theme: theme)
+        loginButton = RoundedButton(theme: theme, type: .Login)
         loginButton.setTitle(String(localized:"log_in"), forState: .Normal)
         loginButton.addTarget(self, action: "loginButtonPressed", forControlEvents: .TouchUpInside)
         contentContainerView.addSubview(loginButton)
