@@ -17,6 +17,8 @@
 		1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
 		114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */; };
 		114962761C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */; };
+		114962921C5E1BE0001E5435 /* PasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962911C5E1BE0001E5435 /* PasswordController.swift */; };
+		114962931C5E1BE0001E5435 /* PasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962911C5E1BE0001E5435 /* PasswordController.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
 		1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
 		1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
@@ -121,7 +123,6 @@
 		11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; };
 		11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; };
 		11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; };
-		11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; };
 		11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; };
 		11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
 		24B56823048809489AF08EE7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7E7D2AE7333141D09DEE1E40 /* libPods.a */; };
@@ -213,7 +214,6 @@
 		9CEE6AF81C4E8FDC00A1ECB5 /* LoginCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */; };
 		9CEE6AF91C4E8FDC00A1ECB5 /* RunningCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */; };
 		9CEE6AFA1C4E8FDC00A1ECB5 /* CallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */; };
-		9CEE6AFB1C4E8FDC00A1ECB5 /* ChangePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */; };
 		9CEE6AFC1C4E8FDC00A1ECB5 /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
 		9CEE6AFD1C4E8FDC00A1ECB5 /* FriendsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */; };
 		9CEE6AFE1C4E8FDC00A1ECB5 /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */; };
@@ -358,6 +358,7 @@
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
 		114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailsController.swift; sourceTree = "<group>"; };
+		114962911C5E1BE0001E5435 /* PasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordController.swift; sourceTree = "<group>"; };
 		1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCellModel.swift; sourceTree = "<group>"; };
 		1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableButtonCellModel.swift; sourceTree = "<group>"; };
 		1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSelectableCellModel.swift; sourceTree = "<group>"; };
@@ -459,7 +460,6 @@
 		11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCoordinator.swift; sourceTree = "<group>"; };
 		11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsTabCoordinator.swift; sourceTree = "<group>"; };
 		11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTabCoordinator.swift; sourceTree = "<group>"; };
-		11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordCoordinator.swift; sourceTree = "<group>"; };
 		11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTabCoordinator.swift; sourceTree = "<group>"; };
 		11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsTabCoordinator.swift; sourceTree = "<group>"; };
 		4ADD1C1DD88A391117C30B9F /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -753,7 +753,6 @@
 			isa = PBXGroup;
 			children = (
 				1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */,
-				11FA0EEE1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift */,
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
 				9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */,
@@ -803,6 +802,7 @@
 				112DA6D21C457CE4004FB1E6 /* DialingCallController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
+				114962911C5E1BE0001E5435 /* PasswordController.swift */,
 				9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */,
 				114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */,
 				9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */,
@@ -1195,7 +1195,6 @@
 				1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */,
 				11B252FC1C4A61550068F47C /* ChatIncomingTextCellModel.swift in Sources */,
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
-				11FA0EEF1BC5A69B00F3DA5B /* ChangePasswordCoordinator.swift in Sources */,
 				11B253F21C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
@@ -1220,6 +1219,7 @@
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
+				114962921C5E1BE0001E5435 /* PasswordController.swift in Sources */,
 				9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */,
 				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
@@ -1240,7 +1240,6 @@
 				9CEE6ACC1C4E8FDC00A1ECB5 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				9CEE6AFC1C4E8FDC00A1ECB5 /* ChatsTabCoordinator.swift in Sources */,
 				9CEE6AD91C4E8FDC00A1ECB5 /* TabBarProfileItem.swift in Sources */,
-				9CEE6AFB1C4E8FDC00A1ECB5 /* ChangePasswordCoordinator.swift in Sources */,
 				9CEE6B181C4E8FDC00A1ECB5 /* RoundedButton.swift in Sources */,
 				11B253A51C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
 				9CEE6B201C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
@@ -1263,6 +1262,7 @@
 				9CEE6B091C4E8FDC00A1ECB5 /* UIColorExtension.swift in Sources */,
 				9CEE6B501C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */,
 				9CEE6AC61C4E8FDC00A1ECB5 /* StaticTableAvatarCellModel.swift in Sources */,
+				114962931C5E1BE0001E5435 /* PasswordController.swift in Sources */,
 				9CEE6AF21C4E8FDC00A1ECB5 /* TabBarController.swift in Sources */,
 				9CEE6B081C4E8FDC00A1ECB5 /* UIAlertViewExtension.swift in Sources */,
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,

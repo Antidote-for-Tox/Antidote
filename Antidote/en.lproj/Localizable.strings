@@ -139,6 +139,15 @@
 
 "set_password" = "Set Password";
 "change_password" = "Change Password";
+"delete_password" = "Delete Password";
+"old_password" = "Old Password";
+"new_password" = "New Password";
+"repeat_password" = "Repeat Password";
+"change_password_done" = "Done";
+"password_is_empty_error" = "Password should be non-empty";
+"wrong_old_password" = "Wrong password";
+"passwords_do_not_match" = "Passwords do not match";
+
 "export_profile" = "Export Profile";
 "delete_profile" = "Delete Profile";
 "delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";

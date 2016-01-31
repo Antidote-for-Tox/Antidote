@@ -12,7 +12,7 @@ import SnapKit
 class StaticTableController: UIViewController {
     private let theme: Theme
     private let tableViewStyle: UITableViewStyle
-    private let modelArray: [[StaticTableBaseCellModel]]
+    private var modelArray: [[StaticTableBaseCellModel]]
     private let footerArray: [String?]?
 
     private var tableView: UITableView?
@@ -42,6 +42,11 @@ class StaticTableController: UIViewController {
 
     func reloadTableView() {
         tableView?.reloadData()
+    }
+
+    func updateModelArray(model: [[StaticTableBaseCellModel]]) {
+        modelArray = model
+        reloadTableView()
     }
 }
 

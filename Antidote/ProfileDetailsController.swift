@@ -9,7 +9,9 @@
 import UIKit
 
 protocol ProfileDetailsControllerDelegate: class {
+    func profileDetailsControllerSetPassword(controller: ProfileDetailsController)
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
+    func profileDetailsControllerDeletePassword(controller: ProfileDetailsController)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
 
@@ -18,7 +20,9 @@ class ProfileDetailsController: StaticTableController {
 
     private weak var toxManager: OCTManager!
 
-    private let passwordModel = StaticTableDefaultCellModel()
+    private let setPasswordModel = StaticTableButtonCellModel()
+    private let changePasswordModel = StaticTableButtonCellModel()
+    private let deletePasswordModel = StaticTableButtonCellModel()
     private let exportProfileModel = StaticTableButtonCellModel()
     private let deleteProfileModel = StaticTableButtonCellModel()
 
@@ -27,19 +31,11 @@ class ProfileDetailsController: StaticTableController {
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager
 
-        super.init(theme: theme, style: .Plain, model: [
-            [
-                passwordModel,
-            ],
-            [
-                exportProfileModel,
-                deleteProfileModel,
-            ],
-        ])
+        super.init(theme: theme, style: .Plain, model: [[]])
 
-        updateModels()
+        updateModel()
 
-        title = String(localized: "status_title")
+        title = String(localized: "profile_details")
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -49,7 +45,7 @@ class ProfileDetailsController: StaticTableController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        updateModels()
+        updateModel()
         reloadTableView()
     }
 }
@@ -69,15 +65,42 @@ extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
 }
 
 private extension ProfileDetailsController {
-    func updateModels() {
+    func updateModel() {
+        var model = [[StaticTableBaseCellModel]]()
+
         if let passphrase = toxManager.configuration().passphrase where !passphrase.isEmpty {
-            passwordModel.value = String(localized: "change_password")
+            model += [
+                [
+                    changePasswordModel,
+                    deletePasswordModel,
+                ]
+            ]
         }
         else {
-            passwordModel.value = String(localized: "set_password")
+            model += [
+                [
+                    setPasswordModel,
+                ]
+            ]
         }
-        passwordModel.didSelectHandler = changePassword
-        passwordModel.rightImageType = .Arrow
+
+        model += [
+            [
+                exportProfileModel,
+                deleteProfileModel,
+            ],
+        ]
+
+        updateModelArray(model)
+
+        setPasswordModel.title = String(localized: "set_password")
+        setPasswordModel.didSelectHandler = setPassword
+
+        changePasswordModel.title = String(localized: "change_password")
+        changePasswordModel.didSelectHandler = changePassword
+
+        deletePasswordModel.title = String(localized: "delete_password")
+        deletePasswordModel.didSelectHandler = deletePassword
 
         exportProfileModel.title = String(localized: "export_profile")
         exportProfileModel.didSelectHandler = exportProfile
@@ -86,8 +109,16 @@ private extension ProfileDetailsController {
         deleteProfileModel.didSelectHandler = deleteProfile
     }
 
+    func setPassword() {
+        delegate?.profileDetailsControllerSetPassword(self)
+    }
+
     func changePassword() {
         delegate?.profileDetailsControllerChangePassword(self)
+    }
+
+    func deletePassword() {
+        delegate?.profileDetailsControllerDeletePassword(self)
     }
 
     func exportProfile() {

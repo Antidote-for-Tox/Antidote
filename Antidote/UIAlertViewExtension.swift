@@ -13,7 +13,7 @@ extension UIAlertView {
         showWithTitle(String(localized: "error_title"), message: message)
     }
 
-    class func showWithTitle(title: String, message: String) {
+    class func showWithTitle(title: String, message: String? = nil) {
         let alertView = UIAlertView(
                 title: title,
                 message: message,

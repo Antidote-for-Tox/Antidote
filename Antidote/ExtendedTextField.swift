@@ -21,6 +21,7 @@ protocol ExtendedTextFieldDelegate: class {
 class ExtendedTextField: UIView {
     enum Type {
         case Login
+        case Normal
     }
 
     weak var delegate: ExtendedTextFieldDelegate?
@@ -126,6 +127,8 @@ private extension ExtendedTextField {
         switch type {
             case .Login:
                 textColor = theme.colorForType(.LoginDescriptionLabel)
+            case .Normal:
+                textColor = theme.colorForType(.NormalText)
         }
 
         titleLabel = UILabel()

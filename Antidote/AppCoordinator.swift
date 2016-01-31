@@ -8,6 +8,10 @@
 
 import UIKit
 
+private struct Constants {
+    static let ToxManagerKey = "ToxManagerKey"
+}
+
 class AppCoordinator {
     private let window: UIWindow
     private var activeCoordinator: CoordinatorProtocol!
@@ -41,7 +45,7 @@ extension AppCoordinator: CoordinatorProtocol {
         var coordinator: CoordinatorProtocol?
 
         if UserDefaultsManager().isUserLoggedIn {
-            coordinator = createRunningCoordinatorWithManager(nil)
+            coordinator = createRunningCoordinatorWithManager(options?[Constants.ToxManagerKey] as? OCTManager)
         }
 
         if coordinator == nil {
@@ -89,7 +93,7 @@ extension AppCoordinator: RunningCoordinatorDelegate {
 
 extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
-        startWithOptions(nil)
+        startWithOptions([ Constants.ToxManagerKey: manager ])
     }
 }
 

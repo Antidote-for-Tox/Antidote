@@ -200,7 +200,7 @@ private extension LoginCoordinator {
 
     class func createOCTManagerWithProfile(profile: String, password: String?) throws -> OCTManager {
         let path = ProfileManager().pathForProfileWithName(profile)
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: password)!
 
         return try OCTManager(configuration: configuration)
     }

@@ -17,6 +17,9 @@ enum ErrorHandlerType {
     case CallToChat
     case ExportProfile
     case DeleteProfile
+    case PasswordIsEmpty
+    case WrongOldPassword
+    case PasswordsDoNotMatch
 }
 
 
@@ -43,6 +46,12 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription)
         case .DeleteProfile:
             UIAlertView.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription)
+        case .PasswordIsEmpty:
+            UIAlertView.showWithTitle(String(localized: "password_is_empty_error"))
+        case .WrongOldPassword:
+            UIAlertView.showWithTitle(String(localized: "wrong_old_password"))
+        case .PasswordsDoNotMatch:
+            UIAlertView.showWithTitle(String(localized: "passwords_do_not_match"))
     }
 }
 
