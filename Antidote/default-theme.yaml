@@ -56,3 +56,4 @@ values:
   notification-background: transparent_dark_gray
   notification-text: white
   settings-background: lightgraypink
+  call-text-color: white

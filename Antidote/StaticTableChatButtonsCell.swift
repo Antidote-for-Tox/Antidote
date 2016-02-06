@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 
 private struct Constants {
-    static let ButtonSize = 50.0
+    static let ButtonSize = 40.0
     static let VerticalOffset = 8.0
 }
 
@@ -48,8 +48,8 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
         super.createViews()
 
         chatButton = createButtonWithImageName("friend-card-chat", action: "chatButtonPressed")
-        callButton = createButtonWithImageName("call-phone", action: "callButtonPressed")
-        videoButton = createButtonWithImageName("call-video", action: "videoButtonPressed")
+        callButton = createButtonWithImageName("start-call", action: "callButtonPressed")
+        videoButton = createButtonWithImageName("video-call", action: "videoButtonPressed")
 
         separators = [UIView]()
         for _ in 0...3 {

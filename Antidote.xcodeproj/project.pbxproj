@@ -18,6 +18,8 @@
 		114962761C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */; };
 		114962921C5E1BE0001E5435 /* PasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962911C5E1BE0001E5435 /* PasswordController.swift */; };
 		114962931C5E1BE0001E5435 /* PasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962911C5E1BE0001E5435 /* PasswordController.swift */; };
+		114962951C64051A001E5435 /* CallBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962941C64051A001E5435 /* CallBaseController.swift */; };
+		114962961C64051A001E5435 /* CallBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962941C64051A001E5435 /* CallBaseController.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
 		1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
 		1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
@@ -346,6 +348,7 @@
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
 		114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailsController.swift; sourceTree = "<group>"; };
 		114962911C5E1BE0001E5435 /* PasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordController.swift; sourceTree = "<group>"; };
+		114962941C64051A001E5435 /* CallBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallBaseController.swift; sourceTree = "<group>"; };
 		1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCellModel.swift; sourceTree = "<group>"; };
 		1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableButtonCellModel.swift; sourceTree = "<group>"; };
 		1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSelectableCellModel.swift; sourceTree = "<group>"; };
@@ -775,6 +778,7 @@
 			children = (
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
 				11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */,
+				114962941C64051A001E5435 /* CallBaseController.swift */,
 				1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */,
 				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
 				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
@@ -1164,6 +1168,7 @@
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				1193AB661C1F5694006AA9E5 /* BaseCell.swift in Sources */,
 				1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */,
+				114962951C64051A001E5435 /* CallBaseController.swift in Sources */,
 				11B252FC1C4A61550068F47C /* ChatIncomingTextCellModel.swift in Sources */,
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				11B253F21C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
@@ -1271,6 +1276,7 @@
 				9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */,
 				1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
+				114962961C64051A001E5435 /* CallBaseController.swift in Sources */,
 				11B253F31C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
 				9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */,
 				9CEE6AEE1C4E8FDC00A1ECB5 /* QRScannerController.swift in Sources */,
