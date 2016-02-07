@@ -44,6 +44,14 @@ class CallIncomingController: CallBaseController {
 
         infoLabel.text = String(localized: "call_incoming")
     }
+
+    override func prepareForRemoval() {
+        super.prepareForRemoval()
+
+        declineButton.enabled = false
+        audioButton.enabled = false
+        videoButton.enabled = false
+    }
 }
 
 // MARK: Actions

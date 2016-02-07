@@ -43,6 +43,13 @@ class CallBaseController: UIViewController {
         createTopViews()
         installConstraints()
     }
+
+    /**
+        Prepare for removal by disabling all active views.
+     */
+    func prepareForRemoval() {
+        infoLabel.text = String(localized: "call_ended")
+    }
 }
 
 private extension CallBaseController {
