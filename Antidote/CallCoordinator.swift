@@ -22,7 +22,7 @@ class CallCoordinator: NSObject {
     func callToChat(chat: OCTChat, enableVideo: Bool) {
         let friend = chat.friends.lastObject() as! OCTFriend
 
-        let controller = CallBaseController(theme: theme, callerName: friend.nickname)
+        let controller = CallIncomingController(theme: theme, callerName: friend.nickname)
 
         let navigation = UINavigationController(rootViewController: controller)
         navigation.modalPresentationStyle = .OverCurrentContext

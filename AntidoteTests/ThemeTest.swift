@@ -61,7 +61,10 @@ class ThemeTest: XCTestCase {
             "  notification-background: first\n" +
             "  notification-text: second\n" +
             "  settings-background: first\n" +
-            "  call-text-color: second\n"
+            "  call-text-color: second\n" +
+            "  call-decline-button-background: first\n" +
+            "  call-answer-button-background: second\n" +
+            "  call-button-icon-color: first\n"
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
@@ -105,6 +108,9 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.NotificationText))
             XCTAssertEqual(first, theme.colorForType(.SettingsBackground))
             XCTAssertEqual(second, theme.colorForType(.CallTextColor))
+            XCTAssertEqual(first, theme.colorForType(.CallDeclineButtonBackground))
+            XCTAssertEqual(second, theme.colorForType(.CallAnswerButtonBackground))
+            XCTAssertEqual(first, theme.colorForType(.CallButtonIconColor))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

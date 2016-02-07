@@ -16,7 +16,8 @@ colors:
   darkblue: 0D678C
   green: 85B452
   yellow: DECF4E
-  red: C56258
+  red: E94F42
+  palered: C56258
 
 values:
   login-background: skyblue
@@ -41,7 +42,7 @@ values:
   offline-status: darkgray
   online-status: green
   away-status: yellow
-  busy-status: red
+  busy-status: palered
   status-background: white
   friend-cell-status: darkgray2
   chat-list-cell-message: darkgray
@@ -49,7 +50,7 @@ values:
   chat-input-background: lightgrayblue
   chat-incoming-bubble: lightgrayblue
   chat-outgoing-bubble: lightgrayblue2
-  tab-badge-background: red
+  tab-badge-background: palered
   tab-badge-text: white
   tab-item-active: skyblue
   tab-item-inactive: darkgray2
@@ -57,3 +58,6 @@ values:
   notification-text: white
   settings-background: lightgraypink
   call-text-color: white
+  call-decline-button-background: red
+  call-answer-button-background: green
+  call-button-icon-color: white

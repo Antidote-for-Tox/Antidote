@@ -155,3 +155,5 @@
 "delete_profile_confirmation_message" = "This operation cannot be undone!";
 "delete_profile_yes" = "Delete";
 "delete_profile_cancel" = "Cancel";
+
+"call_incoming" = "Incoming call";

@@ -19,11 +19,11 @@ private struct Constants {
 class CallBaseController: UIViewController {
     let theme: Theme
 
-    private let callerName: String
+    let callerName: String
 
-    private var topContainer: UIView!
-    private var callerLabel: UILabel!
-    private var infoLabel: UILabel!
+    var topContainer: UIView!
+    var callerLabel: UILabel!
+    var infoLabel: UILabel!
 
     init(theme: Theme, callerName: String) {
         self.theme = theme
@@ -45,7 +45,7 @@ class CallBaseController: UIViewController {
     }
 }
 
-extension CallBaseController {
+private extension CallBaseController {
     func addBlurredBackground() {
         let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
         effectView.frame = view.bounds

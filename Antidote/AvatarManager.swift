@@ -9,6 +9,11 @@
 import Foundation
 
 class AvatarManager {
+    enum Type: String {
+        case Normal
+        case Call
+    }
+
     private let theme: Theme
     private let cache: NSCache
 
@@ -27,18 +32,18 @@ class AvatarManager {
 
         - Returns: Avatar from given string with given size.
      */
-    func avatarFromString(var string: String, diameter: CGFloat) -> UIImage {
+    func avatarFromString(var string: String, diameter: CGFloat, type: Type = .Normal) -> UIImage {
         if string.isEmpty {
             string = "?"
         }
 
-        let key = keyFromString(string, diameter: diameter)
+        let key = keyFromString(string, diameter: diameter, type: type)
 
         if let avatar = cache.objectForKey(key) as? UIImage {
             return avatar
         }
 
-        let avatar = createAvatarFromString(string, diameter: diameter)
+        let avatar = createAvatarFromString(string, diameter: diameter, type: type)
         cache.setObject(avatar, forKey: key)
 
         return avatar
@@ -46,21 +51,29 @@ class AvatarManager {
 }
 
 private extension AvatarManager {
-    func keyFromString(string: String, diameter: CGFloat) -> String {
-        return "\(string)-\(diameter)"
+    func keyFromString(string: String, diameter: CGFloat, type: Type) -> String {
+        return "\(string)-\(diameter)-\(type.rawValue)"
     }
 
-    func createAvatarFromString(string: String, diameter: CGFloat) -> UIImage {
+    func createAvatarFromString(string: String, diameter: CGFloat, type: Type) -> UIImage {
         let avatarString = avatarStringFromString(string)
 
         let label = UILabel()
-        label.backgroundColor = theme.colorForType(.NormalBackground)
-        label.layer.borderColor = theme.colorForType(.LinkText).CGColor
         label.layer.borderWidth = 1.0
         label.layer.masksToBounds = true
-        label.textColor = theme.colorForType(.LinkText)
         label.textAlignment = .Center
         label.text = avatarString
+
+        switch type {
+            case .Normal:
+                label.backgroundColor = theme.colorForType(.NormalBackground)
+                label.layer.borderColor = theme.colorForType(.LinkText).CGColor
+                label.textColor = theme.colorForType(.LinkText)
+            case .Call:
+                label.backgroundColor = .clearColor()
+                label.layer.borderColor = theme.colorForType(.CallButtonIconColor).CGColor
+                label.textColor = theme.colorForType(.CallButtonIconColor)
+        }
 
         var size: CGSize
         var fontSize = diameter
