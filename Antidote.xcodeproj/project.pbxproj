@@ -12,6 +12,10 @@
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
 		112E4ED61C668C02004312CF /* CallIncomingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4ED51C668C02004312CF /* CallIncomingController.swift */; };
 		112E4ED71C668C02004312CF /* CallIncomingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4ED51C668C02004312CF /* CallIncomingController.swift */; };
+		112E4EDF1C675C58004312CF /* CallActiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EDE1C675C58004312CF /* CallActiveController.swift */; };
+		112E4EE01C675C58004312CF /* CallActiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EDE1C675C58004312CF /* CallActiveController.swift */; };
+		112E4EE51C676553004312CF /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EE41C676553004312CF /* CallButton.swift */; };
+		112E4EE61C676553004312CF /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EE41C676553004312CF /* CallButton.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
@@ -346,6 +350,8 @@
 		110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningNavigationCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
 		112E4ED51C668C02004312CF /* CallIncomingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallIncomingController.swift; sourceTree = "<group>"; };
+		112E4EDE1C675C58004312CF /* CallActiveController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallActiveController.swift; sourceTree = "<group>"; };
+		112E4EE41C676553004312CF /* CallButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
@@ -570,16 +576,17 @@
 			isa = PBXGroup;
 			children = (
 				11B253131C4A79A50068F47C /* BubbleView.swift */,
+				112E4EE41C676553004312CF /* CallButton.swift */,
 				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
 				11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */,
+				9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
 				11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */,
-				1164C8EC1BC9801200B91107 /* RoundedButton.swift */,
-				9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */,
 				11B253B31C5027930068F47C /* NotificationView.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
 				113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */,
+				1164C8EC1BC9801200B91107 /* RoundedButton.swift */,
 				11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */,
 				11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */,
 				11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */,
@@ -781,6 +788,7 @@
 			children = (
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
 				11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */,
+				112E4EDE1C675C58004312CF /* CallActiveController.swift */,
 				114962941C64051A001E5435 /* CallBaseController.swift */,
 				112E4ED51C668C02004312CF /* CallIncomingController.swift */,
 				1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */,
@@ -1110,6 +1118,7 @@
 				11B253B41C5027930068F47C /* NotificationView.swift in Sources */,
 				11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */,
 				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
+				112E4EE51C676553004312CF /* CallButton.swift in Sources */,
 				9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
@@ -1202,6 +1211,7 @@
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
 				114962921C5E1BE0001E5435 /* PasswordController.swift in Sources */,
 				9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */,
+				112E4EDF1C675C58004312CF /* CallActiveController.swift in Sources */,
 				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
@@ -1219,9 +1229,11 @@
 				9CEE6ACC1C4E8FDC00A1ECB5 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				9CEE6AFC1C4E8FDC00A1ECB5 /* ChatsTabCoordinator.swift in Sources */,
 				9CEE6AD91C4E8FDC00A1ECB5 /* TabBarProfileItem.swift in Sources */,
+				112E4EE61C676553004312CF /* CallButton.swift in Sources */,
 				9CEE6B181C4E8FDC00A1ECB5 /* RoundedButton.swift in Sources */,
 				11B253A51C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
 				9CEE6B201C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
+				112E4EE01C675C58004312CF /* CallActiveController.swift in Sources */,
 				9CEE6B161C4E8FDC00A1ECB5 /* UserStatusView.swift in Sources */,
 				9CEE6AE21C4E8FDC00A1ECB5 /* LoginLogoController.swift in Sources */,
 				9CEE6B191C4E8FDC00A1ECB5 /* ExtendedTextField.swift in Sources */,

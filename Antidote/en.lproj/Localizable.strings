@@ -158,3 +158,4 @@
 
 "call_incoming" = "Incoming call";
 "call_ended" = "Call ended";
+"call_reaching" = "Reaching...";

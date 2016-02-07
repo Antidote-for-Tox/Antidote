@@ -35,6 +35,15 @@ class CallCoordinator: NSObject {
     }
 
     func callToChat(chat: OCTChat, enableVideo: Bool) {
+        let call = OCTCall()
+
+        let controller = CallActiveController(theme: theme, callerName: "dvor")
+        controller.delegate = self
+
+        startActiveCallWithCall(call, controller: controller)
+
+        _ = controller.view
+        controller.type = .Active(duration: 77.0)
     }
 }
 
@@ -54,14 +63,7 @@ extension CallCoordinator: OCTSubmanagerCallDelegate {
         let controller = CallIncomingController(theme: theme, callerName: call.caller.nickname)
         controller.delegate = self
 
-        let navigation = UINavigationController(rootViewController: controller)
-        navigation.modalPresentationStyle = .OverCurrentContext
-        navigation.navigationBarHidden = true
-        navigation.modalTransitionStyle = .CrossDissolve
-
-        presentingController.presentViewController(navigation, animated: true, completion: nil)
-
-        activeCall = ActiveCall(call: call, navigation: navigation)
+        startActiveCallWithCall(call, controller: controller)
     }
 }
 
@@ -76,6 +78,24 @@ extension CallCoordinator: CallIncomingControllerDelegate {
 
     func callIncomingControllerAnswerVideo(controller: CallIncomingController) {
         // TODO
+    }
+}
+
+extension CallCoordinator: CallActiveControllerDelegate {
+    func callActiveController(controller: CallActiveController, mute: Bool) {
+
+    }
+
+    func callActiveController(controller: CallActiveController, speaker: Bool) {
+
+    }
+
+    func callActiveController(controller: CallActiveController, outgoingVideo: Bool) {
+
+    }
+
+    func callActiveControllerDecline(controller: CallActiveController) {
+        declineCall()
     }
 }
 
@@ -97,5 +117,21 @@ private extension CallCoordinator {
             self?.presentingController.dismissViewControllerAnimated(true, completion: nil)
             self?.activeCall = nil
         }
+    }
+
+    func startActiveCallWithCall(call: OCTCall, controller: CallBaseController) {
+        guard activeCall == nil else {
+            assert(false, "This method should be called only if there is no active call")
+            return
+        }
+
+        let navigation = UINavigationController(rootViewController: controller)
+        navigation.modalPresentationStyle = .OverCurrentContext
+        navigation.navigationBarHidden = true
+        navigation.modalTransitionStyle = .CrossDissolve
+
+        presentingController.presentViewController(navigation, animated: true, completion: nil)
+
+        activeCall = ActiveCall(call: call, navigation: navigation)
     }
 }

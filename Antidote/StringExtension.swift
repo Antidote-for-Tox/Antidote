@@ -9,11 +9,21 @@
 import Foundation
 
 extension String {
-    init(timeInterval: NSTimeInterval) {
-        let minutes = Int(timeInterval / 60)
-        let seconds = Int(timeInterval) - minutes * 60
+    init(var timeInterval: NSTimeInterval) {
+        let hours = Int(timeInterval / 3600)
+        timeInterval -= NSTimeInterval(hours * 3600)
 
-        self.init(format: "%02d:%02d", minutes, seconds)
+        let minutes = Int(timeInterval / 60)
+        timeInterval -= NSTimeInterval(minutes * 60)
+
+        let seconds = Int(timeInterval)
+
+        if hours > 0 {
+            self.init(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        }
+        else {
+            self.init(format: "%02d:%02d", minutes, seconds)
+        }
     }
 
     init(localized: String, _ arguments: CVarArgType...) {

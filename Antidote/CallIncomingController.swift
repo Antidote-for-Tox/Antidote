@@ -15,8 +15,6 @@ private struct Constants {
     static let ButtonContainerTopMinOffset = 10.0
     static let ButtonContainerBottomOffset = -50.0
 
-    static let ButtonSize: CGFloat = 60.0
-    static let ButtonImageSize: CGFloat = 30.0
     static let ButtonHorizontalOffset = 20.0
 }
 
@@ -32,9 +30,9 @@ class CallIncomingController: CallBaseController {
     private var avatarView: UIImageView!
 
     private var buttonContainer: UIView!
-    private var declineButton: UIButton!
-    private var audioButton: UIButton!
-    private var videoButton: UIButton!
+    private var declineButton: CallButton!
+    private var audioButton: CallButton!
+    private var videoButton: CallButton!
 
     override func loadView() {
         super.loadView()
@@ -81,31 +79,17 @@ private extension CallIncomingController {
         buttonContainer.backgroundColor = .clearColor()
         view.addSubview(buttonContainer)
 
-        let declineColor = theme.colorForType(.CallDeclineButtonBackground)
-        let answerColor = theme.colorForType(.CallAnswerButtonBackground)
+        declineButton = CallButton(theme: theme, type: .Decline, buttonSize: .Small)
+        declineButton.addTarget(self, action: "declineButtonPressed", forControlEvents: .TouchUpInside)
+        buttonContainer.addSubview(declineButton)
 
-        declineButton = addButtonWithImageName("end-call", backgroundColor: declineColor, action: "declineButtonPressed")
-        audioButton = addButtonWithImageName("start-call", backgroundColor: answerColor, action: "audioButtonPressed")
-        videoButton = addButtonWithImageName("video-call", backgroundColor: answerColor, action: "videoButtonPressed")
-    }
+        audioButton = CallButton(theme: theme, type: .AnswerAudio, buttonSize: .Small)
+        audioButton.addTarget(self, action: "audioButtonPressed", forControlEvents: .TouchUpInside)
+        buttonContainer.addSubview(audioButton)
 
-    func addButtonWithImageName(imageName: String, backgroundColor: UIColor, action: Selector) -> UIButton {
-        let button = UIButton()
-        button.tintColor = theme.colorForType(.CallButtonIconColor)
-        button.layer.cornerRadius = Constants.ButtonSize / 2
-        button.layer.masksToBounds = true
-        button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
-
-        let imageSize = CGSize(width: Constants.ButtonImageSize, height: Constants.ButtonImageSize)
-        let image = UIImage(named: imageName)!.scaleToSize(imageSize).imageWithRenderingMode(.AlwaysTemplate)
-        button.setImage(image, forState: .Normal)
-
-        let bgImage = UIImage.imageWithColor(backgroundColor, size: CGSize(width: 1.0, height: 1.0))
-        button.setBackgroundImage(bgImage, forState:UIControlState.Normal)
-
-        buttonContainer.addSubview(button)
-
-        return button
+        videoButton = CallButton(theme: theme, type: .AnswerVideo, buttonSize: .Small)
+        videoButton.addTarget(self, action: "videoButtonPressed", forControlEvents: .TouchUpInside)
+        buttonContainer.addSubview(videoButton)
     }
 
     func installConstraints() {
@@ -122,20 +106,17 @@ private extension CallIncomingController {
         declineButton.snp_makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
             $0.left.equalTo(buttonContainer)
-            $0.size.equalTo(Constants.ButtonSize)
         }
 
         audioButton.snp_makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
             $0.left.equalTo(declineButton.snp_right).offset(Constants.ButtonHorizontalOffset)
-            $0.size.equalTo(Constants.ButtonSize)
         }
 
         videoButton.snp_makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
             $0.left.equalTo(audioButton.snp_right).offset(Constants.ButtonHorizontalOffset)
             $0.right.equalTo(buttonContainer)
-            $0.size.equalTo(Constants.ButtonSize)
         }
     }
 }

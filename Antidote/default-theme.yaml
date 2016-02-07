@@ -60,4 +60,7 @@ values:
   call-text-color: white
   call-decline-button-background: red
   call-answer-button-background: green
+  call-control-background: skyblue
+  call-control-selected-background: white
   call-button-icon-color: white
+  call-button-selected-icon-color: skyblue
