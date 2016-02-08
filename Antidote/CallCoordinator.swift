@@ -13,7 +13,7 @@ private struct Constants {
 }
 
 private struct ActiveCall {
-    private var call: OCTCall
+    private let call: OCTCall
     private let navigation: UINavigationController
     private let callController: RBQFetchedResultsController
 }
@@ -75,7 +75,7 @@ extension CallCoordinator: OCTSubmanagerCallDelegate {
 
 extension CallCoordinator: CallIncomingControllerDelegate {
     func callIncomingControllerDecline(controller: CallIncomingController) {
-        declineCall()
+        declineCall(callWasRemoved: false)
     }
 
     func callIncomingControllerAnswerAudio(controller: CallIncomingController) {
@@ -118,7 +118,7 @@ extension CallCoordinator: CallActiveControllerDelegate {
     }
 
     func callActiveControllerDecline(controller: CallActiveController) {
-        declineCall()
+        declineCall(callWasRemoved: false)
     }
 }
 
@@ -133,10 +133,10 @@ extension CallCoordinator: RBQFetchedResultsControllerDelegate {
         switch type {
             case .Insert:
                 break
-            case .Delete:
-                break
             case .Move:
                 break
+            case .Delete:
+                declineCall(callWasRemoved: true)
             case .Update:
                 activeCallWasUpdated()
         }
@@ -144,13 +144,15 @@ extension CallCoordinator: RBQFetchedResultsControllerDelegate {
 }
 
 private extension CallCoordinator {
-    func declineCall() {
+    func declineCall(callWasRemoved wasRemoved: Bool) {
         guard let activeCall = activeCall else {
             assert(false, "This method should be called only if active call is non-nil")
             return
         }
 
-        _ = try? submanagerCalls.sendCallControl(.Cancel, toCall: activeCall.call)
+        if !wasRemoved {
+            _ = try? submanagerCalls.sendCallControl(.Cancel, toCall: activeCall.call)
+        }
 
         if let controller = activeCall.navigation.topViewController as? CallBaseController {
             controller.prepareForRemoval()
@@ -201,7 +203,7 @@ private extension CallCoordinator {
         catch let error as NSError {
             handleErrorWithType(.AnswerCall, error: error)
 
-            declineCall()
+            declineCall(callWasRemoved: false)
         }
     }
 
@@ -230,7 +232,6 @@ private extension CallCoordinator {
             activeCall.navigation.setViewControllers([activeController!], animated: false)
         }
 
-        // activeController.outgoingVideo = enableVideo
         switch activeCall.call.status {
             case .Ringing:
                 break
