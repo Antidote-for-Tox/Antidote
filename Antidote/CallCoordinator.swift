@@ -15,12 +15,14 @@ private struct Constants {
 private struct ActiveCall {
     private var call: OCTCall
     private let navigation: UINavigationController
+    private let callController: RBQFetchedResultsController
 }
 
 class CallCoordinator: NSObject {
     private let theme: Theme
     private weak var presentingController: UIViewController!
     private weak var submanagerCalls: OCTSubmanagerCalls!
+    private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var activeCall: ActiveCall?
 
@@ -28,6 +30,7 @@ class CallCoordinator: NSObject {
         self.theme = theme
         self.presentingController = presentingController
         self.submanagerCalls = submanagerCalls
+        self.submanagerObjects = submanagerObjects
 
         super.init()
 
@@ -102,6 +105,27 @@ extension CallCoordinator: CallActiveControllerDelegate {
     }
 }
 
+extension CallCoordinator: RBQFetchedResultsControllerDelegate {
+    func controller(
+            controller: RBQFetchedResultsController,
+            didChangeObject anObject: RBQSafeRealmObject,
+            atIndexPath indexPath: NSIndexPath?,
+            forChangeType type: RBQFetchedResultsChangeType,
+            newIndexPath: NSIndexPath?) {
+
+        switch type {
+            case .Insert:
+                break
+            case .Delete:
+                break
+            case .Move:
+                break
+            case .Update:
+                activeCallWasUpdated()
+        }
+    }
+}
+
 private extension CallCoordinator {
     func declineCall() {
         guard let activeCall = activeCall else {
@@ -133,9 +157,14 @@ private extension CallCoordinator {
         navigation.navigationBarHidden = true
         navigation.modalTransitionStyle = .CrossDissolve
 
+        let predicate = NSPredicate(format: "uniqueIdentifier == %@", call.uniqueIdentifier)
+        let callController = submanagerObjects.fetchedResultsControllerForType(.Call, predicate: predicate)
+        callController.delegate = self
+        callController.performFetch()
+
         presentingController.presentViewController(navigation, animated: true, completion: nil)
 
-        activeCall = ActiveCall(call: call, navigation: navigation)
+        activeCall = ActiveCall(call: call, navigation: navigation, callController: callController)
     }
 
     func answerCallWithIncomingController(controller: CallIncomingController, enableVideo: Bool) {
@@ -151,17 +180,49 @@ private extension CallCoordinator {
 
         do {
             try submanagerCalls.answerCall(activeCall.call, enableAudio: true, enableVideo: enableVideo)
-
-            let activeController = CallActiveController(theme: theme, callerName: controller.callerName)
-            activeController.delegate = self
-            activeController.outgoingVideo = enableVideo
-
-            activeCall.navigation.setViewControllers([activeController], animated: false)
         }
         catch let error as NSError {
             handleErrorWithType(.AnswerCall, error: error)
 
             declineCall()
         }
+    }
+
+    func activeCallWasUpdated() {
+        guard let activeCall = activeCall else {
+            assert(false, "This method should be called only if active call is non-nil")
+            return
+        }
+
+        switch activeCall.call.status {
+            case .Ringing:
+                // no update for ringing status
+                return
+            case .Dialing:
+                break
+            case .Active:
+                break
+        }
+
+        var activeController = activeCall.navigation.topViewController as? CallActiveController
+
+        if (activeController == nil) {
+            activeController = CallActiveController(theme: theme, callerName: activeCall.call.caller.nickname)
+            activeController!.delegate = self
+
+            activeCall.navigation.setViewControllers([activeController!], animated: false)
+        }
+
+        // activeController.outgoingVideo = enableVideo
+        switch activeCall.call.status {
+            case .Ringing:
+                break
+            case .Dialing:
+                activeController!.state = .Reaching
+            case .Active:
+                activeController!.state = .Active(duration: activeCall.call.callDuration)
+        }
+
+        activeController!.outgoingVideo = activeCall.call.videoIsEnabled
     }
 }

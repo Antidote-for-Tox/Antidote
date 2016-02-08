@@ -33,9 +33,12 @@ class CallActiveController: CallBaseController {
 
     weak var delegate: CallActiveControllerDelegate?
 
-    var type: State = .None {
+    var state: State = .None {
         didSet {
-            switch type {
+            // load view
+            _ = view
+
+            switch state {
                 case .None:
                     infoLabel.text = nil
                 case .Reaching:
