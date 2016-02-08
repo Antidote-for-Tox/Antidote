@@ -89,15 +89,32 @@ extension CallCoordinator: CallIncomingControllerDelegate {
 
 extension CallCoordinator: CallActiveControllerDelegate {
     func callActiveController(controller: CallActiveController, mute: Bool) {
-
+        submanagerCalls.enableMicrophone = !mute
     }
 
     func callActiveController(controller: CallActiveController, speaker: Bool) {
-
+        do {
+            try submanagerCalls.routeAudioToSpeaker(speaker)
+        }
+        catch {
+            handleErrorWithType(.RouteAudioToSpeaker)
+            controller.speaker = !speaker
+        }
     }
 
     func callActiveController(controller: CallActiveController, outgoingVideo: Bool) {
+        guard let activeCall = activeCall else {
+            assert(false, "This method should be called only if active call is non-nil")
+            return
+        }
 
+        do {
+            try submanagerCalls.enableVideoSending(outgoingVideo, forCall: activeCall.call)
+        }
+        catch {
+            handleErrorWithType(.EnableVideoSending)
+            controller.outgoingVideo = !outgoingVideo
+        }
     }
 
     func callActiveControllerDecline(controller: CallActiveController) {

@@ -21,6 +21,8 @@ enum ErrorHandlerType {
     case WrongOldPassword
     case PasswordsDoNotMatch
     case AnswerCall
+    case RouteAudioToSpeaker
+    case EnableVideoSending
 }
 
 
@@ -56,6 +58,10 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
         case .AnswerCall:
             let (title, message) = OCTToxAVErrorAnswer(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
+        case .RouteAudioToSpeaker:
+            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
+        case .EnableVideoSending:
+            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
     }
 }
 
