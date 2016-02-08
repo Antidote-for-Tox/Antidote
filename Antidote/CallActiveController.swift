@@ -95,6 +95,8 @@ class CallActiveController: CallBaseController {
         createSmallViews()
         installConstraints()
 
+        setButtonsInitValues()
+
         updateViewsWithTraitCollection(self.traitCollection)
     }
 
@@ -233,6 +235,17 @@ private extension CallActiveController {
             $0.left.equalTo(smallVideoButton!.snp_right).offset(Constants.SmallButtonOffset)
             $0.right.equalTo(smallContainerView)
         }
+    }
+
+    func setButtonsInitValues() {
+        bigMuteButton?.selected = mute
+        smallMuteButton?.selected = mute
+
+        bigSpeakerButton?.selected = speaker
+        smallSpeakerButton?.selected = speaker
+
+        bigVideoButton?.selected = outgoingVideo
+        smallVideoButton?.selected = outgoingVideo
     }
 
     func updateViewsWithTraitCollection(traitCollection: UITraitCollection) {

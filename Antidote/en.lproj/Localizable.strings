@@ -104,6 +104,7 @@
 
 "call_error_already_in_call" = "Already in a call";
 "call_error_friend_is_offline" = "Friend is offline";
+"call_error_no_active_call" = "There is no active call";
 
 "chat_outgoing_file" = "Outgoing file:";
 "chat_incoming_file" = "Incoming file:";

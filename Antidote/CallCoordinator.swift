@@ -35,15 +35,18 @@ class CallCoordinator: NSObject {
     }
 
     func callToChat(chat: OCTChat, enableVideo: Bool) {
-        let call = OCTCall()
+        // do {
+        //     let call = try submanagerCalls.callToChat(chat, enableAudio: true, enableVideo: enableVideo)
+        //     let friend = chat.friends.lastObject() as! OCTFriend
 
-        let controller = CallActiveController(theme: theme, callerName: "dvor")
-        controller.delegate = self
+        //     let controller = CallActiveController(theme: theme, callerName: friend.nickname)
+        //     controller.delegate = self
 
-        startActiveCallWithCall(call, controller: controller)
+        //     startActiveCallWithCall(call, controller: controller)
+        // }
+        // catch let error as NSError {
 
-        _ = controller.view
-        controller.type = .Active(duration: 77.0)
+        // }
     }
 }
 
@@ -73,11 +76,11 @@ extension CallCoordinator: CallIncomingControllerDelegate {
     }
 
     func callIncomingControllerAnswerAudio(controller: CallIncomingController) {
-        // TODO
+        answerCallWithIncomingController(controller, enableVideo: false)
     }
 
     func callIncomingControllerAnswerVideo(controller: CallIncomingController) {
-        // TODO
+        answerCallWithIncomingController(controller, enableVideo: true)
     }
 }
 
@@ -133,5 +136,32 @@ private extension CallCoordinator {
         presentingController.presentViewController(navigation, animated: true, completion: nil)
 
         activeCall = ActiveCall(call: call, navigation: navigation)
+    }
+
+    func answerCallWithIncomingController(controller: CallIncomingController, enableVideo: Bool) {
+        guard let activeCall = activeCall else {
+            assert(false, "This method should be called only if active call is non-nil")
+            return
+        }
+
+        guard activeCall.call.status == .Ringing else {
+            assert(false, "Call status should be .Ringing")
+            return
+        }
+
+        do {
+            try submanagerCalls.answerCall(activeCall.call, enableAudio: true, enableVideo: enableVideo)
+
+            let activeController = CallActiveController(theme: theme, callerName: controller.callerName)
+            activeController.delegate = self
+            activeController.outgoingVideo = enableVideo
+
+            activeCall.navigation.setViewControllers([activeController], animated: false)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.AnswerCall, error: error)
+
+            declineCall()
+        }
     }
 }

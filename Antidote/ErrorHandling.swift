@@ -20,6 +20,7 @@ enum ErrorHandlerType {
     case PasswordIsEmpty
     case WrongOldPassword
     case PasswordsDoNotMatch
+    case AnswerCall
 }
 
 
@@ -52,6 +53,9 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showWithTitle(String(localized: "wrong_old_password"))
         case .PasswordsDoNotMatch:
             UIAlertView.showWithTitle(String(localized: "passwords_do_not_match"))
+        case .AnswerCall:
+            let (title, message) = OCTToxAVErrorAnswer(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
     }
 }
 
@@ -176,6 +180,27 @@ extension OCTToxAVErrorCall {
             case .Sync:
                 fallthrough
             case .Unknown:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+        }
+    }
+}
+
+extension OCTToxAVErrorAnswer {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .FriendNotCalling:
+                return (String(localized: "error_title"),
+                        String(localized: "call_error_no_active_call"))
+            case .CodecInitialization:
+                fallthrough
+            case .Sync:
+                fallthrough
+            case .InvalidBitRate:
+                fallthrough
+            case .Unknown:
+                fallthrough
+            case .FriendNotFound:
                 return (String(localized: "error_title"),
                         String(localized: "error_internal_message"))
         }
