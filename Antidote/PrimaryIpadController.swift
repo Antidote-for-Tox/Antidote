@@ -22,6 +22,7 @@ class PrimaryIpadController: UIViewController {
     weak var delegate: PrimaryIpadControllerDelegate?
 
     private let theme: Theme
+    private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var friendsButton: UIButton!
@@ -30,8 +31,9 @@ class PrimaryIpadController: UIViewController {
 
     private var tableManager: ChatListTableManager!
 
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
+    init(theme: Theme, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
+        self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
 
         super.init(nibName: nil, bundle: nil)
@@ -74,6 +76,10 @@ extension PrimaryIpadController: ChatListTableManagerDelegate {
     func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat) {
         delegate?.primaryIpadController(self, didSelectChat: chat)
     }
+
+    func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
+        presentViewController(controller, animated: true, completion: nil)
+    }
 }
 
 private extension PrimaryIpadController {
@@ -110,7 +116,7 @@ private extension PrimaryIpadController {
 
         tableView.registerClass(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
 
-        tableManager = ChatListTableManager(theme: theme, tableView: tableView, submanagerObjects: submanagerObjects)
+        tableManager = ChatListTableManager(theme: theme, tableView: tableView, submanagerChats: submanagerChats, submanagerObjects: submanagerObjects)
         tableManager.delegate = self
     }
 

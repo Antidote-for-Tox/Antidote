@@ -154,9 +154,11 @@
 "delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";
 "delete_profile_confirmation_title_2" = "Delete profile?";
 "delete_profile_confirmation_message" = "This operation cannot be undone!";
-"delete_profile_yes" = "Delete";
-"delete_profile_cancel" = "Cancel";
 
 "call_incoming" = "Incoming call";
 "call_ended" = "Call ended";
 "call_reaching" = "Reaching...";
+
+"delete_chat_title" = "Are you sure you want to delete chat with all messages?";
+"alert_delete" = "Delete";
+"alert_cancel" = "Cancel";

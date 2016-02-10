@@ -275,7 +275,7 @@ private extension RunningCoordinator {
                 let splitController = UISplitViewController()
                 splitController.preferredDisplayMode = .AllVisible
 
-                let primaryController = PrimaryIpadController(theme: theme, submanagerObjects: toxManager.objects)
+                let primaryController = PrimaryIpadController(theme: theme, submanagerChats: toxManager.chats, submanagerObjects: toxManager.objects)
                 primaryController.delegate = self
                 splitController.viewControllers = [UINavigationController(rootViewController: primaryController)]
 

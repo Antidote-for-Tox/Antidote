@@ -27,7 +27,7 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
     }
 
     override func startWithOptions(options: CoordinatorOptions?) {
-        let controller = ChatListController(theme: theme, submanagerObjects: submanagerObjects)
+        let controller = ChatListController(theme: theme, submanagerChats: submanagerChats, submanagerObjects: submanagerObjects)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)

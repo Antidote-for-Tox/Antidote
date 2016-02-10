@@ -141,8 +141,8 @@ private extension ProfileDetailsController {
         let title1 = String(localized: "delete_profile_confirmation_title_1")
         let title2 = String(localized: "delete_profile_confirmation_title_2")
         let message = String(localized: "delete_profile_confirmation_message")
-        let yes = String(localized: "delete_profile_yes")
-        let cancel = String(localized: "delete_profile_cancel")
+        let yes = String(localized: "alert_delete")
+        let cancel = String(localized: "alert_cancel")
 
         let alert1 = UIAlertController(title: title1, message: message, preferredStyle: .ActionSheet)
 

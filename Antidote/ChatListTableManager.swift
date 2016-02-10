@@ -10,6 +10,7 @@ import Foundation
 
 protocol ChatListTableManagerDelegate: class {
     func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat)
+    func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController)
 }
 
 class ChatListTableManager: NSObject {
@@ -22,16 +23,20 @@ class ChatListTableManager: NSObject {
     private let dateFormatter: NSDateFormatter
     private let timeFormatter: NSDateFormatter
 
+    private weak var submanagerChats: OCTSubmanagerChats!
+
     private let chatsController: RBQFetchedResultsController
     private let friendsController: RBQFetchedResultsController
 
-    init(theme: Theme, tableView: UITableView, submanagerObjects: OCTSubmanagerObjects) {
+    init(theme: Theme, tableView: UITableView, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.tableView = tableView
 
         self.theme = theme
         self.avatarManager = AvatarManager(theme: theme)
         self.dateFormatter = NSDateFormatter(type: .RelativeDate)
         self.timeFormatter = NSDateFormatter(type: .Time)
+
+        self.submanagerChats = submanagerChats
 
         let descriptors = [RLMSortDescriptor(property: "lastActivityDateInterval", ascending: false)]
         self.chatsController = submanagerObjects.fetchedResultsControllerForType(.Chat, sortDescriptors: descriptors)
@@ -74,6 +79,20 @@ extension ChatListTableManager: UITableViewDataSource {
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chatsController.numberOfRowsForSectionIndex(section)
+    }
+
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            let alert = UIAlertController(title: String(localized:"delete_chat_title"), message: nil, preferredStyle: .Alert)
+
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
+                let chat = self.chatsController.objectAtIndexPath(indexPath) as! OCTChat
+                self.submanagerChats.removeChatWithAllMessages(chat)
+            })
+
+            delegate?.chatListTableManager(self, presentAlertController: alert)
+        }
     }
 }
 

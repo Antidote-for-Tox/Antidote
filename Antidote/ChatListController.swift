@@ -16,12 +16,14 @@ class ChatListController: UIViewController {
     weak var delegate: ChatListControllerDelegate?
 
     private let theme: Theme
+    private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var tableManager: ChatListTableManager!
 
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
+    init(theme: Theme, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
+        self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
 
         super.init(nibName: nil, bundle: nil)
@@ -42,17 +44,27 @@ class ChatListController: UIViewController {
         createTableView()
         installConstraints()
     }
+
+    override func setEditing(editing: Bool, animated animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        tableManager.tableView.setEditing(editing, animated: animated)
+    }
 }
 
 extension ChatListController: ChatListTableManagerDelegate {
     func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat) {
         delegate?.chatListController(self, didSelectChat: chat)
     }
+
+    func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
+        presentViewController(controller, animated: true, completion: nil)
+    }
 }
 
 private extension ChatListController {
     func addNavigationButtons() {
-        // none for now
+        navigationItem.leftBarButtonItem = editButtonItem()
     }
 
     func createTableView() {
@@ -67,7 +79,7 @@ private extension ChatListController {
 
         tableView.registerClass(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
 
-        tableManager = ChatListTableManager(theme: theme, tableView: tableView, submanagerObjects: submanagerObjects)
+        tableManager = ChatListTableManager(theme: theme, tableView: tableView, submanagerChats: submanagerChats, submanagerObjects: submanagerObjects)
         tableManager.delegate = self
     }
 
