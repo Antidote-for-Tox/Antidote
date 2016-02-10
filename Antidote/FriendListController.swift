@@ -22,10 +22,11 @@ class FriendListController: UIViewController {
     private let dataSource: FriendListDataSource
 
     private weak var submanagerFriends: OCTSubmanagerFriends!
+    private weak var submanagerChats: OCTSubmanagerChats!
 
     private var tableView: UITableView!
 
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends) {
+    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats) {
         self.theme = theme
 
         let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
@@ -37,6 +38,7 @@ class FriendListController: UIViewController {
                 friendsController: friendsController)
 
         self.submanagerFriends = submanagerFriends
+        self.submanagerChats = submanagerChats
 
         super.init(nibName: nil, bundle: nil)
 
@@ -57,6 +59,12 @@ class FriendListController: UIViewController {
 
         createTableView()
         installConstraints()
+    }
+
+    override func setEditing(editing: Bool, animated animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        tableView.setEditing(editing, animated: animated)
     }
 }
 
@@ -130,6 +138,42 @@ extension FriendListController: UITableViewDataSource {
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return dataSource.titleForHeaderInSection(section)
     }
+
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        if editingStyle == .Delete {
+            let title: String
+
+            switch dataSource.objectAtIndexPath(indexPath) {
+                case .Request(let request):
+                    title = String(localized:"delete_friend_request_title")
+                case .Friend(let friend):
+                    title = String(localized:"delete_friend_title")
+            }
+
+            let alert = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
+
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
+                switch self.dataSource.objectAtIndexPath(indexPath) {
+                    case .Request(let request):
+                        self.submanagerFriends.removeFriendRequest(request)
+                    case .Friend(let friend):
+                        do {
+                            let chat = self.submanagerChats.getOrCreateChatWithFriend(friend)
+
+                            try self.submanagerFriends.removeFriend(friend)
+
+                            self.submanagerChats.removeChatWithAllMessages(chat)
+                        }
+                        catch let error as NSError {
+                            handleErrorWithType(.RemoveFriend, error: error)
+                        }
+                }
+            })
+
+            presentViewController(alert, animated: true, completion: nil)
+        }
+    }
 }
 
 extension FriendListController: UITableViewDelegate {
@@ -147,6 +191,8 @@ extension FriendListController: UITableViewDelegate {
 
 private extension FriendListController {
     func addNavigationButtons() {
+        navigationItem.leftBarButtonItem = editButtonItem()
+
         navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .Add,
                 target: self,

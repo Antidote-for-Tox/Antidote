@@ -26,7 +26,7 @@ class FriendsTabCoordinator: RunningNavigationCoordinator {
     }
 
     override func startWithOptions(options: CoordinatorOptions?) {
-        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends)
+        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends, submanagerChats: toxManager.chats)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)

@@ -14,6 +14,7 @@ enum ErrorHandlerType {
     case ToxSetInfoCodeName
     case ToxSetInfoCodeStatusMessage
     case ToxAddFriend
+    case RemoveFriend
     case CallToChat
     case ExportProfile
     case DeleteProfile
@@ -41,6 +42,9 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showWithTitle(title, message: message)
         case .ToxAddFriend:
             let (title, message) = OCTToxErrorFriendAdd(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .RemoveFriend:
+            let (title, message) = OCTToxErrorFriendDelete(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
         case .CallToChat:
             let (title, message) = OCTToxAVErrorCall(rawValue: error!.code)!.strings()
@@ -162,6 +166,16 @@ extension OCTToxErrorFriendAdd {
             case .Malloc:
                 fallthrough
             case .Unknown:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+        }
+    }
+}
+
+extension OCTToxErrorFriendDelete {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .NotFound:
                 return (String(localized: "error_title"),
                         String(localized: "error_internal_message"))
         }

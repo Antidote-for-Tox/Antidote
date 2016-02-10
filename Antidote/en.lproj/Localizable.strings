@@ -160,5 +160,7 @@
 "call_reaching" = "Reaching...";
 
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
+"delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";
+"delete_friend_request_title" = "Are you sure you want to delete a friend request?";
 "alert_delete" = "Delete";
 "alert_cancel" = "Cancel";
