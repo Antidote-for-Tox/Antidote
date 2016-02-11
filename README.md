@@ -38,6 +38,8 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 -  multiple profiles
 -  tox_save import/export
 -  ~~avatars~~ *(temporary disabled)*
+-  audio calls
+-  video calls
 
 #### What's next?
 
