@@ -38,18 +38,18 @@ class CallCoordinator: NSObject {
     }
 
     func callToChat(chat: OCTChat, enableVideo: Bool) {
-        // do {
-        //     let call = try submanagerCalls.callToChat(chat, enableAudio: true, enableVideo: enableVideo)
-        //     let friend = chat.friends.lastObject() as! OCTFriend
+        do {
+            let call = try submanagerCalls.callToChat(chat, enableAudio: true, enableVideo: enableVideo)
+            let friend = chat.friends.lastObject() as! OCTFriend
 
-        //     let controller = CallActiveController(theme: theme, callerName: friend.nickname)
-        //     controller.delegate = self
+            let controller = CallActiveController(theme: theme, callerName: friend.nickname)
+            controller.delegate = self
 
-        //     startActiveCallWithCall(call, controller: controller)
-        // }
-        // catch let error as NSError {
-
-        // }
+            startActiveCallWithCall(call, controller: controller)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.CallToChat, error: error)
+        }
     }
 }
 
@@ -242,5 +242,28 @@ private extension CallCoordinator {
         }
 
         activeController!.outgoingVideo = activeCall.call.videoIsEnabled
+        if activeCall.call.videoIsEnabled {
+            if activeController!.videoPreviewLayer == nil {
+                submanagerCalls.getVideoCallPreview { [weak activeController] layer in
+                    activeController?.videoPreviewLayer = layer
+                }
+            }
+        }
+        else {
+            if activeController!.videoPreviewLayer != nil {
+                activeController!.videoPreviewLayer = nil
+            }
+        }
+
+        if activeCall.call.friendSendingVideo {
+            if activeController!.videoFeed == nil {
+                activeController!.videoFeed = submanagerCalls.videoFeed()
+            }
+        }
+        else {
+            if activeController!.videoFeed != nil {
+                activeController!.videoFeed = nil
+            }
+        }
     }
 }

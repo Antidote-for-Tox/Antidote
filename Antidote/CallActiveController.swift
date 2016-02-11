@@ -22,6 +22,9 @@ private struct Constants {
 
     static let SmallButtonOffset = 20.0
     static let SmallBottomOffset = -20.0
+
+    static let VideoPreviewOffset = -20.0
+    static let VideoPreviewSize = CGSize(width: 150.0, height: 110)
 }
 
 class CallActiveController: CallBaseController {
@@ -70,6 +73,53 @@ class CallActiveController: CallBaseController {
         }
     }
 
+    var videoFeed: UIView? {
+        didSet {
+            if oldValue === videoFeed {
+                return
+            }
+
+            if let old = oldValue {
+                old.removeFromSuperview()
+            }
+
+            if let feed = videoFeed {
+                view.insertSubview(feed, belowSubview: videoPreviewView)
+
+                feed.bounds.size = view.bounds.size
+
+                feed.snp_makeConstraints {
+                    $0.edges.equalTo(view)
+                }
+
+                updateViewsWithTraitCollection(self.traitCollection)
+            }
+        }
+    }
+
+    var videoPreviewLayer: CALayer? {
+        didSet {
+            if oldValue === videoPreviewLayer {
+                return
+            }
+
+            if let old = oldValue {
+                old.removeFromSuperlayer()
+                videoPreviewView.hidden = true
+            }
+
+            if let layer = videoPreviewLayer {
+                videoPreviewView.layer.addSublayer(layer)
+                videoPreviewView.hidden = false
+                view.layoutIfNeeded()
+            }
+
+            updateViewsWithTraitCollection(self.traitCollection)
+        }
+    }
+
+    private var videoPreviewView: UIView!
+
     private var bigContainerView: UIView!
     private var bigCenterContainer: UIView!
     private var bigMuteButton: CallButton?
@@ -94,6 +144,7 @@ class CallActiveController: CallBaseController {
     override func loadView() {
         super.loadView()
 
+        createVideoPreviewView()
         createBigViews()
         createSmallViews()
         installConstraints()
@@ -105,6 +156,14 @@ class CallActiveController: CallBaseController {
 
     override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         updateViewsWithTraitCollection(newCollection)
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if let layer = videoPreviewLayer {
+            layer.frame.size = videoPreviewView.frame.size
+        }
     }
 
     override func prepareForRemoval() {
@@ -145,6 +204,14 @@ extension CallActiveController {
 }
 
 private extension CallActiveController {
+    func createVideoPreviewView() {
+        videoPreviewView = UIView()
+        videoPreviewView.backgroundColor = theme.colorForType(.CallVideoPreviewBackground)
+        view.addSubview(videoPreviewView)
+
+        videoPreviewView.hidden = !outgoingVideo
+    }
+
     func createBigViews() {
         bigContainerView = UIView()
         bigContainerView.backgroundColor = .clearColor()
@@ -180,6 +247,13 @@ private extension CallActiveController {
     }
 
     func installConstraints() {
+        videoPreviewView.snp_makeConstraints {
+            $0.right.equalTo(view).offset(Constants.VideoPreviewOffset)
+            $0.bottom.equalTo(smallContainerView.snp_top).offset(Constants.VideoPreviewOffset)
+            $0.width.equalTo(Constants.VideoPreviewSize.width)
+            $0.height.equalTo(Constants.VideoPreviewSize.height)
+        }
+
         bigContainerView.snp_makeConstraints {
             $0.top.equalTo(topContainer.snp_bottom)
             $0.left.right.bottom.equalTo(view)
@@ -252,6 +326,12 @@ private extension CallActiveController {
     }
 
     func updateViewsWithTraitCollection(traitCollection: UITraitCollection) {
+        if videoFeed != nil || videoPreviewLayer != nil {
+            bigContainerView.hidden = true
+            smallContainerView.hidden = false
+            return
+        }
+
         switch traitCollection.verticalSizeClass {
             case .Regular:
                 bigContainerView.hidden = false

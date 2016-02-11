@@ -23,6 +23,7 @@
 #import <objcTox/OCTSubmanagerUser.h>
 #import <objcTox/OCTTox.h>
 #import <objcTox/OCTToxConstants.h>
+#import <objcTox/OCTView.h>
 #import <objcTox/RBQFetchedResultsController.h>
 
 #import "DDLog.h"

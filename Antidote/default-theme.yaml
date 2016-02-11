@@ -64,3 +64,4 @@ values:
   call-control-selected-background: white
   call-button-icon-color: white
   call-button-selected-icon-color: skyblue
+  call-video-preview-background: black
