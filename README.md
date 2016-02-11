@@ -47,42 +47,6 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 
 Also there may be other [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) that represent long-running and big ongoing tasks.
 
-## Contribution
-
-Before contributing please check [style guide](objective-c-style-guide.md).
-
-Antidote is using [Uncrustify](http://uncrustify.sourceforge.net/) code beautifier. Before creating pull request please run it.
-
-You can install it with [Homebrew](http://brew.sh/):
-
-```
-brew install uncrustify
-```
-
-#### Manually running
-
-After installing you can:
-
-- check if there are any formatting issues with
-
-```
-./run-uncrustify.sh --check
-```
-
-- apply uncrustify to all sources with
-
-```
-./run-uncrustify.sh --apply
-```
-
-#### Git hook
-
-There is also git `pre-commit` hook. On committing if there are any it will gently propose you a patch to fix them. To install hook run
-
-```
-ln -s ../../pre-commit.sh .git/hooks/pre-commit
-```
-
 ## Contact
 
 [feedback@antidote.im](mailto:feedback@antidote.im)
