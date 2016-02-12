@@ -1,14 +1,20 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-platform :ios, '7.0'
+platform :ios, '8.2'
 
 # ignore all warnings from all pods
 inhibit_all_warnings!
 
-pod 'BlocksKit', '~> 2.2.5'
-pod 'CocoaLumberjack', '~> 1.9.2'
-pod 'JSQMessagesViewController', '~> 7.1.0'
-pod 'Masonry', '~> 0.6.1'
-pod 'objcTox', '0.4.0'
-pod 'UITextView+Placeholder', '~> 1.0.9'
-pod 'SDCAlertView', '~> 2.5.2'
+def common_pods
+    pod 'objcTox', '0.5.0'
+    pod 'UITextView+Placeholder', '~> 1.1.0'
+    pod 'SDCAlertView', '~> 2.5.4'
+end
+
+target :Antidote do
+    common_pods
+end
+
+target :AntidoteTests do
+    common_pods
+end

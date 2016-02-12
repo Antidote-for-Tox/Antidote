@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Added
 - Audio and video calls.
+- iPad support.
+
+### Changes
+- objcTox updated to version 0.5.0.
+- Dropped 7.0 support.
+- Antidote fully rewritten in Swift.
 
 ## [0.6.1] - 2015-09-26
 ### Fixed

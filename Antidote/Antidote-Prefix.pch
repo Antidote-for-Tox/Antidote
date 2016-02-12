@@ -1,35 +1,15 @@
 //
-//  Prefix header
+//  Antidote-Prefix.pch
+//  Antidote
 //
-//  The contents of this file are implicitly included at the beginning of every source file.
+//  Created by Dmytro Vorobiov on 30/12/15.
+//  Copyright © 2015 dvor. All rights reserved.
 //
 
-#import <Availability.h>
+#ifndef Antidote_Prefix_pch
+#define Antidote_Prefix_pch
 
-#ifndef __IPHONE_3_0
-#warning "This project uses features only available in iOS SDK 3.0 and later."
-#endif
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
 
-#ifdef __OBJC__
-    #import <UIKit/UIKit.h>
-    #import <Foundation/Foundation.h>
-
-    #import "DDLog.h"
-    static int ddLogLevel = LOG_LEVEL_VERBOSE;
-
-    #import "AppContext.h"
-
-    #define MAS_SHORTHAND
-    #define MAS_SHORTHAND_GLOBALS
-
-    #define WeakRef(object) __weak __typeof(object) weak_##object = object
-    #define StrongRef(object) __strong __typeof(weak_##object) object = weak_##object
-    #define weakself WeakRef(self)
-    #define strongself StrongRef(self)
-
-    #define AALogError(fmt, ...) DDLogError((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
-    #define AALogWarn(fmt, ...) DDLogWarn((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
-    #define AALogInfo(fmt, ...) DDLogInfo((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
-    #define AALogVerbose(fmt, ...) DDLogVerbose((@"%@, %@, " fmt), LOG_IDENTIFIER, NSStringFromSelector(_cmd), ##__VA_ARGS__)
-#endif
-
+#endif /* Antidote_Prefix_pch */

@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote)
 
-[Tox](https://tox.chat/) client for iOS 7.0+;
+[Tox](https://tox.chat/) client for iOS 8.2+;
 
 ![](https://i.imgur.com/5HF5RMX.png)
 
@@ -15,12 +15,12 @@ Antidote is available for beta testing via TestFlight. If you wish to participat
 
 #### Manual Installation
 
-Clone repo, install [CocoaPods](https://cocoapods.org/) and open `Antidote.xcworkspace` file with Xcode 7.
+Clone repo, run install script and open `Antidote.xcworkspace` file with Xcode 7.
 
 ```
 git clone https://github.com/Antidote-for-Tox/Antidote.git
 cd Antidote
-pod install
+./install.sh
 open Antidote.xcworkspace
 ```
 
@@ -38,6 +38,8 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 -  multiple profiles
 -  tox_save import/export
 -  ~~avatars~~ *(temporary disabled)*
+-  audio calls
+-  video calls
 
 #### What's next?
 
@@ -46,42 +48,6 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 - [**Faraway**](https://github.com/Antidote-for-Tox/Antidote/milestones/Faraway) - stuff we'll probably *won't* do soon.
 
 Also there may be other [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) that represent long-running and big ongoing tasks.
-
-## Contribution
-
-Before contributing please check [style guide](objective-c-style-guide.md).
-
-Antidote is using [Uncrustify](http://uncrustify.sourceforge.net/) code beautifier. Before creating pull request please run it.
-
-You can install it with [Homebrew](http://brew.sh/):
-
-```
-brew install uncrustify
-```
-
-#### Manually running
-
-After installing you can:
-
-- check if there are any formatting issues with
-
-```
-./run-uncrustify.sh --check
-```
-
-- apply uncrustify to all sources with
-
-```
-./run-uncrustify.sh --apply
-```
-
-#### Git hook
-
-There is also git `pre-commit` hook. On committing if there are any it will gently propose you a patch to fix them. To install hook run
-
-```
-ln -s ../../pre-commit.sh .git/hooks/pre-commit
-```
 
 ## Contact
 

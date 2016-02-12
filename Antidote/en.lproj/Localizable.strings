@@ -1,0 +1,166 @@
+/* 
+  Localizable.strings
+  Antidote
+
+  Created by Dmytro Vorobiov on 08/10/15.
+  Copyright © 2015 dvor. All rights reserved.
+*/
+
+"theme_error_wrong_top_object" = "Top object should be dictionary";
+"theme_error_version_not_found" = "Version key not found";
+"theme_error_color_not_found" = "%@ color not found in colors dictionary";
+"theme_error_no_dictionary_for_key" = "Dictionary not found for key %@";
+"theme_error_wrong_object_for_key" = "Wrong object for key %@, value %@";
+"theme_error_no_mapping_for_type" = "Mapping for type %@ not found";
+"theme_error_version_too_high" = "Version of theme is too high";
+"theme_error_version_too_low" = "Version of theme is too low";
+
+"login_welcome_text" = "Welcome to Antidote!";
+"login_or_label" = "or";
+
+"create_account" = "Create Account";
+"import_profile" = "Import Profile";
+"password" = "Password";
+"log_in" = "Log In";
+"create_profile" = "Create profile";
+"import_to_antidote" = "Import to Antidote";
+"create_account_username_title" = "How friends will see you?";
+"create_account_username_placeholder" = "Username";
+"create_account_profile_title" = "How to call this profile?";
+"create_account_profile_placeholder" = "Profile name";
+"create_account_profile_hint" = "e.g. Home, iPhone";
+"create_account_go_button" = "Go";
+"default_user_status_message" = "Toxing on Antidote";
+
+"login_enter_username_and_profile" = "Please enter both username and profile name.";
+"login_profile_already_exists" = "Profile with given name already exists";
+
+"error_title" = "Error";
+"error_ok_button" = "OK";
+"error_file_not_found" = "File not found";
+
+"error_internal_message" = "Internal error";
+
+"manager_error_wrong_password_title" = "Wrong password";
+"manager_error_wrong_password_message" = "Password contains wrong symbols.";
+"manager_error_import_not_exist_title" = "Cannot import tox save file";
+"manager_error_import_not_exist_message" = "File does not exist.";
+"manager_error_decrypt_title" = "Cannot decrypt tox save file";
+"manager_error_decrypt_empty_data_message" = "Some input data was empty.";
+"manager_error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
+"manager_error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
+"manager_error_general_title" = "Error";
+"manager_error_general_unknown_message" = "Unknown error occured.";
+"manager_error_general_no_memory_message" = "Not enought memory.";
+"manager_error_general_bind_port_message" = "Was unable to bind to a port.";
+"manager_error_general_profile_encrypted_message" = "Profile is encrypted.";
+"manager_error_general_bad_format_message" = "File has bad format or is corrupted.";
+"manager_error_proxy_title" = "Proxy error";
+"manager_error_proxy_invalid_address_message" = "Proxy address has invalid format.";
+"manager_error_proxy_invalid_port_message" = "Proxy port is invalid.";
+"manager_error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
+
+"tox_error_name_too_long" = "Name is too long.";
+"tox_error_status_message_too_long" = "Status message is too long";
+
+"tox_error_friend_request_too_long" = "Message is too long";
+"tox_error_friend_request_no_message" = "No message specified";
+"tox_error_friend_request_own_key" = "Cannot add myself to friend list";
+"tox_error_friend_request_already_sent" = "Friend request was already sent";
+"tox_error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
+"tox_error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
+
+"connecting_label" = "Connecting...";
+
+"friends_title" = "Friends";
+"chats_title" = "Chats";
+"settings_title" = "Settings";
+"profile_title" = "Profile";
+
+"friend_requests_section" = "Friend Requests";
+"friend_last_seen" = "Last seen: %@";
+
+"add_friend_title" = "Add Friend";
+"add_friend_send" = "Send";
+"add_friend_cancel" = "Cancel";
+"add_friend_tox_id_placeholder" = "Enter Tox ID";
+"add_friend_or_label" = "or";
+"add_friend_use_qr" = "Use QR code";
+"add_friend_default_message_title" = "Message";
+"add_friend_default_message_text" = "Hello! Could you please add me to your friendlist?";
+"add_friend_wrong_qr" = "Wrong QR code. It should contain Tox ID";
+
+"name" = "Name";
+"nickname" = "Nickname";
+"status_message" = "Status Message";
+"status_title" = "Status";
+"my_tox_id" = "My Tox ID";
+"public_key" = "Public Key";
+"show_qr" = "Show QR";
+"profile_details" = "Profile Details";
+"logout_button" = "Log Out";
+
+"qr_close_button" = "Close";
+
+"call_error_already_in_call" = "Already in a call";
+"call_error_friend_is_offline" = "Friend is offline";
+"call_error_no_active_call" = "There is no active call";
+
+"chat_outgoing_file" = "Outgoing file:";
+"chat_incoming_file" = "Incoming file:";
+"chat_call_finished" = "Call finished";
+"chat_unanwered_call" = "Unanswered call";
+"chat_send_button" = "Send";
+"chat_new_messages" = "↓ New messages";
+
+"status_offline" = "Offline";
+"status_online" = "Online";
+"status_away" = "Away";
+"status_busy" = "Busy";
+
+"notification_new_message" = "New message";
+"notification_incoming_friend_request" = "Incoming friend request";
+
+"settings_about" = "About";
+"settings_beta_tester_menu" = "Beta Tester Menu";
+"settings_advanced_settings" = "Advanced Settings";
+"settings_feedback" = "Feedback";
+"settings_configure_email" = "Please configure your mail settings";
+"settings_add_log_files" = "Add log files?";
+"settings_no" = "No";
+"settings_yes" = "Yes";
+"settings_antidote_version" = "Antidote Version";
+"settings_antidote_build" = "Antidote Build";
+"settings_toxcore_version" = "Toxcore Version";
+"settings_notifications_message_preview" = "Notification Preview";
+"settings_notifications_description" = "When application goes to background, you will still receive notifications up to 10 minutes.";
+"settings_ipv6_enabled" = "IPv6 Enabled";
+"settings_udp_enabled" = "UDP Enabled";
+"settings_restore_default" = "Restore Default Settings";
+
+"set_password" = "Set Password";
+"change_password" = "Change Password";
+"delete_password" = "Delete Password";
+"old_password" = "Old Password";
+"new_password" = "New Password";
+"repeat_password" = "Repeat Password";
+"change_password_done" = "Done";
+"password_is_empty_error" = "Password should be non-empty";
+"wrong_old_password" = "Wrong password";
+"passwords_do_not_match" = "Passwords do not match";
+
+"export_profile" = "Export Profile";
+"delete_profile" = "Delete Profile";
+"delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";
+"delete_profile_confirmation_title_2" = "Delete profile?";
+"delete_profile_confirmation_message" = "This operation cannot be undone!";
+
+"call_incoming" = "Incoming call";
+"call_ended" = "Call ended";
+"call_reaching" = "Reaching...";
+
+"delete_chat_title" = "Are you sure you want to delete chat with all messages?";
+"delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";
+"delete_friend_request_title" = "Are you sure you want to delete a friend request?";
+"alert_delete" = "Delete";
+"alert_cancel" = "Cancel";
