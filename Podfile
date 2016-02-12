@@ -5,9 +5,16 @@ platform :ios, '8.2'
 # ignore all warnings from all pods
 inhibit_all_warnings!
 
-link_with 'Antidote', 'AntidoteTests'
+def common_pods
+    pod 'objcTox', '0.5.0'
+    pod 'UITextView+Placeholder', '~> 1.1.0'
+    pod 'SDCAlertView', '~> 2.5.4'
+end
 
-pod 'objcTox', :git => 'https://github.com/Antidote-for-Tox/objcTox.git', :branch => 'master'
-pod 'UITextView+Placeholder', '~> 1.1.0'
-pod 'SDCAlertView', '~> 2.5.4'
+target :Antidote do
+    common_pods
+end
 
+target :AntidoteTests do
+    common_pods
+end
