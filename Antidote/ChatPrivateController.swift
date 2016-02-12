@@ -12,6 +12,8 @@ import SnapKit
 private struct Constants {
     static let MessagesPortionSize = 50
 
+    static let BarItemSize = CGSize(width: 25.0, height: 25.0)
+
     static let InputViewTopOffset: CGFloat = 50.0
 
     static let NewMessageViewAllowedDelta: CGFloat = 20.0
@@ -25,6 +27,7 @@ private struct Constants {
 protocol ChatPrivateControllerDelegate: class {
     func chatPrivateControllerWillAppear(controller: ChatPrivateController)
     func chatPrivateControllerWillDisappear(controller: ChatPrivateController)
+    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool)
 }
 
 class ChatPrivateController: KeyboardNotificationController {
@@ -41,6 +44,9 @@ class ChatPrivateController: KeyboardNotificationController {
     private let friendController: RBQFetchedResultsController
 
     private let timeFormatter: NSDateFormatter
+
+    private var audioButton: UIBarButtonItem!
+    private var videoButton: UIBarButtonItem!
 
     private var titleView: ChatPrivateTitleView!
     private var tableView: UITableView!
@@ -191,6 +197,14 @@ extension ChatPrivateController {
         dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
             self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
         }
+    }
+
+    func audioCallButtonPressed() {
+        delegate?.chatPrivateControllerCallToChat(self, enableVideo: false)
+    }
+
+    func videoCallButtonPressed() {
+        delegate?.chatPrivateControllerCallToChat(self, enableVideo: true)
     }
 }
 
@@ -355,6 +369,17 @@ private extension ChatPrivateController {
     func createNavigationViews() {
         titleView = ChatPrivateTitleView(theme: theme)
         navigationItem.titleView = titleView
+
+        let audioImage = UIImage(named: "start-call")!.scaleToSize(Constants.BarItemSize)
+        let videoImage = UIImage(named: "video-call")!.scaleToSize(Constants.BarItemSize)
+
+        audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: "audioCallButtonPressed")
+        videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: "videoCallButtonPressed")
+
+        navigationItem.rightBarButtonItems = [
+            audioButton,
+            videoButton,
+        ]
     }
 
     func createTableView() {
@@ -489,6 +514,8 @@ private extension ChatPrivateController {
         titleView.name = friend.nickname
         titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
 
+        audioButton.enabled = friend.isConnected
+        videoButton.enabled = friend.isConnected
         chatInputView.sendButtonEnabled = friend.isConnected
     }
 }

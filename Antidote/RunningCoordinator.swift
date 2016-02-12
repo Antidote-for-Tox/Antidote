@@ -187,6 +187,10 @@ extension RunningCoordinator: ChatsTabCoordinatorDelegate {
     func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat) {
         notificationCoordinator.unbanNotificationsForChat(chat)
     }
+
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool) {
+        callCoordinator.callToChat(chat, enableVideo: enableVideo)
+    }
 }
 
 extension RunningCoordinator: SettingsTabCoordinatorDelegate {
@@ -242,6 +246,10 @@ extension RunningCoordinator: ChatPrivateControllerDelegate {
 
     func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
         notificationCoordinator.unbanNotificationsForChat(controller.chat)
+    }
+
+    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
+        callCoordinator.callToChat(controller.chat, enableVideo: enableVideo)
     }
 }
 
