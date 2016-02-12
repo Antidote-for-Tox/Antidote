@@ -34,6 +34,7 @@ class NotificationCoordinator: NSObject {
     private let messagesController: RBQFetchedResultsController
     private let requestsController: RBQFetchedResultsController
     private let avatarManager: AvatarManager
+    private let audioPlayer = AudioPlayer()
 
     private var notificationQueue = [NotificationType]()
     private var isShowingNotifications = false
@@ -145,12 +146,18 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
         if controller === messagesController {
             let message = anObject.RLMObject() as! OCTMessageAbstract
 
+            if !message.isOutgoing() {
+                audioPlayer.playSound(.NewMessage, loop: false)
+            }
+
             if shouldEnqueueMessage(message) {
                 enqueueNotification(.NewMessage(message))
             }
         }
         else if controller === requestsController {
             let request = anObject.RLMObject() as! OCTFriendRequest
+
+            audioPlayer.playSound(.NewMessage, loop: false)
 
             enqueueNotification(.FriendRequest(request))
         }

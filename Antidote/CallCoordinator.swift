@@ -24,6 +24,8 @@ class CallCoordinator: NSObject {
     private weak var submanagerCalls: OCTSubmanagerCalls!
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
+    private let audioPlayer = AudioPlayer()
+
     private var activeCall: ActiveCall?
 
     init(theme: Theme, presentingController: UIViewController, submanagerCalls: OCTSubmanagerCalls, submanagerObjects: OCTSubmanagerObjects) {
@@ -154,6 +156,8 @@ private extension CallCoordinator {
             _ = try? submanagerCalls.sendCallControl(.Cancel, toCall: activeCall.call)
         }
 
+        audioPlayer.stopAll()
+
         if let controller = activeCall.navigation.topViewController as? CallBaseController {
             controller.prepareForRemoval()
         }
@@ -184,6 +188,8 @@ private extension CallCoordinator {
         presentingController.presentViewController(navigation, animated: true, completion: nil)
 
         activeCall = ActiveCall(call: call, navigation: navigation, callController: callController)
+
+        activeCallWasUpdated()
     }
 
     func answerCallWithIncomingController(controller: CallIncomingController, enableVideo: Bool) {
@@ -215,12 +221,20 @@ private extension CallCoordinator {
 
         switch activeCall.call.status {
             case .Ringing:
+                if !audioPlayer.isPlayingSound(.Ringtone) {
+                    audioPlayer.playSound(.Ringtone, loop: true)
+                }
+
                 // no update for ringing status
                 return
             case .Dialing:
-                break
+                if !audioPlayer.isPlayingSound(.Calltone) {
+                    audioPlayer.playSound(.Calltone, loop: true)
+                }
             case .Active:
-                break
+                if audioPlayer.isPlaying() {
+                    audioPlayer.stopAll()
+                }
         }
 
         var activeController = activeCall.navigation.topViewController as? CallActiveController

@@ -29,6 +29,22 @@ class AudioPlayer {
         player.play()
     }
 
+    func isPlayingSound(sound: Sound) -> Bool {
+        guard let player = playerForSound(sound) else {
+            return false
+        }
+
+        return player.playing
+    }
+
+    func isPlaying() -> Bool {
+        let pl = players.filter {
+            $0.1.playing
+        }
+
+        return !pl.isEmpty
+    }
+
     func stopSound(sound: Sound) {
         guard let player = playerForSound(sound) else {
             return
