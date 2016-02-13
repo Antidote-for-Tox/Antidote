@@ -146,9 +146,7 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
         if controller === messagesController {
             let message = anObject.RLMObject() as! OCTMessageAbstract
 
-            if !message.isOutgoing() {
-                audioPlayer.playSound(.NewMessage, loop: false)
-            }
+            playSoundForMessageIfNeeded(message)
 
             if shouldEnqueueMessage(message) {
                 enqueueNotification(.NewMessage(message))
@@ -165,6 +163,26 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
 }
 
 private extension NotificationCoordinator {
+    func playSoundForMessageIfNeeded(message: OCTMessageAbstract) {
+        if message.isOutgoing() {
+            return
+        }
+
+        switch UIApplication.sharedApplication().applicationState {
+            case .Active:
+                // yes
+                break
+            case .Inactive:
+                return
+            case .Background:
+                return
+        }
+
+        if message.messageText != nil {
+            audioPlayer.playSound(.NewMessage, loop: false)
+        }
+    }
+
     func shouldEnqueueMessage(message: OCTMessageAbstract) -> Bool {
         if message.isOutgoing() {
             return false
@@ -239,6 +257,7 @@ private extension NotificationCoordinator {
         let local = UILocalNotification()
         local.alertBody = "\(object.title): \(object.body)"
         local.userInfo = object.action.archive()
+        local.soundName = "isotoxin_NewMessage.aac"
 
         UIApplication.sharedApplication().presentLocalNotificationNow(local)
 
