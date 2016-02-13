@@ -36,7 +36,7 @@ class ChatOutgoingCallCell: ChatMovableDateCell {
             label.text = String(localized: "chat_call_message") + String(timeInterval: outgoingModel.callDuration)
         }
         else {
-            label.text = String(localized: "chat_missed_call_message")
+            label.text = String(localized: "chat_unanwered_call")
         }
     }
 
