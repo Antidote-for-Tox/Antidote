@@ -223,6 +223,14 @@ extension ChatPrivateController: UITableViewDataSource {
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingTextCell.staticReuseIdentifier) as! ChatOutgoingTextCell
             }
+            else if message.messageCall != nil {
+                let outgoingModel = ChatOutgoingCallCellModel()
+                outgoingModel.callDuration = message.messageCall.callDuration
+                outgoingModel.answered = (message.messageCall.callEvent == .Answered)
+                model = outgoingModel
+
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingCallCell.staticReuseIdentifier) as! ChatOutgoingCallCell
+            }
             else {
                 model = ChatMovableDateCellModel()
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
@@ -235,6 +243,14 @@ extension ChatPrivateController: UITableViewDataSource {
                 model = incomingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingTextCell.staticReuseIdentifier) as! ChatIncomingTextCell
+            }
+            else if message.messageCall != nil {
+                let incomingModel = ChatIncomingCallCellModel()
+                incomingModel.callDuration = message.messageCall.callDuration
+                incomingModel.answered = (message.messageCall.callEvent == .Answered)
+                model = incomingModel
+
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingCallCell.staticReuseIdentifier) as! ChatIncomingCallCell
             }
             else {
                 model = ChatMovableDateCellModel()
@@ -398,6 +414,8 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatMovableDateCell.self, forCellReuseIdentifier: ChatMovableDateCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingTextCell.self, forCellReuseIdentifier: ChatIncomingTextCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingTextCell.self, forCellReuseIdentifier: ChatOutgoingTextCell.staticReuseIdentifier)
+        tableView.registerClass(ChatIncomingCallCell.self, forCellReuseIdentifier: ChatIncomingCallCell.staticReuseIdentifier)
+        tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)

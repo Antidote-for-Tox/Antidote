@@ -112,6 +112,8 @@
 "chat_unanwered_call" = "Unanswered call";
 "chat_send_button" = "Send";
 "chat_new_messages" = "↓ New messages";
+"chat_call_message" = "Call, ";
+"chat_missed_call_message" = "Missed call";
 
 "status_offline" = "Offline";
 "status_online" = "Online";
