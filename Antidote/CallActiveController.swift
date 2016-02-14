@@ -14,6 +14,7 @@ protocol CallActiveControllerDelegate: class {
     func callActiveController(controller: CallActiveController, speaker: Bool)
     func callActiveController(controller: CallActiveController, outgoingVideo: Bool)
     func callActiveControllerDecline(controller: CallActiveController)
+    func callActiveControllerSwitchCamera(controller: CallActiveController)
 }
 
 private struct Constants {
@@ -21,10 +22,13 @@ private struct Constants {
     static let BigButtonOffset = 30.0
 
     static let SmallButtonOffset = 20.0
-    static let SmallBottomOffset = -20.0
+    static let SmallBottomOffset: CGFloat = -20.0
 
     static let VideoPreviewOffset = -20.0
     static let VideoPreviewSize = CGSize(width: 150.0, height: 110)
+    static let SwitchCameraOffset = 5.0
+
+    static let ControlsAnimationDuration = 0.3
 }
 
 class CallActiveController: CallBaseController {
@@ -46,8 +50,14 @@ class CallActiveController: CallBaseController {
                     infoLabel.text = nil
                 case .Reaching:
                     infoLabel.text = String(localized: "call_reaching")
+
+                    bigVideoButton?.enabled = false
+                    smallVideoButton?.enabled = false
                 case .Active(let duration):
                     infoLabel.text = String(timeInterval: duration)
+
+                    bigVideoButton?.enabled = true
+                    smallVideoButton?.enabled = true
             }
         }
     }
@@ -110,6 +120,7 @@ class CallActiveController: CallBaseController {
 
             if let layer = videoPreviewLayer {
                 videoPreviewView.layer.addSublayer(layer)
+                videoPreviewView.bringSubviewToFront(switchCameraButton)
                 videoPreviewView.hidden = false
                 view.layoutIfNeeded()
             }
@@ -118,7 +129,21 @@ class CallActiveController: CallBaseController {
         }
     }
 
+    private var showControls = true {
+        didSet {
+            let offset = showControls ? Constants.SmallBottomOffset : smallContainerView.frame.size.height
+            smallContainerViewBottomConstraint.updateOffset(offset)
+
+            toggleTopContainer(hidden: !showControls)
+
+            UIView.animateWithDuration(Constants.ControlsAnimationDuration) { [unowned self] in
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+
     private var videoPreviewView: UIView!
+    private var switchCameraButton: UIButton!
 
     private var bigContainerView: UIView!
     private var bigCenterContainer: UIView!
@@ -126,6 +151,8 @@ class CallActiveController: CallBaseController {
     private var bigSpeakerButton: CallButton?
     private var bigVideoButton: CallButton?
     private var bigDeclineButton: CallButton?
+
+    private var smallContainerViewBottomConstraint: Constraint!
 
     private var smallContainerView: UIView!
     private var smallMuteButton: CallButton?
@@ -144,6 +171,7 @@ class CallActiveController: CallBaseController {
     override func loadView() {
         super.loadView()
 
+        createGestureRecognizers()
         createVideoPreviewView()
         createBigViews()
         createSmallViews()
@@ -156,6 +184,7 @@ class CallActiveController: CallBaseController {
 
     override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         updateViewsWithTraitCollection(newCollection)
+        showControls = true
     }
 
     override func viewDidLayoutSubviews() {
@@ -183,6 +212,14 @@ class CallActiveController: CallBaseController {
 
 // MARK: Actions
 extension CallActiveController {
+    func tapOnView() {
+        guard !smallContainerView.hidden else {
+            return
+        }
+
+        showControls = !showControls
+    }
+
     func muteButtonPressed(button: CallButton) {
         mute = !button.selected
         delegate?.callActiveController(self, mute: mute)
@@ -201,15 +238,32 @@ extension CallActiveController {
     func declineButtonPressed() {
         delegate?.callActiveControllerDecline(self)
     }
+
+    func switchCameraButtonPressed() {
+        delegate?.callActiveControllerSwitchCamera(self)
+    }
 }
 
 private extension CallActiveController {
+    func createGestureRecognizers() {
+        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnView")
+        view.addGestureRecognizer(tapGR)
+    }
+
     func createVideoPreviewView() {
         videoPreviewView = UIView()
         videoPreviewView.backgroundColor = theme.colorForType(.CallVideoPreviewBackground)
         view.addSubview(videoPreviewView)
 
         videoPreviewView.hidden = !outgoingVideo
+
+        let image = UIImage(named: "switch-camera")!.imageWithRenderingMode(.AlwaysTemplate)
+
+        switchCameraButton = UIButton()
+        switchCameraButton.tintColor = theme.colorForType(.CallButtonIconColor)
+        switchCameraButton.setImage(image, forState: .Normal)
+        switchCameraButton.addTarget(self, action: "switchCameraButtonPressed", forControlEvents: .TouchUpInside)
+        videoPreviewView.addSubview(switchCameraButton)
     }
 
     func createBigViews() {
@@ -254,6 +308,11 @@ private extension CallActiveController {
             $0.height.equalTo(Constants.VideoPreviewSize.height)
         }
 
+        switchCameraButton.snp_makeConstraints {
+            $0.top.equalTo(videoPreviewView).offset(Constants.SwitchCameraOffset)
+            $0.right.equalTo(videoPreviewView).offset(-Constants.SwitchCameraOffset)
+        }
+
         bigContainerView.snp_makeConstraints {
             $0.top.equalTo(topContainer.snp_bottom)
             $0.left.right.bottom.equalTo(view)
@@ -288,7 +347,7 @@ private extension CallActiveController {
         }
 
         smallContainerView.snp_makeConstraints {
-            $0.bottom.equalTo(view).offset(Constants.SmallBottomOffset)
+            smallContainerViewBottomConstraint = $0.bottom.equalTo(view).offset(Constants.SmallBottomOffset).constraint
             $0.centerX.equalTo(view)
         }
 

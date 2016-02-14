@@ -24,6 +24,7 @@ enum ErrorHandlerType {
     case AnswerCall
     case RouteAudioToSpeaker
     case EnableVideoSending
+    case CallSwitchCamera
 }
 
 
@@ -65,6 +66,8 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
         case .RouteAudioToSpeaker:
             UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
         case .EnableVideoSending:
+            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
+        case .CallSwitchCamera:
             UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
     }
 }

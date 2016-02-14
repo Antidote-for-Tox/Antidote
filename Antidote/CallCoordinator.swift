@@ -20,6 +20,14 @@ private struct ActiveCall {
     private let call: OCTCall
     private let navigation: UINavigationController
     private let callController: RBQFetchedResultsController
+
+    private var usingFrontCamera: Bool = true
+
+    init(call: OCTCall, navigation: UINavigationController, callController: RBQFetchedResultsController) {
+        self.call = call
+        self.navigation = navigation
+        self.callController = callController
+    }
 }
 
 class CallCoordinator: NSObject {
@@ -139,6 +147,23 @@ extension CallCoordinator: CallActiveControllerDelegate {
 
     func callActiveControllerDecline(controller: CallActiveController) {
         declineCall(callWasRemoved: false)
+    }
+
+    func callActiveControllerSwitchCamera(controller: CallActiveController) {
+        guard let activeCall = activeCall else {
+            assert(false, "This method should be called only if active call is non-nil")
+            return
+        }
+
+        do {
+            let front = !activeCall.usingFrontCamera
+            try submanagerCalls.switchToCameraFront(front)
+
+            self.activeCall?.usingFrontCamera = front
+        }
+        catch {
+            handleErrorWithType(.CallSwitchCamera)
+        }
     }
 }
 
