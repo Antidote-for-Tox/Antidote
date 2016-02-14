@@ -26,4 +26,6 @@ class StaticTableDefaultCellModel: StaticTableSelectableCellModel {
     var rightImageType: RightImageType = .None
 
     var userInteractionEnabled: Bool = true
+
+    var canCopyValue: Bool = false
 }

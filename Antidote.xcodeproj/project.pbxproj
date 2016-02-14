@@ -66,6 +66,8 @@
 		116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
 		116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
 		116634CF1C70E46C0072C980 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 116634CE1C70E46C0072C980 /* Launch Screen.storyboard */; };
+		116634D91C70F1260072C980 /* CopyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634D81C70F1260072C980 /* CopyLabel.swift */; };
+		116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634D81C70F1260072C980 /* CopyLabel.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -403,6 +405,7 @@
 		116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCellModel.swift; sourceTree = "<group>"; };
 		116634B11C7087A80072C980 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		116634CE1C70E46C0072C980 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		116634D81C70F1260072C980 /* CopyLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyLabel.swift; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -600,6 +603,7 @@
 				112E4EE41C676553004312CF /* CallButton.swift */,
 				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
 				11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */,
+				116634D81C70F1260072C980 /* CopyLabel.swift */,
 				9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
@@ -1232,6 +1236,7 @@
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
+				116634D91C70F1260072C980 /* CopyLabel.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
@@ -1366,6 +1371,7 @@
 				9CEE6B111C4E8FDC00A1ECB5 /* FullscreenPicker.swift in Sources */,
 				9CEE6AD61C4E8FDC00A1ECB5 /* ProfileManager.swift in Sources */,
 				9CEE6AC01C4E8FDC00A1ECB5 /* ChatMovableDateCellModel.swift in Sources */,
+				116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */,
 				9CEE6AF31C4E8FDC00A1ECB5 /* TextEditController.swift in Sources */,
 				9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,

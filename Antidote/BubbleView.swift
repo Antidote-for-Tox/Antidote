@@ -19,7 +19,7 @@ private struct Constants {
 }
 
 class BubbleView: UIView {
-    private var label: UILabel!
+    private var label: CopyLabel!
 
     var text: String? {
         get {
@@ -45,7 +45,7 @@ class BubbleView: UIView {
         layer.cornerRadius = 12.0
         layer.masksToBounds = true
 
-        label = UILabel()
+        label = CopyLabel()
         label.font = UIFont.systemFontOfSize(16.0)
         label.numberOfLines = 0
         addSubview(label)
