@@ -61,7 +61,7 @@ class FriendListController: UIViewController {
         installConstraints()
     }
 
-    override func setEditing(editing: Bool, animated animated: Bool) {
+    override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
         tableView.setEditing(editing, animated: animated)
@@ -144,9 +144,9 @@ extension FriendListController: UITableViewDataSource {
             let title: String
 
             switch dataSource.objectAtIndexPath(indexPath) {
-                case .Request(let request):
+                case .Request:
                     title = String(localized:"delete_friend_request_title")
-                case .Friend(let friend):
+                case .Friend:
                     title = String(localized:"delete_friend_title")
             }
 
