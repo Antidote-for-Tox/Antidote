@@ -157,6 +157,16 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
     func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator) {
         showFriendList()
     }
+
+    func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String) {
+        callCoordinator.answerIncomingCallWithUserInfo(userInfo)
+    }
+}
+
+extension RunningCoordinator: CallCoordinatorDelegate {
+    func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String) {
+        notificationCoordinator.showCallNotificationWithCaller(caller, userInfo: userInfo)
+    }
 }
 
 extension RunningCoordinator: FriendsTabCoordinatorDelegate {
@@ -306,7 +316,7 @@ private extension RunningCoordinator {
                 presentingController: presentingController,
                 submanagerCalls: toxManager.calls,
                 submanagerObjects: toxManager.objects)
-
+        callCoordinator.delegate = self
     }
 
     func createTabBarItems() -> [TabBarAbstractItem] {

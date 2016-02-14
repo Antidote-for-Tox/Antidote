@@ -122,6 +122,7 @@
 
 "notification_new_message" = "New message";
 "notification_incoming_friend_request" = "Incoming friend request";
+"notification_is_calling" = "is calling";
 
 "settings_about" = "About";
 "settings_beta_tester_menu" = "Beta Tester Menu";

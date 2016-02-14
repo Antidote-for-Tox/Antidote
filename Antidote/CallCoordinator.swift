@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol CallCoordinatorDelegate: class {
+    func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String)
+}
+
 private struct Constants {
     static let DeclineAfterInterval = 1.5
 }
@@ -19,6 +23,8 @@ private struct ActiveCall {
 }
 
 class CallCoordinator: NSObject {
+    weak var delegate: CallCoordinatorDelegate?
+
     private let theme: Theme
     private weak var presentingController: UIViewController!
     private weak var submanagerCalls: OCTSubmanagerCalls!
@@ -53,6 +59,14 @@ class CallCoordinator: NSObject {
             handleErrorWithType(.CallToChat, error: error)
         }
     }
+
+    func answerIncomingCallWithUserInfo(userInfo: String) {
+        guard let activeCall = activeCall else { return }
+        guard activeCall.call.uniqueIdentifier == userInfo else { return }
+        guard activeCall.call.status == .Ringing else { return }
+
+        answerCall(enableVideo: false)
+    }
 }
 
 extension CallCoordinator: CoordinatorProtocol {
@@ -68,6 +82,10 @@ extension CallCoordinator: OCTSubmanagerCallDelegate {
             return
         }
 
+        if !UIApplication.isActive {
+            delegate?.callCoordinator(self, notifyAboutBackgroundCallFrom: call.caller.nickname, userInfo: call.uniqueIdentifier)
+        }
+
         let controller = CallIncomingController(theme: theme, callerName: call.caller.nickname)
         controller.delegate = self
 
@@ -81,11 +99,11 @@ extension CallCoordinator: CallIncomingControllerDelegate {
     }
 
     func callIncomingControllerAnswerAudio(controller: CallIncomingController) {
-        answerCallWithIncomingController(controller, enableVideo: false)
+        answerCall(enableVideo: false)
     }
 
     func callIncomingControllerAnswerVideo(controller: CallIncomingController) {
-        answerCallWithIncomingController(controller, enableVideo: true)
+        answerCall(enableVideo: true)
     }
 }
 
@@ -192,7 +210,7 @@ private extension CallCoordinator {
         activeCallWasUpdated()
     }
 
-    func answerCallWithIncomingController(controller: CallIncomingController, enableVideo: Bool) {
+    func answerCall(enableVideo enableVideo: Bool) {
         guard let activeCall = activeCall else {
             assert(false, "This method should be called only if active call is non-nil")
             return

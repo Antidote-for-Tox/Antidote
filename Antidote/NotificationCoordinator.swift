@@ -20,6 +20,7 @@ private struct Constants {
 protocol NotificationCoordinatorDelegate: class {
     func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat)
     func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator)
+    func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String)
 }
 
 class NotificationCoordinator: NSObject {
@@ -105,6 +106,17 @@ class NotificationCoordinator: NSObject {
 
         performAction(action)
     }
+
+    func showCallNotificationWithCaller(caller: String, userInfo: String) {
+        let object = NotificationObject(
+                image: UIImage.emptyImage(),
+                title: caller,
+                body: String(localized: "notification_is_calling"),
+                action: .AnswerIncomingCall(userInfo: userInfo),
+                soundName: "isotoxin_Ringtone.aac")
+
+        showLocalNotificationObject(object)
+    }
 }
 
 extension NotificationCoordinator: CoordinatorProtocol {
@@ -168,16 +180,6 @@ private extension NotificationCoordinator {
             return
         }
 
-        switch UIApplication.sharedApplication().applicationState {
-            case .Active:
-                // yes
-                break
-            case .Inactive:
-                return
-            case .Background:
-                return
-        }
-
         if message.messageText != nil {
             audioPlayer.playSound(.NewMessage, loop: false)
         }
@@ -188,8 +190,7 @@ private extension NotificationCoordinator {
             return false
         }
 
-        if UIApplication.sharedApplication().applicationState == .Active &&
-           bannedChatIdentifiers.contains(message.chat.uniqueIdentifier) {
+        if UIApplication.isActive && bannedChatIdentifiers.contains(message.chat.uniqueIdentifier) {
             return false
         }
 
@@ -220,18 +221,17 @@ private extension NotificationCoordinator {
         }
 
         let notification = notificationQueue.removeFirst()
+        let object = notificationObjectFromNotification(notification)
 
-        switch UIApplication.sharedApplication().applicationState {
-            case .Active:
-                showInAppNotification(notification)
-            case .Inactive:
-                fallthrough
-            case .Background:
-                showLocalNotification(notification)
+        if UIApplication.isActive {
+            showInAppNotificationObject(object)
+        }
+        else {
+            showLocalNotificationObject(object)
         }
     }
 
-    func showInAppNotification(notification: NotificationType) {
+    func showInAppNotificationObject(object: NotificationObject) {
         let timer = NSTimer.scheduledTimerWithTimeInterval(Constants.NotificationVisibleDuration, block: { [weak self] _ in
             self?.showNextNotification()
         }, repeats: false)
@@ -241,8 +241,6 @@ private extension NotificationCoordinator {
             self?.showNextNotification()
         }
 
-        let object = notificationObjectFromNotification(notification)
-
         let view = NotificationView(theme: theme, image: object.image, topText: object.title, bottomText: object.body, tapHandler: { [weak self] in
             self?.performAction(object.action)
             closeHandler()
@@ -251,13 +249,11 @@ private extension NotificationCoordinator {
         notificationWindow.pushNotificationView(view)
     }
 
-    func showLocalNotification(notification: NotificationType) {
-        let object = notificationObjectFromNotification(notification)
-
+    func showLocalNotificationObject(object: NotificationObject) {
         let local = UILocalNotification()
         local.alertBody = "\(object.title): \(object.body)"
         local.userInfo = object.action.archive()
-        local.soundName = "isotoxin_NewMessage.aac"
+        local.soundName = object.soundName
 
         UIApplication.sharedApplication().presentLocalNotificationNow(local)
 
@@ -278,7 +274,7 @@ private extension NotificationCoordinator {
         let title = String(localized: "notification_incoming_friend_request")
         let body = request.message
 
-        return NotificationObject(image: image, title: title, body: body, action: .OpenRequests)
+        return NotificationObject(image: image, title: title, body: body, action: .OpenRequests, soundName: "isotoxin_NewMessage.aac")
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
@@ -291,7 +287,7 @@ private extension NotificationCoordinator {
             body = userDefaults.showNotificationPreview ? message.messageText.text : String(localized: "notification_new_message")
         }
 
-        return NotificationObject(image: image, title: title, body: body, action: action)
+        return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
     func performAction(action: NotificationAction) {
@@ -305,7 +301,8 @@ private extension NotificationCoordinator {
                 banNotificationsForChat(chat)
             case .OpenRequests:
                 delegate?.notificationCoordinatorShowFriendRequest(self)
-                break
+            case .AnswerIncomingCall(let userInfo):
+                delegate?.notificationCoordinatorAnswerIncomingCall(self, userInfo: userInfo)
         }
     }
 }

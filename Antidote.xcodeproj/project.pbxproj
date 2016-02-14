@@ -63,6 +63,8 @@
 		116634AD1C6F407D0072C980 /* ChatOutgoingCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */; };
 		116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */; };
 		116634B01C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */; };
+		116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
+		116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -398,6 +400,7 @@
 		116634A81C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingCallCellModel.swift; sourceTree = "<group>"; };
 		116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCell.swift; sourceTree = "<group>"; };
 		116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCellModel.swift; sourceTree = "<group>"; };
+		116634B11C7087A80072C980 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -783,13 +786,14 @@
 			children = (
 				1164C8EF1BC982FF00B91107 /* ImageExtension.swift */,
 				1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */,
+				11B253B61C503FA10068F47C /* NSTimerExtension.swift */,
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
 				1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
 				119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */,
+				116634B11C7087A80072C980 /* UIApplicationExtension.swift */,
 				119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */,
 				1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */,
-				11B253B61C503FA10068F47C /* NSTimerExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1133,6 +1137,7 @@
 			files = (
 				9C2EF34E1C493A07006E7AB1 /* PortionDataSource.swift in Sources */,
 				116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
+				116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
 				114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */,
@@ -1339,6 +1344,7 @@
 				9CEE6B121C4E8FDC00A1ECB5 /* ImageViewWithStatus.swift in Sources */,
 				9CEE6ADB1C4E8FDC00A1ECB5 /* UserDefaultsManager.swift in Sources */,
 				9CEE6AF61C4E8FDC00A1ECB5 /* CoordinatorProtocol.swift in Sources */,
+				116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
 				9CEE6ACA1C4E8FDC00A1ECB5 /* StaticTableButtonCellModel.swift in Sources */,
 				9CEE6AEA1C4E8FDC00A1ECB5 /* FriendCardController.swift in Sources */,
 				9CEE6AFA1C4E8FDC00A1ECB5 /* CallCoordinator.swift in Sources */,

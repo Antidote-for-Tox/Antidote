@@ -18,9 +18,15 @@ class AudioPlayer {
         case RingtoneWhileCall = "isotoxin_RingtoneWhileCall"
     }
 
-    var players = [Sound: AVAudioPlayer]()
+    var playOnlyIfApplicationIsActive = true
+
+    private var players = [Sound: AVAudioPlayer]()
 
     func playSound(sound: Sound, loop: Bool) {
+        if playOnlyIfApplicationIsActive && !UIApplication.isActive {
+            return
+        }
+
         guard let player = playerForSound(sound) else {
             return
         }

@@ -11,6 +11,7 @@ import Foundation
 enum NotificationAction {
     case OpenChat(chatUniqueIdentifier: String)
     case OpenRequests
+    case AnswerIncomingCall(userInfo: String)
 }
 
 extension NotificationAction {
@@ -20,6 +21,7 @@ extension NotificationAction {
 
         static let OpenChatValue = "OpenChatValue"
         static let OpenRequestsValue = "OpenRequestsValue"
+        static let AnswerIncomingCallValue = "AnswerIncomingCallValue"
     }
 
     init?(dictionary: [String: String]) {
@@ -35,6 +37,11 @@ extension NotificationAction {
                 self = OpenChat(chatUniqueIdentifier: argument)
             case Constants.OpenRequestsValue:
                 self = .OpenRequests
+            case Constants.AnswerIncomingCallValue:
+                guard let argument = dictionary[Constants.ArgumentKey] else {
+                    return nil
+                }
+                self = .AnswerIncomingCall(userInfo: argument)
             default:
                 return nil
         }
@@ -49,13 +56,28 @@ extension NotificationAction {
                 ]
             case .OpenRequests:
                 return [Constants.ValueKey: Constants.OpenRequestsValue]
+            case .AnswerIncomingCall(let userInfo):
+                return [
+                    Constants.ValueKey: Constants.AnswerIncomingCallValue,
+                    Constants.ArgumentKey: userInfo,
+                ]
         }
     }
 }
 
 struct NotificationObject {
+    /// Image to show on the left of the text. Valid only for in-app notifications.
     let image: UIImage
+
+    /// Title of notification
     let title: String
+
+    /// Body text of notification
     let body: String
+
+    /// Action to be fired when user interacts with notification
     let action: NotificationAction
+
+    /// Sound to play when notification is fired. Valid only for local notifications.
+    let soundName: String
 }
