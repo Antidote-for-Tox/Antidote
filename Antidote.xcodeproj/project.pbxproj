@@ -55,6 +55,16 @@
 		116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */; };
 		116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */; };
 		116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513251C2D636A0066AF06 /* NotificationWindow.swift */; };
+		116634A01C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1166349F1C6E8D0F0072C980 /* ChatIncomingCallCell.swift */; };
+		116634A11C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1166349F1C6E8D0F0072C980 /* ChatIncomingCallCell.swift */; };
+		116634A91C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634A81C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift */; };
+		116634AA1C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634A81C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift */; };
+		116634AC1C6F407D0072C980 /* ChatOutgoingCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */; };
+		116634AD1C6F407D0072C980 /* ChatOutgoingCallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */; };
+		116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */; };
+		116634B01C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */; };
+		116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
+		116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -386,6 +396,11 @@
 		116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCell.swift; sourceTree = "<group>"; };
 		116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableChatButtonsCellModel.swift; sourceTree = "<group>"; };
 		116513251C2D636A0066AF06 /* NotificationWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationWindow.swift; sourceTree = "<group>"; };
+		1166349F1C6E8D0F0072C980 /* ChatIncomingCallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingCallCell.swift; sourceTree = "<group>"; };
+		116634A81C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingCallCellModel.swift; sourceTree = "<group>"; };
+		116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCell.swift; sourceTree = "<group>"; };
+		116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCellModel.swift; sourceTree = "<group>"; };
+		116634B11C7087A80072C980 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -664,12 +679,16 @@
 			children = (
 				1193AB651C1F5694006AA9E5 /* BaseCell.swift */,
 				1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */,
+				1166349F1C6E8D0F0072C980 /* ChatIncomingCallCell.swift */,
+				116634A81C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift */,
 				11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */,
 				11B252FB1C4A61550068F47C /* ChatIncomingTextCellModel.swift */,
 				9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */,
 				9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */,
 				11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */,
 				11B253031C4A61D50068F47C /* ChatMovableDateCellModel.swift */,
+				116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */,
+				116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */,
 				11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */,
 				11B252FF1C4A61630068F47C /* ChatOutgoingTextCellModel.swift */,
 				1193AB691C1F5C28006AA9E5 /* FriendListCell.swift */,
@@ -767,13 +786,14 @@
 			children = (
 				1164C8EF1BC982FF00B91107 /* ImageExtension.swift */,
 				1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */,
+				11B253B61C503FA10068F47C /* NSTimerExtension.swift */,
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
 				1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
 				119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */,
+				116634B11C7087A80072C980 /* UIApplicationExtension.swift */,
 				119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */,
 				1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */,
-				11B253B61C503FA10068F47C /* NSTimerExtension.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -1116,6 +1136,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C2EF34E1C493A07006E7AB1 /* PortionDataSource.swift in Sources */,
+				116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
+				116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
 				114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */,
@@ -1124,6 +1146,7 @@
 				11B253B41C5027930068F47C /* NotificationView.swift in Sources */,
 				11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */,
 				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
+				116634A01C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */,
 				112E4EE51C676553004312CF /* CallButton.swift in Sources */,
 				9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
@@ -1173,6 +1196,7 @@
 				9C07151D1BCD2E5B003A27B5 /* PortraitNavigationController.swift in Sources */,
 				11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */,
 				1156A4851C10D119005AC8C6 /* StaticTableAvatarCellModel.swift in Sources */,
+				116634AC1C6F407D0072C980 /* ChatOutgoingCallCell.swift in Sources */,
 				1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */,
 				9CEE6AA21C4E679100A1ECB5 /* PrimaryIpadController.swift in Sources */,
 				112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */,
@@ -1221,6 +1245,7 @@
 				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
+				116634A91C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
 				11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */,
 				1164C8E71BC929C500B91107 /* LoginBaseController.swift in Sources */,
@@ -1247,6 +1272,7 @@
 				9CEE6ABA1C4E8FDC00A1ECB5 /* BaseCellModel.swift in Sources */,
 				9CEE6B0C1C4E8FDC00A1ECB5 /* HelperFunctions.swift in Sources */,
 				9CEE6B531C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
+				116634A11C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */,
 				9CEE6AEB1C4E8FDC00A1ECB5 /* FriendListController.swift in Sources */,
 				9CEE6AC81C4E8FDC00A1ECB5 /* StaticTableBaseCellModel.swift in Sources */,
 				9CEE6AD71C4E8FDC00A1ECB5 /* TabBarAbstractItem.swift in Sources */,
@@ -1278,6 +1304,7 @@
 				9CEE6AF41C4E8FDC00A1ECB5 /* TextViewController.swift in Sources */,
 				9CEE6B171C4E8FDC00A1ECB5 /* ViewPassingGestures.swift in Sources */,
 				9CEE6B0B1C4E8FDC00A1ECB5 /* ErrorHandling.swift in Sources */,
+				116634B01C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
 				9CEE6B101C4E8FDC00A1ECB5 /* ChatPrivateTitleView.swift in Sources */,
 				11B253B51C5027930068F47C /* NotificationView.swift in Sources */,
 				9CEE6AC31C4E8FDC00A1ECB5 /* FriendListCell.swift in Sources */,
@@ -1312,9 +1339,12 @@
 				9CEE6ABE1C4E8FDC00A1ECB5 /* ChatListCellModel.swift in Sources */,
 				9CEE6AEF1C4E8FDC00A1ECB5 /* QRViewerController.swift in Sources */,
 				9CEE6AC71C4E8FDC00A1ECB5 /* StaticTableBaseCell.swift in Sources */,
+				116634AA1C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */,
+				116634AD1C6F407D0072C980 /* ChatOutgoingCallCell.swift in Sources */,
 				9CEE6B121C4E8FDC00A1ECB5 /* ImageViewWithStatus.swift in Sources */,
 				9CEE6ADB1C4E8FDC00A1ECB5 /* UserDefaultsManager.swift in Sources */,
 				9CEE6AF61C4E8FDC00A1ECB5 /* CoordinatorProtocol.swift in Sources */,
+				116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
 				9CEE6ACA1C4E8FDC00A1ECB5 /* StaticTableButtonCellModel.swift in Sources */,
 				9CEE6AEA1C4E8FDC00A1ECB5 /* FriendCardController.swift in Sources */,
 				9CEE6AFA1C4E8FDC00A1ECB5 /* CallCoordinator.swift in Sources */,

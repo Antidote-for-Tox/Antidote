@@ -157,6 +157,16 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
     func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator) {
         showFriendList()
     }
+
+    func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String) {
+        callCoordinator.answerIncomingCallWithUserInfo(userInfo)
+    }
+}
+
+extension RunningCoordinator: CallCoordinatorDelegate {
+    func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String) {
+        notificationCoordinator.showCallNotificationWithCaller(caller, userInfo: userInfo)
+    }
 }
 
 extension RunningCoordinator: FriendsTabCoordinatorDelegate {
@@ -186,6 +196,10 @@ extension RunningCoordinator: ChatsTabCoordinatorDelegate {
 
     func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat) {
         notificationCoordinator.unbanNotificationsForChat(chat)
+    }
+
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool) {
+        callCoordinator.callToChat(chat, enableVideo: enableVideo)
     }
 }
 
@@ -243,6 +257,10 @@ extension RunningCoordinator: ChatPrivateControllerDelegate {
     func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
         notificationCoordinator.unbanNotificationsForChat(controller.chat)
     }
+
+    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
+        callCoordinator.callToChat(controller.chat, enableVideo: enableVideo)
+    }
 }
 
 private extension RunningCoordinator {
@@ -298,7 +316,7 @@ private extension RunningCoordinator {
                 presentingController: presentingController,
                 submanagerCalls: toxManager.calls,
                 submanagerObjects: toxManager.objects)
-
+        callCoordinator.delegate = self
     }
 
     func createTabBarItems() -> [TabBarAbstractItem] {

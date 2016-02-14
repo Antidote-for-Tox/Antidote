@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol CallCoordinatorDelegate: class {
+    func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String)
+}
+
 private struct Constants {
     static let DeclineAfterInterval = 1.5
 }
@@ -19,10 +23,14 @@ private struct ActiveCall {
 }
 
 class CallCoordinator: NSObject {
+    weak var delegate: CallCoordinatorDelegate?
+
     private let theme: Theme
     private weak var presentingController: UIViewController!
     private weak var submanagerCalls: OCTSubmanagerCalls!
     private weak var submanagerObjects: OCTSubmanagerObjects!
+
+    private let audioPlayer = AudioPlayer()
 
     private var activeCall: ActiveCall?
 
@@ -51,6 +59,14 @@ class CallCoordinator: NSObject {
             handleErrorWithType(.CallToChat, error: error)
         }
     }
+
+    func answerIncomingCallWithUserInfo(userInfo: String) {
+        guard let activeCall = activeCall else { return }
+        guard activeCall.call.uniqueIdentifier == userInfo else { return }
+        guard activeCall.call.status == .Ringing else { return }
+
+        answerCall(enableVideo: false)
+    }
 }
 
 extension CallCoordinator: CoordinatorProtocol {
@@ -66,6 +82,10 @@ extension CallCoordinator: OCTSubmanagerCallDelegate {
             return
         }
 
+        if !UIApplication.isActive {
+            delegate?.callCoordinator(self, notifyAboutBackgroundCallFrom: call.caller.nickname, userInfo: call.uniqueIdentifier)
+        }
+
         let controller = CallIncomingController(theme: theme, callerName: call.caller.nickname)
         controller.delegate = self
 
@@ -79,11 +99,11 @@ extension CallCoordinator: CallIncomingControllerDelegate {
     }
 
     func callIncomingControllerAnswerAudio(controller: CallIncomingController) {
-        answerCallWithIncomingController(controller, enableVideo: false)
+        answerCall(enableVideo: false)
     }
 
     func callIncomingControllerAnswerVideo(controller: CallIncomingController) {
-        answerCallWithIncomingController(controller, enableVideo: true)
+        answerCall(enableVideo: true)
     }
 }
 
@@ -154,6 +174,8 @@ private extension CallCoordinator {
             _ = try? submanagerCalls.sendCallControl(.Cancel, toCall: activeCall.call)
         }
 
+        audioPlayer.stopAll()
+
         if let controller = activeCall.navigation.topViewController as? CallBaseController {
             controller.prepareForRemoval()
         }
@@ -184,9 +206,11 @@ private extension CallCoordinator {
         presentingController.presentViewController(navigation, animated: true, completion: nil)
 
         activeCall = ActiveCall(call: call, navigation: navigation, callController: callController)
+
+        activeCallWasUpdated()
     }
 
-    func answerCallWithIncomingController(controller: CallIncomingController, enableVideo: Bool) {
+    func answerCall(enableVideo enableVideo: Bool) {
         guard let activeCall = activeCall else {
             assert(false, "This method should be called only if active call is non-nil")
             return
@@ -215,12 +239,20 @@ private extension CallCoordinator {
 
         switch activeCall.call.status {
             case .Ringing:
+                if !audioPlayer.isPlayingSound(.Ringtone) {
+                    audioPlayer.playSound(.Ringtone, loop: true)
+                }
+
                 // no update for ringing status
                 return
             case .Dialing:
-                break
+                if !audioPlayer.isPlayingSound(.Calltone) {
+                    audioPlayer.playSound(.Calltone, loop: true)
+                }
             case .Active:
-                break
+                if audioPlayer.isPlaying() {
+                    audioPlayer.stopAll()
+                }
         }
 
         var activeController = activeCall.navigation.topViewController as? CallActiveController

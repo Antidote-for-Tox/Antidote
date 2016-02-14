@@ -12,6 +12,8 @@ import SnapKit
 private struct Constants {
     static let MessagesPortionSize = 50
 
+    static let BarItemSize = CGSize(width: 25.0, height: 25.0)
+
     static let InputViewTopOffset: CGFloat = 50.0
 
     static let NewMessageViewAllowedDelta: CGFloat = 20.0
@@ -25,6 +27,7 @@ private struct Constants {
 protocol ChatPrivateControllerDelegate: class {
     func chatPrivateControllerWillAppear(controller: ChatPrivateController)
     func chatPrivateControllerWillDisappear(controller: ChatPrivateController)
+    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool)
 }
 
 class ChatPrivateController: KeyboardNotificationController {
@@ -41,6 +44,9 @@ class ChatPrivateController: KeyboardNotificationController {
     private let friendController: RBQFetchedResultsController
 
     private let timeFormatter: NSDateFormatter
+
+    private var audioButton: UIBarButtonItem!
+    private var videoButton: UIBarButtonItem!
 
     private var titleView: ChatPrivateTitleView!
     private var tableView: UITableView!
@@ -192,6 +198,14 @@ extension ChatPrivateController {
             self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
         }
     }
+
+    func audioCallButtonPressed() {
+        delegate?.chatPrivateControllerCallToChat(self, enableVideo: false)
+    }
+
+    func videoCallButtonPressed() {
+        delegate?.chatPrivateControllerCallToChat(self, enableVideo: true)
+    }
 }
 
 extension ChatPrivateController: UITableViewDataSource {
@@ -209,6 +223,14 @@ extension ChatPrivateController: UITableViewDataSource {
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingTextCell.staticReuseIdentifier) as! ChatOutgoingTextCell
             }
+            else if message.messageCall != nil {
+                let outgoingModel = ChatOutgoingCallCellModel()
+                outgoingModel.callDuration = message.messageCall.callDuration
+                outgoingModel.answered = (message.messageCall.callEvent == .Answered)
+                model = outgoingModel
+
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingCallCell.staticReuseIdentifier) as! ChatOutgoingCallCell
+            }
             else {
                 model = ChatMovableDateCellModel()
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
@@ -221,6 +243,14 @@ extension ChatPrivateController: UITableViewDataSource {
                 model = incomingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingTextCell.staticReuseIdentifier) as! ChatIncomingTextCell
+            }
+            else if message.messageCall != nil {
+                let incomingModel = ChatIncomingCallCellModel()
+                incomingModel.callDuration = message.messageCall.callDuration
+                incomingModel.answered = (message.messageCall.callEvent == .Answered)
+                model = incomingModel
+
+                cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingCallCell.staticReuseIdentifier) as! ChatIncomingCallCell
             }
             else {
                 model = ChatMovableDateCellModel()
@@ -355,6 +385,17 @@ private extension ChatPrivateController {
     func createNavigationViews() {
         titleView = ChatPrivateTitleView(theme: theme)
         navigationItem.titleView = titleView
+
+        let audioImage = UIImage(named: "start-call")!.scaleToSize(Constants.BarItemSize)
+        let videoImage = UIImage(named: "video-call")!.scaleToSize(Constants.BarItemSize)
+
+        audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: "audioCallButtonPressed")
+        videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: "videoCallButtonPressed")
+
+        navigationItem.rightBarButtonItems = [
+            audioButton,
+            videoButton,
+        ]
     }
 
     func createTableView() {
@@ -373,6 +414,8 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatMovableDateCell.self, forCellReuseIdentifier: ChatMovableDateCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingTextCell.self, forCellReuseIdentifier: ChatIncomingTextCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingTextCell.self, forCellReuseIdentifier: ChatOutgoingTextCell.staticReuseIdentifier)
+        tableView.registerClass(ChatIncomingCallCell.self, forCellReuseIdentifier: ChatIncomingCallCell.staticReuseIdentifier)
+        tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -489,6 +532,8 @@ private extension ChatPrivateController {
         titleView.name = friend.nickname
         titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
 
+        audioButton.enabled = friend.isConnected
+        videoButton.enabled = friend.isConnected
         chatInputView.sendButtonEnabled = friend.isConnected
     }
 }

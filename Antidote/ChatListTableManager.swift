@@ -181,7 +181,7 @@ private extension ChatListTableManager {
                     let timeString = String(timeInterval: call.callDuration)
                     return String(localized: "chat_call_finished") + " - \(timeString)"
                 case .Unanswered:
-                    return String(localized: "chat_unanwered_call")
+                    return message.isOutgoing() ?  String(localized: "chat_unanwered_call") : String(localized: "chat_missed_call_message")
             }
         }
 

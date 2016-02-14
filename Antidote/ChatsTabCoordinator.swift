@@ -11,6 +11,7 @@ import UIKit
 protocol ChatsTabCoordinatorDelegate: class {
     func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat)
     func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat)
+    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool)
 }
 
 class ChatsTabCoordinator: RunningNavigationCoordinator {
@@ -59,5 +60,9 @@ extension ChatsTabCoordinator: ChatPrivateControllerDelegate {
 
     func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
         delegate?.chatsTabCoordinator(self, chatWillDisapper: controller.chat)
+    }
+
+    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
+        delegate?.chatsTabCoordinator(self, callToChat: controller.chat, enableVideo: enableVideo)
     }
 }
