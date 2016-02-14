@@ -21,10 +21,12 @@ private struct Constants {
     static let BigButtonOffset = 30.0
 
     static let SmallButtonOffset = 20.0
-    static let SmallBottomOffset = -20.0
+    static let SmallBottomOffset: CGFloat = -20.0
 
     static let VideoPreviewOffset = -20.0
     static let VideoPreviewSize = CGSize(width: 150.0, height: 110)
+
+    static let ControlsAnimationDuration = 0.3
 }
 
 class CallActiveController: CallBaseController {
@@ -118,6 +120,19 @@ class CallActiveController: CallBaseController {
         }
     }
 
+    private var showControls = true {
+        didSet {
+            let offset = showControls ? Constants.SmallBottomOffset : smallContainerView.frame.size.height
+            smallContainerViewBottomConstraint.updateOffset(offset)
+
+            toggleTopContainer(hidden: !showControls)
+
+            UIView.animateWithDuration(Constants.ControlsAnimationDuration) { [unowned self] in
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+
     private var videoPreviewView: UIView!
 
     private var bigContainerView: UIView!
@@ -126,6 +141,8 @@ class CallActiveController: CallBaseController {
     private var bigSpeakerButton: CallButton?
     private var bigVideoButton: CallButton?
     private var bigDeclineButton: CallButton?
+
+    private var smallContainerViewBottomConstraint: Constraint!
 
     private var smallContainerView: UIView!
     private var smallMuteButton: CallButton?
@@ -144,6 +161,7 @@ class CallActiveController: CallBaseController {
     override func loadView() {
         super.loadView()
 
+        createGestureRecognizers()
         createVideoPreviewView()
         createBigViews()
         createSmallViews()
@@ -156,6 +174,7 @@ class CallActiveController: CallBaseController {
 
     override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
         updateViewsWithTraitCollection(newCollection)
+        showControls = true
     }
 
     override func viewDidLayoutSubviews() {
@@ -183,6 +202,14 @@ class CallActiveController: CallBaseController {
 
 // MARK: Actions
 extension CallActiveController {
+    func tapOnView() {
+        guard !smallContainerView.hidden else {
+            return
+        }
+
+        showControls = !showControls
+    }
+
     func muteButtonPressed(button: CallButton) {
         mute = !button.selected
         delegate?.callActiveController(self, mute: mute)
@@ -204,6 +231,11 @@ extension CallActiveController {
 }
 
 private extension CallActiveController {
+    func createGestureRecognizers() {
+        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnView")
+        view.addGestureRecognizer(tapGR)
+    }
+
     func createVideoPreviewView() {
         videoPreviewView = UIView()
         videoPreviewView.backgroundColor = theme.colorForType(.CallVideoPreviewBackground)
@@ -288,7 +320,7 @@ private extension CallActiveController {
         }
 
         smallContainerView.snp_makeConstraints {
-            $0.bottom.equalTo(view).offset(Constants.SmallBottomOffset)
+            smallContainerViewBottomConstraint = $0.bottom.equalTo(view).offset(Constants.SmallBottomOffset).constraint
             $0.centerX.equalTo(view)
         }
 

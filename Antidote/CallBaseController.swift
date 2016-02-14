@@ -25,6 +25,8 @@ class CallBaseController: UIViewController {
     var callerLabel: UILabel!
     var infoLabel: UILabel!
 
+    private var topContainerTopConstraint: Constraint!
+
     init(theme: Theme, callerName: String) {
         self.theme = theme
         self.callerName = callerName
@@ -49,6 +51,11 @@ class CallBaseController: UIViewController {
      */
     func prepareForRemoval() {
         infoLabel.text = String(localized: "call_ended")
+    }
+
+    func toggleTopContainer(hidden hidden: Bool) {
+        let offset = hidden ? -topContainer.frame.size.height : 0.0
+        topContainerTopConstraint.updateOffset(offset)
     }
 }
 
@@ -83,6 +90,7 @@ private extension CallBaseController {
 
     func installConstraints() {
         topContainer.snp_makeConstraints {
+            topContainerTopConstraint = $0.top.equalTo(view).constraint
             $0.top.left.right.equalTo(view)
             $0.height.equalTo(Constants.TopContainerHeight)
         }
