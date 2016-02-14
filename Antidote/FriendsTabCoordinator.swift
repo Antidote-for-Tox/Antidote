@@ -58,12 +58,13 @@ extension FriendsTabCoordinator: FriendCardControllerDelegate {
         let title = String(localized: "nickname")
         let defaultValue = friend.nickname
 
-        let textController = TextEditController(theme: theme, title: title, defaultValue: defaultValue) {
+        let textController = TextEditController(theme: theme, title: title, defaultValue: defaultValue, changeTextHandler: {
             [unowned self] newValue -> Void in
-
             self.toxManager.objects.changeFriend(friend, nickname: newValue)
+
+        }, userFinishedEditing: { [unowned self] in
             self.navigationController.popViewControllerAnimated(true)
-        }
+        })
 
         navigationController.pushViewController(textController, animated: true)
     }

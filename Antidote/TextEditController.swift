@@ -18,7 +18,8 @@ class TextEditController: UIViewController {
     private let theme: Theme
 
     private let defaultValue: String?
-    private let handler: String -> Void
+    private let changeTextHandler: String -> Void
+    private let userFinishedEditing: Void -> Void
 
     private var textField: UITextField!
 
@@ -27,12 +28,14 @@ class TextEditController: UIViewController {
 
         - Parameters:
           - theme: Theme controller will use.
-          - handler: Handler called when user have finished editing text.
+          - changeTextHandler: Handler called when user have changed the text.
+          - userFinishedEditing: Handler called when user have finished editing.
      */
-    init(theme: Theme, title: String, defaultValue: String?, handler: String -> Void) {
+    init(theme: Theme, title: String, defaultValue: String?, changeTextHandler: String -> Void, userFinishedEditing: Void -> Void) {
         self.theme = theme
         self.defaultValue = defaultValue
-        self.handler = handler
+        self.changeTextHandler = changeTextHandler
+        self.userFinishedEditing = userFinishedEditing
 
         super.init(nibName: nil, bundle: nil)
 
@@ -56,11 +59,18 @@ class TextEditController: UIViewController {
 
         textField.becomeFirstResponder()
     }
+
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        changeTextHandler(textField.text ?? "")
+    }
 }
 
 extension TextEditController: UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        handler(textField.text ?? "")
+        changeTextHandler(textField.text ?? "")
+        userFinishedEditing()
 
         return false
     }
