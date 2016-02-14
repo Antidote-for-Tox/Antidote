@@ -14,6 +14,7 @@ protocol CallActiveControllerDelegate: class {
     func callActiveController(controller: CallActiveController, speaker: Bool)
     func callActiveController(controller: CallActiveController, outgoingVideo: Bool)
     func callActiveControllerDecline(controller: CallActiveController)
+    func callActiveControllerSwitchCamera(controller: CallActiveController)
 }
 
 private struct Constants {
@@ -25,6 +26,7 @@ private struct Constants {
 
     static let VideoPreviewOffset = -20.0
     static let VideoPreviewSize = CGSize(width: 150.0, height: 110)
+    static let SwitchCameraOffset = 5.0
 
     static let ControlsAnimationDuration = 0.3
 }
@@ -118,6 +120,7 @@ class CallActiveController: CallBaseController {
 
             if let layer = videoPreviewLayer {
                 videoPreviewView.layer.addSublayer(layer)
+                videoPreviewView.bringSubviewToFront(switchCameraButton)
                 videoPreviewView.hidden = false
                 view.layoutIfNeeded()
             }
@@ -140,6 +143,7 @@ class CallActiveController: CallBaseController {
     }
 
     private var videoPreviewView: UIView!
+    private var switchCameraButton: UIButton!
 
     private var bigContainerView: UIView!
     private var bigCenterContainer: UIView!
@@ -234,6 +238,10 @@ extension CallActiveController {
     func declineButtonPressed() {
         delegate?.callActiveControllerDecline(self)
     }
+
+    func switchCameraButtonPressed() {
+        delegate?.callActiveControllerSwitchCamera(self)
+    }
 }
 
 private extension CallActiveController {
@@ -248,6 +256,14 @@ private extension CallActiveController {
         view.addSubview(videoPreviewView)
 
         videoPreviewView.hidden = !outgoingVideo
+
+        let image = UIImage(named: "switch-camera")!.imageWithRenderingMode(.AlwaysTemplate)
+
+        switchCameraButton = UIButton()
+        switchCameraButton.tintColor = theme.colorForType(.CallButtonIconColor)
+        switchCameraButton.setImage(image, forState: .Normal)
+        switchCameraButton.addTarget(self, action: "switchCameraButtonPressed", forControlEvents: .TouchUpInside)
+        videoPreviewView.addSubview(switchCameraButton)
     }
 
     func createBigViews() {
@@ -290,6 +306,11 @@ private extension CallActiveController {
             $0.bottom.equalTo(smallContainerView.snp_top).offset(Constants.VideoPreviewOffset)
             $0.width.equalTo(Constants.VideoPreviewSize.width)
             $0.height.equalTo(Constants.VideoPreviewSize.height)
+        }
+
+        switchCameraButton.snp_makeConstraints {
+            $0.top.equalTo(videoPreviewView).offset(Constants.SwitchCameraOffset)
+            $0.right.equalTo(videoPreviewView).offset(-Constants.SwitchCameraOffset)
         }
 
         bigContainerView.snp_makeConstraints {
