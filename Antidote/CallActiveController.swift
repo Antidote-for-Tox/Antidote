@@ -48,8 +48,14 @@ class CallActiveController: CallBaseController {
                     infoLabel.text = nil
                 case .Reaching:
                     infoLabel.text = String(localized: "call_reaching")
+
+                    bigVideoButton?.enabled = false
+                    smallVideoButton?.enabled = false
                 case .Active(let duration):
                     infoLabel.text = String(timeInterval: duration)
+
+                    bigVideoButton?.enabled = true
+                    smallVideoButton?.enabled = true
             }
         }
     }
