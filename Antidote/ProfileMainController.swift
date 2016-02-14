@@ -105,6 +105,7 @@ private extension ProfileMainController {
         toxIdModel.rightButton = String(localized: "show_qr")
         toxIdModel.rightButtonHandler = showToxIdQR
         toxIdModel.userInteractionEnabled = false
+        toxIdModel.canCopyValue = true
 
         profileDetailsModel.value = String(localized: "profile_details")
         profileDetailsModel.didSelectHandler = showProfileDetails

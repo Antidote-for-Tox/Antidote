@@ -482,7 +482,7 @@ private extension ChatPrivateController {
     }
 
     func updateInputViewMaxHeight() {
-        chatInputView.maxHeight = chatInputView.frame.origin.y - Constants.InputViewTopOffset
+        chatInputView.maxHeight = CGRectGetMaxY(chatInputView.frame) - Constants.InputViewTopOffset
     }
 
     func handleNewMessage() {

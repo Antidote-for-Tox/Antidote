@@ -45,7 +45,7 @@ class ChatListController: UIViewController {
         installConstraints()
     }
 
-    override func setEditing(editing: Bool, animated animated: Bool) {
+    override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
         tableManager.tableView.setEditing(editing, animated: animated)

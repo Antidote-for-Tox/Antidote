@@ -65,6 +65,9 @@
 		116634B01C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */; };
 		116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
 		116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634B11C7087A80072C980 /* UIApplicationExtension.swift */; };
+		116634CF1C70E46C0072C980 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 116634CE1C70E46C0072C980 /* Launch Screen.storyboard */; };
+		116634D91C70F1260072C980 /* CopyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634D81C70F1260072C980 /* CopyLabel.swift */; };
+		116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634D81C70F1260072C980 /* CopyLabel.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -401,6 +404,8 @@
 		116634AB1C6F407D0072C980 /* ChatOutgoingCallCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCell.swift; sourceTree = "<group>"; };
 		116634AE1C6F40820072C980 /* ChatOutgoingCallCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingCallCellModel.swift; sourceTree = "<group>"; };
 		116634B11C7087A80072C980 /* UIApplicationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
+		116634CE1C70E46C0072C980 /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
+		116634D81C70F1260072C980 /* CopyLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyLabel.swift; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -598,6 +603,7 @@
 				112E4EE41C676553004312CF /* CallButton.swift */,
 				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
 				11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */,
+				116634D81C70F1260072C980 /* CopyLabel.swift */,
 				9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
@@ -851,6 +857,7 @@
 				1173F0711BC5D9DA00B88B7B /* default-theme.yaml */,
 				1164763B19794D3300DB20B8 /* InfoPlist.strings */,
 				9C7475C01BC698110098B1A4 /* Localizable.strings */,
+				116634CE1C70E46C0072C980 /* Launch Screen.storyboard */,
 			);
 			name = Application;
 			sourceTree = "<group>";
@@ -909,7 +916,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = dvor;
 				TargetAttributes = {
 					1173F0551BC5D94400B88B7B = {
@@ -1021,6 +1028,7 @@
 				9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */,
 				1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */,
 				1164763D19794D3300DB20B8 /* InfoPlist.strings in Resources */,
+				116634CF1C70E46C0072C980 /* Launch Screen.storyboard in Resources */,
 				1179E06B1BA0534600D258C6 /* import-profile.html in Resources */,
 				11B253521C4AD9CF0068F47C /* isotoxin_NewMessage.aac in Resources */,
 				1164764519794D3300DB20B8 /* Images.xcassets in Resources */,
@@ -1228,6 +1236,7 @@
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
+				116634D91C70F1260072C980 /* CopyLabel.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
@@ -1362,6 +1371,7 @@
 				9CEE6B111C4E8FDC00A1ECB5 /* FullscreenPicker.swift in Sources */,
 				9CEE6AD61C4E8FDC00A1ECB5 /* ProfileManager.swift in Sources */,
 				9CEE6AC01C4E8FDC00A1ECB5 /* ChatMovableDateCellModel.swift in Sources */,
+				116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */,
 				9CEE6AF31C4E8FDC00A1ECB5 /* TextEditController.swift in Sources */,
 				9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,
@@ -1435,6 +1445,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1494,7 +1505,6 @@
 			baseConfigurationReference = 2D5B916CEDBEC1B69CD1EFA4 /* Pods-Antidote.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -1505,6 +1515,7 @@
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "me.dvor.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
@@ -1520,7 +1531,6 @@
 			baseConfigurationReference = B3C17AF8CE3B4AD1B68F2B5B /* Pods-Antidote.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
@@ -1531,6 +1541,7 @@
 				INFOPLIST_FILE = "Antidote/Antidote-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "me.dvor.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;

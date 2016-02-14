@@ -43,17 +43,14 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
 
     func profileMainControllerChangeUserName(controller: ProfileMainController) {
         showTextEditController(title: String(localized: "name"), defaultValue: toxManager.user.userName()) {
-            newName -> Bool in
+            newName -> Void in
 
             do {
                 try self.toxManager.user.setUserName(newName)
             }
             catch let error as NSError {
                 handleErrorWithType(.ToxSetInfoCodeName, error: error)
-                return false
             }
-
-            return true
         }
     }
 
@@ -65,17 +62,14 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
 
     func profileMainControllerChangeStatusMessage(controller: ProfileMainController) {
         showTextEditController(title: String(localized: "status_message"), defaultValue: toxManager.user.userStatusMessage()) {
-            newStatusMessage -> Bool in
+            newStatusMessage -> Void in
 
             do {
                 try self.toxManager.user.setUserStatusMessage(newStatusMessage)
             }
             catch let error as NSError {
                 handleErrorWithType(.ToxSetInfoCodeStatusMessage, error: error)
-                return false
             }
-
-            return true
         }
     }
 
@@ -135,18 +129,14 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
 }
 
 private extension ProfileTabCoordinator {
-    /**
-        - Parameters:
-          - setValueClosure: return true if to pop to previous controller, false otherwise
-     */
-    func showTextEditController(title title: String, defaultValue: String, setValueClosure: String -> Bool) {
-        let controller = TextEditController(theme: theme, title: title, defaultValue: defaultValue) {
-            [unowned self] newName -> Void in
+    func showTextEditController(title title: String, defaultValue: String, setValueClosure: String -> Void) {
+        let controller = TextEditController(theme: theme, title: title, defaultValue: defaultValue, changeTextHandler: {
+            newName -> Void in
 
-            if setValueClosure(newName) {
-                self.navigationController.popViewControllerAnimated(true)
-            }
-        }
+            setValueClosure(newName)
+        }, userFinishedEditing: { [unowned self] in
+            self.navigationController.popViewControllerAnimated(true)
+        })
 
         navigationController.pushViewController(controller, animated: true)
     }

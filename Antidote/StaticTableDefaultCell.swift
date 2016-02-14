@@ -20,7 +20,7 @@ private struct Constants {
 class StaticTableDefaultCell: StaticTableBaseCell {
     private var userStatusView: UserStatusView!
     private var titleLabel: UILabel!
-    private var valueLabel: UILabel!
+    private var valueLabel: CopyLabel!
     private var rightButton: UIButton!
     private var rightImageView: UIImageView!
 
@@ -64,6 +64,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
         titleLabel.text = defaultModel.title
         valueLabel.text = defaultModel.value
+        valueLabel.copyable = defaultModel.canCopyValue
 
         rightButton.hidden = (defaultModel.rightButton == nil)
         rightButton.setTitle(defaultModel.rightButton, forState: .Normal)
@@ -123,7 +124,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         titleLabel.backgroundColor = UIColor.clearColor()
         customContentView.addSubview(titleLabel)
 
-        valueLabel = UILabel()
+        valueLabel = CopyLabel()
         valueLabel.numberOfLines = 0
         valueLabel.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightRegular)
         valueLabel.backgroundColor = UIColor.clearColor()
