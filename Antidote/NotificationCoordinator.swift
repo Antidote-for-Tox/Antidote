@@ -21,6 +21,9 @@ protocol NotificationCoordinatorDelegate: class {
     func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat)
     func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator)
     func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String)
+
+    func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int)
+    func notificationCoordinator(coordinator: NotificationCoordinator, updateChatsBadge badge: Int)
 }
 
 class NotificationCoordinator: NSObject {
@@ -33,6 +36,7 @@ class NotificationCoordinator: NSObject {
 
     private weak var submanagerObjects: OCTSubmanagerObjects!
     private let messagesController: RBQFetchedResultsController
+    private let chatsController: RBQFetchedResultsController
     private let requestsController: RBQFetchedResultsController
     private let avatarManager: AvatarManager
     private let audioPlayer = AudioPlayer()
@@ -47,6 +51,7 @@ class NotificationCoordinator: NSObject {
 
         self.submanagerObjects = submanagerObjects
         self.messagesController = submanagerObjects.fetchedResultsControllerForType(.MessageAbstract)
+        self.chatsController = submanagerObjects.fetchedResultsControllerForType(.Chat)
         self.requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
         self.avatarManager = AvatarManager(theme: theme)
 
@@ -54,6 +59,8 @@ class NotificationCoordinator: NSObject {
 
         messagesController.delegate = self
         messagesController.performFetch()
+        chatsController.delegate = self
+        chatsController.performFetch()
         requestsController.delegate = self
         requestsController.performFetch()
 
@@ -126,6 +133,8 @@ extension NotificationCoordinator: CoordinatorProtocol {
         let application = UIApplication.sharedApplication()
         application.registerUserNotificationSettings(settings)
         application.cancelAllLocalNotifications()
+
+        updateBadges()
     }
 }
 
@@ -145,31 +154,32 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
             newIndexPath: NSIndexPath?) {
         switch type {
             case .Insert:
-                // we're good
-                break
+                if controller === messagesController {
+                    let message = anObject.RLMObject() as! OCTMessageAbstract
+
+                    playSoundForMessageIfNeeded(message)
+
+                    if shouldEnqueueMessage(message) {
+                        enqueueNotification(.NewMessage(message))
+                    }
+                }
+                else if controller === requestsController {
+                    let request = anObject.RLMObject() as! OCTFriendRequest
+
+                    audioPlayer.playSound(.NewMessage, loop: false)
+
+                    enqueueNotification(.FriendRequest(request))
+                }
             case .Delete:
-                return
+                break
             case .Move:
-                return
+                break
             case .Update:
-                return
+                break
         }
 
-        if controller === messagesController {
-            let message = anObject.RLMObject() as! OCTMessageAbstract
-
-            playSoundForMessageIfNeeded(message)
-
-            if shouldEnqueueMessage(message) {
-                enqueueNotification(.NewMessage(message))
-            }
-        }
-        else if controller === requestsController {
-            let request = anObject.RLMObject() as! OCTFriendRequest
-
-            audioPlayer.playSound(.NewMessage, loop: false)
-
-            enqueueNotification(.FriendRequest(request))
+        if controller === chatsController || controller === requestsController {
+            updateBadges()
         }
     }
 }
@@ -304,5 +314,37 @@ private extension NotificationCoordinator {
             case .AnswerIncomingCall(let userInfo):
                 delegate?.notificationCoordinatorAnswerIncomingCall(self, userInfo: userInfo)
         }
+    }
+
+    func updateBadges() {
+        let chats = chatsBadge()
+        let friends = friendsBadge()
+
+        delegate?.notificationCoordinator(self, updateChatsBadge: chats)
+        delegate?.notificationCoordinator(self, updateFriendsBadge: friends)
+
+        UIApplication.sharedApplication().applicationIconBadgeNumber = chats + friends
+    }
+
+    func chatsBadge() -> Int {
+        // TODO update to new Realm and filter unread chats with predicate "lastMessage.dateInterval > lastReadDateInterval"
+        var badge = 0
+        let chats = chatsController.fetchedObjects
+
+        for index in 0..<chats.count {
+            guard let chat = chats[index] as? OCTChat else {
+                continue
+            }
+
+            if chat.hasUnreadMessages() {
+                badge++
+            }
+        }
+
+        return badge
+    }
+
+    func friendsBadge() -> Int {
+        return requestsController.numberOfRowsForSectionIndex(0)
     }
 }

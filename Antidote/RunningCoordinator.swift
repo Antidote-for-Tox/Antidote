@@ -45,6 +45,9 @@ private struct IphoneObjects {
     let chatsCoordinator: ChatsTabCoordinator
 
     let tabBarController: TabBarController
+
+    let friendsTabBarItem: TabBarBadgeItem
+    let chatsTabBarItem: TabBarBadgeItem
     let profileTabBarItem: TabBarProfileItem
 }
 
@@ -160,6 +163,26 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
 
     func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String) {
         callCoordinator.answerIncomingCallWithUserInfo(userInfo)
+    }
+
+    func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int) {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                iPhone.friendsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
+            case .iPad:
+                // TODO
+                break
+        }
+    }
+
+    func notificationCoordinator(coordinator: NotificationCoordinator, updateChatsBadge badge: Int) {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                iPhone.chatsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
+            case .iPad:
+                // TODO
+                break
+        }
     }
 }
 
@@ -284,11 +307,20 @@ private extension RunningCoordinator {
                 }
 
                 let tabBarItems = createTabBarItems()
+
+                let friendsTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Friends.rawValue] as! TabBarBadgeItem
+                let chatsTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Chats.rawValue] as! TabBarBadgeItem
                 let profileTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Profile.rawValue] as! TabBarProfileItem
 
                 let tabBarController = TabBarController(theme: theme, controllers: tabBarControllers, tabBarItems: tabBarItems)
 
-                iPhone = IphoneObjects(chatsCoordinator: chatsCoordinator, tabBarController: tabBarController, profileTabBarItem: profileTabBarItem)
+                iPhone = IphoneObjects(
+                        chatsCoordinator: chatsCoordinator,
+                        tabBarController: tabBarController,
+                        friendsTabBarItem: friendsTabBarItem,
+                        chatsTabBarItem: chatsTabBarItem,
+                        profileTabBarItem: profileTabBarItem)
+
             case .iPad:
                 let splitController = UISplitViewController()
                 splitController.preferredDisplayMode = .AllVisible
