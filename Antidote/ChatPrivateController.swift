@@ -89,10 +89,20 @@ class ChatPrivateController: KeyboardNotificationController {
 
         edgesForExtendedLayout = .None
         hidesBottomBarWhenPushed = true
+
+        NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: "applicationDidBecomeActive",
+                name: UIApplicationDidBecomeActiveNotification,
+                object: nil)
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
     }
 
     override func loadView() {
@@ -208,6 +218,13 @@ extension ChatPrivateController {
     }
 }
 
+// MARK: Notifications
+extension ChatPrivateController {
+    func applicationDidBecomeActive() {
+        self.updateLastReadDate()
+    }
+}
+
 extension ChatPrivateController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
@@ -311,12 +328,14 @@ extension ChatPrivateController: PortionDataSourceDelegate {
         if didAddNewMessageInLastUpdate {
             didAddNewMessageInLastUpdate = false
             handleNewMessage()
-        }
 
-        // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.0 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
-            self?.updateLastReadDate()
+            if UIApplication.isActive {
+                // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
+                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.0 * Double(NSEC_PER_SEC)))
+                dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+                    self?.updateLastReadDate()
+                }
+            }
         }
     }
 
