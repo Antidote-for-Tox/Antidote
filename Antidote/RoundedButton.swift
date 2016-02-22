@@ -15,6 +15,7 @@ private struct Constants {
 class RoundedButton: UIButton {
     enum Type {
         case Login
+        case RunningBlue
     }
 
     init(theme: Theme, type: Type) {
@@ -27,6 +28,9 @@ class RoundedButton: UIButton {
             case .Login:
                 titleColor = theme.colorForType(.LoginButtonText)
                 bgColor = theme.colorForType(.LoginButtonBackground)
+            case .RunningBlue:
+                titleColor = theme.colorForType(.NormalBackground)
+                bgColor = theme.colorForType(.LinkText)
         }
 
         setTitleColor(titleColor, forState:UIControlState.Normal)
