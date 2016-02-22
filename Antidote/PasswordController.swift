@@ -71,6 +71,17 @@ class PasswordController: KeyboardNotificationController {
         installConstraints()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if let old = oldPasswordField {
+            old.becomeFirstResponder()
+        }
+        else if let new = newPasswordField {
+            new.becomeFirstResponder()
+        }
+    }
+
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         let underFormHeight = containerView.frame.size.height - CGRectGetMaxY(button.frame)
 
