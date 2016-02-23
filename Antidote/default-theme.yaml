@@ -39,6 +39,9 @@ values:
   connecting-background: skyblue
   connecting-text: white
   separators-and-borders: gray
+  rounded-button-text: white
+  rounded-positive-button-background: skyblue
+  rounded-negative-button-background: gray
   offline-status: darkgray
   online-status: green
   away-status: yellow

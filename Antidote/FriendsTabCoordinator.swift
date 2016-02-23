@@ -45,6 +45,13 @@ extension FriendsTabCoordinator: FriendListControllerDelegate {
         navigationController.pushViewController(controller, animated: true)
     }
 
+    func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest) {
+        let controller = FriendRequestController(theme: theme, request: request, submanagerFriends: toxManager.friends)
+        controller.delegate = self
+
+        navigationController.pushViewController(controller, animated: true)
+    }
+
     func friendListControllerAddFriend(controller: FriendListController) {
         let controller = AddFriendController(theme: theme, submanagerFriends: toxManager.friends)
         controller.delegate = self
@@ -79,6 +86,12 @@ extension FriendsTabCoordinator: FriendCardControllerDelegate {
 
     func friendCardControllerVideoCall(controller: FriendCardController, toFriend friend: OCTFriend) {
         delegate?.friendsTabCoordinatorVideoCall(self, toFriend: friend)
+    }
+}
+
+extension FriendsTabCoordinator: FriendRequestControllerDelegate {
+    func friendRequestControllerDidFinish(controller: FriendRequestController) {
+        navigationController.popViewControllerAnimated(true)
     }
 }
 

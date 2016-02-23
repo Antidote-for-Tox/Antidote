@@ -79,6 +79,10 @@
 
 "friend_requests_section" = "Friend Requests";
 "friend_last_seen" = "Last seen: %@";
+"friend_request" = "Friend Request";
+"friend_request_decline" = "Decline";
+"friend_request_accept" = "Accept";
+"friend_request_delete_title" = "Delete friend request?";
 
 "add_friend_title" = "Add Friend";
 "add_friend_send" = "Send";

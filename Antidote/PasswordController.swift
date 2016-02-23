@@ -155,7 +155,7 @@ private extension PasswordController {
         containerView.backgroundColor = .clearColor()
         view.addSubview(containerView)
 
-        button = RoundedButton(theme: theme, type: .RunningBlue)
+        button = RoundedButton(theme: theme, type: .RunningPositive)
         button.setTitle(String(localized: "change_password_done"), forState: .Normal)
         button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
         containerView.addSubview(button)

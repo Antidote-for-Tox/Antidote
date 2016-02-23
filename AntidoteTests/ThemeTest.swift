@@ -68,7 +68,11 @@ class ThemeTest: XCTestCase {
             "  call-control-selected-background: second\n" +
             "  call-button-icon-color: first\n" +
             "  call-button-selected-icon-color: second\n" +
-            "  call-video-preview-background: first\n"
+            "  call-video-preview-background: first\n" +
+            "  rounded-button-text: second\n" +
+            "  rounded-positive-button-background: first\n" +
+            "  rounded-negative-button-background: second\n" +
+            ""
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
         let second = UIColor(red: 85.0 / 255.0, green: 102.0 / 255.0, blue: 119.0 / 255.0, alpha: 136.0 / 255.0)
@@ -119,6 +123,9 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(first, theme.colorForType(.CallButtonIconColor))
             XCTAssertEqual(second, theme.colorForType(.CallButtonSelectedIconColor))
             XCTAssertEqual(first, theme.colorForType(.CallVideoPreviewBackground))
+            XCTAssertEqual(second, theme.colorForType(.RoundedButtonText))
+            XCTAssertEqual(first, theme.colorForType(.RoundedPositiveButtonBackground))
+            XCTAssertEqual(second, theme.colorForType(.RoundedNegativeButtonBackground))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

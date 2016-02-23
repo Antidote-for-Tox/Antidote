@@ -72,6 +72,12 @@
 		116634E11C7B8D770072C980 /* StaticTableInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634DF1C7B8D770072C980 /* StaticTableInfoCell.swift */; };
 		116634E91C7B8D7C0072C980 /* StaticTableInfoCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634E81C7B8D7C0072C980 /* StaticTableInfoCellModel.swift */; };
 		116634EA1C7B8D7C0072C980 /* StaticTableInfoCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634E81C7B8D7C0072C980 /* StaticTableInfoCellModel.swift */; };
+		116634EC1C7B90F20072C980 /* FriendRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634EB1C7B90F20072C980 /* FriendRequestController.swift */; };
+		116634ED1C7B90F20072C980 /* FriendRequestController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634EB1C7B90F20072C980 /* FriendRequestController.swift */; };
+		116634EF1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634EE1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift */; };
+		116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634EE1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift */; };
+		116634F21C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */; };
+		116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -412,6 +418,9 @@
 		116634D81C70F1260072C980 /* CopyLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyLabel.swift; sourceTree = "<group>"; };
 		116634DF1C7B8D770072C980 /* StaticTableInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableInfoCell.swift; sourceTree = "<group>"; };
 		116634E81C7B8D7C0072C980 /* StaticTableInfoCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableInfoCellModel.swift; sourceTree = "<group>"; };
+		116634EB1C7B90F20072C980 /* FriendRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequestController.swift; sourceTree = "<group>"; };
+		116634EE1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableMultiChoiceButtonCell.swift; sourceTree = "<group>"; };
+		116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableMultiChoiceButtonCellModel.swift; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -717,6 +726,8 @@
 				115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */,
 				116634DF1C7B8D770072C980 /* StaticTableInfoCell.swift */,
 				116634E81C7B8D7C0072C980 /* StaticTableInfoCellModel.swift */,
+				116634EE1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift */,
+				116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */,
 				1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */,
 				11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */,
 				11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */,
@@ -825,6 +836,7 @@
 				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
+				116634EB1C7B90F20072C980 /* FriendRequestController.swift */,
 				114962911C5E1BE0001E5435 /* PasswordController.swift */,
 				9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */,
 				114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */,
@@ -1196,6 +1208,7 @@
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
 				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
 				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
+				116634EC1C7B90F20072C980 /* FriendRequestController.swift in Sources */,
 				11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */,
 				11B253021C4A61D00068F47C /* ChatMovableDateCell.swift in Sources */,
 				11B253041C4A61D50068F47C /* ChatMovableDateCellModel.swift in Sources */,
@@ -1249,6 +1262,7 @@
 				116634D91C70F1260072C980 /* CopyLabel.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
+				116634F21C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
 				11B253B71C503FA10068F47C /* NSTimerExtension.swift in Sources */,
@@ -1264,6 +1278,7 @@
 				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
+				116634EF1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				116634A91C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
 				11FA0EE11BC591FC00F3DA5B /* Logger.swift in Sources */,
@@ -1318,6 +1333,7 @@
 				9CEE6ADA1C4E8FDC00A1ECB5 /* Theme.swift in Sources */,
 				9CEE6B0E1C4E8FDC00A1ECB5 /* BubbleView.swift in Sources */,
 				9CEE6B0A1C4E8FDC00A1ECB5 /* UIViewControllerExtension.swift in Sources */,
+				116634ED1C7B90F20072C980 /* FriendRequestController.swift in Sources */,
 				9CEE6AC21C4E8FDC00A1ECB5 /* ChatOutgoingTextCellModel.swift in Sources */,
 				9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
 				11B253FC1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
@@ -1387,11 +1403,13 @@
 				9CEE6AF31C4E8FDC00A1ECB5 /* TextEditController.swift in Sources */,
 				9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,
+				116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				9CEE6AED1C4E8FDC00A1ECB5 /* ProfileMainController.swift in Sources */,
 				11B253AF1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				9CEE6B061C4E8FDC00A1ECB5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				9CEE6AC11C4E8FDC00A1ECB5 /* ChatOutgoingTextCell.swift in Sources */,
 				9CEE6ABF1C4E8FDC00A1ECB5 /* ChatMovableDateCell.swift in Sources */,
+				116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
 				9CEE6AFF1C4E8FDC00A1ECB5 /* ProfileTabCoordinator.swift in Sources */,
 				9CEE6ADF1C4E8FDC00A1ECB5 /* LoginChoiceController.swift in Sources */,
 				11B253B81C503FA10068F47C /* NSTimerExtension.swift in Sources */,

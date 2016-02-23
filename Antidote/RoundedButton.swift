@@ -13,12 +13,13 @@ private struct Constants {
 }
 
 class RoundedButton: UIButton {
-    enum Type {
+    enum ButtonType {
         case Login
-        case RunningBlue
+        case RunningPositive
+        case RunningNegative
     }
 
-    init(theme: Theme, type: Type) {
+    init(theme: Theme, type: ButtonType) {
         super.init(frame: CGRectZero)
 
         let titleColor: UIColor
@@ -28,9 +29,12 @@ class RoundedButton: UIButton {
             case .Login:
                 titleColor = theme.colorForType(.LoginButtonText)
                 bgColor = theme.colorForType(.LoginButtonBackground)
-            case .RunningBlue:
-                titleColor = theme.colorForType(.NormalBackground)
-                bgColor = theme.colorForType(.LinkText)
+            case .RunningPositive:
+                titleColor = theme.colorForType(.RoundedButtonText)
+                bgColor = theme.colorForType(.RoundedPositiveButtonBackground)
+            case .RunningNegative:
+                titleColor = theme.colorForType(.RoundedButtonText)
+                bgColor = theme.colorForType(.RoundedNegativeButtonBackground)
         }
 
         setTitleColor(titleColor, forState:UIControlState.Normal)
