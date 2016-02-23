@@ -11,6 +11,7 @@ import SnapKit
 
 protocol FriendListControllerDelegate: class {
     func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend)
+    func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest)
     func friendListControllerAddFriend(controller: FriendListController)
 }
 
@@ -221,19 +222,6 @@ private extension FriendListController {
     }
 
     func didSelectFriendRequest(request: OCTFriendRequest) {
-        // FIXME: replace with request controller or some buttons on cell
-        let alert = UIAlertController(title: nil, message: "Choose action", preferredStyle: .Alert)
-
-        alert.addAction(UIAlertAction(title: "Add friend", style: .Default) { [unowned self] _ -> Void in
-            _ = try? self.submanagerFriends.approveFriendRequest(request)
-        })
-
-        alert.addAction(UIAlertAction(title: "Remove friend", style: .Destructive) { [unowned self] _ -> Void in
-            self.submanagerFriends.removeFriendRequest(request)
-        })
-
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Default, handler: nil))
-
-        presentViewController(alert, animated: true, completion: nil)
+        delegate?.friendListController(self, didSelectRequest: request)
     }
 }

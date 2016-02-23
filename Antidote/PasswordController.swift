@@ -71,6 +71,17 @@ class PasswordController: KeyboardNotificationController {
         installConstraints()
     }
 
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if let old = oldPasswordField {
+            old.becomeFirstResponder()
+        }
+        else if let new = newPasswordField {
+            new.becomeFirstResponder()
+        }
+    }
+
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         let underFormHeight = containerView.frame.size.height - CGRectGetMaxY(button.frame)
 
@@ -144,7 +155,7 @@ private extension PasswordController {
         containerView.backgroundColor = .clearColor()
         view.addSubview(containerView)
 
-        button = RoundedButton(theme: theme, type: .Login)
+        button = RoundedButton(theme: theme, type: .RunningPositive)
         button.setTitle(String(localized: "change_password_done"), forState: .Normal)
         button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
         containerView.addSubview(button)

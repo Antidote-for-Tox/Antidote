@@ -66,6 +66,10 @@ extension StaticTableController: UITableViewDataSource {
                 cell = dequeueCellForClass(StaticTableChatButtonsCell.staticReuseIdentifier)
             case _ as StaticTableSwitchCellModel:
                 cell = dequeueCellForClass(StaticTableSwitchCell.staticReuseIdentifier)
+            case _ as StaticTableInfoCellModel:
+                cell = dequeueCellForClass(StaticTableInfoCell.staticReuseIdentifier)
+            case _ as StaticTableMultiChoiceButtonCellModel:
+                cell = dequeueCellForClass(StaticTableMultiChoiceButtonCell.staticReuseIdentifier)
             default:
                 fatalError("Static model class \(model) has not been implemented")
         }
@@ -145,6 +149,8 @@ private extension StaticTableController {
         tableView!.registerClass(StaticTableDefaultCell.self, forCellReuseIdentifier: StaticTableDefaultCell.staticReuseIdentifier)
         tableView!.registerClass(StaticTableChatButtonsCell.self, forCellReuseIdentifier: StaticTableChatButtonsCell.staticReuseIdentifier)
         tableView!.registerClass(StaticTableSwitchCell.self, forCellReuseIdentifier: StaticTableSwitchCell.staticReuseIdentifier)
+        tableView!.registerClass(StaticTableInfoCell.self, forCellReuseIdentifier: StaticTableInfoCell.staticReuseIdentifier)
+        tableView!.registerClass(StaticTableMultiChoiceButtonCell.self, forCellReuseIdentifier: StaticTableMultiChoiceButtonCell.staticReuseIdentifier)
     }
 
     func installConstraints() {

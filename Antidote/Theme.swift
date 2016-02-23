@@ -68,6 +68,9 @@ class Theme {
         case CallButtonIconColor = "call-button-icon-color"
         case CallButtonSelectedIconColor = "call-button-selected-icon-color"
         case CallVideoPreviewBackground = "call-video-preview-background"
+        case RoundedButtonText = "rounded-button-text"
+        case RoundedPositiveButtonBackground = "rounded-positive-button-background"
+        case RoundedNegativeButtonBackground = "rounded-negative-button-background"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -112,6 +115,9 @@ class Theme {
             CallButtonIconColor,
             CallButtonSelectedIconColor,
             CallVideoPreviewBackground,
+            RoundedButtonText,
+            RoundedPositiveButtonBackground,
+            RoundedNegativeButtonBackground,
         ]
     }
 
