@@ -177,11 +177,13 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
             case .Update:
                 break
         }
+    }
 
+   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
         if controller === chatsController || controller === requestsController {
             updateBadges()
         }
-    }
+   }
 }
 
 private extension NotificationCoordinator {
