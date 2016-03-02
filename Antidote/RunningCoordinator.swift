@@ -157,8 +157,8 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
         showChat(chat)
     }
 
-    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator) {
-        showFriendList()
+    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator, showRequest request: OCTFriendRequest) {
+        showFriendRequest(request)
     }
 
     func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String) {
@@ -375,7 +375,7 @@ private extension RunningCoordinator {
         }
     }
 
-    func showFriendList() {
+    func showFriendRequest(request: OCTFriendRequest) {
         switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Friends.rawValue
@@ -383,7 +383,7 @@ private extension RunningCoordinator {
                 primaryIpadControllerShowFriends(iPad.primaryController)
         }
 
-        friendsCoordinator.showFriendListAnimated(false)
+        friendsCoordinator.showRequest(request, animated: false)
     }
 
     func showChat(chat: OCTChat) {

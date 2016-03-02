@@ -32,8 +32,13 @@ class FriendsTabCoordinator: RunningNavigationCoordinator {
         navigationController.pushViewController(controller, animated: false)
     }
 
-    func showFriendListAnimated(animated: Bool) {
-        navigationController.popToRootViewControllerAnimated(animated)
+    func showRequest(request: OCTFriendRequest, animated: Bool) {
+        navigationController.popToRootViewControllerAnimated(false)
+
+        let controller = FriendRequestController(theme: theme, request: request, submanagerFriends: toxManager.friends)
+        controller.delegate = self
+
+        navigationController.pushViewController(controller, animated: animated)
     }
 }
 
@@ -46,10 +51,7 @@ extension FriendsTabCoordinator: FriendListControllerDelegate {
     }
 
     func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest) {
-        let controller = FriendRequestController(theme: theme, request: request, submanagerFriends: toxManager.friends)
-        controller.delegate = self
-
-        navigationController.pushViewController(controller, animated: true)
+        showRequest(request, animated: true)
     }
 
     func friendListControllerAddFriend(controller: FriendListController) {
