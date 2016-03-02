@@ -43,9 +43,10 @@ class FriendListController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        addNavigationButtons()
-
         dataSource.delegate = self
+
+        addNavigationButtons()
+        updateEditButtonItem()
 
         edgesForExtendedLayout = .None
         title = String(localized: "friends_title")
@@ -87,6 +88,8 @@ extension FriendListController: FriendListDataSourceDelegate {
             self.dataSource.reset()
             self.tableView.reloadData()
         }
+
+        updateEditButtonItem()
     }
 
     func friendListDataSourceInsertRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
@@ -192,12 +195,23 @@ extension FriendListController: UITableViewDelegate {
 
 private extension FriendListController {
     func addNavigationButtons() {
-        navigationItem.leftBarButtonItem = editButtonItem()
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .Add,
                 target: self,
                 action: "addFriendButtonPressed")
+    }
+
+    func updateEditButtonItem() {
+        var isEmpty = true
+
+        for section in 0..<dataSource.numberOfSections() {
+            if dataSource.numberOfRowsInSection(section) > 0 {
+                isEmpty = false
+                break
+            }
+        }
+
+        navigationItem.leftBarButtonItem = isEmpty ? nil : editButtonItem()
     }
 
     func createTableView() {

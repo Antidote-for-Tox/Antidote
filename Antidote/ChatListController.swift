@@ -28,8 +28,6 @@ class ChatListController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        addNavigationButtons()
-
         edgesForExtendedLayout = .None
         title = String(localized: "chats_title")
     }
@@ -43,6 +41,8 @@ class ChatListController: UIViewController {
 
         createTableView()
         installConstraints()
+
+        updateEditButtonItem()
     }
 
     override func setEditing(editing: Bool, animated: Bool) {
@@ -60,11 +60,15 @@ extension ChatListController: ChatListTableManagerDelegate {
     func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
         presentViewController(controller, animated: true, completion: nil)
     }
+
+    func chatListTableManagerWasUpdated(manager: ChatListTableManager) {
+        updateEditButtonItem()
+    }
 }
 
 private extension ChatListController {
-    func addNavigationButtons() {
-        navigationItem.leftBarButtonItem = editButtonItem()
+    func updateEditButtonItem() {
+        navigationItem.leftBarButtonItem = tableManager.isEmpty ? nil : editButtonItem()
     }
 
     func createTableView() {

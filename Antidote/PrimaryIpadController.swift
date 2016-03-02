@@ -80,6 +80,10 @@ extension PrimaryIpadController: ChatListTableManagerDelegate {
     func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
         presentViewController(controller, animated: true, completion: nil)
     }
+
+    func chatListTableManagerWasUpdated(manager: ChatListTableManager) {
+        // nope
+    }
 }
 
 private extension PrimaryIpadController {
