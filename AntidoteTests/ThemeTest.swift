@@ -72,6 +72,7 @@ class ThemeTest: XCTestCase {
             "  rounded-button-text: second\n" +
             "  rounded-positive-button-background: first\n" +
             "  rounded-negative-button-background: second\n" +
+            "  empty-screen-placeholder-text: first\n" +
             ""
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
@@ -126,6 +127,7 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.RoundedButtonText))
             XCTAssertEqual(first, theme.colorForType(.RoundedPositiveButtonBackground))
             XCTAssertEqual(second, theme.colorForType(.RoundedNegativeButtonBackground))
+            XCTAssertEqual(first, theme.colorForType(.EmptyScreenPlaceholderText ))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

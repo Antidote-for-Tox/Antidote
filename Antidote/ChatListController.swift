@@ -19,6 +19,7 @@ class ChatListController: UIViewController {
     private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
+    private var placeholderLabel: UILabel!
     private var tableManager: ChatListTableManager!
 
     init(theme: Theme, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
@@ -40,9 +41,10 @@ class ChatListController: UIViewController {
         loadViewWithBackgroundColor(theme.colorForType(.NormalBackground))
 
         createTableView()
+        createPlaceholderView()
         installConstraints()
 
-        updateEditButtonItem()
+        updateViewsVisibility()
     }
 
     override func setEditing(editing: Bool, animated: Bool) {
@@ -62,13 +64,14 @@ extension ChatListController: ChatListTableManagerDelegate {
     }
 
     func chatListTableManagerWasUpdated(manager: ChatListTableManager) {
-        updateEditButtonItem()
+        updateViewsVisibility()
     }
 }
 
 private extension ChatListController {
-    func updateEditButtonItem() {
+    func updateViewsVisibility() {
         navigationItem.leftBarButtonItem = tableManager.isEmpty ? nil : editButtonItem()
+        placeholderLabel.hidden = !tableManager.isEmpty
     }
 
     func createTableView() {
@@ -87,9 +90,22 @@ private extension ChatListController {
         tableManager.delegate = self
     }
 
+    func createPlaceholderView() {
+        placeholderLabel = UILabel()
+        placeholderLabel.text = String(localized: "chat_no_chats")
+        placeholderLabel.textColor = theme.colorForType(.EmptyScreenPlaceholderText)
+        placeholderLabel.font = UIFont.systemFontOfSize(26.0, weight: UIFontWeightLight)
+        view.addSubview(placeholderLabel)
+    }
+
     func installConstraints() {
         tableManager.tableView.snp_makeConstraints {
             $0.edges.equalTo(view)
+        }
+
+        placeholderLabel.snp_makeConstraints {
+            $0.center.equalTo(view)
+            $0.size.equalTo(placeholderLabel.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max)))
         }
     }
 }

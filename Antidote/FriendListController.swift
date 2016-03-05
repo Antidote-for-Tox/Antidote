@@ -13,6 +13,7 @@ protocol FriendListControllerDelegate: class {
     func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend)
     func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest)
     func friendListControllerAddFriend(controller: FriendListController)
+    func friendListController(controller: FriendListController, showQRCodeWithText text: String)
 }
 
 class FriendListController: UIViewController {
@@ -24,10 +25,12 @@ class FriendListController: UIViewController {
 
     private weak var submanagerFriends: OCTSubmanagerFriends!
     private weak var submanagerChats: OCTSubmanagerChats!
+    private weak var submanagerUser: OCTSubmanagerUser!
 
+    private var placeholderView: UITextView!
     private var tableView: UITableView!
 
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats) {
+    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats, submanagerUser: OCTSubmanagerUser) {
         self.theme = theme
 
         let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
@@ -40,13 +43,13 @@ class FriendListController: UIViewController {
 
         self.submanagerFriends = submanagerFriends
         self.submanagerChats = submanagerChats
+        self.submanagerUser = submanagerUser
 
         super.init(nibName: nil, bundle: nil)
 
         dataSource.delegate = self
 
         addNavigationButtons()
-        updateEditButtonItem()
 
         edgesForExtendedLayout = .None
         title = String(localized: "friends_title")
@@ -60,7 +63,10 @@ class FriendListController: UIViewController {
         loadViewWithBackgroundColor(theme.colorForType(.NormalBackground))
 
         createTableView()
+        createPlaceholderView()
         installConstraints()
+
+        updateViewsVisibility()
     }
 
     override func setEditing(editing: Bool, animated: Bool) {
@@ -89,7 +95,7 @@ extension FriendListController: FriendListDataSourceDelegate {
             self.tableView.reloadData()
         }
 
-        updateEditButtonItem()
+        updateViewsVisibility()
     }
 
     func friendListDataSourceInsertRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
@@ -193,6 +199,29 @@ extension FriendListController: UITableViewDelegate {
     }
 }
 
+extension FriendListController : UITextViewDelegate {
+    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        if textView === placeholderView {
+            let toxId = submanagerUser.userAddress
+            let alert = UIAlertController(title: String(localized: "my_tox_id"), message: toxId, preferredStyle: .Alert)
+
+            alert.addAction(UIAlertAction(title: String(localized: "copy"), style: .Default) { _ -> Void in
+                UIPasteboard.generalPasteboard().string = toxId
+            })
+
+            alert.addAction(UIAlertAction(title: String(localized: "show_qr_code"), style: .Default) { [weak self] _ -> Void in
+                self?.delegate?.friendListController(self!, showQRCodeWithText: toxId)
+            })
+
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+
+            presentViewController(alert, animated: true, completion: nil)
+        }
+
+        return false
+    }
+}
+
 private extension FriendListController {
     func addNavigationButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -201,7 +230,7 @@ private extension FriendListController {
                 action: "addFriendButtonPressed")
     }
 
-    func updateEditButtonItem() {
+    func updateViewsVisibility() {
         var isEmpty = true
 
         for section in 0..<dataSource.numberOfSections() {
@@ -212,6 +241,7 @@ private extension FriendListController {
         }
 
         navigationItem.leftBarButtonItem = isEmpty ? nil : editButtonItem()
+        placeholderView.hidden = !isEmpty
     }
 
     func createTableView() {
@@ -229,9 +259,35 @@ private extension FriendListController {
         tableView.registerClass(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
     }
 
+    func createPlaceholderView() {
+        let top = String(localized: "friend_no_friends_add_friend")
+        let bottom = String(localized: "friend_no_friends_share_tox_id")
+
+        let text = NSMutableAttributedString(string: "\(top)\(bottom)")
+        let linkRange = NSRange(location: top.characters.count, length: bottom.characters.count)
+        let fullRange = NSRange(location: 0, length: text.length)
+
+        text.addAttribute(NSForegroundColorAttributeName, value: theme.colorForType(.EmptyScreenPlaceholderText), range: fullRange)
+        text.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(26.0, weight: UIFontWeightLight), range: fullRange)
+        text.addAttribute(NSLinkAttributeName, value: "", range: linkRange)
+
+        placeholderView = UITextView()
+        placeholderView.delegate = self
+        placeholderView.attributedText = text
+        placeholderView.editable = false
+        placeholderView.textAlignment = .Center
+        placeholderView.linkTextAttributes = [NSForegroundColorAttributeName : theme.colorForType(.LinkText)]
+        view.addSubview(placeholderView)
+    }
+
     func installConstraints() {
         tableView.snp_makeConstraints {
             $0.edges.equalTo(view)
+        }
+
+        placeholderView.snp_makeConstraints {
+            $0.center.equalTo(view)
+            $0.size.equalTo(placeholderView.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max)))
         }
     }
 

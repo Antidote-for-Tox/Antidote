@@ -71,6 +71,7 @@ class Theme {
         case RoundedButtonText = "rounded-button-text"
         case RoundedPositiveButtonBackground = "rounded-positive-button-background"
         case RoundedNegativeButtonBackground = "rounded-negative-button-background"
+        case EmptyScreenPlaceholderText = "empty-screen-placeholder-text"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -118,6 +119,7 @@ class Theme {
             RoundedButtonText,
             RoundedPositiveButtonBackground,
             RoundedNegativeButtonBackground,
+            EmptyScreenPlaceholderText,
         ]
     }
 

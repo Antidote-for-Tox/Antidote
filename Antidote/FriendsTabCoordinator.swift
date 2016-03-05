@@ -26,7 +26,7 @@ class FriendsTabCoordinator: RunningNavigationCoordinator {
     }
 
     override func startWithOptions(options: CoordinatorOptions?) {
-        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends, submanagerChats: toxManager.chats)
+        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends, submanagerChats: toxManager.chats, submanagerUser: toxManager.user)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)
@@ -59,6 +59,21 @@ extension FriendsTabCoordinator: FriendListControllerDelegate {
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
+    }
+
+    func friendListController(controller: FriendListController, showQRCodeWithText text: String) {
+        let controller = QRViewerController(theme: theme, text: text)
+        controller.delegate = self
+
+        let toPresent = UINavigationController(rootViewController: controller)
+
+        navigationController.presentViewController(toPresent, animated: true, completion: nil)
+    }
+}
+
+extension FriendsTabCoordinator: QRViewerControllerDelegate {
+    func qrViewerControllerDidFinishPresenting() {
+        navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
