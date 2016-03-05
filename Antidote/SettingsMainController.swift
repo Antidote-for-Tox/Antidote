@@ -11,7 +11,6 @@ import MessageUI
 
 protocol SettingsMainControllerDelegate: class {
     func settingsMainControllerShowAboutScreen(controller: SettingsMainController)
-    func settingsMainControllerShowBetaTesterMenu(controller: SettingsMainController)
     func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController)
 }
 
@@ -22,7 +21,6 @@ class SettingsMainController: StaticTableController {
     private let userDefaults = UserDefaultsManager()
 
     private let aboutModel = StaticTableDefaultCellModel()
-    private let betaTesterMenuModel = StaticTableDefaultCellModel()
     private let notificationsModel = StaticTableSwitchCellModel()
     private let advancedSettingsModel = StaticTableDefaultCellModel()
     private let feedbackModel = StaticTableButtonCellModel()
@@ -41,7 +39,6 @@ class SettingsMainController: StaticTableController {
                 advancedSettingsModel,
             ],
             [
-                betaTesterMenuModel,
                 feedbackModel,
             ],
         ], footers: [
@@ -72,10 +69,6 @@ private extension SettingsMainController{
         aboutModel.didSelectHandler = showAboutScreen
         aboutModel.rightImageType = .Arrow
 
-        betaTesterMenuModel.value = String(localized: "settings_beta_tester_menu")
-        betaTesterMenuModel.didSelectHandler = showBetaTesterMenu
-        betaTesterMenuModel.rightImageType = .Arrow
-
         notificationsModel.title = String(localized: "settings_notifications_message_preview")
         notificationsModel.on = userDefaults.showNotificationPreview
         notificationsModel.valueChangedHandler = notificationsValueChanged
@@ -90,10 +83,6 @@ private extension SettingsMainController{
 
     func showAboutScreen() {
         delegate?.settingsMainControllerShowAboutScreen(self)
-    }
-
-    func showBetaTesterMenu() {
-        delegate?.settingsMainControllerShowBetaTesterMenu(self)
     }
 
     func notificationsValueChanged(on: Bool) {
