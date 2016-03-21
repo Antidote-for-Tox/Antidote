@@ -67,9 +67,14 @@ extension ChatListTableManager: UITableViewDataSource {
         let friend = chat.friends.lastObject() as! OCTFriend
 
         let model = ChatListCellModel()
-        model.avatar = avatarManager.avatarFromString(
-                friend.nickname,
-                diameter: CGFloat(ChatListCell.Constants.AvatarSize))
+        if let data = friend.avatarData {
+            model.avatar = UIImage(data: data)
+        }
+        else {
+            model.avatar = avatarManager.avatarFromString(
+                    friend.nickname,
+                    diameter: CGFloat(ChatListCell.Constants.AvatarSize))
+        }
 
         model.nickname = friend.nickname
         model.message = lastMessageTextFromChat(chat)

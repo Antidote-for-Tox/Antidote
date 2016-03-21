@@ -87,7 +87,12 @@ class FriendListDataSource: NSObject {
                 model.multilineBottomtext = true
                 model.hideStatus = true
             case .Friend(let friend):
-                model.avatar = avatarManager.avatarFromString(friend.nickname, diameter: CGFloat(FriendListCell.Constants.AvatarSize))
+                if let data = friend.avatarData {
+                    model.avatar = UIImage(data: data)
+                }
+                else {
+                    model.avatar = avatarManager.avatarFromString(friend.nickname, diameter: CGFloat(FriendListCell.Constants.AvatarSize))
+                }
                 model.topText = friend.nickname
 
                 if friend.isConnected {

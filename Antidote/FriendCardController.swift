@@ -81,9 +81,14 @@ private extension FriendCardController {
     func updateModels() {
         title = friend.nickname
 
-        avatarModel.avatar = avatarManager.avatarFromString(
-                friend.nickname,
-                diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
+        if let data = friend.avatarData {
+            avatarModel.avatar = UIImage(data: data)
+        }
+        else {
+            avatarModel.avatar = avatarManager.avatarFromString(
+                    friend.nickname,
+                    diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
+        }
         avatarModel.userInteractionEnabled = false
 
         chatButtonsModel.chatButtonHandler = { [unowned self] in
