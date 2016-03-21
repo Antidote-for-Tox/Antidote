@@ -25,6 +25,8 @@ enum ErrorHandlerType {
     case RouteAudioToSpeaker
     case EnableVideoSending
     case CallSwitchCamera
+    case ConvertImageToPNG
+    case ChangeAvatar
 }
 
 
@@ -69,6 +71,11 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
         case .CallSwitchCamera:
             UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
+        case .ConvertImageToPNG:
+            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "change_avatar_error_convert_image"))
+        case .ChangeAvatar:
+            let (title, message) = OCTSetUserAvatarError(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
     }
 }
 
@@ -224,6 +231,16 @@ extension OCTToxAVErrorAnswer {
             case .Unknown:
                 fallthrough
             case .FriendNotFound:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+        }
+    }
+}
+
+extension OCTSetUserAvatarError {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .TooBig:
                 return (String(localized: "error_title"),
                         String(localized: "error_internal_message"))
         }

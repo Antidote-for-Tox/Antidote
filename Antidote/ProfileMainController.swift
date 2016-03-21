@@ -15,6 +15,7 @@ protocol ProfileMainControllerDelegate: class {
     func profileMainControllerChangeStatusMessage(controller: ProfileMainController)
     func profileMainController(controller: ProfileMainController, showQRCodeWithText text: String)
     func profileMainControllerShowProfileDetails(controller: ProfileMainController)
+    func profileMainControllerDidChangeAvatar(controller: ProfileMainController)
 }
 
 class ProfileMainController: StaticTableController {
@@ -75,12 +76,59 @@ class ProfileMainController: StaticTableController {
     }
 }
 
+extension ProfileMainController: UIImagePickerControllerDelegate {
+
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        dismissViewControllerAnimated(true, completion: nil)
+
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
+
+        let data: NSData
+
+        do {
+            data = try pngDataFromImage(image)
+        }
+        catch {
+            handleErrorWithType(.ConvertImageToPNG, error: nil)
+            return
+        }
+
+        do {
+            try submanagerUser.setUserAvatar(data)
+            updateModels()
+            reloadTableView()
+
+            delegate?.profileMainControllerDidChangeAvatar(self)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.ChangeAvatar, error: error)
+        }
+    }
+
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension ProfileMainController: UINavigationControllerDelegate {
+
+}
+
 private extension ProfileMainController {
+    struct PNGFromDataError: ErrorType {}
+
     func updateModels() {
-        avatarModel.avatar = avatarManager.avatarFromString(
-                submanagerUser.userName(),
-                diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
-        avatarModel.userInteractionEnabled = false
+        if let avatarData = submanagerUser.userAvatar() {
+            avatarModel.avatar = UIImage(data: avatarData)
+        }
+        else {
+            avatarModel.avatar = avatarManager.avatarFromString(
+                    submanagerUser.userName(),
+                    diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
+        }
+        avatarModel.didTapOnAvatar = performAvatarAction
 
         userNameModel.title = String(localized: "name")
         userNameModel.value = submanagerUser.userName()
@@ -117,6 +165,85 @@ private extension ProfileMainController {
 
     func logout() {
         delegate?.profileMainControllerLogout(self)
+    }
+
+    func performAvatarAction() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+
+        if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+            alert.addAction(UIAlertAction(title: String(localized: "change_avatar_camera"), style: .Default) { [unowned self] _ -> Void in
+                let controller = UIImagePickerController()
+                controller.sourceType = .Camera
+                controller.delegate = self
+                self.presentViewController(controller, animated: true, completion: nil)
+            })
+        }
+
+        if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
+            alert.addAction(UIAlertAction(title: String(localized: "change_avatar_photo_library"), style: .Default) { [unowned self] _ -> Void in
+                let controller = UIImagePickerController()
+                controller.sourceType = .PhotoLibrary
+                controller.delegate = self
+                self.presentViewController(controller, animated: true, completion: nil)
+            })
+        }
+
+        if submanagerUser.userAvatar() != nil {
+            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
+                self.removeAvatar()
+            })
+        }
+
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+
+        presentViewController(alert, animated: true, completion: nil)
+    }
+
+    func removeAvatar() {
+        do {
+            try submanagerUser.setUserAvatar(nil)
+            updateModels()
+            reloadTableView()
+
+            delegate?.profileMainControllerDidChangeAvatar(self)
+        }
+        catch let error as NSError {
+            handleErrorWithType(.ChangeAvatar, error: error)
+        }
+    }
+
+    func pngDataFromImage(image: UIImage) throws -> NSData {
+        var imageSize = image.size
+
+        // Maximum png size will be (4 * width * height)
+        // * 1.5 to get as big avatar size as possible
+        while OCTToxFileSize(4 * imageSize.width * imageSize.height) > OCTToxFileSize(1.5 * Double(kOCTManagerMaxAvatarSize)) {
+            imageSize.width *= 0.9
+            imageSize.height *= 0.9
+        }
+
+        imageSize.width = ceil(imageSize.width)
+        imageSize.height = ceil(imageSize.height)
+
+        var data: NSData
+        var tempImage = image
+
+        repeat {
+            UIGraphicsBeginImageContext(imageSize)
+            tempImage.drawInRect(CGRect(origin: CGPointZero, size: imageSize))
+            tempImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            guard let theData = UIImagePNGRepresentation(tempImage) else {
+                throw PNGFromDataError()
+            }
+            data = theData
+
+            imageSize.width *= 0.9
+            imageSize.height *= 0.9
+        } while (OCTToxFileSize(data.length) > kOCTManagerMaxAvatarSize)
+
+        return data
     }
 
     func changeUserName() {

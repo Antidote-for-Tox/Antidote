@@ -161,6 +161,10 @@
 "wrong_old_password" = "Wrong password";
 "passwords_do_not_match" = "Passwords do not match";
 
+"change_avatar_camera" = "Camera";
+"change_avatar_photo_library" = "Photo Library";
+"change_avatar_error_convert_image" = "Cannot convert image";
+
 "export_profile" = "Export Profile";
 "delete_profile" = "Delete Profile";
 "delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";

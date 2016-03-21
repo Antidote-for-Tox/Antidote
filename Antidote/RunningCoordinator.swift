@@ -134,6 +134,8 @@ extension RunningCoordinator: CoordinatorProtocol {
         toxManager.bootstrap.addPredefinedNodes()
         toxManager.bootstrap.bootstrap()
 
+        updateUserAvatar()
+
         switch toShow {
             case .None:
                 break
@@ -248,9 +250,12 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         delegate?.runningCoordinatorDeleteProfile(self)
     }
 
-    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
-    {
+    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator) {
         updateUserStatusView()
+    }
+
+    func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator) {
+        updateUserAvatar()
     }
 }
 
@@ -419,6 +424,21 @@ private extension RunningCoordinator {
         switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.profileTabBarItem.userStatus = status
+            case .iPad:
+                // TODO
+                break
+        }
+    }
+
+    func updateUserAvatar() {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                if let avatarData = toxManager.user.userAvatar() {
+                    iPhone.profileTabBarItem.userImage = UIImage(data: avatarData)
+                }
+                else {
+                    iPhone.profileTabBarItem.userImage = nil
+                }
             case .iPad:
                 // TODO
                 break
