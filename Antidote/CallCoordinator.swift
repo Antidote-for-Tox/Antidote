@@ -90,11 +90,13 @@ extension CallCoordinator: OCTSubmanagerCallDelegate {
             return
         }
 
+        let nickname = call.caller?.nickname ?? ""
+
         if !UIApplication.isActive {
-            delegate?.callCoordinator(self, notifyAboutBackgroundCallFrom: call.caller.nickname, userInfo: call.uniqueIdentifier)
+            delegate?.callCoordinator(self, notifyAboutBackgroundCallFrom: nickname, userInfo: call.uniqueIdentifier)
         }
 
-        let controller = CallIncomingController(theme: theme, callerName: call.caller.nickname)
+        let controller = CallIncomingController(theme: theme, callerName: nickname)
         controller.delegate = self
 
         startActiveCallWithCall(call, controller: controller)
@@ -283,7 +285,8 @@ private extension CallCoordinator {
         var activeController = activeCall.navigation.topViewController as? CallActiveController
 
         if (activeController == nil) {
-            activeController = CallActiveController(theme: theme, callerName: activeCall.call.caller.nickname)
+            let nickname = activeCall.call.caller?.nickname ?? ""
+            activeController = CallActiveController(theme: theme, callerName: nickname)
             activeController!.delegate = self
 
             activeCall.navigation.setViewControllers([activeController!], animated: false)

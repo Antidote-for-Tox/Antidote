@@ -73,7 +73,9 @@ extension ChatListTableManager: UITableViewDataSource {
 
         model.nickname = friend.nickname
         model.message = lastMessageTextFromChat(chat)
-        model.dateText = dateTextFromDate(chat.lastActivityDate())
+        if let date = chat.lastActivityDate() {
+            model.dateText = dateTextFromDate(date)
+        }
 
         model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
         model.isUnread = chat.hasUnreadMessages()
@@ -179,7 +181,7 @@ private extension ChatListTableManager {
         }
 
         if let text = message.messageText {
-            return text.text
+            return text.text ?? ""
         }
         else if let file = message.messageFile {
             return String(localized: message.isOutgoing() ? "chat_outgoing_file" : "chat_incoming_file") + " \(file.fileName)"

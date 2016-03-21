@@ -6,7 +6,7 @@ platform :ios, '8.2'
 inhibit_all_warnings!
 
 def common_pods
-    pod 'objcTox', '0.5.0'
+    pod 'objcTox', '0.6.0'
     pod 'UITextView+Placeholder', '~> 1.1.0'
     pod 'SDCAlertView', '~> 2.5.4'
 end

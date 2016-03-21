@@ -284,20 +284,20 @@ private extension NotificationCoordinator {
     func notificationObjectFromRequest(request: OCTFriendRequest) -> NotificationObject {
         let image = avatarManager.avatarFromString("", diameter: NotificationView.Constants.ImageSize)
         let title = String(localized: "notification_incoming_friend_request")
-        let body = request.message
+        let body = request.message ?? ""
         let action = NotificationAction.OpenRequest(requestUniqueIdentifier: request.uniqueIdentifier)
 
         return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
-        let image = avatarManager.avatarFromString(message.sender.nickname, diameter: NotificationView.Constants.ImageSize)
-        let title = message.sender.nickname
+        let image = avatarManager.avatarFromString(message.sender?.nickname ?? "?", diameter: NotificationView.Constants.ImageSize)
+        let title = message.sender?.nickname ?? ""
         var body: String = ""
         let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier)
 
-        if message.messageText != nil {
-            body = userDefaults.showNotificationPreview ? message.messageText.text : String(localized: "notification_new_message")
+        if let text = message.messageText?.text {
+            body = userDefaults.showNotificationPreview ? text : String(localized: "notification_new_message")
         }
 
         return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")

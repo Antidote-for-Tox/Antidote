@@ -233,17 +233,17 @@ extension ChatPrivateController: UITableViewDataSource {
         let cell: ChatMovableDateCell
 
         if message.isOutgoing() {
-            if message.messageText != nil {
+            if let messageText = message.messageText {
                 let outgoingModel = ChatOutgoingTextCellModel()
-                outgoingModel.message = message.messageText.text
+                outgoingModel.message = messageText.text ?? ""
                 model = outgoingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingTextCell.staticReuseIdentifier) as! ChatOutgoingTextCell
             }
-            else if message.messageCall != nil {
+            else if let messageCall = message.messageCall {
                 let outgoingModel = ChatOutgoingCallCellModel()
-                outgoingModel.callDuration = message.messageCall.callDuration
-                outgoingModel.answered = (message.messageCall.callEvent == .Answered)
+                outgoingModel.callDuration = messageCall.callDuration
+                outgoingModel.answered = (messageCall.callEvent == .Answered)
                 model = outgoingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingCallCell.staticReuseIdentifier) as! ChatOutgoingCallCell
@@ -254,17 +254,17 @@ extension ChatPrivateController: UITableViewDataSource {
             }
         }
         else {
-            if message.messageText != nil {
+            if let messageText = message.messageText {
                 let incomingModel = ChatIncomingTextCellModel()
-                incomingModel.message = message.messageText.text
+                incomingModel.message = messageText.text ?? ""
                 model = incomingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingTextCell.staticReuseIdentifier) as! ChatIncomingTextCell
             }
-            else if message.messageCall != nil {
+            else if let messageCall = message.messageCall {
                 let incomingModel = ChatIncomingCallCellModel()
-                incomingModel.callDuration = message.messageCall.callDuration
-                incomingModel.answered = (message.messageCall.callEvent == .Answered)
+                incomingModel.callDuration = messageCall.callDuration
+                incomingModel.answered = (messageCall.callEvent == .Answered)
                 model = incomingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingCallCell.staticReuseIdentifier) as! ChatIncomingCallCell
@@ -477,7 +477,7 @@ private extension ChatPrivateController {
 
     func createInputView() {
         chatInputView = ChatInputView(theme: theme)
-        chatInputView.text = chat.enteredText
+        chatInputView.text = chat.enteredText ?? ""
         chatInputView.delegate = self
         view.addSubview(chatInputView)
     }
