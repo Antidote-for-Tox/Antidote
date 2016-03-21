@@ -11,12 +11,19 @@ import Foundation
 protocol ChatListTableManagerDelegate: class {
     func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat)
     func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController)
+    func chatListTableManagerWasUpdated(manager: ChatListTableManager)
 }
 
 class ChatListTableManager: NSObject {
     weak var delegate: ChatListTableManagerDelegate?
 
     let tableView: UITableView
+
+    var isEmpty: Bool {
+        get {
+            return chatsController.numberOfRowsForSectionIndex(0) == 0
+        }
+    }
 
     private let theme: Theme
     private let avatarManager: AvatarManager
@@ -120,6 +127,8 @@ extension ChatListTableManager: RBQFetchedResultsControllerDelegate {
                 controller.reset()
                 self.tableView.reloadData()
             }
+
+            delegate?.chatListTableManagerWasUpdated(self)
         }
    }
 

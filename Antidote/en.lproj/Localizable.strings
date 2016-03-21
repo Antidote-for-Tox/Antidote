@@ -77,12 +77,17 @@
 "settings_title" = "Settings";
 "profile_title" = "Profile";
 
+"friend_no_friends_add_friend" = "Add a friend\nor\n";
+"friend_no_friends_share_tox_id" = "share your Tox ID";
 "friend_requests_section" = "Friend Requests";
 "friend_last_seen" = "Last seen: %@";
 "friend_request" = "Friend Request";
 "friend_request_decline" = "Decline";
 "friend_request_accept" = "Accept";
 "friend_request_delete_title" = "Delete friend request?";
+
+"show_qr_code" = "Show QR Code";
+"copy" = "Copy";
 
 "add_friend_title" = "Add Friend";
 "add_friend_send" = "Send";
@@ -110,6 +115,7 @@
 "call_error_friend_is_offline" = "Friend is offline";
 "call_error_no_active_call" = "There is no active call";
 
+"chat_no_chats" = "No chats";
 "chat_outgoing_file" = "Outgoing file:";
 "chat_incoming_file" = "Incoming file:";
 "chat_call_finished" = "Call finished";
@@ -129,7 +135,6 @@
 "notification_is_calling" = "is calling";
 
 "settings_about" = "About";
-"settings_beta_tester_menu" = "Beta Tester Menu";
 "settings_advanced_settings" = "Advanced Settings";
 "settings_feedback" = "Feedback";
 "settings_configure_email" = "Please configure your mail settings";

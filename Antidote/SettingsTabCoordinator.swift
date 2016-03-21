@@ -48,12 +48,6 @@ extension SettingsTabCoordinator: SettingsMainControllerDelegate {
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func settingsMainControllerShowBetaTesterMenu(controller: SettingsMainController) {
-        let controller = BetaTestersMenuController()
-
-        navigationController.pushViewController(controller, animated: true)
-    }
-
     func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController) {
         let controller = SettingsAdvancedController(theme: theme)
         controller.delegate = self

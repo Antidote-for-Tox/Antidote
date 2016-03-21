@@ -10,7 +10,7 @@ import Foundation
 
 enum NotificationAction {
     case OpenChat(chatUniqueIdentifier: String)
-    case OpenRequests
+    case OpenRequest(requestUniqueIdentifier: String)
     case AnswerIncomingCall(userInfo: String)
 }
 
@@ -20,7 +20,7 @@ extension NotificationAction {
         static let ArgumentKey = "ArgumentKey"
 
         static let OpenChatValue = "OpenChatValue"
-        static let OpenRequestsValue = "OpenRequestsValue"
+        static let OpenRequestValue = "OpenRequestValue"
         static let AnswerIncomingCallValue = "AnswerIncomingCallValue"
     }
 
@@ -35,13 +35,16 @@ extension NotificationAction {
                     return nil
                 }
                 self = OpenChat(chatUniqueIdentifier: argument)
-            case Constants.OpenRequestsValue:
-                self = .OpenRequests
+            case Constants.OpenRequestValue:
+                guard let argument = dictionary[Constants.ArgumentKey] else {
+                    return nil
+                }
+                self = OpenRequest(requestUniqueIdentifier: argument)
             case Constants.AnswerIncomingCallValue:
                 guard let argument = dictionary[Constants.ArgumentKey] else {
                     return nil
                 }
-                self = .AnswerIncomingCall(userInfo: argument)
+                self = AnswerIncomingCall(userInfo: argument)
             default:
                 return nil
         }
@@ -54,8 +57,11 @@ extension NotificationAction {
                     Constants.ValueKey: Constants.OpenChatValue,
                     Constants.ArgumentKey: identifier,
                 ]
-            case .OpenRequests:
-                return [Constants.ValueKey: Constants.OpenRequestsValue]
+            case .OpenRequest(let identifier):
+                return [
+                    Constants.ValueKey: Constants.OpenRequestValue,
+                    Constants.ArgumentKey: identifier,
+                ]
             case .AnswerIncomingCall(let userInfo):
                 return [
                     Constants.ValueKey: Constants.AnswerIncomingCallValue,

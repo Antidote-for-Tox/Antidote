@@ -26,14 +26,19 @@ class FriendsTabCoordinator: RunningNavigationCoordinator {
     }
 
     override func startWithOptions(options: CoordinatorOptions?) {
-        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends, submanagerChats: toxManager.chats)
+        let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends, submanagerChats: toxManager.chats, submanagerUser: toxManager.user)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)
     }
 
-    func showFriendListAnimated(animated: Bool) {
-        navigationController.popToRootViewControllerAnimated(animated)
+    func showRequest(request: OCTFriendRequest, animated: Bool) {
+        navigationController.popToRootViewControllerAnimated(false)
+
+        let controller = FriendRequestController(theme: theme, request: request, submanagerFriends: toxManager.friends)
+        controller.delegate = self
+
+        navigationController.pushViewController(controller, animated: animated)
     }
 }
 
@@ -46,10 +51,7 @@ extension FriendsTabCoordinator: FriendListControllerDelegate {
     }
 
     func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest) {
-        let controller = FriendRequestController(theme: theme, request: request, submanagerFriends: toxManager.friends)
-        controller.delegate = self
-
-        navigationController.pushViewController(controller, animated: true)
+        showRequest(request, animated: true)
     }
 
     func friendListControllerAddFriend(controller: FriendListController) {
@@ -57,6 +59,21 @@ extension FriendsTabCoordinator: FriendListControllerDelegate {
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
+    }
+
+    func friendListController(controller: FriendListController, showQRCodeWithText text: String) {
+        let controller = QRViewerController(theme: theme, text: text)
+        controller.delegate = self
+
+        let toPresent = UINavigationController(rootViewController: controller)
+
+        navigationController.presentViewController(toPresent, animated: true, completion: nil)
+    }
+}
+
+extension FriendsTabCoordinator: QRViewerControllerDelegate {
+    func qrViewerControllerDidFinishPresenting() {
+        navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

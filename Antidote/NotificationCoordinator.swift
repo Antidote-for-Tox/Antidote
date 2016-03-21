@@ -19,7 +19,7 @@ private struct Constants {
 
 protocol NotificationCoordinatorDelegate: class {
     func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat)
-    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator)
+    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator, showRequest request: OCTFriendRequest)
     func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String)
 
     func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int)
@@ -177,11 +177,13 @@ extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
             case .Update:
                 break
         }
+    }
 
+   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
         if controller === chatsController || controller === requestsController {
             updateBadges()
         }
-    }
+   }
 }
 
 private extension NotificationCoordinator {
@@ -283,8 +285,9 @@ private extension NotificationCoordinator {
         let image = avatarManager.avatarFromString("", diameter: NotificationView.Constants.ImageSize)
         let title = String(localized: "notification_incoming_friend_request")
         let body = request.message
+        let action = NotificationAction.OpenRequest(requestUniqueIdentifier: request.uniqueIdentifier)
 
-        return NotificationObject(image: image, title: title, body: body, action: .OpenRequests, soundName: "isotoxin_NewMessage.aac")
+        return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
@@ -309,8 +312,12 @@ private extension NotificationCoordinator {
 
                 delegate?.notificationCoordinator(self, showChat: chat)
                 banNotificationsForChat(chat)
-            case .OpenRequests:
-                delegate?.notificationCoordinatorShowFriendRequest(self)
+            case .OpenRequest(let identifier):
+                guard let request = submanagerObjects.objectWithUniqueIdentifier(identifier, forType: .FriendRequest) as? OCTFriendRequest else {
+                    return
+                }
+
+                delegate?.notificationCoordinatorShowFriendRequest(self, showRequest: request)
             case .AnswerIncomingCall(let userInfo):
                 delegate?.notificationCoordinatorAnswerIncomingCall(self, userInfo: userInfo)
         }

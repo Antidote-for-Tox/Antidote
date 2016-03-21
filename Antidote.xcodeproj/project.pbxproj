@@ -125,8 +125,6 @@
 		11B253B51C5027930068F47C /* NotificationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253B31C5027930068F47C /* NotificationView.swift */; };
 		11B253B71C503FA10068F47C /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253B61C503FA10068F47C /* NSTimerExtension.swift */; };
 		11B253B81C503FA10068F47C /* NSTimerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253B61C503FA10068F47C /* NSTimerExtension.swift */; };
-		11B253F21C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */; };
-		11B253F31C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */; };
 		11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */; };
 		11B253FC1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */; };
 		11B253FE1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */; };
@@ -468,7 +466,6 @@
 		11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IncompressibleView.swift; sourceTree = "<group>"; };
 		11B253B31C5027930068F47C /* NotificationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationView.swift; sourceTree = "<group>"; };
 		11B253B61C503FA10068F47C /* NSTimerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSTimerExtension.swift; sourceTree = "<group>"; };
-		11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BetaTestersMenuController.swift; sourceTree = "<group>"; };
 		11B253FA1C52C0A10068F47C /* StaticTableSwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSwitchCell.swift; sourceTree = "<group>"; };
 		11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSwitchCellModel.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
@@ -827,7 +824,6 @@
 			isa = PBXGroup;
 			children = (
 				11E640751C2DBAE200D24C6D /* AddFriendController.swift */,
-				11B253F11C52BCBE0068F47C /* BetaTestersMenuController.swift */,
 				112E4EDE1C675C58004312CF /* CallActiveController.swift */,
 				114962941C64051A001E5435 /* CallBaseController.swift */,
 				112E4ED51C668C02004312CF /* CallIncomingController.swift */,
@@ -1245,7 +1241,6 @@
 				114962951C64051A001E5435 /* CallBaseController.swift in Sources */,
 				11B252FC1C4A61550068F47C /* ChatIncomingTextCellModel.swift in Sources */,
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
-				11B253F21C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
@@ -1365,7 +1360,6 @@
 				1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
 				114962961C64051A001E5435 /* CallBaseController.swift in Sources */,
-				11B253F31C52BCBE0068F47C /* BetaTestersMenuController.swift in Sources */,
 				9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */,
 				9CEE6AEE1C4E8FDC00A1ECB5 /* QRScannerController.swift in Sources */,
 				9CEE6ADD1C4E8FDC00A1ECB5 /* PortraitNavigationController.swift in Sources */,
