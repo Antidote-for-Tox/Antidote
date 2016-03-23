@@ -175,6 +175,9 @@
 "call_ended" = "Call ended";
 "call_reaching" = "Reaching...";
 
+"chat_file_cancelled" = "Cancelled";
+"chat_file_deleted" = "Deleted";
+
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
 "delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";
 "delete_friend_request_title" = "Are you sure you want to delete a friend request?";

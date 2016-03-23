@@ -295,7 +295,7 @@ private extension RunningCoordinator {
     func createDeviceSpecificObjects() {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                let chatsCoordinator = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
+                let chatsCoordinator = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats, submanagerFiles: toxManager.files)
                 chatsCoordinator.delegate = self
 
                 let tabBarControllers = IphoneObjects.TabCoordinator.allValues().map { object -> UINavigationController in
@@ -402,6 +402,7 @@ private extension RunningCoordinator {
                         chat: chat,
                         submanagerChats: toxManager.chats,
                         submanagerObjects: toxManager.objects,
+                        submanagerFiles: toxManager.files,
                         delegate: self)
                 let navigation = UINavigationController(rootViewController: controller)
 

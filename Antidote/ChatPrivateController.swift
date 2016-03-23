@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import MobileCoreServices
 
 private struct Constants {
     static let MessagesPortionSize = 50
@@ -22,6 +23,8 @@ private struct Constants {
     static let NewMessageViewAnimationDuration = 0.2
 
     static let ResetPanAnimationDuration = 0.3
+
+    static let MaxImagePreviewSize = 400 * 1024
 }
 
 protocol ChatPrivateControllerDelegate: class {
@@ -39,9 +42,12 @@ class ChatPrivateController: KeyboardNotificationController {
     private let friend: OCTFriend
     private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
+    private weak var submanagerFiles: OCTSubmanagerFiles!
 
     private let dataSource: PortionDataSource
     private let friendController: RBQFetchedResultsController
+
+    private let imageCache = NSCache()
 
     private let timeFormatter: NSDateFormatter
 
@@ -59,12 +65,13 @@ class ChatPrivateController: KeyboardNotificationController {
     private var didAddNewMessageInLastUpdate = false
     private var newMessagesViewVisible = false
 
-    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, delegate: ChatPrivateControllerDelegate) {
+    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
         self.theme = theme
         self.chat = chat
         self.friend = chat.friends.lastObject() as! OCTFriend
         self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
+        self.submanagerFiles = submanagerFiles
         self.delegate = delegate
 
         let messagesController = submanagerObjects.fetchedResultsControllerForType(
@@ -229,8 +236,9 @@ extension ChatPrivateController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
 
-        let model: ChatMovableDateCellModel
-        let cell: ChatMovableDateCell
+        // setting default values to avoid crash
+        var model: ChatMovableDateCellModel  = ChatMovableDateCellModel()
+        var cell: ChatMovableDateCell  = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
 
         if message.isOutgoing() {
             if let messageText = message.messageText {
@@ -247,10 +255,6 @@ extension ChatPrivateController: UITableViewDataSource {
                 model = outgoingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingCallCell.staticReuseIdentifier) as! ChatOutgoingCallCell
-            }
-            else {
-                model = ChatMovableDateCellModel()
-                cell = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
             }
         }
         else {
@@ -269,12 +273,14 @@ extension ChatPrivateController: UITableViewDataSource {
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingCallCell.staticReuseIdentifier) as! ChatIncomingCallCell
             }
-            else {
-                model = ChatMovableDateCellModel()
-                cell = tableView.dequeueReusableCellWithIdentifier(ChatMovableDateCell.staticReuseIdentifier) as! ChatMovableDateCell
+            else if let messageFile = message.messageFile {
+                let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
+
+                if conforms {
+                    (model, cell) = incomingImageCellWithMessage(message)
+                }
             }
         }
-
 
         model.dateString = timeFormatter.stringFromDate(message.date())
 
@@ -294,11 +300,28 @@ extension ChatPrivateController: UITableViewDelegate {
         if indexPath.row == 0 {
             toggleNewMessageView(show: false)
         }
+
+        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+
+        if let messageFile = message.messageFile {
+            let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
+
+            if conforms {
+                if let file = message.messageFile!.filePath() {
+                    if let image = imageCache.objectForKey(file) as? UIImage {
+                        let imageCell = cell as? ChatIncomingImageCell
+                        imageCell?.setButtonImage(image)
+                    }
+                    else {
+                        loadImageForCellAtIndexPath(indexPath, fromFile: file)
+                    }
+                }
+            }
+        }
     }
 }
 
-extension ChatPrivateController: UIScrollViewDelegate
-{
+extension ChatPrivateController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         guard scrollView === tableView else {
             return
@@ -435,6 +458,7 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatOutgoingTextCell.self, forCellReuseIdentifier: ChatOutgoingTextCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingCallCell.self, forCellReuseIdentifier: ChatIncomingCallCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
+        tableView.registerClass(ChatIncomingImageCell.self, forCellReuseIdentifier: ChatIncomingImageCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -554,5 +578,90 @@ private extension ChatPrivateController {
         audioButton.enabled = friend.isConnected
         videoButton.enabled = friend.isConnected
         chatInputView.sendButtonEnabled = friend.isConnected
+    }
+
+    func incomingImageCellWithMessage(message: OCTMessageAbstract) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
+        let cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingImageCell.staticReuseIdentifier) as! ChatIncomingImageCell
+        cell.progressObject = nil
+
+        let model = ChatIncomingImageCellModel()
+
+        model.fileName = message.messageFile!.fileName
+        model.fileSize = NSByteCountFormatter.stringFromByteCount(message.messageFile!.fileSize, countStyle: .File)
+
+        switch message.messageFile!.fileType {
+            case .WaitingConfirmation:
+                model.state = .WaitingConfirmation
+            case .Loading:
+                model.state = .Loading
+
+                let bridge = ChatProgressBridge()
+                cell.progressObject = bridge
+                _ = try? self.submanagerFiles.addProgressSubscriber(bridge, forFileTransfer: message)
+            case .Paused:
+                model.state = .Paused
+            case .Canceled:
+                model.state = .Cancelled
+            case .Ready:
+                model.state = .Done
+        }
+
+        model.startLoadingHandle = { [weak self] in
+            self?.submanagerFiles.acceptFileTransfer(message) { error -> Void in
+                print("----- error \(error)")
+            }
+        }
+
+        model.cancelHandle = { [weak self] in
+            do {
+                try self?.submanagerFiles.cancelFileTransfer(message)
+            }
+            catch let error as NSError {
+                print("----- error \(error)")
+            }
+        }
+
+        model.pauseOrResumeHandle = { [weak self] in
+            let isPaused = (message.messageFile!.pausedBy.rawValue & OCTMessageFilePausedBy.User.rawValue) != 0
+
+            do {
+                try self?.submanagerFiles.pauseFileTransfer(!isPaused, message: message)
+            }
+            catch let error as NSError {
+                print("----- error \(error)")
+            }
+        }
+
+        model.openHandle = { [weak self] in
+            print("open file")
+        }
+
+        return (model, cell)
+    }
+
+    func loadImageForCellAtIndexPath(indexPath: NSIndexPath, fromFile: String) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
+            guard let data = NSData(contentsOfFile: fromFile) else {
+                return
+            }
+
+            dispatch_async(dispatch_get_main_queue()) {
+                guard let cell = self?.tableView.cellForRowAtIndexPath(indexPath) as? ChatIncomingImageCell else {
+                    return
+                }
+
+                var scale = CGFloat(data.length) / CGFloat(Constants.MaxImagePreviewSize)
+                if scale < 1.0 {
+                    scale = 1.0
+                }
+
+                guard let image = UIImage(data: data, scale: scale) else {
+                    return
+                }
+
+                self?.imageCache.setObject(image, forKey: fromFile)
+                cell.setButtonImage(image)
+            }
+        }
     }
 }

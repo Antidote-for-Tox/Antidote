@@ -69,3 +69,7 @@ values:
   call-button-selected-icon-color: skyblue
   call-video-preview-background: black
   empty-screen-placeholder-text: darkgray
+  file-image-background-active: darkgray
+  file-image-cancelled-text: white
+  file-image-accept-button-tint: white
+  file-image-cancel-button-tint: black
