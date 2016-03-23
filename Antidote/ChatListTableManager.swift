@@ -189,7 +189,8 @@ private extension ChatListTableManager {
             return text.text ?? ""
         }
         else if let file = message.messageFile {
-            return String(localized: message.isOutgoing() ? "chat_outgoing_file" : "chat_incoming_file") + " \(file.fileName)"
+            let fileName = file.fileName ?? ""
+            return String(localized: message.isOutgoing() ? "chat_outgoing_file" : "chat_incoming_file") + " \(fileName)"
         }
         else if let call = message.messageCall {
             switch call.callEvent {
