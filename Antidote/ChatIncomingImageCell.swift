@@ -20,7 +20,7 @@ private struct Constants {
     static let CloseButtonSize = 25.0
 }
 
-class ChatIncomingImageCell: ChatMovableDateCell {
+class ChatIncomingImageCell: ChatFileCell {
     private var imageButton: UIButton!
     private var progressView: CircleProgressView!
     private var centerImageView: UIImageView!
@@ -28,23 +28,7 @@ class ChatIncomingImageCell: ChatMovableDateCell {
     private var bottomLabel: UILabel!
     private var cancelButton: UIButton!
 
-    private var state: ChatIncomingImageCellModel.State = .WaitingConfirmation
     private var startLoadingHandle: (Void -> Void)?
-    private var cancelHandle: (Void -> Void)?
-    private var pauseOrResumeHandle: (Void -> Void)?
-    private var openHandle: (Void -> Void)?
-
-    var progressObject: ChatProgressProtocol? {
-        didSet {
-            progressObject?.updateProgress = { [weak self] (progress: Float) -> Void in
-                self?.progressView.progress = CGFloat(progress)
-            }
-
-            progressObject?.updateEta = { [weak self] (eta: CFTimeInterval, bytesPerSecond: OCTToxFileSize) -> Void in
-                self?.bottomLabel.text = String(timeInterval: eta)
-            }
-        }
-    }
 
     /**
         This method should be called after setupWithTheme:model:
@@ -131,7 +115,6 @@ class ChatIncomingImageCell: ChatMovableDateCell {
         imageButton.backgroundColor = backgroundColor
         imageButton.setBackgroundImage(backgroundImage, forState: .Normal)
 
-        progressView.progress = imageModel.progress
         progressView.backgroundLineColor = theme.colorForType(.FileImageAcceptButtonTint).colorWithAlphaComponent(0.3)
         progressView.lineColor = theme.colorForType(.FileImageAcceptButtonTint)
 
@@ -143,11 +126,7 @@ class ChatIncomingImageCell: ChatMovableDateCell {
 
         cancelButton.tintColor = theme.colorForType(.FileImageCancelButtonTint)
 
-        state = imageModel.state
         startLoadingHandle = imageModel.startLoadingHandle
-        cancelHandle = imageModel.cancelHandle
-        pauseOrResumeHandle = imageModel.pauseOrResumeHandle
-        openHandle = imageModel.openHandle
     }
 
     override func createViews() {
@@ -220,6 +199,14 @@ class ChatIncomingImageCell: ChatMovableDateCell {
             $0.top.equalTo(imageButton)
             $0.size.equalTo(Constants.CloseButtonSize)
         }
+    }
+
+    override func updateProgress(progress: CGFloat) {
+        progressView.progress = progress
+    }
+
+    override func updateEta(eta: String) {
+        bottomLabel.text = eta
     }
 }
 

@@ -307,20 +307,24 @@ extension ChatPrivateController: UITableViewDelegate {
 
         let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
 
-        if let messageFile = message.messageFile {
-            let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
+        guard let messageFile = message.messageFile else {
+            return
+        }
 
-            if conforms {
-                if let file = message.messageFile!.filePath() {
-                    if let image = imageCache.objectForKey(file) as? UIImage {
-                        let imageCell = cell as? ChatIncomingImageCell
-                        imageCell?.setButtonImage(image)
-                    }
-                    else {
-                        loadImageForCellAtIndexPath(indexPath, fromFile: file)
-                    }
-                }
-            }
+        guard UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage) else {
+            return
+        }
+
+        guard let file = messageFile.filePath() else {
+            return
+        }
+
+        if let image = imageCache.objectForKey(file) as? UIImage {
+            let imageCell = cell as? ChatIncomingImageCell
+            imageCell?.setButtonImage(image)
+        }
+        else {
+            loadImageForCellAtIndexPath(indexPath, fromFile: file)
         }
     }
 }
