@@ -31,6 +31,10 @@ protocol ChatPrivateControllerDelegate: class {
     func chatPrivateControllerWillAppear(controller: ChatPrivateController)
     func chatPrivateControllerWillDisappear(controller: ChatPrivateController)
     func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool)
+    func chatPrivateControllerShowQuickLookController(
+            controller: ChatPrivateController,
+            dataSource: QuickLookPreviewControllerDataSource,
+            selectedIndex: Int)
 }
 
 class ChatPrivateController: KeyboardNotificationController {
@@ -633,7 +637,15 @@ private extension ChatPrivateController {
         }
 
         model.openHandle = { [weak self] in
-            print("open file")
+            guard let sself = self else {
+                return
+            }
+            let qlDataSource = FilePreviewControllerDataSource(chat: sself.chat, submanagerObjects: sself.submanagerObjects)
+            guard let index = qlDataSource.indexOfMessage(message) else {
+                return
+            }
+
+            sself.delegate?.chatPrivateControllerShowQuickLookController(sself, dataSource: qlDataSource, selectedIndex: index)
         }
 
         return (model, cell)

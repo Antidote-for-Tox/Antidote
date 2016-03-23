@@ -289,6 +289,19 @@ extension RunningCoordinator: ChatPrivateControllerDelegate {
     func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
         callCoordinator.callToChat(controller.chat, enableVideo: enableVideo)
     }
+
+    func chatPrivateControllerShowQuickLookController(
+            controller: ChatPrivateController,
+            dataSource: QuickLookPreviewControllerDataSource,
+            selectedIndex: Int)
+    {
+        let controller = QuickLookPreviewController()
+        controller.dataSource = dataSource
+        controller.dataSourceStorage = dataSource
+        controller.currentPreviewItemIndex = selectedIndex
+
+        iPad.splitController.presentViewController(controller, animated: true, completion: nil)
+    }
 }
 
 private extension RunningCoordinator {

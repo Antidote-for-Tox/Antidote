@@ -68,4 +68,17 @@ extension ChatsTabCoordinator: ChatPrivateControllerDelegate {
     func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
         delegate?.chatsTabCoordinator(self, callToChat: controller.chat, enableVideo: enableVideo)
     }
+
+    func chatPrivateControllerShowQuickLookController(
+            controller: ChatPrivateController,
+            dataSource: QuickLookPreviewControllerDataSource,
+            selectedIndex: Int)
+    {
+        let controller = QuickLookPreviewController()
+        controller.dataSource = dataSource
+        controller.dataSourceStorage = dataSource
+        controller.currentPreviewItemIndex = selectedIndex
+
+        navigationController.presentViewController(controller, animated: true, completion: nil)
+    }
 }
