@@ -1,8 +1,8 @@
 //
-//  ChatIncomingImageCell.swift
+//  ChatOutgoingImageCell.swift
 //  Antidote
 //
-//  Created by Dmytro Vorobiov on 22.03.16.
+//  Created by Dmytro Vorobiov on 25.03.16.
 //  Copyright © 2016 dvor. All rights reserved.
 //
 
@@ -16,46 +16,28 @@ private struct Constants {
     static let CloseButtonSize = 25.0
 }
 
-class ChatIncomingImageCell: ChatGenericImageCell {
-    private var startLoadingHandle: (Void -> Void)?
-
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
-        super.setupWithTheme(theme, model: model)
-
-        guard let imageModel = model as? ChatIncomingImageCellModel else {
-            assert(false, "Wrong model \(model) passed to cell \(self)")
-            return
-        }
-
-        startLoadingHandle = imageModel.startLoadingHandle
-    }
-
-    override func setButtonImage(image: UIImage) {
-        super.setButtonImage(image)
-        loadingView.bottomLabel.hidden = true
-    }
-
+class ChatOutgoingImageCell: ChatGenericImageCell {
     override func createViews() {
         super.createViews()
 
-        contentView.addSubview(loadingView)
-        contentView.addSubview(cancelButton)
+        movableContentView.addSubview(loadingView)
+        movableContentView.addSubview(cancelButton)
     }
 
     override func installConstraints() {
         super.installConstraints()
 
-        loadingView.snp_makeConstraints {
-            $0.left.equalTo(contentView).offset(Constants.BigOffset)
-            $0.top.equalTo(contentView).offset(Constants.BigOffset)
-            $0.bottom.equalTo(contentView).offset(-Constants.BigOffset)
-            $0.size.equalTo(Constants.ImageButtonSize)
-        }
-
         cancelButton.snp_makeConstraints {
-            $0.left.equalTo(loadingView.snp_right).offset(Constants.SmallOffset)
+            $0.right.equalTo(loadingView.snp_left).offset(-Constants.SmallOffset)
             $0.top.equalTo(loadingView)
             $0.size.equalTo(Constants.CloseButtonSize)
+        }
+
+        loadingView.snp_makeConstraints {
+            $0.right.equalTo(movableContentView).offset(-Constants.BigOffset)
+            $0.top.equalTo(movableContentView).offset(Constants.BigOffset)
+            $0.bottom.equalTo(movableContentView).offset(-Constants.BigOffset)
+            $0.size.equalTo(Constants.ImageButtonSize)
         }
     }
 
@@ -63,45 +45,43 @@ class ChatIncomingImageCell: ChatGenericImageCell {
         loadingView.imageButton.userInteractionEnabled = true
         loadingView.centerImageView.hidden = true
         loadingView.progressView.hidden = true
-        loadingView.topLabel.hidden = false
-        loadingView.topLabel.text = imageModel.fileName
-        loadingView.bottomLabel.text = imageModel.fileSize
-        loadingView.bottomLabel.hidden = false
+        loadingView.topLabel.hidden = true
+        loadingView.bottomLabel.hidden = true
 
         cancelButton.hidden = false
 
         switch state {
             case .WaitingConfirmation:
-                loadingView.centerImageView.image = UIImage(named: "chat-file-download")!.imageWithRenderingMode(.AlwaysTemplate)
-                loadingView.centerImageView.hidden = false
+                loadingView.imageButton.userInteractionEnabled = false
+                loadingView.bottomLabel.hidden = false
+                loadingView.bottomLabel.text = String(localized: "chat_waiting")
             case .Loading:
                 loadingView.centerImageView.image = UIImage(named: "chat-file-pause")?.imageWithRenderingMode(.AlwaysTemplate)
                 loadingView.centerImageView.hidden = false
                 loadingView.progressView.hidden = false
+
             case .Paused:
                 loadingView.centerImageView.image = UIImage(named: "chat-file-play")?.imageWithRenderingMode(.AlwaysTemplate)
                 loadingView.centerImageView.hidden = false
             case .Cancelled:
-                loadingView.imageButton.userInteractionEnabled = false
-                cancelButton.hidden = true
+                loadingView.bottomLabel.hidden = false
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")
+                cancelButton.hidden = true
             case .Done:
                 cancelButton.hidden = true
-                loadingView.topLabel.hidden = true
-                loadingView.bottomLabel.text = imageModel.fileName
         }
     }
 
     override func loadingViewPressed() {
         switch state {
             case .WaitingConfirmation:
-                startLoadingHandle?()
+                break
             case .Loading:
                 pauseOrResumeHandle?()
             case .Paused:
                 pauseOrResumeHandle?()
             case .Cancelled:
-                break
+                openHandle?()
             case .Done:
                 openHandle?()
         }

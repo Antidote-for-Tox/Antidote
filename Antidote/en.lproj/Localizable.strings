@@ -161,8 +161,8 @@
 "wrong_old_password" = "Wrong password";
 "passwords_do_not_match" = "Passwords do not match";
 
-"change_avatar_camera" = "Camera";
-"change_avatar_photo_library" = "Photo Library";
+"photo_from_camera" = "Camera";
+"photo_from_photo_library" = "Photo Library";
 "change_avatar_error_convert_image" = "Cannot convert image";
 
 "export_profile" = "Export Profile";
@@ -177,6 +177,7 @@
 
 "chat_file_cancelled" = "Cancelled";
 "chat_file_deleted" = "Deleted";
+"chat_waiting" = "Waiting...";
 
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
 "delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";

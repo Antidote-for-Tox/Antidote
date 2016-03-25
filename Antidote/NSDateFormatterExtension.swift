@@ -11,6 +11,7 @@ import Foundation
 extension NSDateFormatter {
     enum Type {
         case Time
+        case DateAndTime
         case RelativeDate
         case RelativeDateAndTime
     }
@@ -21,6 +22,10 @@ extension NSDateFormatter {
         switch type {
             case .Time:
                 dateFormat = "H:mm"
+            case .DateAndTime:
+                dateStyle = .ShortStyle
+                timeStyle = .ShortStyle
+                doesRelativeDateFormatting = false
             case .RelativeDate:
                 dateStyle = .ShortStyle
                 timeStyle = .NoStyle

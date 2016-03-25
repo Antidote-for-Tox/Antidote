@@ -25,7 +25,14 @@ class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerData
     let messagesController: RBQFetchedResultsController
 
     init(chat: OCTChat, submanagerObjects: OCTSubmanagerObjects) {
-        let predicate = NSPredicate(format: "chat.uniqueIdentifier == %@ AND messageFile != nil AND messageFile.fileType == %d", chat.uniqueIdentifier, OCTMessageFileType.Ready.rawValue)
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "chat.uniqueIdentifier == %@ AND messageFile != nil", chat.uniqueIdentifier),
+
+            NSCompoundPredicate(orPredicateWithSubpredicates: [
+                NSPredicate(format: "messageFile.fileType == \(OCTMessageFileType.Ready.rawValue)"),
+                NSPredicate(format: "sender == nil AND messageFile.fileType == \(OCTMessageFileType.Canceled.rawValue)"),
+            ]),
+        ])
 
         self.messagesController = submanagerObjects.fetchedResultsControllerForType(
                 .MessageAbstract,

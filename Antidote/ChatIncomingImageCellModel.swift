@@ -8,6 +8,6 @@
 
 import Foundation
 
-class ChatIncomingImageCellModel: ChatFileCellModel {
+class ChatIncomingImageCellModel: ChatGenericImageCellModel {
     var startLoadingHandle: (Void -> Void)?
 }

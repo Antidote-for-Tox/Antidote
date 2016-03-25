@@ -112,9 +112,7 @@ extension ProfileMainController: UIImagePickerControllerDelegate {
     }
 }
 
-extension ProfileMainController: UINavigationControllerDelegate {
-
-}
+extension ProfileMainController: UINavigationControllerDelegate {}
 
 private extension ProfileMainController {
     struct PNGFromDataError: ErrorType {}
@@ -171,7 +169,7 @@ private extension ProfileMainController {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
 
         if UIImagePickerController.isSourceTypeAvailable(.Camera) {
-            alert.addAction(UIAlertAction(title: String(localized: "change_avatar_camera"), style: .Default) { [unowned self] _ -> Void in
+            alert.addAction(UIAlertAction(title: String(localized: "photo_from_camera"), style: .Default) { [unowned self] _ -> Void in
                 let controller = UIImagePickerController()
                 controller.sourceType = .Camera
                 controller.delegate = self
@@ -180,7 +178,7 @@ private extension ProfileMainController {
         }
 
         if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
-            alert.addAction(UIAlertAction(title: String(localized: "change_avatar_photo_library"), style: .Default) { [unowned self] _ -> Void in
+            alert.addAction(UIAlertAction(title: String(localized: "photo_from_photo_library"), style: .Default) { [unowned self] _ -> Void in
                 let controller = UIImagePickerController()
                 controller.sourceType = .PhotoLibrary
                 controller.delegate = self

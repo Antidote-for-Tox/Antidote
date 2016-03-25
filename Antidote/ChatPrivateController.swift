@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import MobileCoreServices
+import Photos
 
 private struct Constants {
     static let MessagesPortionSize = 50
@@ -24,7 +25,7 @@ private struct Constants {
 
     static let ResetPanAnimationDuration = 0.3
 
-    static let MaxImagePreviewSize = 400 * 1024
+    static let MaxImagePreviewSize = 800 * 1024
 }
 
 protocol ChatPrivateControllerDelegate: class {
@@ -260,6 +261,13 @@ extension ChatPrivateController: UITableViewDataSource {
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingCallCell.staticReuseIdentifier) as! ChatOutgoingCallCell
             }
+            else if let messageFile = message.messageFile {
+                let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
+
+                if conforms {
+                    (model, cell) = imageCellWithMessage(message, incoming: false)
+                }
+            }
         }
         else {
             if let messageText = message.messageText {
@@ -281,7 +289,7 @@ extension ChatPrivateController: UITableViewDataSource {
                 let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
 
                 if conforms {
-                    (model, cell) = incomingImageCellWithMessage(message)
+                    (model, cell) = imageCellWithMessage(message, incoming: true)
                 }
             }
         }
@@ -320,8 +328,9 @@ extension ChatPrivateController: UITableViewDelegate {
         }
 
         if let image = imageCache.objectForKey(file) as? UIImage {
-            let imageCell = cell as? ChatIncomingImageCell
-            imageCell?.setButtonImage(image)
+            let cell = (cell as? ChatIncomingImageCell) ?? (cell as? ChatOutgoingImageCell)
+
+            cell?.setButtonImage(image)
         }
         else {
             loadImageForCellAtIndexPath(indexPath, fromFile: file)
@@ -402,6 +411,32 @@ extension ChatPrivateController: RBQFetchedResultsControllerDelegate {
 }
 
 extension ChatPrivateController: ChatInputViewDelegate {
+    func chatInputViewCameraButtonPressed(view: ChatInputView) {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+
+        if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+            alert.addAction(UIAlertAction(title: String(localized: "photo_from_camera"), style: .Default) { [unowned self] _ -> Void in
+                let controller = UIImagePickerController()
+                controller.sourceType = .Camera
+                controller.delegate = self
+                self.presentViewController(controller, animated: true, completion: nil)
+            })
+        }
+
+        if UIImagePickerController.isSourceTypeAvailable(.PhotoLibrary) {
+            alert.addAction(UIAlertAction(title: String(localized: "photo_from_photo_library"), style: .Default) { [unowned self] _ -> Void in
+                let controller = UIImagePickerController()
+                controller.sourceType = .PhotoLibrary
+                controller.delegate = self
+                self.presentViewController(controller, animated: true, completion: nil)
+            })
+        }
+
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+
+        presentViewController(alert, animated: true, completion: nil)
+    }
+
     func chatInputViewSendButtonPressed(view: ChatInputView) {
         do {
             try submanagerChats.sendMessageToChat(chat, text: view.text, type: .Normal)
@@ -430,6 +465,36 @@ extension ChatPrivateController: UIGestureRecognizerDelegate {
         return fabsf(Float(translation.x)) > fabsf(Float(translation.y))
     }
 }
+
+extension ChatPrivateController: UIImagePickerControllerDelegate {
+    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+        dismissViewControllerAnimated(true, completion: nil)
+
+        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+            return
+        }
+        guard let data = UIImagePNGRepresentation(image) else {
+            return
+        }
+
+        var fileName: String? = fileNameFromImageInfo(info)
+
+        if fileName == nil {
+            let dateString = NSDateFormatter(type: .DateAndTime).stringFromDate(NSDate())
+            fileName = "Photo \(dateString).png"
+        }
+
+        submanagerFiles.sendData(data, withFileName: fileName!, toChat: chat) { error in
+            print("----- error \(error)")
+        }
+    }
+
+    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
+extension ChatPrivateController: UINavigationControllerDelegate {}
 
 private extension ChatPrivateController {
     func createNavigationViews() {
@@ -467,6 +532,7 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatIncomingCallCell.self, forCellReuseIdentifier: ChatIncomingCallCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingImageCell.self, forCellReuseIdentifier: ChatIncomingImageCell.staticReuseIdentifier)
+        tableView.registerClass(ChatOutgoingImageCell.self, forCellReuseIdentifier: ChatOutgoingImageCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -585,11 +651,19 @@ private extension ChatPrivateController {
 
         audioButton.enabled = friend.isConnected
         videoButton.enabled = friend.isConnected
-        chatInputView.sendButtonEnabled = friend.isConnected
+        chatInputView.buttonsEnabled = friend.isConnected
     }
 
-    func incomingImageCellWithMessage(message: OCTMessageAbstract) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
-        let cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingImageCell.staticReuseIdentifier) as! ChatIncomingImageCell
+    func imageCellWithMessage(message: OCTMessageAbstract, incoming: Bool) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
+        let cell: ChatGenericImageCell
+
+        if incoming {
+            cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingImageCell.staticReuseIdentifier) as! ChatIncomingImageCell
+        }
+        else {
+            cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingImageCell.staticReuseIdentifier) as! ChatOutgoingImageCell
+        }
+
         cell.progressObject = nil
 
         let model = ChatIncomingImageCellModel()
@@ -614,9 +688,11 @@ private extension ChatPrivateController {
                 model.state = .Done
         }
 
-        model.startLoadingHandle = { [weak self] in
-            self?.submanagerFiles.acceptFileTransfer(message) { error -> Void in
-                print("----- error \(error)")
+        if incoming {
+            model.startLoadingHandle = { [weak self] in
+                self?.submanagerFiles.acceptFileTransfer(message) { error -> Void in
+                    print("----- error \(error)")
+                }
             }
         }
 
@@ -662,7 +738,8 @@ private extension ChatPrivateController {
             }
 
             dispatch_async(dispatch_get_main_queue()) {
-                guard let cell = self?.tableView.cellForRowAtIndexPath(indexPath) as? ChatIncomingImageCell else {
+                let optionalCell = self?.tableView.cellForRowAtIndexPath(indexPath)
+                guard let cell = (optionalCell as? ChatIncomingImageCell) ?? (optionalCell as? ChatOutgoingImageCell) else {
                     return
                 }
 
@@ -679,5 +756,30 @@ private extension ChatPrivateController {
                 cell.setButtonImage(image)
             }
         }
+    }
+
+    func fileNameFromImageInfo(info: [String: AnyObject]) -> String? {
+        guard let url = info[UIImagePickerControllerReferenceURL] as? NSURL else {
+            return nil
+        }
+
+        let fetchResult = PHAsset.fetchAssetsWithALAssetURLs([url], options: nil)
+
+        guard let asset = fetchResult.firstObject as? PHAsset else {
+            return nil
+        }
+
+        if #available(iOS 9.0, *) {
+            if let resource = PHAssetResource.assetResourcesForAsset(asset).first {
+                return resource.originalFilename
+            }
+        } else {
+            // Fallback on earlier versions
+            if let name = asset.valueForKey("filename") as? String {
+                return name
+            }
+        }
+
+        return nil
     }
 }
