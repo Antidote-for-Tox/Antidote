@@ -53,6 +53,8 @@
 		11628E761CA5811C008C097E /* ChatGenericImageCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E741CA5811C008C097E /* ChatGenericImageCellModel.swift */; };
 		11628E781CA5819B008C097E /* LoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E771CA5819B008C097E /* LoadingImageView.swift */; };
 		11628E791CA5819B008C097E /* LoadingImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E771CA5819B008C097E /* LoadingImageView.swift */; };
+		11628E7B1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E7A1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift */; };
+		11628E7C1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E7A1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift */; };
 		1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763219794D3300DB20B8 /* Foundation.framework */; };
 		1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763419794D3300DB20B8 /* CoreGraphics.framework */; };
 		1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1164763619794D3300DB20B8 /* UIKit.framework */; };
@@ -99,6 +101,10 @@
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
+		11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */; };
+		11771E2D1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */; };
+		11771E361CA5C6E900EC259E /* Reach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E351CA5C6E900EC259E /* Reach.swift */; };
+		11771E371CA5C6E900EC259E /* Reach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E351CA5C6E900EC259E /* Reach.swift */; };
 		1179E06B1BA0534600D258C6 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1179E06A1BA0534600D258C6 /* import-profile.html */; };
 		1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */; };
 		1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */; };
@@ -425,6 +431,7 @@
 		11628E711CA580ED008C097E /* ChatGenericImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGenericImageCell.swift; sourceTree = "<group>"; };
 		11628E741CA5811C008C097E /* ChatGenericImageCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatGenericImageCellModel.swift; sourceTree = "<group>"; };
 		11628E771CA5819B008C097E /* LoadingImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingImageView.swift; sourceTree = "<group>"; };
+		11628E7A1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeAutodownloadImagesController.swift; sourceTree = "<group>"; };
 		1164762F19794D3300DB20B8 /* Antidote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Antidote.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1164763219794D3300DB20B8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1164763419794D3300DB20B8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -463,6 +470,8 @@
 		1173F06D1BC5D9BA00B88B7B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTest.swift; sourceTree = "<group>"; };
 		1173F0711BC5D9DA00B88B7B /* default-theme.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "default-theme.yaml"; sourceTree = "<group>"; };
+		11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationCoordinator.swift; sourceTree = "<group>"; };
+		11771E351CA5C6E900EC259E /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reach.swift; sourceTree = "<group>"; };
 		1179E06A1BA0534600D258C6 /* import-profile.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "import-profile.html"; sourceTree = "<group>"; };
 		1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatterExtension.swift; sourceTree = "<group>"; };
 		1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallCoordinator.swift; sourceTree = "<group>"; };
@@ -635,6 +644,7 @@
 				11FA0EDF1BC591EA00F3DA5B /* Functions */,
 				119AD2081BEC718C000C5CB8 /* Sounds */,
 				1164C8EA1BC97FF600B91107 /* Views */,
+				11771E341CA5C6D100EC259E /* Other */,
 			);
 			path = Antidote;
 			sourceTree = "<group>";
@@ -735,6 +745,14 @@
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		11771E341CA5C6D100EC259E /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				11771E351CA5C6E900EC259E /* Reach.swift */,
+			);
+			name = Other;
 			sourceTree = "<group>";
 		};
 		1193AB561C1F565B006AA9E5 /* Cells */ = {
@@ -847,6 +865,7 @@
 		11FA0EE31BC59A9B00F3DA5B /* Running */ = {
 			isa = PBXGroup;
 			children = (
+				11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */,
 				1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */,
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
@@ -882,6 +901,7 @@
 				112E4EDE1C675C58004312CF /* CallActiveController.swift */,
 				114962941C64051A001E5435 /* CallBaseController.swift */,
 				112E4ED51C668C02004312CF /* CallIncomingController.swift */,
+				11628E7A1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift */,
 				1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */,
 				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
 				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
@@ -1234,6 +1254,7 @@
 				116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				116634A01C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */,
 				112E4EE51C676553004312CF /* CallButton.swift in Sources */,
+				11771E361CA5C6E900EC259E /* Reach.swift in Sources */,
 				9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
@@ -1309,6 +1330,7 @@
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				1183BCD71CA1FC5B000CD310 /* ChatProgressProtocol.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
+				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
 				9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
@@ -1331,6 +1353,7 @@
 				11B253B71C503FA10068F47C /* NSTimerExtension.swift in Sources */,
 				9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */,
 				11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */,
+				11628E7B1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift in Sources */,
 				116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */,
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				11628E631CA57B14008C097E /* ChatOutgoingImageCell.swift in Sources */,
@@ -1376,6 +1399,7 @@
 				9CEE6ABA1C4E8FDC00A1ECB5 /* BaseCellModel.swift in Sources */,
 				9CEE6B0C1C4E8FDC00A1ECB5 /* HelperFunctions.swift in Sources */,
 				116634E11C7B8D770072C980 /* StaticTableInfoCell.swift in Sources */,
+				11771E2D1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11628E331CA2FBD1008C097E /* FilePreviewControllerDataSource.swift in Sources */,
 				9CEE6B531C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
 				116634A11C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */,
@@ -1387,6 +1411,7 @@
 				9CEE6AC51C4E8FDC00A1ECB5 /* StaticTableAvatarCell.swift in Sources */,
 				9CEE6AB81C4E8FDC00A1ECB5 /* AppDelegate.swift in Sources */,
 				9CEE6AE11C4E8FDC00A1ECB5 /* LoginFormController.swift in Sources */,
+				11771E371CA5C6E900EC259E /* Reach.swift in Sources */,
 				9CEE6ACE1C4E8FDC00A1ECB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				9CEE6B091C4E8FDC00A1ECB5 /* UIColorExtension.swift in Sources */,
 				9CEE6B501C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */,
@@ -1407,6 +1432,7 @@
 				9CEE6ADA1C4E8FDC00A1ECB5 /* Theme.swift in Sources */,
 				9CEE6B0E1C4E8FDC00A1ECB5 /* BubbleView.swift in Sources */,
 				9CEE6B0A1C4E8FDC00A1ECB5 /* UIViewControllerExtension.swift in Sources */,
+				11628E7C1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift in Sources */,
 				116634ED1C7B90F20072C980 /* FriendRequestController.swift in Sources */,
 				9CEE6AC21C4E8FDC00A1ECB5 /* ChatOutgoingTextCellModel.swift in Sources */,
 				9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,

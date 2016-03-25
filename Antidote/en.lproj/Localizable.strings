@@ -144,11 +144,17 @@
 "settings_antidote_version" = "Antidote Version";
 "settings_antidote_build" = "Antidote Build";
 "settings_toxcore_version" = "Toxcore Version";
+"settings_autodownload_images" = "Autodownload images";
+"settings_autodownload_images_description" = "Automatically download incoming images.";
 "settings_notifications_message_preview" = "Notification Preview";
 "settings_notifications_description" = "When application goes to background, you will still receive notifications up to 10 minutes.";
 "settings_ipv6_enabled" = "IPv6 Enabled";
 "settings_udp_enabled" = "UDP Enabled";
 "settings_restore_default" = "Restore Default Settings";
+"settings_never" = "Never";
+"settings_wifi" = "Wi-Fi";
+"settings_using_wifi" = "Using Wi-Fi";
+"settings_always" = "Always";
 
 "set_password" = "Set Password";
 "change_password" = "Change Password";

@@ -65,6 +65,7 @@ class RunningCoordinator: NSObject {
     private let profileCoordinator: ProfileTabCoordinator
 
     private let notificationCoordinator: NotificationCoordinator
+    private let automationCoordinator: AutomationCoordinator
     private var callCoordinator: CallCoordinator!
 
     /**
@@ -82,6 +83,7 @@ class RunningCoordinator: NSObject {
         self.settingsCoordinator = SettingsTabCoordinator(theme: theme)
         self.profileCoordinator = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
         self.notificationCoordinator = NotificationCoordinator(theme: theme, submanagerObjects: toxManager.objects)
+        self.automationCoordinator = AutomationCoordinator(submanagerObjects: toxManager.objects, submanagerFiles: toxManager.files)
 
         super.init()
 
@@ -129,6 +131,7 @@ extension RunningCoordinator: CoordinatorProtocol {
         settingsCoordinator.startWithOptions(settingsOptions)
         profileCoordinator.startWithOptions(nil)
         notificationCoordinator.startWithOptions(nil)
+        automationCoordinator.startWithOptions(nil)
         callCoordinator.startWithOptions(nil)
 
         toxManager.bootstrap.addPredefinedNodes()

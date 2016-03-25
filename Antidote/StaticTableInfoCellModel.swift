@@ -8,7 +8,9 @@
 
 import Foundation
 
-class StaticTableInfoCellModel: StaticTableBaseCellModel {
+class StaticTableInfoCellModel: StaticTableSelectableCellModel {
     var title: String?
     var value: String?
+
+    var showArrow: Bool = false
 }
