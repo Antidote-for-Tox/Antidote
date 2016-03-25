@@ -25,6 +25,7 @@ private struct Constants {
 
     static let ResetPanAnimationDuration = 0.3
 
+    static let MaxImageSizeToShowInline: OCTToxFileSize = 7 * 1024 * 1024
     static let MaxImagePreviewSize = 800 * 1024
 }
 
@@ -263,8 +264,9 @@ extension ChatPrivateController: UITableViewDataSource {
             }
             else if let messageFile = message.messageFile {
                 let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
+                let smallSize = messageFile.fileSize < Constants.MaxImageSizeToShowInline
 
-                if conforms {
+                if conforms && smallSize {
                     (model, cell) = imageCellWithMessage(message, incoming: false)
                 }
             }
@@ -287,8 +289,9 @@ extension ChatPrivateController: UITableViewDataSource {
             }
             else if let messageFile = message.messageFile {
                 let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
+                let smallSize = messageFile.fileSize < Constants.MaxImageSizeToShowInline
 
-                if conforms {
+                if conforms && smallSize {
                     (model, cell) = imageCellWithMessage(message, incoming: true)
                 }
             }
