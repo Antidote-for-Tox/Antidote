@@ -36,4 +36,16 @@ extension UIImage {
 
        return newImage
     }
+
+    func cropWithRect(var rect: CGRect) -> UIImage {
+        if (scale > 1.0) {
+            rect.origin.x *= scale
+            rect.origin.y *= scale
+            rect.size.width *= scale
+            rect.size.height *= scale
+        }
+
+        let imageRef = CGImageCreateWithImageInRect(self.CGImage, rect)!
+        return UIImage(CGImage: imageRef, scale: scale, orientation: imageOrientation)
+    }
 }

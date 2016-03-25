@@ -49,7 +49,6 @@ private extension LoadingImageView {
         imageButton = UIButton()
         imageButton.layer.cornerRadius = 12.0
         imageButton.clipsToBounds = true
-        imageButton.imageView?.contentMode = .ScaleAspectFill
         imageButton.addTarget(self, action: "imageButtonPressed", forControlEvents: .TouchUpInside)
         addSubview(imageButton)
 

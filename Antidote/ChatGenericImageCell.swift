@@ -17,8 +17,21 @@ class ChatGenericImageCell: ChatFileCell {
         This method should be called after setupWithTheme:model:
      */
     func setButtonImage(image: UIImage) {
-        loadingView.imageButton.setImage(image, forState: .Normal)
-        loadingView.imageButton.setBackgroundImage(nil, forState: .Normal)
+        let square: UIImage
+
+        if image.size.width == image.size.height {
+            square = image
+        }
+        else {
+            let side = min(image.size.width, image.size.height)
+            let x = (image.size.width - side) / 2
+            let y = (image.size.height - side) / 2
+            let rect = CGRect(x: x, y: y, width: side, height: side)
+
+            square = image.cropWithRect(rect)
+        }
+
+        loadingView.imageButton.setBackgroundImage(square, forState: .Normal)
     }
 
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
@@ -35,7 +48,6 @@ class ChatGenericImageCell: ChatFileCell {
 
         let backgroundColor = theme.colorForType(.FileImageBackgroundActive)
         let backgroundImage = UIImage.imageWithColor(backgroundColor, size: CGSize(width: 1.0, height: 1.0))
-        loadingView.imageButton.backgroundColor = backgroundColor
         loadingView.imageButton.setBackgroundImage(backgroundImage, forState: .Normal)
 
         loadingView.progressView.backgroundLineColor = theme.colorForType(.FileImageAcceptButtonTint).colorWithAlphaComponent(0.3)
