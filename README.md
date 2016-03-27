@@ -33,11 +33,11 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 -  emoticons
 -  spell check
 -  reading/scanning Tox ID via QR code
--  ~~file transfer~~ *(temporary disabled)*
--  read receipts
+-  file transfer
+-  ~~read receipts~~ *(temporary disabled)*
 -  multiple profiles
 -  tox_save import/export
--  ~~avatars~~ *(temporary disabled)*
+-  avatars
 -  audio calls
 -  video calls
 
