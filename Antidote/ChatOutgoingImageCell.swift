@@ -56,12 +56,12 @@ class ChatOutgoingImageCell: ChatGenericImageCell {
                 loadingView.bottomLabel.hidden = false
                 loadingView.bottomLabel.text = String(localized: "chat_waiting")
             case .Loading:
-                loadingView.centerImageView.image = UIImage(named: "chat-file-pause")?.imageWithRenderingMode(.AlwaysTemplate)
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-pause")
                 loadingView.centerImageView.hidden = false
                 loadingView.progressView.hidden = false
 
             case .Paused:
-                loadingView.centerImageView.image = UIImage(named: "chat-file-play")?.imageWithRenderingMode(.AlwaysTemplate)
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play")
                 loadingView.centerImageView.hidden = false
             case .Cancelled:
                 loadingView.bottomLabel.hidden = false

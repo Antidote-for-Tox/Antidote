@@ -9,5 +9,4 @@
 import Foundation
 
 class ChatIncomingImageCellModel: ChatGenericImageCellModel {
-    var startLoadingHandle: (Void -> Void)?
 }

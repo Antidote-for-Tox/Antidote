@@ -102,7 +102,7 @@ private extension ChatInputView {
         topBorder.backgroundColor = theme.colorForType(.SeparatorsAndBorders)
         addSubview(topBorder)
 
-        let cameraImage = UIImage(named: "chat-camera")!.imageWithRenderingMode(.AlwaysTemplate)
+        let cameraImage = UIImage.templateNamed("chat-camera")
 
         cameraButton = UIButton()
         cameraButton.setImage(cameraImage, forState: .Normal)

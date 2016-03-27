@@ -182,8 +182,8 @@
 "call_reaching" = "Reaching...";
 
 "chat_file_cancelled" = "Cancelled";
-"chat_file_deleted" = "Deleted";
 "chat_waiting" = "Waiting...";
+"chat_paused" = "Paused";
 
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
 "delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";

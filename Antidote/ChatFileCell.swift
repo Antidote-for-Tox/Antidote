@@ -24,6 +24,7 @@ class ChatFileCell: ChatMovableDateCell {
 
     var state: ChatFileCellModel.State = .WaitingConfirmation
 
+    var startLoadingHandle: (Void -> Void)?
     var cancelHandle: (Void -> Void)?
     var pauseOrResumeHandle: (Void -> Void)?
     var openHandle: (Void -> Void)?
@@ -46,6 +47,7 @@ class ChatFileCell: ChatMovableDateCell {
         }
 
         state = fileModel.state
+        startLoadingHandle = fileModel.startLoadingHandle
         cancelHandle = fileModel.cancelHandle
         pauseOrResumeHandle = fileModel.pauseOrResumeHandle
         openHandle = fileModel.openHandle

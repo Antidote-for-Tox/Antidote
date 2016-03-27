@@ -82,7 +82,7 @@ private extension NotificationView {
         fullSizeButton.addTarget(self, action: "fullSizeButtonPressed", forControlEvents: .TouchUpInside)
         addSubview(fullSizeButton)
 
-        let image = UIImage(named: "notification-close")!.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage.templateNamed("notification-close")
 
         closeButton = UIButton()
         closeButton.setImage(image, forState: .Normal)

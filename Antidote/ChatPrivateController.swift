@@ -294,6 +294,9 @@ extension ChatPrivateController: UITableViewDataSource {
                 if conforms && smallSize {
                     (model, cell) = imageCellWithMessage(message, incoming: true)
                 }
+                else {
+                    (model, cell) = fileCellWithMessage(message, incoming: true)
+                }
             }
         }
 
@@ -536,6 +539,7 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingImageCell.self, forCellReuseIdentifier: ChatIncomingImageCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingImageCell.self, forCellReuseIdentifier: ChatOutgoingImageCell.staticReuseIdentifier)
+        tableView.registerClass(ChatIncomingFileCell.self, forCellReuseIdentifier: ChatIncomingFileCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -666,13 +670,33 @@ private extension ChatPrivateController {
         else {
             cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingImageCell.staticReuseIdentifier) as! ChatOutgoingImageCell
         }
+        let model = ChatIncomingImageCellModel()
+
+        prepareFileCell(cell, andModel: model, withMessage: message, incoming: incoming)
+
+        return (model, cell)
+    }
+
+    func fileCellWithMessage(message: OCTMessageAbstract, incoming: Bool) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
+        let cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
+
+        let model = ChatIncomingFileCellModel()
+        prepareFileCell(cell, andModel: model, withMessage: message, incoming: incoming)
+
+        return (model, cell)
+    }
+
+    func prepareFileCell(
+            cell: ChatFileCell,
+            andModel model: ChatFileCellModel,
+            withMessage message: OCTMessageAbstract,
+            incoming: Bool) {
 
         cell.progressObject = nil
 
-        let model = ChatIncomingImageCellModel()
-
         model.fileName = message.messageFile!.fileName
         model.fileSize = NSByteCountFormatter.stringFromByteCount(message.messageFile!.fileSize, countStyle: .File)
+        model.fileUTI = message.messageFile!.fileUTI
 
         switch message.messageFile!.fileType {
             case .WaitingConfirmation:
@@ -730,8 +754,6 @@ private extension ChatPrivateController {
 
             sself.delegate?.chatPrivateControllerShowQuickLookController(sself, dataSource: qlDataSource, selectedIndex: index)
         }
-
-        return (model, cell)
     }
 
     func loadImageForCellAtIndexPath(indexPath: NSIndexPath, fromFile: String) {

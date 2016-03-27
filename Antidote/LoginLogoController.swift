@@ -58,7 +58,7 @@ private extension LoginLogoController {
     }
 
     func createLogoImageView() {
-        let image = UIImage(named: "login-logo")!.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage.templateNamed("login-logo")
 
         logoImageView = UIImageView(image: image)
         logoImageView.tintColor = theme.colorForType(.LoginToxLogo)

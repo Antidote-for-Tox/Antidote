@@ -18,7 +18,7 @@ private struct Constants {
 
 class LoadingImageView: UIView {
     var imageButton: UIButton!
-    var progressView: CircleProgressView!
+    var progressView: ProgressCircleView!
     var centerImageView: UIImageView!
     var topLabel: UILabel!
     var bottomLabel: UILabel!
@@ -55,7 +55,7 @@ private extension LoadingImageView {
         centerImageView = UIImageView()
         addSubview(centerImageView)
 
-        progressView = CircleProgressView()
+        progressView = ProgressCircleView()
         progressView.userInteractionEnabled = false
         addSubview(progressView)
 

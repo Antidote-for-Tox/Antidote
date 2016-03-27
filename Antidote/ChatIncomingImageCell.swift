@@ -17,19 +17,6 @@ private struct Constants {
 }
 
 class ChatIncomingImageCell: ChatGenericImageCell {
-    private var startLoadingHandle: (Void -> Void)?
-
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
-        super.setupWithTheme(theme, model: model)
-
-        guard let imageModel = model as? ChatIncomingImageCellModel else {
-            assert(false, "Wrong model \(model) passed to cell \(self)")
-            return
-        }
-
-        startLoadingHandle = imageModel.startLoadingHandle
-    }
-
     override func setButtonImage(image: UIImage) {
         super.setButtonImage(image)
         loadingView.bottomLabel.hidden = true
@@ -72,14 +59,14 @@ class ChatIncomingImageCell: ChatGenericImageCell {
 
         switch state {
             case .WaitingConfirmation:
-                loadingView.centerImageView.image = UIImage(named: "chat-file-download")!.imageWithRenderingMode(.AlwaysTemplate)
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-download")
                 loadingView.centerImageView.hidden = false
             case .Loading:
-                loadingView.centerImageView.image = UIImage(named: "chat-file-pause")?.imageWithRenderingMode(.AlwaysTemplate)
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-pause")
                 loadingView.centerImageView.hidden = false
                 loadingView.progressView.hidden = false
             case .Paused:
-                loadingView.centerImageView.image = UIImage(named: "chat-file-play")?.imageWithRenderingMode(.AlwaysTemplate)
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play")
                 loadingView.centerImageView.hidden = false
             case .Cancelled:
                 loadingView.imageButton.userInteractionEnabled = false

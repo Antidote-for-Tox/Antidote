@@ -20,7 +20,9 @@ class ChatFileCellModel: ChatMovableDateCellModel {
     var state: State = .WaitingConfirmation
     var fileName: String?
     var fileSize: String?
+    var fileUTI: String?
 
+    var startLoadingHandle: (Void -> Void)?
     var cancelHandle: (Void -> Void)?
     var pauseOrResumeHandle: (Void -> Void)?
     var openHandle: (Void -> Void)?

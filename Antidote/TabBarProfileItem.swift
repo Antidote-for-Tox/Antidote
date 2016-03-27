@@ -32,7 +32,7 @@ class TabBarProfileItem: TabBarAbstractItem {
                 imageViewWithStatus.imageView.image = image
             }
             else {
-                imageViewWithStatus.imageView.image = UIImage(named: "tab-bar-profile")!.imageWithRenderingMode(.AlwaysTemplate)
+                imageViewWithStatus.imageView.image = UIImage.templateNamed("tab-bar-profile")
             }
         }
     }

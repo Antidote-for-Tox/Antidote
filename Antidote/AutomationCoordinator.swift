@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MobileCoreServices
 
 private struct Constants {
     static let MaxFileSize: OCTToxFileSize = 7 * 1024 * 1024
@@ -72,6 +73,11 @@ private extension AutomationCoordinator {
                 }
             case .Always:
                 break
+        }
+
+        if !UTTypeConformsTo(message.messageFile!.fileUTI ?? "", kUTTypeImage) {
+            // download images only
+            return
         }
 
         if message.messageFile!.fileSize > Constants.MaxFileSize {

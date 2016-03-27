@@ -28,6 +28,10 @@ extension UIImage {
         return image
     }
 
+    class func templateNamed(named: String) -> UIImage {
+        return UIImage(named: named)!.imageWithRenderingMode(.AlwaysTemplate)
+    }
+
     func scaleToSize(size: CGSize) -> UIImage {
         UIGraphicsBeginImageContext(size)
         drawInRect(CGRect(origin: CGPointZero, size: size))

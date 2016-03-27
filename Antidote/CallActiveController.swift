@@ -257,7 +257,7 @@ private extension CallActiveController {
 
         videoPreviewView.hidden = !outgoingVideo
 
-        let image = UIImage(named: "switch-camera")!.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage.templateNamed("switch-camera")
 
         switchCameraButton = UIButton()
         switchCameraButton.tintColor = theme.colorForType(.CallButtonIconColor)

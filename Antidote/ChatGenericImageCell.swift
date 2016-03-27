@@ -67,7 +67,7 @@ class ChatGenericImageCell: ChatFileCell {
         loadingView = LoadingImageView()
         loadingView.pressedHandle = loadingViewPressed
 
-        let cancelImage = UIImage(named: "chat-file-cancel")!.imageWithRenderingMode(.AlwaysTemplate)
+        let cancelImage = UIImage.templateNamed("chat-file-cancel")
 
         cancelButton = UIButton()
         cancelButton.setImage(cancelImage, forState: .Normal)

@@ -1,5 +1,5 @@
 //
-//  CircleProgressView.swift
+//  ProgressCircleView.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 22.03.16.
@@ -13,7 +13,7 @@ private struct Constants {
     static let AnimationDuration = 1.0
 }
 
-class CircleProgressView: UIView {
+class ProgressCircleView: UIView {
     private let backgroundLayer: CAShapeLayer
     private let progressLayer: CAShapeLayer
 
