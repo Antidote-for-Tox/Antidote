@@ -68,7 +68,7 @@ private extension SettingsAdvancedController {
         delegate?.settingsAdvancedControllerToxOptionsChanged(self)
     }
 
-    func restoreDefaultsSettings() {
+    func restoreDefaultsSettings(_: StaticTableBaseCell) {
         userDefaults.resetIPv6Enabled()
         userDefaults.resetUDPEnabled()
         delegate?.settingsAdvancedControllerToxOptionsChanged(self)

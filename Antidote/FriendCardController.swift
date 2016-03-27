@@ -107,7 +107,7 @@ private extension FriendCardController {
         nicknameModel.title = String(localized: "nickname")
         nicknameModel.value = friend.nickname
         nicknameModel.rightImageType = .Arrow
-        nicknameModel.didSelectHandler = { [unowned self] in
+        nicknameModel.didSelectHandler = { [unowned self] _ -> Void in
             self.delegate?.friendCardControllerChangeNickname(self, forFriend: self.friend)
         }
 

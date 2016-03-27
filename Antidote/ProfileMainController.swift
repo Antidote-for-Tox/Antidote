@@ -169,12 +169,14 @@ private extension ProfileMainController {
         logoutModel.didSelectHandler = logout
     }
 
-    func logout() {
+    func logout(_: StaticTableBaseCell) {
         delegate?.profileMainControllerLogout(self)
     }
 
-    func performAvatarAction() {
+    func performAvatarAction(cell: StaticTableAvatarCell) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alert.popoverPresentationController?.sourceView = cell
+        alert.popoverPresentationController?.sourceRect = CGRect(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2, width: 1.0, height: 1.0)
 
         if UIImagePickerController.isSourceTypeAvailable(.Camera) {
             alert.addAction(UIAlertAction(title: String(localized: "photo_from_camera"), style: .Default) { [unowned self] _ -> Void in
@@ -257,15 +259,15 @@ private extension ProfileMainController {
         return data
     }
 
-    func changeUserName() {
+    func changeUserName(_: StaticTableBaseCell) {
         delegate?.profileMainControllerChangeUserName(self)
     }
 
-    func changeUserStatus() {
+    func changeUserStatus(_: StaticTableBaseCell) {
         delegate?.profileMainControllerChangeUserStatus(self)
     }
 
-    func changeStatusMessage() {
+    func changeStatusMessage(_: StaticTableBaseCell) {
         delegate?.profileMainControllerChangeStatusMessage(self)
     }
 
@@ -273,7 +275,7 @@ private extension ProfileMainController {
         delegate?.profileMainController(self, showQRCodeWithText: submanagerUser.userAddress)
     }
 
-    func showProfileDetails() {
+    func showProfileDetails(_: StaticTableBaseCell) {
         delegate?.profileMainControllerShowProfileDetails(self)
     }
 }

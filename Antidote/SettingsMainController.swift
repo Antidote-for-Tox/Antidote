@@ -106,7 +106,7 @@ private extension SettingsMainController{
         feedbackModel.didSelectHandler = feedback
     }
 
-    func showAboutScreen() {
+    func showAboutScreen(_: StaticTableBaseCell) {
         delegate?.settingsMainControllerShowAboutScreen(self)
     }
 
@@ -114,15 +114,15 @@ private extension SettingsMainController{
         userDefaults.showNotificationPreview = on
     }
 
-    func changeAutodownloadImages() {
+    func changeAutodownloadImages(_: StaticTableBaseCell) {
         delegate?.settingsMainControllerChangeAutodownloadImages(self)
     }
 
-    func showAdvancedSettings() {
+    func showAdvancedSettings(_: StaticTableBaseCell) {
         delegate?.settingsMainControllerShowAdvancedSettings(self)
     }
 
-    func feedback() {
+    func feedback(_: StaticTableBaseCell) {
         guard MFMailComposeViewController.canSendMail() else {
             UIAlertView.showErrorWithMessage(String(localized: "settings_configure_email"))
             return

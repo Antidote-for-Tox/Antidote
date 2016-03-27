@@ -115,11 +115,15 @@ extension StaticTableController: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? StaticTableBaseCell else {
+            return
+        }
+
         let model = modelArray[indexPath.section][indexPath.row]
 
         switch model {
             case let model as StaticTableSelectableCellModel:
-                model.didSelectHandler?()
+                model.didSelectHandler?(cell)
             default:
                 // nop
                 break;

@@ -71,15 +71,15 @@ private extension ChangeUserStatusController {
         }
     }
 
-    func changeOnlineStatus() {
+    func changeOnlineStatus(_: StaticTableBaseCell) {
         delegate?.changeUserStatusController(self, selectedStatus: .None)
     }
 
-    func changeAwayStatus() {
+    func changeAwayStatus(_: StaticTableBaseCell) {
         delegate?.changeUserStatusController(self, selectedStatus: .Away)
     }
 
-    func changeBusyStatus() {
+    func changeBusyStatus(_: StaticTableBaseCell) {
         delegate?.changeUserStatusController(self, selectedStatus: .Busy)
     }
 }

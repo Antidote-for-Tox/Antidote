@@ -65,17 +65,17 @@ private extension ChangeAutodownloadImagesController {
         }
     }
 
-    func changeNever() {
+    func changeNever(_: StaticTableBaseCell) {
         userDefaults.autodownloadImages = .Never
         delegate?.changeAutodownloadImagesControllerDidChange(self)
     }
 
-    func changeUsingWifi() {
+    func changeUsingWifi(_: StaticTableBaseCell) {
         userDefaults.autodownloadImages = .UsingWiFi
         delegate?.changeAutodownloadImagesControllerDidChange(self)
     }
 
-    func changeAlways() {
+    func changeAlways(_: StaticTableBaseCell) {
         userDefaults.autodownloadImages = .Always
         delegate?.changeAutodownloadImagesControllerDidChange(self)
     }

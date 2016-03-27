@@ -18,7 +18,7 @@ private struct Constants {
 }
 
 protocol ChatInputViewDelegate: class {
-    func chatInputViewCameraButtonPressed(view: ChatInputView)
+    func chatInputViewCameraButtonPressed(view: ChatInputView, cameraView: UIView)
     func chatInputViewSendButtonPressed(view: ChatInputView)
     func chatInputViewTextDidChange(view: ChatInputView)
 }
@@ -81,7 +81,7 @@ class ChatInputView: UIView {
 // MARK: Actions
 extension ChatInputView {
     func cameraButtonPressed() {
-        delegate?.chatInputViewCameraButtonPressed(self)
+        delegate?.chatInputViewCameraButtonPressed(self, cameraView: cameraButton)
     }
 
     func sendButtonPressed() {

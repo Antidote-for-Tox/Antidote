@@ -399,8 +399,10 @@ extension ChatPrivateController: RBQFetchedResultsControllerDelegate {
 }
 
 extension ChatPrivateController: ChatInputViewDelegate {
-    func chatInputViewCameraButtonPressed(view: ChatInputView) {
+    func chatInputViewCameraButtonPressed(view: ChatInputView, cameraView: UIView) {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alert.popoverPresentationController?.sourceView = cameraView
+        alert.popoverPresentationController?.sourceRect = CGRect(x: cameraView.frame.size.width / 2, y: cameraView.frame.size.height / 2, width: 1.0, height: 1.0)
 
         if UIImagePickerController.isSourceTypeAvailable(.Camera) {
             alert.addAction(UIAlertAction(title: String(localized: "photo_from_camera"), style: .Default) { [unowned self] _ -> Void in

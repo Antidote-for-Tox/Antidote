@@ -14,7 +14,7 @@ class StaticTableAvatarCellModel: StaticTableBaseCellModel {
     }
 
     var avatar: UIImage?
-    var didTapOnAvatar: (Void -> Void)?
+    var didTapOnAvatar: (StaticTableAvatarCell -> Void)?
 
     var userInteractionEnabled: Bool = true
 }

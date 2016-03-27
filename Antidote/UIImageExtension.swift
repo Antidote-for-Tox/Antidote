@@ -1,5 +1,5 @@
 //
-//  ImageExtension.swift
+//  UIImageExtension.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 10/10/15.
