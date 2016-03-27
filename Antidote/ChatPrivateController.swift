@@ -307,34 +307,7 @@ extension ChatPrivateController: UITableViewDelegate {
             toggleNewMessageView(show: false)
         }
 
-        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
-
-        guard let messageFile = message.messageFile else {
-            return
-        }
-
-        guard UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage) else {
-            return
-        }
-
-        guard let file = messageFile.filePath() else {
-            return
-        }
-
-        if messageFile.fileSize >= Constants.MaxImageSizeToShowInline {
-            return
-        }
-
-        cell.layer.shouldRasterize = true
-            cell.layer.rasterizationScale = UIScreen.mainScreen().scale
-        if let image = imageCache.objectForKey(file) as? UIImage {
-            let cell = (cell as? ChatIncomingFileCell) ?? (cell as? ChatOutgoingFileCell)
-
-            cell?.setButtonImage(image)
-        }
-        else {
-            loadImageForCellAtIndexPath(indexPath, fromFile: file)
-        }
+        maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
     }
 }
 
@@ -392,7 +365,22 @@ extension ChatPrivateController: PortionDataSourceDelegate {
     }
 
     func portionDataSourceReloadObjectAtIndexPath(indexPath: NSIndexPath) {
-        tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+
+        if message.messageFile == nil {
+            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+            return
+        }
+
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatGenericFileCell else {
+            return
+        }
+
+        let model = ChatIncomingFileCellModel()
+        prepareFileCell(cell, andModel: model, withMessage: message)
+        cell.setupWithTheme(theme, model: model)
+
+        maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
     }
 
     func portionDataSourceMoveObjectAtIndexPath(indexPath: NSIndexPath, toIndexPath: NSIndexPath) {
@@ -665,17 +653,12 @@ private extension ChatPrivateController {
         }
         let model = ChatIncomingFileCellModel()
 
-        prepareFileCell(cell, andModel: model, withMessage: message, incoming: incoming)
+        prepareFileCell(cell, andModel: model, withMessage: message)
 
         return (model, cell)
     }
 
-    func prepareFileCell(
-            cell: ChatGenericFileCell,
-            andModel model: ChatGenericFileCellModel,
-            withMessage message: OCTMessageAbstract,
-            incoming: Bool) {
-
+    func prepareFileCell(cell: ChatGenericFileCell, andModel model: ChatGenericFileCellModel, withMessage message: OCTMessageAbstract) {
         cell.progressObject = nil
 
         model.fileName = message.messageFile!.fileName
@@ -699,7 +682,7 @@ private extension ChatPrivateController {
                 model.state = .Done
         }
 
-        if incoming {
+        if !message.isOutgoing() {
             model.startLoadingHandle = { [weak self] in
                 self?.submanagerFiles.acceptFileTransfer(message) { error -> Void in
                     print("----- error \(error)")
@@ -737,6 +720,35 @@ private extension ChatPrivateController {
             }
 
             sself.delegate?.chatPrivateControllerShowQuickLookController(sself, dataSource: qlDataSource, selectedIndex: index)
+        }
+    }
+
+    func maybeLoadImageForCellAtPath(cell: UITableViewCell, indexPath: NSIndexPath) {
+        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+
+        guard let messageFile = message.messageFile else {
+            return
+        }
+
+        guard UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage) else {
+            return
+        }
+
+        guard let file = messageFile.filePath() else {
+            return
+        }
+
+        if messageFile.fileSize >= Constants.MaxImageSizeToShowInline {
+            return
+        }
+
+        if let image = imageCache.objectForKey(file) as? UIImage {
+            let cell = (cell as? ChatIncomingFileCell) ?? (cell as? ChatOutgoingFileCell)
+
+            cell?.setButtonImage(image)
+        }
+        else {
+            loadImageForCellAtIndexPath(indexPath, fromFile: file)
         }
     }
 
