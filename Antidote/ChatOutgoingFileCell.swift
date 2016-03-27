@@ -1,5 +1,5 @@
 //
-//  ChatOutgoingImageCell.swift
+//  ChatOutgoingFileCell.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 25.03.16.
@@ -16,7 +16,7 @@ private struct Constants {
     static let CloseButtonSize = 25.0
 }
 
-class ChatOutgoingImageCell: ChatGenericImageCell {
+class ChatOutgoingFileCell: ChatGenericFileCell {
     override func createViews() {
         super.createViews()
 
@@ -41,7 +41,7 @@ class ChatOutgoingImageCell: ChatGenericImageCell {
         }
     }
 
-    override func updateViewsWithState(state: ChatFileCellModel.State, imageModel: ChatGenericImageCellModel) {
+    override func updateViewsWithState(state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {
         loadingView.imageButton.userInteractionEnabled = true
         loadingView.progressView.hidden = true
         loadingView.topLabel.hidden = true

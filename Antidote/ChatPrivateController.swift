@@ -325,7 +325,7 @@ extension ChatPrivateController: UITableViewDelegate {
         }
 
         if let image = imageCache.objectForKey(file) as? UIImage {
-            let cell = (cell as? ChatIncomingImageCell) ?? (cell as? ChatOutgoingImageCell)
+            let cell = (cell as? ChatIncomingFileCell) ?? (cell as? ChatOutgoingFileCell)
 
             cell?.setButtonImage(image)
         }
@@ -528,8 +528,8 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatOutgoingTextCell.self, forCellReuseIdentifier: ChatOutgoingTextCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingCallCell.self, forCellReuseIdentifier: ChatIncomingCallCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
-        tableView.registerClass(ChatIncomingImageCell.self, forCellReuseIdentifier: ChatIncomingImageCell.staticReuseIdentifier)
-        tableView.registerClass(ChatOutgoingImageCell.self, forCellReuseIdentifier: ChatOutgoingImageCell.staticReuseIdentifier)
+        tableView.registerClass(ChatIncomingFileCell.self, forCellReuseIdentifier: ChatIncomingFileCell.staticReuseIdentifier)
+        tableView.registerClass(ChatOutgoingFileCell.self, forCellReuseIdentifier: ChatOutgoingFileCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -652,15 +652,15 @@ private extension ChatPrivateController {
     }
 
     func imageCellWithMessage(message: OCTMessageAbstract, incoming: Bool) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
-        let cell: ChatGenericImageCell
+        let cell: ChatGenericFileCell
 
         if incoming {
-            cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingImageCell.staticReuseIdentifier) as! ChatIncomingImageCell
+            cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
         }
         else {
-            cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingImageCell.staticReuseIdentifier) as! ChatOutgoingImageCell
+            cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingFileCell.staticReuseIdentifier) as! ChatOutgoingFileCell
         }
-        let model = ChatIncomingImageCellModel()
+        let model = ChatIncomingFileCellModel()
 
         prepareFileCell(cell, andModel: model, withMessage: message, incoming: incoming)
 
@@ -668,8 +668,8 @@ private extension ChatPrivateController {
     }
 
     func prepareFileCell(
-            cell: ChatFileCell,
-            andModel model: ChatFileCellModel,
+            cell: ChatGenericFileCell,
+            andModel model: ChatGenericFileCellModel,
             withMessage message: OCTMessageAbstract,
             incoming: Bool) {
 
@@ -745,7 +745,7 @@ private extension ChatPrivateController {
 
             dispatch_async(dispatch_get_main_queue()) {
                 let optionalCell = self?.tableView.cellForRowAtIndexPath(indexPath)
-                guard let cell = (optionalCell as? ChatIncomingImageCell) ?? (optionalCell as? ChatOutgoingImageCell) else {
+                guard let cell = (optionalCell as? ChatIncomingFileCell) ?? (optionalCell as? ChatOutgoingFileCell) else {
                     return
                 }
 

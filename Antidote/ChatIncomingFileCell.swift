@@ -1,5 +1,5 @@
 //
-//  ChatIncomingImageCell.swift
+//  ChatIncomingFileCell.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 22.03.16.
@@ -16,7 +16,7 @@ private struct Constants {
     static let CloseButtonSize = 25.0
 }
 
-class ChatIncomingImageCell: ChatGenericImageCell {
+class ChatIncomingFileCell: ChatGenericFileCell {
     override func setButtonImage(image: UIImage) {
         super.setButtonImage(image)
         loadingView.bottomLabel.hidden = true
@@ -46,12 +46,12 @@ class ChatIncomingImageCell: ChatGenericImageCell {
         }
     }
 
-    override func updateViewsWithState(state: ChatFileCellModel.State, imageModel: ChatGenericImageCellModel) {
+    override func updateViewsWithState(state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {
         loadingView.imageButton.userInteractionEnabled = true
         loadingView.progressView.hidden = true
         loadingView.topLabel.hidden = false
-        loadingView.topLabel.text = imageModel.fileName
-        loadingView.bottomLabel.text = imageModel.fileSize
+        loadingView.topLabel.text = fileModel.fileName
+        loadingView.bottomLabel.text = fileModel.fileSize
         loadingView.bottomLabel.hidden = false
 
         cancelButton.hidden = false
@@ -70,7 +70,7 @@ class ChatIncomingImageCell: ChatGenericImageCell {
             case .Done:
                 cancelButton.hidden = true
                 loadingView.topLabel.hidden = true
-                loadingView.bottomLabel.text = imageModel.fileName
+                loadingView.bottomLabel.text = fileModel.fileName
         }
     }
 

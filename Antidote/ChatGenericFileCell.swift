@@ -1,5 +1,5 @@
 //
-//  ChatGenericImageCell.swift
+//  ChatGenericFileCell.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 25.03.16.
@@ -9,9 +9,29 @@
 import UIKit
 import SnapKit
 
-class ChatGenericImageCell: ChatFileCell {
+class ChatGenericFileCell: ChatMovableDateCell {
     var loadingView: LoadingImageView!
     var cancelButton: UIButton!
+
+    var progressObject: ChatProgressProtocol? {
+        didSet {
+            progressObject?.updateProgress = { [weak self] (progress: Float) -> Void in
+                self?.updateProgress(CGFloat(progress))
+            }
+
+            progressObject?.updateEta = { [weak self] (eta: CFTimeInterval, bytesPerSecond: OCTToxFileSize) -> Void in
+                self?.updateEta(String(timeInterval: eta))
+                self?.updateBytesPerSecond(bytesPerSecond)
+            }
+        }
+    }
+
+    var state: ChatGenericFileCellModel.State = .WaitingConfirmation
+
+    var startLoadingHandle: (Void -> Void)?
+    var cancelHandle: (Void -> Void)?
+    var pauseOrResumeHandle: (Void -> Void)?
+    var openHandle: (Void -> Void)?
 
     /**
         This method should be called after setupWithTheme:model:
@@ -38,10 +58,16 @@ class ChatGenericImageCell: ChatFileCell {
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
-        guard let imageModel = model as? ChatGenericImageCellModel else {
+        guard let fileModel = model as? ChatGenericFileCellModel else {
             assert(false, "Wrong model \(model) passed to cell \(self)")
             return
         }
+
+        state = fileModel.state
+        startLoadingHandle = fileModel.startLoadingHandle
+        cancelHandle = fileModel.cancelHandle
+        pauseOrResumeHandle = fileModel.pauseOrResumeHandle
+        openHandle = fileModel.openHandle
 
         switch state {
             case .WaitingConfirmation:
@@ -55,14 +81,14 @@ class ChatGenericImageCell: ChatFileCell {
             case .Done:
                 var fileExtension: String? = nil
 
-                if let fileName = imageModel.fileName {
+                if let fileName = fileModel.fileName {
                     fileExtension = (fileName as NSString).pathExtension
                 }
 
-                loadingView.setImageWithUti(imageModel.fileUTI, fileExtension: fileExtension)
+                loadingView.setImageWithUti(fileModel.fileUTI, fileExtension: fileExtension)
         }
 
-        updateViewsWithState(imageModel.state, imageModel: imageModel)
+        updateViewsWithState(fileModel.state, fileModel: fileModel)
 
         loadingView.imageButton.setImage(nil, forState: .Normal)
 
@@ -94,20 +120,22 @@ class ChatGenericImageCell: ChatFileCell {
         cancelButton.addTarget(self, action: "cancelButtonPressed", forControlEvents: .TouchUpInside)
     }
 
-    override func updateProgress(progress: CGFloat) {
+    func updateProgress(progress: CGFloat) {
         loadingView.progressView.progress = progress
     }
 
-    override func updateEta(eta: String) {
+    func updateEta(eta: String) {
         loadingView.bottomLabel.text = eta
     }
+
+    func updateBytesPerSecond(bytesPerSecond: OCTToxFileSize) {}
 
     func cancelButtonPressed() {
         cancelHandle?()
     }
 
     /// Override in subclass
-    func updateViewsWithState(state: ChatFileCellModel.State, imageModel: ChatGenericImageCellModel) {}
+    func updateViewsWithState(state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {}
 
     /// Override in subclass
     func loadingViewPressed() {}

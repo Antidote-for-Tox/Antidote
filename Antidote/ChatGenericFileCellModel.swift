@@ -1,14 +1,14 @@
 //
-//  ChatFileCellModel.swift
+//  ChatGenericFileCellModel.swift
 //  Antidote
 //
-//  Created by Dmytro Vorobiov on 23.03.16.
+//  Created by Dmytro Vorobiov on 25.03.16.
 //  Copyright © 2016 dvor. All rights reserved.
 //
 
 import Foundation
 
-class ChatFileCellModel: ChatMovableDateCellModel {
+class ChatGenericFileCellModel: ChatMovableDateCellModel {
     enum State {
         case WaitingConfirmation
         case Loading

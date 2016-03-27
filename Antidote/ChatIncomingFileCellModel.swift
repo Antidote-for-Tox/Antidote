@@ -1,5 +1,5 @@
 //
-//  ChatIncomingImageCellModel.swift
+//  ChatIncomingFileCellModel.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 22.03.16.
@@ -8,5 +8,5 @@
 
 import Foundation
 
-class ChatIncomingImageCellModel: ChatGenericImageCellModel {
+class ChatIncomingFileCellModel: ChatGenericFileCellModel {
 }
