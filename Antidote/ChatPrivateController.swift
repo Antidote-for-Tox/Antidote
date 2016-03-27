@@ -262,13 +262,8 @@ extension ChatPrivateController: UITableViewDataSource {
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingCallCell.staticReuseIdentifier) as! ChatOutgoingCallCell
             }
-            else if let messageFile = message.messageFile {
-                let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
-                let smallSize = messageFile.fileSize < Constants.MaxImageSizeToShowInline
-
-                if conforms && smallSize {
-                    (model, cell) = imageCellWithMessage(message, incoming: false)
-                }
+            else if let _ = message.messageFile {
+                (model, cell) = imageCellWithMessage(message, incoming: false)
             }
         }
         else {
@@ -287,16 +282,8 @@ extension ChatPrivateController: UITableViewDataSource {
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingCallCell.staticReuseIdentifier) as! ChatIncomingCallCell
             }
-            else if let messageFile = message.messageFile {
-                let conforms = UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage)
-                let smallSize = messageFile.fileSize < Constants.MaxImageSizeToShowInline
-
-                if conforms && smallSize {
-                    (model, cell) = imageCellWithMessage(message, incoming: true)
-                }
-                else {
-                    (model, cell) = fileCellWithMessage(message, incoming: true)
-                }
+            else if let _ = message.messageFile {
+                (model, cell) = imageCellWithMessage(message, incoming: true)
             }
         }
 
@@ -330,6 +317,10 @@ extension ChatPrivateController: UITableViewDelegate {
         }
 
         guard let file = messageFile.filePath() else {
+            return
+        }
+
+        if messageFile.fileSize >= Constants.MaxImageSizeToShowInline {
             return
         }
 
@@ -539,7 +530,6 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatOutgoingCallCell.self, forCellReuseIdentifier: ChatOutgoingCallCell.staticReuseIdentifier)
         tableView.registerClass(ChatIncomingImageCell.self, forCellReuseIdentifier: ChatIncomingImageCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingImageCell.self, forCellReuseIdentifier: ChatOutgoingImageCell.staticReuseIdentifier)
-        tableView.registerClass(ChatIncomingFileCell.self, forCellReuseIdentifier: ChatIncomingFileCell.staticReuseIdentifier)
 
         let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
         tableView.addGestureRecognizer(tapGR)
@@ -672,15 +662,6 @@ private extension ChatPrivateController {
         }
         let model = ChatIncomingImageCellModel()
 
-        prepareFileCell(cell, andModel: model, withMessage: message, incoming: incoming)
-
-        return (model, cell)
-    }
-
-    func fileCellWithMessage(message: OCTMessageAbstract, incoming: Bool) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
-        let cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
-
-        let model = ChatIncomingFileCellModel()
         prepareFileCell(cell, andModel: model, withMessage: message, incoming: incoming)
 
         return (model, cell)

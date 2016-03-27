@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MobileCoreServices
 
 private struct Constants {
     static let ImageButtonSize = 180.0
@@ -36,6 +37,15 @@ class LoadingImageView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    func setCancelledImage() {
+        centerImageView.image = UIImage.templateNamed("chat-file-type-canceled")
+    }
+
+    func setImageWithUti(uti: String?, fileExtension: String?) {
+        let imageName = imageNameWithUti(uti, fileExtension: fileExtension)
+        centerImageView.image = UIImage.templateNamed(imageName)
+    }
 }
 
 extension LoadingImageView {
@@ -53,6 +63,7 @@ private extension LoadingImageView {
         addSubview(imageButton)
 
         centerImageView = UIImageView()
+        centerImageView.contentMode = .Center
         addSubview(centerImageView)
 
         progressView = ProgressCircleView()
@@ -97,6 +108,96 @@ private extension LoadingImageView {
             $0.left.equalTo(self).offset(Constants.LabelHorizontalOffset)
             $0.right.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
             $0.bottom.equalTo(self).offset(Constants.LabelBottomOffset)
+        }
+    }
+
+    func imageNameWithUti(uti: String?, fileExtension: String?) -> String {
+        guard let uti = uti else {
+            return "chat-file-type-basic"
+        }
+
+        if UTTypeEqual(uti, kUTTypeGIF) {
+            return "chat-file-type-gif"
+        }
+        else if UTTypeEqual(uti, kUTTypeHTML) {
+            return "chat-file-type-html"
+        }
+        else if UTTypeEqual(uti, kUTTypeJPEG) {
+            return "chat-file-type-jpg"
+        }
+        else if UTTypeEqual(uti, kUTTypeMP3) {
+            return "chat-file-type-mp3"
+        }
+        else if UTTypeEqual(uti, kUTTypeMPEG) {
+            return "chat-file-type-mpg"
+        }
+        else if UTTypeEqual(uti, kUTTypeMPEG4) {
+            return "chat-file-type-mpg"
+        }
+        else if UTTypeEqual(uti, kUTTypePDF) {
+            return "chat-file-type-pdf"
+        }
+        else if UTTypeEqual(uti, kUTTypePNG) {
+            return "chat-file-type-png"
+        }
+        else if UTTypeEqual(uti, kUTTypeTIFF) {
+            return "chat-file-type-tif"
+        }
+        else if UTTypeEqual(uti, kUTTypePlainText) {
+            return "chat-file-type-txt"
+        }
+
+        guard let fileExtension = fileExtension else {
+            return "chat-file-type-basic"
+        }
+
+        switch fileExtension {
+            case "7z":
+                return "chat-file-type-7zip"
+            case "aac":
+                return "chat-file-type-aac"
+            case "avi":
+                return "chat-file-type-avi"
+            case "css":
+                return "chat-file-type-css"
+            case "csv":
+                return "chat-file-type-csv"
+            case "doc":
+                return "chat-file-type-doc"
+            case "ebup":
+                return "chat-file-type-ebup"
+            case "exe":
+                return "chat-file-type-exe"
+            case "fb2":
+                return "chat-file-type-fb2"
+            case "flv":
+                return "chat-file-type-flv"
+            case "mov":
+                return "chat-file-type-mov"
+            case "ogg":
+                return "chat-file-type-ogg"
+            case "otf":
+                return "chat-file-type-otf"
+            case "ppt":
+                return "chat-file-type-ppt"
+            case "psd":
+                return "chat-file-type-psd"
+            case "rar":
+                return "chat-file-type-rar"
+            case "tar":
+                return "chat-file-type-tar"
+            case "ttf":
+                return "chat-file-type-ttf"
+            case "wav":
+                return "chat-file-type-wav"
+            case "wma":
+                return "chat-file-type-wma"
+            case "xls":
+                return "chat-file-type-xls"
+            case "zip":
+                return "chat-file-type-zip"
+            default:
+                return "chat-file-type-basic"
         }
     }
 }

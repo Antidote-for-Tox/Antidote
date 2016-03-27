@@ -31,6 +31,7 @@ class ChatGenericImageCell: ChatFileCell {
             square = image.cropWithRect(rect)
         }
 
+        loadingView.centerImageView.image = nil
         loadingView.imageButton.setBackgroundImage(square, forState: .Normal)
     }
 
@@ -40,6 +41,25 @@ class ChatGenericImageCell: ChatFileCell {
         guard let imageModel = model as? ChatGenericImageCellModel else {
             assert(false, "Wrong model \(model) passed to cell \(self)")
             return
+        }
+
+        switch state {
+            case .WaitingConfirmation:
+                loadingView.centerImageView.image = nil
+            case .Loading:
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-pause-big")
+            case .Paused:
+                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play-big")
+            case .Cancelled:
+                loadingView.setCancelledImage()
+            case .Done:
+                var fileExtension: String? = nil
+
+                if let fileName = imageModel.fileName {
+                    fileExtension = (fileName as NSString).pathExtension
+                }
+
+                loadingView.setImageWithUti(imageModel.fileUTI, fileExtension: fileExtension)
         }
 
         updateViewsWithState(imageModel.state, imageModel: imageModel)

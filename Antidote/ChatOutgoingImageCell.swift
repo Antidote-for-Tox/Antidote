@@ -43,7 +43,6 @@ class ChatOutgoingImageCell: ChatGenericImageCell {
 
     override func updateViewsWithState(state: ChatFileCellModel.State, imageModel: ChatGenericImageCellModel) {
         loadingView.imageButton.userInteractionEnabled = true
-        loadingView.centerImageView.hidden = true
         loadingView.progressView.hidden = true
         loadingView.topLabel.hidden = true
         loadingView.bottomLabel.hidden = true
@@ -56,13 +55,9 @@ class ChatOutgoingImageCell: ChatGenericImageCell {
                 loadingView.bottomLabel.hidden = false
                 loadingView.bottomLabel.text = String(localized: "chat_waiting")
             case .Loading:
-                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-pause")
-                loadingView.centerImageView.hidden = false
                 loadingView.progressView.hidden = false
-
             case .Paused:
-                loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play")
-                loadingView.centerImageView.hidden = false
+                break
             case .Cancelled:
                 loadingView.bottomLabel.hidden = false
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")
