@@ -4,6 +4,10 @@
 
 ![](https://i.imgur.com/5HF5RMX.png)
 
+## Translation
+
+You can help by translating Antidote to different languages. Translation is done with help of Transifex service and you can join [here](https://www.transifex.com/antidote/antidote-ios/).
+
 ##Usage
 
 #### TestFlight beta testing
