@@ -102,7 +102,7 @@ class CallButton: UIButton {
         tintColor = normalTintColor
 
         let imageSize = CGSize(width: Constants.ImageSize, height: Constants.ImageSize)
-        let image = UIImage.templateNamed(imageName).scaleToSize(imageSize)
+        let image = UIImage(named: imageName)!.scaleToSize(imageSize).imageWithRenderingMode(.AlwaysTemplate)
         setImage(image, forState: .Normal)
 
         let backgroundImage = UIImage.imageWithColor(backgroundColor, size: CGSize(width: 1.0, height: 1.0))
