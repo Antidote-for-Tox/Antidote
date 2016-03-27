@@ -116,7 +116,7 @@ extension StaticTableChatButtonsCell {
 
 private extension StaticTableChatButtonsCell {
     func createButtonWithImageName(imageName: String, action: Selector) -> UIButton {
-        let image = UIImage(named: imageName)!.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage.templateNamed(imageName)
 
         let button = UIButton()
         button.setImage(image, forState: .Normal)

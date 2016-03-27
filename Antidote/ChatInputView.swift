@@ -12,10 +12,13 @@ import SnapKit
 private struct Constants {
     static let TopBorderHeight = 0.5
     static let Offset: CGFloat = 5.0
+    static let CameraHorizontalOffset: CGFloat = 10.0
+    static let CameraBottomOffset: CGFloat = -10.0
     static let TextViewMinHeight: CGFloat = 35.0
 }
 
 protocol ChatInputViewDelegate: class {
+    func chatInputViewCameraButtonPressed(view: ChatInputView, cameraView: UIView)
     func chatInputViewSendButtonPressed(view: ChatInputView)
     func chatInputViewTextDidChange(view: ChatInputView)
 }
@@ -39,13 +42,14 @@ class ChatInputView: UIView {
         }
     }
 
-    var sendButtonEnabled: Bool = true{
+    var buttonsEnabled: Bool = true{
         didSet {
             updateViews()
         }
     }
 
     private var topBorder: UIView!
+    private var cameraButton: UIButton!
     private var textView: UITextView!
     private var sendButton: UIButton!
 
@@ -76,6 +80,10 @@ class ChatInputView: UIView {
 
 // MARK: Actions
 extension ChatInputView {
+    func cameraButtonPressed() {
+        delegate?.chatInputViewCameraButtonPressed(self, cameraView: cameraButton)
+    }
+
     func sendButtonPressed() {
         delegate?.chatInputViewSendButtonPressed(self)
     }
@@ -94,6 +102,15 @@ private extension ChatInputView {
         topBorder.backgroundColor = theme.colorForType(.SeparatorsAndBorders)
         addSubview(topBorder)
 
+        let cameraImage = UIImage.templateNamed("chat-camera")
+
+        cameraButton = UIButton()
+        cameraButton.setImage(cameraImage, forState: .Normal)
+        cameraButton.tintColor = theme.colorForType(.LinkText)
+        cameraButton.addTarget(self, action: "cameraButtonPressed", forControlEvents: .TouchUpInside)
+        cameraButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+        addSubview(cameraButton)
+
         textView = UITextView()
         textView.delegate = self
         textView.font = UIFont.systemFontOfSize(16.0)
@@ -107,7 +124,6 @@ private extension ChatInputView {
 
         sendButton = UIButton(type: .System)
         sendButton.setTitle(String(localized: "chat_send_button"), forState: .Normal)
-        // sendButton.setTitleColor(theme.colorForType(.LinkText), forState: .Normal)
         sendButton.titleLabel?.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
         sendButton.addTarget(self, action: "sendButtonPressed", forControlEvents: .TouchUpInside)
         sendButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
@@ -120,8 +136,13 @@ private extension ChatInputView {
             $0.height.equalTo(Constants.TopBorderHeight)
         }
 
+        cameraButton.snp_makeConstraints {
+            $0.left.equalTo(self).offset(Constants.CameraHorizontalOffset)
+            $0.bottom.equalTo(self).offset(Constants.CameraBottomOffset)
+        }
+
         textView.snp_makeConstraints {
-            $0.left.equalTo(self).offset(Constants.Offset)
+            $0.left.equalTo(cameraButton.snp_right).offset(Constants.CameraHorizontalOffset)
             $0.top.equalTo(self).offset(Constants.Offset)
             $0.bottom.equalTo(self).offset(-Constants.Offset)
             $0.height.greaterThanOrEqualTo(Constants.TextViewMinHeight)
@@ -144,6 +165,7 @@ private extension ChatInputView {
             textView.scrollEnabled = false
         }
 
-        sendButton.enabled = sendButtonEnabled && !textView.text.isEmpty
+        cameraButton.enabled = buttonsEnabled
+        sendButton.enabled = buttonsEnabled && !textView.text.isEmpty
     }
 }

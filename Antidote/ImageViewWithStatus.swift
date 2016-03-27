@@ -45,6 +45,7 @@ private extension ImageViewWithStatus {
         imageView = UIImageView()
         imageView.backgroundColor = UIColor.clearColor()
         imageView.layer.masksToBounds = true
+        // imageView.contentMode = .ScaleAspectFit
         addSubview(imageView)
 
         userStatusView = UserStatusView()

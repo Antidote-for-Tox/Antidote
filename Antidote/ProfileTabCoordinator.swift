@@ -12,6 +12,7 @@ protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
     func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator)
     func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
+    func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator)
 }
 
 class ProfileTabCoordinator: RunningNavigationCoordinator {
@@ -86,6 +87,10 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
         let controller = ProfileDetailsController(theme: theme, toxManager: toxManager)
         controller.delegate = self
         navigationController.pushViewController(controller, animated: true)
+    }
+
+    func profileMainControllerDidChangeAvatar(controller: ProfileMainController) {
+        delegate?.profileTabCoordinatorDelegateDidChangeAvatar(self)
     }
 }
 

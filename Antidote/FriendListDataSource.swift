@@ -83,20 +83,23 @@ class FriendListDataSource: NSObject {
             case .Request(let request):
                 model.avatar = avatarManager.avatarFromString("", diameter: CGFloat(FriendListCell.Constants.AvatarSize))
                 model.topText = request.publicKey
-                model.bottomText = request.message
+                model.bottomText = request.message ?? ""
                 model.multilineBottomtext = true
                 model.hideStatus = true
             case .Friend(let friend):
-                model.avatar = avatarManager.avatarFromString(friend.nickname, diameter: CGFloat(FriendListCell.Constants.AvatarSize))
+                if let data = friend.avatarData {
+                    model.avatar = UIImage(data: data)
+                }
+                else {
+                    model.avatar = avatarManager.avatarFromString(friend.nickname, diameter: CGFloat(FriendListCell.Constants.AvatarSize))
+                }
                 model.topText = friend.nickname
 
                 if friend.isConnected {
-                    model.bottomText = friend.statusMessage
+                    model.bottomText = friend.statusMessage ?? ""
                 }
-                else if friend.lastSeenOnline() != nil {
-                    model.bottomText = String(
-                            localized: "friend_last_seen",
-                            dateFormatter.stringFromDate(friend.lastSeenOnline()))
+                else if let date = friend.lastSeenOnline() {
+                    model.bottomText = String(localized: "friend_last_seen", dateFormatter.stringFromDate(date))
                 }
 
                 model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)

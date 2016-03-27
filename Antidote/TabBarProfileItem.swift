@@ -9,6 +9,10 @@
 import UIKit
 import SnapKit
 
+private struct Constants {
+    static let ImageSize = 32.0
+}
+
 class TabBarProfileItem: TabBarAbstractItem {
     override var selected: Bool {
         didSet {
@@ -19,6 +23,17 @@ class TabBarProfileItem: TabBarAbstractItem {
     var userStatus: UserStatus = .Offline {
         didSet {
             imageViewWithStatus.userStatusView.userStatus = userStatus
+        }
+    }
+
+    var userImage: UIImage? {
+        didSet {
+            if let image = userImage {
+                imageViewWithStatus.imageView.image = image
+            }
+            else {
+                imageViewWithStatus.imageView.image = UIImage.templateNamed("tab-bar-profile")
+            }
         }
     }
 
@@ -52,9 +67,7 @@ extension TabBarProfileItem {
 
 private extension TabBarProfileItem {
     func createViews() {
-
         imageViewWithStatus = ImageViewWithStatus()
-        imageViewWithStatus.imageView.image = UIImage(named: "tab-bar-profile")!.imageWithRenderingMode(.AlwaysTemplate)
         imageViewWithStatus.userStatusView.theme = theme
         addSubview(imageViewWithStatus)
 
@@ -67,6 +80,7 @@ private extension TabBarProfileItem {
     func installConstraints() {
         imageViewWithStatus.snp_makeConstraints {
             $0.center.equalTo(self)
+            $0.size.equalTo(Constants.ImageSize)
         }
 
         button.snp_makeConstraints {

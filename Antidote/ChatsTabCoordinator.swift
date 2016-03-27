@@ -19,10 +19,12 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
 
     private weak var submanagerObjects: OCTSubmanagerObjects!
     private weak var submanagerChats: OCTSubmanagerChats!
+    private weak var submanagerFiles: OCTSubmanagerFiles!
 
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerChats: OCTSubmanagerChats) {
+    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerChats: OCTSubmanagerChats, submanagerFiles: OCTSubmanagerFiles) {
         self.submanagerObjects = submanagerObjects
         self.submanagerChats = submanagerChats
+        self.submanagerFiles = submanagerFiles
 
         super.init(theme: theme)
     }
@@ -40,6 +42,7 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
                 chat: chat,
                 submanagerChats: submanagerChats,
                 submanagerObjects: submanagerObjects,
+                submanagerFiles: submanagerFiles,
                 delegate: self)
 
         navigationController.popToRootViewControllerAnimated(false)
@@ -64,5 +67,18 @@ extension ChatsTabCoordinator: ChatPrivateControllerDelegate {
 
     func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
         delegate?.chatsTabCoordinator(self, callToChat: controller.chat, enableVideo: enableVideo)
+    }
+
+    func chatPrivateControllerShowQuickLookController(
+            controller: ChatPrivateController,
+            dataSource: QuickLookPreviewControllerDataSource,
+            selectedIndex: Int)
+    {
+        let controller = QuickLookPreviewController()
+        controller.dataSource = dataSource
+        controller.dataSourceStorage = dataSource
+        controller.currentPreviewItemIndex = selectedIndex
+
+        navigationController.presentViewController(controller, animated: true, completion: nil)
     }
 }

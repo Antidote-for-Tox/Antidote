@@ -14,7 +14,7 @@ private struct Constants {
 }
 
 class StaticTableAvatarCell: StaticTableBaseCell {
-    private var didTapOnAvatar: (Void -> Void)?
+    private var didTapOnAvatar: (StaticTableAvatarCell -> Void)?
 
     private var button: UIButton!
 
@@ -57,6 +57,6 @@ class StaticTableAvatarCell: StaticTableBaseCell {
 
 extension StaticTableAvatarCell {
     func buttonPressed() {
-        didTapOnAvatar?()
+        didTapOnAvatar?(self)
     }
 }

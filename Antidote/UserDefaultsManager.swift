@@ -9,19 +9,19 @@
 class UserDefaultsManager {
     var lastActiveProfile: String? {
         get {
-            return stringForKey(Keys.lastActiveProfile)
+            return stringForKey(Keys.LastActiveProfile)
         }
         set {
-            setObject(newValue, forKey: Keys.lastActiveProfile)
+            setObject(newValue, forKey: Keys.LastActiveProfile)
         }
     }
 
     var isUserLoggedIn: Bool {
         get {
-            return boolForKey(Keys.isUserLoggedIn, defaultValue: false)
+            return boolForKey(Keys.IsUserLoggedIn, defaultValue: false)
         }
         set {
-            setBool(newValue, forKey: Keys.isUserLoggedIn)
+            setBool(newValue, forKey: Keys.IsUserLoggedIn)
         }
     }
 
@@ -52,6 +52,26 @@ class UserDefaultsManager {
         }
     }
 
+    enum AutodownloadImages: String {
+        case Never
+        case UsingWiFi
+        case Always
+    }
+
+    var autodownloadImages: AutodownloadImages {
+        get {
+            let defaultValue = AutodownloadImages.Never
+
+            guard let string = stringForKey(Keys.AutodownloadImages) else {
+                return defaultValue
+            }
+            return AutodownloadImages(rawValue: string) ?? defaultValue
+        }
+        set {
+            setObject(newValue.rawValue, forKey: Keys.AutodownloadImages)
+        }
+    }
+
     func resetIPv6Enabled() {
         removeObjectForKey(Keys.IPv6Enabled)
     }
@@ -63,11 +83,12 @@ class UserDefaultsManager {
 
 private extension UserDefaultsManager {
     struct Keys {
-        static let lastActiveProfile = "user-info/last-active-profile"
-        static let isUserLoggedIn = "user-info/is-user-logged-in"
+        static let LastActiveProfile = "user-info/last-active-profile"
+        static let IsUserLoggedIn = "user-info/is-user-logged-in"
         static let IPv6Enabled = "user-info/ipv6-enabled"
         static let UDPEnabled = "user-info/udp-enabled"
         static let ShowNotificationsPreview = "user-info/snow-notification-preview"
+        static let AutodownloadImages = "user-info/autodownload-images"
     }
 
     func setObject(object: AnyObject?, forKey key: String) {

@@ -65,6 +65,7 @@ class RunningCoordinator: NSObject {
     private let profileCoordinator: ProfileTabCoordinator
 
     private let notificationCoordinator: NotificationCoordinator
+    private let automationCoordinator: AutomationCoordinator
     private var callCoordinator: CallCoordinator!
 
     /**
@@ -82,6 +83,7 @@ class RunningCoordinator: NSObject {
         self.settingsCoordinator = SettingsTabCoordinator(theme: theme)
         self.profileCoordinator = ProfileTabCoordinator(theme: theme, toxManager: toxManager)
         self.notificationCoordinator = NotificationCoordinator(theme: theme, submanagerObjects: toxManager.objects)
+        self.automationCoordinator = AutomationCoordinator(submanagerObjects: toxManager.objects, submanagerFiles: toxManager.files)
 
         super.init()
 
@@ -129,10 +131,13 @@ extension RunningCoordinator: CoordinatorProtocol {
         settingsCoordinator.startWithOptions(settingsOptions)
         profileCoordinator.startWithOptions(nil)
         notificationCoordinator.startWithOptions(nil)
+        automationCoordinator.startWithOptions(nil)
         callCoordinator.startWithOptions(nil)
 
         toxManager.bootstrap.addPredefinedNodes()
         toxManager.bootstrap.bootstrap()
+
+        updateUserAvatar()
 
         switch toShow {
             case .None:
@@ -248,9 +253,12 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
         delegate?.runningCoordinatorDeleteProfile(self)
     }
 
-    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
-    {
+    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator) {
         updateUserStatusView()
+    }
+
+    func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator) {
+        updateUserAvatar()
     }
 }
 
@@ -284,13 +292,26 @@ extension RunningCoordinator: ChatPrivateControllerDelegate {
     func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
         callCoordinator.callToChat(controller.chat, enableVideo: enableVideo)
     }
+
+    func chatPrivateControllerShowQuickLookController(
+            controller: ChatPrivateController,
+            dataSource: QuickLookPreviewControllerDataSource,
+            selectedIndex: Int)
+    {
+        let controller = QuickLookPreviewController()
+        controller.dataSource = dataSource
+        controller.dataSourceStorage = dataSource
+        controller.currentPreviewItemIndex = selectedIndex
+
+        iPad.splitController.presentViewController(controller, animated: true, completion: nil)
+    }
 }
 
 private extension RunningCoordinator {
     func createDeviceSpecificObjects() {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                let chatsCoordinator = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats)
+                let chatsCoordinator = ChatsTabCoordinator(theme: theme, submanagerObjects: toxManager.objects, submanagerChats: toxManager.chats, submanagerFiles: toxManager.files)
                 chatsCoordinator.delegate = self
 
                 let tabBarControllers = IphoneObjects.TabCoordinator.allValues().map { object -> UINavigationController in
@@ -397,6 +418,7 @@ private extension RunningCoordinator {
                         chat: chat,
                         submanagerChats: toxManager.chats,
                         submanagerObjects: toxManager.objects,
+                        submanagerFiles: toxManager.files,
                         delegate: self)
                 let navigation = UINavigationController(rootViewController: controller)
 
@@ -419,6 +441,21 @@ private extension RunningCoordinator {
         switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.profileTabBarItem.userStatus = status
+            case .iPad:
+                // TODO
+                break
+        }
+    }
+
+    func updateUserAvatar() {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                if let avatarData = toxManager.user.userAvatar() {
+                    iPhone.profileTabBarItem.userImage = UIImage(data: avatarData)
+                }
+                else {
+                    iPhone.profileTabBarItem.userImage = nil
+                }
             case .iPad:
                 // TODO
                 break

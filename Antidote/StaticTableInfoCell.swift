@@ -9,11 +9,19 @@
 import UIKit
 import SnapKit
 
+private struct Constants {
+    static let ValueToArrowOffset = 6.0
+}
+
 class StaticTableInfoCell: StaticTableBaseCell {
     private var valueChangedHandler: (Bool -> Void)?
 
     private var titleLabel: UILabel!
     private var valueLabel: UILabel!
+    private var arrowImageView: UIImageView!
+
+    private var valueLabelToContentRightConstraint: Constraint!
+    private var valueLabelToArrowConstraint: Constraint!
 
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
@@ -23,13 +31,25 @@ class StaticTableInfoCell: StaticTableBaseCell {
             return
         }
 
-        selectionStyle = .None
-
         titleLabel.textColor = theme.colorForType(.NormalText)
         titleLabel.text = infoModel.title
 
         valueLabel.textColor = theme.colorForType(.LinkText)
         valueLabel.text = infoModel.value
+
+
+        if infoModel.showArrow {
+            arrowImageView.hidden = false
+            valueLabelToContentRightConstraint.deactivate()
+            valueLabelToArrowConstraint.activate()
+            selectionStyle = .Default
+        }
+        else {
+            arrowImageView.hidden = true
+            valueLabelToArrowConstraint.deactivate()
+            valueLabelToContentRightConstraint.activate()
+            selectionStyle = .None
+        }
     }
 
     override func createViews() {
@@ -42,6 +62,10 @@ class StaticTableInfoCell: StaticTableBaseCell {
         valueLabel = UILabel()
         valueLabel.backgroundColor = UIColor.clearColor()
         customContentView.addSubview(valueLabel)
+
+        arrowImageView = UIImageView()
+        arrowImageView.image = UIImage(named: "right-arrow")!
+        customContentView.addSubview(arrowImageView)
     }
 
     override func installConstraints() {
@@ -55,7 +79,18 @@ class StaticTableInfoCell: StaticTableBaseCell {
         valueLabel.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.left.greaterThanOrEqualTo(titleLabel.snp_right)
-            $0.right.equalTo(customContentView)
+            valueLabelToContentRightConstraint = $0.right.equalTo(customContentView).constraint
         }
+
+        valueLabelToContentRightConstraint.deactivate()
+
+        arrowImageView.snp_makeConstraints {
+            $0.centerY.equalTo(customContentView)
+            $0.right.equalTo(customContentView)
+
+            valueLabelToArrowConstraint = $0.left.greaterThanOrEqualTo(valueLabel.snp_right).offset(Constants.ValueToArrowOffset).constraint
+        }
+
+        valueLabelToArrowConstraint.deactivate()
     }
 }

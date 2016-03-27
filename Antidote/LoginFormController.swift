@@ -259,7 +259,7 @@ private extension LoginFormController {
     }
 
     func iconContainerWithImageName(imageName: String) -> UIView {
-        let image = UIImage(named: imageName)!.imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage.templateNamed(imageName)
 
         let imageView = UIImageView(image: image)
         imageView.tintColor = UIColor(white: 200.0/255.0, alpha:1.0)

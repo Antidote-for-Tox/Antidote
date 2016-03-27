@@ -109,19 +109,19 @@ private extension ProfileDetailsController {
         deleteProfileModel.didSelectHandler = deleteProfile
     }
 
-    func setPassword() {
+    func setPassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerSetPassword(self)
     }
 
-    func changePassword() {
+    func changePassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerChangePassword(self)
     }
 
-    func deletePassword() {
+    func deletePassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerDeletePassword(self)
     }
 
-    func exportProfile() {
+    func exportProfile(_: StaticTableBaseCell) {
         do {
             let path = try toxManager.exportToxSaveFile()
 
@@ -137,7 +137,7 @@ private extension ProfileDetailsController {
         }
     }
 
-    func deleteProfile() {
+    func deleteProfile(cell: StaticTableBaseCell) {
         let title1 = String(localized: "delete_profile_confirmation_title_1")
         let title2 = String(localized: "delete_profile_confirmation_title_2")
         let message = String(localized: "delete_profile_confirmation_message")
@@ -145,9 +145,13 @@ private extension ProfileDetailsController {
         let cancel = String(localized: "alert_cancel")
 
         let alert1 = UIAlertController(title: title1, message: message, preferredStyle: .ActionSheet)
+        alert1.popoverPresentationController?.sourceView = cell
+        alert1.popoverPresentationController?.sourceRect = CGRect(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2, width: 1.0, height: 1.0)
 
         alert1.addAction(UIAlertAction(title: yes, style: .Destructive) { [unowned self] _ -> Void in
             let alert2 = UIAlertController(title: title2, message: nil, preferredStyle: .ActionSheet)
+            alert2.popoverPresentationController?.sourceView = cell
+            alert2.popoverPresentationController?.sourceRect = CGRect(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2, width: 1.0, height: 1.0)
 
             alert2.addAction(UIAlertAction(title: yes, style: .Destructive) { [unowned self] _ -> Void in
                 self.reallyDeleteProfile()

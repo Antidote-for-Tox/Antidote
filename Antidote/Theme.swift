@@ -72,6 +72,10 @@ class Theme {
         case RoundedPositiveButtonBackground = "rounded-positive-button-background"
         case RoundedNegativeButtonBackground = "rounded-negative-button-background"
         case EmptyScreenPlaceholderText = "empty-screen-placeholder-text"
+        case FileImageBackgroundActive = "file-image-background-active"
+        case FileImageCancelledText = "file-image-cancelled-text"
+        case FileImageAcceptButtonTint = "file-image-accept-button-tint"
+        case FileImageCancelButtonTint = "file-image-cancel-button-tint"
 
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
@@ -120,6 +124,10 @@ class Theme {
             RoundedPositiveButtonBackground,
             RoundedNegativeButtonBackground,
             EmptyScreenPlaceholderText,
+            FileImageBackgroundActive,
+            FileImageCancelledText,
+            FileImageAcceptButtonTint,
+            FileImageCancelButtonTint,
         ]
     }
 
