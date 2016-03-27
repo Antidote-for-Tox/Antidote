@@ -77,12 +77,20 @@ class ProfileMainController: StaticTableController {
 }
 
 extension ProfileMainController: UIImagePickerControllerDelegate {
-
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         dismissViewControllerAnimated(true, completion: nil)
 
-        guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
+        guard var image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
+        }
+
+        if image.size.width != image.size.height {
+            let side = min(image.size.width, image.size.height)
+            let x = (image.size.width - side) / 2
+            let y = (image.size.height - side) / 2
+            let rect = CGRect(x: x, y: y, width: side, height: side)
+
+            image = image.cropWithRect(rect)
         }
 
         let data: NSData
