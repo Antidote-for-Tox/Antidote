@@ -43,34 +43,33 @@
 
 "error_internal_message" = "Internal error";
 
-"manager_error_wrong_password_title" = "Wrong password";
-"manager_error_wrong_password_message" = "Password contains wrong symbols.";
-"manager_error_import_not_exist_title" = "Cannot import tox save file";
-"manager_error_import_not_exist_message" = "File does not exist.";
-"manager_error_decrypt_title" = "Cannot decrypt tox save file";
-"manager_error_decrypt_empty_data_message" = "Some input data was empty.";
-"manager_error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
-"manager_error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
-"manager_error_general_title" = "Error";
-"manager_error_general_unknown_message" = "Unknown error occured.";
-"manager_error_general_no_memory_message" = "Not enought memory.";
-"manager_error_general_bind_port_message" = "Was unable to bind to a port.";
-"manager_error_general_profile_encrypted_message" = "Profile is encrypted.";
-"manager_error_general_bad_format_message" = "File has bad format or is corrupted.";
-"manager_error_proxy_title" = "Proxy error";
-"manager_error_proxy_invalid_address_message" = "Proxy address has invalid format.";
-"manager_error_proxy_invalid_port_message" = "Proxy port is invalid.";
-"manager_error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
+"error_wrong_password_title" = "Wrong password";
+"error_wrong_password_message" = "Password contains wrong symbols.";
+"error_import_not_exist_title" = "Cannot import tox save file";
+"error_import_not_exist_message" = "File does not exist.";
+"error_decrypt_title" = "Cannot decrypt tox save file";
+"error_decrypt_empty_data_message" = "Some input data was empty.";
+"error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
+"error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
+"error_general_unknown_message" = "Unknown error occured.";
+"error_general_no_memory_message" = "Not enought memory.";
+"error_general_bind_port_message" = "Was unable to bind to a port.";
+"error_general_profile_encrypted_message" = "Profile is encrypted.";
+"error_general_bad_format_message" = "File has bad format or is corrupted.";
+"error_proxy_title" = "Proxy error";
+"error_proxy_invalid_address_message" = "Proxy address has invalid format.";
+"error_proxy_invalid_port_message" = "Proxy port is invalid.";
+"error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
 
-"tox_error_name_too_long" = "Name is too long.";
-"tox_error_status_message_too_long" = "Status message is too long";
+"error_name_too_long" = "Name is too long.";
+"error_status_message_too_long" = "Status message is too long";
 
-"tox_error_friend_request_too_long" = "Message is too long";
-"tox_error_friend_request_no_message" = "No message specified";
-"tox_error_friend_request_own_key" = "Cannot add myself to friend list";
-"tox_error_friend_request_already_sent" = "Friend request was already sent";
-"tox_error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
-"tox_error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
+"error_friend_request_too_long" = "Message is too long";
+"error_friend_request_no_message" = "No message specified";
+"error_friend_request_own_key" = "Cannot add myself to friend list";
+"error_friend_request_already_sent" = "Friend request was already sent";
+"error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
+"error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
 
 "connecting_label" = "Connecting...";
 
@@ -93,7 +92,6 @@
 
 "add_friend_title" = "Add Friend";
 "add_friend_send" = "Send";
-"add_friend_cancel" = "Cancel";
 "add_friend_tox_id_placeholder" = "Enter Tox ID";
 "add_friend_or_label" = "or";
 "add_friend_use_qr" = "Use QR code";
@@ -141,7 +139,6 @@
 "settings_advanced_settings" = "Advanced Settings";
 "settings_feedback" = "Feedback";
 "settings_configure_email" = "Please configure your mail settings";
-"settings_add_log_files" = "Add log files?";
 "settings_no" = "No";
 "settings_yes" = "Yes";
 "settings_antidote_version" = "Antidote Version";
@@ -187,7 +184,6 @@
 "chat_file_cancelled" = "Cancelled";
 "chat_waiting" = "Waiting...";
 "chat_paused" = "Paused";
-
 
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
 "delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";

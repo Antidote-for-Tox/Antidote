@@ -99,47 +99,47 @@ extension OCTManagerInitError {
     func strings() -> (title: String, message: String) {
         switch self {
             case .PassphraseFailed:
-                return (String(localized: "manager_error_wrong_password_title"),
-                        String(localized: "manager_error_wrong_password_message"))
+                return (String(localized: "error_wrong_password_title"),
+                        String(localized: "error_wrong_password_message"))
             case .CannotImportToxSave:
-                return (String(localized: "manager_error_import_not_exist_title"),
-                        String(localized: "manager_error_import_not_exist_message"))
+                return (String(localized: "error_import_not_exist_title"),
+                        String(localized: "error_import_not_exist_message"))
             case .DecryptNull:
-                return (String(localized: "manager_error_decrypt_title"),
-                        String(localized: "manager_error_decrypt_empty_data_message"))
+                return (String(localized: "error_decrypt_title"),
+                        String(localized: "error_decrypt_empty_data_message"))
             case .DecryptBadFormat:
-                return (String(localized: "manager_error_decrypt_title"),
-                        String(localized: "manager_error_decrypt_bad_format_message"))
+                return (String(localized: "error_decrypt_title"),
+                        String(localized: "error_decrypt_bad_format_message"))
             case .DecryptFailed:
-                return (String(localized: "manager_error_decrypt_title"),
-                        String(localized: "manager_error_decrypt_wrong_password_message"))
+                return (String(localized: "error_decrypt_title"),
+                        String(localized: "error_decrypt_wrong_password_message"))
             case .CreateToxUnknown:
-                return (String(localized: "manager_error_general_title"),
-                        String(localized: "manager_error_general_unknown_message"))
+                return (String(localized: "error_title"),
+                        String(localized: "error_general_unknown_message"))
             case .CreateToxMemoryError:
-                return (String(localized: "manager_error_general_title"),
-                        String(localized: "manager_error_general_no_memory_message"))
+                return (String(localized: "error_title"),
+                        String(localized: "error_general_no_memory_message"))
             case .CreateToxPortAlloc:
-                return (String(localized: "manager_error_general_title"),
-                        String(localized: "manager_error_general_bind_port_message"))
+                return (String(localized: "error_title"),
+                        String(localized: "error_general_bind_port_message"))
             case .CreateToxProxyBadType:
-                return (String(localized: "manager_error_proxy_title"),
+                return (String(localized: "error_proxy_title"),
                         String(localized: "error_internal_message"))
             case .CreateToxProxyBadHost:
-                return (String(localized: "manager_error_proxy_title"),
-                        String(localized: "manager_error_proxy_invalid_address_message"))
+                return (String(localized: "error_proxy_title"),
+                        String(localized: "error_proxy_invalid_address_message"))
             case .CreateToxProxyBadPort:
-                return (String(localized: "manager_error_proxy_title"),
-                        String(localized: "manager_error_proxy_invalid_port_message"))
+                return (String(localized: "error_proxy_title"),
+                        String(localized: "error_proxy_invalid_port_message"))
             case .CreateToxProxyNotFound:
-                return (String(localized: "manager_error_proxy_title"),
-                        String(localized: "manager_error_proxy_host_not_resolved_message"))
+                return (String(localized: "error_proxy_title"),
+                        String(localized: "error_proxy_host_not_resolved_message"))
             case .CreateToxEncrypted:
-                return (String(localized: "manager_error_general_title"),
-                        String(localized: "manager_error_general_profile_encrypted_message"))
+                return (String(localized: "error_title"),
+                        String(localized: "error_general_profile_encrypted_message"))
             case .CreateToxBadFormat:
-                return (String(localized: "manager_error_general_title"),
-                        String(localized: "manager_error_general_bad_format_message"))
+                return (String(localized: "error_title"),
+                        String(localized: "error_general_bad_format_message"))
         }
     }
 }
@@ -152,7 +152,7 @@ extension OCTToxErrorSetInfoCode {
                         String(localized: "error_internal_message"))
             case .TooLong:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_name_too_long"))
+                        String(localized: "error_name_too_long"))
         }
     }
 
@@ -163,7 +163,7 @@ extension OCTToxErrorSetInfoCode {
                         String(localized: "error_internal_message"))
             case .TooLong:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_status_message_too_long"))
+                        String(localized: "error_status_message_too_long"))
         }
     }
 }
@@ -173,22 +173,22 @@ extension OCTToxErrorFriendAdd {
         switch self {
             case .TooLong:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_friend_request_too_long"))
+                        String(localized: "error_friend_request_too_long"))
             case .NoMessage:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_friend_request_no_message"))
+                        String(localized: "error_friend_request_no_message"))
             case .OwnKey:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_friend_request_own_key"))
+                        String(localized: "error_friend_request_own_key"))
             case .AlreadySent:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_friend_request_already_sent"))
+                        String(localized: "error_friend_request_already_sent"))
             case .BadChecksum:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_friend_request_bad_checksum"))
+                        String(localized: "error_friend_request_bad_checksum"))
             case .SetNewNospam:
                 return (String(localized: "error_title"),
-                        String(localized: "tox_error_friend_request_new_nospam"))
+                        String(localized: "error_friend_request_new_nospam"))
             case .Malloc:
                 fallthrough
             case .Unknown:

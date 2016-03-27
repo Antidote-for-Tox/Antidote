@@ -115,7 +115,7 @@ extension AddFriendController {
             $0.height.equalTo(Constants.SendAlertTextViewHeight);
         }
 
-        alert.addAction(SDCAlertAction(title: String(localized: "add_friend_cancel"), style: .Default, handler: nil))
+        alert.addAction(SDCAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
         alert.addAction(SDCAlertAction(title: String(localized: "add_friend_send"), style: .Recommended) { [unowned self] action in
             self.cachedMessage = messageView.text
 
