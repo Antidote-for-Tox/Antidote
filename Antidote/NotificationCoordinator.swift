@@ -192,7 +192,7 @@ private extension NotificationCoordinator {
             return
         }
 
-        if message.messageText != nil {
+        if message.messageText != nil || message.messageFile != nil {
             audioPlayer.playSound(.NewMessage, loop: false)
         }
     }
@@ -206,8 +206,7 @@ private extension NotificationCoordinator {
             return false
         }
 
-        // Currently support only text notifications.
-        if message.messageText != nil {
+        if message.messageText != nil || message.messageFile != nil {
             return true
         }
 
@@ -296,8 +295,25 @@ private extension NotificationCoordinator {
         var body: String = ""
         let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier)
 
-        if let text = message.messageText?.text {
-            body = userDefaults.showNotificationPreview ? text : String(localized: "notification_new_message")
+        if let messageText = message.messageText {
+            let defaultString = String(localized: "notification_new_message")
+
+            if userDefaults.showNotificationPreview {
+                body = messageText.text ?? defaultString
+            }
+            else {
+                body = defaultString
+            }
+        }
+        else if let messageFile = message.messageFile {
+            let defaultString = String(localized: "notification_incoming_file")
+
+            if userDefaults.showNotificationPreview {
+                body = messageFile.fileName ?? defaultString
+            }
+            else {
+                body = defaultString
+            }
         }
 
         return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")

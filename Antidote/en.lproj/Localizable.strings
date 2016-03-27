@@ -133,6 +133,7 @@
 "notification_new_message" = "New message";
 "notification_incoming_friend_request" = "Incoming friend request";
 "notification_is_calling" = "is calling";
+"notification_incoming_file" = "Incoming file";
 
 "settings_about" = "About";
 "settings_advanced_settings" = "Advanced Settings";
