@@ -475,7 +475,7 @@ extension ChatPrivateController: UIImagePickerControllerDelegate {
         }
 
         submanagerFiles.sendData(data, withFileName: fileName!, toChat: chat) { error in
-            print("----- error \(error)")
+            handleErrorWithType(.SendFileToFriend, error: error)
         }
     }
 
@@ -687,7 +687,7 @@ private extension ChatPrivateController {
         if !message.isOutgoing() {
             model.startLoadingHandle = { [weak self] in
                 self?.submanagerFiles.acceptFileTransfer(message) { error -> Void in
-                    print("----- error \(error)")
+                    handleErrorWithType(.AcceptIncomingFile, error: error)
                 }
             }
         }
@@ -697,7 +697,7 @@ private extension ChatPrivateController {
                 try self?.submanagerFiles.cancelFileTransfer(message)
             }
             catch let error as NSError {
-                print("----- error \(error)")
+                handleErrorWithType(.CancelFileTransfer, error: error)
             }
         }
 
@@ -708,7 +708,7 @@ private extension ChatPrivateController {
                 try self?.submanagerFiles.pauseFileTransfer(!isPaused, message: message)
             }
             catch let error as NSError {
-                print("----- error \(error)")
+                handleErrorWithType(.CancelFileTransfer, error: error)
             }
         }
 

@@ -38,6 +38,8 @@
 "error_title" = "Error";
 "error_ok_button" = "OK";
 "error_file_not_found" = "File not found";
+"error_friend_not_connected" = "Friend not online";
+"error_too_many_files" = "Too many active file transfers";
 
 "error_internal_message" = "Internal error";
 
@@ -185,6 +187,7 @@
 "chat_file_cancelled" = "Cancelled";
 "chat_waiting" = "Waiting...";
 "chat_paused" = "Paused";
+
 
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
 "delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";

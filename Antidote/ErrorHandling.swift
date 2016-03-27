@@ -27,6 +27,10 @@ enum ErrorHandlerType {
     case CallSwitchCamera
     case ConvertImageToPNG
     case ChangeAvatar
+    case SendFileToFriend
+    case AcceptIncomingFile
+    case CancelFileTransfer
+    case PauseFileTransfer
 }
 
 
@@ -75,6 +79,18 @@ func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
             UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "change_avatar_error_convert_image"))
         case .ChangeAvatar:
             let (title, message) = OCTSetUserAvatarError(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .SendFileToFriend:
+            let (title, message) = OCTSendFileError(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .AcceptIncomingFile:
+            let (title, message) = OCTAcceptFileError(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .CancelFileTransfer:
+            let (title, message) = OCTFileTransferError(rawValue: error!.code)!.strings()
+            UIAlertView.showWithTitle(title, message: message)
+        case .PauseFileTransfer:
+            let (title, message) = OCTFileTransferError(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
     }
 }
@@ -241,6 +257,59 @@ extension OCTSetUserAvatarError {
     func strings() -> (title: String, message: String) {
         switch self {
             case .TooBig:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+        }
+    }
+}
+
+extension OCTSendFileError {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .InternalError:
+                fallthrough
+            case .CannotReadFile:
+                fallthrough
+            case .CannotSaveFileToUploads:
+                fallthrough
+            case .NameTooLong:
+                fallthrough
+            case .FriendNotFound:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+            case .FriendNotConnected:
+                return (String(localized: "error_title"),
+                        String(localized: "error_friend_not_connected"))
+            case .TooMany:
+                return (String(localized: "error_title"),
+                        String(localized: "error_too_many_files"))
+        }
+    }
+}
+
+extension OCTAcceptFileError {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .InternalError:
+                fallthrough
+            case .CannotWriteToFile:
+                fallthrough
+            case .FriendNotFound:
+                fallthrough
+            case .WrongMessage:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+            case .FriendNotConnected:
+                return (String(localized: "error_title"),
+                        String(localized: "error_friend_not_connected"))
+        }
+    }
+}
+
+extension OCTFileTransferError {
+    func strings() -> (title: String, message: String) {
+        switch self {
+            case .WrongMessage:
                 return (String(localized: "error_title"),
                         String(localized: "error_internal_message"))
         }
