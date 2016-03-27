@@ -42,6 +42,32 @@ extension UIImage {
     }
 
     func cropWithRect(var rect: CGRect) -> UIImage {
+        switch imageOrientation {
+            case .Up:
+                fallthrough
+            case .UpMirrored:
+                fallthrough
+            case .Down:
+                fallthrough
+            case .DownMirrored:
+                break
+
+            case .Left:
+                fallthrough
+            case .LeftMirrored:
+                fallthrough
+            case .Right:
+                fallthrough
+            case .RightMirrored:
+                var temp = rect.origin.x
+                rect.origin.x = rect.origin.y
+                rect.origin.y = temp
+
+                temp = rect.size.width
+                rect.size.width = rect.size.height
+                rect.size.height = rect.size.width
+        }
+
         if (scale > 1.0) {
             rect.origin.x *= scale
             rect.origin.y *= scale

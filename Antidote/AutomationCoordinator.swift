@@ -10,7 +10,8 @@ import Foundation
 import MobileCoreServices
 
 private struct Constants {
-    static let MaxFileSize: OCTToxFileSize = 7 * 1024 * 1024
+    static let MaxFileSizeWiFi: OCTToxFileSize = 20 * 1024 * 1024
+    static let MaxFileSizeWWAN: OCTToxFileSize = 5 * 1024 * 1024
 }
 
 class AutomationCoordinator: NSObject {
@@ -64,11 +65,12 @@ extension AutomationCoordinator: RBQFetchedResultsControllerDelegate {
 
 private extension AutomationCoordinator {
     func proceedNewFileMessage(message: OCTMessageAbstract) {
+        let usingWiFi = self.usingWiFi()
         switch userDefaults.autodownloadImages {
             case .Never:
                 return
             case .UsingWiFi:
-                if !usingWiFi() {
+                if !usingWiFi {
                     return
                 }
             case .Always:
@@ -80,9 +82,16 @@ private extension AutomationCoordinator {
             return
         }
 
-        if message.messageFile!.fileSize > Constants.MaxFileSize {
-            // skip too large images
-            return
+        // skip too large images
+        if usingWiFi {
+            if message.messageFile!.fileSize > Constants.MaxFileSizeWiFi {
+                return
+            }
+        }
+        else {
+            if message.messageFile!.fileSize > Constants.MaxFileSizeWWAN {
+                return
+            }
         }
 
         // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51

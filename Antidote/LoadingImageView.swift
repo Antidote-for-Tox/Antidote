@@ -9,15 +9,15 @@
 import Foundation
 import MobileCoreServices
 
-private struct Constants {
-    static let ImageButtonSize = 180.0
-    static let LabelHorizontalOffset = 12.0
-    static let LabelBottomOffset = -6.0
-    static let CenterImageSize = 50.0
-    static let ProgressViewSize = 70.0
-}
-
 class LoadingImageView: UIView {
+    struct Constants {
+        static let ImageButtonSize: CGFloat = 180.0
+        static let LabelHorizontalOffset = 12.0
+        static let LabelBottomOffset = -6.0
+        static let CenterImageSize = 50.0
+        static let ProgressViewSize = 70.0
+    }
+
     var imageButton: UIButton!
     var progressView: ProgressCircleView!
     var centerImageView: UIImageView!

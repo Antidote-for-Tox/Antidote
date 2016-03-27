@@ -51,8 +51,11 @@ class ChatGenericFileCell: ChatMovableDateCell {
             square = image.cropWithRect(rect)
         }
 
-        loadingView.centerImageView.image = nil
         loadingView.imageButton.setBackgroundImage(square, forState: .Normal)
+
+        if state == .Done {
+            loadingView.centerImageView.image = nil
+        }
     }
 
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {

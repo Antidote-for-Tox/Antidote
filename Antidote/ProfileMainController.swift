@@ -181,6 +181,11 @@ private extension ProfileMainController {
                 let controller = UIImagePickerController()
                 controller.sourceType = .Camera
                 controller.delegate = self
+
+                if (UIImagePickerController.isCameraDeviceAvailable(.Front)) {
+                    controller.cameraDevice = .Front
+                }
+
                 self.presentViewController(controller, animated: true, completion: nil)
             })
         }

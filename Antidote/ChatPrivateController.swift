@@ -25,8 +25,9 @@ private struct Constants {
 
     static let ResetPanAnimationDuration = 0.3
 
-    static let MaxImageSizeToShowInline: OCTToxFileSize = 7 * 1024 * 1024
-    static let MaxImagePreviewSize = 800 * 1024
+    static let MaxImageSizeToShowInline: OCTToxFileSize = 20 * 1024 * 1024
+
+    static let MaxInlineImageSide: CGFloat = LoadingImageView.Constants.ImageButtonSize * UIScreen.mainScreen().scale
 }
 
 protocol ChatPrivateControllerDelegate: class {
@@ -324,6 +325,8 @@ extension ChatPrivateController: UITableViewDelegate {
             return
         }
 
+        cell.layer.shouldRasterize = true
+            cell.layer.rasterizationScale = UIScreen.mainScreen().scale
         if let image = imageCache.objectForKey(file) as? UIImage {
             let cell = (cell as? ChatIncomingFileCell) ?? (cell as? ChatOutgoingFileCell)
 
@@ -470,7 +473,7 @@ extension ChatPrivateController: UIImagePickerControllerDelegate {
         guard let image = info[UIImagePickerControllerOriginalImage] as? UIImage else {
             return
         }
-        guard let data = UIImagePNGRepresentation(image) else {
+        guard let data = UIImageJPEGRepresentation(image, 0.9) else {
             return
         }
 
@@ -478,7 +481,7 @@ extension ChatPrivateController: UIImagePickerControllerDelegate {
 
         if fileName == nil {
             let dateString = NSDateFormatter(type: .DateAndTime).stringFromDate(NSDate())
-            fileName = "Photo \(dateString).png"
+            fileName = "Photo \(dateString).jpg"
         }
 
         submanagerFiles.sendData(data, withFileName: fileName!, toChat: chat) { error in
@@ -739,9 +742,22 @@ private extension ChatPrivateController {
 
     func loadImageForCellAtIndexPath(indexPath: NSIndexPath, fromFile: String) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [weak self] in
-            guard let data = NSData(contentsOfFile: fromFile) else {
+            guard var image = UIImage(contentsOfFile: fromFile) else {
                 return
             }
+
+            var size = image.size
+            guard size.width > 0 || size.height > 0 else {
+                return
+            }
+
+            let delta = (size.width > size.height) ? (Constants.MaxInlineImageSide / size.width) : (Constants.MaxInlineImageSide / size.height)
+
+            size.width *= delta
+            size.height *= delta
+
+            image = image.scaleToSize(size)
+            self?.imageCache.setObject(image, forKey: fromFile)
 
             dispatch_async(dispatch_get_main_queue()) {
                 let optionalCell = self?.tableView.cellForRowAtIndexPath(indexPath)
@@ -749,16 +765,6 @@ private extension ChatPrivateController {
                     return
                 }
 
-                var scale = CGFloat(data.length) / CGFloat(Constants.MaxImagePreviewSize)
-                if scale < 1.0 {
-                    scale = 1.0
-                }
-
-                guard let image = UIImage(data: data, scale: scale) else {
-                    return
-                }
-
-                self?.imageCache.setObject(image, forKey: fromFile)
                 cell.setButtonImage(image)
             }
         }
