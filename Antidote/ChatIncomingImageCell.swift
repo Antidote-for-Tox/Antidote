@@ -34,8 +34,8 @@ class ChatIncomingImageCell: ChatGenericImageCell {
 
         loadingView.snp_makeConstraints {
             $0.left.equalTo(contentView).offset(Constants.BigOffset)
-            $0.top.equalTo(contentView).offset(Constants.BigOffset)
-            $0.bottom.equalTo(contentView).offset(-Constants.BigOffset)
+            $0.top.equalTo(contentView).offset(Constants.SmallOffset)
+            $0.bottom.equalTo(contentView).offset(-Constants.SmallOffset)
             $0.size.equalTo(Constants.ImageButtonSize)
         }
 
