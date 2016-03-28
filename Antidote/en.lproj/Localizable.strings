@@ -6,23 +6,6 @@
   Copyright © 2015 dvor. All rights reserved.
 */
 
-/* Error while parsing color theme */
-"theme_error_wrong_top_object" = "Top object should be dictionary";
-/* Error while parsing color theme */
-"theme_error_version_not_found" = "Version key not found";
-/* Error while parsing color theme */
-"theme_error_color_not_found" = "%@ color not found in colors dictionary";
-/* Error while parsing color theme */
-"theme_error_no_dictionary_for_key" = "Dictionary not found for key %@";
-/* Error while parsing color theme */
-"theme_error_wrong_object_for_key" = "Wrong object for key %@, value %@";
-/* Error while parsing color theme */
-"theme_error_no_mapping_for_type" = "Mapping for type %@ not found";
-/* Error while parsing color theme */
-"theme_error_version_too_high" = "Version of theme is too high";
-/* Error while parsing color theme */
-"theme_error_version_too_low" = "Version of theme is too low";
-
 /* Login screen text */
 "login_welcome_text" = "Welcome to Antidote!";
 /* Login screen text */
@@ -54,74 +37,6 @@
 "create_account_go_button" = "Go";
 /* Default status message */
 "default_user_status_message" = "Toxing on Antidote";
-
-/* Error while creating new profile */
-"login_enter_username_and_profile" = "Please enter both username and profile name.";
-/* Error while creating new profile */
-"login_profile_already_exists" = "Profile with given name already exists";
-
-/* General error title */
-"error_title" = "Error";
-/* General error button */
-"error_ok_button" = "OK";
-/* Error */
-"error_friend_not_connected" = "Friend not online";
-/* Error */
-"error_too_many_files" = "Too many active file transfers";
-/* Error */
-"error_internal_message" = "Internal error";
-/* Error */
-"error_wrong_password_title" = "Wrong password";
-/* Error */
-"error_wrong_password_message" = "Password contains wrong symbols.";
-/* Error */
-"error_import_not_exist_title" = "Cannot import tox save file";
-/* Error */
-"error_import_not_exist_message" = "File does not exist.";
-/* Error */
-"error_decrypt_title" = "Cannot decrypt tox save file";
-/* Error */
-"error_decrypt_empty_data_message" = "Some input data was empty.";
-/* Error */
-"error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
-/* Error */
-"error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
-/* Error */
-"error_general_unknown_message" = "Unknown error occured.";
-/* Error */
-"error_general_no_memory_message" = "Not enought memory.";
-/* Error */
-"error_general_bind_port_message" = "Was unable to bind to a port.";
-/* Error */
-"error_general_profile_encrypted_message" = "Profile is encrypted.";
-/* Error */
-"error_general_bad_format_message" = "File has bad format or is corrupted.";
-/* Error */
-"error_proxy_title" = "Proxy error";
-/* Error */
-"error_proxy_invalid_address_message" = "Proxy address has invalid format.";
-/* Error */
-"error_proxy_invalid_port_message" = "Proxy port is invalid.";
-/* Error */
-"error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
-
-/* Error */
-"error_name_too_long" = "Name is too long.";
-/* Error */
-"error_status_message_too_long" = "Status message is too long";
-
-/* Error */
-"error_friend_request_too_long" = "Message is too long";
-/* Error */
-"error_friend_request_no_message" = "No message specified";
-/* Error */
-"error_friend_request_own_key" = "Cannot add myself to friend list";
-/* Error */
-"error_friend_request_already_sent" = "Friend request was already sent";
-/* Error */
-"error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
-/* Error */
-"error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
 
 /* Label shown when connecting to Tox network */
 "connecting_label" = "Connecting...";
@@ -195,13 +110,6 @@
 
 /* QR code screen button */
 "qr_close_button" = "Close";
-
-/* Call error */
-"call_error_already_in_call" = "Already in a call";
-/* Call error */
-"call_error_friend_is_offline" = "Friend is offline";
-/* Call error */
-"call_error_no_active_call" = "There is no active call";
 
 /* Chat screen placeholder */
 "chat_no_chats" = "No chats";
@@ -340,3 +248,95 @@
 "alert_delete" = "Delete";
 /* Delete button */
 "alert_cancel" = "Cancel";
+
+/* Error while creating new profile */
+"login_enter_username_and_profile" = "Please enter both username and profile name.";
+/* Error while creating new profile */
+"login_profile_already_exists" = "Profile with given name already exists";
+
+/* General error title */
+"error_title" = "Error";
+/* General error button */
+"error_ok_button" = "OK";
+/* Error */
+"error_friend_not_connected" = "Friend not online";
+/* Error */
+"error_too_many_files" = "Too many active file transfers";
+/* Error */
+"error_internal_message" = "Internal error";
+/* Error */
+"error_wrong_password_title" = "Wrong password";
+/* Error */
+"error_wrong_password_message" = "Password contains wrong symbols.";
+/* Error */
+"error_import_not_exist_title" = "Cannot import tox save file";
+/* Error */
+"error_import_not_exist_message" = "File does not exist.";
+/* Error */
+"error_decrypt_title" = "Cannot decrypt tox save file";
+/* Error */
+"error_decrypt_empty_data_message" = "Some input data was empty.";
+/* Error */
+"error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
+/* Error */
+"error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
+/* Error */
+"error_general_unknown_message" = "Unknown error occured.";
+/* Error */
+"error_general_no_memory_message" = "Not enought memory.";
+/* Error */
+"error_general_bind_port_message" = "Was unable to bind to a port.";
+/* Error */
+"error_general_profile_encrypted_message" = "Profile is encrypted.";
+/* Error */
+"error_general_bad_format_message" = "File has bad format or is corrupted.";
+/* Error */
+"error_proxy_title" = "Proxy error";
+/* Error */
+"error_proxy_invalid_address_message" = "Proxy address has invalid format.";
+/* Error */
+"error_proxy_invalid_port_message" = "Proxy port is invalid.";
+/* Error */
+"error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
+
+/* Error */
+"error_name_too_long" = "Name is too long.";
+/* Error */
+"error_status_message_too_long" = "Status message is too long";
+
+/* Error */
+"error_friend_request_too_long" = "Message is too long";
+/* Error */
+"error_friend_request_no_message" = "No message specified";
+/* Error */
+"error_friend_request_own_key" = "Cannot add myself to friend list";
+/* Error */
+"error_friend_request_already_sent" = "Friend request was already sent";
+/* Error */
+"error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
+/* Error */
+"error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
+
+/* Call error */
+"call_error_already_in_call" = "Already in a call";
+/* Call error */
+"call_error_friend_is_offline" = "Friend is offline";
+/* Call error */
+"call_error_no_active_call" = "There is no active call";
+
+/* Error while parsing color theme */
+"theme_error_wrong_top_object" = "Top object should be dictionary";
+/* Error while parsing color theme */
+"theme_error_version_not_found" = "Version key not found";
+/* Error while parsing color theme */
+"theme_error_color_not_found" = "%@ color not found in colors dictionary";
+/* Error while parsing color theme */
+"theme_error_no_dictionary_for_key" = "Dictionary not found for key %@";
+/* Error while parsing color theme */
+"theme_error_wrong_object_for_key" = "Wrong object for key %@, value %@";
+/* Error while parsing color theme */
+"theme_error_no_mapping_for_type" = "Mapping for type %@ not found";
+/* Error while parsing color theme */
+"theme_error_version_too_high" = "Version of theme is too high";
+/* Error while parsing color theme */
+"theme_error_version_too_low" = "Version of theme is too low";
