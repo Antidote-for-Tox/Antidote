@@ -10,8 +10,6 @@ import UIKit
 import SnapKit
 
 private struct Constants {
-    static let ImageViewSize = 15.0
-
     static let RightOffset = -20.0
     static let ImageViewToLabelOffset = -5.0
     static let ImageViewYOffset = -1.0
@@ -43,9 +41,7 @@ class ChatOutgoingCallCell: ChatMovableDateCell {
     override func createViews() {
         super.createViews()
 
-        var image = UIImage(named: "start-call")!
-        image = image.scaleToSize(CGSize(width: Constants.ImageViewSize, height: Constants.ImageViewSize))
-        image = image.imageWithRenderingMode(.AlwaysTemplate)
+        var image = UIImage.templateNamed("start-call-small")
 
         callImageView = UIImageView(image: image)
         movableContentView.addSubview(callImageView)

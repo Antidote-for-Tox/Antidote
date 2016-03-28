@@ -77,10 +77,10 @@ class CallButton: UIButton {
                 imageName = "end-call"
                 backgroundColor = theme.colorForType(.CallDeclineButtonBackground)
             case .AnswerAudio:
-                imageName = "start-call"
+                imageName = "start-call-30"
                 backgroundColor = theme.colorForType(.CallAnswerButtonBackground)
             case .AnswerVideo:
-                imageName = "video-call"
+                imageName = "video-call-30"
                 backgroundColor = theme.colorForType(.CallAnswerButtonBackground)
             case .Mute:
                 imageName = "mute"
@@ -93,7 +93,7 @@ class CallButton: UIButton {
                 selectedTintColor = theme.colorForType(.CallButtonSelectedIconColor)
                 selectedBackgroundColor = theme.colorForType(.CallControlSelectedBackground)
             case .Video:
-                imageName = "video-call"
+                imageName = "video-call-30"
                 backgroundColor = theme.colorForType(.CallControlBackground)
                 selectedTintColor = theme.colorForType(.CallButtonSelectedIconColor)
                 selectedBackgroundColor = theme.colorForType(.CallControlSelectedBackground)
@@ -101,8 +101,7 @@ class CallButton: UIButton {
 
         tintColor = normalTintColor
 
-        let imageSize = CGSize(width: Constants.ImageSize, height: Constants.ImageSize)
-        let image = UIImage(named: imageName)!.scaleToSize(imageSize).imageWithRenderingMode(.AlwaysTemplate)
+        let image = UIImage.templateNamed(imageName)
         setImage(image, forState: .Normal)
 
         let backgroundImage = UIImage.imageWithColor(backgroundColor, size: CGSize(width: 1.0, height: 1.0))
