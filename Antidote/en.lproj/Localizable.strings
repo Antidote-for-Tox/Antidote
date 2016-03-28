@@ -324,19 +324,5 @@
 /* Call error */
 "call_error_no_active_call" = "There is no active call";
 
-/* Error while parsing color theme */
-"theme_error_wrong_top_object" = "Top object should be dictionary";
-/* Error while parsing color theme */
-"theme_error_version_not_found" = "Version key not found";
-/* Error while parsing color theme */
-"theme_error_color_not_found" = "%@ color not found in colors dictionary";
-/* Error while parsing color theme */
-"theme_error_no_dictionary_for_key" = "Dictionary not found for key %@";
-/* Error while parsing color theme */
-"theme_error_wrong_object_for_key" = "Wrong object for key %@, value %@";
-/* Error while parsing color theme */
-"theme_error_no_mapping_for_type" = "Mapping for type %@ not found";
-/* Error while parsing color theme */
-"theme_error_version_too_high" = "Version of theme is too high";
-/* Error while parsing color theme */
-"theme_error_version_too_low" = "Version of theme is too low";
+/* Error while using color theme */
+"theme_error_cannot_open" = "Cannot open theme, wrong format";

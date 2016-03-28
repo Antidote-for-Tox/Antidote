@@ -159,7 +159,7 @@ class ThemeTest: XCTestCase {
             let _ = try Theme(yamlString: string)
         }
         catch ErrorTheme.WrongVersion(let description) {
-            didThrow = description == String(localized: "theme_error_version_too_high")
+            didThrow = description == String(localized: "theme_error_cannot_open")
         }
         catch {
             didThrow = false
@@ -182,7 +182,7 @@ class ThemeTest: XCTestCase {
             let _ = try Theme(yamlString: string)
         }
         catch ErrorTheme.WrongVersion(let description) {
-            didThrow = description == String(localized: "theme_error_version_too_low")
+            didThrow = description == String(localized: "theme_error_cannot_open")
         }
         catch {
             didThrow = false
