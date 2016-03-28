@@ -24,7 +24,7 @@
 /* Login screen text */
 "import_to_antidote" = "Import to Antidote";
 /* Login screen text */
-"create_account_username_title" = "How friends will see you?";
+"create_account_username_title" = "How contacts will see you?";
 /* Login screen text */
 "create_account_username_placeholder" = "Username";
 /* Login screen text */
@@ -42,7 +42,7 @@
 "connecting_label" = "Connecting...";
 
 /* Tab name and screen name */
-"friends_title" = "Friends";
+"contacts_title" = "Contacts";
 /* Tab name and screen name */
 "chats_title" = "Chats";
 /* Tab name and screen name */
@@ -50,44 +50,44 @@
 /* Tab name and screen name */
 "profile_title" = "Profile";
 
-/* No friends placeholder text */
-"friend_no_friends_add_friend" = "Add a friend\nor\n";
-/* No friends placeholder text */
-"friend_no_friends_share_tox_id" = "share your Tox ID";
-/* Friend request section title */
-"friend_requests_section" = "Friend Requests";
-/* Friend last seen status */
-"friend_last_seen" = "Last seen: %@";
+/* No contacts placeholder text */
+"contact_no_contacts_add_contact" = "Add a contact\nor\n";
+/* No contacts placeholder text */
+"contact_no_contacts_share_tox_id" = "share your Tox ID";
+/* Contact request section title */
+"contact_requests_section" = "Contact Requests";
+/* Contact last seen status */
+"contact_last_seen" = "Last seen: %@";
 /* Screen name */
-"friend_request" = "Friend Request";
-/* Friend request button */
-"friend_request_decline" = "Decline";
-/* Friend request button */
-"friend_request_accept" = "Accept";
-/* Friend request confirmation */
-"friend_request_delete_title" = "Delete friend request?";
+"contact_request" = "Contact Request";
+/* Contact request button */
+"contact_request_decline" = "Decline";
+/* Contact request button */
+"contact_request_accept" = "Accept";
+/* Contact request confirmation */
+"contact_request_delete_title" = "Delete contact request?";
 
 /* Share Tox ID text */
 "show_qr_code" = "Show QR Code";
 /* Share Tox ID text */
 "copy" = "Copy";
 
-/* Add friend screen name */
-"add_friend_title" = "Add Friend";
-/* Add friend button */
-"add_friend_send" = "Send";
-/* Add friend placeholder text */
-"add_friend_tox_id_placeholder" = "Enter Tox ID";
-/* Add friend placeholder text */
-"add_friend_or_label" = "or";
-/* Add friend button */
-"add_friend_use_qr" = "Use QR code";
-/* Add friend placeholder text */
-"add_friend_default_message_title" = "Message";
-/* Add friend default text sended to friend */
-"add_friend_default_message_text" = "Hello! Could you please add me to your friendlist?";
-/* Add friend error */
-"add_friend_wrong_qr" = "Wrong QR code. It should contain Tox ID";
+/* Add contat screen name */
+"add_contact_title" = "Add Contact";
+/* Add contat button */
+"add_contact_send" = "Send";
+/* Add contat placeholder text */
+"add_contact_tox_id_placeholder" = "Enter Tox ID";
+/* Add contat placeholder text */
+"add_contact_or_label" = "or";
+/* Add contat button */
+"add_contact_use_qr" = "Use QR code";
+/* Add contat placeholder text */
+"add_contact_default_message_title" = "Message";
+/* Add contat default text sended to contact */
+"add_contact_default_message_text" = "Hello! Could you please add me to your contact list?";
+/* Add contat error */
+"add_contact_wrong_qr" = "Wrong QR code. It should contain Tox ID";
 
 /* User name text */
 "name" = "Name";
@@ -142,7 +142,7 @@
 /* Notification text */
 "notification_new_message" = "New message";
 /* Notification text */
-"notification_incoming_friend_request" = "Incoming friend request";
+"notification_incoming_contact_request" = "Incoming contact request";
 /* Notification text */
 "notification_is_calling" = "is calling";
 /* Notification text */
@@ -240,10 +240,10 @@
 
 /* Deleting chat confirmation */
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
-/* Deleting friend confirmation */
-"delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";
-/* Deleting friend request confirmation */
-"delete_friend_request_title" = "Are you sure you want to delete a friend request?";
+/* Deleting contat confirmation */
+"delete_contact_title" = "Are you sure you want to delete a contact?\nThis will remove all chat history as well.";
+/* Deleting contat request confirmation */
+"delete_contact_request_title" = "Are you sure you want to delete a contact request?";
 /* Delete button */
 "alert_delete" = "Delete";
 /* Delete button */
@@ -259,7 +259,7 @@
 /* General error button */
 "error_ok_button" = "OK";
 /* Error */
-"error_friend_not_connected" = "Friend not online";
+"error_contact_not_connected" = "Contact isn't online";
 /* Error */
 "error_too_many_files" = "Too many active file transfers";
 /* Error */
@@ -305,22 +305,22 @@
 "error_status_message_too_long" = "Status message is too long";
 
 /* Error */
-"error_friend_request_too_long" = "Message is too long";
+"error_contact_request_too_long" = "Message is too long";
 /* Error */
-"error_friend_request_no_message" = "No message specified";
+"error_contact_request_no_message" = "No message specified";
 /* Error */
-"error_friend_request_own_key" = "Cannot add myself to friend list";
+"error_contact_request_own_key" = "Cannot add myself to contact list";
 /* Error */
-"error_friend_request_already_sent" = "Friend request was already sent";
+"error_contact_request_already_sent" = "Contact request was already sent";
 /* Error */
-"error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
+"error_contact_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
 /* Error */
-"error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
+"error_contact_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
 
 /* Call error */
 "call_error_already_in_call" = "Already in a call";
 /* Call error */
-"call_error_friend_is_offline" = "Friend is offline";
+"call_error_contact_is_offline" = "Contact is offline";
 /* Call error */
 "call_error_no_active_call" = "There is no active call";
 

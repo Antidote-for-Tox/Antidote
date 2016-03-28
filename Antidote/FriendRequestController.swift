@@ -52,7 +52,7 @@ class FriendRequestController: StaticTableController {
 
 private extension FriendRequestController {
     func updateModels() {
-        title = String(localized: "friend_request")
+        title = String(localized: "contact_request")
 
         publicKeyModel.title = String(localized: "public_key")
         publicKeyModel.value = request.publicKey
@@ -63,15 +63,15 @@ private extension FriendRequestController {
         messageModel.userInteractionEnabled = false
 
         buttonsModel.buttons = [
-            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "friend_request_decline"), style: .Negative, target: self, action: "declineButtonPressed"),
-            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "friend_request_accept"), style: .Positive, target: self, action: "acceptButtonPressed"),
+            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_decline"), style: .Negative, target: self, action: "declineButtonPressed"),
+            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_accept"), style: .Positive, target: self, action: "acceptButtonPressed"),
         ]
     }
 }
 
 extension FriendRequestController {
     func declineButtonPressed() {
-        let alert = UIAlertController(title: String(localized: "friend_request_delete_title"), message: nil, preferredStyle: .Alert)
+        let alert = UIAlertController(title: String(localized: "contact_request_delete_title"), message: nil, preferredStyle: .Alert)
 
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
         alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in

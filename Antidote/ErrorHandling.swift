@@ -173,22 +173,22 @@ extension OCTToxErrorFriendAdd {
         switch self {
             case .TooLong:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_request_too_long"))
+                        String(localized: "error_contact_request_too_long"))
             case .NoMessage:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_request_no_message"))
+                        String(localized: "error_contact_request_no_message"))
             case .OwnKey:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_request_own_key"))
+                        String(localized: "error_contact_request_own_key"))
             case .AlreadySent:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_request_already_sent"))
+                        String(localized: "error_contact_request_already_sent"))
             case .BadChecksum:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_request_bad_checksum"))
+                        String(localized: "error_contact_request_bad_checksum"))
             case .SetNewNospam:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_request_new_nospam"))
+                        String(localized: "error_contact_request_new_nospam"))
             case .Malloc:
                 fallthrough
             case .Unknown:
@@ -216,7 +216,7 @@ extension OCTToxAVErrorCall {
                         String(localized: "call_error_already_in_call"))
             case .FriendNotConnected:
                 return (String(localized: "error_title"),
-                        String(localized: "call_error_friend_is_offline"))
+                        String(localized: "call_error_contact_is_offline"))
             case .FriendNotFound:
                 fallthrough
             case .InvalidBitRate:
@@ -279,7 +279,7 @@ extension OCTSendFileError {
                         String(localized: "error_internal_message"))
             case .FriendNotConnected:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_not_connected"))
+                        String(localized: "error_contact_not_connected"))
             case .TooMany:
                 return (String(localized: "error_title"),
                         String(localized: "error_too_many_files"))
@@ -301,7 +301,7 @@ extension OCTAcceptFileError {
                         String(localized: "error_internal_message"))
             case .FriendNotConnected:
                 return (String(localized: "error_title"),
-                        String(localized: "error_friend_not_connected"))
+                        String(localized: "error_contact_not_connected"))
         }
     }
 }

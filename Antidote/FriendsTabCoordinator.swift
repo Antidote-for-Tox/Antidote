@@ -131,7 +131,7 @@ extension FriendsTabCoordinator: AddFriendControllerDelegate {
                 scanner.pauseScanning = true
 
                 let title = String(localized:"error_title")
-                let message = String(localized:"add_friend_wrong_qr")
+                let message = String(localized:"add_contact_wrong_qr")
                 let button = String(localized:"error_ok_button")
 
                 let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
