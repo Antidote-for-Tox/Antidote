@@ -13,6 +13,7 @@ protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator)
     func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator)
     func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator)
+    func profileTabCoordinatorDelegateDidChangeUserName(coordinator: ProfileTabCoordinator)
 }
 
 class ProfileTabCoordinator: RunningNavigationCoordinator {
@@ -44,10 +45,11 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
 
     func profileMainControllerChangeUserName(controller: ProfileMainController) {
         showTextEditController(title: String(localized: "name"), defaultValue: toxManager.user.userName()) {
-            newName -> Void in
+            [unowned self] newName -> Void in
 
             do {
                 try self.toxManager.user.setUserName(newName)
+                self.delegate?.profileTabCoordinatorDelegateDidChangeUserName(self)
             }
             catch let error as NSError {
                 handleErrorWithType(.ToxSetInfoCodeName, error: error)

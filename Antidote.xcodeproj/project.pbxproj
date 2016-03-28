@@ -16,6 +16,8 @@
 		112E4EE01C675C58004312CF /* CallActiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EDE1C675C58004312CF /* CallActiveController.swift */; };
 		112E4EE51C676553004312CF /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EE41C676553004312CF /* CallButton.swift */; };
 		112E4EE61C676553004312CF /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EE41C676553004312CF /* CallButton.swift */; };
+		113AD84A1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */; };
+		113AD84B1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
@@ -403,6 +405,7 @@
 		112E4ED51C668C02004312CF /* CallIncomingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallIncomingController.swift; sourceTree = "<group>"; };
 		112E4EDE1C675C58004312CF /* CallActiveController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallActiveController.swift; sourceTree = "<group>"; };
 		112E4EE41C676553004312CF /* CallButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
+		113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadNavigationView.swift; sourceTree = "<group>"; };
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
@@ -666,6 +669,7 @@
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
 				11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */,
 				11B253AD1C4EC47D0068F47C /* IncompressibleView.swift */,
+				113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */,
 				11628E771CA5819B008C097E /* LoadingImageView.swift */,
 				11B253B31C5027930068F47C /* NotificationView.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
@@ -1338,6 +1342,7 @@
 				116634D91C70F1260072C980 /* CopyLabel.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
+				113AD84A1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */,
 				116634F21C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
@@ -1458,6 +1463,7 @@
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
 				114962961C64051A001E5435 /* CallBaseController.swift in Sources */,
 				9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */,
+				113AD84B1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */,
 				9CEE6AEE1C4E8FDC00A1ECB5 /* QRScannerController.swift in Sources */,
 				1183BCD81CA1FC5B000CD310 /* ChatProgressProtocol.swift in Sources */,
 				9CEE6ADD1C4E8FDC00A1ECB5 /* PortraitNavigationController.swift in Sources */,

@@ -21,13 +21,35 @@ protocol PrimaryIpadControllerDelegate: class {
 class PrimaryIpadController: UIViewController {
     weak var delegate: PrimaryIpadControllerDelegate?
 
+    var userStatus: UserStatus = .Offline {
+        didSet {
+            navigationView.avatarView.userStatusView.userStatus = userStatus
+        }
+    }
+
+    var userAvatar: UIImage? {
+        didSet {
+            if let image = userAvatar {
+                navigationView.avatarView.imageView.image = image
+            }
+            else {
+                navigationView.avatarView.imageView.image = UIImage.templateNamed("tab-bar-profile")
+            }
+        }
+    }
+
+    var userName: String? {
+        didSet {
+            navigationView.label.text = userName
+        }
+    }
+
     private let theme: Theme
     private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
+    private var navigationView: iPadNavigationView!
     private var friendsButton: UIButton!
-    private var settingsButton: UIButton!
-    private var profileButton: UIButton!
 
     private var tableManager: ChatListTableManager!
 
@@ -41,7 +63,6 @@ class PrimaryIpadController: UIViewController {
         addNavigationButtons()
 
         edgesForExtendedLayout = .None
-        title = String(localized: "chats_title")
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -89,6 +110,15 @@ extension PrimaryIpadController: ChatListTableManagerDelegate {
 private extension PrimaryIpadController {
     func addNavigationButtons() {
         // none for now
+        navigationView = iPadNavigationView(theme: theme)
+        navigationView.didTapHandler = profileButtonPressed
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: navigationView)
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+                image: UIImage(named: "tab-bar-settings"),
+                style: .Plain,
+                target: self,
+                action: "settingsButtonPressed")
     }
 
     func createButtons() {
@@ -96,16 +126,6 @@ private extension PrimaryIpadController {
         friendsButton.setTitle(String(localized: "contacts_title"), forState: .Normal)
         friendsButton.addTarget(self, action: "friendsButtonPressed", forControlEvents: .TouchUpInside)
         view.addSubview(friendsButton)
-
-        settingsButton = UIButton(type: .System)
-        settingsButton.setTitle(String(localized: "settings_title"), forState: .Normal)
-        settingsButton.addTarget(self, action: "settingsButtonPressed", forControlEvents: .TouchUpInside)
-        view.addSubview(settingsButton)
-
-        profileButton = UIButton(type: .System)
-        profileButton.setTitle(String(localized: "profile_title"), forState: .Normal)
-        profileButton.addTarget(self, action: "profileButtonPressed", forControlEvents: .TouchUpInside)
-        view.addSubview(profileButton)
     }
 
     func createTableView() {
@@ -131,20 +151,8 @@ private extension PrimaryIpadController {
             $0.height.equalTo(60.0)
         }
 
-        settingsButton.snp_makeConstraints {
-            $0.top.equalTo(friendsButton.snp_bottom)
-            $0.left.right.equalTo(view)
-            $0.height.equalTo(60.0)
-        }
-
-        profileButton.snp_makeConstraints {
-            $0.top.equalTo(settingsButton.snp_bottom)
-            $0.left.right.equalTo(view)
-            $0.height.equalTo(60.0)
-        }
-
         tableManager.tableView.snp_makeConstraints {
-            $0.top.equalTo(profileButton.snp_bottom)
+            $0.top.equalTo(friendsButton.snp_bottom)
             $0.left.right.bottom.equalTo(view)
         }
     }

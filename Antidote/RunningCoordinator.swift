@@ -139,6 +139,7 @@ extension RunningCoordinator: CoordinatorProtocol {
         toxManager.bootstrap.bootstrap()
 
         updateUserAvatar()
+        updateUserName()
 
         switch toShow {
             case .None:
@@ -186,7 +187,7 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
             case .iPhone:
                 iPhone.chatsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
             case .iPad:
-                // TODO
+                // none
                 break
         }
     }
@@ -260,6 +261,10 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
 
     func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator) {
         updateUserAvatar()
+    }
+
+    func profileTabCoordinatorDelegateDidChangeUserName(coordinator: ProfileTabCoordinator) {
+        updateUserName()
     }
 }
 
@@ -450,23 +455,32 @@ private extension RunningCoordinator {
             case .iPhone:
                 iPhone.profileTabBarItem.userStatus = status
             case .iPad:
-                // TODO
-                break
+                iPad.primaryController.userStatus = status
         }
     }
 
     func updateUserAvatar() {
+        var avatar: UIImage?
+
+        if let avatarData = toxManager.user.userAvatar() {
+            avatar = UIImage(data: avatarData)
+        }
+
         switch InterfaceIdiom.current() {
             case .iPhone:
-                if let avatarData = toxManager.user.userAvatar() {
-                    iPhone.profileTabBarItem.userImage = UIImage(data: avatarData)
-                }
-                else {
-                    iPhone.profileTabBarItem.userImage = nil
-                }
+                iPhone.profileTabBarItem.userImage = avatar
             case .iPad:
-                // TODO
+                iPad.primaryController.userAvatar = avatar
+        }
+    }
+
+    func updateUserName() {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                // nop
                 break
+            case .iPad:
+                iPad.primaryController.userName = toxManager.user.userName()
         }
     }
 
