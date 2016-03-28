@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - objcTox updated to version 0.6.0.
 - Dropped 7.0 support.
 - Antidote fully rewritten in Swift.
+- Friends replaced with Contacts.
 
 ## [0.6.1] - 2015-09-26
 ### Fixed
