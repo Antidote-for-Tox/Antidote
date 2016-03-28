@@ -93,7 +93,7 @@ private extension PrimaryIpadController {
 
     func createButtons() {
         friendsButton = UIButton(type: .System)
-        friendsButton.setTitle(String(localized: "friends_title"), forState: .Normal)
+        friendsButton.setTitle(String(localized: "contacts_title"), forState: .Normal)
         friendsButton.addTarget(self, action: "friendsButtonPressed", forControlEvents: .TouchUpInside)
         view.addSubview(friendsButton)
 

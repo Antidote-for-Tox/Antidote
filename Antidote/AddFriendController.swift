@@ -53,7 +53,7 @@ class AddFriendController: UIViewController {
         addNavigationButtons()
 
         edgesForExtendedLayout = .None
-        title = String(localized: "add_friend_title")
+        title = String(localized: "add_contact_title")
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -96,13 +96,13 @@ extension AddFriendController {
 
         let messageView = UITextView()
         messageView.text = cachedMessage
-        messageView.placeholder = String(localized: "add_friend_default_message_text")
+        messageView.placeholder = String(localized: "add_contact_default_message_text")
         messageView.font = UIFont.systemFontOfSize(17.0)
         messageView.layer.cornerRadius = 5.0
         messageView.layer.masksToBounds = true
 
         let alert = SDCAlertController(
-                title: String(localized: "add_friend_default_message_title"),
+                title: String(localized: "add_contact_default_message_title"),
                 message: nil,
                 preferredStyle: .Alert)
 
@@ -116,7 +116,7 @@ extension AddFriendController {
         }
 
         alert.addAction(SDCAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
-        alert.addAction(SDCAlertAction(title: String(localized: "add_friend_send"), style: .Recommended) { [unowned self] action in
+        alert.addAction(SDCAlertAction(title: String(localized: "add_contact_send"), style: .Recommended) { [unowned self] action in
             self.cachedMessage = messageView.text
 
             let message = messageView.text.isEmpty ? messageView.placeholder : messageView.text
@@ -162,7 +162,7 @@ extension AddFriendController: UITextViewDelegate {
 private extension AddFriendController {
     func addNavigationButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: String(localized: "add_friend_send"),
+                title: String(localized: "add_contact_send"),
                 style: .Done,
                 target: self,
                 action: "sendButtonPressed")
@@ -170,7 +170,7 @@ private extension AddFriendController {
 
     func createViews() {
         textView = UITextView()
-        textView.placeholder = String(localized: "add_friend_tox_id_placeholder")
+        textView.placeholder = String(localized: "add_contact_tox_id_placeholder")
         textView.delegate = self
         textView.scrollEnabled = false
         textView.font = UIFont.systemFontOfSize(17)
@@ -187,13 +187,13 @@ private extension AddFriendController {
         qrCodeBottomSpacer = createSpacer()
 
         orLabel = UILabel()
-        orLabel.text = String(localized: "add_friend_or_label")
+        orLabel.text = String(localized: "add_contact_or_label")
         orLabel.textColor = theme.colorForType(.NormalText)
         orLabel.backgroundColor = .clearColor()
         view.addSubview(orLabel)
 
         qrCodeButton = UIButton(type: .System)
-        qrCodeButton.setTitle(String(localized: "add_friend_use_qr"), forState: .Normal)
+        qrCodeButton.setTitle(String(localized: "add_contact_use_qr"), forState: .Normal)
         qrCodeButton.titleLabel!.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
         qrCodeButton.addTarget(self, action: "qrCodeButtonPressed", forControlEvents: .TouchUpInside)
         view.addSubview(qrCodeButton)

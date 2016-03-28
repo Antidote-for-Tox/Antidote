@@ -99,7 +99,7 @@ class FriendListDataSource: NSObject {
                     model.bottomText = friend.statusMessage ?? ""
                 }
                 else if let date = friend.lastSeenOnline() {
-                    model.bottomText = String(localized: "friend_last_seen", dateFormatter.stringFromDate(date))
+                    model.bottomText = String(localized: "contact_last_seen", dateFormatter.stringFromDate(date))
                 }
 
                 model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
@@ -136,7 +136,7 @@ class FriendListDataSource: NSObject {
 
     func titleForHeaderInSection(section: Int) -> String? {
         if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return String(localized: "friend_requests_section")
+            return String(localized: "contact_requests_section")
         }
         else {
             let normalized = friendsNormalizedSectionFromSection(section)

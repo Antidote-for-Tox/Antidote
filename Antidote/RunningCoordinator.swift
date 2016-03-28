@@ -378,7 +378,7 @@ private extension RunningCoordinator {
                 case .Friends:
                     let item = TabBarBadgeItem(theme: theme)
                     item.image = UIImage(named: "tab-bar-friends")
-                    item.text = String(localized: "friends_title")
+                    item.text = String(localized: "contacts_title")
                     return item
                 case .Chats:
                     let item = TabBarBadgeItem(theme: theme)

@@ -282,7 +282,7 @@ private extension NotificationCoordinator {
 
     func notificationObjectFromRequest(request: OCTFriendRequest) -> NotificationObject {
         let image = avatarManager.avatarFromString("", diameter: NotificationView.Constants.ImageSize)
-        let title = String(localized: "notification_incoming_friend_request")
+        let title = String(localized: "notification_incoming_contact_request")
         let body = request.message ?? ""
         let action = NotificationAction.OpenRequest(requestUniqueIdentifier: request.uniqueIdentifier)
 

@@ -52,7 +52,7 @@ class FriendListController: UIViewController {
         addNavigationButtons()
 
         edgesForExtendedLayout = .None
-        title = String(localized: "friends_title")
+        title = String(localized: "contacts_title")
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -155,9 +155,9 @@ extension FriendListController: UITableViewDataSource {
 
             switch dataSource.objectAtIndexPath(indexPath) {
                 case .Request:
-                    title = String(localized:"delete_friend_request_title")
+                    title = String(localized:"delete_contact_request_title")
                 case .Friend:
-                    title = String(localized:"delete_friend_title")
+                    title = String(localized:"delete_contact_title")
             }
 
             let alert = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
@@ -260,8 +260,8 @@ private extension FriendListController {
     }
 
     func createPlaceholderView() {
-        let top = String(localized: "friend_no_friends_add_friend")
-        let bottom = String(localized: "friend_no_friends_share_tox_id")
+        let top = String(localized: "contact_no_contacts_add_contact")
+        let bottom = String(localized: "contact_no_contacts_share_tox_id")
 
         let text = NSMutableAttributedString(string: "\(top)\(bottom)")
         let linkRange = NSRange(location: top.characters.count, length: bottom.characters.count)
