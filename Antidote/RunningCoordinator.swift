@@ -113,6 +113,7 @@ extension RunningCoordinator: CoordinatorProtocol {
 
                 window.rootViewController = iPhone.tabBarController
             case .iPad:
+                primaryIpadControllerShowFriends(iPad.primaryController)
 
                 window.rootViewController = iPad.splitController
         }
@@ -138,6 +139,7 @@ extension RunningCoordinator: CoordinatorProtocol {
         toxManager.bootstrap.bootstrap()
 
         updateUserAvatar()
+        updateUserName()
 
         switch toShow {
             case .None:
@@ -171,11 +173,13 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
     }
 
     func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int) {
+        let text: String? = (badge > 0) ? "\(badge)" : nil
+
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.friendsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
+                iPhone.friendsTabBarItem.badgeText = text
             case .iPad:
-                // TODO
+                iPad.primaryController.friendsBadgeText = text
                 break
         }
     }
@@ -185,7 +189,7 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
             case .iPhone:
                 iPhone.chatsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
             case .iPad:
-                // TODO
+                // none
                 break
         }
     }
@@ -259,6 +263,10 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
 
     func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator) {
         updateUserAvatar()
+    }
+
+    func profileTabCoordinatorDelegateDidChangeUserName(coordinator: ProfileTabCoordinator) {
+        updateUserName()
     }
 }
 
@@ -413,6 +421,13 @@ private extension RunningCoordinator {
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
                 iPhone.chatsCoordinator.showChat(chat, animated: false)
             case .iPad:
+                if let chatVC = iPadDetailController() as? ChatPrivateController {
+                    if chatVC.chat == chat {
+                        // controller is already visible
+                        return
+                    }
+                }
+
                 let controller = ChatPrivateController(
                         theme: theme,
                         chat: chat,
@@ -442,23 +457,46 @@ private extension RunningCoordinator {
             case .iPhone:
                 iPhone.profileTabBarItem.userStatus = status
             case .iPad:
-                // TODO
-                break
+                iPad.primaryController.userStatus = status
         }
     }
 
     func updateUserAvatar() {
+        var avatar: UIImage?
+
+        if let avatarData = toxManager.user.userAvatar() {
+            avatar = UIImage(data: avatarData)
+        }
+
         switch InterfaceIdiom.current() {
             case .iPhone:
-                if let avatarData = toxManager.user.userAvatar() {
-                    iPhone.profileTabBarItem.userImage = UIImage(data: avatarData)
-                }
-                else {
-                    iPhone.profileTabBarItem.userImage = nil
-                }
+                iPhone.profileTabBarItem.userImage = avatar
             case .iPad:
-                // TODO
-                break
+                iPad.primaryController.userAvatar = avatar
         }
+    }
+
+    func updateUserName() {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                // nop
+                break
+            case .iPad:
+                iPad.primaryController.userName = toxManager.user.userName()
+        }
+    }
+
+    func iPadDetailController() -> UIViewController? {
+        guard iPad.splitController.viewControllers.count == 2 else {
+            return nil
+        }
+
+        let controller = iPad.splitController.viewControllers[1]
+
+        if let navigation = controller as? UINavigationController {
+            return navigation.topViewController
+        }
+
+        return controller
     }
 }
