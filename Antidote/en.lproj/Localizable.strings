@@ -6,187 +6,337 @@
   Copyright © 2015 dvor. All rights reserved.
 */
 
+/* Error while parsing color theme */
 "theme_error_wrong_top_object" = "Top object should be dictionary";
+/* Error while parsing color theme */
 "theme_error_version_not_found" = "Version key not found";
+/* Error while parsing color theme */
 "theme_error_color_not_found" = "%@ color not found in colors dictionary";
+/* Error while parsing color theme */
 "theme_error_no_dictionary_for_key" = "Dictionary not found for key %@";
+/* Error while parsing color theme */
 "theme_error_wrong_object_for_key" = "Wrong object for key %@, value %@";
+/* Error while parsing color theme */
 "theme_error_no_mapping_for_type" = "Mapping for type %@ not found";
+/* Error while parsing color theme */
 "theme_error_version_too_high" = "Version of theme is too high";
+/* Error while parsing color theme */
 "theme_error_version_too_low" = "Version of theme is too low";
 
+/* Login screen text */
 "login_welcome_text" = "Welcome to Antidote!";
+/* Login screen text */
 "login_or_label" = "or";
 
+/* Login screen text */
 "create_account" = "Create Account";
+/* Login screen text */
 "import_profile" = "Import Profile";
+/* Password field */
 "password" = "Password";
+/* Login button */
 "log_in" = "Log In";
+/* Login screen text */
 "create_profile" = "Create profile";
+/* Login screen text */
 "import_to_antidote" = "Import to Antidote";
+/* Login screen text */
 "create_account_username_title" = "How friends will see you?";
+/* Login screen text */
 "create_account_username_placeholder" = "Username";
+/* Login screen text */
 "create_account_profile_title" = "How to call this profile?";
+/* Login screen text */
 "create_account_profile_placeholder" = "Profile name";
+/* Login screen text */
 "create_account_profile_hint" = "e.g. Home, iPhone";
+/* Login button */
 "create_account_go_button" = "Go";
+/* Default status message */
 "default_user_status_message" = "Toxing on Antidote";
 
+/* Error while creating new profile */
 "login_enter_username_and_profile" = "Please enter both username and profile name.";
+/* Error while creating new profile */
 "login_profile_already_exists" = "Profile with given name already exists";
 
+/* General error title */
 "error_title" = "Error";
+/* General error button */
 "error_ok_button" = "OK";
-"error_file_not_found" = "File not found";
+/* Error */
 "error_friend_not_connected" = "Friend not online";
+/* Error */
 "error_too_many_files" = "Too many active file transfers";
-
+/* Error */
 "error_internal_message" = "Internal error";
-
+/* Error */
 "error_wrong_password_title" = "Wrong password";
+/* Error */
 "error_wrong_password_message" = "Password contains wrong symbols.";
+/* Error */
 "error_import_not_exist_title" = "Cannot import tox save file";
+/* Error */
 "error_import_not_exist_message" = "File does not exist.";
+/* Error */
 "error_decrypt_title" = "Cannot decrypt tox save file";
+/* Error */
 "error_decrypt_empty_data_message" = "Some input data was empty.";
+/* Error */
 "error_decrypt_bad_format_message" = "File has bad format or is corrupted.";
+/* Error */
 "error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
+/* Error */
 "error_general_unknown_message" = "Unknown error occured.";
+/* Error */
 "error_general_no_memory_message" = "Not enought memory.";
+/* Error */
 "error_general_bind_port_message" = "Was unable to bind to a port.";
+/* Error */
 "error_general_profile_encrypted_message" = "Profile is encrypted.";
+/* Error */
 "error_general_bad_format_message" = "File has bad format or is corrupted.";
+/* Error */
 "error_proxy_title" = "Proxy error";
+/* Error */
 "error_proxy_invalid_address_message" = "Proxy address has invalid format.";
+/* Error */
 "error_proxy_invalid_port_message" = "Proxy port is invalid.";
+/* Error */
 "error_proxy_host_not_resolved_message" = "Proxy host could not be resolved.";
 
+/* Error */
 "error_name_too_long" = "Name is too long.";
+/* Error */
 "error_status_message_too_long" = "Status message is too long";
 
+/* Error */
 "error_friend_request_too_long" = "Message is too long";
+/* Error */
 "error_friend_request_no_message" = "No message specified";
+/* Error */
 "error_friend_request_own_key" = "Cannot add myself to friend list";
+/* Error */
 "error_friend_request_already_sent" = "Friend request was already sent";
+/* Error */
 "error_friend_request_bad_checksum" = "Bad checksum, please check entered Tox ID";
+/* Error */
 "error_friend_request_new_nospam" = "Bad nospam value, please check entered Tox ID";
 
+/* Label shown when connecting to Tox network */
 "connecting_label" = "Connecting...";
 
+/* Tab name and screen name */
 "friends_title" = "Friends";
+/* Tab name and screen name */
 "chats_title" = "Chats";
+/* Tab name and screen name */
 "settings_title" = "Settings";
+/* Tab name and screen name */
 "profile_title" = "Profile";
 
+/* No friends placeholder text */
 "friend_no_friends_add_friend" = "Add a friend\nor\n";
+/* No friends placeholder text */
 "friend_no_friends_share_tox_id" = "share your Tox ID";
+/* Friend request section title */
 "friend_requests_section" = "Friend Requests";
+/* Friend last seen status */
 "friend_last_seen" = "Last seen: %@";
+/* Screen name */
 "friend_request" = "Friend Request";
+/* Friend request button */
 "friend_request_decline" = "Decline";
+/* Friend request button */
 "friend_request_accept" = "Accept";
+/* Friend request confirmation */
 "friend_request_delete_title" = "Delete friend request?";
 
+/* Share Tox ID text */
 "show_qr_code" = "Show QR Code";
+/* Share Tox ID text */
 "copy" = "Copy";
 
+/* Add friend screen name */
 "add_friend_title" = "Add Friend";
+/* Add friend button */
 "add_friend_send" = "Send";
+/* Add friend placeholder text */
 "add_friend_tox_id_placeholder" = "Enter Tox ID";
+/* Add friend placeholder text */
 "add_friend_or_label" = "or";
+/* Add friend button */
 "add_friend_use_qr" = "Use QR code";
+/* Add friend placeholder text */
 "add_friend_default_message_title" = "Message";
+/* Add friend default text sended to friend */
 "add_friend_default_message_text" = "Hello! Could you please add me to your friendlist?";
+/* Add friend error */
 "add_friend_wrong_qr" = "Wrong QR code. It should contain Tox ID";
 
+/* User name text */
 "name" = "Name";
+/* User nickname text */
 "nickname" = "Nickname";
+/* User status message text */
 "status_message" = "Status Message";
+/* User status text */
 "status_title" = "Status";
+/* User Tox ID text */
 "my_tox_id" = "My Tox ID";
+/* User public key text */
 "public_key" = "Public Key";
+/* Share Tox ID text */
 "show_qr" = "Show QR";
+/* Profile menu item / screen name */
 "profile_details" = "Profile Details";
+/* Profile button */
 "logout_button" = "Log Out";
 
+/* QR code screen button */
 "qr_close_button" = "Close";
 
+/* Call error */
 "call_error_already_in_call" = "Already in a call";
+/* Call error */
 "call_error_friend_is_offline" = "Friend is offline";
+/* Call error */
 "call_error_no_active_call" = "There is no active call";
 
+/* Chat screen placeholder */
 "chat_no_chats" = "No chats";
+/* Chats screen message text */
 "chat_outgoing_file" = "Outgoing file:";
+/* Chats screen message text */
 "chat_incoming_file" = "Incoming file:";
+/* Chats screen message text */
 "chat_call_finished" = "Call finished";
+/* Chats screen message text */
 "chat_unanwered_call" = "Unanswered call";
+/* Chat button */
 "chat_send_button" = "Send";
+/* Chat notification toast */
 "chat_new_messages" = "↓ New messages";
+/* Chat call information */
 "chat_call_message" = "Call, ";
+/* Chat call information */
 "chat_missed_call_message" = "Missed call";
 
+/* Status message */
 "status_offline" = "Offline";
+/* Status message */
 "status_online" = "Online";
+/* Status message */
 "status_away" = "Away";
+/* Status message */
 "status_busy" = "Busy";
 
+/* Notification text */
 "notification_new_message" = "New message";
+/* Notification text */
 "notification_incoming_friend_request" = "Incoming friend request";
+/* Notification text */
 "notification_is_calling" = "is calling";
+/* Notification text */
 "notification_incoming_file" = "Incoming file";
 
+/* Settings menu / screen name */
 "settings_about" = "About";
+/* Settings menu / screen name */
 "settings_advanced_settings" = "Advanced Settings";
+/* Settings menu */
 "settings_feedback" = "Feedback";
+/* Settings feedback error */
 "settings_configure_email" = "Please configure your mail settings";
-"settings_no" = "No";
-"settings_yes" = "Yes";
+/* About screen menu */
 "settings_antidote_version" = "Antidote Version";
+/* About screen menu */
 "settings_antidote_build" = "Antidote Build";
+/* About screen menu */
 "settings_toxcore_version" = "Toxcore Version";
+/* Settings screen menu */
 "settings_autodownload_images" = "Autodownload images";
+/* Settings screen menu */
 "settings_autodownload_images_description" = "Automatically download incoming images.";
+/* Settings screen menu */
 "settings_notifications_message_preview" = "Notification Preview";
+/* Settings screen menu */
 "settings_notifications_description" = "When application goes to background, you will still receive notifications up to 10 minutes.";
+/* Settings screen menu */
 "settings_ipv6_enabled" = "IPv6 Enabled";
+/* Settings screen menu */
 "settings_udp_enabled" = "UDP Enabled";
+/* Settings screen menu */
 "settings_restore_default" = "Restore Default Settings";
+/* Settings screen autodownload images option */
 "settings_never" = "Never";
+/* Settings screen autodownload images option */
 "settings_wifi" = "Wi-Fi";
+/* Settings screen autodownload images option */
 "settings_using_wifi" = "Using Wi-Fi";
+/* Settings screen autodownload images option */
 "settings_always" = "Always";
 
+/* Profile settings menu */
 "set_password" = "Set Password";
+/* Profile settings menu */
 "change_password" = "Change Password";
+/* Profile settings menu */
 "delete_password" = "Delete Password";
+/* Profile settings menu */
 "old_password" = "Old Password";
+/* Change password text */
 "new_password" = "New Password";
+/* Change password text */
 "repeat_password" = "Repeat Password";
+/* Change password button */
 "change_password_done" = "Done";
+/* Change password error */
 "password_is_empty_error" = "Password should be non-empty";
+/* Change password error */
 "wrong_old_password" = "Wrong password";
+/* Change password error */
 "passwords_do_not_match" = "Passwords do not match";
 
+/* Source of photo to take */
 "photo_from_camera" = "Camera";
+/* Source of photo to take */
 "photo_from_photo_library" = "Photo Library";
+/* Error while converting avatar image */
 "change_avatar_error_convert_image" = "Cannot convert image";
 
+/* Profile menu item */
 "export_profile" = "Export Profile";
+/* Profile menu item */
 "delete_profile" = "Delete Profile";
+/* Delete profile confirmation */
 "delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";
+/* Delete profile confirmation */
 "delete_profile_confirmation_title_2" = "Delete profile?";
+/* Delete profile confirmation */
 "delete_profile_confirmation_message" = "This operation cannot be undone!";
 
+/* Call screen text */
 "call_incoming" = "Incoming call";
+/* Call screen text */
 "call_ended" = "Call ended";
+/* Call screen text */
 "call_reaching" = "Reaching...";
 
+/* File message text */
 "chat_file_cancelled" = "Cancelled";
+/* File message text */
 "chat_waiting" = "Waiting...";
+/* File message text */
 "chat_paused" = "Paused";
 
+/* Deleting chat confirmation */
 "delete_chat_title" = "Are you sure you want to delete chat with all messages?";
+/* Deleting friend confirmation */
 "delete_friend_title" = "Are you sure you want to delete a friend?\nThis will remove all chat history as well.";
+/* Deleting friend request confirmation */
 "delete_friend_request_title" = "Are you sure you want to delete a friend request?";
+/* Delete button */
 "alert_delete" = "Delete";
+/* Delete button */
 "alert_cancel" = "Cancel";

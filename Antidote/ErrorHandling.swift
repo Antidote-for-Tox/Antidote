@@ -37,7 +37,7 @@ enum ErrorHandlerType {
 func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
     switch type {
         case .CannotLoadHTML:
-            UIAlertView.showErrorWithMessage(String(localized: "error_file_not_found"))
+            UIAlertView.showErrorWithMessage(String(localized: "error_internal_message"))
         case .CreateOCTManager:
             let (title, message) = OCTManagerInitError(rawValue: error!.code)!.strings()
             UIAlertView.showWithTitle(title, message: message)
