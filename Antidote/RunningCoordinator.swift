@@ -414,6 +414,13 @@ private extension RunningCoordinator {
                 iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
                 iPhone.chatsCoordinator.showChat(chat, animated: false)
             case .iPad:
+                if let chatVC = iPadDetailController() as? ChatPrivateController {
+                    if chatVC.chat == chat {
+                        // controller is already visible
+                        return
+                    }
+                }
+
                 let controller = ChatPrivateController(
                         theme: theme,
                         chat: chat,
@@ -461,5 +468,19 @@ private extension RunningCoordinator {
                 // TODO
                 break
         }
+    }
+
+    func iPadDetailController() -> UIViewController? {
+        guard iPad.splitController.viewControllers.count == 2 else {
+            return nil
+        }
+
+        let controller = iPad.splitController.viewControllers[1]
+
+        if let navigation = controller as? UINavigationController {
+            return navigation.topViewController
+        }
+
+        return controller
     }
 }
