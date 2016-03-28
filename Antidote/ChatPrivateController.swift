@@ -14,8 +14,6 @@ import Photos
 private struct Constants {
     static let MessagesPortionSize = 50
 
-    static let BarItemSize = CGSize(width: 25.0, height: 25.0)
-
     static let InputViewTopOffset: CGFloat = 50.0
 
     static let NewMessageViewAllowedDelta: CGFloat = 20.0
@@ -491,8 +489,8 @@ private extension ChatPrivateController {
         titleView = ChatPrivateTitleView(theme: theme)
         navigationItem.titleView = titleView
 
-        let audioImage = UIImage(named: "start-call")!.scaleToSize(Constants.BarItemSize)
-        let videoImage = UIImage(named: "video-call")!.scaleToSize(Constants.BarItemSize)
+        let audioImage = UIImage(named: "start-call-medium")!
+        let videoImage = UIImage(named: "video-call-medium")!
 
         audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: "audioCallButtonPressed")
         videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: "videoCallButtonPressed")
