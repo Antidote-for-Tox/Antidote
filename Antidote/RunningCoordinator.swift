@@ -173,11 +173,13 @@ extension RunningCoordinator: NotificationCoordinatorDelegate {
     }
 
     func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int) {
+        let text: String? = (badge > 0) ? "\(badge)" : nil
+
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.friendsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
+                iPhone.friendsTabBarItem.badgeText = text
             case .iPad:
-                // TODO
+                iPad.primaryController.friendsBadgeText = text
                 break
         }
     }

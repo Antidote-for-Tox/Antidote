@@ -44,12 +44,18 @@ class PrimaryIpadController: UIViewController {
         }
     }
 
+    var friendsBadgeText: String? {
+        didSet {
+            friendsButton.badgeText = friendsBadgeText
+        }
+    }
+
     private let theme: Theme
     private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var navigationView: iPadNavigationView!
-    private var friendsButton: UIButton!
+    private var friendsButton: iPadFriendsButton!
 
     private var tableManager: ChatListTableManager!
 
@@ -63,6 +69,7 @@ class PrimaryIpadController: UIViewController {
         addNavigationButtons()
 
         edgesForExtendedLayout = .None
+        friendsButton = iPadFriendsButton(theme: theme)
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -72,7 +79,7 @@ class PrimaryIpadController: UIViewController {
     override func loadView() {
         loadViewWithBackgroundColor(theme.colorForType(.NormalBackground))
 
-        createButtons()
+        setupButtons()
         createTableView()
         installConstraints()
     }
@@ -121,10 +128,8 @@ private extension PrimaryIpadController {
                 action: "settingsButtonPressed")
     }
 
-    func createButtons() {
-        friendsButton = UIButton(type: .System)
-        friendsButton.setTitle(String(localized: "contacts_title"), forState: .Normal)
-        friendsButton.addTarget(self, action: "friendsButtonPressed", forControlEvents: .TouchUpInside)
+    func setupButtons() {
+        friendsButton.didTapHandler = friendsButtonPressed
         view.addSubview(friendsButton)
     }
 
