@@ -218,11 +218,11 @@
 /* Profile menu item */
 "delete_profile" = "Delete Profile";
 /* Delete profile confirmation */
-"delete_profile_confirmation_title_1" = "Are you sure you want to delete profile?";
+"delete_profile_confirmation_title_1" = "Delete this profile?";
 /* Delete profile confirmation */
-"delete_profile_confirmation_title_2" = "Delete profile?";
+"delete_profile_confirmation_title_2" = "Are you sure?";
 /* Delete profile confirmation */
-"delete_profile_confirmation_message" = "This operation cannot be undone!";
+"delete_profile_confirmation_message" = "This operation cannot be undone";
 
 /* Call screen text */
 "call_incoming" = "Incoming call";
@@ -239,11 +239,11 @@
 "chat_paused" = "Paused";
 
 /* Deleting chat confirmation */
-"delete_chat_title" = "Are you sure you want to delete chat with all messages?";
+"delete_chat_title" = "Delete this chat and message history?";
 /* Deleting contat confirmation */
-"delete_contact_title" = "Are you sure you want to delete a contact?\nThis will remove all chat history as well.";
+"delete_contact_title" = "Delete this contact?\nYour chat history will be lost.";
 /* Deleting contat request confirmation */
-"delete_contact_request_title" = "Are you sure you want to delete a contact request?";
+"delete_contact_request_title" = "Delete this contact request?";
 /* Delete button */
 "alert_delete" = "Delete";
 /* Delete button */
