@@ -3,16 +3,19 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [0.10.0] - 2016-03-28
 ### Added
 - Audio and video calls.
 - File transfer support.
 - Avatar support.
 - iPad support.
+- Russian translation.
 
 ### Changes
+- Antidote fully rewritten in Swift.
 - objcTox updated to version 0.6.0.
 - Dropped 7.0 support.
-- Antidote fully rewritten in Swift.
 - Friends replaced with Contacts.
 
 ## [0.6.1] - 2015-09-26
@@ -82,7 +85,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.6.1...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.0...master
+[0.10.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.6.1...0.10.0
 [0.6.1]: https://github.com/Antidote-for-Tox/Antidote/compare/0.6.0...0.6.1
 [0.6.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.5.0...0.6.0
 [0.5.0]: https://github.com/Antidote-for-Tox/Antidote/compare/0.4.0...0.5.0
