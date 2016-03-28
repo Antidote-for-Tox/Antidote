@@ -72,7 +72,7 @@ private extension TextViewController {
             htmlString = htmlString.stringByReplacingOccurrencesOfString(Constants.TitleColorKey, withString: titleColor.hexString())
             htmlString = htmlString.stringByReplacingOccurrencesOfString(Constants.TextColorKey, withString: textColor.hexString())
 
-            guard let data = htmlString.dataUsingEncoding(NSUTF8StringEncoding) else {
+            guard let data = htmlString.dataUsingEncoding(NSUnicodeStringEncoding) else {
                 throw FakeError()
             }
             let options = [ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType ]
