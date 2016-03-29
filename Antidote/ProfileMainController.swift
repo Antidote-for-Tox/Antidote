@@ -131,7 +131,7 @@ private extension ProfileMainController {
         }
         else {
             avatarModel.avatar = avatarManager.avatarFromString(
-                    submanagerUser.userName(),
+                    submanagerUser.userName() ?? "?",
                     diameter: StaticTableAvatarCellModel.Constants.AvatarImageSize)
         }
         avatarModel.didTapOnAvatar = performAvatarAction

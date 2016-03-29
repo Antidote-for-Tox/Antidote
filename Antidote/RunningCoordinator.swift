@@ -98,13 +98,9 @@ class RunningCoordinator: NSObject {
         profileCoordinator.delegate = self
         notificationCoordinator.delegate = self
     }
-
-    func handleLocalNotification(notification: UILocalNotification) {
-        notificationCoordinator.handleLocalNotification(notification)
-    }
 }
 
-extension RunningCoordinator: CoordinatorProtocol {
+extension RunningCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
         switch InterfaceIdiom.current() {
             case .iPhone:
@@ -147,6 +143,10 @@ extension RunningCoordinator: CoordinatorProtocol {
             case .Settings:
                 showSettings()
         }
+    }
+
+    func handleLocalNotification(notification: UILocalNotification) {
+        notificationCoordinator.handleLocalNotification(notification)
     }
 }
 

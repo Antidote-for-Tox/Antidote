@@ -10,6 +10,9 @@ import Foundation
 
 private struct Constants {
     static let SaveDirectoryPath = "saves"
+
+    // TODO get this constant from objcTox OCTDefaultFileStorage
+    static let ToxFileName = "save.tox"
 }
 
 class ProfileManager {
@@ -21,10 +24,16 @@ class ProfileManager {
         reloadProfileNames()
     }
 
-    func createProfileWithName(name: String) throws {
+    func createProfileWithName(name: String, copyFromURL: NSURL? = nil) throws {
         let path = pathFromName(name)
+        let fileManager = NSFileManager.defaultManager()
 
-        try NSFileManager.defaultManager().createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+        try fileManager.createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+
+        if let url = copyFromURL {
+            let saveURL = NSURL(fileURLWithPath: path).URLByAppendingPathComponent(Constants.ToxFileName)
+            try fileManager.moveItemAtURL(url, toURL: saveURL)
+        }
 
         reloadProfileNames()
     }

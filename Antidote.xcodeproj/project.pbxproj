@@ -99,6 +99,10 @@
 		116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634EE1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift */; };
 		116634F21C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */; };
 		116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */; };
+		116DCE321CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116DCE311CAAF47100B693EC /* TopCoordinatorProtocol.swift */; };
+		116DCE331CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116DCE311CAAF47100B693EC /* TopCoordinatorProtocol.swift */; };
+		116DCE3B1CAAF85300B693EC /* NSURLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116DCE3A1CAAF85300B693EC /* NSURLExtension.swift */; };
+		116DCE3C1CAAF85300B693EC /* NSURLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116DCE3A1CAAF85300B693EC /* NSURLExtension.swift */; };
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
@@ -466,6 +470,8 @@
 		116634EB1C7B90F20072C980 /* FriendRequestController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequestController.swift; sourceTree = "<group>"; };
 		116634EE1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableMultiChoiceButtonCell.swift; sourceTree = "<group>"; };
 		116634F11C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableMultiChoiceButtonCellModel.swift; sourceTree = "<group>"; };
+		116DCE311CAAF47100B693EC /* TopCoordinatorProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopCoordinatorProtocol.swift; sourceTree = "<group>"; };
+		116DCE3A1CAAF85300B693EC /* NSURLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSURLExtension.swift; sourceTree = "<group>"; };
 		1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SnapKit.xcodeproj; path = submodules/SnapKit/SnapKit.xcodeproj; sourceTree = "<group>"; };
 		1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Yaml.xcodeproj; path = submodules/YamlSwift/Yaml.xcodeproj; sourceTree = "<group>"; };
 		1173F0561BC5D94400B88B7B /* AntidoteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AntidoteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -843,10 +849,11 @@
 		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */,
 				11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */,
+				11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */,
 				11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */,
 				11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */,
+				116DCE311CAAF47100B693EC /* TopCoordinatorProtocol.swift */,
 				11FA0EE31BC59A9B00F3DA5B /* Running */,
 			);
 			name = Coordinators;
@@ -884,6 +891,7 @@
 			children = (
 				1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */,
 				11B253B61C503FA10068F47C /* NSTimerExtension.swift */,
+				116DCE3A1CAAF85300B693EC /* NSURLExtension.swift */,
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
 				1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
@@ -1273,6 +1281,7 @@
 				11628E6C1CA57B19008C097E /* ChatOutgoingFileCellModel.swift in Sources */,
 				9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */,
 				119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */,
+				116DCE3B1CAAF85300B693EC /* NSURLExtension.swift in Sources */,
 				1183BCDD1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */,
 				11E640781C2DC15400D24C6D /* HelperFunctions.swift in Sources */,
 				11FA0EEB1BC5A68600F3DA5B /* FriendsTabCoordinator.swift in Sources */,
@@ -1361,6 +1370,7 @@
 				116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */,
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				11628E631CA57B14008C097E /* ChatOutgoingFileCell.swift in Sources */,
+				116DCE321CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */,
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
 				114962921C5E1BE0001E5435 /* PasswordController.swift in Sources */,
@@ -1407,6 +1417,7 @@
 				11628E331CA2FBD1008C097E /* FilePreviewControllerDataSource.swift in Sources */,
 				9CEE6B531C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
 				116634A11C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */,
+				116DCE3C1CAAF85300B693EC /* NSURLExtension.swift in Sources */,
 				9CEE6AEB1C4E8FDC00A1ECB5 /* FriendListController.swift in Sources */,
 				9CEE6AC81C4E8FDC00A1ECB5 /* StaticTableBaseCellModel.swift in Sources */,
 				1183BCDE1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */,
@@ -1429,6 +1440,7 @@
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				9CEE6AE01C4E8FDC00A1ECB5 /* LoginCreateAccountController.swift in Sources */,
 				9CEE6AC91C4E8FDC00A1ECB5 /* StaticTableButtonCell.swift in Sources */,
+				116DCE331CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */,
 				9CEE6ABD1C4E8FDC00A1ECB5 /* ChatListCell.swift in Sources */,
 				9CEE6B021C4E8FDC00A1ECB5 /* UserStatus.swift in Sources */,
 				9CEE6B0D1C4E8FDC00A1ECB5 /* Logger.swift in Sources */,

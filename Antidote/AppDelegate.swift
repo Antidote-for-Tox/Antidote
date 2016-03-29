@@ -42,6 +42,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
         coordinator.handleLocalNotification(notification)
     }
+
+    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+        coordinator.handleOpenURL(url) {_ in }
+
+        return true
+    }
 }
 
 private extension AppDelegate {

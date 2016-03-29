@@ -14,10 +14,11 @@ private struct Constants {
 
 class AppCoordinator {
     private let window: UIWindow
-    private var activeCoordinator: CoordinatorProtocol!
+    private var activeCoordinator: TopCoordinatorProtocol!
     private var theme: Theme
 
     private var cachedLocalNotification: UILocalNotification?
+    private var cachedOpenURL: NSURL?
 
     init(window: UIWindow) {
         self.window = window
@@ -28,21 +29,12 @@ class AppCoordinator {
         theme = try! Theme(yamlString: yamlString)
         applyTheme(theme)
     }
-
-    func handleLocalNotification(notification: UILocalNotification) {
-        if let running = activeCoordinator as? RunningCoordinator {
-            running.handleLocalNotification(notification)
-        }
-        else {
-            cachedLocalNotification = notification
-        }
-    }
 }
 
 // MARK: CoordinatorProtocol
-extension AppCoordinator: CoordinatorProtocol {
+extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        var coordinator: CoordinatorProtocol?
+        var coordinator: TopCoordinatorProtocol?
 
         if UserDefaultsManager().isUserLoggedIn {
             coordinator = createRunningCoordinatorWithManager(options?[Constants.ToxManagerKey] as? OCTManager)
@@ -60,6 +52,30 @@ extension AppCoordinator: CoordinatorProtocol {
             cachedLocalNotification = nil
             handleLocalNotification(notification)
         }
+
+        // Trying to handle cached url with new coordinator.
+        if let url = cachedOpenURL {
+            cachedOpenURL = nil
+            handleOpenURL(url, resultBlock: {_ in })
+        }
+    }
+
+    func handleLocalNotification(notification: UILocalNotification) -> Bool {
+        if !activeCoordinator.handleLocalNotification(notification) {
+            cachedLocalNotification = notification
+        }
+
+        return true
+    }
+
+    func handleOpenURL(url: NSURL, resultBlock: Bool -> Void) {
+        activeCoordinator.handleOpenURL(url) { [weak self] result in
+            if !result {
+                self?.cachedOpenURL = url
+            }
+        }
+
+        resultBlock(true)
     }
 }
 

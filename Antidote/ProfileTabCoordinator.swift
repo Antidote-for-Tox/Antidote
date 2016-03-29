@@ -44,7 +44,7 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
     }
 
     func profileMainControllerChangeUserName(controller: ProfileMainController) {
-        showTextEditController(title: String(localized: "name"), defaultValue: toxManager.user.userName()) {
+        showTextEditController(title: String(localized: "name"), defaultValue: toxManager.user.userName() ?? "") {
             [unowned self] newName -> Void in
 
             do {
@@ -64,7 +64,7 @@ extension ProfileTabCoordinator: ProfileMainControllerDelegate {
     }
 
     func profileMainControllerChangeStatusMessage(controller: ProfileMainController) {
-        showTextEditController(title: String(localized: "status_message"), defaultValue: toxManager.user.userStatusMessage()) {
+        showTextEditController(title: String(localized: "status_message"), defaultValue: toxManager.user.userStatusMessage() ?? "") {
             newStatusMessage -> Void in
 
             do {
