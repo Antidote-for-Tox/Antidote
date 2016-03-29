@@ -80,7 +80,16 @@ extension LoginCoordinator: TopCoordinatorProtocol {
             return
         }
 
-        let alert = UIAlertController(title: nil, message: fileName, preferredStyle: .ActionSheet)
+        let style: UIAlertControllerStyle
+
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                style = .ActionSheet
+            case .iPad:
+                style = .Alert
+        }
+
+        let alert = UIAlertController(title: nil, message: fileName, preferredStyle: style)
 
         alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
             resultBlock(.Success)
