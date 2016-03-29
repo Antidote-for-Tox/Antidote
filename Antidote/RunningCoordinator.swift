@@ -98,13 +98,9 @@ class RunningCoordinator: NSObject {
         profileCoordinator.delegate = self
         notificationCoordinator.delegate = self
     }
-
-    func handleLocalNotification(notification: UILocalNotification) {
-        notificationCoordinator.handleLocalNotification(notification)
-    }
 }
 
-extension RunningCoordinator: CoordinatorProtocol {
+extension RunningCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
         switch InterfaceIdiom.current() {
             case .iPhone:
@@ -146,6 +142,42 @@ extension RunningCoordinator: CoordinatorProtocol {
                 break
             case .Settings:
                 showSettings()
+        }
+    }
+
+    func handleLocalNotification(notification: UILocalNotification) {
+        notificationCoordinator.handleLocalNotification(notification)
+    }
+
+    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
+        guard openURL.url.isToxURL() else {
+            resultBlock(.Success)
+            return
+        }
+
+        guard let fileName = openURL.url.lastPathComponent else {
+            resultBlock(.Success)
+            return
+        }
+
+        let alert = UIAlertController(title: nil, message: fileName, preferredStyle: .ActionSheet)
+
+        alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
+            let modifiedURL = OpenURL(url: openURL.url, askUser: false)
+
+            resultBlock(.Failure(openURL: modifiedURL))
+            self.logout()
+        })
+
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
+            resultBlock(.Success)
+        })
+
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                iPhone.tabBarController.presentViewController(alert, animated: true, completion: nil)
+            case .iPad:
+                iPad.splitController.presentViewController(alert, animated: true, completion: nil)
         }
     }
 }
@@ -246,9 +278,7 @@ extension RunningCoordinator: SettingsTabCoordinatorDelegate {
 
 extension RunningCoordinator: ProfileTabCoordinatorDelegate {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator) {
-        UserDefaultsManager().isUserLoggedIn = false
-
-        delegate?.runningCoordinatorDidLogout(self)
+        logout()
     }
 
     func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator) {
@@ -498,5 +528,11 @@ private extension RunningCoordinator {
         }
 
         return controller
+    }
+
+    func logout() {
+        UserDefaultsManager().isUserLoggedIn = false
+
+        delegate?.runningCoordinatorDidLogout(self)
     }
 }

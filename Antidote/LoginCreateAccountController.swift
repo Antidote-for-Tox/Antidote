@@ -16,10 +16,18 @@ private struct PrivateConstants {
 
 protocol LoginCreateAccountControllerDelegate: class {
     func loginCreateAccountControllerCreate(controller: LoginCreateAccountController, name: String, profile: String)
+    func loginCreateAccountControllerImport(controller: LoginCreateAccountController, profile: String, userInfo: AnyObject?)
 }
 
 class LoginCreateAccountController: LoginBaseController {
+    enum Type {
+        case CreateAccount
+        case ImportProfile(userInfo: AnyObject?)
+    }
+
     weak var delegate: LoginCreateAccountControllerDelegate?
+
+    private let type: Type
 
     private var containerView: IncompressibleView!
     private var containerViewTopConstraint: Constraint!
@@ -29,6 +37,16 @@ class LoginCreateAccountController: LoginBaseController {
     private var profileView: ExtendedTextField!
     private var goButton: RoundedButton!
 
+    init(theme: Theme, type: Type) {
+        self.type = type
+
+        super.init(theme: theme)
+    }
+
+    required convenience init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func loadView() {
         super.loadView()
 
@@ -37,6 +55,7 @@ class LoginCreateAccountController: LoginBaseController {
         createTitleLabel()
         createExtendedTextFields()
         createGoButton()
+        configureViews()
 
         installConstraints()
     }
@@ -63,10 +82,15 @@ extension LoginCreateAccountController {
     }
 
     func goButtonPressed() {
-        let name = usernameView.text ?? ""
         let profile = profileView.text ?? ""
 
-        delegate?.loginCreateAccountControllerCreate(self, name: name, profile: profile)
+        switch type {
+            case .CreateAccount:
+                let name = usernameView.text ?? ""
+                delegate?.loginCreateAccountControllerCreate(self, name: name, profile: profile)
+            case .ImportProfile(let userInfo):
+                delegate?.loginCreateAccountControllerImport(self, profile: profile, userInfo: userInfo)
+        }
     }
 }
 
@@ -96,7 +120,6 @@ private extension LoginCreateAccountController {
 
     func createTitleLabel() {
         titleLabel = UILabel()
-        titleLabel.text = String(localized: "create_profile")
         titleLabel.textColor = theme.colorForType(.LoginButtonText)
         titleLabel.font = UIFont.systemFontOfSize(26.0, weight: UIFontWeightLight)
         titleLabel.backgroundColor = .clearColor()
@@ -128,6 +151,16 @@ private extension LoginCreateAccountController {
         containerView.addSubview(goButton)
     }
 
+    func configureViews() {
+        switch type {
+            case .CreateAccount:
+                titleLabel.text = String(localized: "create_profile")
+            case .ImportProfile:
+                titleLabel.text = String(localized: "import_profile")
+                usernameView.hidden = true
+        }
+    }
+
     func installConstraints() {
         containerView.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
         containerView.snp_makeConstraints {
@@ -150,8 +183,14 @@ private extension LoginCreateAccountController {
         }
 
         profileView.snp_makeConstraints {
-            $0.top.equalTo(usernameView.snp_bottom).offset(PrivateConstants.FieldsOffset)
             $0.left.right.equalTo(usernameView)
+
+            switch type {
+                case .CreateAccount:
+                    $0.top.equalTo(usernameView.snp_bottom).offset(PrivateConstants.FieldsOffset)
+                case .ImportProfile:
+                    $0.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
+            }
         }
 
         goButton.snp_makeConstraints {

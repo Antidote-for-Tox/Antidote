@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Added profile import support [#170](https://github.com/Antidote-for-Tox/Antidote/issues/170).
 
 ## [0.10.0] - 2016-03-28
 ### Added

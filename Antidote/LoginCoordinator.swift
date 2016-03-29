@@ -52,8 +52,8 @@ class LoginCoordinator {
     }
 }
 
-// MARK: CoordinatorProtocol
-extension LoginCoordinator: CoordinatorProtocol {
+// MARK: TopCoordinatorProtocol
+extension LoginCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
         let profileNames = ProfileManager().allProfileNames
 
@@ -62,11 +62,44 @@ extension LoginCoordinator: CoordinatorProtocol {
         navigationController.pushViewController(controller, animated: false)
         window.rootViewController = navigationController
     }
+
+    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
+        guard openURL.url.isToxURL() else {
+            resultBlock(.Failure(openURL: openURL))
+            return
+        }
+
+        guard let fileName = openURL.url.lastPathComponent else {
+            resultBlock(.Failure(openURL: openURL))
+            return
+        }
+
+        if !openURL.askUser {
+            resultBlock(.Success)
+            self.importToxProfileFromURL(openURL.url)
+            return
+        }
+
+        let alert = UIAlertController(title: nil, message: fileName, preferredStyle: .ActionSheet)
+
+        alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
+            resultBlock(.Success)
+            self.importToxProfileFromURL(openURL.url)
+        })
+
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
+            resultBlock(.Failure(openURL: openURL))
+        })
+
+        navigationController.presentViewController(alert, animated: true, completion: nil)
+    }
 }
 
 extension LoginCoordinator: LoginFormControllerDelegate {
     func loginFormControllerLogin(controller: LoginFormController, profileName: String, password: String?) {
-        loginWithProfile(profileName, password: password)
+        loginWithProfile(profileName, password: password, errorClosure: { error in
+            handleErrorWithType(.CreateOCTManager, error: error)
+        })
     }
 
     func loginFormControllerCreateAccount(controller: LoginFormController) {
@@ -98,32 +131,18 @@ extension LoginCoordinator: LoginChoiceControllerDelegate {
 
 extension LoginCoordinator: LoginCreateAccountControllerDelegate {
     func loginCreateAccountControllerCreate(controller: LoginCreateAccountController, name: String, profile: String) {
-        let profileManager = ProfileManager()
-
-        if name.isEmpty || profile.isEmpty {
+        if name.isEmpty {
             UIAlertView.showWithTitle("", message: String(localized: "login_enter_username_and_profile"))
             return
         }
 
-        if profileManager.allProfileNames.contains(profile) {
-            UIAlertView.showWithTitle("", message: String(localized: "login_profile_already_exists"))
-            return
-        }
+        createProfileWithProfileName(profile, username: name, copyFromURL: nil, allowEncrypted: false)
+    }
 
-        do {
-            try profileManager.createProfileWithName(profile)
-        }
-        catch let error as NSError {
-            UIAlertView.showErrorWithMessage(String(localized: error.localizedDescription))
-            return
-        }
+    func loginCreateAccountControllerImport(controller: LoginCreateAccountController, profile: String, userInfo: AnyObject?) {
+        let url = userInfo as! NSURL
 
-        loginWithProfile(profile, password: nil, configurationClosure:{
-            _ = try? $0.user.setUserName(name)
-            _ = try? $0.user.setUserStatusMessage(String(localized: "default_user_status_message"))
-        }, errorClosure:{
-            _ = try? profileManager.deleteProfileWithName(profile)
-        })
+        createProfileWithProfileName(profile, username: nil, copyFromURL: url, allowEncrypted: true)
     }
 }
 
@@ -150,7 +169,7 @@ private extension LoginCoordinator {
     }
 
     func showCreateAccountController() {
-        let controller = LoginCreateAccountController(theme: theme)
+        let controller = LoginCreateAccountController(theme: theme, type: .CreateAccount)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
@@ -176,7 +195,7 @@ private extension LoginCoordinator {
             profile: String,
             password: String?,
             configurationClosure: ((manager: OCTManager) -> Void)? = nil,
-            errorClosure: (() -> Void)? = nil)
+            errorClosure: (NSError -> Void)? = nil)
     {
         let manager: OCTManager
 
@@ -184,8 +203,7 @@ private extension LoginCoordinator {
             manager = try LoginCoordinator.createOCTManagerWithProfile(profile, password: password)
         }
         catch let error as NSError {
-            handleErrorWithType(.CreateOCTManager, error: error)
-            errorClosure?()
+            errorClosure?(error)
             return
         }
 
@@ -200,8 +218,61 @@ private extension LoginCoordinator {
 
     class func createOCTManagerWithProfile(profile: String, password: String?) throws -> OCTManager {
         let path = ProfileManager().pathForProfileWithName(profile)
+
         let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: password)!
 
         return try OCTManager(configuration: configuration)
+    }
+
+    func importToxProfileFromURL(url: NSURL) {
+        let controller = LoginCreateAccountController(theme: theme, type: .ImportProfile(userInfo: url))
+        controller.delegate = self
+        let root = navigationController.viewControllers[0]
+
+        navigationController.setViewControllers([root, controller], animated: true)
+    }
+
+    func createProfileWithProfileName(profileName: String, username: String?, copyFromURL: NSURL?, allowEncrypted: Bool) {
+        if profileName.isEmpty {
+            UIAlertView.showWithTitle("", message: String(localized: "login_enter_username_and_profile"))
+            return
+        }
+
+        let profileManager = ProfileManager()
+
+        if profileManager.allProfileNames.contains(profileName) {
+            UIAlertView.showWithTitle("", message: String(localized: "login_profile_already_exists"))
+            return
+        }
+
+        do {
+            try profileManager.createProfileWithName(profileName, copyFromURL: copyFromURL)
+        }
+        catch let error as NSError {
+            UIAlertView.showErrorWithMessage(String(localized: error.localizedDescription))
+            return
+        }
+
+        loginWithProfile(profileName, password: nil, configurationClosure: {
+            if let name = username {
+                _ = try? $0.user.setUserName(name)
+                _ = try? $0.user.setUserStatusMessage(String(localized: "default_user_status_message"))
+            }
+        }, errorClosure: { [unowned self] error in
+            let code = OCTManagerInitError(rawValue: error.code)
+
+            if allowEncrypted && code == .CreateToxEncrypted {
+                UserDefaultsManager().lastActiveProfile = profileName
+
+                let controller = self.createFormController()
+                let root = self.navigationController.viewControllers[0]
+
+                self.navigationController.setViewControllers([root, controller], animated: true)
+            }
+            else {
+                handleErrorWithType(.CreateOCTManager, error: error)
+                _ = try? profileManager.deleteProfileWithName(profileName)
+            }
+        })
     }
 }
