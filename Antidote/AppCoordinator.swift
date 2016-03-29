@@ -18,7 +18,7 @@ class AppCoordinator {
     private var theme: Theme
 
     private var cachedLocalNotification: UILocalNotification?
-    private var cachedOpenURL: NSURL?
+    private var cachedOpenURL: OpenURL?
 
     init(window: UIWindow) {
         self.window = window
@@ -55,7 +55,6 @@ extension AppCoordinator: TopCoordinatorProtocol {
 
         // Trying to handle cached url with new coordinator.
         if let url = cachedOpenURL {
-            cachedOpenURL = nil
             handleOpenURL(url, resultBlock: {_ in })
         }
     }
@@ -68,14 +67,20 @@ extension AppCoordinator: TopCoordinatorProtocol {
         return true
     }
 
-    func handleOpenURL(url: NSURL, resultBlock: Bool -> Void) {
-        activeCoordinator.handleOpenURL(url) { [weak self] result in
-            if !result {
-                self?.cachedOpenURL = url
+    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
+        cachedOpenURL = nil
+
+        activeCoordinator.handleOpenURL(openURL) { [weak self] result in
+            switch result {
+                case .Success:
+                    // nop
+                    break
+                case .Failure(let newURL):
+                    self?.cachedOpenURL = newURL
             }
         }
 
-        resultBlock(true)
+        resultBlock(.Success)
     }
 }
 

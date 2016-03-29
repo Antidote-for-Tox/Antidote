@@ -8,6 +8,24 @@
 
 import Foundation
 
+class OpenURL{
+    /// URL to open.
+    let url: NSURL
+
+    /// Ask user before opening url or not.
+    let askUser: Bool
+
+    init(url: NSURL, askUser: Bool) {
+        self.url = url
+        self.askUser = askUser
+    }
+}
+
+enum HandleURLResult {
+    case Success
+    case Failure(openURL: OpenURL)
+}
+
 protocol TopCoordinatorProtocol: CoordinatorProtocol {
     /**
         Handle local notification.
@@ -24,11 +42,11 @@ protocol TopCoordinatorProtocol: CoordinatorProtocol {
 
         - Parameters:
           - url: URL to handle.
-          - resultBlock: call block with true in case if URL was handled, with false otherwise.
-
-        - Returns: true if coordinator did handle url, false otherwise.
+          - resultBlock:
+            - result: true in case if url was handled, false otherwise.
+            - url: url to handle. Coordinator may update initial url if needed.
      */
-    func handleOpenURL(url: NSURL, resultBlock: Bool -> Void)
+    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void)
 }
 
 extension TopCoordinatorProtocol {
@@ -36,7 +54,7 @@ extension TopCoordinatorProtocol {
         return false
     }
 
-    func handleOpenURL(url: NSURL, resultBlock: Bool -> Void) {
-        resultBlock(false)
+    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
+        resultBlock(.Failure(openURL: openURL))
     }
 }

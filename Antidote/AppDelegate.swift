@@ -44,7 +44,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
-        coordinator.handleOpenURL(url) {_ in }
+        let openURL = OpenURL(url: url, askUser: true)
+        coordinator.handleOpenURL(openURL) {_ in }
 
         return true
     }

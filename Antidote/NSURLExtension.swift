@@ -18,6 +18,6 @@ extension NSURL {
             return false
         }
 
-        return UTTypeEqual(identifier, kUTTypeData)
+        return UTTypeConformsTo(identifier, kUTTypeData)
     }
 }
