@@ -45,14 +45,6 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 -  audio calls
 -  video calls
 
-#### What's next?
-
-- [**Now**](https://github.com/Antidote-for-Tox/Antidote/milestones/Now) - this milestone has issues that will go to the next release.
-- [**Next**](https://github.com/Antidote-for-Tox/Antidote/milestones/Next) - stuff we'll probably do soon.
-- [**Faraway**](https://github.com/Antidote-for-Tox/Antidote/milestones/Faraway) - stuff we'll probably *won't* do soon.
-
-Also there may be other [milestones](https://github.com/Antidote-for-Tox/Antidote/milestones) that represent long-running and big ongoing tasks.
-
 ## Contact
 
 [feedback@antidote.im](mailto:feedback@antidote.im)
