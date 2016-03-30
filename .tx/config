@@ -1,0 +1,13 @@
+[main]
+host = https://www.transifex.com
+
+[antidote-ios.import-profilehtml]
+file_filter = Antidote/<lang>.lproj/import-profile.html
+source_lang = en
+type = HTML
+
+[antidote-ios.localizablestrings]
+file_filter = Antidote/<lang>.lproj/Localizable.strings
+source_lang = en
+type = STRINGS
+
