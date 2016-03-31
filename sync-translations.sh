@@ -7,4 +7,4 @@ if ! hash $TOOL 2>/dev/null; then
     exit 1
 fi
 
-$TOOL pull -a
+$TOOL pull -af
