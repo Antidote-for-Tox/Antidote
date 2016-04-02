@@ -95,7 +95,7 @@ private extension FullscreenPicker {
     func createSubviews() {
         blackoutButton = UIButton()
         blackoutButton.backgroundColor = theme.colorForType(.TranslucentBackground)
-        blackoutButton.addTarget(self, action: "doneButtonPressed", forControlEvents:.TouchUpInside)
+        blackoutButton.addTarget(self, action: #selector(FullscreenPicker.doneButtonPressed), forControlEvents:.TouchUpInside)
         addSubview(blackoutButton)
 
         toolbar = UIToolbar()
@@ -103,7 +103,7 @@ private extension FullscreenPicker {
         toolbar.barTintColor = theme.loginNavigationBarColor
         toolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: "doneButtonPressed")
+            UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(FullscreenPicker.doneButtonPressed))
         ]
         addSubview(toolbar)
 

@@ -73,7 +73,7 @@ private extension TabBarProfileItem {
 
         button = UIButton()
         button.backgroundColor = .clearColor()
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(TabBarProfileItem.buttonPressed), forControlEvents: .TouchUpInside)
         addSubview(button)
     }
 

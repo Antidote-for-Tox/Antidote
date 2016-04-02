@@ -47,9 +47,9 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
     override func createViews() {
         super.createViews()
 
-        chatButton = createButtonWithImageName("friend-card-chat", action: "chatButtonPressed")
-        callButton = createButtonWithImageName("start-call", action: "callButtonPressed")
-        videoButton = createButtonWithImageName("video-call", action: "videoButtonPressed")
+        chatButton = createButtonWithImageName("friend-card-chat", action: #selector(StaticTableChatButtonsCell.chatButtonPressed))
+        callButton = createButtonWithImageName("start-call", action: #selector(StaticTableChatButtonsCell.callButtonPressed))
+        videoButton = createButtonWithImageName("video-call", action: #selector(StaticTableChatButtonsCell.videoButtonPressed))
 
         separators = [UIView]()
         for _ in 0...3 {

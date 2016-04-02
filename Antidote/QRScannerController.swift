@@ -40,13 +40,13 @@ class QRScannerController: UIViewController {
 
         NSNotificationCenter.defaultCenter().addObserver(
                 self,
-                selector: "applicationDidEnterBackground",
+                selector: #selector(QRScannerController.applicationDidEnterBackground),
                 name: UIApplicationDidEnterBackgroundNotification,
                 object: nil)
 
         NSNotificationCenter.defaultCenter().addObserver(
                 self,
-                selector: "applicationWillEnterForeground",
+                selector: #selector(QRScannerController.applicationWillEnterForeground),
                 name: UIApplicationWillEnterForegroundNotification,
                 object: nil)
     }
@@ -168,7 +168,7 @@ private extension QRScannerController {
     }
 
     func createBarButtonItems() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: "cancelButtonPressed")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(QRScannerController.cancelButtonPressed))
     }
 
     func createViewsAndLayers() {

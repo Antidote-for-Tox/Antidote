@@ -79,7 +79,7 @@ private extension NotificationView {
         addSubview(bottomLabel)
 
         fullSizeButton = UIButton()
-        fullSizeButton.addTarget(self, action: "fullSizeButtonPressed", forControlEvents: .TouchUpInside)
+        fullSizeButton.addTarget(self, action: #selector(NotificationView.fullSizeButtonPressed), forControlEvents: .TouchUpInside)
         addSubview(fullSizeButton)
 
         let image = UIImage.templateNamed("notification-close")
@@ -87,7 +87,7 @@ private extension NotificationView {
         closeButton = UIButton()
         closeButton.setImage(image, forState: .Normal)
         closeButton.tintColor = theme.colorForType(.NotificationText)
-        closeButton.addTarget(self, action: "closeButtonPressed", forControlEvents: .TouchUpInside)
+        closeButton.addTarget(self, action: #selector(NotificationView.closeButtonPressed), forControlEvents: .TouchUpInside)
         addSubview(closeButton)
     }
 

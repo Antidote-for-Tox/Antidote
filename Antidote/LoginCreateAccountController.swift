@@ -108,7 +108,7 @@ extension LoginCreateAccountController: ExtendedTextFieldDelegate {
 
 private extension LoginCreateAccountController {
     func createGestureRecognizers() {
-        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnView")
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(LoginCreateAccountController.tapOnView))
         view.addGestureRecognizer(tapGR)
     }
 
@@ -147,7 +147,7 @@ private extension LoginCreateAccountController {
     func createGoButton() {
         goButton = RoundedButton(theme: theme, type: .Login)
         goButton.setTitle(String(localized: "create_account_go_button"), forState: .Normal)
-        goButton.addTarget(self, action: "goButtonPressed", forControlEvents: .TouchUpInside)
+        goButton.addTarget(self, action: #selector(LoginCreateAccountController.goButtonPressed), forControlEvents: .TouchUpInside)
         containerView.addSubview(goButton)
     }
 

@@ -141,7 +141,7 @@ extension LoginFormController: FullscreenPickerDelegate {
 
 private extension LoginFormController {
     func createGestureRecognizers() {
-        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnView")
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(LoginFormController.tapOnView))
         view.addGestureRecognizer(tapGR)
     }
 
@@ -159,7 +159,7 @@ private extension LoginFormController {
         formView.addSubview(profileFakeTextField)
 
         profileButton = UIButton()
-        profileButton.addTarget(self, action: "profileButtonPressed", forControlEvents:.TouchUpInside)
+        profileButton.addTarget(self, action: #selector(LoginFormController.profileButtonPressed), forControlEvents:.TouchUpInside)
         formView.addSubview(profileButton)
 
         passwordField = UITextField()
@@ -176,7 +176,7 @@ private extension LoginFormController {
     func createLoginButton() {
         loginButton = RoundedButton(theme: theme, type: .Login)
         loginButton.setTitle(String(localized:"log_in"), forState: .Normal)
-        loginButton.addTarget(self, action: "loginButtonPressed", forControlEvents: .TouchUpInside)
+        loginButton.addTarget(self, action: #selector(LoginFormController.loginButtonPressed), forControlEvents: .TouchUpInside)
         contentContainerView.addSubview(loginButton)
     }
 
@@ -187,7 +187,7 @@ private extension LoginFormController {
 
         createAccountButton = createDescriptionButtonWithTitle(
             String(localized: "create_profile"),
-            action: "createAccountButtonPressed")
+            action: #selector(LoginFormController.createAccountButtonPressed))
         bottomButtonsContainer.addSubview(createAccountButton)
 
         orLabel = UILabel()
@@ -198,7 +198,7 @@ private extension LoginFormController {
 
         importProfileButton = createDescriptionButtonWithTitle(
                 String(localized:"import_to_antidote"),
-                action: "importProfileButtonPressed")
+                action: #selector(LoginFormController.importProfileButtonPressed))
         bottomButtonsContainer.addSubview(importProfileButton)
     }
 

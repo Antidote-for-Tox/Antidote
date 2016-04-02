@@ -69,7 +69,7 @@ private extension QRViewerController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .Done,
                 target: self,
-                action: "closeButtonPressed")
+                action: #selector(QRViewerController.closeButtonPressed))
     }
 
     func createViews() {

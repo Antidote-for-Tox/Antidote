@@ -125,7 +125,7 @@ private extension PrimaryIpadController {
                 image: UIImage(named: "tab-bar-settings"),
                 style: .Plain,
                 target: self,
-                action: "settingsButtonPressed")
+                action: #selector(PrimaryIpadController.settingsButtonPressed))
     }
 
     func setupButtons() {

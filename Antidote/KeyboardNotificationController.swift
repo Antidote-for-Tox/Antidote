@@ -13,8 +13,8 @@ class KeyboardNotificationController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         let center = NSNotificationCenter.defaultCenter()
-        center.addObserver(self, selector: "keyboardWillShowNotification:", name: UIKeyboardWillShowNotification, object: nil)
-        center.addObserver(self, selector: "keyboardWillHideNotification:", name: UIKeyboardWillHideNotification, object: nil)
+        center.addObserver(self, selector: #selector(KeyboardNotificationController.keyboardWillShowNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        center.addObserver(self, selector: #selector(KeyboardNotificationController.keyboardWillHideNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
     }
 
     required convenience init?(coder aDecoder: NSCoder) {

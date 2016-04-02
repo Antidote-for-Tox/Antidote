@@ -128,7 +128,9 @@ private extension AppCoordinator {
         UINavigationBar.appearance().tintColor = linkTextColor
     }
 
-    func createRunningCoordinatorWithManager(var manager: OCTManager?) -> RunningCoordinator? {
+    func createRunningCoordinatorWithManager(manager: OCTManager?) -> RunningCoordinator? {
+        var manager = manager
+
         if manager == nil {
             manager = LoginCoordinator.loginWithActiveProfile()
         }

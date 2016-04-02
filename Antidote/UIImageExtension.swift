@@ -41,7 +41,9 @@ extension UIImage {
        return newImage
     }
 
-    func cropWithRect(var rect: CGRect) -> UIImage {
+    func cropWithRect(rect: CGRect) -> UIImage {
+        var rect = rect
+
         switch imageOrientation {
             case .Up:
                 fallthrough

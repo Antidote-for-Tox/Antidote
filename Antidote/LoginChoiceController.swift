@@ -58,8 +58,8 @@ private extension LoginChoiceController {
     }
 
     func createButtons() {
-        createAccountButton = createButtonWithTitle(String(localized:"create_account"), action: "createAccountButtonPressed")
-        importProfileButton = createButtonWithTitle(String(localized:"import_profile"), action: "importProfileButtonPressed")
+        createAccountButton = createButtonWithTitle(String(localized:"create_account"), action: #selector(LoginChoiceController.createAccountButtonPressed))
+        importProfileButton = createButtonWithTitle(String(localized:"import_profile"), action: #selector(LoginChoiceController.importProfileButtonPressed))
     }
 
     func installConstraints() {

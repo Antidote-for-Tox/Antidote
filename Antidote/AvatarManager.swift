@@ -32,7 +32,9 @@ class AvatarManager {
 
         - Returns: Avatar from given string with given size.
      */
-    func avatarFromString(var string: String, diameter: CGFloat, type: Type = .Normal) -> UIImage {
+    func avatarFromString(string: String, diameter: CGFloat, type: Type = .Normal) -> UIImage {
+        var string = string
+
         if string.isEmpty {
             string = "?"
         }

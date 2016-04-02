@@ -227,7 +227,7 @@ private extension FriendListController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .Add,
                 target: self,
-                action: "addFriendButtonPressed")
+                action: #selector(FriendListController.addFriendButtonPressed))
     }
 
     func updateViewsVisibility() {

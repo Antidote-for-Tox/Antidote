@@ -52,7 +52,7 @@ private extension iPadNavigationView {
         addSubview(label)
 
         button = UIButton()
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(iPadNavigationView.buttonPressed), forControlEvents: .TouchUpInside)
         addSubview(button)
     }
 

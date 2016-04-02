@@ -114,7 +114,7 @@ private extension TabBarBadgeItem {
 
         button = UIButton()
         button.backgroundColor = .clearColor()
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(TabBarBadgeItem.buttonPressed), forControlEvents: .TouchUpInside)
         addSubview(button)
     }
 

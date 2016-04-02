@@ -72,7 +72,9 @@ class AddFriendController: UIViewController {
 
 extension AddFriendController {
     func qrCodeButtonPressed() {
-        func prepareString(var string: String) -> String {
+        func prepareString(string: String) -> String {
+            var string = string
+
             string = string.uppercaseString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
 
             if string.hasPrefix("TOX:") {
@@ -165,7 +167,7 @@ private extension AddFriendController {
                 title: String(localized: "add_contact_send"),
                 style: .Done,
                 target: self,
-                action: "sendButtonPressed")
+                action: #selector(AddFriendController.sendButtonPressed))
     }
 
     func createViews() {
@@ -195,7 +197,7 @@ private extension AddFriendController {
         qrCodeButton = UIButton(type: .System)
         qrCodeButton.setTitle(String(localized: "add_contact_use_qr"), forState: .Normal)
         qrCodeButton.titleLabel!.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
-        qrCodeButton.addTarget(self, action: "qrCodeButtonPressed", forControlEvents: .TouchUpInside)
+        qrCodeButton.addTarget(self, action: #selector(AddFriendController.qrCodeButtonPressed), forControlEvents: .TouchUpInside)
         view.addSubview(qrCodeButton)
     }
 

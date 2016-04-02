@@ -63,8 +63,8 @@ private extension FriendRequestController {
         messageModel.userInteractionEnabled = false
 
         buttonsModel.buttons = [
-            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_decline"), style: .Negative, target: self, action: "declineButtonPressed"),
-            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_accept"), style: .Positive, target: self, action: "acceptButtonPressed"),
+            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_decline"), style: .Negative, target: self, action: #selector(FriendRequestController.declineButtonPressed)),
+            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_accept"), style: .Positive, target: self, action: #selector(FriendRequestController.acceptButtonPressed)),
         ]
     }
 }

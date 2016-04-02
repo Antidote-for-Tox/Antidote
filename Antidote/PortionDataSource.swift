@@ -88,12 +88,12 @@ extension PortionDataSource: RBQFetchedResultsControllerDelegate {
             newIndexPath: NSIndexPath?) {
         switch type {
             case .Insert:
-                currentLimit++
+                currentLimit += 1
                 guard newIndexPath!.row < currentLimit else { return }
 
                 delegate?.portionDataSourceInsertObjectAtIndexPath(newIndexPath!)
             case .Delete:
-                currentLimit--
+                currentLimit -= 1
                 guard indexPath!.row < currentLimit else { return }
 
                 delegate?.portionDataSourceDeleteObjectAtIndexPath(indexPath!)

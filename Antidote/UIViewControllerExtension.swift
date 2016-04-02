@@ -10,7 +10,7 @@ import UIKit
 
 extension UIViewController {
     func loadViewWithBackgroundColor(backgroundColor: UIColor) {
-        let frame = CGRect(origin: CGPointZero, size: UIScreen.mainScreen().applicationFrame.size)
+        let frame = CGRect(origin: CGPointZero, size: UIScreen.mainScreen().bounds.size)
 
         view = UIView(frame: frame)
         view.backgroundColor = backgroundColor

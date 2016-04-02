@@ -9,7 +9,9 @@
 import Foundation
 
 extension String {
-    init(var timeInterval: NSTimeInterval) {
+    init(timeInterval: NSTimeInterval) {
+        var timeInterval = timeInterval
+
         let hours = Int(timeInterval / 3600)
         timeInterval -= NSTimeInterval(hours * 3600)
 
@@ -72,7 +74,7 @@ extension String {
 
     subscript (r: Range<Int>) -> String {
         let start = startIndex.advancedBy(r.startIndex)
-            let end = start.advancedBy(r.endIndex - r.startIndex)
-            return self[Range(start: start, end: end)]
+        let end = start.advancedBy(r.endIndex - r.startIndex)
+        return self[start ..< end]
     }
 }

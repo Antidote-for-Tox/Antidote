@@ -70,7 +70,7 @@ private extension iPadFriendsButton {
         button.titleLabel?.font = UIFont.systemFontOfSize(18.0)
         button.setTitle(String(localized: "contacts_title"), forState: .Normal)
         button.setImage(UIImage(named: "tab-bar-friends"), forState: .Normal)
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(iPadFriendsButton.buttonPressed), forControlEvents: .TouchUpInside)
         addSubview(button)
     }
 

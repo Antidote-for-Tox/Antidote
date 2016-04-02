@@ -22,7 +22,7 @@ class CopyLabel: UILabel {
 
         userInteractionEnabled = true
 
-        recognizer = UITapGestureRecognizer(target: self, action: "tapGesture")
+        recognizer = UITapGestureRecognizer(target: self, action: #selector(CopyLabel.tapGesture))
         addGestureRecognizer(recognizer)
     }
 
@@ -53,7 +53,7 @@ extension CopyLabel {
     }
 
     override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
-        return action == "copy:"
+        return action == #selector(NSObject.copy(_:))
     }
 
     override func canBecomeFirstResponder() -> Bool {

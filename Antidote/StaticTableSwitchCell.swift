@@ -42,7 +42,7 @@ class StaticTableSwitchCell: StaticTableBaseCell {
         customContentView.addSubview(titleLabel)
 
         switchView = UISwitch()
-        switchView.addTarget(self, action: "switchValueChanged", forControlEvents: .ValueChanged)
+        switchView.addTarget(self, action: #selector(StaticTableSwitchCell.switchValueChanged), forControlEvents: .ValueChanged)
         customContentView.addSubview(switchView)
     }
 

@@ -59,7 +59,7 @@ private extension LoadingImageView {
         imageButton = UIButton()
         imageButton.layer.cornerRadius = 12.0
         imageButton.clipsToBounds = true
-        imageButton.addTarget(self, action: "imageButtonPressed", forControlEvents: .TouchUpInside)
+        imageButton.addTarget(self, action: #selector(LoadingImageView.imageButtonPressed), forControlEvents: .TouchUpInside)
         addSubview(imageButton)
 
         centerImageView = UIImageView()
