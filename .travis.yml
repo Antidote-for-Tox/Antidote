@@ -5,4 +5,16 @@ install:
   - ./install.sh
 
 script:
-  - xctool -workspace Antidote.xcworkspace -scheme Antidote -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6s' test
+  - xctool
+    -workspace Antidote.xcworkspace
+    -scheme Antidote
+    -sdk iphonesimulator
+    CODE_SIGNING_REQUIRED=NO
+    GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES
+    GCC_GENERATE_TEST_COVERAGE_FILES=YES
+    -destination 'platform=iOS Simulator,name=iPhone 6s'
+    clean
+    test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
