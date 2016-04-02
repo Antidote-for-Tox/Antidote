@@ -107,7 +107,7 @@ private extension ChatInputView {
         cameraButton = UIButton()
         cameraButton.setImage(cameraImage, forState: .Normal)
         cameraButton.tintColor = theme.colorForType(.LinkText)
-        cameraButton.addTarget(self, action: "cameraButtonPressed", forControlEvents: .TouchUpInside)
+        cameraButton.addTarget(self, action: #selector(ChatInputView.cameraButtonPressed), forControlEvents: .TouchUpInside)
         cameraButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
         addSubview(cameraButton)
 
@@ -125,7 +125,7 @@ private extension ChatInputView {
         sendButton = UIButton(type: .System)
         sendButton.setTitle(String(localized: "chat_send_button"), forState: .Normal)
         sendButton.titleLabel?.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
-        sendButton.addTarget(self, action: "sendButtonPressed", forControlEvents: .TouchUpInside)
+        sendButton.addTarget(self, action: #selector(ChatInputView.sendButtonPressed), forControlEvents: .TouchUpInside)
         sendButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
         addSubview(sendButton)
     }

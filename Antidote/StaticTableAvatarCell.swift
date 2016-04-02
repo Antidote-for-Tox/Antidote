@@ -39,7 +39,7 @@ class StaticTableAvatarCell: StaticTableBaseCell {
         button = UIButton()
         button.layer.cornerRadius = StaticTableAvatarCellModel.Constants.AvatarImageSize / 2
         button.layer.masksToBounds = true
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(StaticTableAvatarCell.buttonPressed), forControlEvents: .TouchUpInside)
         customContentView.addSubview(button)
     }
 

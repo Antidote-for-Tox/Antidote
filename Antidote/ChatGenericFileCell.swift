@@ -120,7 +120,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
         cancelButton = UIButton()
         cancelButton.setImage(cancelImage, forState: .Normal)
-        cancelButton.addTarget(self, action: "cancelButtonPressed", forControlEvents: .TouchUpInside)
+        cancelButton.addTarget(self, action: #selector(ChatGenericFileCell.cancelButtonPressed), forControlEvents: .TouchUpInside)
     }
 
     func updateProgress(progress: CGFloat) {

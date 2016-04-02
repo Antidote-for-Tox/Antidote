@@ -41,7 +41,7 @@ class ChatOutgoingCallCell: ChatMovableDateCell {
     override func createViews() {
         super.createViews()
 
-        var image = UIImage.templateNamed("start-call-small")
+        let image = UIImage.templateNamed("start-call-small")
 
         callImageView = UIImageView(image: image)
         movableContentView.addSubview(callImageView)

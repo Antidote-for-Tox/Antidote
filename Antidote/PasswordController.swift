@@ -147,7 +147,7 @@ private extension PasswordController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .Cancel,
                 target: self,
-                action: "cancelButtonPressed")
+                action: #selector(PasswordController.cancelButtonPressed))
     }
 
     func createViews() {
@@ -157,7 +157,7 @@ private extension PasswordController {
 
         button = RoundedButton(theme: theme, type: .RunningPositive)
         button.setTitle(String(localized: "change_password_done"), forState: .Normal)
-        button.addTarget(self, action: "buttonPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(PasswordController.buttonPressed), forControlEvents: .TouchUpInside)
         containerView.addSubview(button)
 
         switch type {

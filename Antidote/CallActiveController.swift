@@ -246,7 +246,7 @@ extension CallActiveController {
 
 private extension CallActiveController {
     func createGestureRecognizers() {
-        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnView")
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(CallActiveController.tapOnView))
         view.addGestureRecognizer(tapGR)
     }
 
@@ -262,7 +262,7 @@ private extension CallActiveController {
         switchCameraButton = UIButton()
         switchCameraButton.tintColor = theme.colorForType(.CallButtonIconColor)
         switchCameraButton.setImage(image, forState: .Normal)
-        switchCameraButton.addTarget(self, action: "switchCameraButtonPressed", forControlEvents: .TouchUpInside)
+        switchCameraButton.addTarget(self, action: #selector(CallActiveController.switchCameraButtonPressed), forControlEvents: .TouchUpInside)
         videoPreviewView.addSubview(switchCameraButton)
     }
 
@@ -275,10 +275,10 @@ private extension CallActiveController {
         bigCenterContainer.backgroundColor = .clearColor()
         bigContainerView.addSubview(bigCenterContainer)
 
-        bigMuteButton = addButtonWithType(.Mute, buttonSize: .Big, action: "muteButtonPressed:", container: bigCenterContainer)
-        bigSpeakerButton = addButtonWithType(.Speaker, buttonSize: .Big, action: "speakerButtonPressed:", container: bigCenterContainer)
-        bigVideoButton = addButtonWithType(.Video, buttonSize: .Big, action: "videoButtonPressed:", container: bigCenterContainer)
-        bigDeclineButton = addButtonWithType(.Decline, buttonSize: .Small, action: "declineButtonPressed", container: bigContainerView)
+        bigMuteButton = addButtonWithType(.Mute, buttonSize: .Big, action: #selector(CallActiveController.muteButtonPressed(_:)), container: bigCenterContainer)
+        bigSpeakerButton = addButtonWithType(.Speaker, buttonSize: .Big, action: #selector(CallActiveController.speakerButtonPressed(_:)), container: bigCenterContainer)
+        bigVideoButton = addButtonWithType(.Video, buttonSize: .Big, action: #selector(CallActiveController.videoButtonPressed(_:)), container: bigCenterContainer)
+        bigDeclineButton = addButtonWithType(.Decline, buttonSize: .Small, action: #selector(CallActiveController.declineButtonPressed), container: bigContainerView)
     }
 
     func createSmallViews() {
@@ -286,10 +286,10 @@ private extension CallActiveController {
         smallContainerView.backgroundColor = .clearColor()
         view.addSubview(smallContainerView)
 
-        smallMuteButton = addButtonWithType(.Mute, buttonSize: .Small, action: "muteButtonPressed:", container: smallContainerView)
-        smallSpeakerButton = addButtonWithType(.Speaker, buttonSize: .Small, action: "speakerButtonPressed:", container: smallContainerView)
-        smallVideoButton = addButtonWithType(.Video, buttonSize: .Small, action: "videoButtonPressed:", container: smallContainerView)
-        smallDeclineButton = addButtonWithType(.Decline, buttonSize: .Small, action: "declineButtonPressed", container: smallContainerView)
+        smallMuteButton = addButtonWithType(.Mute, buttonSize: .Small, action: #selector(CallActiveController.muteButtonPressed(_:)), container: smallContainerView)
+        smallSpeakerButton = addButtonWithType(.Speaker, buttonSize: .Small, action: #selector(CallActiveController.speakerButtonPressed(_:)), container: smallContainerView)
+        smallVideoButton = addButtonWithType(.Video, buttonSize: .Small, action: #selector(CallActiveController.videoButtonPressed(_:)), container: smallContainerView)
+        smallDeclineButton = addButtonWithType(.Decline, buttonSize: .Small, action: #selector(CallActiveController.declineButtonPressed), container: smallContainerView)
     }
 
     func addButtonWithType(type: CallButton.ButtonType, buttonSize: CallButton.ButtonSize, action: Selector, container: UIView) -> CallButton {

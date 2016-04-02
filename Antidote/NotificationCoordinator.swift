@@ -64,7 +64,7 @@ class NotificationCoordinator: NSObject {
         requestsController.delegate = self
         requestsController.performFetch()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "applicationDidBecomeActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NotificationCoordinator.applicationDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
     deinit {
@@ -360,7 +360,7 @@ private extension NotificationCoordinator {
             }
 
             if chat.hasUnreadMessages() {
-                badge++
+                badge += 1
             }
         }
 

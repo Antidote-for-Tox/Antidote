@@ -20,7 +20,7 @@ extension NSTimer {
     static func scheduledTimerWithTimeInterval(interval: NSTimeInterval, block: NSTimer -> Void, repeats: Bool) -> NSTimer {
         let userInfo = BlockWrapper(block: block)
 
-        return scheduledTimerWithTimeInterval(interval, target: self, selector: "executeBlock:", userInfo: userInfo, repeats: repeats)
+        return scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(NSTimer.executeBlock(_:)), userInfo: userInfo, repeats: repeats)
     }
 
     static func executeBlock(timer: NSTimer) {

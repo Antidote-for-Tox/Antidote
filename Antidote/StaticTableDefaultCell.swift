@@ -131,7 +131,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         customContentView.addSubview(valueLabel)
 
         rightButton = UIButton()
-        rightButton.addTarget(self, action: "rightButtonPressed", forControlEvents: .TouchUpInside)
+        rightButton.addTarget(self, action: #selector(StaticTableDefaultCell.rightButtonPressed), forControlEvents: .TouchUpInside)
         customContentView.addSubview(rightButton)
 
         rightImageView = UIImageView()

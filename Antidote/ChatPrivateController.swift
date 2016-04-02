@@ -104,7 +104,7 @@ class ChatPrivateController: KeyboardNotificationController {
 
         NSNotificationCenter.defaultCenter().addObserver(
                 self,
-                selector: "applicationDidBecomeActive",
+                selector: #selector(ChatPrivateController.applicationDidBecomeActive),
                 name: UIApplicationDidBecomeActiveNotification,
                 object: nil)
     }
@@ -492,8 +492,8 @@ private extension ChatPrivateController {
         let audioImage = UIImage(named: "start-call-medium")!
         let videoImage = UIImage(named: "video-call-medium")!
 
-        audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: "audioCallButtonPressed")
-        videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: "videoCallButtonPressed")
+        audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: #selector(ChatPrivateController.audioCallButtonPressed))
+        videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: #selector(ChatPrivateController.videoCallButtonPressed))
 
         navigationItem.rightBarButtonItems = [
             audioButton,
@@ -522,10 +522,10 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatIncomingFileCell.self, forCellReuseIdentifier: ChatIncomingFileCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingFileCell.self, forCellReuseIdentifier: ChatOutgoingFileCell.staticReuseIdentifier)
 
-        let tapGR = UITapGestureRecognizer(target: self, action: "tapOnTableView")
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(ChatPrivateController.tapOnTableView))
         tableView.addGestureRecognizer(tapGR)
 
-        let panGR = UIPanGestureRecognizer(target: self, action: "panOnTableView:")
+        let panGR = UIPanGestureRecognizer(target: self, action: #selector(ChatPrivateController.panOnTableView(_:)))
         panGR.delegate = self
         tableView.addGestureRecognizer(panGR)
     }
@@ -546,7 +546,7 @@ private extension ChatPrivateController {
         newMessagesView.addSubview(label)
 
         let button = UIButton()
-        button.addTarget(self, action: "newMessagesViewPressed", forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(ChatPrivateController.newMessagesViewPressed), forControlEvents: .TouchUpInside)
         newMessagesView.addSubview(button)
 
         label.snp_makeConstraints {

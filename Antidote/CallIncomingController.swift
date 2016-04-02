@@ -80,15 +80,15 @@ private extension CallIncomingController {
         view.addSubview(buttonContainer)
 
         declineButton = CallButton(theme: theme, type: .Decline, buttonSize: .Small)
-        declineButton.addTarget(self, action: "declineButtonPressed", forControlEvents: .TouchUpInside)
+        declineButton.addTarget(self, action: #selector(CallIncomingController.declineButtonPressed), forControlEvents: .TouchUpInside)
         buttonContainer.addSubview(declineButton)
 
         audioButton = CallButton(theme: theme, type: .AnswerAudio, buttonSize: .Small)
-        audioButton.addTarget(self, action: "audioButtonPressed", forControlEvents: .TouchUpInside)
+        audioButton.addTarget(self, action: #selector(CallIncomingController.audioButtonPressed), forControlEvents: .TouchUpInside)
         buttonContainer.addSubview(audioButton)
 
         videoButton = CallButton(theme: theme, type: .AnswerVideo, buttonSize: .Small)
-        videoButton.addTarget(self, action: "videoButtonPressed", forControlEvents: .TouchUpInside)
+        videoButton.addTarget(self, action: #selector(CallIncomingController.videoButtonPressed), forControlEvents: .TouchUpInside)
         buttonContainer.addSubview(videoButton)
     }
 
