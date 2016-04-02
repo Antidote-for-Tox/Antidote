@@ -17,6 +17,14 @@ private struct Constants {
 }
 
 class ChatOutgoingFileCell: ChatGenericFileCell {
+    override func setButtonImage(image: UIImage) {
+        super.setButtonImage(image)
+
+        if state == .Cancelled {
+            loadingView.centerImageView.image = nil
+        }
+    }
+
     override func createViews() {
         super.createViews()
 
