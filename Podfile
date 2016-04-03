@@ -17,4 +17,5 @@ end
 
 target :AntidoteTests do
     common_pods
+    pod 'FBSnapshotTestCase/Core'
 end

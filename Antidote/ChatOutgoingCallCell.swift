@@ -13,6 +13,7 @@ private struct Constants {
     static let RightOffset = -20.0
     static let ImageViewToLabelOffset = -5.0
     static let ImageViewYOffset = -1.0
+    static let VerticalOffset = 8.0
 }
 
 class ChatOutgoingCallCell: ChatMovableDateCell {
@@ -60,7 +61,8 @@ class ChatOutgoingCallCell: ChatMovableDateCell {
         }
 
         label.snp_makeConstraints {
-            $0.centerY.equalTo(movableContentView)
+            $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
+            $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
             $0.right.equalTo(movableContentView).offset(Constants.RightOffset)
         }
     }
