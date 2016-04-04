@@ -124,7 +124,7 @@ private extension ChatInputView {
 
         sendButton = UIButton(type: .System)
         sendButton.setTitle(String(localized: "chat_send_button"), forState: .Normal)
-        sendButton.titleLabel?.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
+        sendButton.titleLabel?.font = UIFont.antidoteFontWithSize(16.0, weight: .Bold)
         sendButton.addTarget(self, action: #selector(ChatInputView.sendButtonPressed), forControlEvents: .TouchUpInside)
         sendButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
         addSubview(sendButton)

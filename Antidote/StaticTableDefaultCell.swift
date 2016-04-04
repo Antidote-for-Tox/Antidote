@@ -120,13 +120,13 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         customContentView.addSubview(userStatusView)
 
         titleLabel = UILabel()
-        titleLabel.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightLight)
+        titleLabel.font = UIFont.antidoteFontWithSize(17.0, weight: .Light)
         titleLabel.backgroundColor = UIColor.clearColor()
         customContentView.addSubview(titleLabel)
 
         valueLabel = CopyLabel()
         valueLabel.numberOfLines = 0
-        valueLabel.font = UIFont.systemFontOfSize(17.0, weight: UIFontWeightRegular)
+        valueLabel.font = UIFont.systemFontOfSize(17.0)
         valueLabel.backgroundColor = UIColor.clearColor()
         customContentView.addSubview(valueLabel)
 

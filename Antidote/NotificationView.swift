@@ -75,7 +75,7 @@ private extension NotificationView {
         bottomLabel = UILabel()
         bottomLabel.textColor = theme.colorForType(.NotificationText)
         bottomLabel.backgroundColor = .clearColor()
-        bottomLabel.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightLight)
+        bottomLabel.font = UIFont.antidoteFontWithSize(16.0, weight: .Light)
         addSubview(bottomLabel)
 
         fullSizeButton = UIButton()

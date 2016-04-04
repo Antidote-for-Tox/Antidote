@@ -146,7 +146,7 @@ private extension ExtendedTextField {
 
         hintLabel = UILabel()
         hintLabel.textColor = textColor
-        hintLabel.font = UIFont.systemFontOfSize(14.0, weight: UIFontWeightLight)
+        hintLabel.font = UIFont.antidoteFontWithSize(14.0, weight: .Light)
         hintLabel.numberOfLines = 0
         hintLabel.backgroundColor = .clearColor()
         addSubview(hintLabel)

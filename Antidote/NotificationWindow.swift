@@ -127,7 +127,7 @@ private extension NotificationWindow {
         label.backgroundColor = .clearColor()
         label.text = String(localized: "connecting_label")
         label.textAlignment = .Center
-        label.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
+        label.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         connectingView!.addSubview(label)
 
         label.alpha = 0.0

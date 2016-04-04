@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Changed
+- Returned back iOS 8.0 support.
 
 ## [0.10.2] - 2016-03-31
 ### Added
@@ -20,7 +22,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - iPad support.
 - Russian translation.
 
-### Changes
+### Changed
 - Antidote fully rewritten in Swift.
 - objcTox updated to version 0.6.0.
 - Dropped 7.0 support.
@@ -36,7 +38,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Encrypted profiles support (login with encrypted profile, change/remove password).
 - Status change support.
 
-### Changes
+### Changed
 - Icon updated.
 - Launch image updated.
 - objcTox updated to version 0.3.0.

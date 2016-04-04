@@ -196,7 +196,7 @@ private extension AddFriendController {
 
         qrCodeButton = UIButton(type: .System)
         qrCodeButton.setTitle(String(localized: "add_contact_use_qr"), forState: .Normal)
-        qrCodeButton.titleLabel!.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
+        qrCodeButton.titleLabel!.font = UIFont.antidoteFontWithSize(16.0, weight: .Bold)
         qrCodeButton.addTarget(self, action: #selector(AddFriendController.qrCodeButtonPressed), forControlEvents: .TouchUpInside)
         view.addSubview(qrCodeButton)
     }

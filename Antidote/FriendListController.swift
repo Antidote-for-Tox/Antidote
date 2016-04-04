@@ -268,7 +268,7 @@ private extension FriendListController {
         let fullRange = NSRange(location: 0, length: text.length)
 
         text.addAttribute(NSForegroundColorAttributeName, value: theme.colorForType(.EmptyScreenPlaceholderText), range: fullRange)
-        text.addAttribute(NSFontAttributeName, value: UIFont.systemFontOfSize(26.0, weight: UIFontWeightLight), range: fullRange)
+        text.addAttribute(NSFontAttributeName, value: UIFont.antidoteFontWithSize(26.0, weight: .Light), range: fullRange)
         text.addAttribute(NSLinkAttributeName, value: "", range: linkRange)
 
         placeholderView = UITextView()

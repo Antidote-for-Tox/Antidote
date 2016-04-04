@@ -55,7 +55,7 @@ class ChatMovableDateCell: BaseCell {
         contentView.addSubview(movableContentView)
 
         dateLabel = UILabel()
-        dateLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
+        dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         movableContentView.addSubview(dateLabel)
     }
 

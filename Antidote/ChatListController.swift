@@ -94,7 +94,7 @@ private extension ChatListController {
         placeholderLabel = UILabel()
         placeholderLabel.text = String(localized: "chat_no_chats")
         placeholderLabel.textColor = theme.colorForType(.EmptyScreenPlaceholderText)
-        placeholderLabel.font = UIFont.systemFontOfSize(26.0, weight: UIFontWeightLight)
+        placeholderLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .Light)
         view.addSubview(placeholderLabel)
     }
 

@@ -60,7 +60,7 @@ private extension ChatPrivateTitleView {
         nameLabel = UILabel()
         nameLabel.textAlignment = .Center
         nameLabel.textColor = theme.colorForType(.NormalText)
-        nameLabel.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightBold)
+        nameLabel.font = UIFont.antidoteFontWithSize(16.0, weight: .Bold)
         addSubview(nameLabel)
 
         statusView = UserStatusView()
@@ -71,7 +71,7 @@ private extension ChatPrivateTitleView {
         statusLabel = UILabel()
         statusLabel.textAlignment = .Center
         statusLabel.textColor = theme.colorForType(.NormalText)
-        statusLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
+        statusLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         addSubview(statusLabel)
     }
 
