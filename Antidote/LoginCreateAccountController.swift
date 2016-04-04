@@ -121,7 +121,7 @@ private extension LoginCreateAccountController {
     func createTitleLabel() {
         titleLabel = UILabel()
         titleLabel.textColor = theme.colorForType(.LoginButtonText)
-        titleLabel.font = UIFont.systemFontOfSize(26.0, weight: UIFontWeightLight)
+        titleLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .Light)
         titleLabel.backgroundColor = .clearColor()
         containerView.addSubview(titleLabel)
     }

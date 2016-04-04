@@ -48,7 +48,7 @@ class ChatIncomingCallCell: ChatMovableDateCell {
         contentView.addSubview(callImageView)
 
         label = UILabel()
-        label.font = UIFont.systemFontOfSize(16.0, weight: UIFontWeightLight)
+        label.font = UIFont.antidoteFontWithSize(16.0, weight: .Light)
         contentView.addSubview(label)
     }
 

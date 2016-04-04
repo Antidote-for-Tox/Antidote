@@ -13,7 +13,6 @@ class AudioPlayer {
     enum Sound: String {
         case Calltone = "isotoxin_Calltone"
         case Hangup = "isotoxin_Hangup"
-        case NewMessage = "isotoxin_NewMessage"
         case Ringtone = "isotoxin_Ringtone"
         case RingtoneWhileCall = "isotoxin_RingtoneWhileCall"
     }

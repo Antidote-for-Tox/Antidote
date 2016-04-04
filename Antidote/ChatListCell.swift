@@ -72,7 +72,7 @@ class ChatListCell: BaseCell {
         contentView.addSubview(messageLabel)
 
         dateLabel = UILabel()
-        dateLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
+        dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         contentView.addSubview(dateLabel)
 
         let image = UIImage(named: "right-arrow")!

@@ -83,14 +83,14 @@ private extension AvatarManager {
         repeat {
             fontSize--
 
-            let font = UIFont.systemFontOfSize(fontSize, weight: UIFontWeightLight)
+            let font = UIFont.antidoteFontWithSize(fontSize, weight: .Light)
             size = avatarString.stringSizeWithFont(font)
         }
         while (max(size.width, size.height) > diameter)
 
         let frame = CGRect(x: 0, y: 0, width: diameter, height: diameter)
 
-        label.font = UIFont.systemFontOfSize(fontSize * 0.6, weight: UIFontWeightLight)
+        label.font = UIFont.antidoteFontWithSize(fontSize * 0.6, weight: .Light)
         label.layer.cornerRadius = frame.size.width / 2
         label.frame = frame
 

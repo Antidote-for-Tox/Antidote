@@ -10,32 +10,38 @@ import UIKit
 import SnapKit
 
 private struct Constants {
-    static let LabelMinWidth = 5.0
-    static let LabelMaxWidth = 260.0
-    static let LabelMinHeight = 10.0
+    static let TextViewMinWidth = 5.0
+    static let TextViewMaxWidth = 260.0
+    static let TextViewMinHeight = 10.0
 
-    static let LabelVerticalOffset = 7.0
-    static let LabelHorizontalOffset = 10.0
+    static let TextViewVerticalOffset = 1.0
+    static let TextViewHorizontalOffset = 5.0
 }
 
 class BubbleView: UIView {
-    private var label: CopyLabel!
+    private var textView: UITextView!
 
     var text: String? {
         get {
-            return label.text
+            return textView.text
         }
         set {
-            label.text = newValue
+            textView.text = newValue
         }
     }
 
     var textColor: UIColor {
         get {
-            return label.textColor
+            return textView.textColor!
         }
         set {
-            label.textColor = newValue
+            textView.textColor = newValue
+        }
+    }
+
+    override var tintColor: UIColor! {
+        didSet {
+            textView.tintColor = tintColor
         }
     }
 
@@ -45,20 +51,23 @@ class BubbleView: UIView {
         layer.cornerRadius = 12.0
         layer.masksToBounds = true
 
-        label = CopyLabel()
-        label.font = UIFont.systemFontOfSize(16.0)
-        label.numberOfLines = 0
-        addSubview(label)
+        textView = UITextView()
+        textView.backgroundColor = .clearColor()
+        textView.editable = false
+        textView.scrollEnabled = false
+        textView.dataDetectorTypes = .All
+        textView.font = UIFont.systemFontOfSize(16.0)
+        addSubview(textView)
 
-        label.snp_makeConstraints {
-            $0.top.equalTo(self).offset(Constants.LabelVerticalOffset)
-            $0.bottom.equalTo(self).offset(-Constants.LabelVerticalOffset)
-            $0.left.equalTo(self).offset(Constants.LabelHorizontalOffset)
-            $0.right.equalTo(self).offset(-Constants.LabelHorizontalOffset)
+        textView.snp_makeConstraints {
+            $0.top.equalTo(self).offset(Constants.TextViewVerticalOffset)
+            $0.bottom.equalTo(self).offset(-Constants.TextViewVerticalOffset)
+            $0.left.equalTo(self).offset(Constants.TextViewHorizontalOffset)
+            $0.right.equalTo(self).offset(-Constants.TextViewHorizontalOffset)
 
-            $0.width.greaterThanOrEqualTo(Constants.LabelMinWidth)
-            $0.width.lessThanOrEqualTo(Constants.LabelMaxWidth)
-            $0.height.greaterThanOrEqualTo(Constants.LabelMinHeight)
+            $0.width.greaterThanOrEqualTo(Constants.TextViewMinWidth)
+            $0.width.lessThanOrEqualTo(Constants.TextViewMaxWidth)
+            $0.height.greaterThanOrEqualTo(Constants.TextViewMinHeight)
         }
     }
 

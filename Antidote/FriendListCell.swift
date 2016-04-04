@@ -60,7 +60,7 @@ class FriendListCell: BaseCell {
         contentView.addSubview(topLabel)
 
         bottomLabel = UILabel()
-        bottomLabel.font = UIFont.systemFontOfSize(12.0, weight: UIFontWeightLight)
+        bottomLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         contentView.addSubview(bottomLabel)
 
         let image = UIImage(named: "right-arrow")!

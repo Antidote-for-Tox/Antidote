@@ -60,7 +60,7 @@ private extension iPadFriendsButton {
         badgeLabel.textColor = theme.colorForType(.TabBadgeText)
         badgeLabel.textAlignment = .Center
         badgeLabel.backgroundColor = .clearColor()
-        badgeLabel.font = UIFont.systemFontOfSize(14.0, weight: UIFontWeightLight)
+        badgeLabel.font = UIFont.antidoteFontWithSize(14.0, weight: .Light)
         badgeContainer.addSubview(badgeLabel)
 
         button = UIButton(type: .System)

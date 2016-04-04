@@ -84,7 +84,7 @@ private extension CallBaseController {
         infoLabel = UILabel()
         infoLabel.textColor = theme.colorForType(.CallTextColor)
         infoLabel.textAlignment = .Center
-        infoLabel.font = UIFont.systemFontOfSize(18.0, weight: UIFontWeightLight)
+        infoLabel.font = UIFont.antidoteFontWithSize(18.0, weight: .Light)
         topContainer.addSubview(infoLabel)
     }
 
