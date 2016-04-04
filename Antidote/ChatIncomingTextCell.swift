@@ -28,8 +28,8 @@ class ChatIncomingTextCell: ChatMovableDateCell {
 
         bubbleView.text = incomingModel.message
         bubbleView.textColor = theme.colorForType(.NormalText)
+        bubbleView.tintColor = theme.colorForType(.LinkText)
         bubbleView.backgroundColor = theme.colorForType(.ChatIncomingBubble)
-
     }
 
     override func createViews() {
