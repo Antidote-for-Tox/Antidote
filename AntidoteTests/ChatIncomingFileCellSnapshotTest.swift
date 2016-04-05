@@ -27,7 +27,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testLoading() {
@@ -46,7 +46,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         progressObject.updateProgress?(progress: 0.43)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testPaused() {
@@ -65,7 +65,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         progressObject.updateProgress?(progress: 0.43)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testCancelled() {
@@ -79,7 +79,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testDone() {
@@ -93,7 +93,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testDoneWithImage() {
@@ -108,6 +108,6 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         cell.setButtonImage(image)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 }

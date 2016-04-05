@@ -28,7 +28,7 @@ class ChatListCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testLongMessage() {
@@ -44,7 +44,7 @@ class ChatListCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testUnread() {
@@ -60,6 +60,7 @@ class ChatListCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 }
+

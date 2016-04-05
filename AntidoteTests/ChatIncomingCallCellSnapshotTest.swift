@@ -24,7 +24,7 @@ class ChatIncomingCallCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testNonAnsweredCall() {
@@ -36,6 +36,6 @@ class ChatIncomingCallCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 }

@@ -23,7 +23,7 @@ class ChatMovableDateCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testPanned() {
@@ -35,6 +35,6 @@ class ChatMovableDateCellSnapshotTest: CellSnapshotTest {
 
         updateCellLayout(cell)
         cell.movableOffset = -200.0
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 }
