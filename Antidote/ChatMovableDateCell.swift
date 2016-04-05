@@ -17,17 +17,25 @@ class ChatMovableDateCell: BaseCell {
 
     var movableOffset: CGFloat = 0 {
         didSet {
-            if movableOffset > 0.0 {
-                movableOffset = 0.0
+            var offset = movableOffset
+
+            if #available(iOS 9.0, *) {
+                if UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(self.semanticContentAttribute) == .RightToLeft {
+                    offset = -offset
+                }
+            }
+
+            if offset > 0.0 {
+                offset = 0.0
             }
 
             let minOffset = -dateLabel.frame.size.width - 5.0
 
-            if movableOffset < minOffset {
-                movableOffset = minOffset
+            if offset < minOffset {
+                offset = minOffset
             }
 
-            movableContentViewLeftConstraint.updateOffset(movableOffset)
+            movableContentViewLeftConstraint.updateOffset(offset)
             layoutIfNeeded()
         }
     }
