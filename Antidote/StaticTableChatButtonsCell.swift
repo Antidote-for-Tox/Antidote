@@ -71,11 +71,11 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
                 }
 
                 if index == 0 {
-                    $0.left.equalTo(customContentView)
+                    $0.leading.equalTo(customContentView)
                 }
 
                 if index == (separators.count-1) {
-                    $0.right.equalTo(customContentView)
+                    $0.trailing.equalTo(customContentView)
                 }
             }
 
@@ -87,8 +87,8 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
                 $0.top.equalTo(customContentView).offset(Constants.VerticalOffset)
                 $0.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
 
-                $0.left.equalTo(separators[index].snp_right)
-                $0.right.equalTo(separators[index+1].snp_left)
+                $0.leading.equalTo(separators[index].snp_trailing)
+                $0.trailing.equalTo(separators[index+1].snp_leading)
 
                 $0.size.equalTo(Constants.ButtonSize)
             }

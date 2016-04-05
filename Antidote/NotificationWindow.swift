@@ -137,7 +137,7 @@ private extension NotificationWindow {
 
         connectingView!.snp_makeConstraints {
             connectingViewTopConstraint = $0.top.equalTo(self).constraint
-            $0.left.right.equalTo(self)
+            $0.leading.trailing.equalTo(self)
             $0.height.equalTo(UIApplication.sharedApplication().statusBarFrame.size.height)
         }
 
@@ -154,7 +154,7 @@ private extension NotificationWindow {
 
         notificationContainer.snp_makeConstraints {
             $0.top.equalTo(connectingView.snp_bottom)
-            $0.left.right.equalTo(self)
+            $0.leading.trailing.equalTo(self)
             $0.height.equalTo(Constants.NotificationContainerHeight)
         }
     }
@@ -169,7 +169,7 @@ private extension NotificationWindow {
 
         view.snp_makeConstraints {
             topConstraint = $0.top.equalTo(notificationContainer).offset(-Constants.NotificationContainerHeight).constraint
-            $0.left.right.equalTo(notificationContainer)
+            $0.leading.trailing.equalTo(notificationContainer)
             $0.height.equalTo(notificationContainer)
         }
         notificationContainer.layoutIfNeeded()

@@ -64,7 +64,7 @@ class StaticTableInfoCell: StaticTableBaseCell {
         customContentView.addSubview(valueLabel)
 
         arrowImageView = UIImageView()
-        arrowImageView.image = UIImage(named: "right-arrow")!
+        arrowImageView.image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
         customContentView.addSubview(arrowImageView)
     }
 
@@ -73,22 +73,22 @@ class StaticTableInfoCell: StaticTableBaseCell {
 
         titleLabel.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.left.equalTo(customContentView)
+            $0.leading.equalTo(customContentView)
         }
 
         valueLabel.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.left.greaterThanOrEqualTo(titleLabel.snp_right)
-            valueLabelToContentRightConstraint = $0.right.equalTo(customContentView).constraint
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp_trailing)
+            valueLabelToContentRightConstraint = $0.trailing.equalTo(customContentView).constraint
         }
 
         valueLabelToContentRightConstraint.deactivate()
 
         arrowImageView.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.right.equalTo(customContentView)
+            $0.trailing.equalTo(customContentView)
 
-            valueLabelToArrowConstraint = $0.left.greaterThanOrEqualTo(valueLabel.snp_right).offset(Constants.ValueToArrowOffset).constraint
+            valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp_trailing).offset(Constants.ValueToArrowOffset).constraint
         }
 
         valueLabelToArrowConstraint.deactivate()

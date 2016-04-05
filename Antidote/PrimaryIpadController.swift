@@ -152,13 +152,13 @@ private extension PrimaryIpadController {
     func installConstraints() {
         friendsButton.snp_makeConstraints {
             $0.top.equalTo(view)
-            $0.left.right.equalTo(view)
+            $0.leading.trailing.equalTo(view)
             $0.height.equalTo(60.0)
         }
 
         tableManager.tableView.snp_makeConstraints {
             $0.top.equalTo(friendsButton.snp_bottom)
-            $0.left.right.bottom.equalTo(view)
+            $0.leading.trailing.bottom.equalTo(view)
         }
     }
 }

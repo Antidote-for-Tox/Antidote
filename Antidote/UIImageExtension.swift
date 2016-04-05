@@ -80,4 +80,11 @@ extension UIImage {
         let imageRef = CGImageCreateWithImageInRect(self.CGImage, rect)!
         return UIImage(CGImage: imageRef, scale: scale, orientation: imageOrientation)
     }
+
+    func flippedToCorrectLayout() -> UIImage {
+        if #available(iOS 9.0, *) {
+            return imageFlippedForRightToLeftLayoutDirection()
+        }
+        return self
+    }
 }

@@ -136,15 +136,15 @@ private extension TabBarBadgeItem {
         }
 
         badgeContainer.snp_makeConstraints {
-            $0.left.equalTo(imageAndTextContainer.snp_left)
+            $0.leading.equalTo(imageAndTextContainer.snp_leading)
             $0.top.equalTo(imageAndTextContainer.snp_top).offset(Constants.BadgeTopOffset)
             $0.width.greaterThanOrEqualTo(Constants.BadgeMinimumWidth)
             $0.height.equalTo(Constants.BadgeHeight)
         }
 
         badgeLabel.snp_makeConstraints {
-            $0.left.equalTo(badgeContainer).offset(Constants.BadgeHorizontalOffset)
-            $0.right.equalTo(badgeContainer).offset(-Constants.BadgeHorizontalOffset)
+            $0.leading.equalTo(badgeContainer).offset(Constants.BadgeHorizontalOffset)
+            $0.trailing.equalTo(badgeContainer).offset(-Constants.BadgeHorizontalOffset)
             $0.centerY.equalTo(badgeContainer)
         }
 

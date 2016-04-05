@@ -91,20 +91,20 @@ private extension CallBaseController {
     func installConstraints() {
         topContainer.snp_makeConstraints {
             topContainerTopConstraint = $0.top.equalTo(view).constraint
-            $0.top.left.right.equalTo(view)
+            $0.top.leading.trailing.equalTo(view)
             $0.height.equalTo(Constants.TopContainerHeight)
         }
 
         callerLabel.snp_makeConstraints {
             $0.top.equalTo(topContainer).offset(Constants.CallerLabelTopOffset)
-            $0.left.equalTo(topContainer).offset(Constants.LabelHorizontalOffset)
-            $0.right.equalTo(topContainer).offset(-Constants.LabelHorizontalOffset)
+            $0.leading.equalTo(topContainer).offset(Constants.LabelHorizontalOffset)
+            $0.trailing.equalTo(topContainer).offset(-Constants.LabelHorizontalOffset)
         }
 
         infoLabel.snp_makeConstraints {
             $0.bottom.equalTo(topContainer).offset(Constants.InfoLabelBottomOffset)
-            $0.left.equalTo(topContainer).offset(Constants.LabelHorizontalOffset)
-            $0.right.equalTo(topContainer).offset(-Constants.LabelHorizontalOffset)
+            $0.leading.equalTo(topContainer).offset(Constants.LabelHorizontalOffset)
+            $0.trailing.equalTo(topContainer).offset(-Constants.LabelHorizontalOffset)
         }
     }
 }

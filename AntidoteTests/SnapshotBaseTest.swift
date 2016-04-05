@@ -26,4 +26,23 @@ class SnapshotBaseTest: FBSnapshotTestCase {
 
         theme = try! Theme(yamlString: yamlString)
     }
+
+    func verifyView(view: UIView) {
+        FBSnapshotVerifyView(view, identifier: "normal")
+
+        view.forceRightToLeft()
+        FBSnapshotVerifyView(view, identifier: "right-to-left")
+    }
+}
+
+private extension UIView {
+    func forceRightToLeft() {
+        if #available(iOS 9.0, *) {
+            semanticContentAttribute = .ForceRightToLeft
+        }
+
+        for view in subviews {
+            view.forceRightToLeft()
+        }
+    }
 }

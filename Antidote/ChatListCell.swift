@@ -75,7 +75,8 @@ class ChatListCell: BaseCell {
         dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         contentView.addSubview(dateLabel)
 
-        let image = UIImage(named: "right-arrow")!
+        let image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
+
         arrowImageView = UIImageView(image: image)
         arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
         contentView.addSubview(arrowImageView)
@@ -85,35 +86,35 @@ class ChatListCell: BaseCell {
         super.installConstraints()
 
         avatarView.snp_makeConstraints {
-            $0.left.equalTo(contentView).offset(Constants.AvatarLeftOffset)
+            $0.leading.equalTo(contentView).offset(Constants.AvatarLeftOffset)
             $0.centerY.equalTo(contentView)
             $0.size.equalTo(Constants.AvatarSize)
         }
 
         nicknameLabel.snp_makeConstraints {
-            $0.left.equalTo(avatarView.snp_right).offset(Constants.AvatarRightOffset)
+            $0.leading.equalTo(avatarView.snp_trailing).offset(Constants.AvatarRightOffset)
             $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
             $0.height.equalTo(Constants.NicknameLabelHeight)
         }
 
         messageLabel.snp_makeConstraints {
-            $0.left.equalTo(nicknameLabel)
-            $0.right.equalTo(contentView).offset(Constants.RightOffset)
+            $0.leading.equalTo(nicknameLabel)
+            $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
             $0.top.equalTo(nicknameLabel.snp_bottom)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
             $0.height.equalTo(Constants.MessageLabelHeight)
         }
 
         dateLabel.snp_makeConstraints {
-            $0.left.greaterThanOrEqualTo(nicknameLabel.snp_right).offset(Constants.NicknameToDateMinOffset)
+            $0.leading.greaterThanOrEqualTo(nicknameLabel.snp_trailing).offset(Constants.NicknameToDateMinOffset)
             $0.top.equalTo(nicknameLabel)
             $0.height.equalTo(nicknameLabel)
         }
 
         arrowImageView.snp_makeConstraints {
             $0.centerY.equalTo(dateLabel)
-            $0.left.greaterThanOrEqualTo(dateLabel.snp_right).offset(Constants.DateToArrowOffset)
-            $0.right.equalTo(contentView).offset(Constants.RightOffset)
+            $0.leading.greaterThanOrEqualTo(dateLabel.snp_trailing).offset(Constants.DateToArrowOffset)
+            $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
         }
     }
 }

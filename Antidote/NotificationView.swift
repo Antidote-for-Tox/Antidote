@@ -93,20 +93,20 @@ private extension NotificationView {
 
     func installConstraints() {
         imageView.snp_makeConstraints {
-            $0.left.equalTo(self).offset(Constants.Offset)
+            $0.leading.equalTo(self).offset(Constants.Offset)
             $0.centerY.equalTo(self)
             $0.size.equalTo(Constants.ImageSize)
         }
 
         topLabel.snp_makeConstraints {
             $0.top.equalTo(self)
-            $0.left.equalTo(imageView.snp_right).offset(Constants.Offset)
+            $0.leading.equalTo(imageView.snp_trailing).offset(Constants.Offset)
         }
 
         bottomLabel.snp_makeConstraints {
             $0.top.equalTo(topLabel.snp_bottom).offset(Constants.LabelsOffset)
-            $0.left.equalTo(topLabel)
-            $0.right.equalTo(topLabel)
+            $0.leading.equalTo(topLabel)
+            $0.trailing.equalTo(topLabel)
             $0.bottom.equalTo(self)
         }
 
@@ -115,8 +115,8 @@ private extension NotificationView {
         }
 
         closeButton.snp_makeConstraints {
-            $0.left.equalTo(topLabel.snp_right)
-            $0.right.equalTo(self)
+            $0.leading.equalTo(topLabel.snp_trailing)
+            $0.trailing.equalTo(self)
             $0.top.bottom.equalTo(self)
             $0.width.equalTo(Constants.CloseButtonWidth)
         }

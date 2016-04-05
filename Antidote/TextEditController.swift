@@ -89,8 +89,8 @@ private extension TextEditController {
     func installConstraints() {
         textField.snp_makeConstraints {
             $0.top.equalTo(view).offset(Constants.Offset)
-            $0.left.equalTo(view).offset(Constants.Offset)
-            $0.right.equalTo(view).offset(-Constants.Offset)
+            $0.leading.equalTo(view).offset(Constants.Offset)
+            $0.trailing.equalTo(view).offset(-Constants.Offset)
             $0.height.equalTo(Constants.FieldHeight)
         }
     }

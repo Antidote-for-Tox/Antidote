@@ -56,8 +56,8 @@ private extension TextViewController {
 
     func installConstraints() {
         textView.snp_makeConstraints {
-            $0.left.top.equalTo(view).offset(Constants.Offset)
-            $0.right.bottom.equalTo(view).offset(-Constants.Offset)
+            $0.leading.top.equalTo(view).offset(Constants.Offset)
+            $0.trailing.bottom.equalTo(view).offset(-Constants.Offset)
         }
     }
 

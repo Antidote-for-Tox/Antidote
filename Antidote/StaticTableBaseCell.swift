@@ -56,16 +56,16 @@ class StaticTableBaseCell: BaseCell {
         super.installConstraints()
 
         customContentView.snp_makeConstraints {
-            $0.left.equalTo(contentView).offset(Constants.HorizontalOffset)
-            $0.right.equalTo(contentView).offset(-Constants.HorizontalOffset)
+            $0.leading.equalTo(contentView).offset(Constants.HorizontalOffset)
+            $0.trailing.equalTo(contentView).offset(-Constants.HorizontalOffset)
             $0.top.equalTo(contentView)
             $0.height.greaterThanOrEqualTo(Constants.MinHeight)
         }
 
         bottomSeparatorView.snp_makeConstraints {
-            $0.left.equalTo(customContentView)
+            $0.leading.equalTo(customContentView)
             $0.top.equalTo(customContentView.snp_bottom)
-            $0.right.bottom.equalTo(contentView)
+            $0.trailing.bottom.equalTo(contentView)
             $0.height.equalTo(0.5)
         }
     }

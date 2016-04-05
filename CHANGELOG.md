@@ -3,8 +3,16 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Arabic localication.
+- Highlighting links in chat [#176](https://github.com/Antidote-for-Tox/Antidote/issues/176).
+
 ### Changed
-- Returned back iOS 8.0 support.
+- Returned back iOS 8.0 support [#188](https://github.com/Antidote-for-Tox/Antidote/issues/188).
+
+### Fixed
+- Music stops when switching to Antidote [#177](https://github.com/Antidote-for-Tox/Antidote/issues/177).
+- Layout for right to left interface [#190](https://github.com/Antidote-for-Tox/Antidote/issues/190).
 
 ## [0.10.2] - 2016-03-31
 ### Added

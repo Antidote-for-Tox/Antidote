@@ -40,11 +40,11 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
                 $0.top.bottom.equalTo(buttonsContainer)
 
                 if let previousButton = previousButton {
-                    $0.left.equalTo(previousButton.snp_right).offset(Constants.HorizontalOffset)
+                    $0.leading.equalTo(previousButton.snp_trailing).offset(Constants.HorizontalOffset)
                     $0.width.equalTo(previousButton)
                 }
                 else {
-                    $0.left.equalTo(buttonsContainer)
+                    $0.leading.equalTo(buttonsContainer)
                 }
             }
             previousButton = button
@@ -52,7 +52,7 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
 
         if let previousButton = previousButton {
             previousButton.snp_makeConstraints {
-                $0.right.equalTo(buttonsContainer)
+                $0.trailing.equalTo(buttonsContainer)
             }
         }
     }
@@ -69,7 +69,7 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
         super.installConstraints()
 
         buttonsContainer.snp_makeConstraints {
-            $0.left.right.equalTo(customContentView)
+            $0.leading.trailing.equalTo(customContentView)
             $0.centerY.equalTo(customContentView)
             $0.height.equalTo(Constants.Height)
         }

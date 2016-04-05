@@ -51,13 +51,13 @@ class StaticTableSwitchCell: StaticTableBaseCell {
 
         titleLabel.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.left.equalTo(customContentView)
+            $0.leading.equalTo(customContentView)
         }
 
         switchView.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.left.greaterThanOrEqualTo(titleLabel.snp_right)
-            $0.right.equalTo(customContentView)
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp_trailing)
+            $0.trailing.equalTo(customContentView)
         }
     }
 }

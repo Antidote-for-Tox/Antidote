@@ -23,7 +23,7 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testMediumMessage() {
@@ -34,7 +34,7 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 
     func testHugeMessage() {
@@ -45,6 +45,6 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
 
         updateCellLayout(cell)
-        FBSnapshotVerifyView(cell)
+        verifyView(cell)
     }
 }

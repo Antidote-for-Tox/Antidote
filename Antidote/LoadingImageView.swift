@@ -99,14 +99,14 @@ private extension LoadingImageView {
         }
 
         topLabel.snp_makeConstraints {
-            $0.left.equalTo(self).offset(Constants.LabelHorizontalOffset)
-            $0.right.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
+            $0.leading.equalTo(self).offset(Constants.LabelHorizontalOffset)
+            $0.trailing.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
             $0.bottom.equalTo(bottomLabel.snp_top)
         }
 
         bottomLabel.snp_makeConstraints {
-            $0.left.equalTo(self).offset(Constants.LabelHorizontalOffset)
-            $0.right.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
+            $0.leading.equalTo(self).offset(Constants.LabelHorizontalOffset)
+            $0.trailing.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
             $0.bottom.equalTo(self).offset(Constants.LabelBottomOffset)
         }
     }

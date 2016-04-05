@@ -33,14 +33,14 @@ class ChatIncomingFileCell: ChatGenericFileCell {
         super.installConstraints()
 
         loadingView.snp_makeConstraints {
-            $0.left.equalTo(contentView).offset(Constants.BigOffset)
+            $0.leading.equalTo(contentView).offset(Constants.BigOffset)
             $0.top.equalTo(contentView).offset(Constants.SmallOffset)
             $0.bottom.equalTo(contentView).offset(-Constants.SmallOffset)
             $0.size.equalTo(Constants.ImageButtonSize)
         }
 
         cancelButton.snp_makeConstraints {
-            $0.left.equalTo(loadingView.snp_right).offset(Constants.SmallOffset)
+            $0.leading.equalTo(loadingView.snp_trailing).offset(Constants.SmallOffset)
             $0.top.equalTo(loadingView)
             $0.size.equalTo(Constants.CloseButtonSize)
         }

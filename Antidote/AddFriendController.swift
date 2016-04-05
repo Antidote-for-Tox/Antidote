@@ -112,8 +112,8 @@ extension AddFriendController {
         messageView.snp_makeConstraints {
             $0.top.equalTo(alert.contentView)
             $0.bottom.equalTo(alert.contentView).offset(Constants.SendAlertTextViewBottomOffset);
-            $0.left.equalTo(alert.contentView).offset(Constants.SendAlertTextViewXOffset);
-            $0.right.equalTo(alert.contentView).offset(-Constants.SendAlertTextViewXOffset);
+            $0.leading.equalTo(alert.contentView).offset(Constants.SendAlertTextViewXOffset);
+            $0.trailing.equalTo(alert.contentView).offset(-Constants.SendAlertTextViewXOffset);
             $0.height.equalTo(Constants.SendAlertTextViewHeight);
         }
 
@@ -212,8 +212,8 @@ private extension AddFriendController {
     func installConstraints() {
         textView.snp_makeConstraints {
             $0.top.equalTo(view).offset(Constants.TextViewTopOffset)
-            $0.left.equalTo(view).offset(Constants.TextViewXOffset)
-            $0.right.equalTo(view).offset(-Constants.TextViewXOffset)
+            $0.leading.equalTo(view).offset(Constants.TextViewXOffset)
+            $0.trailing.equalTo(view).offset(-Constants.TextViewXOffset)
             $0.bottom.equalTo(view.snp_centerY)
         }
 

@@ -105,18 +105,18 @@ private extension CallIncomingController {
 
         declineButton.snp_makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
-            $0.left.equalTo(buttonContainer)
+            $0.leading.equalTo(buttonContainer)
         }
 
         audioButton.snp_makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
-            $0.left.equalTo(declineButton.snp_right).offset(Constants.ButtonHorizontalOffset)
+            $0.leading.equalTo(declineButton.snp_trailing).offset(Constants.ButtonHorizontalOffset)
         }
 
         videoButton.snp_makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
-            $0.left.equalTo(audioButton.snp_right).offset(Constants.ButtonHorizontalOffset)
-            $0.right.equalTo(buttonContainer)
+            $0.leading.equalTo(audioButton.snp_trailing).offset(Constants.ButtonHorizontalOffset)
+            $0.trailing.equalTo(buttonContainer)
         }
     }
 }

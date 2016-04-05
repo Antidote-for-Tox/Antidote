@@ -154,18 +154,18 @@ private extension ExtendedTextField {
 
     func installConstraints() {
         titleLabel.snp_makeConstraints {
-            $0.top.left.right.equalTo(self)
+            $0.top.leading.trailing.equalTo(self)
         }
 
         textField.snp_makeConstraints {
             $0.top.equalTo(titleLabel.snp_bottom).offset(Constants.VerticalOffset)
-            $0.left.right.equalTo(self)
+            $0.leading.trailing.equalTo(self)
             $0.height.equalTo(Constants.TextFieldHeight)
         }
 
         hintLabel.snp_makeConstraints {
             $0.top.equalTo(textField.snp_bottom).offset(Constants.VerticalOffset)
-            $0.left.right.equalTo(self)
+            $0.leading.trailing.equalTo(self)
             $0.bottom.equalTo(self)
         }
     }

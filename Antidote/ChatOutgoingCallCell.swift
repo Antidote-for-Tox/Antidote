@@ -57,13 +57,13 @@ class ChatOutgoingCallCell: ChatMovableDateCell {
 
         callImageView.snp_makeConstraints {
             $0.centerY.equalTo(label).offset(Constants.ImageViewYOffset)
-            $0.right.equalTo(label.snp_left).offset(Constants.ImageViewToLabelOffset)
+            $0.trailing.equalTo(label.snp_leading).offset(Constants.ImageViewToLabelOffset)
         }
 
         label.snp_makeConstraints {
             $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
-            $0.right.equalTo(movableContentView).offset(Constants.RightOffset)
+            $0.trailing.equalTo(movableContentView).offset(Constants.RightOffset)
         }
     }
 }

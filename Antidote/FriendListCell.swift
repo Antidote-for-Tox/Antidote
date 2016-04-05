@@ -63,7 +63,7 @@ class FriendListCell: BaseCell {
         bottomLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         contentView.addSubview(bottomLabel)
 
-        let image = UIImage(named: "right-arrow")!
+        let image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
         arrowImageView = UIImageView(image: image)
         arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
         contentView.addSubview(arrowImageView)
@@ -73,19 +73,19 @@ class FriendListCell: BaseCell {
         super.installConstraints()
 
         avatarView.snp_makeConstraints {
-            $0.left.equalTo(contentView).offset(Constants.AvatarLeftOffset)
+            $0.leading.equalTo(contentView).offset(Constants.AvatarLeftOffset)
             $0.centerY.equalTo(contentView)
             $0.size.equalTo(Constants.AvatarSize)
         }
 
         topLabel.snp_makeConstraints {
-            $0.left.equalTo(avatarView.snp_right).offset(Constants.AvatarRightOffset)
+            $0.leading.equalTo(avatarView.snp_trailing).offset(Constants.AvatarRightOffset)
             $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
             $0.height.equalTo(Constants.TopLabelHeight)
         }
 
         bottomLabel.snp_makeConstraints {
-            $0.left.right.equalTo(topLabel)
+            $0.leading.trailing.equalTo(topLabel)
             $0.top.equalTo(topLabel.snp_bottom)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
             $0.height.greaterThanOrEqualTo(Constants.MinimumBottomLabelHeight)
@@ -93,8 +93,8 @@ class FriendListCell: BaseCell {
 
         arrowImageView.snp_makeConstraints {
             $0.centerY.equalTo(contentView)
-            $0.left.greaterThanOrEqualTo(topLabel.snp_right)
-            $0.right.equalTo(contentView)
+            $0.leading.greaterThanOrEqualTo(topLabel.snp_trailing)
+            $0.trailing.equalTo(contentView)
         }
     }
 }
