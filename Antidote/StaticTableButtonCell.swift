@@ -38,7 +38,7 @@ class StaticTableButtonCell: StaticTableBaseCell {
         super.installConstraints()
 
         label.snp_makeConstraints {
-            $0.left.right.equalTo(customContentView)
+            $0.leading.trailing.equalTo(customContentView)
             $0.top.equalTo(customContentView).offset(Constants.VerticalOffset)
             $0.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)
         }

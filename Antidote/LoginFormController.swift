@@ -217,8 +217,8 @@ private extension LoginFormController {
 
         profileButton.snp_makeConstraints {
             $0.top.equalTo(formView).offset(PrivateConstants.FormOffset)
-            $0.left.equalTo(formView).offset(PrivateConstants.FormOffset)
-            $0.right.equalTo(formView).offset(-PrivateConstants.FormOffset)
+            $0.leading.equalTo(formView).offset(PrivateConstants.FormOffset)
+            $0.trailing.equalTo(formView).offset(-PrivateConstants.FormOffset)
             profileButtonBottomToFormConstraint = $0.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
 
             $0.height.equalTo(Constants.TextFieldHeight)
@@ -226,7 +226,7 @@ private extension LoginFormController {
 
         passwordField.snp_makeConstraints {
             $0.top.equalTo(profileButton.snp_bottom).offset(PrivateConstants.FormSmallOffset)
-            $0.left.right.equalTo(profileButton)
+            $0.leading.trailing.equalTo(profileButton)
             passwordFieldBottomToFormConstraint = $0.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
 
             $0.height.equalTo(Constants.TextFieldHeight)
@@ -234,7 +234,7 @@ private extension LoginFormController {
 
         loginButton.snp_makeConstraints {
             $0.top.equalTo(formView.snp_bottom).offset(PrivateConstants.FormSmallOffset)
-            $0.left.right.equalTo(formView)
+            $0.leading.trailing.equalTo(formView)
         }
 
         bottomButtonsContainer.snp_makeConstraints {
@@ -244,17 +244,17 @@ private extension LoginFormController {
         }
 
         createAccountButton.snp_makeConstraints {
-            $0.top.left.bottom.equalTo(bottomButtonsContainer)
+            $0.top.leading.bottom.equalTo(bottomButtonsContainer)
         }
 
         orLabel.snp_makeConstraints {
             $0.centerY.equalTo(bottomButtonsContainer)
-            $0.left.equalTo(createAccountButton.snp_right).offset(PrivateConstants.FormSmallOffset)
-            $0.right.equalTo(importProfileButton.snp_left).offset(-PrivateConstants.FormSmallOffset)
+            $0.leading.equalTo(createAccountButton.snp_trailing).offset(PrivateConstants.FormSmallOffset)
+            $0.trailing.equalTo(importProfileButton.snp_leading).offset(-PrivateConstants.FormSmallOffset)
         }
 
         importProfileButton.snp_makeConstraints {
-            $0.top.right.bottom.equalTo(bottomButtonsContainer)
+            $0.top.trailing.bottom.equalTo(bottomButtonsContainer)
         }
     }
 

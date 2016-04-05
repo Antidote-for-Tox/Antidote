@@ -104,7 +104,7 @@ extension TabBarController {
         customTabBarView.addSubview(horizontalLine)
 
         horizontalLine.snp_makeConstraints {
-            $0.top.left.right.equalTo(customTabBarView)
+            $0.top.leading.trailing.equalTo(customTabBarView)
             $0.height.equalTo(Constants.HorizontalLineHeight)
         }
     }
@@ -123,7 +123,7 @@ extension TabBarController {
         customTabBarView.snp_makeConstraints {
             customTabBarViewVisibleConstraint = $0.bottom.equalTo(view.snp_bottom).constraint
             customTabBarViewHiddenConstraint = $0.top.equalTo(view.snp_bottom).constraint
-            $0.left.right.equalTo(view)
+            $0.leading.trailing.equalTo(view)
             $0.height.equalTo(tabBar.frame.size.height)
         }
 
@@ -136,18 +136,18 @@ extension TabBarController {
                 $0.top.bottom.equalTo(customTabBarView)
 
                 if previous != nil {
-                    $0.left.equalTo(previous!.snp_right)
+                    $0.leading.equalTo(previous!.snp_trailing)
                     $0.width.equalTo(previous!)
                 }
                 else {
-                    $0.left.equalTo(customTabBarView)
+                    $0.leading.equalTo(customTabBarView)
                 }
             }
 
             previous = item
         }
         previous!.snp_makeConstraints {
-            $0.right.equalTo(customTabBarView)
+            $0.trailing.equalTo(customTabBarView)
         }
     }
 

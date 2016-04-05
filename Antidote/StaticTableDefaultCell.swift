@@ -76,7 +76,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
                 showRightImageView = false
             case .Arrow:
                 showRightImageView = true
-                rightImageView.image = UIImage(named: "right-arrow")!
+                rightImageView.image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
             case .Checkmark:
                 showRightImageView = true
                 rightImageView.image = UIImage(named: "checkmark")!
@@ -143,7 +143,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
         userStatusView.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.left.equalTo(customContentView)
+            $0.leading.equalTo(customContentView)
             $0.size.equalTo(UserStatusView.Constants.DefaultSize)
         }
 
@@ -151,21 +151,21 @@ class StaticTableDefaultCell: StaticTableBaseCell {
             $0.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset)
             $0.height.equalTo(Constants.TitleHeight)
 
-            userStatusViewVisibleConstraint = $0.left.equalTo(userStatusView.snp_right).offset(Constants.TitleToUserStatusOffset).constraint
+            userStatusViewVisibleConstraint = $0.leading.equalTo(userStatusView.snp_trailing).offset(Constants.TitleToUserStatusOffset).constraint
         }
 
         userStatusViewVisibleConstraint.deactivate()
 
         titleLabel.snp_makeConstraints {
-            userStatusViewHiddenConstraint = $0.left.equalTo(customContentView).constraint
+            userStatusViewHiddenConstraint = $0.leading.equalTo(customContentView).constraint
         }
 
         valueLabel.snp_makeConstraints {
             valueLabelToTitleConstraint = $0.top.equalTo(titleLabel.snp_bottom).offset(Constants.TitleToValueOffset).constraint
 
-            valueLabelToContentRightConstraint = $0.right.equalTo(customContentView).constraint
+            valueLabelToContentRightConstraint = $0.trailing.equalTo(customContentView).constraint
 
-            $0.left.equalTo(titleLabel)
+            $0.leading.equalTo(titleLabel)
             $0.bottom.equalTo(customContentView).offset(-Constants.EdgesVerticalOffset)
             $0.height.greaterThanOrEqualTo(Constants.MinValueLabelHeight)
         }
@@ -176,17 +176,17 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         }
 
         rightButton.snp_makeConstraints {
-            $0.left.greaterThanOrEqualTo(titleLabel.snp_right)
-            $0.right.equalTo(customContentView)
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp_trailing)
+            $0.trailing.equalTo(customContentView)
             $0.centerY.equalTo(titleLabel)
             $0.bottom.lessThanOrEqualTo(customContentView)
         }
 
         rightImageView.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.right.equalTo(customContentView)
+            $0.trailing.equalTo(customContentView)
 
-            valueLabelToArrowConstraint = $0.left.greaterThanOrEqualTo(valueLabel.snp_right).constraint
+            valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp_trailing).constraint
         }
     }
 }

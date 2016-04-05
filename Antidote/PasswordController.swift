@@ -214,7 +214,7 @@ private extension PasswordController {
 
         button.snp_makeConstraints {
             $0.top.equalTo(topConstraint).offset(Constants.ButtonVerticalOffset)
-            $0.left.right.equalTo(containerView)
+            $0.leading.trailing.equalTo(containerView)
         }
     }
 
@@ -228,7 +228,7 @@ private extension PasswordController {
 
         field.snp_makeConstraints {
             $0.top.equalTo(topConstraint).offset(Constants.FieldsOffset)
-            $0.left.right.equalTo(containerView)
+            $0.leading.trailing.equalTo(containerView)
         }
 
         return true

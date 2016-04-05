@@ -62,8 +62,8 @@ class BubbleView: UIView {
         textView.snp_makeConstraints {
             $0.top.equalTo(self).offset(Constants.TextViewVerticalOffset)
             $0.bottom.equalTo(self).offset(-Constants.TextViewVerticalOffset)
-            $0.left.equalTo(self).offset(Constants.TextViewHorizontalOffset)
-            $0.right.equalTo(self).offset(-Constants.TextViewHorizontalOffset)
+            $0.leading.equalTo(self).offset(Constants.TextViewHorizontalOffset)
+            $0.trailing.equalTo(self).offset(-Constants.TextViewHorizontalOffset)
 
             $0.width.greaterThanOrEqualTo(Constants.TextViewMinWidth)
             $0.width.lessThanOrEqualTo(Constants.TextViewMaxWidth)

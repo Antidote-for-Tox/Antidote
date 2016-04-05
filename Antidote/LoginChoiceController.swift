@@ -74,22 +74,22 @@ private extension LoginChoiceController {
 
         welcomeLabel.snp_makeConstraints {
             $0.top.equalTo(incompressibleContainer)
-            $0.left.right.equalTo(incompressibleContainer)
+            $0.leading.trailing.equalTo(incompressibleContainer)
         }
 
         createAccountButton.snp_makeConstraints {
             $0.top.equalTo(welcomeLabel.snp_bottom).offset(Constants.VerticalOffset)
-            $0.left.right.equalTo(welcomeLabel)
+            $0.leading.trailing.equalTo(welcomeLabel)
         }
 
         orLabel.snp_makeConstraints {
             $0.top.equalTo(createAccountButton.snp_bottom).offset(Constants.SmallVerticalOffset)
-            $0.left.right.equalTo(welcomeLabel)
+            $0.leading.trailing.equalTo(welcomeLabel)
         }
 
         importProfileButton.snp_makeConstraints {
             $0.top.equalTo(orLabel.snp_bottom).offset(Constants.SmallVerticalOffset)
-            $0.left.right.equalTo(welcomeLabel)
+            $0.leading.trailing.equalTo(welcomeLabel)
         }
     }
 

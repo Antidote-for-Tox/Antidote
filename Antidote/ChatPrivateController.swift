@@ -550,8 +550,8 @@ private extension ChatPrivateController {
         newMessagesView.addSubview(button)
 
         label.snp_makeConstraints {
-            $0.left.equalTo(newMessagesView).offset(Constants.NewMessageViewEdgesOffset)
-            $0.right.equalTo(newMessagesView).offset(-Constants.NewMessageViewEdgesOffset)
+            $0.leading.equalTo(newMessagesView).offset(Constants.NewMessageViewEdgesOffset)
+            $0.trailing.equalTo(newMessagesView).offset(-Constants.NewMessageViewEdgesOffset)
             $0.top.equalTo(newMessagesView).offset(Constants.NewMessageViewEdgesOffset)
             $0.bottom.equalTo(newMessagesView).offset(-Constants.NewMessageViewEdgesOffset)
         }
@@ -570,7 +570,7 @@ private extension ChatPrivateController {
 
     func installConstraints() {
         tableView.snp_makeConstraints {
-            $0.top.left.right.equalTo(view)
+            $0.top.leading.trailing.equalTo(view)
         }
 
         newMessagesView.snp_makeConstraints {
@@ -579,7 +579,7 @@ private extension ChatPrivateController {
         }
 
         chatInputView.snp_makeConstraints {
-            $0.left.right.equalTo(view)
+            $0.leading.trailing.equalTo(view)
             $0.top.equalTo(tableView.snp_bottom)
             $0.top.greaterThanOrEqualTo(view).offset(Constants.InputViewTopOffset)
             chatInputViewBottomConstraint = $0.bottom.equalTo(view).constraint

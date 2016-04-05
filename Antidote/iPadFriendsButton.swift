@@ -76,15 +76,15 @@ private extension iPadFriendsButton {
 
     func installConstraints() {
         badgeContainer.snp_makeConstraints {
-            $0.right.equalTo(self).offset(Constants.BadgeRightOffset)
+            $0.trailing.equalTo(self).offset(Constants.BadgeRightOffset)
             $0.centerY.equalTo(self)
             $0.width.greaterThanOrEqualTo(Constants.BadgeMinimumWidth)
             $0.height.equalTo(Constants.BadgeHeight)
         }
 
         badgeLabel.snp_makeConstraints {
-            $0.left.equalTo(badgeContainer).offset(Constants.BadgeHorizontalOffset)
-            $0.right.equalTo(badgeContainer).offset(-Constants.BadgeHorizontalOffset)
+            $0.leading.equalTo(badgeContainer).offset(Constants.BadgeHorizontalOffset)
+            $0.trailing.equalTo(badgeContainer).offset(-Constants.BadgeHorizontalOffset)
             $0.centerY.equalTo(badgeContainer)
         }
 

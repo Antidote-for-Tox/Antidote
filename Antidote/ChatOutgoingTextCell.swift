@@ -44,7 +44,7 @@ class ChatOutgoingTextCell: ChatMovableDateCell {
         bubbleView.snp_makeConstraints {
             $0.top.equalTo(movableContentView).offset(Constants.BubbleVerticalOffset)
             $0.bottom.equalTo(movableContentView).offset(-Constants.BubbleVerticalOffset)
-            $0.right.equalTo(movableContentView).offset(Constants.BubbleRightOffset)
+            $0.trailing.equalTo(movableContentView).offset(Constants.BubbleRightOffset)
         }
     }
 }

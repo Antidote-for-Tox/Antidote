@@ -302,7 +302,7 @@ private extension CallActiveController {
 
     func installConstraints() {
         videoPreviewView.snp_makeConstraints {
-            $0.right.equalTo(view).offset(Constants.VideoPreviewOffset)
+            $0.trailing.equalTo(view).offset(Constants.VideoPreviewOffset)
             $0.bottom.equalTo(smallContainerView.snp_top).offset(Constants.VideoPreviewOffset)
             $0.width.equalTo(Constants.VideoPreviewSize.width)
             $0.height.equalTo(Constants.VideoPreviewSize.height)
@@ -310,12 +310,12 @@ private extension CallActiveController {
 
         switchCameraButton.snp_makeConstraints {
             $0.top.equalTo(videoPreviewView).offset(Constants.SwitchCameraOffset)
-            $0.right.equalTo(videoPreviewView).offset(-Constants.SwitchCameraOffset)
+            $0.trailing.equalTo(videoPreviewView).offset(-Constants.SwitchCameraOffset)
         }
 
         bigContainerView.snp_makeConstraints {
             $0.top.equalTo(topContainer.snp_bottom)
-            $0.left.right.bottom.equalTo(view)
+            $0.leading.trailing.bottom.equalTo(view)
         }
 
         bigCenterContainer.snp_makeConstraints {
@@ -325,18 +325,18 @@ private extension CallActiveController {
 
         bigMuteButton!.snp_makeConstraints {
             $0.top.equalTo(bigCenterContainer)
-            $0.left.equalTo(bigCenterContainer)
+            $0.leading.equalTo(bigCenterContainer)
         }
 
         bigSpeakerButton!.snp_makeConstraints {
             $0.top.equalTo(bigCenterContainer)
-            $0.right.equalTo(bigCenterContainer)
-            $0.left.equalTo(bigMuteButton!.snp_right).offset(Constants.BigButtonOffset)
+            $0.trailing.equalTo(bigCenterContainer)
+            $0.leading.equalTo(bigMuteButton!.snp_trailing).offset(Constants.BigButtonOffset)
         }
 
         bigVideoButton!.snp_makeConstraints {
             $0.top.equalTo(bigMuteButton!.snp_bottom).offset(Constants.BigButtonOffset)
-            $0.left.equalTo(bigCenterContainer)
+            $0.leading.equalTo(bigCenterContainer)
             $0.bottom.equalTo(bigCenterContainer)
         }
 
@@ -353,23 +353,23 @@ private extension CallActiveController {
 
         smallMuteButton!.snp_makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.left.equalTo(smallContainerView)
+            $0.leading.equalTo(smallContainerView)
         }
 
         smallSpeakerButton!.snp_makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.left.equalTo(smallMuteButton!.snp_right).offset(Constants.SmallButtonOffset)
+            $0.leading.equalTo(smallMuteButton!.snp_trailing).offset(Constants.SmallButtonOffset)
         }
 
         smallVideoButton!.snp_makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.left.equalTo(smallSpeakerButton!.snp_right).offset(Constants.SmallButtonOffset)
+            $0.leading.equalTo(smallSpeakerButton!.snp_trailing).offset(Constants.SmallButtonOffset)
         }
 
         smallDeclineButton!.snp_makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.left.equalTo(smallVideoButton!.snp_right).offset(Constants.SmallButtonOffset)
-            $0.right.equalTo(smallContainerView)
+            $0.leading.equalTo(smallVideoButton!.snp_trailing).offset(Constants.SmallButtonOffset)
+            $0.trailing.equalTo(smallContainerView)
         }
     }
 

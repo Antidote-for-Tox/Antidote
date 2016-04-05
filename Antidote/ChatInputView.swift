@@ -132,25 +132,25 @@ private extension ChatInputView {
 
     func installConstraints() {
         topBorder.snp_makeConstraints {
-            $0.top.left.right.equalTo(self)
+            $0.top.leading.trailing.equalTo(self)
             $0.height.equalTo(Constants.TopBorderHeight)
         }
 
         cameraButton.snp_makeConstraints {
-            $0.left.equalTo(self).offset(Constants.CameraHorizontalOffset)
+            $0.leading.equalTo(self).offset(Constants.CameraHorizontalOffset)
             $0.bottom.equalTo(self).offset(Constants.CameraBottomOffset)
         }
 
         textView.snp_makeConstraints {
-            $0.left.equalTo(cameraButton.snp_right).offset(Constants.CameraHorizontalOffset)
+            $0.leading.equalTo(cameraButton.snp_trailing).offset(Constants.CameraHorizontalOffset)
             $0.top.equalTo(self).offset(Constants.Offset)
             $0.bottom.equalTo(self).offset(-Constants.Offset)
             $0.height.greaterThanOrEqualTo(Constants.TextViewMinHeight)
         }
 
         sendButton.snp_makeConstraints {
-            $0.left.equalTo(textView.snp_right).offset(Constants.Offset)
-            $0.right.equalTo(self).offset(-Constants.Offset)
+            $0.leading.equalTo(textView.snp_trailing).offset(Constants.Offset)
+            $0.trailing.equalTo(self).offset(-Constants.Offset)
             $0.bottom.equalTo(self).offset(-Constants.Offset)
         }
     }

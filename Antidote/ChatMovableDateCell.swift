@@ -64,13 +64,13 @@ class ChatMovableDateCell: BaseCell {
 
         movableContentView.snp_makeConstraints {
             $0.top.equalTo(contentView)
-            movableContentViewLeftConstraint = $0.left.equalTo(contentView).constraint
+            movableContentViewLeftConstraint = $0.leading.equalTo(contentView).constraint
             $0.size.equalTo(contentView)
         }
 
         dateLabel.snp_makeConstraints {
             $0.centerY.equalTo(movableContentView)
-            $0.left.equalTo(movableContentView.snp_right)
+            $0.leading.equalTo(movableContentView.snp_trailing)
         }
     }
 }

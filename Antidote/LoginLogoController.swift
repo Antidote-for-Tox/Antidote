@@ -75,7 +75,7 @@ private extension LoginLogoController {
     func installConstraints() {
         mainContainerView.snp_makeConstraints {
             mainContainerViewTopConstraint = $0.top.equalTo(view).constraint
-            $0.left.right.equalTo(view)
+            $0.leading.trailing.equalTo(view)
             $0.height.equalTo(view)
         }
 
@@ -88,7 +88,7 @@ private extension LoginLogoController {
         contentContainerView.snp_makeConstraints {
             $0.top.equalTo(logoImageView.snp_bottom).offset(Constants.VerticalOffset)
             $0.bottom.equalTo(mainContainerView)
-            $0.left.right.equalTo(mainContainerView)
+            $0.leading.trailing.equalTo(mainContainerView)
         }
     }
 }

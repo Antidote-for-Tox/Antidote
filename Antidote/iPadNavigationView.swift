@@ -59,13 +59,13 @@ private extension iPadNavigationView {
     func installConstraints() {
         avatarView.snp_makeConstraints {
             $0.top.equalTo(self)
-            $0.left.equalTo(self)
+            $0.leading.equalTo(self)
             $0.size.equalTo(Constants.Height)
         }
 
         label.snp_makeConstraints {
-            $0.left.equalTo(avatarView.snp_right).offset(Constants.Offset)
-            $0.right.equalTo(self)
+            $0.leading.equalTo(avatarView.snp_trailing).offset(Constants.Offset)
+            $0.trailing.equalTo(self)
             $0.top.equalTo(self)
             $0.bottom.equalTo(self)
         }

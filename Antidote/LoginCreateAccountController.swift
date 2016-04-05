@@ -178,12 +178,12 @@ private extension LoginCreateAccountController {
 
         usernameView.snp_makeConstraints {
             $0.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
-            $0.left.equalTo(containerView)
-            $0.right.equalTo(containerView)
+            $0.leading.equalTo(containerView)
+            $0.trailing.equalTo(containerView)
         }
 
         profileView.snp_makeConstraints {
-            $0.left.right.equalTo(usernameView)
+            $0.leading.trailing.equalTo(usernameView)
 
             switch type {
                 case .CreateAccount:
@@ -195,7 +195,7 @@ private extension LoginCreateAccountController {
 
         goButton.snp_makeConstraints {
             $0.top.equalTo(profileView.snp_bottom).offset(PrivateConstants.VerticalOffset)
-            $0.left.right.equalTo(usernameView)
+            $0.leading.trailing.equalTo(usernameView)
         }
     }
 }
