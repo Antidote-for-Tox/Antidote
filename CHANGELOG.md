@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Added
+- Arabic localication.
 - Highlighting links in chat [#176](https://github.com/Antidote-for-Tox/Antidote/issues/176).
 
 ### Changed

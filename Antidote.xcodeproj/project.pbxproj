@@ -478,6 +478,8 @@
 		113F03221CAFE5190009ABE1 /* ChatOutgoingTextCellSnapshotTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingTextCellSnapshotTest.swift; sourceTree = "<group>"; };
 		113F03321CB2E9C20009ABE1 /* UIFontExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		113F03411CB31DD60009ABE1 /* AlertAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertAudioPlayer.swift; sourceTree = "<group>"; };
+		113F035C1CB458D10009ABE1 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ar; path = "ar.lproj/import-profile.html"; sourceTree = "<group>"; };
+		113F035D1CB458D10009ABE1 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
 		114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailsController.swift; sourceTree = "<group>"; };
 		114962911C5E1BE0001E5435 /* PasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PasswordController.swift; sourceTree = "<group>"; };
@@ -1163,6 +1165,7 @@
 				de,
 				pt,
 				es,
+				ar,
 			);
 			mainGroup = 1164762619794D3300DB20B8;
 			productRefGroup = 1164763019794D3300DB20B8 /* Products */;
@@ -1737,6 +1740,7 @@
 				11F83B821CADC9460074FE11 /* de */,
 				11F83B841CADC9790074FE11 /* pt */,
 				11F83B861CADC9820074FE11 /* es */,
+				113F035C1CB458D10009ABE1 /* ar */,
 			);
 			name = "import-profile.html";
 			sourceTree = "<group>";
@@ -1759,6 +1763,7 @@
 				11F83B831CADC9460074FE11 /* de */,
 				11F83B851CADC9790074FE11 /* pt */,
 				11F83B871CADC9820074FE11 /* es */,
+				113F035D1CB458D10009ABE1 /* ar */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
