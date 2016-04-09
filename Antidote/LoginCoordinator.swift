@@ -65,17 +65,17 @@ extension LoginCoordinator: TopCoordinatorProtocol {
 
     func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
         guard openURL.url.isToxURL() else {
-            resultBlock(.Failure(openURL: openURL))
+            resultBlock(.DidNotHandle(openURL: openURL))
             return
         }
 
         guard let fileName = openURL.url.lastPathComponent else {
-            resultBlock(.Failure(openURL: openURL))
+            resultBlock(.DidNotHandle(openURL: openURL))
             return
         }
 
         if !openURL.askUser {
-            resultBlock(.Success)
+            resultBlock(.DidHandle)
             self.importToxProfileFromURL(openURL.url)
             return
         }
@@ -92,12 +92,12 @@ extension LoginCoordinator: TopCoordinatorProtocol {
         let alert = UIAlertController(title: nil, message: fileName, preferredStyle: style)
 
         alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
-            resultBlock(.Success)
+            resultBlock(.DidHandle)
             self.importToxProfileFromURL(openURL.url)
         })
 
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
-            resultBlock(.Failure(openURL: openURL))
+            resultBlock(.DidNotHandle(openURL: openURL))
         })
 
         navigationController.presentViewController(alert, animated: true, completion: nil)

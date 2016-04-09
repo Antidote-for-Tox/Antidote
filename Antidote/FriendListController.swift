@@ -275,6 +275,7 @@ private extension FriendListController {
         placeholderView.delegate = self
         placeholderView.attributedText = text
         placeholderView.editable = false
+        placeholderView.scrollEnabled = false
         placeholderView.textAlignment = .Center
         placeholderView.linkTextAttributes = [NSForegroundColorAttributeName : theme.colorForType(.LinkText)]
         view.addSubview(placeholderView)

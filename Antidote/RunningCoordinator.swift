@@ -150,15 +150,18 @@ extension RunningCoordinator: TopCoordinatorProtocol {
     }
 
     func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
-        guard openURL.url.isToxURL() else {
-            resultBlock(.Success)
+        guard let fileName = openURL.url.lastPathComponent else {
+            resultBlock(.DidHandle)
             return
         }
 
-        guard let fileName = openURL.url.lastPathComponent else {
-            resultBlock(.Success)
+        guard let filePath = openURL.url.path else {
+            resultBlock(.DidHandle)
             return
         }
+
+        let isToxFile = openURL.url.isToxURL()
+        let chatController = activeChatController()
 
         let style: UIAlertControllerStyle
 
@@ -171,15 +174,29 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
         let alert = UIAlertController(title: nil, message: fileName, preferredStyle: style)
 
-        alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
-            let modifiedURL = OpenURL(url: openURL.url, askUser: false)
+        if isToxFile {
+            alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
+                let modifiedURL = OpenURL(url: openURL.url, askUser: false)
 
-            resultBlock(.Failure(openURL: modifiedURL))
-            self.logout()
+                resultBlock(.DidNotHandle(openURL: modifiedURL))
+                self.logout()
+            })
+        }
+
+        if let chatController = chatController {
+            alert.addAction(UIAlertAction(title: String(localized: "file_send_to_active_chat"), style: .Default) { [unowned self] _ -> Void in
+                self.sendFile(filePath, toChat: chatController.chat)
+                resultBlock(.DidHandle)
+            })
+        }
+
+        alert.addAction(UIAlertAction(title: String(localized: "file_send_to_contact"), style: .Default) { [unowned self] _ -> Void in
+            self.sendFileToChats(filePath, fileName: fileName)
+            resultBlock(.DidHandle)
         })
 
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
-            resultBlock(.Success)
+            resultBlock(.DidHandle)
         })
 
         switch InterfaceIdiom.current() {
@@ -354,6 +371,23 @@ extension RunningCoordinator: ChatPrivateControllerDelegate {
     }
 }
 
+extension RunningCoordinator: FriendSelectControllerDelegate {
+    func friendSelectController(controller: FriendSelectController, didSelectFriend friend: OCTFriend) {
+        rootViewController().dismissViewControllerAnimated(true, completion: nil)
+
+        guard let filePath = controller.userInfo as? String else {
+            return
+        }
+
+        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+        sendFile(filePath, toChat: chat)
+    }
+
+    func friendSelectControllerCancel(controller: FriendSelectController) {
+        rootViewController().dismissViewControllerAnimated(true, completion: nil)
+    }
+}
+
 private extension RunningCoordinator {
     func createDeviceSpecificObjects() {
         switch InterfaceIdiom.current() {
@@ -454,6 +488,22 @@ private extension RunningCoordinator {
         friendsCoordinator.showRequest(request, animated: false)
     }
 
+    /**
+        Returns active chat controller if it is visible, nil otherwise.
+     */
+    func activeChatController() -> ChatPrivateController? {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                if iPhone.tabBarController.selectedIndex != IphoneObjects.TabCoordinator.Chats.rawValue {
+                    return nil
+                }
+
+                return iPhone.chatsCoordinator.activeChatController()
+            case .iPad:
+                return iPadDetailController() as? ChatPrivateController
+        }
+    }
+
     func showChat(chat: OCTChat) {
         switch InterfaceIdiom.current() {
             case .iPhone:
@@ -543,5 +593,31 @@ private extension RunningCoordinator {
         UserDefaultsManager().isUserLoggedIn = false
 
         delegate?.runningCoordinatorDidLogout(self)
+    }
+
+    func rootViewController() -> UIViewController {
+        switch InterfaceIdiom.current() {
+            case .iPhone:
+                return iPhone.tabBarController
+            case .iPad:
+                return iPad.splitController
+        }
+    }
+
+    func sendFileToChats(filePath: String, fileName: String) {
+        let controller = FriendSelectController(theme: theme, submanagerObjects: toxManager.objects)
+        controller.delegate = self
+        controller.title = String(localized: "file_send_to_contact")
+        controller.userInfo = filePath
+
+        let navigation = UINavigationController(rootViewController: controller)
+
+        rootViewController().presentViewController(navigation, animated: true, completion: nil)
+    }
+
+    func sendFile(filePath: String, toChat chat: OCTChat) {
+        toxManager.files.sendFile(filePath, overrideFileName: nil, toChat: chat) { error in
+            handleErrorWithType(.SendFileToFriend, error: error)
+        }
     }
 }

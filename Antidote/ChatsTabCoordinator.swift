@@ -48,6 +48,13 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
         navigationController.popToRootViewControllerAnimated(false)
         navigationController.pushViewController(controller, animated: animated)
     }
+
+    /**
+        Returns active chat controller if it is visible, nil otherwise.
+     */
+    func activeChatController() -> ChatPrivateController? {
+        return navigationController.topViewController as? ChatPrivateController
+    }
 }
 
 extension ChatsTabCoordinator: ChatListControllerDelegate {

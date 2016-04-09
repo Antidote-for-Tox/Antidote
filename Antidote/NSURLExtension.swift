@@ -11,13 +11,23 @@ import MobileCoreServices
 
 extension NSURL {
     func isToxURL() -> Bool {
-        var uniformTypeIdentifier: AnyObject?
-        _ = try? getResourceValue(&uniformTypeIdentifier, forKey: NSURLTypeIdentifierKey)
-
-        guard let identifier = uniformTypeIdentifier as? String else {
+        guard fileURL else {
             return false
         }
 
-        return UTTypeConformsTo(identifier, kUTTypeData)
+        let request = NSURLRequest(URL: self, cachePolicy: .UseProtocolCachePolicy, timeoutInterval: 0.1)
+        var response: NSURLResponse? = nil
+
+        _ = try? NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+
+        guard let mimeType = response?.MIMEType else {
+            return false
+        }
+
+        guard let identifier = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType, nil)?.takeRetainedValue() else {
+            return false
+        }
+
+        return UTTypeEqual(identifier, kUTTypeData)
     }
 }

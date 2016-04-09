@@ -123,6 +123,8 @@
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
+		11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11770D691CBC120C00D34D6E /* FriendSelectController.swift */; };
+		11770D6B1CBC120C00D34D6E /* FriendSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11770D691CBC120C00D34D6E /* FriendSelectController.swift */; };
 		11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */; };
 		11771E2D1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */; };
 		11771E361CA5C6E900EC259E /* Reach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E351CA5C6E900EC259E /* Reach.swift */; };
@@ -541,6 +543,7 @@
 		1173F06D1BC5D9BA00B88B7B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTest.swift; sourceTree = "<group>"; };
 		1173F0711BC5D9DA00B88B7B /* default-theme.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "default-theme.yaml"; sourceTree = "<group>"; };
+		11770D691CBC120C00D34D6E /* FriendSelectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendSelectController.swift; sourceTree = "<group>"; };
 		11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationCoordinator.swift; sourceTree = "<group>"; };
 		11771E351CA5C6E900EC259E /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reach.swift; sourceTree = "<group>"; };
 		1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatterExtension.swift; sourceTree = "<group>"; };
@@ -1036,6 +1039,7 @@
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				116634EB1C7B90F20072C980 /* FriendRequestController.swift */,
+				11770D691CBC120C00D34D6E /* FriendSelectController.swift */,
 				114962911C5E1BE0001E5435 /* PasswordController.swift */,
 				9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */,
 				114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */,
@@ -1500,6 +1504,7 @@
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
+				11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
 				9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
 				116634E01C7B8D770072C980 /* StaticTableInfoCell.swift in Sources */,
@@ -1702,6 +1707,7 @@
 				116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
 				113F031B1CAFDBF70009ABE1 /* ChatListCellSnapshotTest.swift in Sources */,
 				9CEE6AFF1C4E8FDC00A1ECB5 /* ProfileTabCoordinator.swift in Sources */,
+				11770D6B1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
 				9CEE6ADF1C4E8FDC00A1ECB5 /* LoginChoiceController.swift in Sources */,
 				11628E791CA5819B008C097E /* LoadingImageView.swift in Sources */,
 				11B253B81C503FA10068F47C /* NSTimerExtension.swift in Sources */,
