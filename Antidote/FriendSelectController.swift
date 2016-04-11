@@ -30,13 +30,9 @@ class FriendSelectController: UIViewController {
         self.theme = theme
         self.userInfo = userInfo
 
-        let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
         let friendsController = submanagerObjects.fetchedResultsControllerForType(.Friend, sectionNameKeyPath: "nickname")
 
-        self.dataSource = FriendListDataSource(
-                theme: theme,
-                requestsController: requestsController,
-                friendsController: friendsController)
+        self.dataSource = FriendListDataSource(theme: theme, friendsController: friendsController)
 
         super.init(nibName: nil, bundle: nil)
 
