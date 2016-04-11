@@ -141,7 +141,7 @@ extension LoginCoordinator: LoginChoiceControllerDelegate {
 extension LoginCoordinator: LoginCreateAccountControllerDelegate {
     func loginCreateAccountControllerCreate(controller: LoginCreateAccountController, name: String, profile: String) {
         if name.isEmpty {
-            UIAlertView.showWithTitle("", message: String(localized: "login_enter_username_and_profile"))
+            UIAlertController.showWithTitle("", message: String(localized: "login_enter_username_and_profile"), retryBlock: nil)
             return
         }
 
@@ -243,14 +243,14 @@ private extension LoginCoordinator {
 
     func createProfileWithProfileName(profileName: String, username: String?, copyFromURL: NSURL?, allowEncrypted: Bool) {
         if profileName.isEmpty {
-            UIAlertView.showWithTitle("", message: String(localized: "login_enter_username_and_profile"))
+            UIAlertController.showWithTitle("", message: String(localized: "login_enter_username_and_profile"), retryBlock: nil)
             return
         }
 
         let profileManager = ProfileManager()
 
         if profileManager.allProfileNames.contains(profileName) {
-            UIAlertView.showWithTitle("", message: String(localized: "login_profile_already_exists"))
+            UIAlertController.showWithTitle("", message: String(localized: "login_profile_already_exists"), retryBlock: nil)
             return
         }
 
@@ -258,7 +258,7 @@ private extension LoginCoordinator {
             try profileManager.createProfileWithName(profileName, copyFromURL: copyFromURL)
         }
         catch let error as NSError {
-            UIAlertView.showErrorWithMessage(String(localized: error.localizedDescription))
+            UIAlertController.showErrorWithMessage(String(localized: error.localizedDescription), retryBlock: nil)
             return
         }
 

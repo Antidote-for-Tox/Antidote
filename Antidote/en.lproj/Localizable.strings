@@ -270,6 +270,8 @@
 "error_title" = "Error";
 /* General error button */
 "error_ok_button" = "OK";
+/* General error button */
+"error_retry_button" = "Retry";
 /* Error */
 "error_contact_not_connected" = "Contact isn't online";
 /* Error */
