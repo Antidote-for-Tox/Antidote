@@ -373,14 +373,14 @@ extension RunningCoordinator: ChatPrivateControllerDelegate {
 
 extension RunningCoordinator: FriendSelectControllerDelegate {
     func friendSelectController(controller: FriendSelectController, didSelectFriend friend: OCTFriend) {
-        rootViewController().dismissViewControllerAnimated(true, completion: nil)
+        rootViewController().dismissViewControllerAnimated(true) { [unowned self] in
+            guard let filePath = controller.userInfo as? String else {
+                return
+            }
 
-        guard let filePath = controller.userInfo as? String else {
-            return
+            let chat = self.toxManager.chats.getOrCreateChatWithFriend(friend)
+            self.sendFile(filePath, toChat: chat)
         }
-
-        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
-        sendFile(filePath, toChat: chat)
     }
 
     func friendSelectControllerCancel(controller: FriendSelectController) {
@@ -507,7 +507,10 @@ private extension RunningCoordinator {
     func showChat(chat: OCTChat) {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
+                if iPhone.tabBarController.selectedIndex != IphoneObjects.TabCoordinator.Chats.rawValue {
+                    iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
+                }
+
                 iPhone.chatsCoordinator.showChat(chat, animated: false)
             case .iPad:
                 if let chatVC = iPadDetailController() as? ChatPrivateController {
@@ -616,8 +619,12 @@ private extension RunningCoordinator {
     }
 
     func sendFile(filePath: String, toChat chat: OCTChat) {
+        showChat(chat)
+
         toxManager.files.sendFile(filePath, overrideFileName: nil, toChat: chat) { error in
-            handleErrorWithType(.SendFileToFriend, error: error)
+            handleErrorWithType(.SendFileToFriend, error: error) { [weak self] in
+                self?.sendFile(filePath, toChat: chat)
+            }
         }
     }
 }

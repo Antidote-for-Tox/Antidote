@@ -37,6 +37,13 @@ class ChatsTabCoordinator: RunningNavigationCoordinator {
     }
 
     func showChat(chat: OCTChat, animated: Bool) {
+        if let top = navigationController.topViewController as? ChatPrivateController {
+            if top.chat == chat {
+                // controller is already visible
+                return
+            }
+        }
+
         let controller = ChatPrivateController(
                 theme: theme,
                 chat: chat,
