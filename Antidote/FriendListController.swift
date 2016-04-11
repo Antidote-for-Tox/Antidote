@@ -33,13 +33,13 @@ class FriendListController: UIViewController {
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats, submanagerUser: OCTSubmanagerUser) {
         self.theme = theme
 
-        let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
         let friendsController = submanagerObjects.fetchedResultsControllerForType(.Friend, sectionNameKeyPath: "nickname")
+        let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
 
         self.dataSource = FriendListDataSource(
                 theme: theme,
-                requestsController: requestsController,
-                friendsController: friendsController)
+                friendsController: friendsController,
+                requestsController: requestsController)
 
         self.submanagerFriends = submanagerFriends
         self.submanagerChats = submanagerChats

@@ -36,17 +36,23 @@ class FriendListDataSource: NSObject {
     private let avatarManager: AvatarManager
     private let dateFormatter: NSDateFormatter
 
-    private let requestsStorage: LazyStorage<RBQFetchedResultsController>
+    private let requestsStorage: LazyStorage<RBQFetchedResultsController>?
     private let friendsStorage: LazyStorage<RBQFetchedResultsController>
 
-    init(theme: Theme, requestsController: RBQFetchedResultsController, friendsController: RBQFetchedResultsController) {
+    /// In case if requestsController is nil friend requests won't be shown.
+    init(theme: Theme, friendsController: RBQFetchedResultsController, requestsController: RBQFetchedResultsController? = nil) {
         self.avatarManager = AvatarManager(theme: theme)
         self.dateFormatter = NSDateFormatter(type: .RelativeDateAndTime)
 
-        self.requestsStorage = LazyStorage(createBlock: {
-            requestsController.performFetch()
-            return requestsController
-        })
+        if let requestsController = requestsController {
+            self.requestsStorage = LazyStorage(createBlock: {
+                requestsController.performFetch()
+                return requestsController
+            })
+        }
+        else {
+            self.requestsStorage = nil
+        }
 
         self.friendsStorage = LazyStorage(createBlock: {
             friendsController.performFetch()
@@ -55,12 +61,12 @@ class FriendListDataSource: NSObject {
 
         super.init()
 
-        requestsController.delegate = self
+        requestsController?.delegate = self
         friendsController.delegate = self
     }
 
     func numberOfSections() -> Int {
-        let requests = requestsStorage.object.numberOfSections()
+        let requests = requestsStorage?.object.numberOfSections() ?? 0
         let friends = friendsStorage.object.numberOfSections()
 
         return requests + friends
@@ -68,7 +74,7 @@ class FriendListDataSource: NSObject {
 
     func numberOfRowsInSection(section: Int) -> Int {
         if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return requestsStorage.object.numberOfRowsForSectionIndex(0)
+            return requestsStorage!.object.numberOfRowsForSectionIndex(0) ?? 0
         }
         else {
             let normalized = friendsNormalizedSectionFromSection(section)
@@ -110,7 +116,7 @@ class FriendListDataSource: NSObject {
 
     func objectAtIndexPath(indexPath: NSIndexPath) -> FriendListObject {
         if indexPath.section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return .Request(requestsStorage.object.objectAtIndexPath(indexPath) as! OCTFriendRequest)
+            return .Request(requestsStorage!.object.objectAtIndexPath(indexPath) as! OCTFriendRequest)
         }
         else {
             let section = friendsNormalizedSectionFromSection(indexPath.section)
@@ -150,7 +156,7 @@ class FriendListDataSource: NSObject {
         Call this method to force the cahce to be rebuilt.
      */
     func reset() {
-        requestsStorage.object.reset()
+        requestsStorage?.object.reset()
         friendsStorage.object.reset()
     }
 }
@@ -212,6 +218,9 @@ extension FriendListDataSource: RBQFetchedResultsControllerDelegate {
 
 private extension FriendListDataSource {
     func isRequestsSectionVisible() -> Bool {
+        guard let requestsStorage = requestsStorage else {
+            return false
+        }
         return requestsStorage.object.numberOfSections() > 0
     }
 
@@ -233,7 +242,7 @@ private extension FriendListDataSource {
     }
 
     func denormalizeSectionIndex(index: Int, forController controller: RBQFetchedResultsController) -> Int {
-        if controller == requestsStorage.object {
+        if requestsStorage != nil && controller == requestsStorage!.object {
             return index
         }
 
