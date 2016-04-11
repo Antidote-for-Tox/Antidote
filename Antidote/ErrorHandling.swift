@@ -34,64 +34,72 @@ enum ErrorHandlerType {
 }
 
 
-func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil) {
+/**
+    Show alert for given error.
+
+    - Parameters:
+      - type: Type of error to handle.
+      - error: Optional erro to get code from.
+      - retryBlock: If set user will be asked to retry request once again.
+ */
+func handleErrorWithType(type: ErrorHandlerType, error: NSError? = nil, retryBlock: (Void -> Void)? = nil) {
     switch type {
         case .CannotLoadHTML:
-            UIAlertView.showErrorWithMessage(String(localized: "error_internal_message"))
+            UIAlertController.showErrorWithMessage(String(localized: "error_internal_message"), retryBlock: retryBlock)
         case .CreateOCTManager:
             let (title, message) = OCTManagerInitError(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .ToxSetInfoCodeName:
             let (title, message) = OCTToxErrorSetInfoCode(rawValue: error!.code)!.nameStrings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .ToxSetInfoCodeStatusMessage:
             let (title, message) = OCTToxErrorSetInfoCode(rawValue: error!.code)!.statusMessageStrings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .ToxAddFriend:
             let (title, message) = OCTToxErrorFriendAdd(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .RemoveFriend:
             let (title, message) = OCTToxErrorFriendDelete(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .CallToChat:
             let (title, message) = OCTToxAVErrorCall(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .ExportProfile:
-            UIAlertView.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription)
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription, retryBlock: retryBlock)
         case .DeleteProfile:
-            UIAlertView.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription)
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: error!.localizedDescription, retryBlock: retryBlock)
         case .PasswordIsEmpty:
-            UIAlertView.showWithTitle(String(localized: "password_is_empty_error"))
+            UIAlertController.showWithTitle(String(localized: "password_is_empty_error"), retryBlock: retryBlock)
         case .WrongOldPassword:
-            UIAlertView.showWithTitle(String(localized: "wrong_old_password"))
+            UIAlertController.showWithTitle(String(localized: "wrong_old_password"), retryBlock: retryBlock)
         case .PasswordsDoNotMatch:
-            UIAlertView.showWithTitle(String(localized: "passwords_do_not_match"))
+            UIAlertController.showWithTitle(String(localized: "passwords_do_not_match"), retryBlock: retryBlock)
         case .AnswerCall:
             let (title, message) = OCTToxAVErrorAnswer(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .RouteAudioToSpeaker:
-            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"), retryBlock: retryBlock)
         case .EnableVideoSending:
-            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"), retryBlock: retryBlock)
         case .CallSwitchCamera:
-            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"))
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: String(localized: "error_internal_message"), retryBlock: retryBlock)
         case .ConvertImageToPNG:
-            UIAlertView.showWithTitle(String(localized: "error_title"), message: String(localized: "change_avatar_error_convert_image"))
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: String(localized: "change_avatar_error_convert_image"), retryBlock: retryBlock)
         case .ChangeAvatar:
             let (title, message) = OCTSetUserAvatarError(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .SendFileToFriend:
             let (title, message) = OCTSendFileError(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .AcceptIncomingFile:
             let (title, message) = OCTAcceptFileError(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .CancelFileTransfer:
             let (title, message) = OCTFileTransferError(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
         case .PauseFileTransfer:
             let (title, message) = OCTFileTransferError(rawValue: error!.code)!.strings()
-            UIAlertView.showWithTitle(title, message: message)
+            UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
     }
 }
 

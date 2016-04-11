@@ -72,15 +72,15 @@ extension AppCoordinator: TopCoordinatorProtocol {
 
         activeCoordinator.handleOpenURL(openURL) { [weak self] result in
             switch result {
-                case .Success:
+                case .DidHandle:
                     // nop
                     break
-                case .Failure(let newURL):
+                case .DidNotHandle(let newURL):
                     self?.cachedOpenURL = newURL
             }
         }
 
-        resultBlock(.Success)
+        resultBlock(.DidHandle)
     }
 }
 

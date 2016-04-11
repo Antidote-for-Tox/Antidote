@@ -123,6 +123,10 @@
 		1173F06E1BC5D9BA00B88B7B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06D1BC5D9BA00B88B7B /* Theme.swift */; };
 		1173F0701BC5D9CA00B88B7B /* ThemeTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */; };
 		1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
+		11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11770D691CBC120C00D34D6E /* FriendSelectController.swift */; };
+		11770D6B1CBC120C00D34D6E /* FriendSelectController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11770D691CBC120C00D34D6E /* FriendSelectController.swift */; };
+		11770D771CBC1C7A00D34D6E /* UIAlertControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11770D761CBC1C7A00D34D6E /* UIAlertControllerExtension.swift */; };
+		11770D781CBC1C7A00D34D6E /* UIAlertControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11770D761CBC1C7A00D34D6E /* UIAlertControllerExtension.swift */; };
 		11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */; };
 		11771E2D1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */; };
 		11771E361CA5C6E900EC259E /* Reach.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11771E351CA5C6E900EC259E /* Reach.swift */; };
@@ -151,7 +155,6 @@
 		119AD1BE1BDED261000C5CB8 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1BD1BDED261000C5CB8 /* TextViewController.swift */; };
 		119AD1CA1BDED6E9000C5CB8 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */; };
 		119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
-		119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
 		11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */; };
 		11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */; };
 		11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */; };
@@ -299,7 +302,6 @@
 		9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		9CEE6B061C4E8FDC00A1ECB5 /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */; };
 		9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
-		9CEE6B081C4E8FDC00A1ECB5 /* UIAlertViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */; };
 		9CEE6B091C4E8FDC00A1ECB5 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
 		9CEE6B0A1C4E8FDC00A1ECB5 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
 		9CEE6B0B1C4E8FDC00A1ECB5 /* ErrorHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */; };
@@ -541,6 +543,8 @@
 		1173F06D1BC5D9BA00B88B7B /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeTest.swift; sourceTree = "<group>"; };
 		1173F0711BC5D9DA00B88B7B /* default-theme.yaml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "default-theme.yaml"; sourceTree = "<group>"; };
+		11770D691CBC120C00D34D6E /* FriendSelectController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendSelectController.swift; sourceTree = "<group>"; };
+		11770D761CBC1C7A00D34D6E /* UIAlertControllerExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertControllerExtension.swift; sourceTree = "<group>"; };
 		11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutomationCoordinator.swift; sourceTree = "<group>"; };
 		11771E351CA5C6E900EC259E /* Reach.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reach.swift; sourceTree = "<group>"; };
 		1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDateFormatterExtension.swift; sourceTree = "<group>"; };
@@ -562,7 +566,6 @@
 		119AD1BD1BDED261000C5CB8 /* TextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		119AD1C91BDED6E9000C5CB8 /* ErrorHandling.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandling.swift; sourceTree = "<group>"; };
 		119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
-		119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIAlertViewExtension.swift; sourceTree = "<group>"; };
 		11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPrivateController.swift; sourceTree = "<group>"; };
 		11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
 		11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingTextCell.swift; sourceTree = "<group>"; };
@@ -1012,7 +1015,7 @@
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
 				1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
-				119AD1E81BE166CA000C5CB8 /* UIAlertViewExtension.swift */,
+				11770D761CBC1C7A00D34D6E /* UIAlertControllerExtension.swift */,
 				116634B11C7087A80072C980 /* UIApplicationExtension.swift */,
 				119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */,
 				113F03321CB2E9C20009ABE1 /* UIFontExtension.swift */,
@@ -1036,6 +1039,7 @@
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				116634EB1C7B90F20072C980 /* FriendRequestController.swift */,
+				11770D691CBC120C00D34D6E /* FriendSelectController.swift */,
 				114962911C5E1BE0001E5435 /* PasswordController.swift */,
 				9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */,
 				114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */,
@@ -1434,7 +1438,6 @@
 				11B2535D1C4BACDB0068F47C /* TabBarController.swift in Sources */,
 				11628E6C1CA57B19008C097E /* ChatOutgoingFileCellModel.swift in Sources */,
 				9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */,
-				119AD1E91BE166CA000C5CB8 /* UIAlertViewExtension.swift in Sources */,
 				116DCE3B1CAAF85300B693EC /* NSURLExtension.swift in Sources */,
 				1183BCDD1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */,
 				11E640781C2DC15400D24C6D /* HelperFunctions.swift in Sources */,
@@ -1500,6 +1503,7 @@
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
+				11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
 				9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
 				116634E01C7B8D770072C980 /* StaticTableInfoCell.swift in Sources */,
@@ -1508,6 +1512,7 @@
 				11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				110E49E01BF925FD00D1FE6F /* RunningNavigationCoordinator.swift in Sources */,
 				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
+				11770D771CBC1C7A00D34D6E /* UIAlertControllerExtension.swift in Sources */,
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
@@ -1595,7 +1600,6 @@
 				11628E641CA57B14008C097E /* ChatOutgoingFileCell.swift in Sources */,
 				1183BCAD1CA1B398000CD310 /* ChatIncomingFileCell.swift in Sources */,
 				9CEE6AF21C4E8FDC00A1ECB5 /* TabBarController.swift in Sources */,
-				9CEE6B081C4E8FDC00A1ECB5 /* UIAlertViewExtension.swift in Sources */,
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				9CEE6AE01C4E8FDC00A1ECB5 /* LoginCreateAccountController.swift in Sources */,
 				9CEE6AC91C4E8FDC00A1ECB5 /* StaticTableButtonCell.swift in Sources */,
@@ -1691,6 +1695,7 @@
 				9CEE6AC01C4E8FDC00A1ECB5 /* ChatMovableDateCellModel.swift in Sources */,
 				116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */,
 				9CEE6AF31C4E8FDC00A1ECB5 /* TextEditController.swift in Sources */,
+				11770D781CBC1C7A00D34D6E /* UIAlertControllerExtension.swift in Sources */,
 				9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,
 				116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
@@ -1702,6 +1707,7 @@
 				116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
 				113F031B1CAFDBF70009ABE1 /* ChatListCellSnapshotTest.swift in Sources */,
 				9CEE6AFF1C4E8FDC00A1ECB5 /* ProfileTabCoordinator.swift in Sources */,
+				11770D6B1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
 				9CEE6ADF1C4E8FDC00A1ECB5 /* LoginChoiceController.swift in Sources */,
 				11628E791CA5819B008C097E /* LoadingImageView.swift in Sources */,
 				11B253B81C503FA10068F47C /* NSTimerExtension.swift in Sources */,

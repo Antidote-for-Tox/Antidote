@@ -22,8 +22,8 @@ class OpenURL{
 }
 
 enum HandleURLResult {
-    case Success
-    case Failure(openURL: OpenURL)
+    case DidHandle
+    case DidNotHandle(openURL: OpenURL)
 }
 
 protocol TopCoordinatorProtocol: CoordinatorProtocol {
@@ -55,6 +55,6 @@ extension TopCoordinatorProtocol {
     }
 
     func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
-        resultBlock(.Failure(openURL: openURL))
+        resultBlock(.DidNotHandle(openURL: openURL))
     }
 }

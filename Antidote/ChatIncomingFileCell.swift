@@ -64,6 +64,7 @@ class ChatIncomingFileCell: ChatGenericFileCell {
             case .Paused:
                 break
             case .Cancelled:
+                loadingView.setCancelledImage()
                 loadingView.imageButton.userInteractionEnabled = false
                 cancelButton.hidden = true
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")

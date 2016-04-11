@@ -124,7 +124,7 @@ private extension SettingsMainController{
 
     func feedback(_: StaticTableBaseCell) {
         guard MFMailComposeViewController.canSendMail() else {
-            UIAlertView.showErrorWithMessage(String(localized: "settings_configure_email"))
+            UIAlertController.showErrorWithMessage(String(localized: "settings_configure_email"), retryBlock: nil)
             return
         }
 

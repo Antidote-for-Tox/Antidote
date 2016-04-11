@@ -56,6 +56,8 @@
 "profile_title" = "Profile";
 
 /* No contacts placeholder text */
+"contact_no_contacts" = "No contacts";
+/* No contacts placeholder text */
 "contact_no_contacts_add_contact" = "Add a contact\nor\n";
 /* No contacts placeholder text */
 "contact_no_contacts_share_tox_id" = "share your Tox ID";
@@ -218,6 +220,11 @@
 /* Error while converting avatar image */
 "change_avatar_error_convert_image" = "Cannot convert image";
 
+/* Alert text when sending file to contacts */
+"file_send_to_active_chat" = "Send to active chat";
+/* Alert text when sending file to contacts */
+"file_send_to_contact" = "Send to contact";
+
 /* Profile menu item */
 "export_profile" = "Export Profile";
 /* Profile menu item */
@@ -263,6 +270,8 @@
 "error_title" = "Error";
 /* General error button */
 "error_ok_button" = "OK";
+/* General error button */
+"error_retry_button" = "Retry";
 /* Error */
 "error_contact_not_connected" = "Contact isn't online";
 /* Error */
