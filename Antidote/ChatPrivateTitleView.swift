@@ -73,27 +73,32 @@ private extension ChatPrivateTitleView {
         statusLabel.textColor = theme.colorForType(.NormalText)
         statusLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
         addSubview(statusLabel)
+
+        nameLabel.snp_makeConstraints {
+            $0.top.equalTo(self)
+            $0.leading.equalTo(self)
+        }
+
+        statusView.snp_makeConstraints {
+            $0.centerY.equalTo(nameLabel)
+            $0.leading.equalTo(nameLabel.snp_trailing).offset(Constants.StatusViewLeftOffset)
+            $0.trailing.equalTo(self)
+            $0.size.equalTo(Constants.StatusViewSize)
+        }
+
+        statusLabel.snp_makeConstraints {
+            $0.top.equalTo(nameLabel.snp_bottom)
+            $0.leading.equalTo(nameLabel)
+            $0.trailing.equalTo(nameLabel)
+            $0.bottom.equalTo(self)
+        }
     }
 
     func updateFrame() {
         nameLabel.sizeToFit()
         statusLabel.sizeToFit()
 
-        // Yeah, manual stuff.. suffer!
-
-        frame.size.width = max(
-                nameLabel.frame.size.width + Constants.StatusViewLeftOffset + Constants.StatusViewSize,
-                statusLabel.frame.size.width)
+        frame.size.width = max(nameLabel.frame.size.width, statusLabel.frame.size.width) + Constants.StatusViewLeftOffset + Constants.StatusViewSize
         frame.size.height = nameLabel.frame.size.height + statusLabel.frame.size.height
-
-        nameLabel.frame.origin.x = (frame.size.width - nameLabel.frame.size.width) / 2
-
-        statusView.frame.size.width = Constants.StatusViewSize
-        statusView.frame.size.height = Constants.StatusViewSize
-        statusView.frame.origin.x = Constants.StatusViewLeftOffset + CGRectGetMaxX(nameLabel.frame)
-        statusView.frame.origin.y = (nameLabel.frame.size.height - statusView.frame.size.height) / 2
-
-        statusLabel.frame.origin.x = (frame.size.width - statusLabel.frame.size.width) / 2
-        statusLabel.frame.origin.y = CGRectGetMaxY(nameLabel.frame)
     }
 }

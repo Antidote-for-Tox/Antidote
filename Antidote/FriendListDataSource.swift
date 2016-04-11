@@ -247,6 +247,6 @@ private extension FriendListDataSource {
         }
 
         // friends controller
-        return isRequestsSectionVisible() ? (index - 1) : index
+        return isRequestsSectionVisible() ? (index + 1) : index
     }
 }

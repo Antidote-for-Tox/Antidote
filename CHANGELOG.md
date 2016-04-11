@@ -14,6 +14,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - Music stops when switching to Antidote [#177](https://github.com/Antidote-for-Tox/Antidote/issues/177).
 - Layout for right to left interface [#190](https://github.com/Antidote-for-Tox/Antidote/issues/190).
+- Long contact names overflow in the top bar [#184](https://github.com/Antidote-for-Tox/Antidote/issues/184).
+- Time in chat doesn't fit sometimes [#178](https://github.com/Antidote-for-Tox/Antidote/issues/178).
 
 ## [0.10.2] - 2016-03-31
 ### Added
