@@ -80,7 +80,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
             case .Paused:
                 loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play-big")
             case .Cancelled:
-                loadingView.setCancelledImage()
+                fallthrough
             case .Done:
                 var fileExtension: String? = nil
 

@@ -20,6 +20,7 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
     override func setButtonImage(image: UIImage) {
         super.setButtonImage(image)
 
+        loadingView.bottomLabel.hidden = true
         if state == .Cancelled {
             loadingView.centerImageView.image = nil
         }
@@ -53,21 +54,20 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
         loadingView.imageButton.userInteractionEnabled = true
         loadingView.progressView.hidden = true
         loadingView.topLabel.hidden = true
-        loadingView.bottomLabel.hidden = true
+        loadingView.bottomLabel.hidden = false
+        loadingView.bottomLabel.text = fileModel.fileName
 
         cancelButton.hidden = false
 
         switch state {
             case .WaitingConfirmation:
                 loadingView.imageButton.userInteractionEnabled = false
-                loadingView.bottomLabel.hidden = false
                 loadingView.bottomLabel.text = String(localized: "chat_waiting")
             case .Loading:
                 loadingView.progressView.hidden = false
             case .Paused:
                 break
             case .Cancelled:
-                loadingView.bottomLabel.hidden = false
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")
                 cancelButton.hidden = true
             case .Done:
