@@ -58,7 +58,7 @@ class RunningCoordinator: NSObject {
     private let window: UIWindow
 
     // Tox manager is stored here
-    private let toxManager: OCTManager
+    private var toxManager: OCTManager!
 
     private let friendsCoordinator: FriendsTabCoordinator
     private let settingsCoordinator: SettingsTabCoordinator
@@ -97,6 +97,16 @@ class RunningCoordinator: NSObject {
         settingsCoordinator.delegate = self
         profileCoordinator.delegate = self
         notificationCoordinator.delegate = self
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(RunningCoordinator.applicationWillTerminate), name: UIApplicationWillTerminateNotification, object: nil)
+    }
+
+    deinit {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+
+    func applicationWillTerminate() {
+        toxManager = nil
     }
 }
 

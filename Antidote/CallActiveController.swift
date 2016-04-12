@@ -177,6 +177,8 @@ class CallActiveController: CallBaseController {
         createSmallViews()
         installConstraints()
 
+        view.bringSubviewToFront(topContainer)
+
         setButtonsInitValues()
 
         updateViewsWithTraitCollection(self.traitCollection)

@@ -21,7 +21,9 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
         super.setButtonImage(image)
 
         loadingView.bottomLabel.hidden = true
+
         if state == .Cancelled {
+            loadingView.bottomLabel.hidden = false
             loadingView.centerImageView.image = nil
         }
     }
