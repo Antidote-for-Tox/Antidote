@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Layout for right to left interface [#190](https://github.com/Antidote-for-Tox/Antidote/issues/190).
 - Long contact names overflow in the top bar [#184](https://github.com/Antidote-for-Tox/Antidote/issues/184).
 - Time in chat doesn't fit sometimes [#178](https://github.com/Antidote-for-Tox/Antidote/issues/178).
+- User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
 
 ## [0.10.2] - 2016-03-31
 ### Added
