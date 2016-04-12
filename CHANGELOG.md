@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Returned back iOS 8.0 support [#188](https://github.com/Antidote-for-Tox/Antidote/issues/188).
+- Translations updated.
 
 ### Fixed
 - Music stops when switching to Antidote [#177](https://github.com/Antidote-for-Tox/Antidote/issues/177).
