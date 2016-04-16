@@ -3,7 +3,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Changed
 - Migration to new Realm, app speed improvements.
+
+### Fixed
+- User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
 
 ## [0.10.3] - 2016-04-12
 ### Added

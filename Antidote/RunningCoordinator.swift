@@ -107,6 +107,10 @@ class RunningCoordinator: NSObject {
 
     func applicationWillTerminate() {
         toxManager = nil
+
+        // Giving tox some time to close all connections.
+        let until = NSDate(timeIntervalSinceNow:1.0)
+        NSRunLoop.currentRunLoop().runUntilDate(until)
     }
 }
 
