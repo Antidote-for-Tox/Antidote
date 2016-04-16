@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
+- Crash when sending files from other apps [#193](https://github.com/Antidote-for-Tox/Antidote/issues/193).
 
 ## [0.10.3] - 2016-04-12
 ### Added

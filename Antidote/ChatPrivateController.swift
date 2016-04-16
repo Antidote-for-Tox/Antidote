@@ -63,7 +63,7 @@ class ChatPrivateController: KeyboardNotificationController {
     private var videoButton: UIBarButtonItem!
 
     private var titleView: ChatPrivateTitleView!
-    private var tableView: UITableView!
+    private var tableView: UITableView?
     private var newMessagesView: UIView!
     private var chatInputView: ChatInputView!
 
@@ -177,6 +177,10 @@ extension ChatPrivateController {
     }
 
     func panOnTableView(recognizer: UIPanGestureRecognizer) {
+        guard let tableView = tableView else {
+            return
+        }
+
         let translation = recognizer.translationInView(recognizer.view)
         recognizer.setTranslation(CGPointZero, inView: recognizer.view)
 
@@ -207,13 +211,17 @@ extension ChatPrivateController {
     }
 
     func newMessagesViewPressed() {
+        guard let tableView = tableView else {
+            return
+        }
+
         tableView.setContentOffset(CGPointZero, animated: true)
 
         // iOS is broken =\
         // See https://stackoverflow.com/a/30804874
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
-            self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+            self?.tableView?.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
         }
     }
 
@@ -307,6 +315,9 @@ extension ChatPrivateController: UITableViewDelegate {
 
 extension ChatPrivateController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        guard let tableView = tableView else {
+            return
+        }
         guard scrollView === tableView else {
             return
         }
@@ -433,7 +444,8 @@ private extension ChatPrivateController {
     }
 
     func createTableView() {
-        tableView = UITableView()
+        let tableView = UITableView()
+        self.tableView = tableView
         tableView.dataSource = self
         tableView.delegate = self
         tableView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0)
@@ -500,18 +512,18 @@ private extension ChatPrivateController {
     }
 
     func installConstraints() {
-        tableView.snp_makeConstraints {
+        tableView!.snp_makeConstraints {
             $0.top.leading.trailing.equalTo(view)
         }
 
         newMessagesView.snp_makeConstraints {
-            $0.centerX.equalTo(tableView)
+            $0.centerX.equalTo(tableView!)
             newMessageViewTopConstraint = $0.top.equalTo(chatInputView.snp_top).constraint
         }
 
         chatInputView.snp_makeConstraints {
             $0.leading.trailing.equalTo(view)
-            $0.top.equalTo(tableView.snp_bottom)
+            $0.top.equalTo(tableView!.snp_bottom)
             $0.top.greaterThanOrEqualTo(view).offset(Constants.InputViewTopOffset)
             chatInputViewBottomConstraint = $0.bottom.equalTo(view).constraint
         }
@@ -519,17 +531,20 @@ private extension ChatPrivateController {
 
     func addMessagesNotification() {
         self.messagesToken = messages.addNotificationBlock { [unowned self] change in
+            guard let tableView = self.tableView else {
+                return
+            }
             switch change {
                 case .Initial:
                     break
                 case .Update(_, let deletions, let insertions, let modifications):
                     self.visibleMessages = self.visibleMessages + insertions.count - deletions.count
 
-                    self.tableView.beginUpdates()
+                    tableView.beginUpdates()
                     self.updateTableViewWithDeletions(deletions)
                     self.updateTableViewWithInsertions(insertions)
                     self.updateTableViewWithModifications(modifications)
-                    self.tableView.endUpdates()
+                    tableView.endUpdates()
 
                     if insertions.contains(0) {
                         self.handleNewMessage()
@@ -541,6 +556,10 @@ private extension ChatPrivateController {
     }
 
     func updateTableViewWithDeletions(deletions: [Int]) {
+        guard let tableView = tableView else {
+            return
+        }
+
         for index in deletions {
             if index >= visibleMessages {
                 continue
@@ -551,6 +570,10 @@ private extension ChatPrivateController {
     }
 
     func updateTableViewWithInsertions(insertions: [Int]) {
+        guard let tableView = tableView else {
+            return
+        }
+
         for index in insertions {
             if index >= visibleMessages {
                 continue
@@ -561,6 +584,10 @@ private extension ChatPrivateController {
     }
 
     func updateTableViewWithModifications(modifications: [Int]) {
+        guard let tableView = tableView else {
+            return
+        }
+
         for index in modifications {
             if index >= visibleMessages {
                 continue
@@ -617,6 +644,9 @@ private extension ChatPrivateController {
             updateLastReadDate()
         }
 
+        guard let tableView = tableView else {
+            return
+        }
         guard let visible = tableView.indexPathsForVisibleRows else {
             return
         }
@@ -663,10 +693,10 @@ private extension ChatPrivateController {
         let cell: ChatGenericFileCell
 
         if incoming {
-            cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
+            cell = tableView!.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
         }
         else {
-            cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingFileCell.staticReuseIdentifier) as! ChatOutgoingFileCell
+            cell = tableView!.dequeueReusableCellWithIdentifier(ChatOutgoingFileCell.staticReuseIdentifier) as! ChatOutgoingFileCell
         }
         let model = ChatIncomingFileCellModel()
 
@@ -789,7 +819,7 @@ private extension ChatPrivateController {
             self?.imageCache.setObject(image, forKey: fromFile)
 
             dispatch_async(dispatch_get_main_queue()) {
-                let optionalCell = self?.tableView.cellForRowAtIndexPath(indexPath)
+                let optionalCell = self?.tableView?.cellForRowAtIndexPath(indexPath)
                 guard let cell = (optionalCell as? ChatIncomingFileCell) ?? (optionalCell as? ChatOutgoingFileCell) else {
                     return
                 }
