@@ -175,7 +175,6 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         }
 
         let isToxFile = openURL.url.isToxURL()
-        let chatController = activeChatController()
 
         let style: UIAlertControllerStyle
 
@@ -194,13 +193,6 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
                 resultBlock(.DidNotHandle(openURL: modifiedURL))
                 self.logout()
-            })
-        }
-
-        if let chatController = chatController {
-            alert.addAction(UIAlertAction(title: String(localized: "file_send_to_active_chat"), style: .Default) { [unowned self] _ -> Void in
-                self.sendFile(filePath, toChat: chatController.chat)
-                resultBlock(.DidHandle)
             })
         }
 

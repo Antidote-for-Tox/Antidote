@@ -221,8 +221,6 @@
 "change_avatar_error_convert_image" = "Cannot convert image";
 
 /* Alert text when sending file to contacts */
-"file_send_to_active_chat" = "Send to active chat";
-/* Alert text when sending file to contacts */
 "file_send_to_contact" = "Send to contact";
 
 /* Profile menu item */

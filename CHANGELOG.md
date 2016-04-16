@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Changed
 - Migration to new Realm, app speed improvements.
+- Improving file sending UX [#193](https://github.com/Antidote-for-Tox/Antidote/issues/193).
 
 ### Fixed
 - User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
