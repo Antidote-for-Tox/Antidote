@@ -627,7 +627,7 @@ private extension RunningCoordinator {
     func sendFile(filePath: String, toChat chat: OCTChat) {
         showChat(chat)
 
-        toxManager.files.sendFile(filePath, overrideFileName: nil, toChat: chat) { error in
+        toxManager.files.sendFileAtPath(filePath, moveToUploads: true, toChat: chat) { error in
             handleErrorWithType(.SendFileToFriend, error: error) { [weak self] in
                 self?.sendFile(filePath, toChat: chat)
             }
