@@ -203,6 +203,7 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
             resultBlock(.DidHandle)
+            _ = try? NSFileManager.defaultManager().removeItemAtPath(filePath)
         })
 
         switch InterfaceIdiom.current() {
@@ -391,6 +392,11 @@ extension RunningCoordinator: FriendSelectControllerDelegate {
 
     func friendSelectControllerCancel(controller: FriendSelectController) {
         rootViewController().dismissViewControllerAnimated(true, completion: nil)
+
+        guard let filePath = controller.userInfo as? String else {
+            return
+        }
+        _ = try? NSFileManager.defaultManager().removeItemAtPath(filePath)
     }
 }
 
