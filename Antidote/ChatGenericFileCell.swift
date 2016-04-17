@@ -55,7 +55,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
         loadingView.imageButton.setBackgroundImage(square, forState: .Normal)
 
-        if state == .Done {
+        if state == .WaitingConfirmation || state == .Done {
             loadingView.centerImageView.image = nil
         }
     }
@@ -76,12 +76,12 @@ class ChatGenericFileCell: ChatMovableDateCell {
         openHandle = fileModel.openHandle
 
         switch state {
-            case .WaitingConfirmation:
-                loadingView.centerImageView.image = nil
             case .Loading:
                 loadingView.centerImageView.image = UIImage.templateNamed("chat-file-pause-big")
             case .Paused:
                 loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play-big")
+            case .WaitingConfirmation:
+                fallthrough
             case .Cancelled:
                 fallthrough
             case .Done:
