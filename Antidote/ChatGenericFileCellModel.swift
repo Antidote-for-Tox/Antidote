@@ -24,6 +24,7 @@ class ChatGenericFileCellModel: ChatMovableDateCellModel {
 
     var startLoadingHandle: (Void -> Void)?
     var cancelHandle: (Void -> Void)?
+    var retryHandle: (Void -> Void)?
     var pauseOrResumeHandle: (Void -> Void)?
     var openHandle: (Void -> Void)?
 }

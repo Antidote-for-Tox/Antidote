@@ -33,6 +33,7 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
 
         movableContentView.addSubview(loadingView)
         movableContentView.addSubview(cancelButton)
+        movableContentView.addSubview(retryButton)
     }
 
     override func installConstraints() {
@@ -42,6 +43,11 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
             $0.trailing.equalTo(loadingView.snp_leading).offset(-Constants.SmallOffset)
             $0.top.equalTo(loadingView)
             $0.size.equalTo(Constants.CloseButtonSize)
+        }
+
+        retryButton.snp_makeConstraints {
+            $0.center.equalTo(cancelButton)
+            $0.size.equalTo(cancelButton)
         }
 
         loadingView.snp_makeConstraints {
@@ -60,6 +66,7 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
         loadingView.bottomLabel.text = fileModel.fileName
 
         cancelButton.hidden = false
+        retryButton.hidden = true
 
         switch state {
             case .WaitingConfirmation:
@@ -72,6 +79,7 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
             case .Cancelled:
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")
                 cancelButton.hidden = true
+                retryButton.hidden = false
             case .Done:
                 cancelButton.hidden = true
         }

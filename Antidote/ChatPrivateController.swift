@@ -746,6 +746,15 @@ private extension ChatPrivateController {
             }
         }
 
+        model.retryHandle = { [weak self] in
+            do {
+                try self?.submanagerFiles.cancelFileTransfer(message)
+            }
+            catch let error as NSError {
+                handleErrorWithType(.CancelFileTransfer, error: error)
+            }
+        }
+
         model.pauseOrResumeHandle = { [weak self] in
             let isPaused = (message.messageFile!.pausedBy.rawValue & OCTMessageFilePausedBy.User.rawValue) != 0
 

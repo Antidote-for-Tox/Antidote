@@ -12,6 +12,7 @@ import SnapKit
 class ChatGenericFileCell: ChatMovableDateCell {
     var loadingView: LoadingImageView!
     var cancelButton: UIButton!
+    var retryButton: UIButton!
 
     var progressObject: ChatProgressProtocol? {
         didSet {
@@ -30,6 +31,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
     var startLoadingHandle: (Void -> Void)?
     var cancelHandle: (Void -> Void)?
+    var retryHandle: (Void -> Void)?
     var pauseOrResumeHandle: (Void -> Void)?
     var openHandle: (Void -> Void)?
 
@@ -69,6 +71,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
         state = fileModel.state
         startLoadingHandle = fileModel.startLoadingHandle
         cancelHandle = fileModel.cancelHandle
+        retryHandle = fileModel.retryHandle
         pauseOrResumeHandle = fileModel.pauseOrResumeHandle
         openHandle = fileModel.openHandle
 
@@ -108,6 +111,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
         loadingView.bottomLabel.textColor = theme.colorForType(.FileImageCancelledText)
 
         cancelButton.tintColor = theme.colorForType(.FileImageCancelButtonTint)
+        retryButton.tintColor = theme.colorForType(.FileImageCancelButtonTint)
     }
 
     override func createViews() {
@@ -121,6 +125,12 @@ class ChatGenericFileCell: ChatMovableDateCell {
         cancelButton = UIButton()
         cancelButton.setImage(cancelImage, forState: .Normal)
         cancelButton.addTarget(self, action: #selector(ChatGenericFileCell.cancelButtonPressed), forControlEvents: .TouchUpInside)
+
+        let retryImage = UIImage.templateNamed("chat-file-retry")
+
+        retryButton = UIButton()
+        retryButton.setImage(retryImage, forState: .Normal)
+        retryButton.addTarget(self, action: #selector(ChatGenericFileCell.retryButtonPressed), forControlEvents: .TouchUpInside)
     }
 
     func updateProgress(progress: CGFloat) {
@@ -135,6 +145,10 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
     func cancelButtonPressed() {
         cancelHandle?()
+    }
+
+    func retryButtonPressed() {
+        retryHandle?()
     }
 
     /// Override in subclass
