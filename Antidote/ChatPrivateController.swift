@@ -747,11 +747,8 @@ private extension ChatPrivateController {
         }
 
         model.retryHandle = { [weak self] in
-            do {
-                try self?.submanagerFiles.cancelFileTransfer(message)
-            }
-            catch let error as NSError {
-                handleErrorWithType(.CancelFileTransfer, error: error)
+            self?.submanagerFiles.retrySendingFile(message) { error in
+                handleErrorWithType(.SendFileToFriend, error: error)
             }
         }
 

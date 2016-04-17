@@ -634,9 +634,7 @@ private extension RunningCoordinator {
         showChat(chat)
 
         toxManager.files.sendFileAtPath(filePath, moveToUploads: true, toChat: chat) { error in
-            handleErrorWithType(.SendFileToFriend, error: error) { [weak self] in
-                self?.sendFile(filePath, toChat: chat)
-            }
+            handleErrorWithType(.SendFileToFriend, error: error)
         }
     }
 }
