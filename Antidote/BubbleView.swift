@@ -45,6 +45,15 @@ class BubbleView: UIView {
         }
     }
 
+    var selectable: Bool {
+        get {
+            return textView.selectable
+        }
+        set {
+            textView.selectable = newValue
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 

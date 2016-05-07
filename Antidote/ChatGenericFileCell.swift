@@ -41,6 +41,8 @@ class ChatGenericFileCell: ChatMovableDateCell {
     func setButtonImage(image: UIImage) {
         let square: UIImage
 
+        canBeCopied = true
+
         if image.size.width == image.size.height {
             square = image
         }
@@ -74,6 +76,8 @@ class ChatGenericFileCell: ChatMovableDateCell {
         retryHandle = fileModel.retryHandle
         pauseOrResumeHandle = fileModel.pauseOrResumeHandle
         openHandle = fileModel.openHandle
+
+        canBeCopied = false
 
         switch state {
             case .Loading:
@@ -133,6 +137,14 @@ class ChatGenericFileCell: ChatMovableDateCell {
         retryButton.addTarget(self, action: #selector(ChatGenericFileCell.retryButtonPressed), forControlEvents: .TouchUpInside)
     }
 
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        loadingView.userInteractionEnabled = !editing
+        cancelButton.userInteractionEnabled = !editing
+        retryButton.userInteractionEnabled = !editing
+    }
+
     func updateProgress(progress: CGFloat) {
         loadingView.progressView.progress = progress
     }
@@ -156,4 +168,15 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
     /// Override in subclass
     func loadingViewPressed() {}
+}
+
+// ChatEditable
+extension ChatGenericFileCell {
+    override func shouldShowMenu() -> Bool {
+        return true
+    }
+
+    override func menuTargetRect() -> CGRect {
+        return loadingView.frame
+    }
 }
