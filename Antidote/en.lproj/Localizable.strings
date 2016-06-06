@@ -295,9 +295,9 @@
 /* Error */
 "error_decrypt_wrong_password_message" = "Password is wrong or file is corrupted.";
 /* Error */
-"error_general_unknown_message" = "Unknown error occured.";
+"error_general_unknown_message" = "Unknown error occurred.";
 /* Error */
-"error_general_no_memory_message" = "Not enought memory.";
+"error_general_no_memory_message" = "Not enough memory.";
 /* Error */
 "error_general_bind_port_message" = "Was unable to bind to a port.";
 /* Error */
