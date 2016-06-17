@@ -44,13 +44,16 @@ class ChatPrivateController: KeyboardNotificationController {
     private weak var delegate: ChatPrivateControllerDelegate?
 
     private let theme: Theme
-    private let friend: OCTFriend
     private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerObjects: OCTSubmanagerObjects!
     private weak var submanagerFiles: OCTSubmanagerFiles!
 
-    private let dataSource: PortionDataSource
-    private let friendController: RBQFetchedResultsController
+    private let messages: RLMResults
+    private var messagesToken: RLMNotificationToken?
+    private var visibleMessages: Int
+    
+    private let friend: OCTFriend
+    private var friendToken: RLMNotificationToken?
 
     private let imageCache = NSCache()
 
@@ -67,7 +70,6 @@ class ChatPrivateController: KeyboardNotificationController {
     private var newMessageViewTopConstraint: Constraint!
     private var chatInputViewBottomConstraint: Constraint!
 
-    private var didAddNewMessageInLastUpdate = false
     private var newMessagesViewVisible = false
 
     init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
@@ -79,23 +81,13 @@ class ChatPrivateController: KeyboardNotificationController {
         self.submanagerFiles = submanagerFiles
         self.delegate = delegate
 
-        let messagesController = submanagerObjects.fetchedResultsControllerForType(
-                .MessageAbstract,
-                predicate: NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier),
-                sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: false)])
-        self.dataSource = PortionDataSource(controller: messagesController, portionSize:Constants.MessagesPortionSize)
-
-        self.friendController = submanagerObjects.fetchedResultsControllerForType(
-                .Friend,
-                predicate: NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier))
+        let predicate = NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier)
+        self.messages = submanagerObjects.objectsForType(.MessageAbstract, predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: false)
+        self.visibleMessages = Constants.MessagesPortionSize
 
         self.timeFormatter = NSDateFormatter(type: .Time)
 
         super.init()
-
-        dataSource.delegate = self
-        friendController.delegate = self
-        friendController.performFetch()
 
         createNavigationViews()
 
@@ -109,12 +101,15 @@ class ChatPrivateController: KeyboardNotificationController {
                 object: nil)
     }
 
-    required convenience init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+
+        messagesToken?.stop()
+        friendToken?.stop()
+    }
+
+    required convenience init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func loadView() {
@@ -129,7 +124,8 @@ class ChatPrivateController: KeyboardNotificationController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        friendWasUpdated()
+        addMessagesNotification()
+        addFriendNotification()
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -239,7 +235,7 @@ extension ChatPrivateController {
 
 extension ChatPrivateController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+        let message = messages[UInt(indexPath.row)] as! OCTMessageAbstract
 
         // setting default values to avoid crash
         var model: ChatMovableDateCellModel  = ChatMovableDateCellModel()
@@ -295,7 +291,7 @@ extension ChatPrivateController: UITableViewDataSource {
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource.numberOfObjects()
+        return min(visibleMessages, Int(messages.count))
     }
 }
 
@@ -316,82 +312,17 @@ extension ChatPrivateController: UIScrollViewDelegate {
         }
 
         if tableView.contentOffset.y > (tableView.contentSize.height - tableView.frame.size.height) {
-            if dataSource.increaseLimit() {
+            let previous = visibleMessages
+
+            visibleMessages = visibleMessages + Constants.MessagesPortionSize
+
+            if visibleMessages > Int(messages.count) {
+                visibleMessages = Int(messages.count)
+            }
+
+            if visibleMessages != previous {
                 tableView.reloadData()
             }
-        }
-    }
-}
-
-extension ChatPrivateController: PortionDataSourceDelegate {
-    func portionDataSourceBeginUpdates() {
-        tableView.beginUpdates()
-    }
-
-    func portionDataSourceEndUpdates() {
-        ExceptionHandling.tryWithBlock({ [unowned self] in
-            self.tableView.endUpdates()
-        }) { [unowned self] _ in
-            self.dataSource.reset()
-            self.tableView.reloadData()
-        }
-
-        if didAddNewMessageInLastUpdate {
-            didAddNewMessageInLastUpdate = false
-            handleNewMessage()
-
-            if UIApplication.isActive {
-                // workaround for deadlock in objcTox https://github.com/Antidote-for-Tox/objcTox/issues/51
-                let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.0 * Double(NSEC_PER_SEC)))
-                dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
-                    self?.updateLastReadDate()
-                }
-            }
-        }
-    }
-
-    func portionDataSourceInsertObjectAtIndexPath(indexPath: NSIndexPath) {
-        if indexPath.row == 0 {
-            didAddNewMessageInLastUpdate = true
-        }
-
-        tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
-    }
-
-    func portionDataSourceDeleteObjectAtIndexPath(indexPath: NSIndexPath) {
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-    }
-
-    func portionDataSourceReloadObjectAtIndexPath(indexPath: NSIndexPath) {
-        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
-
-        if message.messageFile == nil {
-            tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-            return
-        }
-
-        guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatGenericFileCell else {
-            return
-        }
-
-        let model = ChatIncomingFileCellModel()
-        prepareFileCell(cell, andModel: model, withMessage: message)
-        cell.setupWithTheme(theme, model: model)
-
-        maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
-    }
-
-    func portionDataSourceMoveObjectAtIndexPath(indexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-        tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        tableView.insertRowsAtIndexPaths([toIndexPath], withRowAnimation: .Automatic)
-    }
-
-}
-
-extension ChatPrivateController: RBQFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(controller: RBQFetchedResultsController) {
-        if controller === friendController {
-            friendWasUpdated()
         }
     }
 }
@@ -586,11 +517,80 @@ private extension ChatPrivateController {
         }
     }
 
+    func addMessagesNotification() {
+        self.messagesToken = messages.addNotificationBlock { [unowned self] _, changes, error in
+            if let error = error {
+                fatalError("\(error)")
+            }
+
+            guard let changes = changes else {
+                return
+            }
+
+            self.visibleMessages = self.visibleMessages + changes.insertions.count - changes.deletions.count
+
+
+            self.tableView.beginUpdates()
+            self.tableView.insertRowsAtIndexPaths(changes.insertionsInSection(0), withRowAnimation: .Automatic)
+            self.tableView.deleteRowsAtIndexPaths(changes.deletionsInSection(0), withRowAnimation: .Automatic)
+
+            for index in changes.modifications {
+                let message = self.messages[UInt(index)] as! OCTMessageAbstract
+                let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
+
+                if message.messageFile == nil {
+                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+                    continue
+                }
+
+                guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? ChatGenericFileCell else {
+                    return
+                }
+
+                let model = ChatIncomingFileCellModel()
+                self.prepareFileCell(cell, andModel: model, withMessage: message)
+                cell.setupWithTheme(self.theme, model: model)
+
+                self.maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
+            }
+
+            self.tableView.endUpdates()
+
+            if changes.insertions.contains(0) {
+                self.handleNewMessage()
+            }
+        }
+    }
+
+    func addFriendNotification() {
+        let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
+        let results = submanagerObjects.objectsForType(.Friend, predicate: predicate)
+
+        friendToken = results.addNotificationBlock { [unowned self] _, change, error in
+            if let error = error {
+                fatalError("\(error)")
+            }
+
+            self.titleView.name = self.friend.nickname
+            self.titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+
+            let isConnected = self.friend.isConnected
+
+            self.audioButton.enabled = isConnected
+            self.videoButton.enabled = isConnected
+            self.chatInputView.buttonsEnabled = isConnected
+        }
+    }
+
     func updateInputViewMaxHeight() {
         chatInputView.maxHeight = CGRectGetMaxY(chatInputView.frame) - Constants.InputViewTopOffset
     }
 
     func handleNewMessage() {
+        if UIApplication.isActive {
+            updateLastReadDate()
+        }
+
         guard let visible = tableView.indexPathsForVisibleRows else {
             return
         }
@@ -631,15 +631,6 @@ private extension ChatPrivateController {
 
     func updateLastReadDate() {
         submanagerObjects.changeChat(chat, lastReadDateInterval: NSDate().timeIntervalSince1970)
-    }
-
-    func friendWasUpdated() {
-        titleView.name = friend.nickname
-        titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
-
-        audioButton.enabled = friend.isConnected
-        videoButton.enabled = friend.isConnected
-        chatInputView.buttonsEnabled = friend.isConnected
     }
 
     func imageCellWithMessage(message: OCTMessageAbstract, incoming: Bool) -> (ChatMovableDateCellModel, ChatMovableDateCell) {
@@ -724,7 +715,7 @@ private extension ChatPrivateController {
     }
 
     func maybeLoadImageForCellAtPath(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let message = dataSource.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+        let message = messages[UInt(indexPath.row)] as! OCTMessageAbstract
 
         guard let messageFile = message.messageFile else {
             return

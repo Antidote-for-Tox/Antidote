@@ -33,13 +33,10 @@ class FriendListController: UIViewController {
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats, submanagerUser: OCTSubmanagerUser) {
         self.theme = theme
 
-        let friendsController = submanagerObjects.fetchedResultsControllerForType(.Friend, sectionNameKeyPath: "nickname")
-        let requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
+        let friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
+        let requests = submanagerObjects.objectsForType(.FriendRequest, predicate: nil)
 
-        self.dataSource = FriendListDataSource(
-                theme: theme,
-                friendsController: friendsController,
-                requestsController: requestsController)
+        self.dataSource = FriendListDataSource(theme: theme, friends: friends, requests: requests)
 
         self.submanagerFriends = submanagerFriends
         self.submanagerChats = submanagerChats
@@ -88,13 +85,7 @@ extension FriendListController: FriendListDataSourceDelegate {
     }
 
     func friendListDataSourceEndUpdates() {
-        ExceptionHandling.tryWithBlock({ [unowned self] in
-            self.tableView.endUpdates()
-        }) { [unowned self] _ in
-            self.dataSource.reset()
-            self.tableView.reloadData()
-        }
-
+        self.tableView.endUpdates()
         updateViewsVisibility()
     }
 

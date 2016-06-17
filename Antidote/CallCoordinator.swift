@@ -16,17 +16,21 @@ private struct Constants {
     static let DeclineAfterInterval = 1.5
 }
 
-private struct ActiveCall {
+private class ActiveCall {
+    var callToken: RLMNotificationToken?
+
     private let call: OCTCall
     private let navigation: UINavigationController
-    private let callController: RBQFetchedResultsController
 
     private var usingFrontCamera: Bool = true
 
-    init(call: OCTCall, navigation: UINavigationController, callController: RBQFetchedResultsController) {
+    init(call: OCTCall, navigation: UINavigationController) {
         self.call = call
         self.navigation = navigation
-        self.callController = callController
+    }
+
+    deinit {
+        callToken?.stop()
     }
 }
 
@@ -169,27 +173,6 @@ extension CallCoordinator: CallActiveControllerDelegate {
     }
 }
 
-extension CallCoordinator: RBQFetchedResultsControllerDelegate {
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeObject anObject: RBQSafeRealmObject,
-            atIndexPath indexPath: NSIndexPath?,
-            forChangeType type: RBQFetchedResultsChangeType,
-            newIndexPath: NSIndexPath?) {
-
-        switch type {
-            case .Insert:
-                break
-            case .Move:
-                break
-            case .Delete:
-                declineCall(callWasRemoved: true)
-            case .Update:
-                activeCallWasUpdated()
-        }
-    }
-}
-
 private extension CallCoordinator {
     func declineCall(callWasRemoved wasRemoved: Bool) {
         guard let activeCall = activeCall else {
@@ -225,15 +208,28 @@ private extension CallCoordinator {
         navigation.navigationBarHidden = true
         navigation.modalTransitionStyle = .CrossDissolve
 
+        activeCall = ActiveCall(call: call, navigation: navigation)
+
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", call.uniqueIdentifier)
-        let callController = submanagerObjects.fetchedResultsControllerForType(.Call, predicate: predicate)
-        callController.delegate = self
-        callController.performFetch()
+        let results = submanagerObjects.objectsForType(.Call, predicate: predicate)
+        activeCall!.callToken = results.addNotificationBlock { [unowned self] _, changes, error in
+            if let error = error {
+                fatalError("\(error)")
+            }
+
+            guard let changes = changes else {
+                return
+            }
+
+            if changes.deletions.count > 0 {
+                self.declineCall(callWasRemoved: true)
+            }
+            else if changes.insertions.count > 0 {
+                self.activeCallWasUpdated()
+            }
+        }
 
         presentingController.presentViewController(navigation, animated: true, completion: nil)
-
-        activeCall = ActiveCall(call: call, navigation: navigation, callController: callController)
-
         activeCallWasUpdated()
     }
 

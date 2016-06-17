@@ -30,9 +30,8 @@ class FriendSelectController: UIViewController {
         self.theme = theme
         self.userInfo = userInfo
 
-        let friendsController = submanagerObjects.fetchedResultsControllerForType(.Friend, sectionNameKeyPath: "nickname")
-
-        self.dataSource = FriendListDataSource(theme: theme, friendsController: friendsController)
+        let friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
+        self.dataSource = FriendListDataSource(theme: theme, friends: friends)
 
         super.init(nibName: nil, bundle: nil)
 
@@ -70,13 +69,7 @@ extension FriendSelectController: FriendListDataSourceDelegate {
     }
 
     func friendListDataSourceEndUpdates() {
-        ExceptionHandling.tryWithBlock({ [unowned self] in
-            self.tableView.endUpdates()
-        }) { [unowned self] _ in
-            self.dataSource.reset()
-            self.tableView.reloadData()
-        }
-
+        self.tableView.endUpdates()
         updateViewsVisibility()
     }
 

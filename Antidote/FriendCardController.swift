@@ -18,10 +18,12 @@ protocol FriendCardControllerDelegate: class {
 class FriendCardController: StaticTableController {
     weak var delegate: FriendCardControllerDelegate?
 
+    private weak var submanagerObjects: OCTSubmanagerObjects!
+
     private let friend: OCTFriend
 
     private let avatarManager: AvatarManager
-    private let friendController: RBQFetchedResultsController
+    private var friendToken: RLMNotificationToken?
 
     private let avatarModel: StaticTableAvatarCellModel
     private let chatButtonsModel: StaticTableChatButtonsCellModel
@@ -31,13 +33,10 @@ class FriendCardController: StaticTableController {
     private let publicKeyModel: StaticTableDefaultCellModel
 
     init(theme: Theme, friend: OCTFriend, submanagerObjects: OCTSubmanagerObjects) {
+        self.submanagerObjects = submanagerObjects
         self.friend = friend
 
         self.avatarManager = AvatarManager(theme: theme)
-
-        let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
-        friendController = submanagerObjects.fetchedResultsControllerForType(.Friend, predicate: predicate)
-        friendController.performFetch()
 
         avatarModel = StaticTableAvatarCellModel()
         chatButtonsModel = StaticTableChatButtonsCellModel()
@@ -61,19 +60,32 @@ class FriendCardController: StaticTableController {
             ],
         ])
 
-        friendController.delegate = self
         updateModels()
+    }
+
+    deinit {
+        friendToken?.stop()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
-extension FriendCardController: RBQFetchedResultsControllerDelegate {
-    func controllerDidChangeContent(controller: RBQFetchedResultsController) {
-        updateModels()
-        reloadTableView()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
+        let results = submanagerObjects.objectsForType(.Friend, predicate: predicate)
+        friendToken = results.addNotificationBlock { [unowned self] _, changes, error in
+            if let error = error {
+                fatalError("\(error)")
+            }
+
+            if changes != nil {
+                self.updateModels()
+                self.reloadTableView()
+            }
+        }
     }
 }
 

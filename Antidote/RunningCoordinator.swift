@@ -219,7 +219,7 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 }
 
 extension RunningCoordinator: OCTSubmanagerUserDelegate {
-    func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
+    func submanagerUser(submanager: OCTSubmanagerUser, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
         updateUserStatusView()
 
         let show = (connectionStatus == .None)

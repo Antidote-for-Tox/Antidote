@@ -22,7 +22,8 @@ private class FilePreviewItem: NSObject, QLPreviewItem {
 class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerDataSource {
     weak var previewController: QuickLookPreviewController?
 
-    let messagesController: RBQFetchedResultsController
+    let messages: RLMResults
+    var messagesToken: RLMNotificationToken?
 
     init(chat: OCTChat, submanagerObjects: OCTSubmanagerObjects) {
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
@@ -34,36 +35,35 @@ class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerData
             ]),
         ])
 
-        self.messagesController = submanagerObjects.fetchedResultsControllerForType(
-                .MessageAbstract,
-                predicate: predicate,
-                sortDescriptors: [RLMSortDescriptor(property: "dateInterval", ascending: true)])
+        self.messages = submanagerObjects.objectsForType(.MessageAbstract, predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: true)
 
         super.init()
 
-        messagesController.delegate = self
-        messagesController.performFetch()
+        messagesToken = messages.addNotificationBlock { [unowned self] _, changes, error in
+            if let error = error {
+                fatalError("\(error)")
+            }
+
+            self.previewController?.reloadData()
+        }
+    }
+
+    deinit {
+        messagesToken?.stop()
     }
 
     func indexOfMessage(message: OCTMessageAbstract) -> Int? {
-        return messagesController.indexPathForObject(message)?.row
+        return Int(messages.indexOfObject(message))
     }
-}
-
-extension FilePreviewControllerDataSource: RBQFetchedResultsControllerDelegate {
-   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
-       previewController?.reloadData()
-   }
 }
 
 extension FilePreviewControllerDataSource: QLPreviewControllerDataSource {
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
-        return messagesController.numberOfRowsForSectionIndex(0)
+        return Int(messages.count)
     }
 
     func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-        let indexPath = NSIndexPath(forRow: index, inSection: 0)
-        let message = messagesController.objectAtIndexPath(indexPath) as! OCTMessageAbstract
+        let message = messages[UInt(index)] as! OCTMessageAbstract
 
         let url = NSURL.fileURLWithPath(message.messageFile!.filePath()!)
 

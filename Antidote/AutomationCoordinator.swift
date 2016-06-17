@@ -17,49 +17,37 @@ private struct Constants {
 class AutomationCoordinator: NSObject {
     private weak var submanagerFiles: OCTSubmanagerFiles!
 
-    private let fileMessagesController: RBQFetchedResultsController
+    private var fileMessagesToken: RLMNotificationToken?
     private let userDefaults = UserDefaultsManager()
     private let reachability = Reach()
 
     init(submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles) {
         self.submanagerFiles = submanagerFiles
 
-        let predicate = NSPredicate(format: "sender != nil AND messageFile != nil")
-        self.fileMessagesController = submanagerObjects.fetchedResultsControllerForType(.MessageAbstract, predicate: predicate)
-
         super.init()
 
-        fileMessagesController.delegate = self
-        fileMessagesController.performFetch()
+        let predicate = NSPredicate(format: "sender != nil AND messageFile != nil")
+        let results = submanagerObjects.objectsForType(.MessageAbstract, predicate: predicate)
+        fileMessagesToken = results.addNotificationBlock { [unowned self] results, changes, error in
+            if let error = error {
+                fatalError("\(error)")
+            }
+
+            guard let changes = changes, let results = results else {
+                return
+            }
+
+            for index in changes.insertions {
+                let message = results[UInt(index)] as! OCTMessageAbstract
+                self.proceedNewFileMessage(message)
+            }
+        }
     }
 }
 
 extension AutomationCoordinator: CoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
         // nop
-    }
-}
-
-extension AutomationCoordinator: RBQFetchedResultsControllerDelegate {
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeObject anObject: RBQSafeRealmObject,
-            atIndexPath indexPath: NSIndexPath?,
-            forChangeType type: RBQFetchedResultsChangeType,
-            newIndexPath: NSIndexPath?) {
-        switch type {
-            case .Insert:
-                if controller === fileMessagesController {
-                    let message = anObject.RLMObject() as! OCTMessageAbstract
-                    proceedNewFileMessage(message)
-                }
-            case .Delete:
-                break
-            case .Move:
-                break
-            case .Update:
-                break
-        }
     }
 }
 
