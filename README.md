@@ -1,8 +1,8 @@
+![](http://i.imgur.com/BSDWK8z.png)
+
 [![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote)
 
 [Tox](https://tox.chat/) client for iOS 8.0+;
-
-![](https://i.imgur.com/5HF5RMX.png)
 
 ## Translation
 
