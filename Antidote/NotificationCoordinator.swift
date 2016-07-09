@@ -194,8 +194,8 @@ private extension NotificationCoordinator {
 
                 self.audioPlayer.playSound(.NewMessage)
                 self.enqueueNotification(.FriendRequest(request))
-                self.updateBadges()
             }
+            self.updateBadges()
         }
     }
 

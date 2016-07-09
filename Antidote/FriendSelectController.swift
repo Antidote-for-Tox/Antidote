@@ -96,6 +96,10 @@ extension FriendSelectController: FriendListDataSourceDelegate {
     func friendListDataSourceReloadSections(sections: NSIndexSet) {
         tableView.reloadSections(sections, withRowAnimation: .Automatic)
     }
+
+    func friendListDataSourceReloadTable() {
+        tableView.reloadData()
+    }
 }
 
 extension FriendSelectController: UITableViewDataSource {

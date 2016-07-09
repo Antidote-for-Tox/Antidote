@@ -21,8 +21,9 @@ class FriendListController: UIViewController {
 
     private let theme: Theme
 
-    private let dataSource: FriendListDataSource
+    private var dataSource: FriendListDataSource!
 
+    private weak var submanagerObjects: OCTSubmanagerObjects!
     private weak var submanagerFriends: OCTSubmanagerFriends!
     private weak var submanagerChats: OCTSubmanagerChats!
     private weak var submanagerUser: OCTSubmanagerUser!
@@ -33,18 +34,12 @@ class FriendListController: UIViewController {
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats, submanagerUser: OCTSubmanagerUser) {
         self.theme = theme
 
-        let friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
-        let requests = submanagerObjects.objectsForType(.FriendRequest, predicate: nil)
-
-        self.dataSource = FriendListDataSource(theme: theme, friends: friends, requests: requests)
-
+        self.submanagerObjects = submanagerObjects
         self.submanagerFriends = submanagerFriends
         self.submanagerChats = submanagerChats
         self.submanagerUser = submanagerUser
 
         super.init(nibName: nil, bundle: nil)
-
-        dataSource.delegate = self
 
         addNavigationButtons()
 
@@ -62,6 +57,18 @@ class FriendListController: UIViewController {
         createTableView()
         createPlaceholderView()
         installConstraints()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        let friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
+        let requests = submanagerObjects.objectsForType(.FriendRequest, predicate: nil)
+        dataSource = FriendListDataSource(theme: theme, friends: friends, requests: requests)
+        dataSource.delegate = self
+
+        // removing separators on empty lines
+        tableView.tableFooterView = UIView()
 
         updateViewsVisibility()
     }
@@ -85,7 +92,7 @@ extension FriendListController: FriendListDataSourceDelegate {
     }
 
     func friendListDataSourceEndUpdates() {
-        self.tableView.endUpdates()
+        tableView.endUpdates()
         updateViewsVisibility()
     }
 
@@ -111,6 +118,10 @@ extension FriendListController: FriendListDataSourceDelegate {
 
     func friendListDataSourceReloadSections(sections: NSIndexSet) {
         tableView.reloadSections(sections, withRowAnimation: .Automatic)
+    }
+
+    func friendListDataSourceReloadTable() {
+        tableView.reloadData()
     }
 }
 
@@ -242,8 +253,6 @@ private extension FriendListController {
         tableView.delegate = self
         tableView.backgroundColor = theme.colorForType(.NormalBackground)
         tableView.sectionIndexColor = theme.colorForType(.LinkText)
-        // removing separators on empty lines
-        tableView.tableFooterView = UIView()
 
         view.addSubview(tableView)
 

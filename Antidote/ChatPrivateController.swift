@@ -529,12 +529,28 @@ private extension ChatPrivateController {
 
             self.visibleMessages = self.visibleMessages + changes.insertions.count - changes.deletions.count
 
-
             self.tableView.beginUpdates()
-            self.tableView.insertRowsAtIndexPaths(changes.insertionsInSection(0), withRowAnimation: .Automatic)
-            self.tableView.deleteRowsAtIndexPaths(changes.deletionsInSection(0), withRowAnimation: .Automatic)
+
+            for index in changes.insertions {
+                if Int(index) >= self.visibleMessages {
+                    continue
+                }
+                let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
+                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+            }
+
+            for index in changes.deletions {
+                if Int(index) >= self.visibleMessages {
+                    continue
+                }
+                let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+            }
 
             for index in changes.modifications {
+                if Int(index) >= self.visibleMessages {
+                    continue
+                }
                 let message = self.messages[UInt(index)] as! OCTMessageAbstract
                 let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
 
@@ -544,7 +560,7 @@ private extension ChatPrivateController {
                 }
 
                 guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? ChatGenericFileCell else {
-                    return
+                    continue
                 }
 
                 let model = ChatIncomingFileCellModel()

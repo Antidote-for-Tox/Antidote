@@ -23,6 +23,8 @@ protocol FriendListDataSourceDelegate: class {
     func friendListDataSourceInsertSections(sections: NSIndexSet)
     func friendListDataSourceDeleteSections(sections: NSIndexSet)
     func friendListDataSourceReloadSections(sections: NSIndexSet)
+
+    func friendListDataSourceReloadTable()
 }
 
 enum FriendListObject {
@@ -126,7 +128,11 @@ class FriendListDataSource: NSObject {
     }
 
     func titleForHeaderInSection(section: Int) -> String? {
-        if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
+        if !isRequestsSectionVisible() {
+            return nil
+        }
+
+        if section == Constants.FriendRequestsSection {
             return String(localized: "contact_requests_section")
         }
         else {
@@ -137,34 +143,61 @@ class FriendListDataSource: NSObject {
 
 private extension FriendListDataSource {
     func addNotificationBlocks() {
-        requestsToken = requests?.addNotificationBlock { [unowned self] _, changes, error in
+        requestsToken = requests?.addNotificationBlock { [unowned self] requests, changes, error in
             if let error = error {
                 fatalError("\(error)")
             }
 
-            guard let changes = changes else {
+            guard let changes = changes, let requests = requests else {
+                return
+            }
+
+            if changes.deletions.count > 0 {
+                // reloading data on request removal/friend insertion to synchronize requests/friends
+                self.delegate?.friendListDataSourceReloadTable()
                 return
             }
 
             self.delegate?.friendListDataSourceBeginUpdates()
-            self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(changes.deletionsInSection(0))
-            self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(changes.insertionsInSection(0))
-            self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(changes.modificationsInSection(0))
+
+            let countAfter = Int(requests.count)
+            let countBefore = countAfter - changes.insertions.count + changes.deletions.count
+
+            if countBefore == 0 && countAfter > 0 {
+                self.delegate?.friendListDataSourceInsertSections(NSIndexSet(index: 0))
+            }
+            else if countBefore > 0 && countAfter == 0 {
+                self.delegate?.friendListDataSourceDeleteSections(NSIndexSet(index: 0))
+            }
+            else {
+                self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(changes.deletionsInSection(0))
+                self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(changes.insertionsInSection(0))
+                self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(changes.modificationsInSection(0))
+            }
+
             self.delegate?.friendListDataSourceEndUpdates()
         }
 
-        friendsToken = friends.addNotificationBlock { [unowned self] _, changes, error in
+        friendsToken = friends.addNotificationBlock { [unowned self] friends, changes, error in
             if let error = error {
                 fatalError("\(error)")
             }
 
-            guard let changes = changes else {
+            guard let changes = changes, let friends = friends else {
                 return
             }
 
-            let deletions = changes.deletionsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: Constants.FriendRequestsSection + 1) }
-            let insertions = changes.insertionsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: Constants.FriendRequestsSection + 1) }
-            let modifications = changes.modificationsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: Constants.FriendRequestsSection + 1) }
+            if changes.insertions.count > 0 {
+                // reloading data on request removal/friend insertion to synchronize requests/friends
+                self.delegate?.friendListDataSourceReloadTable()
+                return
+            }
+
+            let section = self.isRequestsSectionVisible() ? 1 : 0
+
+            let deletions = changes.deletionsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: section) }
+            let insertions = changes.insertionsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: section) }
+            let modifications = changes.modificationsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: section) }
 
             self.delegate?.friendListDataSourceBeginUpdates()
             self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(deletions)
