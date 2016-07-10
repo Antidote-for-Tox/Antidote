@@ -38,14 +38,14 @@ class FriendListDataSource: NSObject {
     private let avatarManager: AvatarManager
     private let dateFormatter: NSDateFormatter
 
-    private let requests: RLMResults?
-    private let friends: RLMResults
+    private let requests: Results<OCTFriendRequest>?
+    private let friends: Results<OCTFriend>
 
     private var requestsToken: RLMNotificationToken?
     private var friendsToken: RLMNotificationToken?
 
     /// In case if requests is nil friend requests won't be shown.
-    init(theme: Theme, friends: RLMResults, requests: RLMResults? = nil) {
+    init(theme: Theme, friends: Results<OCTFriend>, requests: Results<OCTFriendRequest>? = nil) {
         self.avatarManager = AvatarManager(theme: theme)
         self.dateFormatter = NSDateFormatter(type: .RelativeDateAndTime)
 
@@ -73,10 +73,10 @@ class FriendListDataSource: NSObject {
 
     func numberOfRowsInSection(section: Int) -> Int {
         if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return Int(requests!.count)
+            return requests!.count
         }
         else {
-            return Int(friends.count)
+            return friends.count
         }
     }
 
@@ -114,10 +114,10 @@ class FriendListDataSource: NSObject {
 
     func objectAtIndexPath(indexPath: NSIndexPath) -> FriendListObject {
         if indexPath.section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return .Request(requests![UInt(indexPath.row)] as! OCTFriendRequest)
+            return .Request(requests![indexPath.row])
         }
         else {
-            return .Friend(friends[UInt(indexPath.row)] as! OCTFriend)
+            return .Friend(friends[indexPath.row])
         }
     }
 
@@ -143,67 +143,69 @@ class FriendListDataSource: NSObject {
 
 private extension FriendListDataSource {
     func addNotificationBlocks() {
-        requestsToken = requests?.addNotificationBlock { [unowned self] requests, changes, error in
-            if let error = error {
-                fatalError("\(error)")
-            }
+        requestsToken = requests?.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let requests, let deletions, let insertions, let modifications):
+                    guard let requests = requests else {
+                        return
+                    }
 
-            guard let changes = changes, let requests = requests else {
-                return
-            }
+                    if deletions.count > 0 {
+                        // reloading data on request removal/friend insertion to synchronize requests/friends
+                        self.delegate?.friendListDataSourceReloadTable()
+                        return
+                    }
 
-            if changes.deletions.count > 0 {
-                // reloading data on request removal/friend insertion to synchronize requests/friends
-                self.delegate?.friendListDataSourceReloadTable()
-                return
-            }
+                    self.delegate?.friendListDataSourceBeginUpdates()
 
-            self.delegate?.friendListDataSourceBeginUpdates()
+                    let countAfter = requests.count
+                    let countBefore = countAfter - insertions.count + deletions.count
 
-            let countAfter = Int(requests.count)
-            let countBefore = countAfter - changes.insertions.count + changes.deletions.count
+                    if countBefore == 0 && countAfter > 0 {
+                        self.delegate?.friendListDataSourceInsertSections(NSIndexSet(index: 0))
+                    }
+                    else if countBefore > 0 && countAfter == 0 {
+                        self.delegate?.friendListDataSourceDeleteSections(NSIndexSet(index: 0))
+                    }
+                    else {
+                        self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0)} )
+                        self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0)} )
+                        self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0)} )
+                    }
 
-            if countBefore == 0 && countAfter > 0 {
-                self.delegate?.friendListDataSourceInsertSections(NSIndexSet(index: 0))
+                    self.delegate?.friendListDataSourceEndUpdates()
+                case .Error(let error):
+                    fatalError("\(error)")
             }
-            else if countBefore > 0 && countAfter == 0 {
-                self.delegate?.friendListDataSourceDeleteSections(NSIndexSet(index: 0))
-            }
-            else {
-                self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(changes.deletionsInSection(0))
-                self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(changes.insertionsInSection(0))
-                self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(changes.modificationsInSection(0))
-            }
-
-            self.delegate?.friendListDataSourceEndUpdates()
         }
 
-        friendsToken = friends.addNotificationBlock { [unowned self] friends, changes, error in
-            if let error = error {
-                fatalError("\(error)")
+        friendsToken = friends.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(_, let deletions, let insertions, let modifications):
+                    if insertions.count > 0 {
+                        // reloading data on request removal/friend insertion to synchronize requests/friends
+                        self.delegate?.friendListDataSourceReloadTable()
+                        return
+                    }
+
+                    let section = self.isRequestsSectionVisible() ? 1 : 0
+
+                    let deletions = deletions.map { NSIndexPath(forRow: $0, inSection: section) }
+                    let insertions = insertions.map { NSIndexPath(forRow: $0, inSection: section) }
+                    let modifications = modifications.map { NSIndexPath(forRow: $0, inSection: section) }
+
+                    self.delegate?.friendListDataSourceBeginUpdates()
+                    self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(deletions)
+                    self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(insertions)
+                    self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(modifications)
+                    self.delegate?.friendListDataSourceEndUpdates()
+                case .Error(let error):
+                    fatalError("\(error)")
             }
-
-            guard let changes = changes, let friends = friends else {
-                return
-            }
-
-            if changes.insertions.count > 0 {
-                // reloading data on request removal/friend insertion to synchronize requests/friends
-                self.delegate?.friendListDataSourceReloadTable()
-                return
-            }
-
-            let section = self.isRequestsSectionVisible() ? 1 : 0
-
-            let deletions = changes.deletionsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: section) }
-            let insertions = changes.insertionsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: section) }
-            let modifications = changes.modificationsInSection(0).map {NSIndexPath(forRow: $0.row, inSection: section) }
-
-            self.delegate?.friendListDataSourceBeginUpdates()
-            self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(deletions)
-            self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(insertions)
-            self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(modifications)
-            self.delegate?.friendListDataSourceEndUpdates()
         }
     }
 

@@ -37,9 +37,9 @@ class NotificationCoordinator: NSObject {
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
     private var messagesToken: RLMNotificationToken?
-    private var chats: RLMResults
+    private var chats: Results<OCTChat>
     private var chatsToken: RLMNotificationToken?
-    private var requests: RLMResults
+    private var requests: Results<OCTFriendRequest>
     private var requestsToken: RLMNotificationToken?
 
     private let avatarManager: AvatarManager
@@ -57,8 +57,8 @@ class NotificationCoordinator: NSObject {
         self.avatarManager = AvatarManager(theme: theme)
 
         let predicate = NSPredicate(format: "lastMessage.dateInterval > lastReadDateInterval")
-        self.chats = submanagerObjects.objectsForType(.Chat, predicate: predicate)
-        self.requests = submanagerObjects.objectsForType(.FriendRequest, predicate: nil)
+        self.chats = submanagerObjects.chats(predicate: predicate)
+        self.requests = submanagerObjects.friendRequests()
 
         super.init()
 
@@ -151,51 +151,58 @@ extension NotificationCoordinator {
 
 private extension NotificationCoordinator {
     func addNotificationBlocks() {
-        let messages = submanagerObjects.objectsForType(.MessageAbstract, predicate: nil)
-        messagesToken = messages.addNotificationBlock { [unowned self] messages, changes, error in
-            if let error = error {
+        let messages = submanagerObjects.messages()
+        messagesToken = messages.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let messages, _, let insertions, _):
+                    guard let messages = messages else {
+                        break
+                    }
+                    for index in insertions {
+                        let message = messages[index]
+
+                        self.playSoundForMessageIfNeeded(message)
+
+                        if self.shouldEnqueueMessage(message) {
+                            self.enqueueNotification(.NewMessage(message))
+                        }
+                    }
+                case .Error(let error):
                 fatalError("\(error)")
-            }
-
-            guard let changes = changes, let messages = messages else {
-                return
-            }
-
-            for index in changes.insertions {
-                let message = messages[UInt(index)] as! OCTMessageAbstract
-
-                self.playSoundForMessageIfNeeded(message)
-
-                if self.shouldEnqueueMessage(message) {
-                    self.enqueueNotification(.NewMessage(message))
-                }
             }
         }
 
-        chatsToken = chats.addNotificationBlock { [unowned self] chats, changes, error in
-            if let error = error {
+        chatsToken = chats.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update:
+                    self.updateBadges()
+                case .Error(let error):
                 fatalError("\(error)")
             }
-
-            self.updateBadges()
         }
 
-        requestsToken = requests.addNotificationBlock { [unowned self] requests, changes, error in
-            if let error = error {
+        requestsToken = requests.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let requests, _, let insertions, _):
+                    guard let requests = requests else {
+                        break
+                    }
+                    for index in insertions {
+                        let request = requests[index]
+
+                        self.audioPlayer.playSound(.NewMessage)
+                        self.enqueueNotification(.FriendRequest(request))
+                    }
+                    self.updateBadges()
+                case .Error(let error):
                 fatalError("\(error)")
             }
-            
-            guard let changes = changes, let requests = requests else {
-                return
-            }
-
-            for index in changes.insertions {
-                let request = requests[UInt(index)] as! OCTFriendRequest
-
-                self.audioPlayer.playSound(.NewMessage)
-                self.enqueueNotification(.FriendRequest(request))
-            }
-            self.updateBadges()
         }
     }
 
@@ -352,8 +359,8 @@ private extension NotificationCoordinator {
     }
 
     func updateBadges() {
-        let chatsCount = Int(chats.count)
-        let requestsCount = Int(requests.count)
+        let chatsCount = chats.count
+        let requestsCount = requests.count
 
         delegate?.notificationCoordinator(self, updateChatsBadge: chatsCount)
         delegate?.notificationCoordinator(self, updateFriendsBadge: requestsCount)

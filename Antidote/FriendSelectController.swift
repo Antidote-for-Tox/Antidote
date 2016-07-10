@@ -30,7 +30,7 @@ class FriendSelectController: UIViewController {
         self.theme = theme
         self.userInfo = userInfo
 
-        let friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
+        let friends = submanagerObjects.friends()
         self.dataSource = FriendListDataSource(theme: theme, friends: friends)
 
         super.init(nibName: nil, bundle: nil)

@@ -27,19 +27,22 @@ class AutomationCoordinator: NSObject {
         super.init()
 
         let predicate = NSPredicate(format: "sender != nil AND messageFile != nil")
-        let results = submanagerObjects.objectsForType(.MessageAbstract, predicate: predicate)
-        fileMessagesToken = results.addNotificationBlock { [unowned self] results, changes, error in
-            if let error = error {
-                fatalError("\(error)")
-            }
+        let results = submanagerObjects.messages(predicate: predicate)
+        fileMessagesToken = results.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let results, _, let insertions, _):
+                    guard let results = results else {
+                        break
+                    }
 
-            guard let changes = changes, let results = results else {
-                return
-            }
-
-            for index in changes.insertions {
-                let message = results[UInt(index)] as! OCTMessageAbstract
-                self.proceedNewFileMessage(message)
+                    for index in insertions {
+                        let message = results[index]
+                        self.proceedNewFileMessage(message)
+                    }
+                case .Error(let error):
+                    fatalError("\(error)")
             }
         }
     }

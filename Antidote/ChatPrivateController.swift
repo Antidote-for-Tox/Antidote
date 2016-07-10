@@ -48,7 +48,7 @@ class ChatPrivateController: KeyboardNotificationController {
     private weak var submanagerObjects: OCTSubmanagerObjects!
     private weak var submanagerFiles: OCTSubmanagerFiles!
 
-    private let messages: RLMResults
+    private let messages: Results<OCTMessageAbstract>
     private var messagesToken: RLMNotificationToken?
     private var visibleMessages: Int
     
@@ -82,7 +82,7 @@ class ChatPrivateController: KeyboardNotificationController {
         self.delegate = delegate
 
         let predicate = NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier)
-        self.messages = submanagerObjects.objectsForType(.MessageAbstract, predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: false)
+        self.messages = submanagerObjects.messages(predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: false)
         self.visibleMessages = Constants.MessagesPortionSize
 
         self.timeFormatter = NSDateFormatter(type: .Time)
@@ -235,7 +235,7 @@ extension ChatPrivateController {
 
 extension ChatPrivateController: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let message = messages[UInt(indexPath.row)] as! OCTMessageAbstract
+        let message = messages[indexPath.row]
 
         // setting default values to avoid crash
         var model: ChatMovableDateCellModel  = ChatMovableDateCellModel()
@@ -291,7 +291,7 @@ extension ChatPrivateController: UITableViewDataSource {
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return min(visibleMessages, Int(messages.count))
+        return min(visibleMessages, messages.count)
     }
 }
 
@@ -316,8 +316,8 @@ extension ChatPrivateController: UIScrollViewDelegate {
 
             visibleMessages = visibleMessages + Constants.MessagesPortionSize
 
-            if visibleMessages > Int(messages.count) {
-                visibleMessages = Int(messages.count)
+            if visibleMessages > messages.count {
+                visibleMessages = messages.count
             }
 
             if visibleMessages != previous {
@@ -518,83 +518,93 @@ private extension ChatPrivateController {
     }
 
     func addMessagesNotification() {
-        self.messagesToken = messages.addNotificationBlock { [unowned self] _, changes, error in
-            if let error = error {
-                fatalError("\(error)")
+        self.messagesToken = messages.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(_, let deletions, let insertions, let modifications):
+                    self.visibleMessages = self.visibleMessages + insertions.count - deletions.count
+
+                    self.tableView.beginUpdates()
+                    self.updateTableViewWithDeletions(deletions)
+                    self.updateTableViewWithInsertions(insertions)
+                    self.updateTableViewWithModifications(modifications)
+                    self.tableView.endUpdates()
+
+                    if insertions.contains(0) {
+                        self.handleNewMessage()
+                    }
+                case .Error(let error):
+                    fatalError("\(error)")
+            }
+        }
+    }
+
+    func updateTableViewWithDeletions(deletions: [Int]) {
+        for index in deletions {
+            if index >= visibleMessages {
+                continue
+            }
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+        }
+    }
+
+    func updateTableViewWithInsertions(insertions: [Int]) {
+        for index in insertions {
+            if index >= visibleMessages {
+                continue
+            }
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+            tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+        }
+    }
+
+    func updateTableViewWithModifications(modifications: [Int]) {
+        for index in modifications {
+            if index >= visibleMessages {
+                continue
+            }
+            let message = messages[index]
+            let indexPath = NSIndexPath(forRow: index, inSection: 0)
+
+            if message.messageFile == nil {
+                tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
+                continue
             }
 
-            guard let changes = changes else {
-                return
+            guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatGenericFileCell else {
+                continue
             }
 
-            self.visibleMessages = self.visibleMessages + changes.insertions.count - changes.deletions.count
+            let model = ChatIncomingFileCellModel()
+            prepareFileCell(cell, andModel: model, withMessage: message)
+            cell.setupWithTheme(theme, model: model)
 
-            self.tableView.beginUpdates()
-
-            for index in changes.insertions {
-                if Int(index) >= self.visibleMessages {
-                    continue
-                }
-                let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
-                self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
-            }
-
-            for index in changes.deletions {
-                if Int(index) >= self.visibleMessages {
-                    continue
-                }
-                let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
-            }
-
-            for index in changes.modifications {
-                if Int(index) >= self.visibleMessages {
-                    continue
-                }
-                let message = self.messages[UInt(index)] as! OCTMessageAbstract
-                let indexPath = NSIndexPath(forRow: Int(index), inSection: 0)
-
-                if message.messageFile == nil {
-                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .None)
-                    continue
-                }
-
-                guard let cell = self.tableView.cellForRowAtIndexPath(indexPath) as? ChatGenericFileCell else {
-                    continue
-                }
-
-                let model = ChatIncomingFileCellModel()
-                self.prepareFileCell(cell, andModel: model, withMessage: message)
-                cell.setupWithTheme(self.theme, model: model)
-
-                self.maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
-            }
-
-            self.tableView.endUpdates()
-
-            if changes.insertions.contains(0) {
-                self.handleNewMessage()
-            }
+            maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
         }
     }
 
     func addFriendNotification() {
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
-        let results = submanagerObjects.objectsForType(.Friend, predicate: predicate)
+        let results = submanagerObjects.friends(predicate: predicate)
 
-        friendToken = results.addNotificationBlock { [unowned self] _, change, error in
-            if let error = error {
-                fatalError("\(error)")
+        friendToken = results.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    fallthrough
+                case .Update:
+                    self.titleView.name = self.friend.nickname
+                    self.titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+
+                    let isConnected = self.friend.isConnected
+
+                    self.audioButton.enabled = isConnected
+                    self.videoButton.enabled = isConnected
+                    self.chatInputView.buttonsEnabled = isConnected
+                case .Error(let error):
+                    fatalError("\(error)")
             }
-
-            self.titleView.name = self.friend.nickname
-            self.titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
-
-            let isConnected = self.friend.isConnected
-
-            self.audioButton.enabled = isConnected
-            self.videoButton.enabled = isConnected
-            self.chatInputView.buttonsEnabled = isConnected
         }
     }
 
@@ -731,7 +741,7 @@ private extension ChatPrivateController {
     }
 
     func maybeLoadImageForCellAtPath(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let message = messages[UInt(indexPath.row)] as! OCTMessageAbstract
+        let message = messages[indexPath.row]
 
         guard let messageFile = message.messageFile else {
             return

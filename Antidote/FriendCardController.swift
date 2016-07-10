@@ -75,15 +75,16 @@ class FriendCardController: StaticTableController {
         super.viewDidLoad()
 
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
-        let results = submanagerObjects.objectsForType(.Friend, predicate: predicate)
-        friendToken = results.addNotificationBlock { [unowned self] _, changes, error in
-            if let error = error {
-                fatalError("\(error)")
-            }
-
-            if changes != nil {
-                self.updateModels()
-                self.reloadTableView()
+        let results = submanagerObjects.friends(predicate: predicate)
+        friendToken = results.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update:
+                    self.updateModels()
+                    self.reloadTableView()
+                case .Error(let error):
+                    fatalError("\(error)")
             }
         }
     }

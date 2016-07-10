@@ -22,7 +22,7 @@ private class FilePreviewItem: NSObject, QLPreviewItem {
 class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerDataSource {
     weak var previewController: QuickLookPreviewController?
 
-    let messages: RLMResults
+    let messages: Results<OCTMessageAbstract>
     var messagesToken: RLMNotificationToken?
 
     init(chat: OCTChat, submanagerObjects: OCTSubmanagerObjects) {
@@ -35,16 +35,19 @@ class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerData
             ]),
         ])
 
-        self.messages = submanagerObjects.objectsForType(.MessageAbstract, predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: true)
+        self.messages = submanagerObjects.messages(predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: true)
 
         super.init()
 
-        messagesToken = messages.addNotificationBlock { [unowned self] _, changes, error in
-            if let error = error {
+        messagesToken = messages.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update:
+                    self.previewController?.reloadData()
+                case .Error(let error):
                 fatalError("\(error)")
             }
-
-            self.previewController?.reloadData()
         }
     }
 
@@ -53,17 +56,17 @@ class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerData
     }
 
     func indexOfMessage(message: OCTMessageAbstract) -> Int? {
-        return Int(messages.indexOfObject(message))
+        return messages.indexOfObject(message)
     }
 }
 
 extension FilePreviewControllerDataSource: QLPreviewControllerDataSource {
     func numberOfPreviewItemsInPreviewController(controller: QLPreviewController) -> Int {
-        return Int(messages.count)
+        return messages.count
     }
 
     func previewController(controller: QLPreviewController, previewItemAtIndex index: Int) -> QLPreviewItem {
-        let message = messages[UInt(index)] as! OCTMessageAbstract
+        let message = messages[index]
 
         let url = NSURL.fileURLWithPath(message.messageFile!.filePath()!)
 

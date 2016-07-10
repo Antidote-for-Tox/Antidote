@@ -32,9 +32,9 @@ class ChatListTableManager: NSObject {
 
     private weak var submanagerChats: OCTSubmanagerChats!
 
-    private let chats: RLMResults
+    private let chats: Results<OCTChat>
     private var chatsToken: RLMNotificationToken?
-    private let friends: RLMResults
+    private let friends: Results<OCTFriend>
     private var friendsToken: RLMNotificationToken?
 
     init(theme: Theme, tableView: UITableView, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
@@ -47,8 +47,8 @@ class ChatListTableManager: NSObject {
 
         self.submanagerChats = submanagerChats
 
-        self.chats = submanagerObjects.objectsForType(.Chat, predicate: nil).sortedResultsUsingProperty("lastActivityDateInterval", ascending: false)
-        self.friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
+        self.chats = submanagerObjects.chats().sortedResultsUsingProperty("lastActivityDateInterval", ascending: false)
+        self.friends = submanagerObjects.friends()
 
         super.init()
 
@@ -66,7 +66,7 @@ class ChatListTableManager: NSObject {
 
 extension ChatListTableManager: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let chat = chats[UInt(indexPath.row)] as! OCTChat
+        let chat = chats[indexPath.row]
         let friend = chat.friends.lastObject() as! OCTFriend
 
         let model = ChatListCellModel()
@@ -95,7 +95,7 @@ extension ChatListTableManager: UITableViewDataSource {
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(chats.count)
+        return chats.count
     }
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -104,7 +104,7 @@ extension ChatListTableManager: UITableViewDataSource {
 
             alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
             alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
-                let chat = self.chats[UInt(indexPath.row)] as! OCTChat
+                let chat = self.chats[indexPath.row]
                 self.submanagerChats.removeChatWithAllMessages(chat)
             })
 
@@ -117,52 +117,57 @@ extension ChatListTableManager: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        let chat = self.chats[UInt(indexPath.row)] as! OCTChat
+        let chat = self.chats[indexPath.row]
         delegate?.chatListTableManager(self, didSelectChat: chat)
     }
 }
 
 private extension ChatListTableManager {
     func addNotificationBlocks() {
-        chatsToken = chats.addNotificationBlock { [unowned self] _, changes, error in
-            if let error = error {
-                fatalError("\(error)")
+        chatsToken = chats.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(_, let deletions, let insertions, let modifications):
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
+                                                          withRowAnimation: .Automatic)
+                    self.tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
+                                                          withRowAnimation: .Automatic)
+                    self.tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
+                                                          withRowAnimation: .None)
+                    self.tableView.endUpdates()
+
+                    self.delegate?.chatListTableManagerWasUpdated(self)
+                case .Error(let error):
+                    fatalError("\(error)")
             }
-
-            guard let changes = changes else {
-                return
-            }
-
-            self.tableView.beginUpdates()
-            self.tableView.deleteRowsAtIndexPaths(changes.deletionsInSection(0), withRowAnimation: .Automatic)
-            self.tableView.insertRowsAtIndexPaths(changes.insertionsInSection(0), withRowAnimation: .Automatic)
-            self.tableView.reloadRowsAtIndexPaths(changes.modificationsInSection(0), withRowAnimation: .None)
-            self.tableView.endUpdates()
-
-            self.delegate?.chatListTableManagerWasUpdated(self)
         }
 
-        friendsToken = friends.addNotificationBlock { [unowned self] friends, changes, error in
-            if let error = error {
+        friendsToken = friends.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let friends, _, _, let modifications):
+                    guard let friends = friends else {
+                        break
+                    }
+
+                    for index in modifications {
+                        let friend = friends[index]
+
+                        let pathsToUpdate = self.tableView.indexPathsForVisibleRows?.filter {
+                            let chat = self.chats[$0.row]
+
+                            return Int(chat.friends.indexOfObject(friend)) != NSNotFound
+                        }
+
+                        if let paths = pathsToUpdate {
+                            self.tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .None)
+                        }
+                    }
+                case .Error(let error):
                 fatalError("\(error)")
-            }
-
-            guard let changes = changes, let friends = friends else {
-                return
-            }
-
-            for index in changes.modifications {
-                let friend = friends[UInt(index)] as! OCTFriend
-
-                let pathsToUpdate = self.tableView.indexPathsForVisibleRows?.filter {
-                    let chat = self.chats[UInt($0.row)] as! OCTChat
-
-                    return Int(chat.friends.indexOfObject(friend)) != NSNotFound
-                }
-
-                if let paths = pathsToUpdate {
-                    self.tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .None)
-                }
             }
         }
     }

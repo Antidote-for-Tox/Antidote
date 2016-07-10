@@ -62,8 +62,8 @@ class FriendListController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let friends = submanagerObjects.objectsForType(.Friend, predicate: nil)
-        let requests = submanagerObjects.objectsForType(.FriendRequest, predicate: nil)
+        let friends = submanagerObjects.friends()
+        let requests = submanagerObjects.friendRequests()
         dataSource = FriendListDataSource(theme: theme, friends: friends, requests: requests)
         dataSource.delegate = self
 

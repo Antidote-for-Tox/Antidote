@@ -211,21 +211,20 @@ private extension CallCoordinator {
         activeCall = ActiveCall(call: call, navigation: navigation)
 
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", call.uniqueIdentifier)
-        let results = submanagerObjects.objectsForType(.Call, predicate: predicate)
-        activeCall!.callToken = results.addNotificationBlock { [unowned self] _, changes, error in
-            if let error = error {
-                fatalError("\(error)")
-            }
-
-            guard let changes = changes else {
-                return
-            }
-
-            if changes.deletions.count > 0 {
-                self.declineCall(callWasRemoved: true)
-            }
-            else if changes.insertions.count > 0 {
-                self.activeCallWasUpdated()
+        let results = submanagerObjects.calls(predicate: predicate)
+        activeCall!.callToken = results.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(_, let deletions, let insertions, _):
+                    if deletions.count > 0 {
+                        self.declineCall(callWasRemoved: true)
+                    }
+                    else if insertions.count > 0 {
+                        self.activeCallWasUpdated()
+                    }
+                case .Error(let error):
+                    fatalError("\(error)")
             }
         }
 
