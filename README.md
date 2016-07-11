@@ -28,6 +28,10 @@ cd Antidote
 open Antidote.xcworkspace
 ```
 
+## What's next?
+
+See [Backlog](https://github.com/Antidote-for-Tox/Antidote/milestone/1) milestone. Top issue has highest priority and will be started earlier.
+
 ## Features
 
 See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current and previous versions).
