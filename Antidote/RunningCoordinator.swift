@@ -155,8 +155,8 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         }
     }
 
-    func handleLocalNotification(notification: UILocalNotification) {
-        notificationCoordinator.handleLocalNotification(notification)
+    func handleLocalNotification(notification: UILocalNotification) -> Bool {
+        return notificationCoordinator.handleLocalNotification(notification)
     }
 
     func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
