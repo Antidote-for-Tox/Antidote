@@ -26,7 +26,7 @@ class AutomationCoordinator: NSObject {
 
         super.init()
 
-        let predicate = NSPredicate(format: "sender != nil AND messageFile != nil")
+        let predicate = NSPredicate(format: "senderUniqueIdentifier != nil AND messageFile != nil")
         let results = submanagerObjects.messages(predicate: predicate)
         fileMessagesToken = results.addNotificationBlock { [unowned self] change in
             switch change {

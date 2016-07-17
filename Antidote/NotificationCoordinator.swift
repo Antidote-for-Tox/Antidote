@@ -92,7 +92,7 @@ class NotificationCoordinator: NSObject {
         notificationQueue = notificationQueue.filter {
             switch $0 {
                 case .NewMessage(let messageAbstract):
-                    return messageAbstract.chat.uniqueIdentifier != chat.uniqueIdentifier
+                    return messageAbstract.chatUniqueIdentifier != chat.uniqueIdentifier
                 case .FriendRequest:
                     return true
             }
@@ -222,7 +222,7 @@ private extension NotificationCoordinator {
             return false
         }
 
-        if UIApplication.isActive && bannedChatIdentifiers.contains(message.chat.uniqueIdentifier) {
+        if UIApplication.isActive && bannedChatIdentifiers.contains(message.chatUniqueIdentifier) {
             return false
         }
 
@@ -310,10 +310,21 @@ private extension NotificationCoordinator {
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
-        let image = avatarManager.avatarFromString(message.sender?.nickname ?? "?", diameter: NotificationView.Constants.ImageSize)
-        let title = message.sender?.nickname ?? ""
+        let avatarString: String
+        let title: String
+
+        if let friend = submanagerObjects.objectWithUniqueIdentifier(message.senderUniqueIdentifier, forType: .Friend) as? OCTFriend {
+            avatarString = friend.nickname
+            title = friend.nickname
+        }
+        else {
+            avatarString = "?"
+            title = ""
+        }
+
+        let image = avatarManager.avatarFromString(avatarString, diameter: NotificationView.Constants.ImageSize)
         var body: String = ""
-        let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier)
+        let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chatUniqueIdentifier)
 
         if let messageText = message.messageText {
             let defaultString = String(localized: "notification_new_message")

@@ -81,7 +81,7 @@ class ChatPrivateController: KeyboardNotificationController {
         self.submanagerFiles = submanagerFiles
         self.delegate = delegate
 
-        let predicate = NSPredicate(format: "chat.uniqueIdentifier == %@", chat.uniqueIdentifier)
+        let predicate = NSPredicate(format: "chatUniqueIdentifier == %@", chat.uniqueIdentifier)
         self.messages = submanagerObjects.messages(predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: false)
         self.visibleMessages = Constants.MessagesPortionSize
 

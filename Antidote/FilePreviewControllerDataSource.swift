@@ -27,11 +27,11 @@ class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerData
 
     init(chat: OCTChat, submanagerObjects: OCTSubmanagerObjects) {
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            NSPredicate(format: "chat.uniqueIdentifier == %@ AND messageFile != nil", chat.uniqueIdentifier),
+            NSPredicate(format: "chatUniqueIdentifier == %@ AND messageFile != nil", chat.uniqueIdentifier),
 
             NSCompoundPredicate(orPredicateWithSubpredicates: [
                 NSPredicate(format: "messageFile.fileType == \(OCTMessageFileType.Ready.rawValue)"),
-                NSPredicate(format: "sender == nil AND messageFile.fileType == \(OCTMessageFileType.Canceled.rawValue)"),
+                NSPredicate(format: "senderUniqueIdentifier == nil AND messageFile.fileType == \(OCTMessageFileType.Canceled.rawValue)"),
             ]),
         ])
 
