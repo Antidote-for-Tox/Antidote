@@ -21,7 +21,7 @@ class ChatListTableManager: NSObject {
 
     var isEmpty: Bool {
         get {
-            return chatsController.numberOfRowsForSectionIndex(0) == 0
+            return chats.count == 0
         }
     }
 
@@ -32,8 +32,10 @@ class ChatListTableManager: NSObject {
 
     private weak var submanagerChats: OCTSubmanagerChats!
 
-    private let chatsController: RBQFetchedResultsController
-    private let friendsController: RBQFetchedResultsController
+    private let chats: Results<OCTChat>
+    private var chatsToken: RLMNotificationToken?
+    private let friends: Results<OCTFriend>
+    private var friendsToken: RLMNotificationToken?
 
     init(theme: Theme, tableView: UITableView, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.tableView = tableView
@@ -45,25 +47,26 @@ class ChatListTableManager: NSObject {
 
         self.submanagerChats = submanagerChats
 
-        let descriptors = [RLMSortDescriptor(property: "lastActivityDateInterval", ascending: false)]
-        self.chatsController = submanagerObjects.fetchedResultsControllerForType(.Chat, sortDescriptors: descriptors)
-        self.chatsController.performFetch()
-
-        self.friendsController = submanagerObjects.fetchedResultsControllerForType(.Friend)
-        self.friendsController.performFetch()
+        self.chats = submanagerObjects.chats().sortedResultsUsingProperty("lastActivityDateInterval", ascending: false)
+        self.friends = submanagerObjects.friends()
 
         super.init()
 
         tableView.delegate = self
         tableView.dataSource = self
-        chatsController.delegate = self
-        friendsController.delegate = self
+
+        addNotificationBlocks()
+    }
+
+    deinit {
+        chatsToken?.stop()
+        friendsToken?.stop()
     }
 }
 
 extension ChatListTableManager: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let chat = chatsController.objectAtIndexPath(indexPath) as! OCTChat
+        let chat = chats[indexPath.row]
         let friend = chat.friends.lastObject() as! OCTFriend
 
         let model = ChatListCellModel()
@@ -92,7 +95,7 @@ extension ChatListTableManager: UITableViewDataSource {
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return chatsController.numberOfRowsForSectionIndex(section)
+        return chats.count
     }
 
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -101,7 +104,7 @@ extension ChatListTableManager: UITableViewDataSource {
 
             alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
             alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
-                let chat = self.chatsController.objectAtIndexPath(indexPath) as! OCTChat
+                let chat = self.chats[indexPath.row]
                 self.submanagerChats.removeChatWithAllMessages(chat)
             })
 
@@ -114,72 +117,61 @@ extension ChatListTableManager: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
 
-        let chat = chatsController.objectAtIndexPath(indexPath) as! OCTChat
+        let chat = self.chats[indexPath.row]
         delegate?.chatListTableManager(self, didSelectChat: chat)
     }
 }
 
-extension ChatListTableManager: RBQFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(controller: RBQFetchedResultsController) {
-        if controller === chatsController {
-            tableView.beginUpdates()
-        }
-    }
-
-   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
-        if controller === chatsController {
-            ExceptionHandling.tryWithBlock({ [unowned self] in
-                self.tableView.endUpdates()
-            }) { [unowned self] _ in
-                controller.reset()
-                self.tableView.reloadData()
-            }
-
-            delegate?.chatListTableManagerWasUpdated(self)
-        }
-   }
-
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeObject anObject: RBQSafeRealmObject,
-            atIndexPath indexPath: NSIndexPath?,
-            forChangeType type: RBQFetchedResultsChangeType,
-            newIndexPath: NSIndexPath?) {
-
-        if controller === chatsController {
-            switch type {
-                case .Insert:
-                    tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
-                case .Delete:
-                    tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-                case .Move:
-                    tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: .Automatic)
-                    tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: .Automatic)
-                case .Update:
-                    tableView.reloadRowsAtIndexPaths([indexPath!], withRowAnimation: .None)
-            }
-        }
-        else if controller === friendsController {
-            guard type == .Update else {
-                return
-            }
-
-            let friend = anObject.RLMObject() as! OCTFriend
-
-            let pathsToUpdate = tableView.indexPathsForVisibleRows?.filter {
-                let chat = chatsController.objectAtIndexPath($0) as! OCTChat
-
-                return Int(chat.friends.indexOfObject(friend)) != NSNotFound
-            }
-
-            if let paths = pathsToUpdate {
-                tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .None)
-            }
-        }
-    }
-}
-
 private extension ChatListTableManager {
+    func addNotificationBlocks() {
+        chatsToken = chats.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(_, let deletions, let insertions, let modifications):
+                    self.tableView.beginUpdates()
+                    self.tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
+                                                          withRowAnimation: .Automatic)
+                    self.tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
+                                                          withRowAnimation: .Automatic)
+                    self.tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
+                                                          withRowAnimation: .None)
+                    self.tableView.endUpdates()
+
+                    self.delegate?.chatListTableManagerWasUpdated(self)
+                case .Error(let error):
+                    fatalError("\(error)")
+            }
+        }
+
+        friendsToken = friends.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let friends, _, _, let modifications):
+                    guard let friends = friends else {
+                        break
+                    }
+
+                    for index in modifications {
+                        let friend = friends[index]
+
+                        let pathsToUpdate = self.tableView.indexPathsForVisibleRows?.filter {
+                            let chat = self.chats[$0.row]
+
+                            return Int(chat.friends.indexOfObject(friend)) != NSNotFound
+                        }
+
+                        if let paths = pathsToUpdate {
+                            self.tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .None)
+                        }
+                    }
+                case .Error(let error):
+                fatalError("\(error)")
+            }
+        }
+    }
+
     func lastMessageTextFromChat(chat: OCTChat) -> String {
         guard let message = chat.lastMessage else {
             return ""

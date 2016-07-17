@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+- Migration to new Realm, app speed improvements.
 
 ## [0.10.3] - 2016-04-12
 ### Added

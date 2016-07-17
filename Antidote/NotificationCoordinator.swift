@@ -35,9 +35,13 @@ class NotificationCoordinator: NSObject {
     private let notificationWindow: NotificationWindow
 
     private weak var submanagerObjects: OCTSubmanagerObjects!
-    private let messagesController: RBQFetchedResultsController
-    private let chatsController: RBQFetchedResultsController
-    private let requestsController: RBQFetchedResultsController
+
+    private var messagesToken: RLMNotificationToken?
+    private var chats: Results<OCTChat>
+    private var chatsToken: RLMNotificationToken?
+    private var requests: Results<OCTFriendRequest>
+    private var requestsToken: RLMNotificationToken?
+
     private let avatarManager: AvatarManager
     private let audioPlayer = AlertAudioPlayer()
 
@@ -50,25 +54,25 @@ class NotificationCoordinator: NSObject {
         self.notificationWindow = NotificationWindow(theme: theme)
 
         self.submanagerObjects = submanagerObjects
-        self.messagesController = submanagerObjects.fetchedResultsControllerForType(.MessageAbstract)
-        self.chatsController = submanagerObjects.fetchedResultsControllerForType(.Chat)
-        self.requestsController = submanagerObjects.fetchedResultsControllerForType(.FriendRequest)
         self.avatarManager = AvatarManager(theme: theme)
+
+        let predicate = NSPredicate(format: "lastMessage.dateInterval > lastReadDateInterval")
+        self.chats = submanagerObjects.chats(predicate: predicate)
+        self.requests = submanagerObjects.friendRequests()
 
         super.init()
 
-        messagesController.delegate = self
-        messagesController.performFetch()
-        chatsController.delegate = self
-        chatsController.performFetch()
-        requestsController.delegate = self
-        requestsController.performFetch()
+        addNotificationBlocks()
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NotificationCoordinator.applicationDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
     deinit {
         NSNotificationCenter.defaultCenter().removeObserver(self)
+
+        messagesToken?.stop()
+        chatsToken?.stop()
+        requestsToken?.stop()
     }
 
     /**
@@ -88,7 +92,7 @@ class NotificationCoordinator: NSObject {
         notificationQueue = notificationQueue.filter {
             switch $0 {
                 case .NewMessage(let messageAbstract):
-                    return messageAbstract.chat.uniqueIdentifier != chat.uniqueIdentifier
+                    return messageAbstract.chatUniqueIdentifier != chat.uniqueIdentifier
                 case .FriendRequest:
                     return true
             }
@@ -102,16 +106,17 @@ class NotificationCoordinator: NSObject {
         bannedChatIdentifiers.remove(chat.uniqueIdentifier)
     }
 
-    func handleLocalNotification(notification: UILocalNotification) {
+    func handleLocalNotification(notification: UILocalNotification) -> Bool {
         guard let userInfo = notification.userInfo as? [String: String] else {
-            return
+            return false
         }
 
         guard let action = NotificationAction(dictionary: userInfo) else {
-            return
+            return false
         }
 
         performAction(action)
+        return true
     }
 
     func showCallNotificationWithCaller(caller: String, userInfo: String) {
@@ -145,48 +150,63 @@ extension NotificationCoordinator {
     }
 }
 
-extension NotificationCoordinator: RBQFetchedResultsControllerDelegate {
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeObject anObject: RBQSafeRealmObject,
-            atIndexPath indexPath: NSIndexPath?,
-            forChangeType type: RBQFetchedResultsChangeType,
-            newIndexPath: NSIndexPath?) {
-        switch type {
-            case .Insert:
-                if controller === messagesController {
-                    let message = anObject.RLMObject() as! OCTMessageAbstract
-
-                    playSoundForMessageIfNeeded(message)
-
-                    if shouldEnqueueMessage(message) {
-                        enqueueNotification(.NewMessage(message))
+private extension NotificationCoordinator {
+    func addNotificationBlocks() {
+        let messages = submanagerObjects.messages()
+        messagesToken = messages.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let messages, _, let insertions, _):
+                    guard let messages = messages else {
+                        break
                     }
-                }
-                else if controller === requestsController {
-                    let request = anObject.RLMObject() as! OCTFriendRequest
+                    for index in insertions {
+                        let message = messages[index]
 
-                    audioPlayer.playSound(.NewMessage)
+                        self.playSoundForMessageIfNeeded(message)
 
-                    enqueueNotification(.FriendRequest(request))
-                }
-            case .Delete:
-                break
-            case .Move:
-                break
-            case .Update:
-                break
+                        if self.shouldEnqueueMessage(message) {
+                            self.enqueueNotification(.NewMessage(message))
+                        }
+                    }
+                case .Error(let error):
+                fatalError("\(error)")
+            }
+        }
+
+        chatsToken = chats.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update:
+                    self.updateBadges()
+                case .Error(let error):
+                fatalError("\(error)")
+            }
+        }
+
+        requestsToken = requests.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let requests, _, let insertions, _):
+                    guard let requests = requests else {
+                        break
+                    }
+                    for index in insertions {
+                        let request = requests[index]
+
+                        self.audioPlayer.playSound(.NewMessage)
+                        self.enqueueNotification(.FriendRequest(request))
+                    }
+                    self.updateBadges()
+                case .Error(let error):
+                fatalError("\(error)")
+            }
         }
     }
 
-   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
-        if controller === chatsController || controller === requestsController {
-            updateBadges()
-        }
-   }
-}
-
-private extension NotificationCoordinator {
     func playSoundForMessageIfNeeded(message: OCTMessageAbstract) {
         if message.isOutgoing() {
             return
@@ -202,7 +222,7 @@ private extension NotificationCoordinator {
             return false
         }
 
-        if UIApplication.isActive && bannedChatIdentifiers.contains(message.chat.uniqueIdentifier) {
+        if UIApplication.isActive && bannedChatIdentifiers.contains(message.chatUniqueIdentifier) {
             return false
         }
 
@@ -290,10 +310,21 @@ private extension NotificationCoordinator {
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
-        let image = avatarManager.avatarFromString(message.sender?.nickname ?? "?", diameter: NotificationView.Constants.ImageSize)
-        let title = message.sender?.nickname ?? ""
+        let avatarString: String
+        let title: String
+
+        if let friend = submanagerObjects.objectWithUniqueIdentifier(message.senderUniqueIdentifier, forType: .Friend) as? OCTFriend {
+            avatarString = friend.nickname
+            title = friend.nickname
+        }
+        else {
+            avatarString = "?"
+            title = ""
+        }
+
+        let image = avatarManager.avatarFromString(avatarString, diameter: NotificationView.Constants.ImageSize)
         var body: String = ""
-        let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chat.uniqueIdentifier)
+        let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chatUniqueIdentifier)
 
         if let messageText = message.messageText {
             let defaultString = String(localized: "notification_new_message")
@@ -340,34 +371,29 @@ private extension NotificationCoordinator {
     }
 
     func updateBadges() {
-        let chats = chatsBadge()
-        let friends = friendsBadge()
+        let chatsCount = chats.count
+        let requestsCount = requests.count
 
-        delegate?.notificationCoordinator(self, updateChatsBadge: chats)
-        delegate?.notificationCoordinator(self, updateFriendsBadge: friends)
+        delegate?.notificationCoordinator(self, updateChatsBadge: chatsCount)
+        delegate?.notificationCoordinator(self, updateFriendsBadge: requestsCount)
 
-        UIApplication.sharedApplication().applicationIconBadgeNumber = chats + friends
+        UIApplication.sharedApplication().applicationIconBadgeNumber = chatsCount + requestsCount
     }
 
-    func chatsBadge() -> Int {
-        // TODO update to new Realm and filter unread chats with predicate "lastMessage.dateInterval > lastReadDateInterval"
-        var badge = 0
-        let chats = chatsController.fetchedObjects
+    // func chatsBadge() -> Int {
+    //     // TODO update to new Realm and filter unread chats with predicate "lastMessage.dateInterval > lastReadDateInterval"
+    //     var badge = 0
 
-        for index in 0..<chats.count {
-            guard let chat = chats[index] as? OCTChat else {
-                continue
-            }
+    //     for index in 0..<chats.count {
+    //         guard let chat = chats[index] as? OCTChat else {
+    //             continue
+    //         }
 
-            if chat.hasUnreadMessages() {
-                badge += 1
-            }
-        }
+    //         if chat.hasUnreadMessages() {
+    //             badge += 1
+    //         }
+    //     }
 
-        return badge
-    }
-
-    func friendsBadge() -> Int {
-        return requestsController.numberOfRowsForSectionIndex(0)
-    }
+    //     return badge
+    // }
 }

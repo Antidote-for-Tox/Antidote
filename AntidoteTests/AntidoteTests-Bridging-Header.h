@@ -26,7 +26,6 @@
 #import <objcTox/OCTTox.h>
 #import <objcTox/OCTToxConstants.h>
 #import <objcTox/OCTView.h>
-#import <objcTox/RBQFetchedResultsController.h>
 
 #undef LOG_INFO
 #undef LOG_DEBUG

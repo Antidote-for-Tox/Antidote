@@ -8,39 +8,6 @@
 
 import XCTest
 
-class MockedFetchedResultsController: RBQFetchedResultsController {
-    var didPerformFetch: Bool = false
-    var didReset: Bool = false
-
-    private let objects: [[NSObject]]
-
-    init(objects: [[NSObject]]) {
-        self.objects = objects
-        super.init()
-    }
-
-    override func numberOfSections() -> Int {
-        return objects.count
-    }
-
-    override func numberOfRowsForSectionIndex(index: Int) -> Int {
-        return objects[index].count
-    }
-
-    override func objectAtIndexPath(indexPath: NSIndexPath!) -> AnyObject! {
-        return objects[indexPath.row][indexPath.section]
-    }
-
-    override func performFetch() -> Bool {
-        didPerformFetch = true
-        return true
-    }
-
-    override func reset() {
-        didReset = true
-    }
-}
-
 class FriendListDataSourceTest: XCTestCase {
     override func setUp() {
         super.setUp()

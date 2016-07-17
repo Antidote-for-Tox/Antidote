@@ -23,6 +23,8 @@ protocol FriendListDataSourceDelegate: class {
     func friendListDataSourceInsertSections(sections: NSIndexSet)
     func friendListDataSourceDeleteSections(sections: NSIndexSet)
     func friendListDataSourceReloadSections(sections: NSIndexSet)
+
+    func friendListDataSourceReloadTable()
 }
 
 enum FriendListObject {
@@ -36,49 +38,45 @@ class FriendListDataSource: NSObject {
     private let avatarManager: AvatarManager
     private let dateFormatter: NSDateFormatter
 
-    private let requestsStorage: LazyStorage<RBQFetchedResultsController>?
-    private let friendsStorage: LazyStorage<RBQFetchedResultsController>
+    private let requests: Results<OCTFriendRequest>?
+    private let friends: Results<OCTFriend>
 
-    /// In case if requestsController is nil friend requests won't be shown.
-    init(theme: Theme, friendsController: RBQFetchedResultsController, requestsController: RBQFetchedResultsController? = nil) {
+    private var requestsToken: RLMNotificationToken?
+    private var friendsToken: RLMNotificationToken?
+
+    /// In case if requests is nil friend requests won't be shown.
+    init(theme: Theme, friends: Results<OCTFriend>, requests: Results<OCTFriendRequest>? = nil) {
         self.avatarManager = AvatarManager(theme: theme)
         self.dateFormatter = NSDateFormatter(type: .RelativeDateAndTime)
 
-        if let requestsController = requestsController {
-            self.requestsStorage = LazyStorage(createBlock: {
-                requestsController.performFetch()
-                return requestsController
-            })
-        }
-        else {
-            self.requestsStorage = nil
-        }
-
-        self.friendsStorage = LazyStorage(createBlock: {
-            friendsController.performFetch()
-            return friendsController
-        })
+        self.requests = requests
+        self.friends = friends
 
         super.init()
 
-        requestsController?.delegate = self
-        friendsController.delegate = self
+        addNotificationBlocks()
+    }
+
+    deinit {
+        requestsToken?.stop()
+        friendsToken?.stop()
     }
 
     func numberOfSections() -> Int {
-        let requests = requestsStorage?.object.numberOfSections() ?? 0
-        let friends = friendsStorage.object.numberOfSections()
+        if isRequestsSectionVisible() {
+            return 2
+        }
 
-        return requests + friends
+        // friends only
+        return 1
     }
 
     func numberOfRowsInSection(section: Int) -> Int {
         if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return requestsStorage!.object.numberOfRowsForSectionIndex(0) ?? 0
+            return requests!.count
         }
         else {
-            let normalized = friendsNormalizedSectionFromSection(section)
-            return friendsStorage.object.numberOfRowsForSectionIndex(normalized)
+            return friends.count
         }
     }
 
@@ -116,137 +114,106 @@ class FriendListDataSource: NSObject {
 
     func objectAtIndexPath(indexPath: NSIndexPath) -> FriendListObject {
         if indexPath.section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
-            return .Request(requestsStorage!.object.objectAtIndexPath(indexPath) as! OCTFriendRequest)
+            return .Request(requests![indexPath.row])
         }
         else {
-            let section = friendsNormalizedSectionFromSection(indexPath.section)
-            let normalized = NSIndexPath(forRow: indexPath.row, inSection: section)
-
-            return .Friend(friendsStorage.object.objectAtIndexPath(normalized) as! OCTFriend)
+            return .Friend(friends[indexPath.row])
         }
     }
 
     func sectionIndexTitles() -> [String] {
-        var array = [String]()
-
-        for i in 0..<friendsStorage.object.numberOfSections() {
-            array.append(friendsStorage.object.titleForHeaderInSection(i))
-        }
-
-        return array.filter {
-            !$0.isEmpty
-        }.map {
-            $0.substringToIndex($0.startIndex.advancedBy(1))
-        }
+        // TODO fix when Realm will support sections
+        let array = [String]()
+        return array
     }
 
     func titleForHeaderInSection(section: Int) -> String? {
-        if section == Constants.FriendRequestsSection && isRequestsSectionVisible() {
+        if !isRequestsSectionVisible() {
+            return nil
+        }
+
+        if section == Constants.FriendRequestsSection {
             return String(localized: "contact_requests_section")
         }
         else {
-            let normalized = friendsNormalizedSectionFromSection(section)
-            let title = friendsStorage.object.titleForHeaderInSection(normalized)
-
-            return title.isEmpty ? "" : title.substringToIndex(title.startIndex.advancedBy(1))
-        }
-    }
-
-    /**
-        Call this method to force the cahce to be rebuilt.
-     */
-    func reset() {
-        requestsStorage?.object.reset()
-        friendsStorage.object.reset()
-    }
-}
-
-extension FriendListDataSource: RBQFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(controller: RBQFetchedResultsController) {
-        delegate?.friendListDataSourceBeginUpdates()
-    }
-
-   func controllerDidChangeContent(controller: RBQFetchedResultsController) {
-       delegate?.friendListDataSourceEndUpdates()
-   }
-
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeObject anObject: RBQSafeRealmObject,
-            atIndexPath indexPath: NSIndexPath?,
-            forChangeType type: RBQFetchedResultsChangeType,
-            newIndexPath: NSIndexPath?) {
-
-        let denormalizedPath = denormalizeIndexPath(indexPath, forController: controller)
-        let newDenormalizedPath = denormalizeIndexPath(newIndexPath, forController: controller)
-
-        switch type {
-            case .Insert:
-                delegate?.friendListDataSourceInsertRowsAtIndexPaths([newDenormalizedPath!])
-            case .Delete:
-                delegate?.friendListDataSourceDeleteRowsAtIndexPaths([denormalizedPath!])
-            case .Move:
-                delegate?.friendListDataSourceDeleteRowsAtIndexPaths([denormalizedPath!])
-                delegate?.friendListDataSourceInsertRowsAtIndexPaths([newDenormalizedPath!])
-            case .Update:
-                delegate?.friendListDataSourceReloadRowsAtIndexPaths([denormalizedPath!])
-        }
-    }
-
-    func controller(
-            controller: RBQFetchedResultsController,
-            didChangeSection section: RBQFetchedResultsSectionInfo,
-            atIndex sectionIndex: UInt,
-            forChangeType type: RBQFetchedResultsChangeType) {
-
-        let denormalizedIndex = denormalizeSectionIndex(Int(sectionIndex), forController: controller)
-        let indexSet = NSIndexSet(index: denormalizedIndex)
-
-        switch type {
-            case .Insert:
-                delegate?.friendListDataSourceInsertSections(indexSet)
-            case .Delete:
-                delegate?.friendListDataSourceDeleteSections(indexSet)
-            case .Move:
-                // nop
-                break
-            case .Update:
-                delegate?.friendListDataSourceReloadSections(indexSet)
+            return String(localized: "contacts_title")
         }
     }
 }
 
 private extension FriendListDataSource {
+    func addNotificationBlocks() {
+        requestsToken = requests?.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(let requests, let deletions, let insertions, let modifications):
+                    guard let requests = requests else {
+                        return
+                    }
+
+                    if deletions.count > 0 {
+                        // reloading data on request removal/friend insertion to synchronize requests/friends
+                        self.delegate?.friendListDataSourceReloadTable()
+                        return
+                    }
+
+                    self.delegate?.friendListDataSourceBeginUpdates()
+
+                    let countAfter = requests.count
+                    let countBefore = countAfter - insertions.count + deletions.count
+
+                    if countBefore == 0 && countAfter > 0 {
+                        self.delegate?.friendListDataSourceInsertSections(NSIndexSet(index: 0))
+                    }
+                    else if countBefore > 0 && countAfter == 0 {
+                        self.delegate?.friendListDataSourceDeleteSections(NSIndexSet(index: 0))
+                    }
+                    else {
+                        self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0)} )
+                        self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0)} )
+                        self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0)} )
+                    }
+
+                    self.delegate?.friendListDataSourceEndUpdates()
+                case .Error(let error):
+                    fatalError("\(error)")
+            }
+        }
+
+        friendsToken = friends.addNotificationBlock { [unowned self] change in
+            switch change {
+                case .Initial:
+                    break
+                case .Update(_, let deletions, let insertions, let modifications):
+                    if insertions.count > 0 {
+                        // reloading data on request removal/friend insertion to synchronize requests/friends
+                        self.delegate?.friendListDataSourceReloadTable()
+                        return
+                    }
+
+                    let section = self.isRequestsSectionVisible() ? 1 : 0
+
+                    let deletions = deletions.map { NSIndexPath(forRow: $0, inSection: section) }
+                    let insertions = insertions.map { NSIndexPath(forRow: $0, inSection: section) }
+                    let modifications = modifications.map { NSIndexPath(forRow: $0, inSection: section) }
+
+                    self.delegate?.friendListDataSourceBeginUpdates()
+                    self.delegate?.friendListDataSourceDeleteRowsAtIndexPaths(deletions)
+                    self.delegate?.friendListDataSourceInsertRowsAtIndexPaths(insertions)
+                    self.delegate?.friendListDataSourceReloadRowsAtIndexPaths(modifications)
+                    self.delegate?.friendListDataSourceEndUpdates()
+                case .Error(let error):
+                    fatalError("\(error)")
+            }
+        }
+    }
+
     func isRequestsSectionVisible() -> Bool {
-        guard let requestsStorage = requestsStorage else {
+        guard let requests = requests else {
             return false
         }
-        return requestsStorage.object.numberOfSections() > 0
-    }
 
-    func friendsNormalizedSectionFromSection(section: Int) -> Int {
-        if isRequestsSectionVisible() && section > Constants.FriendRequestsSection {
-            return section - 1
-        }
-
-        return section
-    }
-
-    func denormalizeIndexPath(indexPath: NSIndexPath?, forController controller: RBQFetchedResultsController) -> NSIndexPath? {
-        guard indexPath != nil else {
-            return nil
-        }
-
-        let denormalizedIndex = denormalizeSectionIndex(indexPath!.section, forController: controller)
-        return NSIndexPath(forRow: indexPath!.row, inSection: denormalizedIndex)
-    }
-
-    func denormalizeSectionIndex(index: Int, forController controller: RBQFetchedResultsController) -> Int {
-        if requestsStorage != nil && controller == requestsStorage!.object {
-            return index
-        }
-
-        // friends controller
-        return isRequestsSectionVisible() ? (index + 1) : index
+        return requests.count > 0
     }
 }

@@ -155,8 +155,8 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         }
     }
 
-    func handleLocalNotification(notification: UILocalNotification) {
-        notificationCoordinator.handleLocalNotification(notification)
+    func handleLocalNotification(notification: UILocalNotification) -> Bool {
+        return notificationCoordinator.handleLocalNotification(notification)
     }
 
     func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
@@ -219,7 +219,7 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 }
 
 extension RunningCoordinator: OCTSubmanagerUserDelegate {
-    func submanagerUser(submanager: OCTSubmanagerUser!, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
+    func submanagerUser(submanager: OCTSubmanagerUser, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
         updateUserStatusView()
 
         let show = (connectionStatus == .None)

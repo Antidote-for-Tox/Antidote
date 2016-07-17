@@ -2,30 +2,35 @@
 //  OCTSubmanagerObjectsExtension.swift
 //  Antidote
 //
-//  Created by Dmytro Vorobiov on 14/12/15.
-//  Copyright © 2015 dvor. All rights reserved.
+//  Created by Dmytro Vorobiov on 10/07/16.
+//  Copyright © 2016 dvor. All rights reserved.
 //
 
 import Foundation
 
 extension OCTSubmanagerObjects {
-    func fetchedResultsControllerForType(
-            type: OCTFetchRequestType,
-            predicate: NSPredicate? = nil,
-            sortDescriptors: [RLMSortDescriptor]? = nil,
-            sectionNameKeyPath: String? = nil,
-            delegate: RBQFetchedResultsControllerDelegate? = nil) -> RBQFetchedResultsController {
+    func friends(predicate predicate: NSPredicate? = nil) -> Results<OCTFriend> {
+        let rlmResults = objectsForType(.Friend, predicate: predicate)
+        return Results(results: rlmResults)
+    }
 
-        let request = fetchRequestForType(type, withPredicate: predicate)
-        request.sortDescriptors = sortDescriptors
+    func friendRequests(predicate predicate: NSPredicate? = nil) -> Results<OCTFriendRequest> {
+        let rlmResults = objectsForType(.FriendRequest, predicate: predicate)
+        return Results(results: rlmResults)
+    }
 
-        let controller = RBQFetchedResultsController(
-                fetchRequest: request,
-                sectionNameKeyPath: sectionNameKeyPath,
-                cacheName: nil)
+    func chats(predicate predicate: NSPredicate? = nil) -> Results<OCTChat> {
+        let rlmResults = objectsForType(.Chat, predicate: predicate)
+        return Results(results: rlmResults)
+    }
 
-        controller.delegate = delegate
+    func calls(predicate predicate: NSPredicate? = nil) -> Results<OCTCall> {
+        let rlmResults = objectsForType(.Call, predicate: predicate)
+        return Results(results: rlmResults)
+    }
 
-        return controller
+    func messages(predicate predicate: NSPredicate? = nil) -> Results<OCTMessageAbstract> {
+        let rlmResults = objectsForType(.MessageAbstract, predicate: predicate)
+        return Results(results: rlmResults)
     }
 }

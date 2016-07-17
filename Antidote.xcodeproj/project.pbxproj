@@ -146,7 +146,6 @@
 		118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
 		1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
 		1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB411C1E2075006AA9E5 /* QRViewerController.swift */; };
-		1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */; };
 		1193AB481C1F4164006AA9E5 /* FriendListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB471C1F4164006AA9E5 /* FriendListController.swift */; };
 		1193AB661C1F5694006AA9E5 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB651C1F5694006AA9E5 /* BaseCell.swift */; };
 		1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */; };
@@ -207,12 +206,16 @@
 		11FA0EED1BC5A69000F3DA5B /* ProfileTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */; };
 		11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */; };
 		11FA0EF31BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */; };
-		40BDAF52C2CAB41F6297D52F /* libPods-AntidoteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B9CB322416EBEF64C20BED38 /* libPods-AntidoteTests.a */; };
-		510F7EDDD1C30FE0F58F497B /* libPods-Antidote.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C7B6015173CCDD67B296DB33 /* libPods-Antidote.a */; };
+		11FC10571D32E54A00CE863E /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC10561D32E54A00CE863E /* Results.swift */; };
+		11FC10581D32E54A00CE863E /* Results.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC10561D32E54A00CE863E /* Results.swift */; };
+		11FC105A1D32EED000CE863E /* ResultsChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC10591D32EED000CE863E /* ResultsChange.swift */; };
+		11FC105B1D32EED000CE863E /* ResultsChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC10591D32EED000CE863E /* ResultsChange.swift */; };
+		11FC105D1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC105C1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift */; };
+		11FC105E1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FC105C1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift */; };
+		96166DAAD67996D5A6819984 /* libPods-AntidoteTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 72586F4D098584EF43024224 /* libPods-AntidoteTests.a */; };
 		9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */; };
 		9C07151D1BCD2E5B003A27B5 /* PortraitNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */; };
 		9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151E1BCD501D003A27B5 /* LoginFormController.swift */; };
-		9C2EF34E1C493A07006E7AB1 /* PortionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */; };
 		9C2EF3711C4D4D5C006E7AB1 /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */; };
 		9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
 		9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C7475C01BC698110098B1A4 /* Localizable.strings */; };
@@ -258,7 +261,6 @@
 		9CEE6AD21C4E8FDC00A1ECB5 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
 		9CEE6AD31C4E8FDC00A1ECB5 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */; };
 		9CEE6AD41C4E8FDC00A1ECB5 /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
-		9CEE6AD51C4E8FDC00A1ECB5 /* PortionDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */; };
 		9CEE6AD61C4E8FDC00A1ECB5 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
 		9CEE6AD71C4E8FDC00A1ECB5 /* TabBarAbstractItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */; };
 		9CEE6AD81C4E8FDC00A1ECB5 /* TabBarBadgeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */; };
@@ -300,7 +302,6 @@
 		9CEE6B031C4E8FDC00A1ECB5 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* UIImageExtension.swift */; };
 		9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1180FD9D1C38497A005F3EA1 /* NSDateFormatterExtension.swift */; };
 		9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
-		9CEE6B061C4E8FDC00A1ECB5 /* OCTSubmanagerObjectsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */; };
 		9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
 		9CEE6B091C4E8FDC00A1ECB5 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
 		9CEE6B0A1C4E8FDC00A1ECB5 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
@@ -327,6 +328,7 @@
 		9CEE6B501C528AAA00A1ECB5 /* SettingsAboutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B4E1C528AAA00A1ECB5 /* SettingsAboutController.swift */; };
 		9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */; };
 		9CEE6B531C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */; };
+		D4F896D05F7EAA7C321A2AA8 /* libPods-Antidote.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 034E57B3AE56E352BBAA0487 /* libPods-Antidote.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -453,6 +455,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		034E57B3AE56E352BBAA0487 /* libPods-Antidote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Antidote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningNavigationCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
@@ -557,7 +560,6 @@
 		118703C61C3942C700DBC29A /* LazyStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyStorage.swift; sourceTree = "<group>"; };
 		1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditController.swift; sourceTree = "<group>"; };
 		1193AB411C1E2075006AA9E5 /* QRViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewerController.swift; sourceTree = "<group>"; };
-		1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerObjectsExtension.swift; sourceTree = "<group>"; };
 		1193AB471C1F4164006AA9E5 /* FriendListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListController.swift; sourceTree = "<group>"; };
 		1193AB651C1F5694006AA9E5 /* BaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCellModel.swift; sourceTree = "<group>"; };
@@ -624,12 +626,15 @@
 		11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTabCoordinator.swift; sourceTree = "<group>"; };
 		11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTabCoordinator.swift; sourceTree = "<group>"; };
 		11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatsTabCoordinator.swift; sourceTree = "<group>"; };
+		11FC10561D32E54A00CE863E /* Results.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Results.swift; sourceTree = "<group>"; };
+		11FC10591D32EED000CE863E /* ResultsChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsChange.swift; sourceTree = "<group>"; };
+		11FC105C1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerObjectsExtension.swift; sourceTree = "<group>"; };
 		2D5B916CEDBEC1B69CD1EFA4 /* Pods-Antidote.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Antidote.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Antidote/Pods-Antidote.debug.xcconfig"; sourceTree = "<group>"; };
 		43C533DEE94E80C981FEC348 /* Pods-AntidoteTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AntidoteTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AntidoteTests/Pods-AntidoteTests.debug.xcconfig"; sourceTree = "<group>"; };
+		72586F4D098584EF43024224 /* libPods-AntidoteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AntidoteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCell.swift; sourceTree = "<group>"; };
 		9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortraitNavigationController.swift; sourceTree = "<group>"; };
 		9C07151E1BCD501D003A27B5 /* LoginFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFormController.swift; sourceTree = "<group>"; };
-		9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortionDataSource.swift; sourceTree = "<group>"; };
 		9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCoordinator.swift; sourceTree = "<group>"; };
 		9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListTableManager.swift; sourceTree = "<group>"; };
 		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -652,8 +657,6 @@
 		9CEE6B4E1C528AAA00A1ECB5 /* SettingsAboutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAboutController.swift; sourceTree = "<group>"; };
 		9CEE6B511C528AB600A1ECB5 /* SettingsAdvancedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsAdvancedController.swift; sourceTree = "<group>"; };
 		B3C17AF8CE3B4AD1B68F2B5B /* Pods-Antidote.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Antidote.release.xcconfig"; path = "Pods/Target Support Files/Pods-Antidote/Pods-Antidote.release.xcconfig"; sourceTree = "<group>"; };
-		B9CB322416EBEF64C20BED38 /* libPods-AntidoteTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AntidoteTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C7B6015173CCDD67B296DB33 /* libPods-Antidote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Antidote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEC32120B965BE40E0029DB1 /* Pods-AntidoteTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AntidoteTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-AntidoteTests/Pods-AntidoteTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -667,7 +670,7 @@
 				116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */,
 				116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */,
 				1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */,
-				510F7EDDD1C30FE0F58F497B /* libPods-Antidote.a in Frameworks */,
+				D4F896D05F7EAA7C321A2AA8 /* libPods-Antidote.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -675,7 +678,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				40BDAF52C2CAB41F6297D52F /* libPods-AntidoteTests.a in Frameworks */,
+				96166DAAD67996D5A6819984 /* libPods-AntidoteTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,8 +748,8 @@
 				1164763419794D3300DB20B8 /* CoreGraphics.framework */,
 				1164763619794D3300DB20B8 /* UIKit.framework */,
 				1164764B19794D3300DB20B8 /* XCTest.framework */,
-				C7B6015173CCDD67B296DB33 /* libPods-Antidote.a */,
-				B9CB322416EBEF64C20BED38 /* libPods-AntidoteTests.a */,
+				034E57B3AE56E352BBAA0487 /* libPods-Antidote.a */,
+				72586F4D098584EF43024224 /* libPods-AntidoteTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -866,8 +869,9 @@
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
 				118703C61C3942C700DBC29A /* LazyStorage.swift */,
 				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
-				9C2EF34D1C493A07006E7AB1 /* PortionDataSource.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
+				11FC10561D32E54A00CE863E /* Results.swift */,
+				11FC10591D32EED000CE863E /* ResultsChange.swift */,
 				11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */,
 				11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */,
 				11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */,
@@ -1013,7 +1017,7 @@
 				11B253B61C503FA10068F47C /* NSTimerExtension.swift */,
 				116DCE3A1CAAF85300B693EC /* NSURLExtension.swift */,
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
-				1193AB431C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift */,
+				11FC105C1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
 				11770D761CBC1C7A00D34D6E /* UIAlertControllerExtension.swift */,
 				116634B11C7087A80072C980 /* UIApplicationExtension.swift */,
@@ -1093,13 +1097,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1164765B19794D3300DB20B8 /* Build configuration list for PBXNativeTarget "Antidote" */;
 			buildPhases = (
-				0E40AAC10D854CCE59CF1B7F /* Check Pods Manifest.lock */,
+				0E40AAC10D854CCE59CF1B7F /* [CP] Check Pods Manifest.lock */,
 				1164762B19794D3300DB20B8 /* Sources */,
 				1164762C19794D3300DB20B8 /* Frameworks */,
 				1164762D19794D3300DB20B8 /* Resources */,
 				1165130B1C2B4B190066AF06 /* Embed Frameworks */,
-				EB929365DEC3A81A6AF82FFC /* Embed Pods Frameworks */,
-				F334EF7D7E56B63481570925 /* Copy Pods Resources */,
+				EB929365DEC3A81A6AF82FFC /* [CP] Embed Pods Frameworks */,
+				F334EF7D7E56B63481570925 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1116,12 +1120,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1173F05D1BC5D94400B88B7B /* Build configuration list for PBXNativeTarget "AntidoteTests" */;
 			buildPhases = (
-				0684EDB5CA4B84C1AF4AF8A4 /* Check Pods Manifest.lock */,
+				0684EDB5CA4B84C1AF4AF8A4 /* [CP] Check Pods Manifest.lock */,
 				1173F0521BC5D94400B88B7B /* Sources */,
 				1173F0531BC5D94400B88B7B /* Frameworks */,
 				1173F0541BC5D94400B88B7B /* Resources */,
-				23B2271556C46D6D79F2B8F1 /* Embed Pods Frameworks */,
-				B98298617DAB39F4AF6E0CCC /* Copy Pods Resources */,
+				23B2271556C46D6D79F2B8F1 /* [CP] Embed Pods Frameworks */,
+				B98298617DAB39F4AF6E0CCC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1310,14 +1314,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0684EDB5CA4B84C1AF4AF8A4 /* Check Pods Manifest.lock */ = {
+		0684EDB5CA4B84C1AF4AF8A4 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1325,14 +1329,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		0E40AAC10D854CCE59CF1B7F /* Check Pods Manifest.lock */ = {
+		0E40AAC10D854CCE59CF1B7F /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1340,14 +1344,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		23B2271556C46D6D79F2B8F1 /* Embed Pods Frameworks */ = {
+		23B2271556C46D6D79F2B8F1 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1355,14 +1359,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AntidoteTests/Pods-AntidoteTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		B98298617DAB39F4AF6E0CCC /* Copy Pods Resources */ = {
+		B98298617DAB39F4AF6E0CCC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1370,14 +1374,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AntidoteTests/Pods-AntidoteTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EB929365DEC3A81A6AF82FFC /* Embed Pods Frameworks */ = {
+		EB929365DEC3A81A6AF82FFC /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1385,14 +1389,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Antidote/Pods-Antidote-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F334EF7D7E56B63481570925 /* Copy Pods Resources */ = {
+		F334EF7D7E56B63481570925 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1407,14 +1411,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C2EF34E1C493A07006E7AB1 /* PortionDataSource.swift in Sources */,
 				11628E721CA580ED008C097E /* ChatGenericFileCell.swift in Sources */,
 				116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
 				116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				1183BCB51CA1B3AE000CD310 /* ChatIncomingFileCellModel.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
+				11FC105A1D32EED000CE863E /* ResultsChange.swift in Sources */,
 				114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */,
+				11FC105D1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				11628E321CA2FBD1008C097E /* FilePreviewControllerDataSource.swift in Sources */,
 				113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */,
 				1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */,
@@ -1445,7 +1450,6 @@
 				1164C8F01BC982FF00B91107 /* UIImageExtension.swift in Sources */,
 				9CEE6B461C5289E200A1ECB5 /* SettingsMainController.swift in Sources */,
 				9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */,
-				1193AB441C1F3F05006AA9E5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
 				11B253AE1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				11628E3E1CA30C13008C097E /* QuickLookPreviewController.swift in Sources */,
@@ -1502,6 +1506,7 @@
 				1183BCD71CA1FC5B000CD310 /* ChatProgressProtocol.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
+				11FC10571D32E54A00CE863E /* Results.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
@@ -1590,6 +1595,7 @@
 				9CEE6AC51C4E8FDC00A1ECB5 /* StaticTableAvatarCell.swift in Sources */,
 				9CEE6AB81C4E8FDC00A1ECB5 /* AppDelegate.swift in Sources */,
 				9CEE6AE11C4E8FDC00A1ECB5 /* LoginFormController.swift in Sources */,
+				11FC10581D32E54A00CE863E /* Results.swift in Sources */,
 				11771E371CA5C6E900EC259E /* Reach.swift in Sources */,
 				9CEE6ACE1C4E8FDC00A1ECB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				9CEE6B091C4E8FDC00A1ECB5 /* UIColorExtension.swift in Sources */,
@@ -1603,6 +1609,7 @@
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				9CEE6AE01C4E8FDC00A1ECB5 /* LoginCreateAccountController.swift in Sources */,
 				9CEE6AC91C4E8FDC00A1ECB5 /* StaticTableButtonCell.swift in Sources */,
+				11FC105E1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				113F03431CB31DD60009ABE1 /* AlertAudioPlayer.swift in Sources */,
 				116DCE331CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */,
 				9CEE6ABD1C4E8FDC00A1ECB5 /* ChatListCell.swift in Sources */,
@@ -1649,9 +1656,9 @@
 				9CEE6AEC1C4E8FDC00A1ECB5 /* PrimaryIpadController.swift in Sources */,
 				9CEE6AF81C4E8FDC00A1ECB5 /* LoginCoordinator.swift in Sources */,
 				9CEE6AD31C4E8FDC00A1ECB5 /* FriendListDataSource.swift in Sources */,
+				11FC105B1D32EED000CE863E /* ResultsChange.swift in Sources */,
 				9CEE6AE81C4E8FDC00A1ECB5 /* ChatPrivateController.swift in Sources */,
 				9CEE6ACD1C4E8FDC00A1ECB5 /* StaticTableDefaultCell.swift in Sources */,
-				9CEE6AD51C4E8FDC00A1ECB5 /* PortionDataSource.swift in Sources */,
 				9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */,
 				1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
@@ -1701,7 +1708,6 @@
 				116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				9CEE6AED1C4E8FDC00A1ECB5 /* ProfileMainController.swift in Sources */,
 				11B253AF1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
-				9CEE6B061C4E8FDC00A1ECB5 /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				9CEE6AC11C4E8FDC00A1ECB5 /* ChatOutgoingTextCell.swift in Sources */,
 				9CEE6ABF1C4E8FDC00A1ECB5 /* ChatMovableDateCell.swift in Sources */,
 				116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
