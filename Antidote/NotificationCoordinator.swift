@@ -152,7 +152,7 @@ extension NotificationCoordinator {
 
 private extension NotificationCoordinator {
     func addNotificationBlocks() {
-        let messages = submanagerObjects.messages()
+        let messages = submanagerObjects.messages().sortedResultsUsingProperty("dateInterval", ascending: false)
         messagesToken = messages.addNotificationBlock { [unowned self] change in
             switch change {
                 case .Initial:
@@ -161,8 +161,8 @@ private extension NotificationCoordinator {
                     guard let messages = messages else {
                         break
                     }
-                    for index in insertions {
-                        let message = messages[index]
+                    if insertions.contains(0) {
+                        let message = messages[0]
 
                         self.playSoundForMessageIfNeeded(message)
 
