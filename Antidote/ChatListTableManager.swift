@@ -105,7 +105,7 @@ extension ChatListTableManager: UITableViewDataSource {
             alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
             alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
                 let chat = self.chats[indexPath.row]
-                self.submanagerChats.removeChatWithAllMessages(chat)
+                self.submanagerChats.removeAllMessagesInChat(chat, removeChat: true)
             })
 
             delegate?.chatListTableManager(self, presentAlertController: alert)

@@ -256,14 +256,9 @@ extension ChatPrivateController {
             return
         }
 
-        let deleteButtonText = selectedRows.count > 1 ?
-            String(localized: "delete_multiple_messages") + " (\(selectedRows.count))" :
-            String(localized: "delete_single_message")
-
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        alert.popoverPresentationController?.barButtonItem = barButtonItem
-
-        alert.addAction(UIAlertAction(title: deleteButtonText, style: .Destructive) { [unowned self] _ -> Void in
+        showMessageDeletionConfirmation(messagesCount: selectedRows.count,
+                                        showFromItem: barButtonItem,
+                                        deleteClosure: { [unowned self] _ -> Void in
             self.toggleTableViewEditing(false, animated: true)
 
             let toRemove = selectedRows.map {
@@ -272,15 +267,16 @@ extension ChatPrivateController {
 
             self.submanagerChats.removeMessages(toRemove)
         })
-
-        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
-
-        presentViewController(alert, animated: true, completion: nil)
     }
 
-    func deleteAllMessagesButtonPressed() {
-        // TODO remove all messages
+    func deleteAllMessagesButtonPressed(barButtonItem: UIBarButtonItem) {
         toggleTableViewEditing(false, animated: true)
+
+        showMessageDeletionConfirmation(messagesCount: messages.count,
+                                        showFromItem: barButtonItem,
+                                        deleteClosure: { [unowned self] _ -> Void in
+            self.submanagerChats.removeAllMessagesInChat(self.chat, removeChat: false)
+        })
     }
 
     func cancelEditingButtonPressed() {
@@ -1061,7 +1057,7 @@ private extension ChatPrivateController {
                 title: String(localized: "delete_all_messages"),
                 style: .Plain,
                 target: self,
-                action: #selector(ChatPrivateController.deleteAllMessagesButtonPressed))]
+                action: #selector(ChatPrivateController.deleteAllMessagesButtonPressed(_:)))]
 
             navigationItem.rightBarButtonItems = [UIBarButtonItem(
                     barButtonSystemItem: .Cancel,
@@ -1081,5 +1077,24 @@ private extension ChatPrivateController {
                 videoButton,
             ]
         }
+    }
+
+    func showMessageDeletionConfirmation(messagesCount messagesCount: Int,
+                                         showFromItem barButtonItem: UIBarButtonItem,
+                                         deleteClosure: Void -> Void) {
+        let deleteButtonText = messagesCount > 1 ?
+            String(localized: "delete_multiple_messages") + " (\(messagesCount))" :
+            String(localized: "delete_single_message")
+
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alert.popoverPresentationController?.barButtonItem = barButtonItem
+
+        alert.addAction(UIAlertAction(title: deleteButtonText, style: .Destructive) { _ -> Void in
+            deleteClosure()
+        })
+
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+
+        presentViewController(alert, animated: true, completion: nil)
     }
 }
