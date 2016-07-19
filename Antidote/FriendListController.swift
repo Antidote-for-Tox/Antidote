@@ -175,7 +175,7 @@ extension FriendListController: UITableViewDataSource {
 
                             try self.submanagerFriends.removeFriend(friend)
 
-                            self.submanagerChats.removeChatWithAllMessages(chat)
+                            self.submanagerChats.removeAllMessagesInChat(chat, removeChat: true)
                         }
                         catch let error as NSError {
                             handleErrorWithType(.RemoveFriend, error: error)

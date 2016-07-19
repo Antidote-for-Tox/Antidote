@@ -63,14 +63,20 @@ class ChatPrivateController: KeyboardNotificationController {
     private var videoButton: UIBarButtonItem!
 
     private var titleView: ChatPrivateTitleView!
-    private var tableView: UITableView!
+    private var tableView: UITableView?
     private var newMessagesView: UIView!
     private var chatInputView: ChatInputView!
+    private var editMessagesToolbar: UIToolbar!
+
+    private var tableViewTapGestureRecognizer: UITapGestureRecognizer!
 
     private var newMessageViewTopConstraint: Constraint!
     private var chatInputViewBottomConstraint: Constraint!
 
     private var newMessagesViewVisible = false
+
+    /// Index path for cell with UIMenu presented.
+    private var selectedMenuIndexPath: NSIndexPath?
 
     init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
         self.theme = theme
@@ -89,8 +95,6 @@ class ChatPrivateController: KeyboardNotificationController {
 
         super.init()
 
-        createNavigationViews()
-
         edgesForExtendedLayout = .None
         hidesBottomBarWhenPushed = true
 
@@ -98,6 +102,17 @@ class ChatPrivateController: KeyboardNotificationController {
                 self,
                 selector: #selector(ChatPrivateController.applicationDidBecomeActive),
                 name: UIApplicationDidBecomeActiveNotification,
+                object: nil)
+
+        NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(ChatPrivateController.willShowMenuNotification(_:)),
+                name: UIMenuControllerWillShowMenuNotification,
+                object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(ChatPrivateController.willHideMenuNotification),
+                name: UIMenuControllerWillHideMenuNotification,
                 object: nil)
     }
 
@@ -118,6 +133,7 @@ class ChatPrivateController: KeyboardNotificationController {
         createTableView()
         createNewMessagesView()
         createInputView()
+        createEditMessageToolbar()
         installConstraints()
     }
 
@@ -125,6 +141,8 @@ class ChatPrivateController: KeyboardNotificationController {
         super.viewDidLoad()
 
         addMessagesNotification()
+
+        createNavigationViews()
         addFriendNotification()
     }
 
@@ -177,6 +195,10 @@ extension ChatPrivateController {
     }
 
     func panOnTableView(recognizer: UIPanGestureRecognizer) {
+        guard let tableView = tableView else {
+            return
+        }
+
         let translation = recognizer.translationInView(recognizer.view)
         recognizer.setTranslation(CGPointZero, inView: recognizer.view)
 
@@ -207,13 +229,17 @@ extension ChatPrivateController {
     }
 
     func newMessagesViewPressed() {
+        guard let tableView = tableView else {
+            return
+        }
+
         tableView.setContentOffset(CGPointZero, animated: true)
 
         // iOS is broken =\
         // See https://stackoverflow.com/a/30804874
         let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.2 * Double(NSEC_PER_SEC)))
         dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
-            self?.tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
+            self?.tableView?.scrollToRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), atScrollPosition: .Top, animated: true)
         }
     }
 
@@ -224,12 +250,87 @@ extension ChatPrivateController {
     func videoCallButtonPressed() {
         delegate?.chatPrivateControllerCallToChat(self, enableVideo: true)
     }
+
+    func editMessagesDeleteButtonPressed(barButtonItem: UIBarButtonItem) {
+        guard let selectedRows = tableView?.indexPathsForSelectedRows else {
+            return
+        }
+
+        showMessageDeletionConfirmation(messagesCount: selectedRows.count,
+                                        showFromItem: barButtonItem,
+                                        deleteClosure: { [unowned self] _ -> Void in
+            self.toggleTableViewEditing(false, animated: true)
+
+            let toRemove = selectedRows.map {
+                return self.messages[$0.row]
+            }
+
+            self.submanagerChats.removeMessages(toRemove)
+        })
+    }
+
+    func deleteAllMessagesButtonPressed(barButtonItem: UIBarButtonItem) {
+        toggleTableViewEditing(false, animated: true)
+
+        showMessageDeletionConfirmation(messagesCount: messages.count,
+                                        showFromItem: barButtonItem,
+                                        deleteClosure: { [unowned self] _ -> Void in
+            self.submanagerChats.removeAllMessagesInChat(self.chat, removeChat: false)
+        })
+    }
+
+    func cancelEditingButtonPressed() {
+        toggleTableViewEditing(false, animated: true)
+    }
 }
 
 // MARK: Notifications
 extension ChatPrivateController {
     func applicationDidBecomeActive() {
-        self.updateLastReadDate()
+        updateLastReadDate()
+    }
+
+    func willShowMenuNotification(notification: NSNotification) {
+        guard let indexPath = selectedMenuIndexPath else {
+            return
+        }
+        guard let cell = tableView?.cellForRowAtIndexPath(indexPath) else {
+            return
+        }
+        guard let editable = cell as? ChatEditable else {
+            return
+        }
+        guard let menu = notification.object as? UIMenuController else {
+            return
+        }
+
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIMenuControllerWillShowMenuNotification, object: nil)
+
+        menu.setMenuVisible(false, animated: false)
+
+        let rect = cell.convertRect(editable.menuTargetRect(), toView: view)
+
+        menu.setTargetRect(rect, inView: view)
+        menu.setMenuVisible(true, animated: true)
+
+        NSNotificationCenter.defaultCenter().addObserver(
+                self,
+                selector: #selector(ChatPrivateController.willShowMenuNotification(_:)),
+                name: UIMenuControllerWillShowMenuNotification,
+                object: nil)
+    }
+
+    func willHideMenuNotification() {
+        guard let indexPath = selectedMenuIndexPath else {
+            return
+        }
+        selectedMenuIndexPath = nil
+
+        guard let editable = tableView?.cellForRowAtIndexPath(indexPath) as? ChatEditable else {
+            return
+        }
+
+        editable.willHideMenu()
     }
 }
 
@@ -243,7 +344,7 @@ extension ChatPrivateController: UITableViewDataSource {
 
         if message.isOutgoing() {
             if let messageText = message.messageText {
-                let outgoingModel = ChatOutgoingTextCellModel()
+                let outgoingModel = ChatBaseTextCellModel()
                 outgoingModel.message = messageText.text ?? ""
                 model = outgoingModel
 
@@ -263,7 +364,7 @@ extension ChatPrivateController: UITableViewDataSource {
         }
         else {
             if let messageText = message.messageText {
-                let incomingModel = ChatIncomingTextCellModel()
+                let incomingModel = ChatBaseTextCellModel()
                 incomingModel.message = messageText.text ?? ""
                 model = incomingModel
 
@@ -284,6 +385,7 @@ extension ChatPrivateController: UITableViewDataSource {
 
         model.dateString = timeFormatter.stringFromDate(message.date())
 
+        cell.delegate = self
         cell.setupWithTheme(theme, model: model)
         cell.transform = tableView.transform;
 
@@ -303,10 +405,43 @@ extension ChatPrivateController: UITableViewDelegate {
 
         maybeLoadImageForCellAtPath(cell, indexPath: indexPath)
     }
+
+    func tableView(tableView: UITableView, shouldShowMenuForRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        guard !tableView.editing else {
+            return false
+        }
+        guard let editable = tableView.cellForRowAtIndexPath(indexPath) as? ChatEditable else {
+            return false
+        }
+
+        if !editable.shouldShowMenu() {
+            return false
+        }
+
+        selectedMenuIndexPath = indexPath
+        editable.willShowMenu()
+
+        return true
+    }
+
+    func tableView(tableView: UITableView, canPerformAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
+        guard let cell = tableView.cellForRowAtIndexPath(indexPath) as? ChatMovableDateCell else {
+            return false
+        }
+
+        return cell.isMenuActionSupportedByCell(action)
+    }
+
+    func tableView(tableView: UITableView, performAction action: Selector, forRowAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
+        // Dummy method to make tableView:shouldShowMenuForRowAtIndexPath: work.
+    }
 }
 
 extension ChatPrivateController: UIScrollViewDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
+        guard let tableView = tableView else {
+            return
+        }
         guard scrollView === tableView else {
             return
         }
@@ -324,6 +459,59 @@ extension ChatPrivateController: UIScrollViewDelegate {
                 tableView.reloadData()
             }
         }
+    }
+}
+
+extension ChatPrivateController: ChatMovableDateCellDelegate {
+    func chatMovableDateCellCopyPressed(cell: ChatMovableDateCell) {
+        guard let indexPath = tableView?.indexPathForCell(cell) else {
+            return
+        }
+
+        let message = messages[indexPath.row]
+
+        if let messageText = message.messageText {
+            UIPasteboard.generalPasteboard().string = messageText.text
+        }
+        else if let _ = message.messageCall {
+            fatalError("Message call cannot be copied")
+        }
+        else if let messageFile = message.messageFile {
+            guard UTTypeConformsTo(messageFile.fileUTI ?? "", kUTTypeImage) else {
+                fatalError("Cannot copy non-image file")
+            }
+            guard let file = messageFile.filePath() else {
+                assertionFailure("Tried to copy non-existing file")
+                return
+            }
+            guard let image = UIImage(contentsOfFile: file) else {
+                assertionFailure("Cannot create image from file")
+                return
+            }
+
+            UIPasteboard.generalPasteboard().image = image
+        }
+    }
+
+    func chatMovableDateCellDeletePressed(cell: ChatMovableDateCell) {
+        guard let indexPath = tableView?.indexPathForCell(cell) else {
+            return
+        }
+
+        let message = messages[indexPath.row]
+
+        submanagerChats.removeMessages([message])
+    }
+
+    func chatMovableDateCellMorePressed(cell: ChatMovableDateCell) {
+        toggleTableViewEditing(true, animated: true)
+
+        // TODO select row
+        // guard let indexPath = tableView?.indexPathForCell(cell) else {
+        //     return
+        // }
+
+        // tableView?.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .None)
     }
 }
 
@@ -420,20 +608,13 @@ private extension ChatPrivateController {
         titleView = ChatPrivateTitleView(theme: theme)
         navigationItem.titleView = titleView
 
-        let audioImage = UIImage(named: "start-call-medium")!
-        let videoImage = UIImage(named: "video-call-medium")!
-
-        audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: #selector(ChatPrivateController.audioCallButtonPressed))
-        videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: #selector(ChatPrivateController.videoCallButtonPressed))
-
-        navigationItem.rightBarButtonItems = [
-            audioButton,
-            videoButton,
-        ]
+        // create correct navigation buttons
+        toggleTableViewEditing(false, animated: false)
     }
 
     func createTableView() {
-        tableView = UITableView()
+        let tableView = UITableView()
+        self.tableView = tableView
         tableView.dataSource = self
         tableView.delegate = self
         tableView.transform = CGAffineTransformMake(1, 0, 0, -1, 0, 0)
@@ -441,6 +622,7 @@ private extension ChatPrivateController {
         tableView.allowsSelection = false
         tableView.estimatedRowHeight = 44.0
         tableView.backgroundColor = theme.colorForType(.NormalBackground)
+        tableView.allowsMultipleSelectionDuringEditing = true
         tableView.separatorStyle = .None
 
         view.addSubview(tableView)
@@ -453,8 +635,8 @@ private extension ChatPrivateController {
         tableView.registerClass(ChatIncomingFileCell.self, forCellReuseIdentifier: ChatIncomingFileCell.staticReuseIdentifier)
         tableView.registerClass(ChatOutgoingFileCell.self, forCellReuseIdentifier: ChatOutgoingFileCell.staticReuseIdentifier)
 
-        let tapGR = UITapGestureRecognizer(target: self, action: #selector(ChatPrivateController.tapOnTableView))
-        tableView.addGestureRecognizer(tapGR)
+        tableViewTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ChatPrivateController.tapOnTableView))
+        tableView.addGestureRecognizer(tableViewTapGestureRecognizer)
 
         let panGR = UIPanGestureRecognizer(target: self, action: #selector(ChatPrivateController.panOnTableView(_:)))
         panGR.delegate = self
@@ -499,37 +681,54 @@ private extension ChatPrivateController {
         view.addSubview(chatInputView)
     }
 
+    func createEditMessageToolbar() {
+        editMessagesToolbar = UIToolbar()
+        editMessagesToolbar.hidden = true
+        editMessagesToolbar.tintColor = theme.colorForType(.LinkText)
+        editMessagesToolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .Trash, target: self, action: #selector(ChatPrivateController.editMessagesDeleteButtonPressed(_:)))
+        ]
+        view.addSubview(editMessagesToolbar)
+    }
+
     func installConstraints() {
-        tableView.snp_makeConstraints {
+        tableView!.snp_makeConstraints {
             $0.top.leading.trailing.equalTo(view)
         }
 
         newMessagesView.snp_makeConstraints {
-            $0.centerX.equalTo(tableView)
+            $0.centerX.equalTo(tableView!)
             newMessageViewTopConstraint = $0.top.equalTo(chatInputView.snp_top).constraint
         }
 
         chatInputView.snp_makeConstraints {
             $0.leading.trailing.equalTo(view)
-            $0.top.equalTo(tableView.snp_bottom)
+            $0.top.equalTo(tableView!.snp_bottom)
             $0.top.greaterThanOrEqualTo(view).offset(Constants.InputViewTopOffset)
             chatInputViewBottomConstraint = $0.bottom.equalTo(view).constraint
+        }
+
+        editMessagesToolbar.snp_makeConstraints {
+            $0.edges.equalTo(chatInputView)
         }
     }
 
     func addMessagesNotification() {
         self.messagesToken = messages.addNotificationBlock { [unowned self] change in
+            guard let tableView = self.tableView else {
+                return
+            }
             switch change {
                 case .Initial:
                     break
                 case .Update(_, let deletions, let insertions, let modifications):
-                    self.visibleMessages = self.visibleMessages + insertions.count - deletions.count
-
-                    self.tableView.beginUpdates()
+                    tableView.beginUpdates()
                     self.updateTableViewWithDeletions(deletions)
                     self.updateTableViewWithInsertions(insertions)
                     self.updateTableViewWithModifications(modifications)
-                    self.tableView.endUpdates()
+
+                    self.visibleMessages = self.visibleMessages + insertions.count - deletions.count
+                    tableView.endUpdates()
 
                     if insertions.contains(0) {
                         self.handleNewMessage()
@@ -541,6 +740,10 @@ private extension ChatPrivateController {
     }
 
     func updateTableViewWithDeletions(deletions: [Int]) {
+        guard let tableView = tableView else {
+            return
+        }
+
         for index in deletions {
             if index >= visibleMessages {
                 continue
@@ -551,6 +754,10 @@ private extension ChatPrivateController {
     }
 
     func updateTableViewWithInsertions(insertions: [Int]) {
+        guard let tableView = tableView else {
+            return
+        }
+
         for index in insertions {
             if index >= visibleMessages {
                 continue
@@ -561,6 +768,10 @@ private extension ChatPrivateController {
     }
 
     func updateTableViewWithModifications(modifications: [Int]) {
+        guard let tableView = tableView else {
+            return
+        }
+
         for index in modifications {
             if index >= visibleMessages {
                 continue
@@ -617,6 +828,9 @@ private extension ChatPrivateController {
             updateLastReadDate()
         }
 
+        guard let tableView = tableView else {
+            return
+        }
         guard let visible = tableView.indexPathsForVisibleRows else {
             return
         }
@@ -663,10 +877,10 @@ private extension ChatPrivateController {
         let cell: ChatGenericFileCell
 
         if incoming {
-            cell = tableView.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
+            cell = tableView!.dequeueReusableCellWithIdentifier(ChatIncomingFileCell.staticReuseIdentifier) as! ChatIncomingFileCell
         }
         else {
-            cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingFileCell.staticReuseIdentifier) as! ChatOutgoingFileCell
+            cell = tableView!.dequeueReusableCellWithIdentifier(ChatOutgoingFileCell.staticReuseIdentifier) as! ChatOutgoingFileCell
         }
         let model = ChatIncomingFileCellModel()
 
@@ -713,6 +927,12 @@ private extension ChatPrivateController {
             }
             catch let error as NSError {
                 handleErrorWithType(.CancelFileTransfer, error: error)
+            }
+        }
+
+        model.retryHandle = { [weak self] in
+            self?.submanagerFiles.retrySendingFile(message) { error in
+                handleErrorWithType(.SendFileToFriend, error: error)
             }
         }
 
@@ -789,7 +1009,7 @@ private extension ChatPrivateController {
             self?.imageCache.setObject(image, forKey: fromFile)
 
             dispatch_async(dispatch_get_main_queue()) {
-                let optionalCell = self?.tableView.cellForRowAtIndexPath(indexPath)
+                let optionalCell = self?.tableView?.cellForRowAtIndexPath(indexPath)
                 guard let cell = (optionalCell as? ChatIncomingFileCell) ?? (optionalCell as? ChatOutgoingFileCell) else {
                     return
                 }
@@ -822,5 +1042,59 @@ private extension ChatPrivateController {
         }
 
         return nil
+    }
+
+    func toggleTableViewEditing(editing: Bool, animated: Bool) {
+        tableView?.setEditing(editing, animated: animated)
+
+        tableViewTapGestureRecognizer.enabled = !editing
+        editMessagesToolbar.hidden = !editing
+
+        if editing {
+            chatInputView.resignFirstResponder()
+
+            navigationItem.leftBarButtonItems = [UIBarButtonItem(
+                title: String(localized: "delete_all_messages"),
+                style: .Plain,
+                target: self,
+                action: #selector(ChatPrivateController.deleteAllMessagesButtonPressed(_:)))]
+
+            navigationItem.rightBarButtonItems = [UIBarButtonItem(
+                    barButtonSystemItem: .Cancel,
+                    target: self,
+                    action: #selector(ChatPrivateController.cancelEditingButtonPressed))]
+        }
+        else {
+            let audioImage = UIImage(named: "start-call-medium")!
+            let videoImage = UIImage(named: "video-call-medium")!
+
+            audioButton = UIBarButtonItem(image: audioImage, style: .Plain, target: self, action: #selector(ChatPrivateController.audioCallButtonPressed))
+            videoButton = UIBarButtonItem(image: videoImage, style: .Plain, target: self, action: #selector(ChatPrivateController.videoCallButtonPressed))
+
+            navigationItem.leftBarButtonItems = nil
+            navigationItem.rightBarButtonItems = [
+                audioButton,
+                videoButton,
+            ]
+        }
+    }
+
+    func showMessageDeletionConfirmation(messagesCount messagesCount: Int,
+                                         showFromItem barButtonItem: UIBarButtonItem,
+                                         deleteClosure: Void -> Void) {
+        let deleteButtonText = messagesCount > 1 ?
+            String(localized: "delete_multiple_messages") + " (\(messagesCount))" :
+            String(localized: "delete_single_message")
+
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        alert.popoverPresentationController?.barButtonItem = barButtonItem
+
+        alert.addAction(UIAlertAction(title: deleteButtonText, style: .Destructive) { _ -> Void in
+            deleteClosure()
+        })
+
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+
+        presentViewController(alert, animated: true, completion: nil)
     }
 }

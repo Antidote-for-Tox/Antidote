@@ -52,5 +52,12 @@ extension UIColor {
 
         return String(format: "%02x%02x%02x", Int(255 * red), Int(255 * green), Int(255 * blue))
     }
+
+    func darkerColor() -> UIColor {
+        let (red, green, blue, alpha) = components()
+        let delta: CGFloat = 0.1
+
+        return UIColor(red: max(red - delta, 0.0), green: max(green - delta, 0.0), blue: max(blue - delta, 0.0), alpha: alpha)
+    }
 }
 

@@ -107,6 +107,10 @@ class RunningCoordinator: NSObject {
 
     func applicationWillTerminate() {
         toxManager = nil
+
+        // Giving tox some time to close all connections.
+        let until = NSDate(timeIntervalSinceNow:1.0)
+        NSRunLoop.currentRunLoop().runUntilDate(until)
     }
 }
 
@@ -171,7 +175,6 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         }
 
         let isToxFile = openURL.url.isToxURL()
-        let chatController = activeChatController()
 
         let style: UIAlertControllerStyle
 
@@ -193,13 +196,6 @@ extension RunningCoordinator: TopCoordinatorProtocol {
             })
         }
 
-        if let chatController = chatController {
-            alert.addAction(UIAlertAction(title: String(localized: "file_send_to_active_chat"), style: .Default) { [unowned self] _ -> Void in
-                self.sendFile(filePath, toChat: chatController.chat)
-                resultBlock(.DidHandle)
-            })
-        }
-
         alert.addAction(UIAlertAction(title: String(localized: "file_send_to_contact"), style: .Default) { [unowned self] _ -> Void in
             self.sendFileToChats(filePath, fileName: fileName)
             resultBlock(.DidHandle)
@@ -207,6 +203,7 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
             resultBlock(.DidHandle)
+            _ = try? NSFileManager.defaultManager().removeItemAtPath(filePath)
         })
 
         switch InterfaceIdiom.current() {
@@ -395,6 +392,11 @@ extension RunningCoordinator: FriendSelectControllerDelegate {
 
     func friendSelectControllerCancel(controller: FriendSelectController) {
         rootViewController().dismissViewControllerAnimated(true, completion: nil)
+
+        guard let filePath = controller.userInfo as? String else {
+            return
+        }
+        _ = try? NSFileManager.defaultManager().removeItemAtPath(filePath)
     }
 }
 
@@ -631,10 +633,8 @@ private extension RunningCoordinator {
     func sendFile(filePath: String, toChat chat: OCTChat) {
         showChat(chat)
 
-        toxManager.files.sendFile(filePath, overrideFileName: nil, toChat: chat) { error in
-            handleErrorWithType(.SendFileToFriend, error: error) { [weak self] in
-                self?.sendFile(filePath, toChat: chat)
-            }
+        toxManager.files.sendFileAtPath(filePath, moveToUploads: true, toChat: chat) { error in
+            handleErrorWithType(.SendFileToFriend, error: error)
         }
     }
 }

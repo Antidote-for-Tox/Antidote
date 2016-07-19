@@ -136,6 +136,8 @@
 "chat_call_message" = "Call, ";
 /* Chat call information */
 "chat_missed_call_message" = "Missed call";
+/* Item present in the menu on long press on message */
+"chat_more_menu_item" = "More";
 
 /* Status message */
 "status_offline" = "Offline";
@@ -221,8 +223,6 @@
 "change_avatar_error_convert_image" = "Cannot convert image";
 
 /* Alert text when sending file to contacts */
-"file_send_to_active_chat" = "Send to active chat";
-/* Alert text when sending file to contacts */
 "file_send_to_contact" = "Send to contact";
 
 /* Profile menu item */
@@ -256,6 +256,12 @@
 "delete_contact_title" = "Delete this contact?\nYour chat history will be lost.";
 /* Deleting contat request confirmation */
 "delete_contact_request_title" = "Delete this contact request?";
+/* Deleting single message in chat */
+"delete_single_message" = "Delete Message";
+/* Deleting multiple messages in chat. */
+"delete_multiple_messages" = "Delete Messages";
+/* Deleting all messages in chat. */
+"delete_all_messages" = "Delete All";
 /* Delete button */
 "alert_delete" = "Delete";
 /* Delete button */

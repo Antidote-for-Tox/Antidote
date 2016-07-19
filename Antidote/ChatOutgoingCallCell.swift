@@ -67,3 +67,14 @@ class ChatOutgoingCallCell: ChatMovableDateCell {
         }
     }
 }
+
+// ChatEditable
+extension ChatOutgoingCallCell {
+    override func shouldShowMenu() -> Bool {
+        return true
+    }
+
+    override func menuTargetRect() -> CGRect {
+        return label.frame
+    }
+}

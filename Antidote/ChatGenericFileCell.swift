@@ -12,6 +12,7 @@ import SnapKit
 class ChatGenericFileCell: ChatMovableDateCell {
     var loadingView: LoadingImageView!
     var cancelButton: UIButton!
+    var retryButton: UIButton!
 
     var progressObject: ChatProgressProtocol? {
         didSet {
@@ -30,6 +31,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
     var startLoadingHandle: (Void -> Void)?
     var cancelHandle: (Void -> Void)?
+    var retryHandle: (Void -> Void)?
     var pauseOrResumeHandle: (Void -> Void)?
     var openHandle: (Void -> Void)?
 
@@ -38,6 +40,8 @@ class ChatGenericFileCell: ChatMovableDateCell {
      */
     func setButtonImage(image: UIImage) {
         let square: UIImage
+
+        canBeCopied = true
 
         if image.size.width == image.size.height {
             square = image
@@ -53,7 +57,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
         loadingView.imageButton.setBackgroundImage(square, forState: .Normal)
 
-        if state == .Done {
+        if state == .WaitingConfirmation || state == .Done {
             loadingView.centerImageView.image = nil
         }
     }
@@ -69,16 +73,19 @@ class ChatGenericFileCell: ChatMovableDateCell {
         state = fileModel.state
         startLoadingHandle = fileModel.startLoadingHandle
         cancelHandle = fileModel.cancelHandle
+        retryHandle = fileModel.retryHandle
         pauseOrResumeHandle = fileModel.pauseOrResumeHandle
         openHandle = fileModel.openHandle
 
+        canBeCopied = false
+
         switch state {
-            case .WaitingConfirmation:
-                loadingView.centerImageView.image = nil
             case .Loading:
                 loadingView.centerImageView.image = UIImage.templateNamed("chat-file-pause-big")
             case .Paused:
                 loadingView.centerImageView.image = UIImage.templateNamed("chat-file-play-big")
+            case .WaitingConfirmation:
+                fallthrough
             case .Cancelled:
                 fallthrough
             case .Done:
@@ -108,6 +115,7 @@ class ChatGenericFileCell: ChatMovableDateCell {
         loadingView.bottomLabel.textColor = theme.colorForType(.FileImageCancelledText)
 
         cancelButton.tintColor = theme.colorForType(.FileImageCancelButtonTint)
+        retryButton.tintColor = theme.colorForType(.FileImageCancelButtonTint)
     }
 
     override func createViews() {
@@ -121,6 +129,20 @@ class ChatGenericFileCell: ChatMovableDateCell {
         cancelButton = UIButton()
         cancelButton.setImage(cancelImage, forState: .Normal)
         cancelButton.addTarget(self, action: #selector(ChatGenericFileCell.cancelButtonPressed), forControlEvents: .TouchUpInside)
+
+        let retryImage = UIImage.templateNamed("chat-file-retry")
+
+        retryButton = UIButton()
+        retryButton.setImage(retryImage, forState: .Normal)
+        retryButton.addTarget(self, action: #selector(ChatGenericFileCell.retryButtonPressed), forControlEvents: .TouchUpInside)
+    }
+
+    override func setEditing(editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        loadingView.userInteractionEnabled = !editing
+        cancelButton.userInteractionEnabled = !editing
+        retryButton.userInteractionEnabled = !editing
     }
 
     func updateProgress(progress: CGFloat) {
@@ -137,9 +159,24 @@ class ChatGenericFileCell: ChatMovableDateCell {
         cancelHandle?()
     }
 
+    func retryButtonPressed() {
+        retryHandle?()
+    }
+
     /// Override in subclass
     func updateViewsWithState(state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {}
 
     /// Override in subclass
     func loadingViewPressed() {}
+}
+
+// ChatEditable
+extension ChatGenericFileCell {
+    override func shouldShowMenu() -> Bool {
+        return true
+    }
+
+    override func menuTargetRect() -> CGRect {
+        return loadingView.frame
+    }
 }

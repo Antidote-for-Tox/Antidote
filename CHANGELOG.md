@@ -3,7 +3,18 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Retry button for file transfers.
+- Message removal in chat.
+
+### Changed
 - Migration to new Realm, app speed improvements.
+- Improving file sending UX [#193](https://github.com/Antidote-for-Tox/Antidote/issues/193).
+- Improved file transfer leftovers cleanup.
+
+### Fixed
+- User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
+- Crash when sending files from other apps [#193](https://github.com/Antidote-for-Tox/Antidote/issues/193).
 
 ## [0.10.3] - 2016-04-12
 ### Added
