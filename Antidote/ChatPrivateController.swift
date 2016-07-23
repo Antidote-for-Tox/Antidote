@@ -1073,8 +1073,8 @@ private extension ChatPrivateController {
 
             navigationItem.leftBarButtonItems = nil
             navigationItem.rightBarButtonItems = [
-                audioButton,
                 videoButton,
+                audioButton,
             ]
         }
     }
