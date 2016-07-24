@@ -15,6 +15,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 - User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
 - Crash when sending files from other apps [#193](https://github.com/Antidote-for-Tox/Antidote/issues/193).
+- Opening files from other aps on iOS 8 [#198](https://github.com/Antidote-for-Tox/Antidote/issues/198).
+- Flashing screen when rotating device on iOS 8 [#196](https://github.com/Antidote-for-Tox/Antidote/issues/196).
+- Password screen layout in landscape [#187](https://github.com/Antidote-for-Tox/Antidote/issues/187).
+- Error messages sometimes not shown.
 
 ## [0.10.3] - 2016-04-12
 ### Added
