@@ -797,6 +797,9 @@ private extension ChatPrivateController {
     }
 
     func addFriendNotification() {
+        titleView.name = self.friend.nickname
+        titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
         let results = submanagerObjects.friends(predicate: predicate)
 
