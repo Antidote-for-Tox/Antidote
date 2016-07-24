@@ -73,6 +73,12 @@ class FriendListController: UIViewController {
         updateViewsVisibility()
     }
 
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+
+        updateViewsVisibility()
+    }
+
     override func setEditing(editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 

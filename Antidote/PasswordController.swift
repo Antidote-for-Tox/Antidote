@@ -34,8 +34,8 @@ class PasswordController: KeyboardNotificationController {
 
     private weak var toxManager: OCTManager!
 
+    private var scrollView: UIScrollView!
     private var containerView: IncompressibleView!
-    private var containerViewTopConstraint: Constraint!
 
     private var oldPasswordField: ExtendedTextField?
     private var newPasswordField: ExtendedTextField?
@@ -83,17 +83,20 @@ class PasswordController: KeyboardNotificationController {
     }
 
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
-        let underFormHeight = containerView.frame.size.height - CGRectGetMaxY(button.frame)
-
-        let offset = min(0.0, underFormHeight - frame.height)
-
-        containerViewTopConstraint.updateOffset(offset)
-        view.layoutIfNeeded()
+        scrollView.contentInset.bottom = frame.size.height
+        scrollView.scrollIndicatorInsets.bottom = frame.size.height
     }
 
     override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
-        containerViewTopConstraint.updateOffset(0.0)
-        view.layoutIfNeeded()
+        scrollView.contentInset.bottom = 0.0
+        scrollView.scrollIndicatorInsets.bottom = 0.0
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        scrollView.contentSize.width = scrollView.frame.size.width
+        scrollView.contentSize.height = CGRectGetMaxY(containerView.frame)
     }
 }
 
@@ -151,9 +154,12 @@ private extension PasswordController {
     }
 
     func createViews() {
+        scrollView = UIScrollView()
+        view.addSubview(scrollView)
+
         containerView = IncompressibleView()
         containerView.backgroundColor = .clearColor()
-        view.addSubview(containerView)
+        scrollView.addSubview(containerView)
 
         button = RoundedButton(theme: theme, type: .RunningPositive)
         button.setTitle(String(localized: "change_password_done"), forState: .Normal)
@@ -189,13 +195,16 @@ private extension PasswordController {
     }
 
     func installConstraints() {
+        scrollView.snp_makeConstraints {
+            $0.edges.equalTo(view)
+        }
+
         containerView.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
         containerView.snp_makeConstraints {
-            containerViewTopConstraint = $0.top.equalTo(view).constraint
-            $0.centerX.equalTo(view)
+            $0.top.equalTo(scrollView)
+            $0.centerX.equalTo(scrollView)
             $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
-            $0.width.lessThanOrEqualTo(view).offset(-2 * Constants.HorizontalOffset)
-            $0.height.equalTo(view)
+            $0.width.lessThanOrEqualTo(scrollView).offset(-2 * Constants.HorizontalOffset)
         }
 
         var topConstraint = containerView.snp_top
@@ -215,6 +224,7 @@ private extension PasswordController {
         button.snp_makeConstraints {
             $0.top.equalTo(topConstraint).offset(Constants.ButtonVerticalOffset)
             $0.leading.trailing.equalTo(containerView)
+            $0.bottom.equalTo(containerView)
         }
     }
 
