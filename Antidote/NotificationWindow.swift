@@ -33,6 +33,7 @@ class NotificationWindow: UIWindow {
 
         windowLevel = UIWindowLevelStatusBar + 1
         makeKeyAndVisible()
+        backgroundColor = .clearColor()
 
         createRootViewController()
         createConnectingView()
