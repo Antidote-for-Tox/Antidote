@@ -49,6 +49,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return true
     }
+
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        let openURL = OpenURL(url: url, askUser: true)
+        coordinator.handleOpenURL(openURL) {_ in }
+
+        return true
+    }
 }
 
 private extension AppDelegate {
