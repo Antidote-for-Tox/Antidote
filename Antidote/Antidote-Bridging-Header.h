@@ -33,6 +33,7 @@
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 
+#import <LNNotificationsUI/LNNotificationsUI.h>
 #import <SDCAlertView/SDCAlertController.h>
 #import <UITextView+Placeholder/UITextView+Placeholder.h>
 

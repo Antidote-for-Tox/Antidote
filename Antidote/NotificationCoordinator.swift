@@ -46,7 +46,7 @@ class NotificationCoordinator: NSObject {
     private let audioPlayer = AlertAudioPlayer()
 
     private var notificationQueue = [NotificationType]()
-    private var isShowingNotifications = false
+    private var inAppNotificationAppIdsRegistered = [String: Bool]()
     private var bannedChatIdentifiers = Set<String>()
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
@@ -97,6 +97,8 @@ class NotificationCoordinator: NSObject {
                     return true
             }
         }
+        
+        LNNotificationCenter.defaultCenter().clearPendingNotificationsForApplicationIdentifier(chat.uniqueIdentifier);
     }
 
     /**
@@ -121,13 +123,19 @@ class NotificationCoordinator: NSObject {
 
     func showCallNotificationWithCaller(caller: String, userInfo: String) {
         let object = NotificationObject(
-                image: UIImage.emptyImage(),
                 title: caller,
                 body: String(localized: "notification_is_calling"),
                 action: .AnswerIncomingCall(userInfo: userInfo),
                 soundName: "isotoxin_Ringtone.aac")
 
         showLocalNotificationObject(object)
+    }
+    
+    func registerInAppNotificationAppId(appId: String) {
+        if inAppNotificationAppIdsRegistered[appId] == nil {
+            LNNotificationCenter.defaultCenter().registerApplicationWithIdentifier(appId, name: NSBundle.mainBundle().infoDictionary?["CFBundleDisplayName"] as? String, icon: UIImage.init(imageLiteral: "notification-app-icon"), defaultSettings: LNNotificationAppSettings.defaultNotificationAppSettings())
+            inAppNotificationAppIdsRegistered[appId] = true
+        }
     }
 }
 
@@ -236,18 +244,11 @@ private extension NotificationCoordinator {
     func enqueueNotification(notification: NotificationType) {
         notificationQueue.append(notification)
 
-        if isShowingNotifications {
-            return
-        }
-        isShowingNotifications = true
-
         showNextNotification()
     }
 
     func showNextNotification() {
         if notificationQueue.isEmpty {
-            notificationWindow.pushNotificationView(nil)
-            isShowingNotifications = false
             return
         }
 
@@ -255,29 +256,38 @@ private extension NotificationCoordinator {
         let object = notificationObjectFromNotification(notification)
 
         if UIApplication.isActive {
-            showInAppNotificationObject(object)
+            switch notification {
+                case .NewMessage(let messageAbstract):
+                    showInAppNotificationObject(object, chatUniqueIdentifier: messageAbstract.chatUniqueIdentifier)
+                default:
+                    showInAppNotificationObject(object, chatUniqueIdentifier: nil)
+            }
         }
         else {
             showLocalNotificationObject(object)
         }
     }
 
-    func showInAppNotificationObject(object: NotificationObject) {
-        let timer = NSTimer.scheduledTimerWithTimeInterval(Constants.NotificationVisibleDuration, block: { [weak self] _ in
-            self?.showNextNotification()
-        }, repeats: false)
-
-        let closeHandler = { [weak self] in
-            timer.invalidate()
-            self?.showNextNotification()
+    func showInAppNotificationObject(object: NotificationObject, chatUniqueIdentifier: String?) {
+        var appId:String
+        
+        if chatUniqueIdentifier != nil {
+            appId = chatUniqueIdentifier!
+        } else {
+            appId = NSBundle.mainBundle().bundleIdentifier!
         }
+        
+        registerInAppNotificationAppId(appId);
 
-        let view = NotificationView(theme: theme, image: object.image, topText: object.title, bottomText: object.body, tapHandler: { [weak self] in
+        let notification = LNNotification.init(message: object.body, title: object.title)
+        notification.soundName = object.soundName;
+        notification.defaultAction = LNNotificationAction.init(title: nil, handler: { [weak self] _ in
             self?.performAction(object.action)
-            closeHandler()
-        }, closeHandler: closeHandler)
-
-        notificationWindow.pushNotificationView(view)
+        })
+        
+        LNNotificationCenter.defaultCenter().presentNotification(notification, forApplicationIdentifier: appId)
+        
+        showNextNotification()
     }
 
     func showLocalNotificationObject(object: NotificationObject) {
@@ -301,28 +311,23 @@ private extension NotificationCoordinator {
     }
 
     func notificationObjectFromRequest(request: OCTFriendRequest) -> NotificationObject {
-        let image = avatarManager.avatarFromString("", diameter: NotificationView.Constants.ImageSize)
         let title = String(localized: "notification_incoming_contact_request")
         let body = request.message ?? ""
         let action = NotificationAction.OpenRequest(requestUniqueIdentifier: request.uniqueIdentifier)
 
-        return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
+        return NotificationObject(title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
     func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
-        let avatarString: String
         let title: String
 
         if let friend = submanagerObjects.objectWithUniqueIdentifier(message.senderUniqueIdentifier, forType: .Friend) as? OCTFriend {
-            avatarString = friend.nickname
             title = friend.nickname
         }
         else {
-            avatarString = "?"
             title = ""
         }
 
-        let image = avatarManager.avatarFromString(avatarString, diameter: NotificationView.Constants.ImageSize)
         var body: String = ""
         let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chatUniqueIdentifier)
 
@@ -347,7 +352,7 @@ private extension NotificationCoordinator {
             }
         }
 
-        return NotificationObject(image: image, title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
+        return NotificationObject(title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
     func performAction(action: NotificationAction) {

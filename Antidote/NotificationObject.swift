@@ -72,9 +72,6 @@ extension NotificationAction {
 }
 
 struct NotificationObject {
-    /// Image to show on the left of the text. Valid only for in-app notifications.
-    let image: UIImage
-
     /// Title of notification
     let title: String
 
