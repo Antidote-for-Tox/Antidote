@@ -46,6 +46,7 @@ class NotificationCoordinator: NSObject {
     private let audioPlayer = AlertAudioPlayer()
 
     private var notificationQueue = [NotificationType]()
+    private var inAppNotificationAppIdsRegistered = [String: Bool]()
     private var bannedChatIdentifiers = Set<String>()
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
@@ -63,7 +64,6 @@ class NotificationCoordinator: NSObject {
 
         addNotificationBlocks()
 
-        LNNotificationCenter.defaultCenter().registerApplicationWithIdentifier(NSBundle.mainBundle().bundleIdentifier, name: NSBundle.mainBundle().infoDictionary?["CFBundleDisplayName"] as? String, icon: UIImage.init(imageLiteral: "notification-app-icon"), defaultSettings: LNNotificationAppSettings.defaultNotificationAppSettings())
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NotificationCoordinator.applicationDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
@@ -97,6 +97,8 @@ class NotificationCoordinator: NSObject {
                     return true
             }
         }
+        
+        LNNotificationCenter.defaultCenter().clearPendingNotificationsForApplicationIdentifier(chat.uniqueIdentifier);
     }
 
     /**
@@ -127,6 +129,13 @@ class NotificationCoordinator: NSObject {
                 soundName: "isotoxin_Ringtone.aac")
 
         showLocalNotificationObject(object)
+    }
+    
+    func registerInAppNotificationAppId(appId: String) {
+        if inAppNotificationAppIdsRegistered[appId] == nil {
+            LNNotificationCenter.defaultCenter().registerApplicationWithIdentifier(appId, name: NSBundle.mainBundle().infoDictionary?["CFBundleDisplayName"] as? String, icon: UIImage.init(imageLiteral: "notification-app-icon"), defaultSettings: LNNotificationAppSettings.defaultNotificationAppSettings())
+            inAppNotificationAppIdsRegistered[appId] = true
+        }
     }
 }
 
@@ -247,21 +256,36 @@ private extension NotificationCoordinator {
         let object = notificationObjectFromNotification(notification)
 
         if UIApplication.isActive {
-            showInAppNotificationObject(object)
+            switch notification {
+                case .NewMessage(let messageAbstract):
+                    showInAppNotificationObject(object, chatUniqueIdentifier: messageAbstract.chatUniqueIdentifier)
+                default:
+                    showInAppNotificationObject(object, chatUniqueIdentifier: nil)
+            }
         }
         else {
             showLocalNotificationObject(object)
         }
     }
 
-    func showInAppNotificationObject(object: NotificationObject) {
+    func showInAppNotificationObject(object: NotificationObject, chatUniqueIdentifier: String?) {
+        var appId:String
+        
+        if chatUniqueIdentifier != nil {
+            appId = chatUniqueIdentifier!
+        } else {
+            appId = NSBundle.mainBundle().bundleIdentifier!
+        }
+        
+        registerInAppNotificationAppId(appId);
+
         let notification = LNNotification.init(message: object.body, title: object.title)
         notification.soundName = object.soundName;
         notification.defaultAction = LNNotificationAction.init(title: nil, handler: { [weak self] _ in
             self?.performAction(object.action)
         })
         
-        LNNotificationCenter.defaultCenter().presentNotification(notification, forApplicationIdentifier: NSBundle.mainBundle().bundleIdentifier)
+        LNNotificationCenter.defaultCenter().presentNotification(notification, forApplicationIdentifier: appId)
         
         showNextNotification()
     }
