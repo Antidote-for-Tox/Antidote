@@ -1,7 +1,0 @@
-comment:
-  layout: header, sunburst
-coverage:
-  ignore:
-  - AntidoteTests/*
-  - Pods/.*
-  - submodules/.*
