@@ -5,7 +5,7 @@ install:
   - ./install.sh
 
 script:
-  - xctool
+  - set -o pipefail && xcodebuild
     -workspace Antidote.xcworkspace
     -scheme Antidote
     -sdk iphonesimulator
@@ -15,6 +15,5 @@ script:
     -destination 'platform=iOS Simulator,name=iPhone 6s'
     clean
     test
+    | xcpretty
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
