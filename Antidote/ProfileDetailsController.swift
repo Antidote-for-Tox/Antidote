@@ -68,7 +68,7 @@ private extension ProfileDetailsController {
     func updateModel() {
         var model = [[StaticTableBaseCellModel]]()
 
-        if let passphrase = toxManager.configuration().passphrase where !passphrase.isEmpty {
+        if OCTManager.isToxSaveEncryptedAtPath(toxManager.configuration().fileStorage.pathForToxSaveFile) {
             model += [
                 [
                     changePasswordModel,

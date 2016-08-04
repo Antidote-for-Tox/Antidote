@@ -107,19 +107,23 @@ extension PasswordController {
     }
 
     func buttonPressed() {
-        guard validateOldPassword() else {
-            return
-        }
-
         guard validateNewPassword() else {
             return
         }
 
+        let oldPassword = oldPasswordField?.text
+        let newPassword: String?
+
         switch type {
             case .SetNewPassword:
-                toxManager.changePassphrase(newPasswordField!.text!)
+                newPassword = newPasswordField!.text!
             case .DeletePassword:
-                toxManager.changePassphrase(nil)
+                newPassword = nil
+        }
+
+        if !toxManager.changeToxPassword(newPassword, oldPassword: oldPassword) {
+            handleErrorWithType(.WrongOldPassword)
+            return
         }
 
         delegate?.passwordControllerDidFinishPresenting(self)
@@ -245,30 +249,7 @@ private extension PasswordController {
     }
 
     func hasOldPassword() -> Bool {
-        if let passphrase = toxManager.configuration().passphrase where !passphrase.isEmpty {
-            return true
-        }
-
-        return false
-    }
-
-    func validateOldPassword() -> Bool {
-        guard let oldPasswordField = oldPasswordField else {
-            // no password field, no need for validation
-            return true
-        }
-
-        guard let text = oldPasswordField.text where !text.isEmpty else {
-            handleErrorWithType(.PasswordIsEmpty)
-            return false
-        }
-
-        guard text == toxManager.configuration().passphrase! else {
-            handleErrorWithType(.WrongOldPassword)
-            return false
-        }
-
-        return true
+        return OCTManager.isToxSaveEncryptedAtPath(toxManager.configuration().fileStorage.pathForToxSaveFile)
     }
 
     func validateNewPassword() -> Bool {

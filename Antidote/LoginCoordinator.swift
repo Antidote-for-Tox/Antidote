@@ -122,7 +122,7 @@ extension LoginCoordinator: LoginFormControllerDelegate {
     func loginFormController(controller: LoginFormController, isProfileEncrypted profile: String) -> Bool {
         let path = ProfileManager().pathForProfileWithName(profile)
 
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: nil)!
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
 
         return OCTManager.isToxSaveEncryptedAtPath(configuration.fileStorage.pathForToxSaveFile)
     }
@@ -228,9 +228,9 @@ private extension LoginCoordinator {
     class func createOCTManagerWithProfile(profile: String, password: String?) throws -> OCTManager {
         let path = ProfileManager().pathForProfileWithName(profile)
 
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path, passphrase: password)!
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
 
-        return try OCTManager(configuration: configuration)
+        return try OCTManager(configuration: configuration, toxPassword: password, databasePassword: "123")
     }
 
     func importToxProfileFromURL(url: NSURL) {
