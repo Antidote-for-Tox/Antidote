@@ -8,3 +8,9 @@ if ! hash $TOOL 2>/dev/null; then
 fi
 
 $TOOL pull -af
+
+rm -rf Antidote/fr-FR.lproj
+mv Antidote/fr_FR.lproj Antidote/fr-FR.lproj
+
+rm -rf Antidote/zh-Hans-CN.lproj
+mv Antidote/zh_CN.lproj Antidote/zh-Hans-CN.lproj

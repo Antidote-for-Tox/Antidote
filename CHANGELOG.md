@@ -6,11 +6,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Retry button for file transfers.
 - Message removal in chat.
+- Breton, Lithuanian, Chinese (China), French, French (France) languages.
 
 ### Changed
 - Migration to new Realm, app speed improvements.
 - Improving file sending UX [#193](https://github.com/Antidote-for-Tox/Antidote/issues/193).
 - Improved cleanup of file transfer leftovers.
+- In-app notifications look like system ones [#205](https://github.com/Antidote-for-Tox/Antidote/issues/205).
 
 ### Fixed
 - User stays online for some time after quitting Antidote [#171](https://github.com/Antidote-for-Tox/Antidote/issues/171).
