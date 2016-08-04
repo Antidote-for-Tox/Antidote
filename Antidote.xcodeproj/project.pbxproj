@@ -596,6 +596,16 @@
 		11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewWithStatus.swift; sourceTree = "<group>"; };
 		11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusView.swift; sourceTree = "<group>"; };
 		11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticBackgroundView.swift; sourceTree = "<group>"; };
+		11D15D741D53CDAA0042FD4A /* br */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = br; path = "br.lproj/import-profile.html"; sourceTree = "<group>"; };
+		11D15D751D53CDAA0042FD4A /* br */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = br; path = br.lproj/Localizable.strings; sourceTree = "<group>"; };
+		11D15D761D53CECC0042FD4A /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = lt; path = "lt.lproj/import-profile.html"; sourceTree = "<group>"; };
+		11D15D771D53CECC0042FD4A /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lt; path = lt.lproj/Localizable.strings; sourceTree = "<group>"; };
+		11D15D781D53D1390042FD4A /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/import-profile.html"; sourceTree = "<group>"; };
+		11D15D791D53D1390042FD4A /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		11D15D7A1D53D26A0042FD4A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = fr; path = "fr.lproj/import-profile.html"; sourceTree = "<group>"; };
+		11D15D7B1D53D26A0042FD4A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		11D15D7C1D53D2820042FD4A /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "fr-FR"; path = "fr-FR.lproj/import-profile.html"; sourceTree = "<group>"; };
+		11D15D7D1D53D2820042FD4A /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPassingGestures.swift; sourceTree = "<group>"; };
 		11E640751C2DBAE200D24C6D /* AddFriendController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendController.swift; sourceTree = "<group>"; };
 		11E640771C2DC15400D24C6D /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
@@ -1171,6 +1181,11 @@
 				pt,
 				es,
 				ar,
+				br,
+				lt,
+				"zh-Hans-CN",
+				fr,
+				"fr-FR",
 			);
 			mainGroup = 1164762619794D3300DB20B8;
 			productRefGroup = 1164763019794D3300DB20B8 /* Products */;
@@ -1749,6 +1764,11 @@
 				11F83B841CADC9790074FE11 /* pt */,
 				11F83B861CADC9820074FE11 /* es */,
 				113F035C1CB458D10009ABE1 /* ar */,
+				11D15D741D53CDAA0042FD4A /* br */,
+				11D15D761D53CECC0042FD4A /* lt */,
+				11D15D781D53D1390042FD4A /* zh-Hans-CN */,
+				11D15D7A1D53D26A0042FD4A /* fr */,
+				11D15D7C1D53D2820042FD4A /* fr-FR */,
 			);
 			name = "import-profile.html";
 			sourceTree = "<group>";
@@ -1764,6 +1784,11 @@
 				11F83B851CADC9790074FE11 /* pt */,
 				11F83B871CADC9820074FE11 /* es */,
 				113F035D1CB458D10009ABE1 /* ar */,
+				11D15D751D53CDAA0042FD4A /* br */,
+				11D15D771D53CECC0042FD4A /* lt */,
+				11D15D791D53D1390042FD4A /* zh-Hans-CN */,
+				11D15D7B1D53D26A0042FD4A /* fr */,
+				11D15D7D1D53D2820042FD4A /* fr-FR */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
