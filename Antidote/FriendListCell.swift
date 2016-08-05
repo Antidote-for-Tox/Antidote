@@ -11,14 +11,15 @@ import SnapKit
 
 class FriendListCell: BaseCell {
     struct Constants {
-        static let AvatarSize = 30.0
+        static let AvatarSize = 40.0
         static let AvatarLeftOffset = 10.0
         static let AvatarRightOffset = 16.0
 
         static let TopLabelHeight = 22.0
-        static let MinimumBottomLabelHeight = 15.0
+        static let MinimumBottomLabelHeight = 22.0
 
         static let VerticalOffset = 3.0
+        static let RightOffset = -7.0
     }
 
     private var avatarView: ImageViewWithStatus!
@@ -94,7 +95,7 @@ class FriendListCell: BaseCell {
         arrowImageView.snp_makeConstraints {
             $0.centerY.equalTo(contentView)
             $0.leading.greaterThanOrEqualTo(topLabel.snp_trailing)
-            $0.trailing.equalTo(contentView)
+            $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
         }
     }
 }
