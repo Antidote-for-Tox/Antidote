@@ -19,7 +19,7 @@ class ChatListCell: BaseCell {
         static let MessageLabelHeight = 22.0
 
         static let NicknameToDateMinOffset = 5.0
-        static let DateToArrowOffset = 5.0
+        static let DateToArrowOffset = -5.0
 
         static let RightOffset = -7.0
         static let VerticalOffset = 3.0
@@ -99,7 +99,7 @@ class ChatListCell: BaseCell {
 
         messageLabel.snp_makeConstraints {
             $0.leading.equalTo(nicknameLabel)
-            $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
+            $0.trailing.equalTo(dateLabel.snp_trailing)
             $0.top.equalTo(nicknameLabel.snp_bottom)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
             $0.height.equalTo(Constants.MessageLabelHeight)
@@ -109,11 +109,12 @@ class ChatListCell: BaseCell {
             $0.leading.greaterThanOrEqualTo(nicknameLabel.snp_trailing).offset(Constants.NicknameToDateMinOffset)
             $0.top.equalTo(nicknameLabel)
             $0.height.equalTo(nicknameLabel)
+            $0.trailing.equalTo(arrowImageView.snp_leading).offset(Constants.DateToArrowOffset)
         }
 
         arrowImageView.snp_makeConstraints {
-            $0.centerY.equalTo(dateLabel)
-            $0.leading.greaterThanOrEqualTo(dateLabel.snp_trailing).offset(Constants.DateToArrowOffset)
+            $0.centerY.equalTo(contentView)
+            $0.leading.greaterThanOrEqualTo(nicknameLabel.snp_trailing)
             $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
         }
     }
