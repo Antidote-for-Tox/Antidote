@@ -17,9 +17,6 @@ class AppCoordinator {
     private var activeCoordinator: TopCoordinatorProtocol!
     private var theme: Theme
 
-    private var cachedLocalNotification: UILocalNotification?
-    private var cachedOpenURL: OpenURL?
-
     init(window: UIWindow) {
         self.window = window
 
@@ -46,47 +43,29 @@ extension AppCoordinator: TopCoordinatorProtocol {
 
         activeCoordinator = coordinator
         activeCoordinator.startWithOptions(nil)
-
-        // Trying to handle cached notification with new coordinator.
-        if let notification = cachedLocalNotification {
-            cachedLocalNotification = nil
-            handleLocalNotification(notification)
-        }
-
-        // Trying to handle cached url with new coordinator.
-        if let url = cachedOpenURL {
-            handleOpenURL(url, resultBlock: {_ in })
-        }
     }
 
-    func handleLocalNotification(notification: UILocalNotification) -> Bool {
-        if !activeCoordinator.handleLocalNotification(notification) {
-            cachedLocalNotification = notification
-        }
-
-        return true
+    func handleLocalNotification(notification: UILocalNotification) {
+        activeCoordinator.handleLocalNotification(notification)
     }
 
-    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
-        cachedOpenURL = nil
-
-        activeCoordinator.handleOpenURL(openURL) { [weak self] result in
-            switch result {
-                case .DidHandle:
-                    // nop
-                    break
-                case .DidNotHandle(let newURL):
-                    self?.cachedOpenURL = newURL
-            }
-        }
-
-        resultBlock(.DidHandle)
+    func handleInboxURL(url: NSURL) {
+        activeCoordinator.handleInboxURL(url)
     }
 }
 
 extension AppCoordinator: RunningCoordinatorDelegate {
-    func runningCoordinatorDidLogout(coordinator: RunningCoordinator) {
-        startWithOptions(nil)
+    func runningCoordinatorDidLogout(coordinator: RunningCoordinator, importToxProfileFromURL: NSURL?) {
+        UserDefaultsManager().isUserLoggedIn = false
+
+        let coordinator = createLoginCoordinator()
+
+        activeCoordinator = coordinator
+        activeCoordinator.startWithOptions(nil)
+
+        if let url = importToxProfileFromURL {
+            coordinator.handleInboxURL(url)
+        }
     }
 
     func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator) {
@@ -99,7 +78,10 @@ extension AppCoordinator: RunningCoordinatorDelegate {
             try profileManager.deleteProfileWithName(name)
 
             userDefaults.lastActiveProfile = nil
-            startWithOptions(nil)
+            userDefaults.isUserLoggedIn = false
+
+            activeCoordinator = createLoginCoordinator()
+            activeCoordinator.startWithOptions(nil)
         }
         catch let error as NSError {
             handleErrorWithType(.DeleteProfile, error: error)
@@ -114,7 +96,8 @@ extension AppCoordinator: RunningCoordinatorDelegate {
 
 extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
-        startWithOptions([ Constants.ToxManagerKey: manager ])
+        activeCoordinator = createRunningCoordinatorWithManager(manager)
+        activeCoordinator.startWithOptions(nil)
     }
 }
 

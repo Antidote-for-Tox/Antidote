@@ -9,7 +9,7 @@
 import UIKit
 
 protocol RunningCoordinatorDelegate: class {
-    func runningCoordinatorDidLogout(coordinator: RunningCoordinator)
+    func runningCoordinatorDidLogout(coordinator: RunningCoordinator, importToxProfileFromURL: NSURL?)
     func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator)
     func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions)
 }
@@ -159,22 +159,20 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         }
     }
 
-    func handleLocalNotification(notification: UILocalNotification) -> Bool {
-        return notificationCoordinator.handleLocalNotification(notification)
+    func handleLocalNotification(notification: UILocalNotification) {
+        notificationCoordinator.handleLocalNotification(notification)
     }
 
-    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
-        guard let fileName = openURL.url.lastPathComponent else {
-            resultBlock(.DidHandle)
+    func handleInboxURL(url: NSURL) {
+        guard let fileName = url.lastPathComponent else {
             return
         }
 
-        guard let filePath = openURL.url.path else {
-            resultBlock(.DidHandle)
+        guard let filePath = url.path else {
             return
         }
 
-        let isToxFile = openURL.url.isToxURL()
+        let isToxFile = url.isToxURL()
 
         let style: UIAlertControllerStyle
 
@@ -189,22 +187,15 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
         if isToxFile {
             alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
-                let modifiedURL = OpenURL(url: openURL.url, askUser: false)
-
-                resultBlock(.DidNotHandle(openURL: modifiedURL))
-                self.logout()
+                self.logout(importToxProfileFromURL: url)
             })
         }
 
         alert.addAction(UIAlertAction(title: String(localized: "file_send_to_contact"), style: .Default) { [unowned self] _ -> Void in
             self.sendFileToChats(filePath, fileName: fileName)
-            resultBlock(.DidHandle)
         })
 
-        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
-            resultBlock(.DidHandle)
-            _ = try? NSFileManager.defaultManager().removeItemAtPath(filePath)
-        })
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
 
         switch InterfaceIdiom.current() {
             case .iPhone:
@@ -315,8 +306,6 @@ extension RunningCoordinator: ProfileTabCoordinatorDelegate {
     }
 
     func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator) {
-        UserDefaultsManager().isUserLoggedIn = false
-
         delegate?.runningCoordinatorDeleteProfile(self)
     }
 
@@ -604,10 +593,8 @@ private extension RunningCoordinator {
         return controller
     }
 
-    func logout() {
-        UserDefaultsManager().isUserLoggedIn = false
-
-        delegate?.runningCoordinatorDidLogout(self)
+    func logout(importToxProfileFromURL profileURL: NSURL? = nil) {
+        delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: profileURL)
     }
 
     func rootViewController() -> UIViewController {

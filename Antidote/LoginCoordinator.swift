@@ -62,21 +62,17 @@ extension LoginCoordinator: TopCoordinatorProtocol {
         navigationController.pushViewController(controller, animated: false)
         window.rootViewController = navigationController
     }
+    
+    func handleLocalNotification(notification: UILocalNotification) {
+        // nop
+    }
 
-    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
-        guard openURL.url.isToxURL() else {
-            resultBlock(.DidNotHandle(openURL: openURL))
+    func handleInboxURL(url: NSURL) {
+        guard url.isToxURL() else {
             return
         }
 
-        guard let fileName = openURL.url.lastPathComponent else {
-            resultBlock(.DidNotHandle(openURL: openURL))
-            return
-        }
-
-        if !openURL.askUser {
-            resultBlock(.DidHandle)
-            self.importToxProfileFromURL(openURL.url)
+        guard let fileName = url.lastPathComponent else {
             return
         }
 
@@ -92,13 +88,10 @@ extension LoginCoordinator: TopCoordinatorProtocol {
         let alert = UIAlertController(title: nil, message: fileName, preferredStyle: style)
 
         alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
-            resultBlock(.DidHandle)
-            self.importToxProfileFromURL(openURL.url)
+            self.importToxProfileFromURL(url)
         })
 
-        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel) { _ -> Void in
-            resultBlock(.DidNotHandle(openURL: openURL))
-        })
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
 
         navigationController.presentViewController(alert, animated: true, completion: nil)
     }

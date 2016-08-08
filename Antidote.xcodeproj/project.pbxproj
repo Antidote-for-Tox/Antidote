@@ -223,6 +223,8 @@
 		9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C7475C01BC698110098B1A4 /* Localizable.strings */; };
 		9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
 		9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */; };
+		9CB1F9511D58CA4000105858 /* ActiveSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB1F9501D58CA4000105858 /* ActiveSessionCoordinator.swift */; };
+		9CB1F9521D58CA4000105858 /* ActiveSessionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB1F9501D58CA4000105858 /* ActiveSessionCoordinator.swift */; };
 		9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */; };
 		9CBBC7CD1BDFC6C600099A5E /* ExtendedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */; };
 		9CDC091B1C34081900DC0D63 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */; };
@@ -640,6 +642,7 @@
 		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9C7475C41BC698510098B1A4 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMainController.swift; sourceTree = "<group>"; };
+		9CB1F9501D58CA4000105858 /* ActiveSessionCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSessionCoordinator.swift; sourceTree = "<group>"; };
 		9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountController.swift; sourceTree = "<group>"; };
 		9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtendedTextField.swift; sourceTree = "<group>"; };
 		9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListDataSource.swift; sourceTree = "<group>"; };
@@ -973,10 +976,10 @@
 		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
+				9CB1F9501D58CA4000105858 /* ActiveSessionCoordinator.swift */,
 				11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */,
 				11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */,
 				11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */,
-				11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */,
 				116DCE311CAAF47100B693EC /* TopCoordinatorProtocol.swift */,
 				11FA0EE31BC59A9B00F3DA5B /* Running */,
 			);
@@ -998,6 +1001,7 @@
 		11FA0EE31BC59A9B00F3DA5B /* Running */ = {
 			isa = PBXGroup;
 			children = (
+				11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */,
 				11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */,
 				1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */,
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
@@ -1440,6 +1444,7 @@
 				118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */,
 				11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */,
 				11B2535D1C4BACDB0068F47C /* TabBarController.swift in Sources */,
+				9CB1F9511D58CA4000105858 /* ActiveSessionCoordinator.swift in Sources */,
 				11628E6C1CA57B19008C097E /* ChatOutgoingFileCellModel.swift in Sources */,
 				9CBBC7C11BDFC62700099A5E /* LoginCreateAccountController.swift in Sources */,
 				116DCE3B1CAAF85300B693EC /* NSURLExtension.swift in Sources */,
@@ -1718,6 +1723,7 @@
 				11628E791CA5819B008C097E /* LoadingImageView.swift in Sources */,
 				11B253B81C503FA10068F47C /* NSTimerExtension.swift in Sources */,
 				9CEE6AD01C4E8FDC00A1ECB5 /* AudioPlayer.swift in Sources */,
+				9CB1F9521D58CA4000105858 /* ActiveSessionCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
