@@ -144,6 +144,8 @@
 		1183BCD81CA1FC5B000CD310 /* ChatProgressProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183BCD61CA1FC5B000CD310 /* ChatProgressProtocol.swift */; };
 		1183BCDD1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */; };
 		1183BCDE1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */; };
+		11869B361D5906180090340E /* ToxManagerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11869B351D5906180090340E /* ToxManagerFactory.swift */; };
+		11869B371D5906180090340E /* ToxManagerFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11869B351D5906180090340E /* ToxManagerFactory.swift */; };
 		118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
 		1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
 		1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB411C1E2075006AA9E5 /* QRViewerController.swift */; };
@@ -560,6 +562,7 @@
 		1183BCBF1CA1DB05000CD310 /* ProgressCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressCircleView.swift; sourceTree = "<group>"; };
 		1183BCD61CA1FC5B000CD310 /* ChatProgressProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatProgressProtocol.swift; sourceTree = "<group>"; };
 		1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatProgressBridge.swift; sourceTree = "<group>"; };
+		11869B351D5906180090340E /* ToxManagerFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToxManagerFactory.swift; sourceTree = "<group>"; };
 		118703C61C3942C700DBC29A /* LazyStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyStorage.swift; sourceTree = "<group>"; };
 		1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditController.swift; sourceTree = "<group>"; };
 		1193AB411C1E2075006AA9E5 /* QRViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewerController.swift; sourceTree = "<group>"; };
@@ -878,6 +881,7 @@
 				11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */,
 				11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */,
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
+				11869B351D5906180090340E /* ToxManagerFactory.swift */,
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
 			);
 			name = Classes;
@@ -1001,13 +1005,13 @@
 		11FA0EE31BC59A9B00F3DA5B /* Running */ = {
 			isa = PBXGroup;
 			children = (
-				11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */,
 				11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */,
 				1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */,
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
 				9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */,
 				11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */,
+				11FA0EE61BC59B1400F3DA5B /* RunningCoordinator.swift */,
 				110E49DF1BF925FD00D1FE6F /* RunningNavigationCoordinator.swift */,
 				11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */,
 			);
@@ -1421,6 +1425,7 @@
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				1183BCB51CA1B3AE000CD310 /* ChatIncomingFileCellModel.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
+				11869B361D5906180090340E /* ToxManagerFactory.swift in Sources */,
 				11FC105A1D32EED000CE863E /* ResultsChange.swift in Sources */,
 				114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */,
 				11FC105D1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */,
@@ -1598,6 +1603,7 @@
 				9CEE6AD71C4E8FDC00A1ECB5 /* TabBarAbstractItem.swift in Sources */,
 				9CEE6ABB1C4E8FDC00A1ECB5 /* ChatIncomingTextCell.swift in Sources */,
 				9CEE6AC51C4E8FDC00A1ECB5 /* StaticTableAvatarCell.swift in Sources */,
+				11869B371D5906180090340E /* ToxManagerFactory.swift in Sources */,
 				9CEE6AB81C4E8FDC00A1ECB5 /* AppDelegate.swift in Sources */,
 				9CEE6AE11C4E8FDC00A1ECB5 /* LoginFormController.swift in Sources */,
 				11FC10581D32E54A00CE863E /* Results.swift in Sources */,

@@ -36,20 +36,6 @@ class LoginCoordinator {
             NSForegroundColorAttributeName: theme.colorForType(.LoginButtonText)
         ]
     }
-
-    /**
-     * Tries to login with active profile. Returns nil
-     * - if there is no active profile.
-     * - if profile is encrypted.
-     * - if there was some error during login.
-     */
-    class func loginWithActiveProfile() -> OCTManager? {
-        guard let profile = UserDefaultsManager().lastActiveProfile else {
-            return nil
-        }
-
-        return try? createOCTManagerWithProfile(profile, password: nil)
-    }
 }
 
 // MARK: TopCoordinatorProtocol
@@ -199,31 +185,26 @@ private extension LoginCoordinator {
             configurationClosure: ((manager: OCTManager) -> Void)? = nil,
             errorClosure: (NSError -> Void)? = nil)
     {
-        let manager: OCTManager
-
-        do {
-            manager = try LoginCoordinator.createOCTManagerWithProfile(profile, password: password)
-        }
-        catch let error as NSError {
-            errorClosure?(error)
-            return
-        }
-
-        configurationClosure?(manager: manager)
-
-        let userDefaults = UserDefaultsManager()
-        userDefaults.isUserLoggedIn = true
-        userDefaults.lastActiveProfile = profile
-
-        delegate?.loginCoordinatorDidLogin(self, manager: manager)
-    }
-
-    class func createOCTManagerWithProfile(profile: String, password: String?) throws -> OCTManager {
         let path = ProfileManager().pathForProfileWithName(profile)
-
         let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
 
-        return try OCTManager(configuration: configuration, toxPassword: password, databasePassword: "123")
+        let hud = JGProgressHUD(style: .Dark)
+        hud.showInView(self.navigationController.view)
+
+        ToxManagerFactory.managerWithPassword(password, configuration: configuration, successClosure: { [weak self] manager -> Void in
+            hud.dismiss()
+
+            configurationClosure?(manager: manager)
+
+            let userDefaults = UserDefaultsManager()
+            userDefaults.lastActiveProfile = profile
+
+            self?.delegate?.loginCoordinatorDidLogin(self!, manager: manager)
+
+        }, failureClosure: { error -> Void in
+            hud.dismiss()
+            errorClosure?(error)
+        })
     }
 
     func importToxProfileFromURL(url: NSURL) {

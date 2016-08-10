@@ -8,10 +8,6 @@
 
 import UIKit
 
-private struct Constants {
-    static let ToxManagerKey = "ToxManagerKey"
-}
-
 class AppCoordinator {
     private let window: UIWindow
     private var activeCoordinator: TopCoordinatorProtocol!
@@ -31,17 +27,13 @@ class AppCoordinator {
 // MARK: CoordinatorProtocol
 extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        var coordinator: TopCoordinatorProtocol?
+        // if UserDefaultsManager().isUserLoggedIn {
+        //     activeCoordinator = createActiveSessionCoordinator()
+        // }
+        // else {
+            activeCoordinator = createLoginCoordinator()
+        // }
 
-        if UserDefaultsManager().isUserLoggedIn {
-            coordinator = createActiveSessionCoordinatorWithManager(options?[Constants.ToxManagerKey] as? OCTManager)
-        }
-
-        if coordinator == nil {
-            coordinator = createLoginCoordinator()
-        }
-
-        activeCoordinator = coordinator
         activeCoordinator.startWithOptions(nil)
     }
 
@@ -89,14 +81,16 @@ extension AppCoordinator: ActiveSessionCoordinatorDelegate {
     }
 
     func activeSessionCoordinatorRecreateCoordinatorsStack(coordinator: ActiveSessionCoordinator, options: CoordinatorOptions) {
-        activeCoordinator = createActiveSessionCoordinatorWithManager(nil)
+        activeCoordinator = createActiveSessionCoordinator()
         activeCoordinator.startWithOptions(options)
     }
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
-        activeCoordinator = createActiveSessionCoordinatorWithManager(manager)
+        UserDefaultsManager().isUserLoggedIn = true
+
+        activeCoordinator = createActiveSessionCoordinator(withManager: manager)
         activeCoordinator.startWithOptions(nil)
     }
 }
@@ -111,20 +105,18 @@ private extension AppCoordinator {
         UINavigationBar.appearance().tintColor = linkTextColor
     }
 
-    func createActiveSessionCoordinatorWithManager(manager: OCTManager?) -> ActiveSessionCoordinator? {
-        var manager = manager
+    func createActiveSessionCoordinator(withManager manager: OCTManager? = nil) -> ActiveSessionCoordinator {
+        let coordinator: ActiveSessionCoordinator
 
-        if manager == nil {
-            manager = LoginCoordinator.loginWithActiveProfile()
+        if let manager = manager {
+            coordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: manager)
+        }
+        else {
+            let profile = UserDefaultsManager().lastActiveProfile!
+            coordinator = ActiveSessionCoordinator(theme: theme, window: window, profileName: profile)
         }
 
-        if manager == nil {
-            return nil
-        }
-
-        let coordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: manager!)
         coordinator.delegate = self
-
         return coordinator
     }
 
