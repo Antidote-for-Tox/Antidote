@@ -216,11 +216,11 @@ private extension CallCoordinator {
             switch change {
                 case .Initial:
                     break
-                case .Update(_, let deletions, let insertions, _):
+                case .Update(_, let deletions, _, let modifications):
                     if deletions.count > 0 {
                         self.declineCall(callWasRemoved: true)
                     }
-                    else if insertions.count > 0 {
+                    else if modifications.count > 0 {
                         self.activeCallWasUpdated()
                     }
                 case .Error(let error):
