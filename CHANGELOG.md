@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [0.10.4-2] - 2016-08-04
 ### Fixed
-- Issue with calles not updating when answered.
+- Issue with calls not updating when answered.
 
 ## [0.10.4] - 2016-08-04
 ### Added
