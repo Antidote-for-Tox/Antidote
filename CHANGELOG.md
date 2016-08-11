@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Fixed
+- Issue with calles not updating when answered.
 
 ## [0.10.4] - 2016-08-04
 ### Added
