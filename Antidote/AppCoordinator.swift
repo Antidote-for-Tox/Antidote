@@ -27,7 +27,8 @@ class AppCoordinator {
 // MARK: CoordinatorProtocol
 extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        window.rootViewController = UIViewController()
+        let storyboard = UIStoryboard(name: "LaunchPlaceholderBoard", bundle: NSBundle.mainBundle())
+        window.rootViewController = storyboard.instantiateViewControllerWithIdentifier("LaunchPlaceholderController")
 
         if UserDefaultsManager().isUserLoggedIn {
             activeCoordinator = createRunningCoordinator()
