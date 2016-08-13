@@ -11,7 +11,7 @@ import SnapKit
 
 protocol AuthorizationControllerDelegate: class {
     func authorizationController(controller: AuthorizationController, authorizeWithPassword password: String)
-    func authorizationControllerLogout(controller: AuthorizationController)
+    func authorizationControllerCancel(controller: AuthorizationController)
 }
 
 private struct Constants {
@@ -21,21 +21,25 @@ private struct Constants {
 }
 
 class AuthorizationController: KeyboardNotificationController {
+    enum CancelButtonType {
+        case Cancel
+        case Logout
+    }
+
     weak var delegate: AuthorizationControllerDelegate?
 
     let theme: Theme
-    let profileName: String
 
     private var containerView: IncompressibleView!
-    private var profileNameLabel: UILabel!
     private var passwordField: ExtendedTextField!
-    private var logoutButton: UIButton!
     
-    init(theme: Theme, profileName: String) {
+    init(theme: Theme, cancelButtonType: CancelButtonType) {
         self.theme = theme
-        self.profileName = profileName
 
         super.init()
+
+        edgesForExtendedLayout = .None
+        addNavigationButtons(cancelButtonType: cancelButtonType)
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -59,7 +63,7 @@ class AuthorizationController: KeyboardNotificationController {
 // Actions
 extension AuthorizationController {
     func logoutButtonPressed() {
-        delegate?.authorizationControllerLogout(self)
+        delegate?.authorizationControllerCancel(self)
     }
 }
 
@@ -71,13 +75,25 @@ extension AuthorizationController: ExtendedTextFieldDelegate {
 }
 
 private extension AuthorizationController {
+    func addNavigationButtons(cancelButtonType cancelButtonType: CancelButtonType) {
+        let title: String
+        switch cancelButtonType {
+            case .Cancel:
+                title = String(localized: "alert_cancel")
+            case .Logout:
+                title = String(localized: "logout_button")
+        }
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+                title: title,
+                style: .Done,
+                target: self,
+                action: #selector(AuthorizationController.logoutButtonPressed))
+    }
+
     func createViews() {
         containerView = IncompressibleView()
         view.addSubview(containerView)
-
-        profileNameLabel = UILabel()
-        profileNameLabel.text = profileName
-        containerView.addSubview(profileNameLabel)
 
         passwordField = ExtendedTextField(theme: theme, type: .Normal)
         passwordField.delegate = self
@@ -85,11 +101,6 @@ private extension AuthorizationController {
         passwordField.secureTextEntry = true
         passwordField.returnKeyType = .Done
         containerView.addSubview(passwordField)
-
-        logoutButton = UIButton(type: .System)
-        logoutButton.setTitle(String(localized: "logout_button"), forState: .Normal)
-        logoutButton.addTarget(self, action: #selector(AuthorizationController.logoutButtonPressed), forControlEvents: .TouchUpInside)
-        containerView.addSubview(logoutButton)
     }
     
     func installConstraints() {
@@ -102,19 +113,9 @@ private extension AuthorizationController {
             $0.width.lessThanOrEqualTo(view).offset(-2 * Constants.HorizontalOffset)
         }
 
-        profileNameLabel.snp_makeConstraints {
-            $0.top.equalTo(containerView).offset(Constants.TopOffset)
-            $0.centerX.equalTo(containerView)
-        }
-
         passwordField.snp_makeConstraints {
-            $0.top.equalTo(profileNameLabel.snp_bottom)
+            $0.top.equalTo(containerView)
             $0.leading.trailing.equalTo(containerView)
-        }
-
-        logoutButton.snp_makeConstraints {
-            $0.top.equalTo(passwordField.snp_bottom)
-            $0.centerX.equalTo(containerView)
         }
     }
 }

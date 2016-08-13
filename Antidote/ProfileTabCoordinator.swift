@@ -130,8 +130,38 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
         showChangePasswordController(.DeletePassword)
     }
 
+    func profileDetailsController(controller: ProfileDetailsController, enableAutoLogin: Bool) {
+        if enableAutoLogin {
+            let controller = AuthorizationController(theme: theme, cancelButtonType: .Cancel)
+            controller.title = String(localized: "enter_your_password")
+            controller.delegate = self
+
+            let toPresent = UINavigationController(rootViewController: controller)
+            navigationController.presentViewController(toPresent, animated: true, completion: nil)
+        }
+        else {
+            let keychainManager = KeychainManager()
+            keychainManager.autoLoginForActiveAccount = false
+        }
+    }
+
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
         delegate?.profileTabCoordinatorDelegateDeleteProfile(self)
+    }
+}
+
+extension ProfileTabCoordinator: AuthorizationControllerDelegate {
+    func authorizationController(controller: AuthorizationController, authorizeWithPassword password: String) {
+        // TODO verify the password
+        let keychainManager = KeychainManager()
+        keychainManager.autoLoginForActiveAccount = true
+        keychainManager.toxPasswordForActiveAccount = password
+        
+        navigationController.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    func authorizationControllerCancel(controller: AuthorizationController) {
+        navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 

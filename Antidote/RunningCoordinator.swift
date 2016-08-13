@@ -53,9 +53,7 @@ extension RunningCoordinator: TopCoordinatorProtocol {
             case .ToxManager(let manager):
                 startSessionWithToxManager(manager)
             case .ProfileName(let name):
-                let controller = AuthorizationController(theme: theme, profileName: name)
-                controller.delegate = self
-                window.rootViewController = controller
+                authorizeWithProfileName(name)
         }
     }
 
@@ -84,13 +82,20 @@ extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
 
 extension RunningCoordinator: AuthorizationControllerDelegate {
     func authorizationController(controller: AuthorizationController, authorizeWithPassword password: String) {
-        let path = ProfileManager().pathForProfileWithName(controller.profileName)
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
+        let profileName: String
+
+        switch infoObject {
+            case .ProfileName(let name):
+                profileName = name
+            default:
+                assert(false, "profile name should be set")
+                return
+        }
 
         let hud = JGProgressHUD(style: .Dark)
         hud.showInView(controller.view)
         
-        OCTManager.managerWithConfiguration(configuration, toxPassword: password, databasePassword: password, successBlock: { [unowned self] manager -> Void in
+        createToxManagerWithProfileName(profileName, password: password, successBlock: { [unowned self] manager -> Void in
             hud.dismiss()
             self.startSessionWithToxManager(manager)
 
@@ -100,7 +105,7 @@ extension RunningCoordinator: AuthorizationControllerDelegate {
         })
     }
 
-    func authorizationControllerLogout(controller: AuthorizationController) {
+    func authorizationControllerCancel(controller: AuthorizationController) {
         delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: nil)
     }
 }
@@ -110,5 +115,54 @@ private extension RunningCoordinator {
         activeSessionCoordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: manager)
         activeSessionCoordinator?.delegate = self
         activeSessionCoordinator?.startWithOptions(options)
+    }
+
+    func authorizeWithProfileName(profileName: String) {
+        let keychainManager = KeychainManager()
+
+        if let autoLogin = keychainManager.autoLoginForActiveAccount,
+           let password = keychainManager.toxPasswordForActiveAccount {
+
+            if autoLogin {
+                tryToAutoLoginWithProfileName(profileName, password: password)
+                return
+            }
+        }
+
+        let controller = AuthorizationController(theme: theme, cancelButtonType: .Logout)
+        controller.title = profileName
+        controller.delegate = self
+        window.rootViewController = UINavigationController(rootViewController: controller)
+    }
+
+    func tryToAutoLoginWithProfileName(profileName: String, password: String) {
+        createToxManagerWithProfileName(profileName, password: password, successBlock: { [unowned self] manager -> Void in
+            self.startSessionWithToxManager(manager)
+
+        }, failureBlock: { [unowned self] error -> Void in
+            log("Cannot autologin with profileName \(profileName), error \(error)")
+
+            // Something went wrong during autologin, seems that saved data is broken.
+            // Removing it and showing user normal login.
+            let keychainManager = KeychainManager()
+            keychainManager.deleteActiveAccountData()
+
+            self.authorizeWithProfileName(profileName)
+        })
+    }
+
+    func createToxManagerWithProfileName(profileName: String,
+                                         password: String,
+                                         successBlock: (OCTManager -> Void),
+                                         failureBlock: (NSError -> Void))
+    {
+        let path = ProfileManager().pathForProfileWithName(profileName)
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
+        
+        OCTManager.managerWithConfiguration(configuration,
+                                            toxPassword: password,
+                                            databasePassword: password,
+                                            successBlock: successBlock,
+                                            failureBlock: failureBlock)
     }
 }

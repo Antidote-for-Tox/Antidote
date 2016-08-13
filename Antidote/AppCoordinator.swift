@@ -27,6 +27,8 @@ class AppCoordinator {
 // MARK: CoordinatorProtocol
 extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
+        window.rootViewController = UIViewController()
+
         if UserDefaultsManager().isUserLoggedIn {
             activeCoordinator = createRunningCoordinator()
         }

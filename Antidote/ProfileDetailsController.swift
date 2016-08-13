@@ -12,6 +12,7 @@ protocol ProfileDetailsControllerDelegate: class {
     func profileDetailsControllerSetPassword(controller: ProfileDetailsController)
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
     func profileDetailsControllerDeletePassword(controller: ProfileDetailsController)
+    func profileDetailsController(controller: ProfileDetailsController, enableAutoLogin: Bool)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
 
@@ -20,9 +21,8 @@ class ProfileDetailsController: StaticTableController {
 
     private weak var toxManager: OCTManager!
 
-    private let setPasswordModel = StaticTableButtonCellModel()
     private let changePasswordModel = StaticTableButtonCellModel()
-    private let deletePasswordModel = StaticTableButtonCellModel()
+    private let rememberPasswordModel = StaticTableSwitchCellModel()
     private let exportProfileModel = StaticTableButtonCellModel()
     private let deleteProfileModel = StaticTableButtonCellModel()
 
@@ -31,7 +31,16 @@ class ProfileDetailsController: StaticTableController {
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager
 
-        super.init(theme: theme, style: .Plain, model: [[]])
+        super.init(theme: theme, style: .Grouped, model: [
+            [
+                changePasswordModel,
+                rememberPasswordModel,
+            ],
+            [
+                exportProfileModel,
+                deleteProfileModel,
+            ],
+        ])
 
         updateModel()
 
@@ -66,41 +75,19 @@ extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
 
 private extension ProfileDetailsController {
     func updateModel() {
-        var model = [[StaticTableBaseCellModel]]()
-
-        if OCTManager.isToxSaveEncryptedAtPath(toxManager.configuration().fileStorage.pathForToxSaveFile) {
-            model += [
-                [
-                    changePasswordModel,
-                    deletePasswordModel,
-                ]
-            ]
-        }
-        else {
-            model += [
-                [
-                    setPasswordModel,
-                ]
-            ]
-        }
-
-        model += [
-            [
-                exportProfileModel,
-                deleteProfileModel,
-            ],
-        ]
-
-        updateModelArray(model)
-
-        setPasswordModel.title = String(localized: "set_password")
-        setPasswordModel.didSelectHandler = setPassword
+        let keychainManager = KeychainManager()
 
         changePasswordModel.title = String(localized: "change_password")
         changePasswordModel.didSelectHandler = changePassword
 
-        deletePasswordModel.title = String(localized: "delete_password")
-        deletePasswordModel.didSelectHandler = deletePassword
+        rememberPasswordModel.title = String(localized: "remember_password")
+        if let remember = keychainManager.autoLoginForActiveAccount {
+            rememberPasswordModel.on = remember
+        }
+        else {
+            rememberPasswordModel.on = false
+        }
+        rememberPasswordModel.valueChangedHandler = rememberPasswordValueChanged
 
         exportProfileModel.title = String(localized: "export_profile")
         exportProfileModel.didSelectHandler = exportProfile
@@ -119,6 +106,10 @@ private extension ProfileDetailsController {
 
     func deletePassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerDeletePassword(self)
+    }
+
+    func rememberPasswordValueChanged(on: Bool) {
+        delegate?.profileDetailsController(self, enableAutoLogin: on)
     }
 
     func exportProfile(_: StaticTableBaseCell) {

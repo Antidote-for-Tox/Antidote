@@ -195,9 +195,11 @@
 "settings_always" = "Always";
 
 /* Profile settings menu */
-"set_password" = "Set Password";
-/* Profile settings menu */
 "change_password" = "Change Password";
+/* Profile settings menu */
+"remember_password" = "Remember Password";
+/* Profile settings menu */
+"enter_your_password" = "Enter your password";
 /* Profile settings menu */
 "delete_password" = "Delete Password";
 /* Profile settings menu */
