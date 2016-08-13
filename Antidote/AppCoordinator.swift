@@ -28,7 +28,7 @@ class AppCoordinator {
 extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
         // if UserDefaultsManager().isUserLoggedIn {
-        //     activeCoordinator = createActiveSessionCoordinator()
+        //     activeCoordinator = createRunningCoordinator()
         // }
         // else {
             activeCoordinator = createLoginCoordinator()
@@ -46,8 +46,8 @@ extension AppCoordinator: TopCoordinatorProtocol {
     }
 }
 
-extension AppCoordinator: ActiveSessionCoordinatorDelegate {
-    func activeSessionCoordinatorDidLogout(coordinator: ActiveSessionCoordinator, importToxProfileFromURL: NSURL?) {
+extension AppCoordinator: RunningCoordinatorDelegate {
+    func runningCoordinatorDidLogout(coordinator: RunningCoordinator, importToxProfileFromURL: NSURL?) {
         UserDefaultsManager().isUserLoggedIn = false
 
         let coordinator = createLoginCoordinator()
@@ -60,7 +60,7 @@ extension AppCoordinator: ActiveSessionCoordinatorDelegate {
         }
     }
 
-    func activeSessionCoordinatorDeleteProfile(coordinator: ActiveSessionCoordinator) {
+    func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator) {
         let userDefaults = UserDefaultsManager()
         let profileManager = ProfileManager()
 
@@ -80,8 +80,8 @@ extension AppCoordinator: ActiveSessionCoordinatorDelegate {
         }
     }
 
-    func activeSessionCoordinatorRecreateCoordinatorsStack(coordinator: ActiveSessionCoordinator, options: CoordinatorOptions) {
-        activeCoordinator = createActiveSessionCoordinator()
+    func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions) {
+        activeCoordinator = createRunningCoordinator()
         activeCoordinator.startWithOptions(options)
     }
 }
@@ -90,7 +90,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
         UserDefaultsManager().isUserLoggedIn = true
 
-        activeCoordinator = createActiveSessionCoordinator(withManager: manager)
+        activeCoordinator = createRunningCoordinator(withManager: manager)
         activeCoordinator.startWithOptions(nil)
     }
 }
@@ -105,15 +105,15 @@ private extension AppCoordinator {
         UINavigationBar.appearance().tintColor = linkTextColor
     }
 
-    func createActiveSessionCoordinator(withManager manager: OCTManager? = nil) -> ActiveSessionCoordinator {
-        let coordinator: ActiveSessionCoordinator
+    func createRunningCoordinator(withManager manager: OCTManager? = nil) -> RunningCoordinator {
+        let coordinator: RunningCoordinator
 
         if let manager = manager {
-            coordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: manager)
+            coordinator = RunningCoordinator(theme: theme, window: window, toxManager: manager)
         }
         else {
             let profile = UserDefaultsManager().lastActiveProfile!
-            coordinator = ActiveSessionCoordinator(theme: theme, window: window, profileName: profile)
+            coordinator = RunningCoordinator(theme: theme, window: window, profileName: profile)
         }
 
         coordinator.delegate = self

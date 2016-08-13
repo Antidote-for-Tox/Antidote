@@ -20,7 +20,7 @@ protocol SettingsTabCoordinatorDelegate: class {
     func settingsTabCoordinatorRecreateCoordinatorsStack(coordinator: SettingsTabCoordinator, options: CoordinatorOptions)
 }
 
-class SettingsTabCoordinator: RunningNavigationCoordinator {
+class SettingsTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: SettingsTabCoordinatorDelegate?
 
     override func startWithOptions(options: CoordinatorOptions?) {

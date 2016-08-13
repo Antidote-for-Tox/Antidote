@@ -14,7 +14,7 @@ protocol ChatsTabCoordinatorDelegate: class {
     func chatsTabCoordinator(coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool)
 }
 
-class ChatsTabCoordinator: RunningNavigationCoordinator {
+class ChatsTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: ChatsTabCoordinatorDelegate?
 
     private weak var submanagerObjects: OCTSubmanagerObjects!

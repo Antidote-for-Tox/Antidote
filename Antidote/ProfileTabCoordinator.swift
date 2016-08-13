@@ -16,7 +16,7 @@ protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateDidChangeUserName(coordinator: ProfileTabCoordinator)
 }
 
-class ProfileTabCoordinator: RunningNavigationCoordinator {
+class ProfileTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: ProfileTabCoordinatorDelegate?
 
     private weak var toxManager: OCTManager!

@@ -1,5 +1,5 @@
 //
-//  RunningNavigationCoordinator.swift
+//  ActiveSessionNavigationCoordinator.swift
 //  Antidote
 //
 //  Created by Dmytro Vorobiov on 15/11/15.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RunningNavigationCoordinator {
+class ActiveSessionNavigationCoordinator {
     let theme: Theme
     let navigationController: UINavigationController
 
