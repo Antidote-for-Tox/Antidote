@@ -26,15 +26,14 @@ class RunningCoordinator {
     private let window: UIWindow
 
     private var infoObject: InfoObject
+    private var options: CoordinatorOptions?
 
-//    private let authenticationCoordinator: AuthenticationCoordinator
     private var activeSessionCoordinator: ActiveSessionCoordinator?
 
     private init(theme: Theme, window: UIWindow, infoObject: InfoObject) {
         self.theme = theme
         self.window = window
         self.infoObject = infoObject
-//        self.authenticationCoordinator = AuthenticationCoordinator()
     }
 
     convenience init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
@@ -43,21 +42,20 @@ class RunningCoordinator {
 
     convenience init(theme: Theme, window: UIWindow, profileName: String) {
         self.init(theme: theme, window: window, infoObject: .ProfileName(name: profileName))
-            // let path = ProfileManager().pathForProfileWithName(profile)
     }
 }
 
 extension RunningCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-//        authenticationCoordinator.startWithOptions(nil)
+        self.options = options
 
         switch infoObject {
             case .ToxManager(let manager):
-                activeSessionCoordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: manager)
-                activeSessionCoordinator?.delegate = self
-                activeSessionCoordinator?.startWithOptions(options)
+                startSessionWithToxManager(manager)
             case .ProfileName(let name):
-                print("profile \(name)")
+                let controller = AuthorizationController(theme: theme, profileName: name)
+                controller.delegate = self
+                window.rootViewController = controller
         }
     }
 
@@ -84,5 +82,33 @@ extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
     }
 }
 
+extension RunningCoordinator: AuthorizationControllerDelegate {
+    func authorizationController(controller: AuthorizationController, authorizeWithPassword password: String) {
+        let path = ProfileManager().pathForProfileWithName(controller.profileName)
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
+
+        let hud = JGProgressHUD(style: .Dark)
+        hud.showInView(controller.view)
+        
+        OCTManager.managerWithConfiguration(configuration, toxPassword: password, databasePassword: password, successBlock: { [unowned self] manager -> Void in
+            hud.dismiss()
+            self.startSessionWithToxManager(manager)
+
+        }, failureBlock: { error -> Void in
+            hud.dismiss()
+            handleErrorWithType(.CreateOCTManager, error: error)
+        })
+    }
+
+    func authorizationControllerLogout(controller: AuthorizationController) {
+        delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: nil)
+    }
+}
+
 private extension RunningCoordinator {
+    func startSessionWithToxManager(manager: OCTManager) {
+        activeSessionCoordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: manager)
+        activeSessionCoordinator?.delegate = self
+        activeSessionCoordinator?.startWithOptions(options)
+    }
 }

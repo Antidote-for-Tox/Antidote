@@ -27,12 +27,12 @@ class AppCoordinator {
 // MARK: CoordinatorProtocol
 extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        // if UserDefaultsManager().isUserLoggedIn {
-        //     activeCoordinator = createRunningCoordinator()
-        // }
-        // else {
+        if UserDefaultsManager().isUserLoggedIn {
+            activeCoordinator = createRunningCoordinator()
+        }
+        else {
             activeCoordinator = createLoginCoordinator()
-        // }
+        }
 
         activeCoordinator.startWithOptions(nil)
     }

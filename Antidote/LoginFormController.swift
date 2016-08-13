@@ -80,12 +80,12 @@ class LoginFormController: LoginLogoController {
 
         let offset = min(0.0, underLoginHeight - frame.height)
 
-        mainContainerViewTopConstraint.updateOffset(offset)
+        mainContainerViewTopConstraint?.updateOffset(offset)
         view.layoutIfNeeded()
     }
 
     override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
-        mainContainerViewTopConstraint.updateOffset(0.0)
+        mainContainerViewTopConstraint?.updateOffset(0.0)
         view.layoutIfNeeded()
     }
 }

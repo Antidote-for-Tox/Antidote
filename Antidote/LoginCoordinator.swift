@@ -191,7 +191,7 @@ private extension LoginCoordinator {
         let hud = JGProgressHUD(style: .Dark)
         hud.showInView(self.navigationController.view)
 
-        ToxManagerFactory.managerWithPassword(password, configuration: configuration, successClosure: { [weak self] manager -> Void in
+        OCTManager.managerWithConfiguration(configuration, toxPassword: password, databasePassword: "123", successBlock: { [weak self] manager -> Void in
             hud.dismiss()
 
             configurationClosure?(manager: manager)
@@ -201,7 +201,7 @@ private extension LoginCoordinator {
 
             self?.delegate?.loginCoordinatorDidLogin(self!, manager: manager)
 
-        }, failureClosure: { error -> Void in
+        }, failureBlock: { error -> Void in
             hud.dismiss()
             errorClosure?(error)
         })
