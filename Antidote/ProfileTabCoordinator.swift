@@ -111,23 +111,23 @@ extension ProfileTabCoordinator: QRViewerControllerDelegate {
     }
 }
 
-extension ProfileTabCoordinator: PasswordControllerDelegate {
-    func passwordControllerDidFinishPresenting(controller: PasswordController) {
+extension ProfileTabCoordinator: ChangePasswordControllerDelegate {
+    func changePasswordControllerDidFinishPresenting(controller: ChangePasswordController) {
         navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
 extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
     func profileDetailsControllerSetPassword(controller: ProfileDetailsController) {
-        showPasswordController(.SetNewPassword)
+        showChangePasswordController(.SetNewPassword)
     }
 
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
-        showPasswordController(.SetNewPassword)
+        showChangePasswordController(.SetNewPassword)
     }
 
     func profileDetailsControllerDeletePassword(controller: ProfileDetailsController) {
-        showPasswordController(.DeletePassword)
+        showChangePasswordController(.DeletePassword)
     }
 
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
@@ -148,8 +148,8 @@ private extension ProfileTabCoordinator {
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func showPasswordController(type: PasswordController.ControllerType) {
-        let controller = PasswordController(theme: theme, type: type, toxManager: toxManager)
+    func showChangePasswordController(type: ChangePasswordController.ControllerType) {
+        let controller = ChangePasswordController(theme: theme, type: type, toxManager: toxManager)
         controller.delegate = self
 
         let toPresent = UINavigationController(rootViewController: controller)
