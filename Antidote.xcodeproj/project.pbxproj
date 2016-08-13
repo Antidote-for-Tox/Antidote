@@ -60,6 +60,9 @@
 		115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */; };
 		1160B6781D5F86CF002DF75B /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B6771D5F86CF002DF75B /* AuthorizationController.swift */; };
 		1160B6791D5F86CF002DF75B /* AuthorizationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B6771D5F86CF002DF75B /* AuthorizationController.swift */; };
+		1160B67E1D5F9993002DF75B /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B67D1D5F9993002DF75B /* KeychainManager.swift */; };
+		1160B67F1D5F9993002DF75B /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B67D1D5F9993002DF75B /* KeychainManager.swift */; };
+		1160B6821D5FC7CC002DF75B /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B6801D5FC7CC002DF75B /* KeychainManagerTests.swift */; };
 		11628E321CA2FBD1008C097E /* FilePreviewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */; };
 		11628E331CA2FBD1008C097E /* FilePreviewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */; };
 		11628E3E1CA30C13008C097E /* QuickLookPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11628E3D1CA30C13008C097E /* QuickLookPreviewController.swift */; };
@@ -502,6 +505,8 @@
 		115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCell.swift; sourceTree = "<group>"; };
 		115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCellModel.swift; sourceTree = "<group>"; };
 		1160B6771D5F86CF002DF75B /* AuthorizationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthorizationController.swift; sourceTree = "<group>"; };
+		1160B67D1D5F9993002DF75B /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		1160B6801D5FC7CC002DF75B /* KeychainManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
 		11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilePreviewControllerDataSource.swift; sourceTree = "<group>"; };
 		11628E3D1CA30C13008C097E /* QuickLookPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuickLookPreviewController.swift; sourceTree = "<group>"; };
 		11628E621CA57B14008C097E /* ChatOutgoingFileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingFileCell.swift; sourceTree = "<group>"; };
@@ -850,10 +855,11 @@
 		1173F0571BC5D94400B88B7B /* AntidoteTests */ = {
 			isa = PBXGroup;
 			children = (
-				113F030D1CAFCCE20009ABE1 /* SnapshotTests */,
 				11F83BD31CAFB0F30074FE11 /* AntidoteTests-Bridging-Header.h */,
 				9CDC09241C34083100DC0D63 /* FriendListDataSourceTest.swift */,
 				1173F05A1BC5D94400B88B7B /* Info.plist */,
+				1160B6801D5FC7CC002DF75B /* KeychainManagerTests.swift */,
+				113F030D1CAFCCE20009ABE1 /* SnapshotTests */,
 				11F83BDA1CAFB2A20074FE11 /* SwiftSupport.swift */,
 				1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */,
 			);
@@ -869,6 +875,7 @@
 				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
+				1160B67D1D5F9993002DF75B /* KeychainManager.swift */,
 				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
 				11FC10561D32E54A00CE863E /* Results.swift */,
@@ -1544,6 +1551,7 @@
 				116DCE321CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */,
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
+				1160B67E1D5F9993002DF75B /* KeychainManager.swift in Sources */,
 				114962921C5E1BE0001E5435 /* ChangePasswordController.swift in Sources */,
 				9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */,
 				112E4EDF1C675C58004312CF /* CallActiveController.swift in Sources */,
@@ -1677,6 +1685,7 @@
 				11B253FF1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */,
 				9CEE6ABE1C4E8FDC00A1ECB5 /* ChatListCellModel.swift in Sources */,
 				9CEE6AEF1C4E8FDC00A1ECB5 /* QRViewerController.swift in Sources */,
+				1160B6821D5FC7CC002DF75B /* KeychainManagerTests.swift in Sources */,
 				9CEE6AC71C4E8FDC00A1ECB5 /* StaticTableBaseCell.swift in Sources */,
 				116634AA1C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */,
 				116634AD1C6F407D0072C980 /* ChatOutgoingCallCell.swift in Sources */,
@@ -1708,6 +1717,7 @@
 				1160B6791D5F86CF002DF75B /* AuthorizationController.swift in Sources */,
 				11770D781CBC1C7A00D34D6E /* UIAlertControllerExtension.swift in Sources */,
 				9CEE6B041C4E8FDC00A1ECB5 /* NSDateFormatterExtension.swift in Sources */,
+				1160B67F1D5F9993002DF75B /* KeychainManager.swift in Sources */,
 				11F276AF1D3EBEF700C613AA /* ChatBaseTextCell.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,
 				116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
