@@ -146,7 +146,6 @@
 		1183BCD81CA1FC5B000CD310 /* ChatProgressProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183BCD61CA1FC5B000CD310 /* ChatProgressProtocol.swift */; };
 		1183BCDD1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */; };
 		1183BCDE1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */; };
-		118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
 		1193AB361C1DEF2E006AA9E5 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
 		1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB411C1E2075006AA9E5 /* QRViewerController.swift */; };
 		1193AB481C1F4164006AA9E5 /* FriendListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB471C1F4164006AA9E5 /* FriendListController.swift */; };
@@ -264,7 +263,6 @@
 		9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
 		9CEE6AD21C4E8FDC00A1ECB5 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
 		9CEE6AD31C4E8FDC00A1ECB5 /* FriendListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */; };
-		9CEE6AD41C4E8FDC00A1ECB5 /* LazyStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 118703C61C3942C700DBC29A /* LazyStorage.swift */; };
 		9CEE6AD61C4E8FDC00A1ECB5 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
 		9CEE6AD71C4E8FDC00A1ECB5 /* TabBarAbstractItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */; };
 		9CEE6AD81C4E8FDC00A1ECB5 /* TabBarBadgeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */; };
@@ -563,7 +561,6 @@
 		1183BCBF1CA1DB05000CD310 /* ProgressCircleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressCircleView.swift; sourceTree = "<group>"; };
 		1183BCD61CA1FC5B000CD310 /* ChatProgressProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatProgressProtocol.swift; sourceTree = "<group>"; };
 		1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatProgressBridge.swift; sourceTree = "<group>"; };
-		118703C61C3942C700DBC29A /* LazyStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LazyStorage.swift; sourceTree = "<group>"; };
 		1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextEditController.swift; sourceTree = "<group>"; };
 		1193AB411C1E2075006AA9E5 /* QRViewerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRViewerController.swift; sourceTree = "<group>"; };
 		1193AB471C1F4164006AA9E5 /* FriendListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendListController.swift; sourceTree = "<group>"; };
@@ -872,7 +869,6 @@
 				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
-				118703C61C3942C700DBC29A /* LazyStorage.swift */,
 				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
 				11FC10561D32E54A00CE863E /* Results.swift */,
@@ -1445,7 +1441,6 @@
 				1183BCAC1CA1B398000CD310 /* ChatIncomingFileCell.swift in Sources */,
 				112E4ED61C668C02004312CF /* CallIncomingController.swift in Sources */,
 				116634E91C7B8D7C0072C980 /* StaticTableInfoCellModel.swift in Sources */,
-				118703C71C3942C700DBC29A /* LazyStorage.swift in Sources */,
 				11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */,
 				11B2535D1C4BACDB0068F47C /* TabBarController.swift in Sources */,
 				9CB1F9511D58CA4000105858 /* RunningCoordinator.swift in Sources */,
@@ -1586,7 +1581,6 @@
 				9CEE6B161C4E8FDC00A1ECB5 /* UserStatusView.swift in Sources */,
 				9CEE6AE21C4E8FDC00A1ECB5 /* LoginLogoController.swift in Sources */,
 				9CEE6B191C4E8FDC00A1ECB5 /* ExtendedTextField.swift in Sources */,
-				9CEE6AD41C4E8FDC00A1ECB5 /* LazyStorage.swift in Sources */,
 				9CEE6ABA1C4E8FDC00A1ECB5 /* BaseCellModel.swift in Sources */,
 				9CEE6B0C1C4E8FDC00A1ECB5 /* HelperFunctions.swift in Sources */,
 				113F03231CAFE5190009ABE1 /* ChatOutgoingTextCellSnapshotTest.swift in Sources */,
