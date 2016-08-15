@@ -68,6 +68,9 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
 extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
     func activeSessionCoordinatorDidLogout(coordinator: ActiveSessionCoordinator, importToxProfileFromURL url: NSURL?) {
+        let keychainManager = KeychainManager()
+        keychainManager.deleteActiveAccountData()
+
         delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: url)
     }
 
