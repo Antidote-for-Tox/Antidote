@@ -22,29 +22,22 @@ protocol ChangePasswordControllerDelegate: class {
 }
 
 class ChangePasswordController: KeyboardNotificationController {
-    enum ControllerType {
-        case SetNewPassword
-        case DeletePassword
-    }
-
     weak var delegate: ChangePasswordControllerDelegate?
 
     private let theme: Theme
-    private let type: ControllerType
 
     private weak var toxManager: OCTManager!
 
     private var scrollView: UIScrollView!
     private var containerView: IncompressibleView!
 
-    private var oldPasswordField: ExtendedTextField?
-    private var newPasswordField: ExtendedTextField?
-    private var repeatPasswordField: ExtendedTextField?
+    private var oldPasswordField: ExtendedTextField!
+    private var newPasswordField: ExtendedTextField!
+    private var repeatPasswordField: ExtendedTextField!
     private var button: RoundedButton!
 
-    init(theme: Theme, type: ControllerType, toxManager: OCTManager) {
+    init(theme: Theme, toxManager: OCTManager) {
         self.theme = theme
-        self.type = type
         self.toxManager = toxManager
 
         super.init()
@@ -52,12 +45,7 @@ class ChangePasswordController: KeyboardNotificationController {
         edgesForExtendedLayout = .None
         addNavigationButtons()
 
-        switch type {
-            case .SetNewPassword:
-                title = String(localized: "change_password")
-            case .DeletePassword:
-                title = String(localized: "delete_password")
-        }
+        title = String(localized: "change_password")
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -71,8 +59,8 @@ class ChangePasswordController: KeyboardNotificationController {
         installConstraints()
     }
 
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
 
         if let old = oldPasswordField {
             old.becomeFirstResponder()
@@ -107,44 +95,50 @@ extension ChangePasswordController {
     }
 
     func buttonPressed() {
-        guard validateNewPassword() else {
+        guard validatePasswordFields() else {
             return
         }
 
-        let oldPassword = oldPasswordField?.text
-        let newPassword: String?
+        let oldPassword = oldPasswordField.text!
+        let newPassword = newPasswordField.text!
 
-        switch type {
-            case .SetNewPassword:
-                newPassword = newPasswordField!.text!
-            case .DeletePassword:
-                newPassword = nil
+        let hud = JGProgressHUD(style: .Dark)
+        hud.showInView(view)
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
+            let result = self.toxManager.changeEncryptPassword(newPassword, oldPassword: oldPassword)
+
+            if result {
+                let keychainManager = KeychainManager()
+                if keychainManager.toxPasswordForActiveAccount != nil {
+                    keychainManager.toxPasswordForActiveAccount = newPassword
+                }
+            }
+
+            dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                hud.dismiss()
+
+                if result {
+                    self.delegate?.changePasswordControllerDidFinishPresenting(self)
+                }
+                else {
+                    handleErrorWithType(.WrongOldPassword)
+                }
+            }
         }
-
-        if !toxManager.changeEncryptPassword(newPassword!, oldPassword: oldPassword!) {
-            handleErrorWithType(.WrongOldPassword)
-            return
-        }
-
-        delegate?.changePasswordControllerDidFinishPresenting(self)
     }
 }
 
 extension ChangePasswordController: ExtendedTextFieldDelegate {
     func loginExtendedTextFieldReturnKeyPressed(field: ExtendedTextField) {
-        switch type {
-            case .SetNewPassword:
-                if field === oldPasswordField {
-                    newPasswordField!.becomeFirstResponder()
-                }
-                else if field === newPasswordField {
-                    repeatPasswordField!.becomeFirstResponder()
-                }
-                else if field === repeatPasswordField {
-                    buttonPressed()
-                }
-            case .DeletePassword:
-                buttonPressed()
+        if field === oldPasswordField {
+            newPasswordField!.becomeFirstResponder()
+        }
+        else if field === newPasswordField {
+            repeatPasswordField!.becomeFirstResponder()
+        }
+        else if field === repeatPasswordField {
+            buttonPressed()
         }
     }
 }
@@ -170,22 +164,13 @@ private extension ChangePasswordController {
         button.addTarget(self, action: #selector(ChangePasswordController.buttonPressed), forControlEvents: .TouchUpInside)
         containerView.addSubview(button)
 
-        switch type {
-            case .SetNewPassword:
-                if hasOldPassword() {
-                    oldPasswordField = createPasswordFieldWithTitle(String(localized: "old_password"))
-                }
-                newPasswordField = createPasswordFieldWithTitle(String(localized: "new_password"))
-                repeatPasswordField = createPasswordFieldWithTitle(String(localized: "repeat_password"))
+        oldPasswordField = createPasswordFieldWithTitle(String(localized: "old_password"))
+        newPasswordField = createPasswordFieldWithTitle(String(localized: "new_password"))
+        repeatPasswordField = createPasswordFieldWithTitle(String(localized: "repeat_password"))
 
-                oldPasswordField?.returnKeyType = .Next
-                newPasswordField?.returnKeyType = .Next
-                repeatPasswordField?.returnKeyType = .Done
-
-            case .DeletePassword:
-                oldPasswordField = createPasswordFieldWithTitle(String(localized: "old_password"))
-                oldPasswordField?.returnKeyType = .Done
-        }
+        oldPasswordField.returnKeyType = .Next
+        newPasswordField.returnKeyType = .Next
+        repeatPasswordField.returnKeyType = .Done
     }
 
     func createPasswordFieldWithTitle(title: String) -> ExtendedTextField {
@@ -252,13 +237,11 @@ private extension ChangePasswordController {
         return OCTManager.isToxSaveEncryptedAtPath(toxManager.configuration().fileStorage.pathForToxSaveFile)
     }
 
-    func validateNewPassword() -> Bool {
-        guard let newPasswordField = newPasswordField,
-              let repeatPasswordField = repeatPasswordField else {
-            // no password fields, no need for validation
-            return true
+    func validatePasswordFields() -> Bool {
+        guard let oldText = oldPasswordField.text where !oldText.isEmpty else {
+            handleErrorWithType(.PasswordIsEmpty)
+            return false
         }
-
         guard let newText = newPasswordField.text where !newText.isEmpty else {
             handleErrorWithType(.PasswordIsEmpty)
             return false

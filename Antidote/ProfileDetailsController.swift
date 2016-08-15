@@ -9,9 +9,7 @@
 import UIKit
 
 protocol ProfileDetailsControllerDelegate: class {
-    func profileDetailsControllerSetPassword(controller: ProfileDetailsController)
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
-    func profileDetailsControllerDeletePassword(controller: ProfileDetailsController)
     func profileDetailsController(controller: ProfileDetailsController, enableAutoLogin: Bool)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
@@ -96,16 +94,8 @@ private extension ProfileDetailsController {
         deleteProfileModel.didSelectHandler = deleteProfile
     }
 
-    func setPassword(_: StaticTableBaseCell) {
-        delegate?.profileDetailsControllerSetPassword(self)
-    }
-
     func changePassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerChangePassword(self)
-    }
-
-    func deletePassword(_: StaticTableBaseCell) {
-        delegate?.profileDetailsControllerDeletePassword(self)
     }
 
     func rememberPasswordValueChanged(on: Bool) {

@@ -118,16 +118,12 @@ extension ProfileTabCoordinator: ChangePasswordControllerDelegate {
 }
 
 extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
-    func profileDetailsControllerSetPassword(controller: ProfileDetailsController) {
-        showChangePasswordController(.SetNewPassword)
-    }
-
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
-        showChangePasswordController(.SetNewPassword)
-    }
+        let controller = ChangePasswordController(theme: theme, toxManager: toxManager)
+        controller.delegate = self
 
-    func profileDetailsControllerDeletePassword(controller: ProfileDetailsController) {
-        showChangePasswordController(.DeletePassword)
+        let toPresent = UINavigationController(rootViewController: controller)
+        navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 
     func profileDetailsController(controller: ProfileDetailsController, enableAutoLogin: Bool) {
@@ -192,13 +188,5 @@ private extension ProfileTabCoordinator {
         })
 
         navigationController.pushViewController(controller, animated: true)
-    }
-
-    func showChangePasswordController(type: ChangePasswordController.ControllerType) {
-        let controller = ChangePasswordController(theme: theme, type: type, toxManager: toxManager)
-        controller.delegate = self
-
-        let toPresent = UINavigationController(rootViewController: controller)
-        navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 }
