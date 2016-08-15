@@ -121,7 +121,7 @@ extension ChangePasswordController {
                 newPassword = nil
         }
 
-        if !toxManager.changeToxPassword(newPassword, oldPassword: oldPassword) {
+        if !toxManager.changeEncryptPassword(newPassword!, oldPassword: oldPassword!) {
             handleErrorWithType(.WrongOldPassword)
             return
         }

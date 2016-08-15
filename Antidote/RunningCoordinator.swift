@@ -160,8 +160,7 @@ private extension RunningCoordinator {
         let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
         
         OCTManager.managerWithConfiguration(configuration,
-                                            toxPassword: password,
-                                            databasePassword: password,
+                                            encryptPassword: password,
                                             successBlock: successBlock,
                                             failureBlock: failureBlock)
     }
