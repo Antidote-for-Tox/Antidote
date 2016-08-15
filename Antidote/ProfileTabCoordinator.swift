@@ -152,12 +152,28 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
 
 extension ProfileTabCoordinator: AuthorizationControllerDelegate {
     func authorizationController(controller: AuthorizationController, authorizeWithPassword password: String) {
-        // TODO verify the password
-        let keychainManager = KeychainManager()
-        keychainManager.autoLoginForActiveAccount = true
-        keychainManager.toxPasswordForActiveAccount = password
+        let hud = JGProgressHUD(style: .Dark)
+        hud.showInView(controller.view)
+
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
+            let result = self.toxManager.isManagerEncryptedWithPassword(password)
+
+            dispatch_async(dispatch_get_main_queue()) { [unowned self] in
+                hud.dismiss()
+
+                if result {
+                    let keychainManager = KeychainManager()
+                    keychainManager.autoLoginForActiveAccount = true
+                    keychainManager.toxPasswordForActiveAccount = password
+
+                    self.navigationController.dismissViewControllerAnimated(true, completion: nil)
+                }
+                else {
+                    handleErrorWithType(.WrongOldPassword)
+                }
+            }
+        }
         
-        navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 
     func authorizationControllerCancel(controller: AuthorizationController) {
