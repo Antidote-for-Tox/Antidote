@@ -9,7 +9,7 @@
 import UIKit
 
 protocol LoginCoordinatorDelegate: class {
-    func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager)
+    func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager, password: String)
 }
 
 class LoginCoordinator {
@@ -199,7 +199,7 @@ private extension LoginCoordinator {
             let userDefaults = UserDefaultsManager()
             userDefaults.lastActiveProfile = profile
 
-            self?.delegate?.loginCoordinatorDidLogin(self!, manager: manager)
+            self?.delegate?.loginCoordinatorDidLogin(self!, manager: manager, password: password!)
 
         }, failureBlock: { error -> Void in
             hud.dismiss()

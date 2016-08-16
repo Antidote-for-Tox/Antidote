@@ -12,8 +12,6 @@ private struct Constants {
     static let ActiveAccountDataService = "me.dvor.Antidote.KeychainManager.ActiveAccountDataService"
 
     static let toxPasswordForActiveAccount = "toxPasswordForActiveAccount"
-    static let touchIDEnabledActiveAccount = "touchIDEnabledActiveAccount"
-    static let autoLoginForActiveAccount = "autoLoginForActiveAccount"
 }
 
 class KeychainManager {
@@ -27,31 +25,9 @@ class KeychainManager {
         }
     }
 
-    /// Whether Touch ID is enabled for current account.
-    var touchIDEnabledActiveAccount: Bool? {
-        get {
-            return getBoolForKey(Constants.touchIDEnabledActiveAccount)
-        }
-        set {
-            setBool(newValue, forKey: Constants.touchIDEnabledActiveAccount)
-        }
-    }
-
-    /// Whether app should automatically login with saved password.
-    var autoLoginForActiveAccount: Bool? {
-        get {
-            return getBoolForKey(Constants.autoLoginForActiveAccount)
-        }
-        set {
-            setBool(newValue, forKey: Constants.autoLoginForActiveAccount)
-        }
-    }
-
     /// Removes all data related to active account.
     func deleteActiveAccountData() {
         self.toxPasswordForActiveAccount = nil
-        self.touchIDEnabledActiveAccount = nil
-        self.autoLoginForActiveAccount = nil
     }
 }
 

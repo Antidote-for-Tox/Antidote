@@ -10,7 +10,6 @@ import UIKit
 
 protocol ProfileDetailsControllerDelegate: class {
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
-    func profileDetailsController(controller: ProfileDetailsController, enableAutoLogin: Bool)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
 
@@ -20,7 +19,6 @@ class ProfileDetailsController: StaticTableController {
     private weak var toxManager: OCTManager!
 
     private let changePasswordModel = StaticTableButtonCellModel()
-    private let rememberPasswordModel = StaticTableSwitchCellModel()
     private let exportProfileModel = StaticTableButtonCellModel()
     private let deleteProfileModel = StaticTableButtonCellModel()
 
@@ -32,7 +30,6 @@ class ProfileDetailsController: StaticTableController {
         super.init(theme: theme, style: .Grouped, model: [
             [
                 changePasswordModel,
-                rememberPasswordModel,
             ],
             [
                 exportProfileModel,
@@ -73,19 +70,8 @@ extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
 
 private extension ProfileDetailsController {
     func updateModel() {
-        let keychainManager = KeychainManager()
-
         changePasswordModel.title = String(localized: "change_password")
         changePasswordModel.didSelectHandler = changePassword
-
-        rememberPasswordModel.title = String(localized: "remember_password")
-        if let remember = keychainManager.autoLoginForActiveAccount {
-            rememberPasswordModel.on = remember
-        }
-        else {
-            rememberPasswordModel.on = false
-        }
-        rememberPasswordModel.valueChangedHandler = rememberPasswordValueChanged
 
         exportProfileModel.title = String(localized: "export_profile")
         exportProfileModel.didSelectHandler = exportProfile
@@ -96,10 +82,6 @@ private extension ProfileDetailsController {
 
     func changePassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerChangePassword(self)
-    }
-
-    func rememberPasswordValueChanged(on: Bool) {
-        delegate?.profileDetailsController(self, enableAutoLogin: on)
     }
 
     func exportProfile(_: StaticTableBaseCell) {

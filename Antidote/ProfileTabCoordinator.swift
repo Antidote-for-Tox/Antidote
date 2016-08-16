@@ -126,54 +126,8 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
         navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 
-    func profileDetailsController(controller: ProfileDetailsController, enableAutoLogin: Bool) {
-        if enableAutoLogin {
-            let controller = AuthorizationController(theme: theme, cancelButtonType: .Cancel)
-            controller.title = String(localized: "enter_your_password")
-            controller.delegate = self
-
-            let toPresent = UINavigationController(rootViewController: controller)
-            navigationController.presentViewController(toPresent, animated: true, completion: nil)
-        }
-        else {
-            let keychainManager = KeychainManager()
-            keychainManager.autoLoginForActiveAccount = false
-        }
-    }
-
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
         delegate?.profileTabCoordinatorDelegateDeleteProfile(self)
-    }
-}
-
-extension ProfileTabCoordinator: AuthorizationControllerDelegate {
-    func authorizationController(controller: AuthorizationController, authorizeWithPassword password: String) {
-        let hud = JGProgressHUD(style: .Dark)
-        hud.showInView(controller.view)
-
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
-            let result = self.toxManager.isManagerEncryptedWithPassword(password)
-
-            dispatch_async(dispatch_get_main_queue()) { [unowned self] in
-                hud.dismiss()
-
-                if result {
-                    let keychainManager = KeychainManager()
-                    keychainManager.autoLoginForActiveAccount = true
-                    keychainManager.toxPasswordForActiveAccount = password
-
-                    self.navigationController.dismissViewControllerAnimated(true, completion: nil)
-                }
-                else {
-                    handleErrorWithType(.WrongOldPassword)
-                }
-            }
-        }
-        
-    }
-
-    func authorizationControllerCancel(controller: AuthorizationController) {
-        navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
