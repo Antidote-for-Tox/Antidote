@@ -73,6 +73,9 @@ class LoginFormController: LoginLogoController {
     }
 
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
+        guard navigationController?.topViewController == self else {
+            return
+        }
         let underLoginHeight =
             mainContainerView.frame.size.height -
             contentContainerView.frame.origin.y -

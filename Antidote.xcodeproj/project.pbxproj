@@ -10,6 +10,12 @@
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
 		110E49E01BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
+		112950841D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */; };
+		112950851D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */; };
+		112950871D63AFD800C9CE0F /* LoginCreatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */; };
+		112950881D63AFD800C9CE0F /* LoginCreatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */; };
+		1129508B1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1129508A1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift */; };
+		1129508C1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1129508A1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift */; };
 		112E4ED61C668C02004312CF /* CallIncomingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4ED51C668C02004312CF /* CallIncomingController.swift */; };
 		112E4ED71C668C02004312CF /* CallIncomingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4ED51C668C02004312CF /* CallIncomingController.swift */; };
 		112E4EDF1C675C58004312CF /* CallActiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EDE1C675C58004312CF /* CallActiveController.swift */; };
@@ -465,6 +471,9 @@
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSessionNavigationCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
+		112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginGenericCreateController.swift; sourceTree = "<group>"; };
+		112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreatePasswordController.swift; sourceTree = "<group>"; };
+		1129508A1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountCoordinator.swift; sourceTree = "<group>"; };
 		112E4ED51C668C02004312CF /* CallIncomingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallIncomingController.swift; sourceTree = "<group>"; };
 		112E4EDE1C675C58004312CF /* CallActiveController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallActiveController.swift; sourceTree = "<group>"; };
 		112E4EE41C676553004312CF /* CallButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
@@ -695,6 +704,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		112950891D6851B600C9CE0F /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */,
+				1129508A1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
 		113F02FB1CAFCBA00009ABE1 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -956,7 +974,9 @@
 				1164C8E61BC929C500B91107 /* LoginBaseController.swift */,
 				1164C8E81BC929F700B91107 /* LoginChoiceController.swift */,
 				9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */,
+				112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */,
 				9C07151E1BCD501D003A27B5 /* LoginFormController.swift */,
+				112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */,
 				1164C8F21BC9880000B91107 /* LoginLogoController.swift */,
 			);
 			name = Login;
@@ -986,11 +1006,10 @@
 		11FA0ED61BC584A300F3DA5B /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				9CB1F9501D58CA4000105858 /* RunningCoordinator.swift */,
 				11FA0ED91BC584D900F3DA5B /* AppCoordinator.swift */,
 				11FA0EDD1BC58DCC00F3DA5B /* CoordinatorProtocol.swift */,
-				11FA0EE81BC5A66D00F3DA5B /* LoginCoordinator.swift */,
 				116DCE311CAAF47100B693EC /* TopCoordinatorProtocol.swift */,
+				112950891D6851B600C9CE0F /* Login */,
 				11FA0EE31BC59A9B00F3DA5B /* Running */,
 			);
 			name = Coordinators;
@@ -1011,14 +1030,15 @@
 		11FA0EE31BC59A9B00F3DA5B /* Running */ = {
 			isa = PBXGroup;
 			children = (
+				11FA0EE61BC59B1400F3DA5B /* ActiveSessionCoordinator.swift */,
+				110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */,
 				11771E2B1CA5C3F200EC259E /* AutomationCoordinator.swift */,
 				1180FD9F1C384E29005F3EA1 /* CallCoordinator.swift */,
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
 				9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */,
 				11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */,
-				11FA0EE61BC59B1400F3DA5B /* ActiveSessionCoordinator.swift */,
-				110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */,
+				9CB1F9501D58CA4000105858 /* RunningCoordinator.swift */,
 				11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */,
 			);
 			name = Running;
@@ -1443,6 +1463,7 @@
 				116634A01C6E8D0F0072C980 /* ChatIncomingCallCell.swift in Sources */,
 				112E4EE51C676553004312CF /* CallButton.swift in Sources */,
 				11771E361CA5C6E900EC259E /* Reach.swift in Sources */,
+				112950871D63AFD800C9CE0F /* LoginCreatePasswordController.swift in Sources */,
 				9CEE6B1F1C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */,
 				11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */,
@@ -1479,6 +1500,7 @@
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
 				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
 				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
+				112950841D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */,
 				116634EC1C7B90F20072C980 /* FriendRequestController.swift in Sources */,
 				11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */,
 				11B253021C4A61D00068F47C /* ChatMovableDateCell.swift in Sources */,
@@ -1544,6 +1566,7 @@
 				116634F21C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
 				11B2534F1C4AD2550068F47C /* AudioPlayer.swift in Sources */,
 				9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */,
+				1129508B1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift in Sources */,
 				11B253B71C503FA10068F47C /* NSTimerExtension.swift in Sources */,
 				9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */,
 				11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */,
@@ -1670,6 +1693,7 @@
 				9CEE6B471C5289E200A1ECB5 /* SettingsMainController.swift in Sources */,
 				9CEE6AEC1C4E8FDC00A1ECB5 /* PrimaryIpadController.swift in Sources */,
 				9CEE6AF81C4E8FDC00A1ECB5 /* LoginCoordinator.swift in Sources */,
+				1129508C1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift in Sources */,
 				9CEE6AD31C4E8FDC00A1ECB5 /* FriendListDataSource.swift in Sources */,
 				11FC105B1D32EED000CE863E /* ResultsChange.swift in Sources */,
 				9CEE6AE81C4E8FDC00A1ECB5 /* ChatPrivateController.swift in Sources */,
@@ -1700,6 +1724,7 @@
 				9CEE6AF61C4E8FDC00A1ECB5 /* CoordinatorProtocol.swift in Sources */,
 				116634B31C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
 				9CEE6ACA1C4E8FDC00A1ECB5 /* StaticTableButtonCellModel.swift in Sources */,
+				112950881D63AFD800C9CE0F /* LoginCreatePasswordController.swift in Sources */,
 				9CEE6AEA1C4E8FDC00A1ECB5 /* FriendCardController.swift in Sources */,
 				9CEE6AFA1C4E8FDC00A1ECB5 /* CallCoordinator.swift in Sources */,
 				9CEE6AE51C4E8FDC00A1ECB5 /* AddFriendController.swift in Sources */,
@@ -1715,6 +1740,7 @@
 				9CEE6B031C4E8FDC00A1ECB5 /* UIImageExtension.swift in Sources */,
 				9CEE6B111C4E8FDC00A1ECB5 /* FullscreenPicker.swift in Sources */,
 				1183BCB61CA1B3AE000CD310 /* ChatIncomingFileCellModel.swift in Sources */,
+				112950851D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */,
 				9CEE6AD61C4E8FDC00A1ECB5 /* ProfileManager.swift in Sources */,
 				9CEE6AC01C4E8FDC00A1ECB5 /* ChatMovableDateCellModel.swift in Sources */,
 				116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */,
