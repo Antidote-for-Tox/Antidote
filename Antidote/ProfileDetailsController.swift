@@ -9,9 +9,7 @@
 import UIKit
 
 protocol ProfileDetailsControllerDelegate: class {
-    func profileDetailsControllerSetPassword(controller: ProfileDetailsController)
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
-    func profileDetailsControllerDeletePassword(controller: ProfileDetailsController)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
 
@@ -20,9 +18,7 @@ class ProfileDetailsController: StaticTableController {
 
     private weak var toxManager: OCTManager!
 
-    private let setPasswordModel = StaticTableButtonCellModel()
     private let changePasswordModel = StaticTableButtonCellModel()
-    private let deletePasswordModel = StaticTableButtonCellModel()
     private let exportProfileModel = StaticTableButtonCellModel()
     private let deleteProfileModel = StaticTableButtonCellModel()
 
@@ -31,7 +27,15 @@ class ProfileDetailsController: StaticTableController {
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager
 
-        super.init(theme: theme, style: .Plain, model: [[]])
+        super.init(theme: theme, style: .Grouped, model: [
+            [
+                changePasswordModel,
+            ],
+            [
+                exportProfileModel,
+                deleteProfileModel,
+            ],
+        ])
 
         updateModel()
 
@@ -66,41 +70,8 @@ extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
 
 private extension ProfileDetailsController {
     func updateModel() {
-        var model = [[StaticTableBaseCellModel]]()
-
-        if let passphrase = toxManager.configuration().passphrase where !passphrase.isEmpty {
-            model += [
-                [
-                    changePasswordModel,
-                    deletePasswordModel,
-                ]
-            ]
-        }
-        else {
-            model += [
-                [
-                    setPasswordModel,
-                ]
-            ]
-        }
-
-        model += [
-            [
-                exportProfileModel,
-                deleteProfileModel,
-            ],
-        ]
-
-        updateModelArray(model)
-
-        setPasswordModel.title = String(localized: "set_password")
-        setPasswordModel.didSelectHandler = setPassword
-
         changePasswordModel.title = String(localized: "change_password")
         changePasswordModel.didSelectHandler = changePassword
-
-        deletePasswordModel.title = String(localized: "delete_password")
-        deletePasswordModel.didSelectHandler = deletePassword
 
         exportProfileModel.title = String(localized: "export_profile")
         exportProfileModel.didSelectHandler = exportProfile
@@ -109,16 +80,8 @@ private extension ProfileDetailsController {
         deleteProfileModel.didSelectHandler = deleteProfile
     }
 
-    func setPassword(_: StaticTableBaseCell) {
-        delegate?.profileDetailsControllerSetPassword(self)
-    }
-
     func changePassword(_: StaticTableBaseCell) {
         delegate?.profileDetailsControllerChangePassword(self)
-    }
-
-    func deletePassword(_: StaticTableBaseCell) {
-        delegate?.profileDetailsControllerDeletePassword(self)
     }
 
     func exportProfile(_: StaticTableBaseCell) {

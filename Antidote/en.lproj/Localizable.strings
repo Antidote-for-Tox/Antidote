@@ -38,6 +38,12 @@
 "create_account_profile_placeholder" = "Profile name";
 /* Login screen text */
 "create_account_profile_hint" = "e.g. Home, iPhone";
+/* Login screen text */
+"set_password_title" = "Set Password";
+/* Login screen text */
+"set_password_hint" = "Password is required to protect your data. Keep it safe - once lost it cannot be restored.";
+/* Login button */
+"create_account_next_button" = "Next";
 /* Login button */
 "create_account_go_button" = "Go";
 /* Default status message */
@@ -194,8 +200,6 @@
 /* Settings screen autodownload images option */
 "settings_always" = "Always";
 
-/* Profile settings menu */
-"set_password" = "Set Password";
 /* Profile settings menu */
 "change_password" = "Change Password";
 /* Profile settings menu */

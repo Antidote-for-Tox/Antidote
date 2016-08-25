@@ -108,17 +108,16 @@ class NotificationCoordinator: NSObject {
         bannedChatIdentifiers.remove(chat.uniqueIdentifier)
     }
 
-    func handleLocalNotification(notification: UILocalNotification) -> Bool {
+    func handleLocalNotification(notification: UILocalNotification) {
         guard let userInfo = notification.userInfo as? [String: String] else {
-            return false
+            return
         }
 
         guard let action = NotificationAction(dictionary: userInfo) else {
-            return false
+            return
         }
 
         performAction(action)
-        return true
     }
 
     func showCallNotificationWithCaller(caller: String, userInfo: String) {

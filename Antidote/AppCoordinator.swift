@@ -8,17 +8,10 @@
 
 import UIKit
 
-private struct Constants {
-    static let ToxManagerKey = "ToxManagerKey"
-}
-
 class AppCoordinator {
     private let window: UIWindow
     private var activeCoordinator: TopCoordinatorProtocol!
     private var theme: Theme
-
-    private var cachedLocalNotification: UILocalNotification?
-    private var cachedOpenURL: OpenURL?
 
     init(window: UIWindow) {
         self.window = window
@@ -34,59 +27,31 @@ class AppCoordinator {
 // MARK: CoordinatorProtocol
 extension AppCoordinator: TopCoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        var coordinator: TopCoordinatorProtocol?
+        let storyboard = UIStoryboard(name: "LaunchPlaceholderBoard", bundle: NSBundle.mainBundle())
+        window.rootViewController = storyboard.instantiateViewControllerWithIdentifier("LaunchPlaceholderController")
 
-        if UserDefaultsManager().isUserLoggedIn {
-            coordinator = createRunningCoordinatorWithManager(options?[Constants.ToxManagerKey] as? OCTManager)
-        }
-
-        if coordinator == nil {
-            coordinator = createLoginCoordinator()
-        }
-
-        activeCoordinator = coordinator
-        activeCoordinator.startWithOptions(nil)
-
-        // Trying to handle cached notification with new coordinator.
-        if let notification = cachedLocalNotification {
-            cachedLocalNotification = nil
-            handleLocalNotification(notification)
-        }
-
-        // Trying to handle cached url with new coordinator.
-        if let url = cachedOpenURL {
-            handleOpenURL(url, resultBlock: {_ in })
-        }
+        recreateActiveCoordinator(options: options)
     }
 
-    func handleLocalNotification(notification: UILocalNotification) -> Bool {
-        if !activeCoordinator.handleLocalNotification(notification) {
-            cachedLocalNotification = notification
-        }
-
-        return true
+    func handleLocalNotification(notification: UILocalNotification) {
+        activeCoordinator.handleLocalNotification(notification)
     }
 
-    func handleOpenURL(openURL: OpenURL, resultBlock: HandleURLResult -> Void) {
-        cachedOpenURL = nil
-
-        activeCoordinator.handleOpenURL(openURL) { [weak self] result in
-            switch result {
-                case .DidHandle:
-                    // nop
-                    break
-                case .DidNotHandle(let newURL):
-                    self?.cachedOpenURL = newURL
-            }
-        }
-
-        resultBlock(.DidHandle)
+    func handleInboxURL(url: NSURL) {
+        activeCoordinator.handleInboxURL(url)
     }
 }
 
 extension AppCoordinator: RunningCoordinatorDelegate {
-    func runningCoordinatorDidLogout(coordinator: RunningCoordinator) {
-        startWithOptions(nil)
+    func runningCoordinatorDidLogout(coordinator: RunningCoordinator, importToxProfileFromURL: NSURL?) {
+        KeychainManager().deleteActiveAccountData()
+
+        recreateActiveCoordinator()
+
+        if let url = importToxProfileFromURL,
+           let coordinator = activeCoordinator as? LoginCoordinator {
+            coordinator.handleInboxURL(url)
+        }
     }
 
     func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator) {
@@ -98,8 +63,10 @@ extension AppCoordinator: RunningCoordinatorDelegate {
         do {
             try profileManager.deleteProfileWithName(name)
 
+            KeychainManager().deleteActiveAccountData()
             userDefaults.lastActiveProfile = nil
-            startWithOptions(nil)
+
+            recreateActiveCoordinator()
         }
         catch let error as NSError {
             handleErrorWithType(.DeleteProfile, error: error)
@@ -107,14 +74,15 @@ extension AppCoordinator: RunningCoordinatorDelegate {
     }
 
     func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions) {
-        activeCoordinator = createRunningCoordinatorWithManager(nil)
-        activeCoordinator.startWithOptions(options)
+        recreateActiveCoordinator(options: options)
     }
 }
 
 extension AppCoordinator: LoginCoordinatorDelegate {
-    func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager) {
-        startWithOptions([ Constants.ToxManagerKey: manager ])
+    func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager, password: String) {
+        KeychainManager().toxPasswordForActiveAccount = password
+
+        recreateActiveCoordinator(manager: manager)
     }
 }
 
@@ -128,26 +96,47 @@ private extension AppCoordinator {
         UINavigationBar.appearance().tintColor = linkTextColor
     }
 
-    func createRunningCoordinatorWithManager(manager: OCTManager?) -> RunningCoordinator? {
-        var manager = manager
+    func recreateActiveCoordinator(options options: CoordinatorOptions? = nil, manager: OCTManager? = nil) {
+        if let password = KeychainManager().toxPasswordForActiveAccount {
+            let successBlock: OCTManager -> Void = { [unowned self] manager -> Void in
+                self.activeCoordinator = self.createRunningCoordinatorWithManager(manager, options: options)
+            }
 
-        if manager == nil {
-            manager = LoginCoordinator.loginWithActiveProfile()
+            if let manager = manager {
+                successBlock(manager)
+            }
+            else {
+                let profileName = UserDefaultsManager().lastActiveProfile!
+                let path = ProfileManager().pathForProfileWithName(profileName)
+                let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
+
+                OCTManager.managerWithConfiguration(configuration,
+                                                    encryptPassword: password,
+                                                    successBlock: successBlock,
+                                                    failureBlock: { [unowned self] _ in
+                    log("Cannot create tox with configuration \(configuration)")
+                    KeychainManager().deleteActiveAccountData()
+                    self.recreateActiveCoordinator(options: options, manager: manager)
+                })
+            }
         }
-
-        if manager == nil {
-            return nil
+        else {
+            activeCoordinator = createLoginCoordinator(options)
         }
+    }
 
-        let coordinator = RunningCoordinator(theme: theme, window: window, toxManager: manager!)
+    func createRunningCoordinatorWithManager(manager: OCTManager, options: CoordinatorOptions?) -> RunningCoordinator {
+        let coordinator = RunningCoordinator(theme: theme, window: window, toxManager: manager)
         coordinator.delegate = self
+        coordinator.startWithOptions(options)
 
         return coordinator
     }
 
-    func createLoginCoordinator() -> LoginCoordinator {
+    func createLoginCoordinator(options: CoordinatorOptions?) -> LoginCoordinator {
         let coordinator = LoginCoordinator(theme: theme, window: window)
         coordinator.delegate = self
+        coordinator.startWithOptions(options)
 
         return coordinator
     }

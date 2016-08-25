@@ -112,13 +112,26 @@ extension OCTManagerInitError {
             case .CannotImportToxSave:
                 return (String(localized: "error_import_not_exist_title"),
                         String(localized: "error_import_not_exist_message"))
-            case .DecryptNull:
+            case .DatabaseKeyCannotCreateKey:
+                fallthrough
+            case .DatabaseKeyCannotReadKey:
+                fallthrough
+            case .DatabaseKeyMigrationToEncryptedFailed:
+                return (String(localized: "error_title"),
+                        String(localized: "error_internal_message"))
+            case .ToxFileDecryptNull:
+                fallthrough
+            case .DatabaseKeyDecryptNull:
                 return (String(localized: "error_decrypt_title"),
                         String(localized: "error_decrypt_empty_data_message"))
-            case .DecryptBadFormat:
+            case .ToxFileDecryptBadFormat:
+                fallthrough
+            case .DatabaseKeyDecryptBadFormat:
                 return (String(localized: "error_decrypt_title"),
                         String(localized: "error_decrypt_bad_format_message"))
-            case .DecryptFailed:
+            case .ToxFileDecryptFailed:
+                fallthrough
+            case .DatabaseKeyDecryptFailed:
                 return (String(localized: "error_decrypt_title"),
                         String(localized: "error_decrypt_wrong_password_message"))
             case .CreateToxUnknown:

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="NhS-HC-vff">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--Launch Placeholder Controller-->
+        <scene sceneID="xZ1-yW-wOr">
+            <objects>
+                <viewController storyboardIdentifier="LaunchPlaceholderController" id="NhS-HC-vff" customClass="LaunchPlaceholderController" customModule="Antidote" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Ahn-hM-RCB"/>
+                        <viewControllerLayoutGuide type="bottom" id="yCP-4d-2if"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="7Pz-ZR-ZBN">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LFP-OV-dSa">
+                                <rect key="frame" x="0.0" y="551" width="600" height="49"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items/>
+                            </tabBar>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWf-iw-K5g">
+                                <rect key="frame" x="0.0" y="20" width="600" height="44"/>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="iWf-iw-K5g" firstAttribute="top" secondItem="Ahn-hM-RCB" secondAttribute="bottom" id="4t2-aS-Nnl"/>
+                            <constraint firstItem="iWf-iw-K5g" firstAttribute="leading" secondItem="7Pz-ZR-ZBN" secondAttribute="leadingMargin" constant="-20" id="CMB-Gl-5el"/>
+                            <constraint firstItem="LFP-OV-dSa" firstAttribute="leading" secondItem="7Pz-ZR-ZBN" secondAttribute="leadingMargin" constant="-20" id="DP7-77-vR3"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="LFP-OV-dSa" secondAttribute="trailing" constant="-20" id="LWN-YG-u2C"/>
+                            <constraint firstItem="yCP-4d-2if" firstAttribute="top" secondItem="LFP-OV-dSa" secondAttribute="bottom" id="XUX-A2-73L"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iWf-iw-K5g" secondAttribute="trailing" constant="-20" id="fu7-YT-olc"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="subviews">
+                                <exclude reference="LFP-OV-dSa"/>
+                                <exclude reference="iWf-iw-K5g"/>
+                            </mask>
+                            <mask key="constraints">
+                                <exclude reference="XUX-A2-73L"/>
+                                <exclude reference="4t2-aS-Nnl"/>
+                                <exclude reference="CMB-Gl-5el"/>
+                                <exclude reference="fu7-YT-olc"/>
+                                <exclude reference="DP7-77-vR3"/>
+                                <exclude reference="LWN-YG-u2C"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=compact">
+                            <mask key="subviews">
+                                <include reference="LFP-OV-dSa"/>
+                                <include reference="iWf-iw-K5g"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="XUX-A2-73L"/>
+                                <include reference="4t2-aS-Nnl"/>
+                                <include reference="CMB-Gl-5el"/>
+                                <include reference="fu7-YT-olc"/>
+                                <include reference="DP7-77-vR3"/>
+                                <include reference="LWN-YG-u2C"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=compact">
+                            <mask key="subviews">
+                                <include reference="LFP-OV-dSa"/>
+                                <include reference="iWf-iw-K5g"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="XUX-A2-73L"/>
+                                <include reference="4t2-aS-Nnl"/>
+                                <include reference="CMB-Gl-5el"/>
+                                <include reference="fu7-YT-olc"/>
+                                <include reference="DP7-77-vR3"/>
+                                <include reference="LWN-YG-u2C"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="subviews">
+                                <include reference="iWf-iw-K5g"/>
+                            </mask>
+                            <mask key="constraints">
+                                <include reference="4t2-aS-Nnl"/>
+                                <include reference="CMB-Gl-5el"/>
+                                <include reference="fu7-YT-olc"/>
+                            </mask>
+                        </variation>
+                    </view>
+                    <navigationItem key="navigationItem" id="X6I-x6-T4B"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Lh-n9-Vs0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1017" y="1615.5"/>
+        </scene>
+    </scenes>
+</document>

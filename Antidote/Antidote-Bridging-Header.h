@@ -36,6 +36,7 @@
 #import <LNNotificationsUI/LNNotificationsUI.h>
 #import <SDCAlertView/SDCAlertController.h>
 #import <UITextView+Placeholder/UITextView+Placeholder.h>
+#import <JGProgressHUD/JGProgressHUD.h>
 
 #import "ExceptionHandling.h"
 

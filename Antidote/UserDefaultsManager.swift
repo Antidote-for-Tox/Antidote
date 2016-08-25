@@ -16,15 +16,6 @@ class UserDefaultsManager {
         }
     }
 
-    var isUserLoggedIn: Bool {
-        get {
-            return boolForKey(Keys.IsUserLoggedIn, defaultValue: false)
-        }
-        set {
-            setBool(newValue, forKey: Keys.IsUserLoggedIn)
-        }
-    }
-
     var IPv6Enabled: Bool {
         get {
             return boolForKey(Keys.IPv6Enabled, defaultValue: true)
@@ -84,7 +75,6 @@ class UserDefaultsManager {
 private extension UserDefaultsManager {
     struct Keys {
         static let LastActiveProfile = "user-info/last-active-profile"
-        static let IsUserLoggedIn = "user-info/is-user-logged-in"
         static let IPv6Enabled = "user-info/ipv6-enabled"
         static let UDPEnabled = "user-info/udp-enabled"
         static let ShowNotificationsPreview = "user-info/snow-notification-preview"

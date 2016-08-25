@@ -16,7 +16,7 @@ protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateDidChangeUserName(coordinator: ProfileTabCoordinator)
 }
 
-class ProfileTabCoordinator: RunningNavigationCoordinator {
+class ProfileTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: ProfileTabCoordinatorDelegate?
 
     private weak var toxManager: OCTManager!
@@ -111,23 +111,19 @@ extension ProfileTabCoordinator: QRViewerControllerDelegate {
     }
 }
 
-extension ProfileTabCoordinator: PasswordControllerDelegate {
-    func passwordControllerDidFinishPresenting(controller: PasswordController) {
+extension ProfileTabCoordinator: ChangePasswordControllerDelegate {
+    func changePasswordControllerDidFinishPresenting(controller: ChangePasswordController) {
         navigationController.dismissViewControllerAnimated(true, completion: nil)
     }
 }
 
 extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
-    func profileDetailsControllerSetPassword(controller: ProfileDetailsController) {
-        showPasswordController(.SetNewPassword)
-    }
-
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
-        showPasswordController(.SetNewPassword)
-    }
+        let controller = ChangePasswordController(theme: theme, toxManager: toxManager)
+        controller.delegate = self
 
-    func profileDetailsControllerDeletePassword(controller: ProfileDetailsController) {
-        showPasswordController(.DeletePassword)
+        let toPresent = UINavigationController(rootViewController: controller)
+        navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
@@ -146,13 +142,5 @@ private extension ProfileTabCoordinator {
         })
 
         navigationController.pushViewController(controller, animated: true)
-    }
-
-    func showPasswordController(type: PasswordController.ControllerType) {
-        let controller = PasswordController(theme: theme, type: type, toxManager: toxManager)
-        controller.delegate = self
-
-        let toPresent = UINavigationController(rootViewController: controller)
-        navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 }

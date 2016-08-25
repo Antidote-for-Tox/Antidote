@@ -7,7 +7,7 @@
 //
 
 extension OCTManagerConfiguration {
-    static func configurationWithBaseDirectory(baseDirectory: String, passphrase: String?) -> OCTManagerConfiguration? {
+    static func configurationWithBaseDirectory(baseDirectory: String) -> OCTManagerConfiguration? {
         var isDirectory: ObjCBool = false
         let exists = NSFileManager.defaultManager().fileExistsAtPath(baseDirectory, isDirectory:&isDirectory)
 
@@ -16,7 +16,6 @@ extension OCTManagerConfiguration {
         }
 
         let configuration = OCTManagerConfiguration.defaultConfiguration()
-        configuration.passphrase = passphrase
 
         let userDefaultsManager = UserDefaultsManager()
 

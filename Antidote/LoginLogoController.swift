@@ -19,7 +19,7 @@ class LoginLogoController: LoginBaseController {
      * Main view, which is used as container for all subviews.
      */
     var mainContainerView: UIView!
-    var mainContainerViewTopConstraint: Constraint!
+    var mainContainerViewTopConstraint: Constraint?
 
     var logoImageView: UIImageView!
 
