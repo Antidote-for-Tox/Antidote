@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Database encryption. Now all message history and relate data is encrypted.
+- Requering password for all accounts.
+- Storing password in keychain. There is no need to login on every application launch.
 
 ## [0.10.4-2] - 2016-08-04
 ### Fixed
