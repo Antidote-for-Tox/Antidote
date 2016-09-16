@@ -122,11 +122,23 @@ extension ExtendedTextField: UITextFieldDelegate {
 
 private extension ExtendedTextField {
     func createViews(theme theme: Theme, type: Type) {
+        textField = UITextField()
+        textField.delegate = self
+        textField.borderStyle = .RoundedRect
+        textField.autocapitalizationType = .Sentences
+        textField.enablesReturnKeyAutomatically = true
+        addSubview(textField)
+
         let textColor: UIColor
 
         switch type {
             case .Login:
-                textColor = theme.colorForType(.LoginDescriptionLabel)
+                textColor = theme.colorForType(.NormalText)
+
+                textField.layer.borderColor = theme.colorForType(.LoginButtonBackground).CGColor
+                textField.layer.borderWidth = 0.5
+                textField.layer.masksToBounds = true
+                textField.layer.cornerRadius = 6.0
             case .Normal:
                 textColor = theme.colorForType(.NormalText)
         }
@@ -136,13 +148,6 @@ private extension ExtendedTextField {
         titleLabel.font = UIFont.systemFontOfSize(18.0)
         titleLabel.backgroundColor = .clearColor()
         addSubview(titleLabel)
-
-        textField = UITextField()
-        textField.delegate = self
-        textField.borderStyle = .RoundedRect
-        textField.autocapitalizationType = .Sentences
-        textField.enablesReturnKeyAutomatically = true
-        addSubview(textField)
 
         hintLabel = UILabel()
         hintLabel.textColor = textColor

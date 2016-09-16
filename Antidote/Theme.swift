@@ -26,6 +26,7 @@ enum ErrorTheme: ErrorType {
 class Theme {
     enum Type: String {
         case LoginBackground = "login-background"
+        case LoginGradient = "login-gradient"
         case LoginToxLogo = "login-tox-logo"
         case LoginButtonText = "login-button-text"
         case LoginButtonBackground = "login-button-background"
@@ -80,6 +81,7 @@ class Theme {
         // Because enums don't support enumerations we have to do this hack. Phew.
         static let allValues = [
             LoginBackground,
+            LoginGradient,
             LoginToxLogo,
             LoginButtonText,
             LoginButtonBackground,

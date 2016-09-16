@@ -58,10 +58,9 @@ private extension LoginLogoController {
     }
 
     func createLogoImageView() {
-        let image = UIImage.templateNamed("login-logo")
+        let image = UIImage(named: "login-logo")
 
         logoImageView = UIImageView(image: image)
-        logoImageView.tintColor = theme.colorForType(.LoginToxLogo)
         logoImageView.contentMode = .ScaleAspectFit
         mainContainerView.addSubview(logoImageView)
     }

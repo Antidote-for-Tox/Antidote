@@ -26,7 +26,8 @@ class ThemeTest: XCTestCase {
             "  first: \"AABBCC\"\n" +
             "  second: \"55667788\"\n" +
             "values:\n" +
-            "  login-background: first\n" +
+            "  login-background: second\n" +
+            "  login-gradient: first\n" +
             "  login-tox-logo: second\n" +
             "  login-button-text: first\n" +
             "  login-button-background: second\n" +
@@ -85,7 +86,8 @@ class ThemeTest: XCTestCase {
         do {
             let theme = try Theme(yamlString: string)
 
-            XCTAssertEqual(first, theme.colorForType(.LoginBackground))
+            XCTAssertEqual(second, theme.colorForType(.LoginBackground))
+            XCTAssertEqual(first, theme.colorForType(.LoginGradient))
             XCTAssertEqual(second, theme.colorForType(.LoginToxLogo))
             XCTAssertEqual(first, theme.colorForType(.LoginButtonText))
             XCTAssertEqual(second, theme.colorForType(.LoginButtonBackground))

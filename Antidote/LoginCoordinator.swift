@@ -39,8 +39,7 @@ class LoginCoordinator {
                 self.navigationController = UINavigationController()
         }
 
-        navigationController.navigationBar.tintColor = theme.colorForType(.LoginButtonText)
-        navigationController.navigationBar.barTintColor = theme.loginNavigationBarColor
+        navigationController.navigationBar.tintColor = theme.colorForType(.LoginButtonBackground)
         navigationController.navigationBar.titleTextAttributes = [
             NSForegroundColorAttributeName: theme.colorForType(.LoginButtonText)
         ]
@@ -191,8 +190,8 @@ private extension LoginCoordinator {
         let controller = TextViewController(
                 resourceName: "import-profile",
                 backgroundColor: theme.colorForType(.LoginBackground),
-                titleColor: theme.colorForType(.LoginButtonText),
-                textColor: theme.colorForType(.LoginDescriptionLabel))
+                titleColor: theme.colorForType(.NormalText),
+                textColor: theme.colorForType(.NormalText))
 
         navigationController.pushViewController(controller, animated: true)
     }
