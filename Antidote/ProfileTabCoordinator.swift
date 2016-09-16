@@ -129,12 +129,6 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
         navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 
-    func profileDetailsControllerRemovePin(controller: ProfileDetailsController) {
-        let settings = toxManager.objects.getProfileSettings()
-        settings.unlockPinCode = nil
-        toxManager.objects.setProfileSettings(settings)
-    }
-
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
         let controller = ChangePasswordController(theme: theme, toxManager: toxManager)
         controller.delegate = self

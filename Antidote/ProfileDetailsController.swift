@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 protocol ProfileDetailsControllerDelegate: class {
     func profileDetailsControllerSetPin(controller: ProfileDetailsController)
-    func profileDetailsControllerRemovePin(controller: ProfileDetailsController)
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
@@ -33,27 +33,24 @@ class ProfileDetailsController: StaticTableController {
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager
 
-        super.init(theme: theme, style: .Grouped, model: [
-            [
-                pinEnabledModel,
-                lockTimeoutModel,
-            ],
-            [
-                touchIdEnabledModel,
-            ],
-            [
-                changePasswordModel,
-            ],
-            [
-                exportProfileModel,
-                deleteProfileModel,
-            ],
-        ], footers: [
-            String(localized: "pin_description"),
-            String(localized: "pin_touch_id_description"),
-            nil,
-            nil,
-        ])
+        var model = [[StaticTableBaseCellModel]]()
+        var footers = [String?]()
+
+        model.append([pinEnabledModel, lockTimeoutModel])
+        footers.append(String(localized: "pin_description"))
+
+        if LAContext().canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
+            model.append([touchIdEnabledModel])
+            footers.append(String(localized: "pin_touch_id_description"))
+        }
+
+        model.append([changePasswordModel])
+        footers.append(nil)
+
+        model.append([exportProfileModel, deleteProfileModel])
+        footers.append(nil)
+
+        super.init(theme: theme, style: .Grouped, model: model, footers: footers)
 
         updateModel()
 
@@ -89,9 +86,10 @@ extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
 private extension ProfileDetailsController {
     func updateModel() {
         let settings = toxManager.objects.getProfileSettings()
+        let isPinEnabled = settings.unlockPinCode != nil
 
         pinEnabledModel.title = String(localized: "pin_enabled")
-        pinEnabledModel.on = settings.unlockPinCode != nil
+        pinEnabledModel.on = isPinEnabled
         pinEnabledModel.valueChangedHandler = pinEnabledValueChanged
 
         lockTimeoutModel.title = String(localized: "pin_lock_timeout")
@@ -99,8 +97,9 @@ private extension ProfileDetailsController {
         lockTimeoutModel.didSelectHandler = changeLockTimeout
         lockTimeoutModel.value = String(localized: "pin_lock_immediately")
 
+        touchIdEnabledModel.enabled = isPinEnabled
         touchIdEnabledModel.title = String(localized: "pin_touch_id_enabled")
-        touchIdEnabledModel.on = false
+        touchIdEnabledModel.on = settings.useTouchID
         touchIdEnabledModel.valueChangedHandler = touchIdEnabledValueChanged
 
         changePasswordModel.title = String(localized: "change_password")
@@ -118,14 +117,23 @@ private extension ProfileDetailsController {
             delegate?.profileDetailsControllerSetPin(self)
         }
         else {
-            delegate?.profileDetailsControllerRemovePin(self)
+            let settings = toxManager.objects.getProfileSettings()
+            settings.useTouchID = false
+            settings.unlockPinCode = nil
+            toxManager.objects.setProfileSettings(settings)
         }
+
+        updateModel()
+        reloadTableView()
     }
 
     func changeLockTimeout(_: StaticTableBaseCell) {
     }
 
     func touchIdEnabledValueChanged(on: Bool) {
+        let settings = toxManager.objects.getProfileSettings()
+        settings.useTouchID = on
+        toxManager.objects.setProfileSettings(settings)
     }
 
     func changePassword(_: StaticTableBaseCell) {

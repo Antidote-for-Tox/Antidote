@@ -8,12 +8,15 @@
 
 import Foundation
 import AudioToolbox
+import LocalAuthentication
 
 class PinAuthorizationCoordinator: NSObject {
     private let theme: Theme
     private let window: UIWindow
 
     private weak var submanagerObjects: OCTSubmanagerObjects!
+
+    private var isCheckingTouchID: Bool = false
     
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
@@ -42,18 +45,17 @@ class PinAuthorizationCoordinator: NSObject {
     }
 
     func appWillResignActiveNotification() {
-        showLockScreenIfNeeded()
+        lockIfNeeded()
     }
 
     func appDidBecomeActiveNotification() {
-        if !challengeUserToAuthorizeIfNeeded() {
-            window.hidden = true
-        }
+        challengeUserToAuthorizeIfNeeded()
     }
 }
 
 extension PinAuthorizationCoordinator: CoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
+        lockIfNeeded()
         challengeUserToAuthorizeIfNeeded()
     }
 }
@@ -71,8 +73,10 @@ extension PinAuthorizationCoordinator: EnterPinControllerDelegate {
 }
 
 private extension PinAuthorizationCoordinator {
-    func showLockScreenIfNeeded() {
-        guard savedPinCode() != nil else {
+    func lockIfNeeded() {
+        let settings = submanagerObjects.getProfileSettings()
+
+        guard settings.unlockPinCode != nil else {
             return
         }
 
@@ -81,23 +85,71 @@ private extension PinAuthorizationCoordinator {
         window.hidden = false
     }
 
-    func challengeUserToAuthorizeIfNeeded() -> Bool {
-        guard let savedPin = savedPinCode() else {
-            return false
+    func challengeUserToAuthorizeIfNeeded() {
+        guard shouldCheckPin() else {
+            return
         }
 
-        let controller = EnterPinController(theme: theme, state: .ValidatePin(validPin: savedPin))
+        if window.rootViewController is EnterPinController {
+            // already showing pin controller
+            return
+        }
+
+        let context = LAContext()
+
+        if touchIdEnabled() && context.canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
+            isCheckingTouchID = true
+
+            context.evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
+                                   localizedReason: String(localized: "pin_touch_id_description"),
+                                   reply: { [weak self] success, error in
+                dispatch_async(dispatch_get_main_queue()) {
+                    if success {
+                        self?.window.hidden = true
+                    }
+                    else {
+                        self?.validatePin()
+                    }
+
+                    self?.isCheckingTouchID = false
+                }
+            })
+        }
+        else {
+            validatePin()
+        }
+    }
+
+    func validatePin() {
+        let settings = submanagerObjects.getProfileSettings()
+        guard let pin = settings.unlockPinCode else {
+            fatalError("pin shouldn't be nil")
+        }
+
+        let controller = EnterPinController(theme: theme, state: .ValidatePin(validPin: pin))
         controller.topText = String(localized: "pin_enter_to_unlock")
         controller.delegate = self
         window.rootViewController = controller
         window.hidden = false
+    }
+
+    func shouldCheckPin() -> Bool {
+        if isCheckingTouchID {
+            // Already checking pin.
+            return false
+        }
+
+        if window.hidden {
+            // Already unlocked
+            return false
+        }
 
         return true
     }
 
-    func savedPinCode() -> String? {
+    func touchIdEnabled() -> Bool {
         let settings = submanagerObjects.getProfileSettings()
 
-        return settings.unlockPinCode
+        return settings.useTouchID
     }
 }
