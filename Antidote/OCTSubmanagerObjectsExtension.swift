@@ -40,7 +40,10 @@ extension OCTSubmanagerObjects {
         }
 
         let unarchiver = NSKeyedUnarchiver(forReadingWithData: data)
-        return ProfileSettings(coder: unarchiver)
+        let settings =  ProfileSettings(coder: unarchiver)
+        unarchiver.finishDecoding()
+
+        return settings
     }
 
     func setProfileSettings(settings: ProfileSettings) {
@@ -48,7 +51,8 @@ extension OCTSubmanagerObjects {
         let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
 
         settings.encodeWithCoder(archiver)
+        archiver.finishEncoding()
 
-        self.genericSettingsData = data.copy()
+        self.genericSettingsData = data.copy() as! NSData
     }
 }

@@ -7,14 +7,18 @@
 //
 
 import Foundation
+import AudioToolbox
 
 class PinAuthorizationCoordinator: NSObject {
     private let theme: Theme
     private let window: UIWindow
 
-    init(theme: Theme) {
+    private weak var submanagerObjects: OCTSubmanagerObjects!
+    
+    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
+        self.submanagerObjects = submanagerObjects
 
         super.init()
 
@@ -58,11 +62,17 @@ extension PinAuthorizationCoordinator: EnterPinControllerDelegate {
     func enterPinController(controller: EnterPinController, successWithPin pin: String) {
         window.hidden = true
     }
+
+    func enterPinControllerFailure(controller: EnterPinController) {
+        controller.resetEnteredPin()
+        controller.topText = String(localized: "pin_incorrect")
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+    }
 }
 
 private extension PinAuthorizationCoordinator {
     func showLockScreenIfNeeded() {
-        guard isPinEnabled() else {
+        guard savedPinCode() != nil else {
             return
         }
 
@@ -72,11 +82,12 @@ private extension PinAuthorizationCoordinator {
     }
 
     func challengeUserToAuthorizeIfNeeded() -> Bool {
-        guard isPinEnabled() else {
+        guard let savedPin = savedPinCode() else {
             return false
         }
 
-        let controller = EnterPinController(theme: theme, state: .ValidatePin(validPin: "1234"))
+        let controller = EnterPinController(theme: theme, state: .ValidatePin(validPin: savedPin))
+        controller.topText = String(localized: "pin_enter_to_unlock")
         controller.delegate = self
         window.rootViewController = controller
         window.hidden = false
@@ -84,7 +95,9 @@ private extension PinAuthorizationCoordinator {
         return true
     }
 
-    func isPinEnabled() -> Bool {
-        return true
+    func savedPinCode() -> String? {
+        let settings = submanagerObjects.getProfileSettings()
+
+        return settings.unlockPinCode
     }
 }

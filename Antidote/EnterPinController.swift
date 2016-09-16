@@ -8,7 +8,6 @@
 
 import Foundation
 import SnapKit
-import AudioToolbox
 
 private struct Constants {
     static let PinLength = 4
@@ -16,19 +15,40 @@ private struct Constants {
 
 protocol EnterPinControllerDelegate: class {
     func enterPinController(controller: EnterPinController, successWithPin pin: String)
+
+    // This method may be called only for ValidatePin state.
+    func enterPinControllerFailure(controller: EnterPinController)
 }
 
 class EnterPinController: UIViewController {
     enum State {
         case ValidatePin(validPin: String)
         case SetPin
-        case ConfirmPin(validPin: String)
     }
 
     weak var delegate: EnterPinControllerDelegate?
 
+    let state: State
+
+    var topText: String {
+        get {
+            return pinInputView.topText
+        }
+        set {
+            if #available(iOS 9.0, *) {
+                loadViewIfNeeded()
+            } else {
+                if !isViewLoaded() {
+                    // creating view
+                    view.setNeedsDisplay()
+                }
+            }
+
+            pinInputView.topText = newValue
+        }
+    }
+
     private let theme: Theme
-    private let state: State
 
     private var pinInputView: PinInputView!
 
@@ -53,6 +73,11 @@ class EnterPinController: UIViewController {
 
         pinInputView.applyColors()
     }
+
+    func resetEnteredPin() {
+        enteredString = ""
+        pinInputView.enteredNumbersCount = enteredString.characters.count
+    }
 }
 
 extension EnterPinController: PinInputViewDelegate {
@@ -62,6 +87,7 @@ extension EnterPinController: PinInputViewDelegate {
         }
 
         enteredString += "\(i)"
+        pinInputView.enteredNumbersCount = enteredString.characters.count
 
         if enteredString.characters.count == Constants.PinLength {
             switch state {
@@ -70,18 +96,12 @@ extension EnterPinController: PinInputViewDelegate {
                          delegate?.enterPinController(self, successWithPin: enteredString)
                      }
                      else {
-                         enteredString = ""
-                         pinInputView.topText = String(localized: "pin_incorrect")
-                         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                         delegate?.enterPinControllerFailure(self)
                      }
                 case .SetPin:
-                     break
-                case .ConfirmPin(_):
-                     break
+                    delegate?.enterPinController(self, successWithPin: enteredString)
             }
         }
-
-        view.enteredNumbersCount = enteredString.characters.count
     }
 
     func pinInputViewDeleteButtonPressed(view: PinInputView) {
@@ -99,15 +119,6 @@ private extension EnterPinController {
         pinInputView = PinInputView(pinLength: Constants.PinLength, topColor: .greenColor(), bottomColor: .blueColor())
         pinInputView.delegate = self
         view.addSubview(pinInputView)
-
-        switch state {
-            case .ValidatePin:
-                pinInputView.topText = String(localized: "pin_enter_to_unlock")
-            case .SetPin:
-                pinInputView.topText = String(localized: "pin_set")
-            case .ConfirmPin:
-                pinInputView.topText = String(localized: "pin_confirm")
-        }
     }
 
     func installConstraints() {

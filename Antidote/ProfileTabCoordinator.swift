@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 protocol ProfileTabCoordinatorDelegate: class {
     func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator)
@@ -118,6 +119,22 @@ extension ProfileTabCoordinator: ChangePasswordControllerDelegate {
 }
 
 extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
+    func profileDetailsControllerSetPin(controller: ProfileDetailsController) {
+        let controller = EnterPinController(theme: theme, state: .SetPin)
+        controller.topText = String(localized: "pin_set")
+        controller.delegate = self
+
+        let toPresent = UINavigationController(rootViewController: controller)
+        toPresent.navigationBarHidden = true
+        navigationController.presentViewController(toPresent, animated: true, completion: nil)
+    }
+
+    func profileDetailsControllerRemovePin(controller: ProfileDetailsController) {
+        let settings = toxManager.objects.getProfileSettings()
+        settings.unlockPinCode = nil
+        toxManager.objects.setProfileSettings(settings)
+    }
+
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
         let controller = ChangePasswordController(theme: theme, toxManager: toxManager)
         controller.delegate = self
@@ -128,6 +145,43 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
 
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController) {
         delegate?.profileTabCoordinatorDelegateDeleteProfile(self)
+    }
+}
+
+extension ProfileTabCoordinator: EnterPinControllerDelegate {
+    func enterPinController(controller: EnterPinController, successWithPin pin: String) {
+        switch controller.state {
+            case .ValidatePin:
+                let settings = toxManager.objects.getProfileSettings()
+                settings.unlockPinCode = pin
+                toxManager.objects.setProfileSettings(settings)
+
+                navigationController.dismissViewControllerAnimated(true, completion: nil)
+            case .SetPin:
+                guard let presentedNavigation = controller.navigationController else {
+                    fatalError("wrong state")
+                }
+
+                let validate = EnterPinController(theme: theme, state: .ValidatePin(validPin: pin))
+                validate.topText = String(localized: "pin_confirm")
+                validate.delegate = self
+
+                presentedNavigation.viewControllers = [validate]
+        }
+    }
+
+    func enterPinControllerFailure(controller: EnterPinController) {
+        guard let presentedNavigation = controller.navigationController else {
+            fatalError("wrong state")
+        }
+
+        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+
+        let setPin = EnterPinController(theme: theme, state: .SetPin)
+        setPin.topText = String(localized: "pin_do_not_match")
+        setPin.delegate = self
+
+        presentedNavigation.viewControllers = [setPin]
     }
 }
 

@@ -64,19 +64,21 @@
 /* PIN screen screen */
 "pin_touch_id_enabled" = "Touch ID Enabled";
 /* PIN screen screen */
+"pin_description" = "Prevent unauthorized access to Antidote with a PIN.";
+/* PIN screen screen */
 "pin_touch_id_description" = "Use your fingerprint as an alternative to entering a PIN.";
 /* PIN screen screen */
 "pin_lock_timeout" = "Lock Timeout";
 /* PIN screen screen */
-"pin_immediately" = "Immediately";
+"pin_lock_immediately" = "Immediately";
 /* PIN screen screen */
-"pin_30_seconds" = "30 Seconds";
+"pin_lock_30_seconds" = "30 Seconds";
 /* PIN screen screen */
-"pin_1_minute" = "1 Minute";
+"pin_lock_1_minute" = "1 Minute";
 /* PIN screen screen */
-"pin_2_minutes" = "2 Minutes";
+"pin_lock_2_minutes" = "2 Minutes";
 /* PIN screen screen */
-"pin_5_minutes" = "5 Minutes";
+"pin_lock_5_minutes" = "5 Minutes";
 
 /* Label shown when connecting to Tox network */
 "connecting_label" = "Connecting...";

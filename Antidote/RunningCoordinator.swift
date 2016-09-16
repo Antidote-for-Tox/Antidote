@@ -30,7 +30,7 @@ class RunningCoordinator {
         self.theme = theme
         self.window = window
         self.toxManager = toxManager
-        self.pinAuthorizationCoordinator = PinAuthorizationCoordinator(theme: theme)
+        self.pinAuthorizationCoordinator = PinAuthorizationCoordinator(theme: theme, submanagerObjects: toxManager.objects)
     }
 }
 
