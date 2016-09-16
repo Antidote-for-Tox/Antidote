@@ -232,6 +232,8 @@
 		9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151E1BCD501D003A27B5 /* LoginFormController.swift */; };
 		9C19367E1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */; };
 		9C19367F1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */; };
+		9C1FEB291D8C10EB008C2ADE /* ProfileSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */; };
+		9C1FEB2A1D8C10EB008C2ADE /* ProfileSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */; };
 		9C2EF3711C4D4D5C006E7AB1 /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */; };
 		9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
 		9C3271871D79C19C00347490 /* PinAuthorizationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */; };
@@ -669,6 +671,7 @@
 		9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortraitNavigationController.swift; sourceTree = "<group>"; };
 		9C07151E1BCD501D003A27B5 /* LoginFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFormController.swift; sourceTree = "<group>"; };
 		9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinController.swift; sourceTree = "<group>"; };
+		9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSettings.swift; sourceTree = "<group>"; };
 		9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCoordinator.swift; sourceTree = "<group>"; };
 		9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListTableManager.swift; sourceTree = "<group>"; };
 		9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinAuthorizationCoordinator.swift; sourceTree = "<group>"; };
@@ -918,6 +921,7 @@
 				1160B67D1D5F9993002DF75B /* KeychainManager.swift */,
 				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
+				9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */,
 				11FC10561D32E54A00CE863E /* Results.swift */,
 				11FC10591D32EED000CE863E /* ResultsChange.swift */,
 				11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */,
@@ -1551,6 +1555,7 @@
 				11B2536A1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */,
 				113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */,
 				116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */,
+				9C1FEB291D8C10EB008C2ADE /* ProfileSettings.swift in Sources */,
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* ActiveSessionCoordinator.swift in Sources */,
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
@@ -1730,6 +1735,7 @@
 				9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */,
 				1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
+				9C1FEB2A1D8C10EB008C2ADE /* ProfileSettings.swift in Sources */,
 				114962961C64051A001E5435 /* CallBaseController.swift in Sources */,
 				11F276BC1D3EBF3000C613AA /* ChatBaseTextCellModel.swift in Sources */,
 				9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */,
