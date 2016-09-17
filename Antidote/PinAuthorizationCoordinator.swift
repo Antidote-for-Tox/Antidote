@@ -16,12 +16,14 @@ class PinAuthorizationCoordinator: NSObject {
 
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
+    private var lockOnStartup: Bool
     private var isCheckingTouchID: Bool = false
     
-    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
+    init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, lockOnStartup: Bool) {
         self.theme = theme
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.submanagerObjects = submanagerObjects
+        self.lockOnStartup = lockOnStartup
 
         super.init()
 
@@ -55,8 +57,10 @@ class PinAuthorizationCoordinator: NSObject {
 
 extension PinAuthorizationCoordinator: CoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        lockIfNeeded()
-        challengeUserToAuthorizeIfNeeded()
+        if lockOnStartup {
+            lockIfNeeded()
+            challengeUserToAuthorizeIfNeeded()
+        }
     }
 }
 

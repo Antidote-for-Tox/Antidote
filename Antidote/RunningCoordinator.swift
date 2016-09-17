@@ -26,11 +26,13 @@ class RunningCoordinator {
     private var activeSessionCoordinator: ActiveSessionCoordinator?
     private var pinAuthorizationCoordinator: PinAuthorizationCoordinator
 
-    init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
+    init(theme: Theme, window: UIWindow, toxManager: OCTManager, skipAuthorizationChallenge: Bool) {
         self.theme = theme
         self.window = window
         self.toxManager = toxManager
-        self.pinAuthorizationCoordinator = PinAuthorizationCoordinator(theme: theme, submanagerObjects: toxManager.objects)
+        self.pinAuthorizationCoordinator = PinAuthorizationCoordinator(theme: theme,
+                                                                       submanagerObjects: toxManager.objects,
+                                                                       lockOnStartup: !skipAuthorizationChallenge)
     }
 }
 
