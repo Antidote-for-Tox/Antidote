@@ -11,25 +11,33 @@ import AudioToolbox
 import LocalAuthentication
 
 class PinAuthorizationCoordinator: NSObject {
+    private enum State {
+        case Unlocked
+        case Locked(lockTime: CFTimeInterval)
+        case ValidatingPin
+    }
+
     private let theme: Theme
     private let window: UIWindow
 
     private weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private var lockOnStartup: Bool
-    private var isCheckingTouchID: Bool = false
-    
+    private var state: State
+
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, lockOnStartup: Bool) {
         self.theme = theme
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         self.submanagerObjects = submanagerObjects
-        self.lockOnStartup = lockOnStartup
+        self.state = .Unlocked
 
         super.init()
 
         // Showing window on top of all other windows.
         window.windowLevel = UIWindowLevelStatusBar + 1000
-        window.backgroundColor = .redColor()
+
+        if lockOnStartup {
+            lockIfNeeded(0)
+        }
 
         NSNotificationCenter.defaultCenter().addObserver(self,
                                                          selector: #selector(PinAuthorizationCoordinator.appWillResignActiveNotification),
@@ -47,26 +55,38 @@ class PinAuthorizationCoordinator: NSObject {
     }
 
     func appWillResignActiveNotification() {
-        lockIfNeeded()
+        lockIfNeeded(CACurrentMediaTime())
     }
 
     func appDidBecomeActiveNotification() {
-        challengeUserToAuthorizeIfNeeded()
+        switch state {
+            case .Unlocked:
+                // unlocked, nothing to do here
+                break
+            case .Locked(let lockTime):
+                isPinDateExpired(lockTime) ? challengeUserToAuthorize(lockTime) : unlock()
+            case .ValidatingPin:
+                // checking pin, no action required
+                break
+        }
     }
 }
 
 extension PinAuthorizationCoordinator: CoordinatorProtocol {
     func startWithOptions(options: CoordinatorOptions?) {
-        if lockOnStartup {
-            lockIfNeeded()
-            challengeUserToAuthorizeIfNeeded()
+        switch state {
+            case .Locked(let lockTime):
+                challengeUserToAuthorize(lockTime)
+            default:
+                // ignore
+                break
         }
     }
 }
 
 extension PinAuthorizationCoordinator: EnterPinControllerDelegate {
     func enterPinController(controller: EnterPinController, successWithPin pin: String) {
-        window.hidden = true
+        unlock()
     }
 
     func enterPinControllerFailure(controller: EnterPinController) {
@@ -77,54 +97,55 @@ extension PinAuthorizationCoordinator: EnterPinControllerDelegate {
 }
 
 private extension PinAuthorizationCoordinator {
-    func lockIfNeeded() {
-        let settings = submanagerObjects.getProfileSettings()
-
-        guard settings.unlockPinCode != nil else {
+    func lockIfNeeded(lockTime: CFTimeInterval) {
+        guard submanagerObjects.getProfileSettings().unlockPinCode != nil else {
             return
         }
 
         let storyboard = UIStoryboard(name: "LaunchPlaceholderBoard", bundle: NSBundle.mainBundle())
         window.rootViewController = storyboard.instantiateViewControllerWithIdentifier("LaunchPlaceholderController")
         window.hidden = false
+
+        switch state {
+            case .Unlocked:
+                // In case of Locked state don't want to update lockTime.
+                // In case of ValidatingPin state we also don't want to do anything.
+                state = .Locked(lockTime: lockTime)
+            default:
+                break
+        }
     }
 
-    func challengeUserToAuthorizeIfNeeded() {
-        guard shouldCheckPin() else {
-            return
-        }
+    func unlock() {
+        state = .Unlocked
+        window.hidden = true
+    }
 
+    func challengeUserToAuthorize(lockTime: CFTimeInterval) {
         if window.rootViewController is EnterPinController {
             // already showing pin controller
             return
         }
 
-        let context = LAContext()
+        if shouldUseTouchID() {
+            state = .ValidatingPin
 
-        if touchIdEnabled() && context.canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
-            isCheckingTouchID = true
-
-            context.evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
-                                   localizedReason: String(localized: "pin_touch_id_description"),
-                                   reply: { [weak self] success, error in
+            LAContext().evaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics,
+                                       localizedReason: String(localized: "pin_touch_id_description"),
+                                       reply: { [weak self] success, error in
                 dispatch_async(dispatch_get_main_queue()) {
-                    if success {
-                        self?.window.hidden = true
-                    }
-                    else {
-                        self?.validatePin()
-                    }
+                    self?.state = .Locked(lockTime: lockTime)
 
-                    self?.isCheckingTouchID = false
+                    success ? self?.unlock() : self?.showValidatePinController()
                 }
             })
         }
         else {
-            validatePin()
+            showValidatePinController()
         }
     }
 
-    func validatePin() {
+    func showValidatePinController() {
         let settings = submanagerObjects.getProfileSettings()
         guard let pin = settings.unlockPinCode else {
             fatalError("pin shouldn't be nil")
@@ -134,26 +155,35 @@ private extension PinAuthorizationCoordinator {
         controller.topText = String(localized: "pin_enter_to_unlock")
         controller.delegate = self
         window.rootViewController = controller
-        window.hidden = false
     }
 
-    func shouldCheckPin() -> Bool {
-        if isCheckingTouchID {
-            // Already checking pin.
+    func isPinDateExpired(lockTime: CFTimeInterval) -> Bool {
+        let settings = submanagerObjects.getProfileSettings()
+        let delta = CACurrentMediaTime() - lockTime
+
+        switch settings.lockTimeout {
+            case .Immediately:
+                return true
+            case .Seconds30:
+                return delta > 30
+            case .Minute1:
+                return delta > 60
+            case .Minute2:
+                return delta > (60 * 2)
+            case .Minute5:
+                return delta > (60 * 5)
+        }
+    }
+
+    func shouldUseTouchID() -> Bool {
+        guard submanagerObjects.getProfileSettings().useTouchID else {
             return false
         }
 
-        if window.hidden {
-            // Already unlocked
+        guard LAContext().canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, error: nil) else {
             return false
         }
 
         return true
-    }
-
-    func touchIdEnabled() -> Bool {
-        let settings = submanagerObjects.getProfileSettings()
-
-        return settings.useTouchID
     }
 }

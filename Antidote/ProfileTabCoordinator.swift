@@ -129,6 +129,12 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
         navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }
 
+    func profileDetailsControllerChangeLockTimeout(controller: ProfileDetailsController) {
+        let controller = ChangePinTimeoutController(theme: theme, submanagerObjects: toxManager.objects)
+        controller.delegate = self
+        navigationController.pushViewController(controller, animated: true)
+    }
+
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController) {
         let controller = ChangePasswordController(theme: theme, toxManager: toxManager)
         controller.delegate = self
@@ -148,7 +154,7 @@ extension ProfileTabCoordinator: EnterPinControllerDelegate {
             case .ValidatePin:
                 let settings = toxManager.objects.getProfileSettings()
                 settings.unlockPinCode = pin
-                toxManager.objects.setProfileSettings(settings)
+                toxManager.objects.saveProfileSettings(settings)
 
                 navigationController.dismissViewControllerAnimated(true, completion: nil)
             case .SetPin:
@@ -176,6 +182,12 @@ extension ProfileTabCoordinator: EnterPinControllerDelegate {
         setPin.delegate = self
 
         presentedNavigation.viewControllers = [setPin]
+    }
+}
+
+extension ProfileTabCoordinator: ChangePinTimeoutControllerDelegate {
+    func changePinTimeoutControllerDone(controller: ChangePinTimeoutController) {
+        navigationController.popViewControllerAnimated(true)
     }
 }
 

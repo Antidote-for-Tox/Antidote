@@ -11,6 +11,7 @@ import LocalAuthentication
 
 protocol ProfileDetailsControllerDelegate: class {
     func profileDetailsControllerSetPin(controller: ProfileDetailsController)
+    func profileDetailsControllerChangeLockTimeout(controller: ProfileDetailsController)
     func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
     func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
 }
@@ -95,7 +96,19 @@ private extension ProfileDetailsController {
         lockTimeoutModel.title = String(localized: "pin_lock_timeout")
         lockTimeoutModel.showArrow = true
         lockTimeoutModel.didSelectHandler = changeLockTimeout
-        lockTimeoutModel.value = String(localized: "pin_lock_immediately")
+
+        switch settings.lockTimeout {
+            case .Immediately:
+                lockTimeoutModel.value = String(localized: "pin_lock_immediately")
+            case .Seconds30:
+                lockTimeoutModel.value = String(localized: "pin_lock_30_seconds")
+            case .Minute1:
+                lockTimeoutModel.value = String(localized: "pin_lock_1_minute")
+            case .Minute2:
+                lockTimeoutModel.value = String(localized: "pin_lock_2_minutes")
+            case .Minute5:
+                lockTimeoutModel.value = String(localized: "pin_lock_5_minutes")
+        }
 
         touchIdEnabledModel.enabled = isPinEnabled
         touchIdEnabledModel.title = String(localized: "pin_touch_id_enabled")
@@ -118,9 +131,8 @@ private extension ProfileDetailsController {
         }
         else {
             let settings = toxManager.objects.getProfileSettings()
-            settings.useTouchID = false
             settings.unlockPinCode = nil
-            toxManager.objects.setProfileSettings(settings)
+            toxManager.objects.saveProfileSettings(settings)
         }
 
         updateModel()
@@ -128,12 +140,13 @@ private extension ProfileDetailsController {
     }
 
     func changeLockTimeout(_: StaticTableBaseCell) {
+        delegate?.profileDetailsControllerChangeLockTimeout(self)
     }
 
     func touchIdEnabledValueChanged(on: Bool) {
         let settings = toxManager.objects.getProfileSettings()
         settings.useTouchID = on
-        toxManager.objects.setProfileSettings(settings)
+        toxManager.objects.saveProfileSettings(settings)
     }
 
     func changePassword(_: StaticTableBaseCell) {

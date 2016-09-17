@@ -46,7 +46,7 @@ extension OCTSubmanagerObjects {
         return settings
     }
 
-    func setProfileSettings(settings: ProfileSettings) {
+    func saveProfileSettings(settings: ProfileSettings) {
         let data = NSMutableData()
         let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
 
