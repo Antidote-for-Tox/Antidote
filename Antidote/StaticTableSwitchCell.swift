@@ -28,6 +28,7 @@ class StaticTableSwitchCell: StaticTableBaseCell {
         titleLabel.textColor = theme.colorForType(.NormalText)
         titleLabel.text = switchModel.title
 
+        switchView.enabled = switchModel.enabled
         switchView.tintColor = theme.colorForType(.LinkText)
         switchView.on = switchModel.on
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1109019B1D83417500BC5751 /* PinInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1109019A1D83417500BC5751 /* PinInputView.swift */; };
+		1109019C1D83417500BC5751 /* PinInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1109019A1D83417500BC5751 /* PinInputView.swift */; };
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
 		110E49E01BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
@@ -64,6 +66,8 @@
 		1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
 		115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */; };
 		115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */; };
+		116046191D8D434B002287C8 /* ChangePinTimeoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116046181D8D434B002287C8 /* ChangePinTimeoutController.swift */; };
+		1160461A1D8D434B002287C8 /* ChangePinTimeoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116046181D8D434B002287C8 /* ChangePinTimeoutController.swift */; };
 		1160B67E1D5F9993002DF75B /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B67D1D5F9993002DF75B /* KeychainManager.swift */; };
 		1160B67F1D5F9993002DF75B /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B67D1D5F9993002DF75B /* KeychainManager.swift */; };
 		1160B6821D5FC7CC002DF75B /* KeychainManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1160B6801D5FC7CC002DF75B /* KeychainManagerTests.swift */; };
@@ -228,8 +232,14 @@
 		9C04BB6D1C17389200F58488 /* StaticTableBaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */; };
 		9C07151D1BCD2E5B003A27B5 /* PortraitNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */; };
 		9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C07151E1BCD501D003A27B5 /* LoginFormController.swift */; };
+		9C19367E1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */; };
+		9C19367F1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */; };
+		9C1FEB291D8C10EB008C2ADE /* ProfileSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */; };
+		9C1FEB2A1D8C10EB008C2ADE /* ProfileSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */; };
 		9C2EF3711C4D4D5C006E7AB1 /* NotificationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */; };
 		9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */; };
+		9C3271871D79C19C00347490 /* PinAuthorizationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */; };
+		9C3271881D79C19C00347490 /* PinAuthorizationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */; };
 		9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C7475C01BC698110098B1A4 /* Localizable.strings */; };
 		9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C7475C41BC698510098B1A4 /* StringExtension.swift */; };
 		9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */; };
@@ -467,6 +477,7 @@
 
 /* Begin PBXFileReference section */
 		034E57B3AE56E352BBAA0487 /* libPods-Antidote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Antidote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1109019A1D83417500BC5751 /* PinInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinInputView.swift; sourceTree = "<group>"; };
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSessionNavigationCoordinator.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
@@ -513,6 +524,7 @@
 		1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarManager.swift; sourceTree = "<group>"; };
 		115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCell.swift; sourceTree = "<group>"; };
 		115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCellModel.swift; sourceTree = "<group>"; };
+		116046181D8D434B002287C8 /* ChangePinTimeoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePinTimeoutController.swift; sourceTree = "<group>"; };
 		1160B67D1D5F9993002DF75B /* KeychainManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		1160B6801D5FC7CC002DF75B /* KeychainManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainManagerTests.swift; sourceTree = "<group>"; };
 		1160B6891D5FD8DE002DF75B /* LaunchPlaceholderController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchPlaceholderController.swift; sourceTree = "<group>"; };
@@ -661,8 +673,11 @@
 		9C04BB6C1C17389200F58488 /* StaticTableBaseCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCell.swift; sourceTree = "<group>"; };
 		9C07151C1BCD2E5B003A27B5 /* PortraitNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PortraitNavigationController.swift; sourceTree = "<group>"; };
 		9C07151E1BCD501D003A27B5 /* LoginFormController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginFormController.swift; sourceTree = "<group>"; };
+		9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnterPinController.swift; sourceTree = "<group>"; };
+		9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileSettings.swift; sourceTree = "<group>"; };
 		9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCoordinator.swift; sourceTree = "<group>"; };
 		9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListTableManager.swift; sourceTree = "<group>"; };
+		9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinAuthorizationCoordinator.swift; sourceTree = "<group>"; };
 		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9C7475C41BC698510098B1A4 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMainController.swift; sourceTree = "<group>"; };
@@ -837,6 +852,7 @@
 				113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */,
 				11628E771CA5819B008C097E /* LoadingImageView.swift */,
 				116513251C2D636A0066AF06 /* NotificationWindow.swift */,
+				1109019A1D83417500BC5751 /* PinInputView.swift */,
 				1183BCBF1CA1DB05000CD310 /* ProgressCircleView.swift */,
 				113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */,
 				1164C8EC1BC9801200B91107 /* RoundedButton.swift */,
@@ -908,6 +924,7 @@
 				1160B67D1D5F9993002DF75B /* KeychainManager.swift */,
 				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
+				9C1FEB281D8C10EB008C2ADE /* ProfileSettings.swift */,
 				11FC10561D32E54A00CE863E /* Results.swift */,
 				11FC10591D32EED000CE863E /* ResultsChange.swift */,
 				11B253651C4BAD3C0068F47C /* TabBarAbstractItem.swift */,
@@ -1045,6 +1062,7 @@
 				11FA0EF21BC5A6AF00F3DA5B /* ChatsTabCoordinator.swift */,
 				11FA0EEA1BC5A68600F3DA5B /* FriendsTabCoordinator.swift */,
 				9C2EF3701C4D4D5C006E7AB1 /* NotificationCoordinator.swift */,
+				9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */,
 				11FA0EEC1BC5A69000F3DA5B /* ProfileTabCoordinator.swift */,
 				9CB1F9501D58CA4000105858 /* RunningCoordinator.swift */,
 				11FA0EF01BC5A6A500F3DA5B /* SettingsTabCoordinator.swift */,
@@ -1080,9 +1098,11 @@
 				112E4ED51C668C02004312CF /* CallIncomingController.swift */,
 				11628E7A1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift */,
 				114962911C5E1BE0001E5435 /* ChangePasswordController.swift */,
+				116046181D8D434B002287C8 /* ChangePinTimeoutController.swift */,
 				1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */,
 				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
 				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
+				9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				116634EB1C7B90F20072C980 /* FriendRequestController.swift */,
@@ -1539,6 +1559,7 @@
 				11B2536A1C4BAD560068F47C /* TabBarBadgeItem.swift in Sources */,
 				113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */,
 				116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */,
+				9C1FEB291D8C10EB008C2ADE /* ProfileSettings.swift in Sources */,
 				9C07151F1BCD501D003A27B5 /* LoginFormController.swift in Sources */,
 				11FA0EE71BC59B1400F3DA5B /* ActiveSessionCoordinator.swift in Sources */,
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
@@ -1556,6 +1577,7 @@
 				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11FC10571D32E54A00CE863E /* Results.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
+				9C19367E1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */,
 				11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
 				1193AB421C1E2075006AA9E5 /* QRViewerController.swift in Sources */,
 				9CEE6B521C528AB600A1ECB5 /* SettingsAdvancedController.swift in Sources */,
@@ -1566,6 +1588,8 @@
 				110E49E01BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift in Sources */,
 				1164C8D81BC922EB00B91107 /* UserDefaultsManager.swift in Sources */,
 				11770D771CBC1C7A00D34D6E /* UIAlertControllerExtension.swift in Sources */,
+				9C3271871D79C19C00347490 /* PinAuthorizationCoordinator.swift in Sources */,
+				1109019B1D83417500BC5751 /* PinInputView.swift in Sources */,
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
@@ -1590,6 +1614,7 @@
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
 				1160B67E1D5F9993002DF75B /* KeychainManager.swift in Sources */,
+				116046191D8D434B002287C8 /* ChangePinTimeoutController.swift in Sources */,
 				114962921C5E1BE0001E5435 /* ChangePasswordController.swift in Sources */,
 				9C2EF37A1C4E2DDE006E7AB1 /* ChatListTableManager.swift in Sources */,
 				112E4EDF1C675C58004312CF /* CallActiveController.swift in Sources */,
@@ -1620,6 +1645,7 @@
 				113AD8581CA9C70F00D981B5 /* iPadFriendsButton.swift in Sources */,
 				9CEE6B181C4E8FDC00A1ECB5 /* RoundedButton.swift in Sources */,
 				11B253A51C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
+				9C3271881D79C19C00347490 /* PinAuthorizationCoordinator.swift in Sources */,
 				116634EA1C7B8D7C0072C980 /* StaticTableInfoCellModel.swift in Sources */,
 				9CEE6B201C510A1E00A1ECB5 /* NotificationObject.swift in Sources */,
 				113F03341CB2E9C20009ABE1 /* UIFontExtension.swift in Sources */,
@@ -1658,6 +1684,7 @@
 				9CEE6AF21C4E8FDC00A1ECB5 /* TabBarController.swift in Sources */,
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				9CEE6AE01C4E8FDC00A1ECB5 /* LoginCreateAccountController.swift in Sources */,
+				1109019C1D83417500BC5751 /* PinInputView.swift in Sources */,
 				9CEE6AC91C4E8FDC00A1ECB5 /* StaticTableButtonCell.swift in Sources */,
 				11FC105E1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */,
 				113F03431CB31DD60009ABE1 /* AlertAudioPlayer.swift in Sources */,
@@ -1665,12 +1692,14 @@
 				9CEE6ABD1C4E8FDC00A1ECB5 /* ChatListCell.swift in Sources */,
 				9CEE6B021C4E8FDC00A1ECB5 /* UserStatus.swift in Sources */,
 				9CEE6B0D1C4E8FDC00A1ECB5 /* Logger.swift in Sources */,
+				9C19367F1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */,
 				9CEE6B001C4E8FDC00A1ECB5 /* ActiveSessionNavigationCoordinator.swift in Sources */,
 				9CEE6ADA1C4E8FDC00A1ECB5 /* Theme.swift in Sources */,
 				9CEE6B0E1C4E8FDC00A1ECB5 /* BubbleView.swift in Sources */,
 				113F03211CAFE2B50009ABE1 /* ChatOutgoingFileCellSnapshotTest.swift in Sources */,
 				9CEE6B0A1C4E8FDC00A1ECB5 /* UIViewControllerExtension.swift in Sources */,
 				11628E7C1CA5BF1F008C097E /* ChangeAutodownloadImagesController.swift in Sources */,
+				1160461A1D8D434B002287C8 /* ChangePinTimeoutController.swift in Sources */,
 				116634ED1C7B90F20072C980 /* FriendRequestController.swift in Sources */,
 				11B3F8701CE095D2001927D8 /* ChatEditable.swift in Sources */,
 				9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
@@ -1712,6 +1741,7 @@
 				9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */,
 				1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
+				9C1FEB2A1D8C10EB008C2ADE /* ProfileSettings.swift in Sources */,
 				114962961C64051A001E5435 /* CallBaseController.swift in Sources */,
 				11F276BC1D3EBF3000C613AA /* ChatBaseTextCellModel.swift in Sources */,
 				9CEE6B071C4E8FDC00A1ECB5 /* StringExtension.swift in Sources */,

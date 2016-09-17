@@ -24,11 +24,15 @@ class RunningCoordinator {
     private var options: CoordinatorOptions?
 
     private var activeSessionCoordinator: ActiveSessionCoordinator?
+    private var pinAuthorizationCoordinator: PinAuthorizationCoordinator
 
-    init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
+    init(theme: Theme, window: UIWindow, toxManager: OCTManager, skipAuthorizationChallenge: Bool) {
         self.theme = theme
         self.window = window
         self.toxManager = toxManager
+        self.pinAuthorizationCoordinator = PinAuthorizationCoordinator(theme: theme,
+                                                                       submanagerObjects: toxManager.objects,
+                                                                       lockOnStartup: !skipAuthorizationChallenge)
     }
 }
 
@@ -39,6 +43,8 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         activeSessionCoordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: toxManager)
         activeSessionCoordinator?.delegate = self
         activeSessionCoordinator?.startWithOptions(options)
+
+        pinAuthorizationCoordinator.startWithOptions(nil)
     }
 
     func handleLocalNotification(notification: UILocalNotification) {

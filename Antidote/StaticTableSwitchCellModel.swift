@@ -13,4 +13,6 @@ class StaticTableSwitchCellModel: StaticTableBaseCellModel {
     var on: Bool = false
 
     var valueChangedHandler: (Bool -> Void)?
+
+    var enabled: Bool = true
 }

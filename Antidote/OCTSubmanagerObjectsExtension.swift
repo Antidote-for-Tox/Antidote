@@ -33,4 +33,26 @@ extension OCTSubmanagerObjects {
         let rlmResults = objectsForType(.MessageAbstract, predicate: predicate)
         return Results(results: rlmResults)
     }
+
+    func getProfileSettings() -> ProfileSettings {
+        guard let data = self.genericSettingsData else {
+            return ProfileSettings()
+        }
+
+        let unarchiver = NSKeyedUnarchiver(forReadingWithData: data)
+        let settings =  ProfileSettings(coder: unarchiver)
+        unarchiver.finishDecoding()
+
+        return settings
+    }
+
+    func saveProfileSettings(settings: ProfileSettings) {
+        let data = NSMutableData()
+        let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
+
+        settings.encodeWithCoder(archiver)
+        archiver.finishEncoding()
+
+        self.genericSettingsData = data.copy() as! NSData
+    }
 }

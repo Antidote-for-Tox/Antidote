@@ -74,7 +74,7 @@ extension AppCoordinator: RunningCoordinatorDelegate {
     }
 
     func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions) {
-        recreateActiveCoordinator(options: options)
+        recreateActiveCoordinator(options: options, skipAuthorizationChallenge: true)
     }
 }
 
@@ -82,7 +82,7 @@ extension AppCoordinator: LoginCoordinatorDelegate {
     func loginCoordinatorDidLogin(coordinator: LoginCoordinator, manager: OCTManager, password: String) {
         KeychainManager().toxPasswordForActiveAccount = password
 
-        recreateActiveCoordinator(manager: manager)
+        recreateActiveCoordinator(manager: manager, skipAuthorizationChallenge: true)
     }
 }
 
@@ -96,10 +96,14 @@ private extension AppCoordinator {
         UINavigationBar.appearance().tintColor = linkTextColor
     }
 
-    func recreateActiveCoordinator(options options: CoordinatorOptions? = nil, manager: OCTManager? = nil) {
+    func recreateActiveCoordinator(options options: CoordinatorOptions? = nil,
+                                   manager: OCTManager? = nil,
+                                   skipAuthorizationChallenge: Bool = false) {
         if let password = KeychainManager().toxPasswordForActiveAccount {
             let successBlock: OCTManager -> Void = { [unowned self] manager -> Void in
-                self.activeCoordinator = self.createRunningCoordinatorWithManager(manager, options: options)
+                self.activeCoordinator = self.createRunningCoordinatorWithManager(manager,
+                                                                                  options: options,
+                                                                                  skipAuthorizationChallenge: skipAuthorizationChallenge)
             }
 
             if let manager = manager {
@@ -116,7 +120,9 @@ private extension AppCoordinator {
                                                     failureBlock: { [unowned self] _ in
                     log("Cannot create tox with configuration \(configuration)")
                     KeychainManager().deleteActiveAccountData()
-                    self.recreateActiveCoordinator(options: options, manager: manager)
+                    self.recreateActiveCoordinator(options: options,
+                                                   manager: manager,
+                                                   skipAuthorizationChallenge: skipAuthorizationChallenge)
                 })
             }
         }
@@ -125,8 +131,13 @@ private extension AppCoordinator {
         }
     }
 
-    func createRunningCoordinatorWithManager(manager: OCTManager, options: CoordinatorOptions?) -> RunningCoordinator {
-        let coordinator = RunningCoordinator(theme: theme, window: window, toxManager: manager)
+    func createRunningCoordinatorWithManager(manager: OCTManager,
+                                             options: CoordinatorOptions?,
+                                             skipAuthorizationChallenge: Bool) -> RunningCoordinator {
+        let coordinator = RunningCoordinator(theme: theme,
+                                             window: window,
+                                             toxManager: manager,
+                                             skipAuthorizationChallenge: skipAuthorizationChallenge)
         coordinator.delegate = self
         coordinator.startWithOptions(options)
 
