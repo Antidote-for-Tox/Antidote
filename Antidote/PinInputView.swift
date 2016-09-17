@@ -9,11 +9,11 @@
 import Foundation
 
 private struct Constants {
-    static let DotsSize: CGFloat = 12
-    static let ButtonSize: CGFloat = 55
-    static let VerticalOffsetSmall: CGFloat = 8
-    static let VerticalOffsetBig: CGFloat = 13
-    static let HorizontalOffset: CGFloat = 13
+    static let DotsSize: CGFloat = 14
+    static let ButtonSize: CGFloat = 65
+    static let VerticalOffsetSmall: CGFloat = 10
+    static let VerticalOffsetBig: CGFloat = 15
+    static let HorizontalOffset: CGFloat = 15
 }
 
 protocol PinInputViewDelegate: class {
@@ -107,7 +107,7 @@ extension PinInputView {
 private extension PinInputView {
     func createTopLabel() {
         topLabel = UILabel()
-        topLabel.font = .systemFontOfSize(14.0)
+        topLabel.font = .systemFontOfSize(16.0)
         addSubview(topLabel)
     }
 
@@ -128,7 +128,7 @@ private extension PinInputView {
         for i in 0...9 {
             let button = UIButton()
             button.setTitle("\(i)", forState: .Normal)
-            button.titleLabel?.font = UIFont.systemFontOfSize(24.0)
+            button.titleLabel?.font = UIFont.systemFontOfSize(28.0)
             button.addTarget(self, action: #selector(PinInputView.numericButtonPressed(_:)), forControlEvents: .TouchUpInside)
             addSubview(button)
 
@@ -140,7 +140,7 @@ private extension PinInputView {
         deleteButton = UIButton(type: .System)
         // No localication on purpose
         deleteButton.setTitle("Delete", forState: .Normal)
-        deleteButton.titleLabel?.font = .systemFontOfSize(15.0)
+        deleteButton.titleLabel?.font = .systemFontOfSize(18.0)
         deleteButton.addTarget(self, action: #selector(PinInputView.deleteButtonPressed(_:)), forControlEvents: .TouchUpInside)
         addSubview(deleteButton)
     }
