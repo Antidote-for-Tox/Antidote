@@ -124,7 +124,7 @@ extension ProfileTabCoordinator: ProfileDetailsControllerDelegate {
         controller.topText = String(localized: "pin_set")
         controller.delegate = self
 
-        let toPresent = UINavigationController(rootViewController: controller)
+        let toPresent = PortraitNavigationController(rootViewController: controller)
         toPresent.navigationBarHidden = true
         navigationController.presentViewController(toPresent, animated: true, completion: nil)
     }

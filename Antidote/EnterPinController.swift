@@ -74,6 +74,14 @@ class EnterPinController: UIViewController {
         pinInputView.applyColors()
     }
 
+    override func shouldAutorotate() -> Bool {
+        return false
+    }
+
+    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.Portrait
+    }
+
     func resetEnteredPin() {
         enteredString = ""
         pinInputView.enteredNumbersCount = enteredString.characters.count
