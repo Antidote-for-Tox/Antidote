@@ -102,6 +102,10 @@ private extension PinAuthorizationCoordinator {
             return
         }
 
+        for window in UIApplication.sharedApplication().windows {
+            window.endEditing(true)
+        }
+
         let storyboard = UIStoryboard(name: "LaunchPlaceholderBoard", bundle: NSBundle.mainBundle())
         window.rootViewController = storyboard.instantiateViewControllerWithIdentifier("LaunchPlaceholderController")
         window.hidden = false
