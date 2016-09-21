@@ -15,7 +15,7 @@ You can help by translating Antidote to different languages. Translation is done
 Antidote is available for beta testing via TestFlight. If you wish to participate, you must:
 - Be on iOS 8+.
 - Install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore.
-- Send your Apple ID email to [beta@antidote.im](mailto:beta@antidote.im?subject=Beta%20testing).
+- Send your Apple ID email address to [beta@antidote.im](mailto:beta@antidote.im?subject=Beta%20testing).
 
 #### Manual Installation
 
