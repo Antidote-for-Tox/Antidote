@@ -49,7 +49,7 @@ class TextViewController: UIViewController {
 private extension TextViewController {
     func createTextView() {
         textView = UITextView()
-        textView.userInteractionEnabled = false
+        textView.editable = false
         textView.backgroundColor = .clearColor()
         view.addSubview(textView)
     }

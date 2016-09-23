@@ -255,6 +255,8 @@
 		9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
 		9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
 		9CE0BDF31C4522C800DCE357 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
+		9CEA6A1F1D957EFC0045F000 /* antidote-acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = 9CEA6A1E1D957EFC0045F000 /* antidote-acknowledgements.html */; };
+		9CEA6A201D957EFC0045F000 /* antidote-acknowledgements.html in Resources */ = {isa = PBXBuildFile; fileRef = 9CEA6A1E1D957EFC0045F000 /* antidote-acknowledgements.html */; };
 		9CEE6AA21C4E679100A1ECB5 /* PrimaryIpadController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */; };
 		9CEE6AB81C4E8FDC00A1ECB5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */; };
 		9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB651C1F5694006AA9E5 /* BaseCell.swift */; };
@@ -693,6 +695,7 @@
 		9CE0BDE51C45229500DCE357 /* ChatListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListController.swift; sourceTree = "<group>"; };
 		9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
 		9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCellModel.swift; sourceTree = "<group>"; };
+		9CEA6A1E1D957EFC0045F000 /* antidote-acknowledgements.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "antidote-acknowledgements.html"; sourceTree = "<group>"; };
 		9CEE6AA11C4E679100A1ECB5 /* PrimaryIpadController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryIpadController.swift; sourceTree = "<group>"; };
 		9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationObject.swift; sourceTree = "<group>"; };
 		9CEE6B451C5289E200A1ECB5 /* SettingsMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsMainController.swift; sourceTree = "<group>"; };
@@ -1143,6 +1146,7 @@
 				1164763A19794D3300DB20B8 /* Antidote-Info.plist */,
 				11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
+				9CEA6A1E1D957EFC0045F000 /* antidote-acknowledgements.html */,
 				1131D6C71CA9D8BC00B4531C /* import-profile.html */,
 				1173F0711BC5D9DA00B88B7B /* default-theme.yaml */,
 				9C7475C01BC698110098B1A4 /* Localizable.strings */,
@@ -1359,6 +1363,7 @@
 				11DDEAFD1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard in Resources */,
 				11B253531C4AD9CF0068F47C /* isotoxin_Ringtone.aac in Resources */,
 				9C7475BE1BC698110098B1A4 /* Localizable.strings in Resources */,
+				9CEA6A1F1D957EFC0045F000 /* antidote-acknowledgements.html in Resources */,
 				1173F0721BC5D9DA00B88B7B /* default-theme.yaml in Resources */,
 				116634CF1C70E46C0072C980 /* Launch Screen.storyboard in Resources */,
 				1131D6C51CA9D8BC00B4531C /* import-profile.html in Resources */,
@@ -1374,6 +1379,7 @@
 			files = (
 				113F03111CAFD1610009ABE1 /* icon.png in Resources */,
 				113F03081CAFCC9D0009ABE1 /* default-theme.yaml in Resources */,
+				9CEA6A201D957EFC0045F000 /* antidote-acknowledgements.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

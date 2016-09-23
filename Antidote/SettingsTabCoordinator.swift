@@ -44,6 +44,7 @@ class SettingsTabCoordinator: ActiveSessionNavigationCoordinator {
 extension SettingsTabCoordinator: SettingsMainControllerDelegate {
     func settingsMainControllerShowAboutScreen(controller: SettingsMainController) {
         let controller = SettingsAboutController(theme: theme)
+        controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
     }
@@ -58,6 +59,19 @@ extension SettingsTabCoordinator: SettingsMainControllerDelegate {
     func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController) {
         let controller = SettingsAdvancedController(theme: theme)
         controller.delegate = self
+
+        navigationController.pushViewController(controller, animated: true)
+    }
+}
+
+extension SettingsTabCoordinator: SettingsAboutControllerDelegate {
+    func settingsAboutControllerShowAcknowledgements(controller: SettingsAboutController) {
+        let controller = TextViewController(
+                resourceName: "antidote-acknowledgements",
+                backgroundColor: theme.colorForType(.NormalBackground),
+                titleColor: theme.colorForType(.NormalText),
+                textColor: theme.colorForType(.NormalText))
+        controller.title = String(localized: "settings_acknowledgements")
 
         navigationController.pushViewController(controller, animated: true)
     }
