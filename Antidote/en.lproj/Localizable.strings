@@ -208,6 +208,8 @@
 "settings_antidote_build" = "Antidote Build";
 /* About screen menu */
 "settings_toxcore_version" = "Toxcore Version";
+/* About screen menu */
+"settings_acknowledgements" = "Acknowledgements";
 /* Settings screen menu */
 "settings_autodownload_images" = "Autodownload images";
 /* Settings screen menu */

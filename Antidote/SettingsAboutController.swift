@@ -8,10 +8,17 @@
 
 import Foundation
 
+protocol SettingsAboutControllerDelegate: class {
+    func settingsAboutControllerShowAcknowledgements(controller: SettingsAboutController)
+}
+
 class SettingsAboutController: StaticTableController {
+    weak var delegate: SettingsAboutControllerDelegate?
+
     private let antidoteVersionModel = StaticTableInfoCellModel()
     private let antidoteBuildModel = StaticTableInfoCellModel()
     private let toxcoreVersionModel = StaticTableInfoCellModel()
+    private let acknowledgementsModel = StaticTableDefaultCellModel()
 
     init(theme: Theme) {
         super.init(theme: theme, style: .Grouped, model: [
@@ -21,6 +28,9 @@ class SettingsAboutController: StaticTableController {
             ],
             [
                 toxcoreVersionModel,
+            ],
+            [
+                acknowledgementsModel,
             ],
         ])
 
@@ -43,5 +53,13 @@ private extension SettingsAboutController {
 
         toxcoreVersionModel.title = String(localized: "settings_toxcore_version")
         toxcoreVersionModel.value = OCTTox.version()
+
+        acknowledgementsModel.value = String(localized: "settings_acknowledgements")
+        acknowledgementsModel.didSelectHandler = showAcknowledgements
+        acknowledgementsModel.rightImageType = .Arrow
+    }
+
+    func showAcknowledgements(_: StaticTableBaseCell) {
+        delegate?.settingsAboutControllerShowAcknowledgements(self)
     }
 }
