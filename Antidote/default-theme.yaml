@@ -10,7 +10,6 @@ colors:
   darkgray: AAAAAA
   darkgray2: 8C8C8C
   lightgrayblue: EDF3F5
-  lightgrayblue2: D8E7EF
   simpleblue: 2E76D3
   mediumblue: 00A7E9
   lightblue: 9CBDE9
@@ -54,7 +53,7 @@ values:
   chat-list-cell-unread-background: lightgrayblue
   chat-input-background: lightgrayblue
   chat-incoming-bubble: lightgrayblue
-  chat-outgoing-bubble: lightgrayblue2
+  chat-outgoing-bubble: simpleblue
   tab-badge-background: palered
   tab-badge-text: white
   tab-item-active: simpleblue

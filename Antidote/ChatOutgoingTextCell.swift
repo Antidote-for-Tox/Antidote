@@ -14,6 +14,7 @@ class ChatOutgoingTextCell: ChatBaseTextCell {
         super.setupWithTheme(theme, model: model)
 
         bubbleNormalBackground = theme.colorForType(.ChatOutgoingBubble)
+        bubbleView.textColor = theme.colorForType(.ConnectingText)
         bubbleView.backgroundColor = bubbleNormalBackground
     }
 
