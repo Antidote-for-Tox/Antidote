@@ -12,8 +12,9 @@ colors:
   lightgrayblue: EDF3F5
   lightgrayblue2: D8E7EF
   simpleblue: 2E76D3
+  mediumblue: 00A7E9
   lightblue: 9CBDE9
-  darkblue: 0D678C
+  purple: 575CCF
   green: 85B452
   yellow: DECF4E
   red: E94F42
@@ -74,3 +75,5 @@ values:
   file-image-cancelled-text: white
   file-image-accept-button-tint: white
   file-image-cancel-button-tint: black
+  lock-gradient-top: mediumblue
+  lock-gradient-bottom: purple

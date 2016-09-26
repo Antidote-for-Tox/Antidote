@@ -78,6 +78,8 @@ class ThemeTest: XCTestCase {
             "  file-image-cancelled-text: first\n" +
             "  file-image-accept-button-tint: second\n" +
             "  file-image-cancel-button-tint: first\n" +
+            "  lock-gradient-top: second\n" +
+            "  lock-gradient-bottom: first\n" +
             ""
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
@@ -138,6 +140,8 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(first, theme.colorForType(.FileImageCancelledText))
             XCTAssertEqual(second, theme.colorForType(.FileImageAcceptButtonTint))
             XCTAssertEqual(first, theme.colorForType(.FileImageCancelButtonTint))
+            XCTAssertEqual(second, theme.colorForType(.LockGradientTop))
+            XCTAssertEqual(first, theme.colorForType(.LockGradientBottom))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

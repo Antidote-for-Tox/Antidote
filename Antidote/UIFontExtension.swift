@@ -11,6 +11,7 @@ import UIKit
 extension UIFont {
     enum Weight {
         case Light
+        case Medium
         case Bold
 
         func float() -> CGFloat {
@@ -18,6 +19,8 @@ extension UIFont {
                 switch self {
                     case .Light:
                         return UIFontWeightLight
+                    case .Medium:
+                        return UIFontWeightMedium
                     case .Bold:
                         return UIFontWeightBold
                 }
@@ -30,6 +33,8 @@ extension UIFont {
             switch self {
                 case .Light:
                     return "HelveticaNeue-Light"
+                case .Medium:
+                    return "HelveticaNeue-Medium"
                 case .Bold:
                     return "HelveticaNeue-Bold"
             }
