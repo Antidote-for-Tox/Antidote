@@ -107,11 +107,7 @@ extension LoginCoordinator: LoginFormControllerDelegate {
     }
 
     func loginFormController(controller: LoginFormController, isProfileEncrypted profile: String) -> Bool {
-        let path = ProfileManager().pathForProfileWithName(profile)
-
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
-
-        return OCTManager.isToxSaveEncryptedAtPath(configuration.fileStorage.pathForToxSaveFile)
+        return isProfileEncrypted(profile)
     }
 }
 
@@ -209,6 +205,12 @@ private extension LoginCoordinator {
             errorClosure: (NSError -> Void)? = nil)
     {
         guard let password = password else {
+            if isProfileEncrypted(profile) {
+                // Profile is encrypted, password is required. No error is needed, password placeholder
+                // should be quite obvious.
+                return
+            }
+
             let coordinator = LoginCreateAccountCoordinator(theme: theme,
                                                             navigationController: navigationController,
                                                             type: .CreatePassword)
@@ -292,5 +294,13 @@ private extension LoginCoordinator {
                 _ = try? profileManager.deleteProfileWithName(profileName)
             }
         })
+    }
+
+    func isProfileEncrypted(profile: String) -> Bool {
+        let path = ProfileManager().pathForProfileWithName(profile)
+
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
+
+        return OCTManager.isToxSaveEncryptedAtPath(configuration.fileStorage.pathForToxSaveFile)
     }
 }
