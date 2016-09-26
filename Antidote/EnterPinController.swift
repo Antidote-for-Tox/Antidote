@@ -124,7 +124,9 @@ extension EnterPinController: PinInputViewDelegate {
 
 private extension EnterPinController {
     func createViews() {
-        pinInputView = PinInputView(pinLength: Constants.PinLength, topColor: .greenColor(), bottomColor: .blueColor())
+        pinInputView = PinInputView(pinLength: Constants.PinLength,
+                                    topColor: theme.colorForType(.LockGradientTop),
+                                    bottomColor: theme.colorForType(.LockGradientBottom))
         pinInputView.delegate = self
         view.addSubview(pinInputView)
     }

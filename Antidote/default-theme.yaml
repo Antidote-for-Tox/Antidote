@@ -10,24 +10,25 @@ colors:
   darkgray: AAAAAA
   darkgray2: 8C8C8C
   lightgrayblue: EDF3F5
-  lightgrayblue2: D8E7EF
-  lightblue: D4F1FC
-  skyblue: 2685AC
-  darkblue: 0D678C
+  simpleblue: 2E76D3
+  mediumblue: 00A7E9
+  lightblue: 9CBDE9
+  purple: 575CCF
   green: 85B452
   yellow: DECF4E
   red: E94F42
   palered: C56258
 
 values:
-  login-background: skyblue
-  login-tox-logo: lightgrayblue2
+  login-background: white
+  login-gradient: lightblue
+  login-tox-logo: simpleblue
   login-button-text: white
-  login-button-background: darkblue
-  login-description-label: lightblue
+  login-button-background: simpleblue
+  login-description-label: white
   login-form-background: white
   login-form-text: black
-  login-link-color: lightgrayblue
+  login-link-color: white
 
   # Color used for fullscreen translucent views background, e.g. fullscreen picker
   translucent-background: transparent_white
@@ -35,12 +36,12 @@ values:
   # normal background color used all over application
   normal-background: white
   normal-text: black
-  link-text: skyblue
-  connecting-background: skyblue
+  link-text: simpleblue
+  connecting-background: simpleblue
   connecting-text: white
   separators-and-borders: gray
   rounded-button-text: white
-  rounded-positive-button-background: skyblue
+  rounded-positive-button-background: simpleblue
   rounded-negative-button-background: gray
   offline-status: darkgray
   online-status: green
@@ -52,10 +53,10 @@ values:
   chat-list-cell-unread-background: lightgrayblue
   chat-input-background: lightgrayblue
   chat-incoming-bubble: lightgrayblue
-  chat-outgoing-bubble: lightgrayblue2
+  chat-outgoing-bubble: simpleblue
   tab-badge-background: palered
   tab-badge-text: white
-  tab-item-active: skyblue
+  tab-item-active: simpleblue
   tab-item-inactive: darkgray2
   notification-background: transparent_dark_gray
   notification-text: white
@@ -63,13 +64,15 @@ values:
   call-text-color: white
   call-decline-button-background: red
   call-answer-button-background: green
-  call-control-background: skyblue
+  call-control-background: simpleblue
   call-control-selected-background: white
   call-button-icon-color: white
-  call-button-selected-icon-color: skyblue
+  call-button-selected-icon-color: simpleblue
   call-video-preview-background: black
   empty-screen-placeholder-text: darkgray
   file-image-background-active: darkgray
   file-image-cancelled-text: white
   file-image-accept-button-tint: white
   file-image-cancel-button-tint: black
+  lock-gradient-top: mediumblue
+  lock-gradient-bottom: purple

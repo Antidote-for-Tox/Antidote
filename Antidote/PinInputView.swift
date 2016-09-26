@@ -9,11 +9,11 @@
 import Foundation
 
 private struct Constants {
-    static let DotsSize: CGFloat = 14
-    static let ButtonSize: CGFloat = 65
-    static let VerticalOffsetSmall: CGFloat = 10
-    static let VerticalOffsetBig: CGFloat = 15
-    static let HorizontalOffset: CGFloat = 15
+    static let DotsSize: CGFloat = 16
+    static let ButtonSize: CGFloat = 75
+    static let VerticalOffsetSmall: CGFloat = 12
+    static let VerticalOffsetBig: CGFloat = 17
+    static let HorizontalOffset: CGFloat = 17
 }
 
 protocol PinInputViewDelegate: class {
@@ -107,7 +107,7 @@ extension PinInputView {
 private extension PinInputView {
     func createTopLabel() {
         topLabel = UILabel()
-        topLabel.font = .systemFontOfSize(16.0)
+        topLabel.font = UIFont.antidoteFontWithSize(18.0, weight: .Medium)
         addSubview(topLabel)
     }
 
@@ -140,7 +140,7 @@ private extension PinInputView {
         deleteButton = UIButton(type: .System)
         // No localication on purpose
         deleteButton.setTitle("Delete", forState: .Normal)
-        deleteButton.titleLabel?.font = .systemFontOfSize(18.0)
+        deleteButton.titleLabel?.font = .systemFontOfSize(20.0)
         deleteButton.addTarget(self, action: #selector(PinInputView.deleteButtonPressed(_:)), forControlEvents: .TouchUpInside)
         addSubview(deleteButton)
     }
@@ -309,10 +309,11 @@ private extension PinInputView {
 
         if !filled {
             // apply mask
+            let lineWidth: CGFloat = 2.0
 
             let path = UIBezierPath()
             path.addArcWithCenter(CGPoint(x: radius, y: radius),
-                                radius: radius - 1.0,
+                                radius: radius - lineWidth,
                                 startAngle: 0.0,
                                 endAngle: CGFloat(2 * M_PI),
                                 clockwise: true)
@@ -320,7 +321,7 @@ private extension PinInputView {
             let mask = CAShapeLayer()
             mask.frame = gradientLayer.frame
             mask.path = path.CGPath
-            mask.lineWidth = 1.0
+            mask.lineWidth = lineWidth
             mask.fillColor = UIColor.clearColor().CGColor
             mask.strokeColor = UIColor.blackColor().CGColor
 

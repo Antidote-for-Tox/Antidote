@@ -150,15 +150,19 @@ private extension LoginFormController {
 
     func createFormViews() {
         formView = IncompressibleView()
-        formView.backgroundColor = theme.colorForType(.LoginFormBackground)
+        formView.backgroundColor = .clearColor()
         formView.layer.cornerRadius = 5.0
         formView.layer.masksToBounds = true
         contentContainerView.addSubview(formView)
 
         profileFakeTextField = UITextField()
-        profileFakeTextField.borderStyle = .RoundedRect
         profileFakeTextField.leftViewMode = .Always
         profileFakeTextField.leftView = iconContainerWithImageName("login-profile-icon")
+        profileFakeTextField.borderStyle = .RoundedRect
+        profileFakeTextField.layer.borderColor = theme.colorForType(.LoginButtonBackground).CGColor
+        profileFakeTextField.layer.borderWidth = 0.5
+        profileFakeTextField.layer.masksToBounds = true
+        profileFakeTextField.layer.cornerRadius = 6.0
         formView.addSubview(profileFakeTextField)
 
         profileButton = UIButton()
@@ -173,6 +177,10 @@ private extension LoginFormController {
         passwordField.borderStyle = .RoundedRect
         passwordField.leftViewMode = .Always
         passwordField.leftView = iconContainerWithImageName("login-password-icon")
+        passwordField.layer.borderColor = theme.colorForType(.LoginButtonBackground).CGColor
+        passwordField.layer.borderWidth = 0.5
+        passwordField.layer.masksToBounds = true
+        passwordField.layer.cornerRadius = 6.0
         formView.addSubview(passwordField)
     }
 
@@ -195,7 +203,7 @@ private extension LoginFormController {
 
         orLabel = UILabel()
         orLabel.text = String(localized: "login_or_label")
-        orLabel.textColor = theme.colorForType(.LoginDescriptionLabel)
+        orLabel.textColor = theme.colorForType(.LoginButtonBackground)
         orLabel.backgroundColor = .clearColor()
         bottomButtonsContainer.addSubview(orLabel)
 
@@ -220,8 +228,8 @@ private extension LoginFormController {
 
         profileButton.snp_makeConstraints {
             $0.top.equalTo(formView).offset(PrivateConstants.FormOffset)
-            $0.leading.equalTo(formView).offset(PrivateConstants.FormOffset)
-            $0.trailing.equalTo(formView).offset(-PrivateConstants.FormOffset)
+            $0.leading.equalTo(formView)
+            $0.trailing.equalTo(formView)
             profileButtonBottomToFormConstraint = $0.bottom.equalTo(formView).offset(-PrivateConstants.FormOffset).constraint
 
             $0.height.equalTo(Constants.TextFieldHeight)

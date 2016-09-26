@@ -100,7 +100,7 @@ private extension LoginGenericCreateController {
 
     func createTitleLabel() {
         titleLabel = UILabel()
-        titleLabel.textColor = theme.colorForType(.LoginButtonText)
+        titleLabel.textColor = theme.colorForType(.LoginButtonBackground)
         titleLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .Light)
         titleLabel.backgroundColor = .clearColor()
         containerView.addSubview(titleLabel)

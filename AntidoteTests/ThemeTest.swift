@@ -26,7 +26,8 @@ class ThemeTest: XCTestCase {
             "  first: \"AABBCC\"\n" +
             "  second: \"55667788\"\n" +
             "values:\n" +
-            "  login-background: first\n" +
+            "  login-background: second\n" +
+            "  login-gradient: first\n" +
             "  login-tox-logo: second\n" +
             "  login-button-text: first\n" +
             "  login-button-background: second\n" +
@@ -77,6 +78,8 @@ class ThemeTest: XCTestCase {
             "  file-image-cancelled-text: first\n" +
             "  file-image-accept-button-tint: second\n" +
             "  file-image-cancel-button-tint: first\n" +
+            "  lock-gradient-top: second\n" +
+            "  lock-gradient-bottom: first\n" +
             ""
 
         let first = UIColor(red: 170.0 / 255.0, green: 187.0 / 255.0, blue: 204.0 / 255.0, alpha: 1.0)
@@ -85,7 +88,8 @@ class ThemeTest: XCTestCase {
         do {
             let theme = try Theme(yamlString: string)
 
-            XCTAssertEqual(first, theme.colorForType(.LoginBackground))
+            XCTAssertEqual(second, theme.colorForType(.LoginBackground))
+            XCTAssertEqual(first, theme.colorForType(.LoginGradient))
             XCTAssertEqual(second, theme.colorForType(.LoginToxLogo))
             XCTAssertEqual(first, theme.colorForType(.LoginButtonText))
             XCTAssertEqual(second, theme.colorForType(.LoginButtonBackground))
@@ -136,6 +140,8 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(first, theme.colorForType(.FileImageCancelledText))
             XCTAssertEqual(second, theme.colorForType(.FileImageAcceptButtonTint))
             XCTAssertEqual(first, theme.colorForType(.FileImageCancelButtonTint))
+            XCTAssertEqual(second, theme.colorForType(.LockGradientTop))
+            XCTAssertEqual(first, theme.colorForType(.LockGradientBottom))
         }
         catch let error as ErrorTheme {
             XCTFail(error.debugDescription())

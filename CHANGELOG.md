@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Storing password in keychain. There is no need to login on every application launch.
 - Added PIN screen and TouchID support [#164](https://github.com/Antidote-for-Tox/Antidote/issues/164), [#165](https://github.com/Antidote-for-Tox/Antidote/issues/165).
 - Added Acknowledgements screen [#76](https://github.com/Antidote-for-Tox/Antidote/issues/76).
+- Updating app icon and color scheme [#203](https://github.com/Antidote-for-Tox/Antidote/issues/203).
 
 ## [0.10.4-2] - 2016-08-04
 ### Fixed
