@@ -39,7 +39,12 @@ class LoginGenericCreateController: LoginBaseController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        firstTextField.becomeFirstResponder()
+        if !firstTextField.hidden {
+            firstTextField.becomeFirstResponder()
+        }
+        else if !secondTextField.hidden {
+            secondTextField.becomeFirstResponder()
+        }
     }
 
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {

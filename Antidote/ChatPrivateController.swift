@@ -588,7 +588,7 @@ extension ChatPrivateController: UIImagePickerControllerDelegate {
 
         if fileName == nil {
             let dateString = NSDateFormatter(type: .DateAndTime).stringFromDate(NSDate())
-            fileName = "Photo \(dateString).jpg"
+            fileName = "Photo \(dateString).jpg".stringByReplacingOccurrencesOfString("/", withString: "-")
         }
 
         submanagerFiles.sendData(data, withFileName: fileName!, toChat: chat) { error in

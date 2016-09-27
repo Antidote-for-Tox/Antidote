@@ -279,7 +279,6 @@ private extension NotificationCoordinator {
         registerInAppNotificationAppId(appId);
 
         let notification = LNNotification.init(message: object.body, title: object.title)
-        notification.soundName = object.soundName;
         notification.defaultAction = LNNotificationAction.init(title: nil, handler: { [weak self] _ in
             self?.performAction(object.action)
         })
