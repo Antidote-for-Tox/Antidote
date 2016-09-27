@@ -273,26 +273,26 @@ private extension LoginCoordinator {
             return
         }
 
+        if isProfileEncrypted(profileName) && password == nil {
+            // Cannot login without password, just opening login screen.
+            UserDefaultsManager().lastActiveProfile = profileName
+
+            let controller = self.createFormController()
+            let root = self.navigationController.viewControllers[0]
+
+            self.navigationController.setViewControllers([root, controller], animated: true)
+
+            return
+        }
+
         loginWithProfile(profileName, password: password, configurationClosure: {
             if let name = username {
                 _ = try? $0.user.setUserName(name)
                 _ = try? $0.user.setUserStatusMessage(String(localized: "default_user_status_message"))
             }
         }, errorClosure: { [unowned self] error in
-            let code = OCTManagerInitError(rawValue: error.code)
-
-            if code == .CreateToxEncrypted {
-                UserDefaultsManager().lastActiveProfile = profileName
-
-                let controller = self.createFormController()
-                let root = self.navigationController.viewControllers[0]
-
-                self.navigationController.setViewControllers([root, controller], animated: true)
-            }
-            else {
-                handleErrorWithType(.CreateOCTManager, error: error)
-                _ = try? profileManager.deleteProfileWithName(profileName)
-            }
+            handleErrorWithType(.CreateOCTManager, error: error)
+            _ = try? profileManager.deleteProfileWithName(profileName)
         })
     }
 
