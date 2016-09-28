@@ -1244,6 +1244,7 @@
 				"zh-Hans-CN",
 				fr,
 				"fr-FR",
+				cs,
 			);
 			mainGroup = 1164762619794D3300DB20B8;
 			productRefGroup = 1164763019794D3300DB20B8 /* Products */;
