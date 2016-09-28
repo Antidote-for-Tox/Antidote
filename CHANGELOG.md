@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [1.0.0-rc.1] - 2016-09-28
 ### Added
 - Database encryption. Now all message history and relate data is encrypted.
 - Requering password for all accounts.
@@ -143,7 +145,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.4-2...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.1...master
+[1.0.0-rc.1]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.4-2...1.0.0-rc.1
 [0.10.4-2]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.4...0.10.4-2
 [0.10.4]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.3...0.10.4
 [0.10.3]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.2...0.10.3
