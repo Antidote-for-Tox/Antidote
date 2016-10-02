@@ -18,7 +18,7 @@ private struct Options {
 }
 
 private struct Constants {
-    static let FAQURL = "https://github.com/Antidote-for-Tox/Antidote/blob/FAQ/en.md"
+    static let FAQURL = "https://github.com/Antidote-for-Tox/Antidote/blob/master/FAQ/en.md"
 }
 
 protocol SettingsTabCoordinatorDelegate: class {

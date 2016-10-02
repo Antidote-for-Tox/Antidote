@@ -32,20 +32,19 @@ class SettingsMainController: StaticTableController {
 
         super.init(theme: theme, style: .Grouped, model: [
             [
-                aboutModel,
-                faqModel,
-            ],
-            [
                 autodownloadImagesModel,
             ],
             [
                 notificationsModel,
             ],
             [
+                faqModel,
                 advancedSettingsModel,
             ],
+            [
+                aboutModel,
+            ],
         ], footers: [
-            nil,
             String(localized: "settings_autodownload_images_description"),
             String(localized: "settings_notifications_description"),
             nil,
