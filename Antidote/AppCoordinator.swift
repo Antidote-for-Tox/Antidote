@@ -110,19 +110,31 @@ private extension AppCoordinator {
                 successBlock(manager)
             }
             else {
-                let profileName = UserDefaultsManager().lastActiveProfile!
-                let path = ProfileManager().pathForProfileWithName(profileName)
-                let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
-
-                OCTManager.managerWithConfiguration(configuration,
-                                                    encryptPassword: password,
-                                                    successBlock: successBlock,
-                                                    failureBlock: { [unowned self] _ in
-                    log("Cannot create tox with configuration \(configuration)")
+                let deleteActiveAccountAndRetry: Void -> Void = { [unowned self] in
                     KeychainManager().deleteActiveAccountData()
                     self.recreateActiveCoordinator(options: options,
                                                    manager: manager,
                                                    skipAuthorizationChallenge: skipAuthorizationChallenge)
+                }
+
+                guard let profileName = UserDefaultsManager().lastActiveProfile else {
+                    deleteActiveAccountAndRetry()
+                    return
+                }
+
+                let path = ProfileManager().pathForProfileWithName(profileName)
+
+                guard let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path) else {
+                    deleteActiveAccountAndRetry()
+                    return
+                }
+
+                OCTManager.managerWithConfiguration(configuration,
+                                                    encryptPassword: password,
+                                                    successBlock: successBlock,
+                                                    failureBlock: { _ in
+                    log("Cannot create tox with configuration \(configuration)")
+                    deleteActiveAccountAndRetry()
                 })
             }
         }
