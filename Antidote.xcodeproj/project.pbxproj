@@ -170,6 +170,8 @@
 		119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */; };
 		11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */; };
 		11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */; };
+		11AEBE711DA1876F00D04B59 /* FAQController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AEBE701DA1876F00D04B59 /* FAQController.swift */; };
+		11AEBE721DA1876F00D04B59 /* FAQController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AEBE701DA1876F00D04B59 /* FAQController.swift */; };
 		11B252FA1C4A614D0068F47C /* ChatIncomingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */; };
 		11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */; };
 		11B253021C4A61D00068F47C /* ChatMovableDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */; };
@@ -602,6 +604,7 @@
 		119AD1CB1BDEDD9C000C5CB8 /* UIColorExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPrivateController.swift; sourceTree = "<group>"; };
 		11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputView.swift; sourceTree = "<group>"; };
+		11AEBE701DA1876F00D04B59 /* FAQController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQController.swift; sourceTree = "<group>"; };
 		11B252F91C4A614D0068F47C /* ChatIncomingTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingTextCell.swift; sourceTree = "<group>"; };
 		11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingTextCell.swift; sourceTree = "<group>"; };
 		11B253011C4A61D00068F47C /* ChatMovableDateCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatMovableDateCell.swift; sourceTree = "<group>"; };
@@ -1108,6 +1111,7 @@
 				9CE0BDE51C45229500DCE357 /* ChatListController.swift */,
 				11A21EFA1C45BDB100E80A89 /* ChatPrivateController.swift */,
 				9C19367D1D79CF7E005EA0B2 /* EnterPinController.swift */,
+				11AEBE701DA1876F00D04B59 /* FAQController.swift */,
 				116513181C2C6C980066AF06 /* FriendCardController.swift */,
 				1193AB471C1F4164006AA9E5 /* FriendListController.swift */,
 				116634EB1C7B90F20072C980 /* FriendRequestController.swift */,
@@ -1538,6 +1542,7 @@
 				11B2536D1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */,
 				11B253A41C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
+				11AEBE711DA1876F00D04B59 /* FAQController.swift in Sources */,
 				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
 				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
 				112950841D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */,
@@ -1677,6 +1682,7 @@
 				1183BCDE1CA1FD55000CD310 /* ChatProgressBridge.swift in Sources */,
 				9CEE6AD71C4E8FDC00A1ECB5 /* TabBarAbstractItem.swift in Sources */,
 				9CEE6ABB1C4E8FDC00A1ECB5 /* ChatIncomingTextCell.swift in Sources */,
+				11AEBE721DA1876F00D04B59 /* FAQController.swift in Sources */,
 				9CEE6AC51C4E8FDC00A1ECB5 /* StaticTableAvatarCell.swift in Sources */,
 				9CEE6AB81C4E8FDC00A1ECB5 /* AppDelegate.swift in Sources */,
 				9CEE6AE11C4E8FDC00A1ECB5 /* LoginFormController.swift in Sources */,

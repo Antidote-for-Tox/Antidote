@@ -17,10 +17,6 @@ private struct Options {
     }
 }
 
-private struct Constants {
-    static let FAQURL = "https://github.com/Antidote-for-Tox/Antidote/blob/master/FAQ/en.md"
-}
-
 protocol SettingsTabCoordinatorDelegate: class {
     func settingsTabCoordinatorRecreateCoordinatorsStack(coordinator: SettingsTabCoordinator, options: CoordinatorOptions)
 }
@@ -55,17 +51,9 @@ extension SettingsTabCoordinator: SettingsMainControllerDelegate {
     }
 
     func settingsMainControllerShowFaqScreen(controller: SettingsMainController) {
-        let url = NSURL(string: Constants.FAQURL)!
+        let controller = FAQController(theme: theme)
 
-        if #available(iOS 9.0, *) {
-            let controller = SFSafariViewController(URL: url)
-            controller.title = String(localized: "settings_faq")
-            controller.hidesBottomBarWhenPushed = true
-
-            navigationController.presentViewController(controller, animated: true, completion: nil)
-        } else {
-            UIApplication.sharedApplication().openURL(url)
-        }
+        navigationController.pushViewController(controller, animated: true)
     }
 
     func settingsMainControllerChangeAutodownloadImages(controller: SettingsMainController) {
