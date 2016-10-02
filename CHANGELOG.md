@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Fixed
 - Czech language was not working.
+- Freezes when bootstraping on bad network [#231](https://github.com/Antidote-for-Tox/Antidote/issues/231).
 
 ## [1.0.0-rc.1] - 2016-09-28
 ### Added
