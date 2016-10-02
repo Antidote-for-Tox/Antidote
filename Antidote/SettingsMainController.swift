@@ -7,10 +7,10 @@
 //
 
 import Foundation
-import MessageUI
 
 protocol SettingsMainControllerDelegate: class {
     func settingsMainControllerShowAboutScreen(controller: SettingsMainController)
+    func settingsMainControllerShowFaqScreen(controller: SettingsMainController)
     func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController)
     func settingsMainControllerChangeAutodownloadImages(controller: SettingsMainController)
 }
@@ -22,10 +22,10 @@ class SettingsMainController: StaticTableController {
     private let userDefaults = UserDefaultsManager()
 
     private let aboutModel = StaticTableDefaultCellModel()
+    private let faqModel = StaticTableDefaultCellModel()
     private let autodownloadImagesModel = StaticTableInfoCellModel()
     private let notificationsModel = StaticTableSwitchCellModel()
     private let advancedSettingsModel = StaticTableDefaultCellModel()
-    private let feedbackModel = StaticTableButtonCellModel()
 
     init(theme: Theme) {
         self.theme = theme
@@ -33,6 +33,7 @@ class SettingsMainController: StaticTableController {
         super.init(theme: theme, style: .Grouped, model: [
             [
                 aboutModel,
+                faqModel,
             ],
             [
                 autodownloadImagesModel,
@@ -42,9 +43,6 @@ class SettingsMainController: StaticTableController {
             ],
             [
                 advancedSettingsModel,
-            ],
-            [
-                feedbackModel,
             ],
         ], footers: [
             nil,
@@ -70,17 +68,15 @@ class SettingsMainController: StaticTableController {
     }
 }
 
-extension SettingsMainController: MFMailComposeViewControllerDelegate {
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
-}
-
 private extension SettingsMainController{
     func updateModels() {
         aboutModel.value = String(localized: "settings_about")
         aboutModel.didSelectHandler = showAboutScreen
         aboutModel.rightImageType = .Arrow
+
+        faqModel.value = String(localized: "settings_faq")
+        faqModel.didSelectHandler = showFaqScreen
+        faqModel.rightImageType = .Arrow
 
         autodownloadImagesModel.title = String(localized: "settings_autodownload_images")
         autodownloadImagesModel.showArrow = true
@@ -101,13 +97,14 @@ private extension SettingsMainController{
         advancedSettingsModel.value = String(localized: "settings_advanced_settings")
         advancedSettingsModel.didSelectHandler = showAdvancedSettings
         advancedSettingsModel.rightImageType = .Arrow
-
-        feedbackModel.title = String(localized: "settings_feedback")
-        feedbackModel.didSelectHandler = feedback
     }
 
     func showAboutScreen(_: StaticTableBaseCell) {
         delegate?.settingsMainControllerShowAboutScreen(self)
+    }
+
+    func showFaqScreen(_: StaticTableBaseCell) {
+        delegate?.settingsMainControllerShowFaqScreen(self)
     }
 
     func notificationsValueChanged(on: Bool) {
@@ -120,20 +117,5 @@ private extension SettingsMainController{
 
     func showAdvancedSettings(_: StaticTableBaseCell) {
         delegate?.settingsMainControllerShowAdvancedSettings(self)
-    }
-
-    func feedback(_: StaticTableBaseCell) {
-        guard MFMailComposeViewController.canSendMail() else {
-            UIAlertController.showErrorWithMessage(String(localized: "settings_configure_email"), retryBlock: nil)
-            return
-        }
-
-        let controller = MFMailComposeViewController()
-        controller.navigationBar.tintColor = theme.colorForType(.LinkText)
-        controller.setSubject("Feedback")
-        controller.setToRecipients(["feedback@antidote.im"])
-        controller.mailComposeDelegate = self
-
-        presentViewController(controller, animated: true, completion: nil)
     }
 }

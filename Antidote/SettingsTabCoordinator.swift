@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SafariServices
 
 private struct Options {
     static let ToShowKey = "ToShowKey"
@@ -14,6 +15,10 @@ private struct Options {
     enum Controller {
         case AdvancedSettings
     }
+}
+
+private struct Constants {
+    static let FAQURL = "https://github.com/Antidote-for-Tox/Antidote/blob/FAQ/en.md"
 }
 
 protocol SettingsTabCoordinatorDelegate: class {
@@ -47,6 +52,20 @@ extension SettingsTabCoordinator: SettingsMainControllerDelegate {
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
+    }
+
+    func settingsMainControllerShowFaqScreen(controller: SettingsMainController) {
+        let url = NSURL(string: Constants.FAQURL)!
+
+        if #available(iOS 9.0, *) {
+            let controller = SFSafariViewController(URL: url)
+            controller.title = String(localized: "settings_faq")
+            controller.hidesBottomBarWhenPushed = true
+
+            navigationController.presentViewController(controller, animated: true, completion: nil)
+        } else {
+            UIApplication.sharedApplication().openURL(url)
+        }
     }
 
     func settingsMainControllerChangeAutodownloadImages(controller: SettingsMainController) {

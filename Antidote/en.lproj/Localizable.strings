@@ -197,11 +197,9 @@
 /* Settings menu / screen name */
 "settings_about" = "About";
 /* Settings menu / screen name */
+"settings_faq" = "FAQ";
+/* Settings menu / screen name */
 "settings_advanced_settings" = "Advanced Settings";
-/* Settings menu */
-"settings_feedback" = "Feedback";
-/* Settings feedback error */
-"settings_configure_email" = "Please configure your mail settings";
 /* About screen menu */
 "settings_antidote_version" = "Antidote Version";
 /* About screen menu */

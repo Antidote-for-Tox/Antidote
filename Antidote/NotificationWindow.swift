@@ -25,9 +25,9 @@ class NotificationWindow: UIWindow {
 
         super.init(frame: UIScreen.mainScreen().bounds)
 
-        windowLevel = UIWindowLevelStatusBar + 1
-        makeKeyAndVisible()
+        windowLevel = UIWindowLevelStatusBar + 500
         backgroundColor = .clearColor()
+        hidden = false
 
         createRootViewController()
         createConnectingView()
