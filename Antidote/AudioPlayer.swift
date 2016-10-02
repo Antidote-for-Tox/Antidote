@@ -31,6 +31,7 @@ class AudioPlayer {
         }
 
         player.numberOfLoops = loop ? -1 : 1
+        player.currentTime = 0.0
         player.play()
     }
 
