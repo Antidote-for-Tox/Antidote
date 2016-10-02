@@ -290,7 +290,7 @@ private extension LoginCoordinator {
                 _ = try? $0.user.setUserName(name)
                 _ = try? $0.user.setUserStatusMessage(String(localized: "default_user_status_message"))
             }
-        }, errorClosure: { [unowned self] error in
+        }, errorClosure: { error in
             handleErrorWithType(.CreateOCTManager, error: error)
             _ = try? profileManager.deleteProfileWithName(profileName)
         })

@@ -36,17 +36,6 @@ class LoginGenericCreateController: LoginBaseController {
         installConstraints()
     }
 
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if !firstTextField.hidden {
-            firstTextField.becomeFirstResponder()
-        }
-        else if !secondTextField.hidden {
-            secondTextField.becomeFirstResponder()
-        }
-    }
-
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         if CGRectIsEmpty(containerView.frame) {
             return
@@ -85,7 +74,7 @@ extension LoginGenericCreateController: ExtendedTextFieldDelegate {
             secondTextField.becomeFirstResponder()
         }
         else if field == secondTextField {
-            secondTextField.resignFirstResponder()
+            view.endEditing(true)
             bottomButtonPressed()
         }
     }
