@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Fixed
+- Crash on startup that happened on app reinstall.
 
 ## [1.0.0-rc.2] - 2016-10-02
 ### Added
