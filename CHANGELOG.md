@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [1.0.0-rc.3] - 2016-10-03
 ### Fixed
 - Crash on startup that happened on app reinstall.
 
@@ -157,7 +159,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.2...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.3...master
+[1.0.0-rc.3]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.2...1.0.0-rc.3
 [1.0.0-rc.2]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.1...1.0.0-rc.2
 [1.0.0-rc.1]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.4-2...1.0.0-rc.1
 [0.10.4-2]: https://github.com/Antidote-for-Tox/Antidote/compare/0.10.4...0.10.4-2
