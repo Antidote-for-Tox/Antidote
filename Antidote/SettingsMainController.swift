@@ -38,10 +38,10 @@ class SettingsMainController: StaticTableController {
                 notificationsModel,
             ],
             [
-                faqModel,
                 advancedSettingsModel,
             ],
             [
+                faqModel,
                 aboutModel,
             ],
         ], footers: [
