@@ -217,8 +217,6 @@
 /* Settings screen menu */
 "settings_notifications_description" = "When application goes to background, you will still receive notifications up to 10 minutes.";
 /* Settings screen menu */
-"settings_ipv6_enabled" = "IPv6 Enabled";
-/* Settings screen menu */
 "settings_udp_enabled" = "UDP Enabled";
 /* Settings screen menu */
 "settings_restore_default" = "Restore Default Settings";

@@ -16,15 +16,6 @@ class UserDefaultsManager {
         }
     }
 
-    var IPv6Enabled: Bool {
-        get {
-            return boolForKey(Keys.IPv6Enabled, defaultValue: true)
-        }
-        set {
-            setBool(newValue, forKey: Keys.IPv6Enabled)
-        }
-    }
-
     var UDPEnabled: Bool {
         get {
             return boolForKey(Keys.UDPEnabled, defaultValue: true)
@@ -63,10 +54,6 @@ class UserDefaultsManager {
         }
     }
 
-    func resetIPv6Enabled() {
-        removeObjectForKey(Keys.IPv6Enabled)
-    }
-
     func resetUDPEnabled() {
         removeObjectForKey(Keys.UDPEnabled)
     }
@@ -75,7 +62,6 @@ class UserDefaultsManager {
 private extension UserDefaultsManager {
     struct Keys {
         static let LastActiveProfile = "user-info/last-active-profile"
-        static let IPv6Enabled = "user-info/ipv6-enabled"
         static let UDPEnabled = "user-info/udp-enabled"
         static let ShowNotificationsPreview = "user-info/snow-notification-preview"
         static let AutodownloadImages = "user-info/autodownload-images"
