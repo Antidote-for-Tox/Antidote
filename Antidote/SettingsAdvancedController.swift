@@ -18,7 +18,6 @@ class SettingsAdvancedController: StaticTableController {
     private let theme: Theme
     private let userDefaults = UserDefaultsManager()
 
-    private let IPv6Model = StaticTableSwitchCellModel()
     private let UDPModel = StaticTableSwitchCellModel()
     private let restoreDefaultsModel = StaticTableButtonCellModel()
 
@@ -27,7 +26,6 @@ class SettingsAdvancedController: StaticTableController {
 
         super.init(theme: theme, style: .Grouped, model: [
             [
-                IPv6Model,
                 UDPModel,
             ],
             [
@@ -46,10 +44,6 @@ class SettingsAdvancedController: StaticTableController {
 
 private extension SettingsAdvancedController {
     func updateModels() {
-        IPv6Model.title = String(localized: "settings_ipv6_enabled")
-        IPv6Model.on = userDefaults.IPv6Enabled
-        IPv6Model.valueChangedHandler = IPv6Changed
-
         UDPModel.title = String(localized: "settings_udp_enabled")
         UDPModel.on = userDefaults.UDPEnabled
         UDPModel.valueChangedHandler = UDPChanged
@@ -58,18 +52,12 @@ private extension SettingsAdvancedController {
         restoreDefaultsModel.didSelectHandler = restoreDefaultsSettings
     }
 
-    func IPv6Changed(on: Bool) {
-        userDefaults.IPv6Enabled = on
-        delegate?.settingsAdvancedControllerToxOptionsChanged(self)
-    }
-
     func UDPChanged(on: Bool) {
         userDefaults.UDPEnabled = on
         delegate?.settingsAdvancedControllerToxOptionsChanged(self)
     }
 
     func restoreDefaultsSettings(_: StaticTableBaseCell) {
-        userDefaults.resetIPv6Enabled()
         userDefaults.resetUDPEnabled()
         delegate?.settingsAdvancedControllerToxOptionsChanged(self)
     }

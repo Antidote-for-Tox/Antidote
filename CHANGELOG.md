@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [Unreleased][unreleased]
 ### Changes
 - Removed voip flag.
+- Always enabling IPv6. Removed IPv6 option from settings.
 
 ## [1.0.0-rc.3] - 2016-10-03
 ### Fixed

@@ -60,9 +60,9 @@
 /* PIN screen error */
 "pin_incorrect" = "Incorrect PIN";
 /* PIN screen screen */
-"pin_enabled" = "PIN Enabled";
+"pin_enabled" = "Enable PIN";
 /* PIN screen screen */
-"pin_touch_id_enabled" = "Touch ID Enabled";
+"pin_touch_id_enabled" = "Enable Touch ID";
 /* PIN screen screen */
 "pin_description" = "Prevent unauthorized access to Antidote with a PIN.";
 /* PIN screen screen */
@@ -217,9 +217,7 @@
 /* Settings screen menu */
 "settings_notifications_description" = "When application goes to background, you will still receive notifications up to 10 minutes.";
 /* Settings screen menu */
-"settings_ipv6_enabled" = "IPv6 Enabled";
-/* Settings screen menu */
-"settings_udp_enabled" = "UDP Enabled";
+"settings_udp_enabled" = "Enable UDP";
 /* Settings screen menu */
 "settings_restore_default" = "Restore Default Settings";
 /* Settings screen autodownload images option */
