@@ -56,7 +56,7 @@ See [CHANGELOG](CHANGELOG.md) for list of notable changes (unreleased, current a
 
 ## License
 
-Antidote is available under the MIT license. See the [LICENSE](LICENSE) file for more info.
+Antidote is available under Mozilla Public License Version 2.0. See the [LICENSE](LICENSE) file for more info.
 
 ## Links
 
