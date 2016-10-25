@@ -6,6 +6,8 @@ import Foundation
 
 protocol CallCoordinatorDelegate: class {
     func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String)
+    func callCoordinatorDidStartCall(coordinator: CallCoordinator)
+    func callCoordinatorDidFinishCall(coordinator: CallCoordinator)
 }
 
 private struct Constants {
@@ -40,7 +42,18 @@ class CallCoordinator: NSObject {
 
     private let audioPlayer = AudioPlayer()
 
-    private var activeCall: ActiveCall?
+    private var activeCall: ActiveCall? {
+        didSet {
+            switch (oldValue, activeCall) {
+                case (.None, .Some):
+                    delegate?.callCoordinatorDidStartCall(self)
+                case (.Some, .None):
+                    delegate?.callCoordinatorDidFinishCall(self)
+                default:
+                    break
+            }
+        }
+    }
 
     init(theme: Theme, presentingController: UIViewController, submanagerCalls: OCTSubmanagerCalls, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme

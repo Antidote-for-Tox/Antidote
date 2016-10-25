@@ -20,6 +20,15 @@ class PinAuthorizationCoordinator: NSObject {
 
     private var state: State
 
+    var preventFromLocking: Bool = false {
+        didSet {
+            if !preventFromLocking && UIApplication.sharedApplication().applicationState != .Active {
+                // In case if locking option change in background we want to lock app when user comes back.
+                lockIfNeeded(CACurrentMediaTime())
+            }
+        }
+    }
+
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, lockOnStartup: Bool) {
         self.theme = theme
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
@@ -73,7 +82,10 @@ extension PinAuthorizationCoordinator: CoordinatorProtocol {
         switch state {
             case .Locked(let lockTime):
                 challengeUserToAuthorize(lockTime)
-            default:
+            case .Unlocked:
+                // ignore
+                break
+            case .ValidatingPin:
                 // ignore
                 break
         }
@@ -98,6 +110,10 @@ private extension PinAuthorizationCoordinator {
             return
         }
 
+        if preventFromLocking {
+            return
+        }
+
         for window in UIApplication.sharedApplication().windows {
             window.endEditing(true)
         }
@@ -108,10 +124,12 @@ private extension PinAuthorizationCoordinator {
 
         switch state {
             case .Unlocked:
-                // In case of Locked state don't want to update lockTime.
-                // In case of ValidatingPin state we also don't want to do anything.
                 state = .Locked(lockTime: lockTime)
-            default:
+            case .Locked:
+                // In case of Locked state don't want to update lockTime.
+                break
+            case .ValidatingPin:
+                // In case of ValidatingPin state we also don't want to do anything.
                 break
         }
     }
