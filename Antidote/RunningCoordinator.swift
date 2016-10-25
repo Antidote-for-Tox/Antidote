@@ -67,6 +67,14 @@ extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
     func activeSessionCoordinatorRecreateCoordinatorsStack(coordinator: ActiveSessionCoordinator, options: CoordinatorOptions) {
         delegate?.runningCoordinatorRecreateCoordinatorsStack(self, options: options)
     }
+
+    func activeSessionCoordinatorDidStartCall(coordinator: ActiveSessionCoordinator) {
+        pinAuthorizationCoordinator.preventFromLocking = true
+    }
+
+    func activeSessionCoordinatorDidFinishCall(coordinator: ActiveSessionCoordinator) {
+        pinAuthorizationCoordinator.preventFromLocking = false
+    }
 }
 
 private extension RunningCoordinator {

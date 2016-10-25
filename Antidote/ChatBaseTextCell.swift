@@ -24,7 +24,6 @@ class ChatBaseTextCell: ChatMovableDateCell {
         canBeCopied = true
         bubbleView.text = textModel.message
         bubbleView.textColor = theme.colorForType(.NormalText)
-        bubbleView.tintColor = theme.colorForType(.LinkText)
     }
 
     override func createViews() {

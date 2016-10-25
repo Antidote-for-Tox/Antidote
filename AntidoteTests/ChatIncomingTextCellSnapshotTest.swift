@@ -43,4 +43,24 @@ class ChatIncomingTextCellSnapshotTest: CellSnapshotTest {
         updateCellLayout(cell)
         verifyView(cell)
     }
+
+    func testWithLink() {
+        let model = ChatBaseTextCellModel()
+        model.message = "Lorem ipsum dolor sit amet, https://tox.chat consectetur adipiscing elit, +1234567890"
+
+        let cell = ChatIncomingTextCell()
+        cell.setupWithTheme(theme, model: model)
+
+        updateCellLayout(cell)
+
+        let expectation = expectationWithDescription("link rendering expectation")
+
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+            self?.verifyView(cell)
+            expectation.fulfill()
+        }
+
+        waitForExpectationsWithTimeout(1.0, handler: nil)
+    }
 }

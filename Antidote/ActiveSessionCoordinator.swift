@@ -8,6 +8,8 @@ protocol ActiveSessionCoordinatorDelegate: class {
     func activeSessionCoordinatorDidLogout(coordinator: ActiveSessionCoordinator, importToxProfileFromURL: NSURL?)
     func activeSessionCoordinatorDeleteProfile(coordinator: ActiveSessionCoordinator)
     func activeSessionCoordinatorRecreateCoordinatorsStack(coordinator: ActiveSessionCoordinator, options: CoordinatorOptions)
+    func activeSessionCoordinatorDidStartCall(coordinator: ActiveSessionCoordinator)
+    func activeSessionCoordinatorDidFinishCall(coordinator: ActiveSessionCoordinator)
 }
 
 private struct Options {
@@ -250,6 +252,14 @@ extension ActiveSessionCoordinator: NotificationCoordinatorDelegate {
 extension ActiveSessionCoordinator: CallCoordinatorDelegate {
     func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String) {
         notificationCoordinator.showCallNotificationWithCaller(caller, userInfo: userInfo)
+    }
+
+    func callCoordinatorDidStartCall(coordinator: CallCoordinator) {
+        delegate?.activeSessionCoordinatorDidStartCall(self)
+    }
+
+    func callCoordinatorDidFinishCall(coordinator: CallCoordinator) {
+        delegate?.activeSessionCoordinatorDidFinishCall(self)
     }
 }
 

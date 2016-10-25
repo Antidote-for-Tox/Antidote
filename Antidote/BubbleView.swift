@@ -37,7 +37,10 @@ class BubbleView: UIView {
 
     override var tintColor: UIColor! {
         didSet {
-            textView.tintColor = tintColor
+            textView.linkTextAttributes = [
+                NSForegroundColorAttributeName: tintColor,
+                NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue,
+            ]
         }
     }
 
@@ -62,6 +65,7 @@ class BubbleView: UIView {
         textView.scrollEnabled = false
         textView.dataDetectorTypes = .All
         textView.font = UIFont.systemFontOfSize(16.0)
+
         addSubview(textView)
 
         textView.snp_makeConstraints {

@@ -3,9 +3,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-### Changes
+### Changed
 - Removed voip flag.
 - Always enabling IPv6. Removed IPv6 option from settings.
+
+### Fixed
+- Links are not visible with new bubble colors [#242](https://github.com/Antidote-for-Tox/Antidote/issues/242).
+- Touch ID alert pops during the call [#240](https://github.com/Antidote-for-Tox/Antidote/issues/240).
 
 ## [1.0.0-rc.3] - 2016-10-03
 ### Fixed
