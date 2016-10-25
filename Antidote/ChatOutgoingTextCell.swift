@@ -12,6 +12,7 @@ class ChatOutgoingTextCell: ChatBaseTextCell {
         bubbleNormalBackground = theme.colorForType(.ChatOutgoingBubble)
         bubbleView.textColor = theme.colorForType(.ConnectingText)
         bubbleView.backgroundColor = bubbleNormalBackground
+        bubbleView.tintColor = theme.colorForType(.NormalText)
     }
 
     override func installConstraints() {
