@@ -14,7 +14,7 @@ class UserDefaultsManager {
 
     var UDPEnabled: Bool {
         get {
-            return boolForKey(Keys.UDPEnabled, defaultValue: true)
+            return boolForKey(Keys.UDPEnabled, defaultValue: false)
         }
         set {
             setBool(newValue, forKey: Keys.UDPEnabled)
