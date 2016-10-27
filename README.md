@@ -2,18 +2,19 @@
 
 [![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote)
 
+[![Download on the App Store](https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg)](https://itunes.apple.com/app/apple-store/id933117605?pt=107449857&ct=github&mt=8)
+
 [Tox](https://tox.chat/) client for iOS 8.0+;
 
 ## FAQ
 
 See [FAQ](FAQ/en.md).
 
-
 ##Usage
 
 #### TestFlight beta testing
 
-Antidote is available for beta testing via TestFlight. If you wish to participate, you must:
+You can help to test beta versions of Antidote via TestFlight. If you wish to participate, you must:
 - Be on iOS 8+.
 - Install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore.
 - Send your Apple ID email address to [beta@antidote.im](mailto:beta@antidote.im?subject=Beta%20testing).
