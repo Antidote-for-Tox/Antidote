@@ -29,3 +29,5 @@ xcshareddata
 
 Pods
 Podfile.lock
+
+.bundle
