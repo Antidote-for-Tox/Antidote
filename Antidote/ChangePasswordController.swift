@@ -229,10 +229,6 @@ private extension ChangePasswordController {
         return true
     }
 
-    func hasOldPassword() -> Bool {
-        return OCTManager.isToxSaveEncryptedAtPath(toxManager.configuration().fileStorage.pathForToxSaveFile)
-    }
-
     func validatePasswordFields() -> Bool {
         guard let oldText = oldPasswordField.text where !oldText.isEmpty else {
             handleErrorWithType(.PasswordIsEmpty)

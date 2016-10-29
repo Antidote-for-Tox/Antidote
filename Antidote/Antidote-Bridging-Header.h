@@ -8,6 +8,7 @@
 #import <objcTox/OCTFriend.h>
 #import <objcTox/OCTFriendRequest.h>
 #import <objcTox/OCTManager.h>
+#import <objcTox/OCTManagerFactory.h>
 #import <objcTox/OCTManagerConfiguration.h>
 #import <objcTox/OCTManagerConstants.h>
 #import <objcTox/OCTMessageAbstract.h>
@@ -24,6 +25,7 @@
 #import <objcTox/OCTSubmanagerObjects.h>
 #import <objcTox/OCTSubmanagerUser.h>
 #import <objcTox/OCTTox.h>
+#import <objcTox/OCTToxEncryptSave.h>
 #import <objcTox/OCTToxConstants.h>
 #import <objcTox/OCTView.h>
 

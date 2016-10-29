@@ -226,7 +226,7 @@ private extension LoginCoordinator {
         let hud = JGProgressHUD(style: .Dark)
         hud.showInView(self.navigationController.view)
 
-        OCTManager.managerWithConfiguration(configuration, encryptPassword: password, successBlock: { [weak self] manager -> Void in
+        OCTManagerFactory.managerWithConfiguration(configuration, encryptPassword: password, successBlock: { [weak self] manager -> Void in
             hud.dismiss()
 
             configurationClosure?(manager: manager)
@@ -293,10 +293,19 @@ private extension LoginCoordinator {
     }
 
     func isProfileEncrypted(profile: String) -> Bool {
-        let path = ProfileManager().pathForProfileWithName(profile)
+        let profilePath = ProfileManager().pathForProfileWithName(profile)
 
-        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(path)!
+        let configuration = OCTManagerConfiguration.configurationWithBaseDirectory(profilePath)!
+        let dataPath = configuration.fileStorage.pathForToxSaveFile
 
-        return OCTManager.isToxSaveEncryptedAtPath(configuration.fileStorage.pathForToxSaveFile)
+        guard NSFileManager.defaultManager().fileExistsAtPath(dataPath) else {
+            return false
+        }
+
+        guard let data = NSData(contentsOfFile: dataPath) else {
+            return false
+        }
+
+        return OCTToxEncryptSave.isDataEncrypted(data)
     }
 }
