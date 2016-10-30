@@ -11,6 +11,26 @@
 		1109019C1D83417500BC5751 /* PinInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1109019A1D83417500BC5751 /* PinInputView.swift */; };
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
 		110E49E01BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */; };
+		111782781DC52BDB000C1721 /* OCTManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782771DC52BDB000C1721 /* OCTManagerMock.swift */; };
+		111782791DC52BDB000C1721 /* OCTManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782771DC52BDB000C1721 /* OCTManagerMock.swift */; };
+		1117827B1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */; };
+		1117827C1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */; };
+		1117827E1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */; };
+		1117827F1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */; };
+		1117828D1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */; };
+		1117828E1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */; };
+		111782901DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */; };
+		111782911DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */; };
+		111782931DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */; };
+		111782941DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */; };
+		111782961DC53458000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */; };
+		111782971DC53458000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */; };
+		111782991DC53545000C1721 /* OCTSubmanagerObjectsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */; };
+		1117829A1DC53545000C1721 /* OCTSubmanagerObjectsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */; };
+		1117829C1DC5363C000C1721 /* OCTSubmanagerUserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117829B1DC5363C000C1721 /* OCTSubmanagerUserMock.swift */; };
+		1117829D1DC5363C000C1721 /* OCTSubmanagerUserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117829B1DC5363C000C1721 /* OCTSubmanagerUserMock.swift */; };
+		1117829F1DC53AB4000C1721 /* ToxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117829E1DC53AB4000C1721 /* ToxFactory.swift */; };
+		111782A01DC53AB4000C1721 /* ToxFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117829E1DC53AB4000C1721 /* ToxFactory.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
 		112950841D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */; };
 		112950851D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */; };
@@ -100,10 +120,10 @@
 		1164C8F01BC982FF00B91107 /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8EF1BC982FF00B91107 /* UIImageExtension.swift */; };
 		1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F21BC9880000B91107 /* LoginLogoController.swift */; };
 		1164C8F61BC98F8300B91107 /* UIViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1164C8F51BC98F8300B91107 /* UIViewControllerExtension.swift */; };
-		116513031C2B4B180066AF06 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
-		116513041C2B4B180066AF06 /* ReferenceProxy in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		116513071C2B4B180066AF06 /* ReferenceProxy in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
-		116513081C2B4B180066AF06 /* ReferenceProxy in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; };
+		116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFD01BC5C6B300B88B7B /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; };
+		116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1173EFF01BC5CF5D00B88B7B /* Yaml.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		116513191C2C6C980066AF06 /* FriendCardController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513181C2C6C980066AF06 /* FriendCardController.swift */; };
 		116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513211C2C74940066AF06 /* StaticTableChatButtonsCell.swift */; };
 		116513241C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116513231C2C749E0066AF06 /* StaticTableChatButtonsCellModel.swift */; };
@@ -471,8 +491,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				116513041C2B4B180066AF06 /* ReferenceProxy in Embed Frameworks */,
-				116513081C2B4B180066AF06 /* ReferenceProxy in Embed Frameworks */,
+				116513041C2B4B180066AF06 /* SnapKit.framework in Embed Frameworks */,
+				116513081C2B4B180066AF06 /* Yaml.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,6 +504,16 @@
 		1109019A1D83417500BC5751 /* PinInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinInputView.swift; sourceTree = "<group>"; };
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSessionNavigationCoordinator.swift; sourceTree = "<group>"; };
+		111782771DC52BDB000C1721 /* OCTManagerMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerMock.swift; sourceTree = "<group>"; };
+		1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerBootstrapMock.swift; sourceTree = "<group>"; };
+		1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerCallsMock.swift; sourceTree = "<group>"; };
+		1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerChatsMock.swift; sourceTree = "<group>"; };
+		1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerDNSMock.swift; sourceTree = "<group>"; };
+		111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerFilesMock.swift; sourceTree = "<group>"; };
+		111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerFriendsMock.swift; sourceTree = "<group>"; };
+		111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerObjectsMock.swift; sourceTree = "<group>"; };
+		1117829B1DC5363C000C1721 /* OCTSubmanagerUserMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerUserMock.swift; sourceTree = "<group>"; };
+		1117829E1DC53AB4000C1721 /* ToxFactory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToxFactory.swift; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
 		112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginGenericCreateController.swift; sourceTree = "<group>"; };
 		112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreatePasswordController.swift; sourceTree = "<group>"; };
@@ -717,8 +747,8 @@
 			files = (
 				1164763519794D3300DB20B8 /* CoreGraphics.framework in Frameworks */,
 				1164763719794D3300DB20B8 /* UIKit.framework in Frameworks */,
-				116513031C2B4B180066AF06 /* ReferenceProxy in Frameworks */,
-				116513071C2B4B180066AF06 /* ReferenceProxy in Frameworks */,
+				116513031C2B4B180066AF06 /* SnapKit.framework in Frameworks */,
+				116513071C2B4B180066AF06 /* Yaml.framework in Frameworks */,
 				1164763319794D3300DB20B8 /* Foundation.framework in Frameworks */,
 				D4F896D05F7EAA7C321A2AA8 /* libPods-Antidote.a in Frameworks */,
 			);
@@ -735,6 +765,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1117826C1DC52BBB000C1721 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				111782771DC52BDB000C1721 /* OCTManagerMock.swift */,
+				1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */,
+				1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */,
+				1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */,
+				1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */,
+				111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */,
+				111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */,
+				111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */,
+				1117829B1DC5363C000C1721 /* OCTSubmanagerUserMock.swift */,
+			);
+			name = Mocks;
+			sourceTree = "<group>";
+		};
 		112950891D6851B600C9CE0F /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -824,9 +870,10 @@
 				11CFCD091C2744E10046BD94 /* Enums */,
 				9C7475C11BC698240098B1A4 /* Extensions */,
 				11FA0EDF1BC591EA00F3DA5B /* Functions */,
+				1117826C1DC52BBB000C1721 /* Mocks */,
+				11771E341CA5C6D100EC259E /* Other */,
 				119AD2081BEC718C000C5CB8 /* Sounds */,
 				1164C8EA1BC97FF600B91107 /* Views */,
-				11771E341CA5C6D100EC259E /* Other */,
 			);
 			path = Antidote;
 			sourceTree = "<group>";
@@ -939,6 +986,7 @@
 				11B253691C4BAD560068F47C /* TabBarBadgeItem.swift */,
 				11B2536C1C4BAD5D0068F47C /* TabBarProfileItem.swift */,
 				1173F06D1BC5D9BA00B88B7B /* Theme.swift */,
+				1117829E1DC53AB4000C1721 /* ToxFactory.swift */,
 				1164C8D71BC922EB00B91107 /* UserDefaultsManager.swift */,
 			);
 			name = Classes;
@@ -1405,7 +1453,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		0E40AAC10D854CCE59CF1B7F /* [CP] Check Pods Manifest.lock */ = {
@@ -1420,7 +1468,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run \'pod install\' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		23B2271556C46D6D79F2B8F1 /* [CP] Embed Pods Frameworks */ = {
@@ -1493,6 +1541,7 @@
 				11628E721CA580ED008C097E /* ChatGenericFileCell.swift in Sources */,
 				116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
 				116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
+				1117828D1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */,
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				1183BCB51CA1B3AE000CD310 /* ChatIncomingFileCellModel.swift in Sources */,
 				110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */,
@@ -1514,6 +1563,8 @@
 				9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
 				9CE0BDF31C4522C800DCE357 /* ChatListCellModel.swift in Sources */,
 				11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */,
+				111782961DC53458000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */,
+				111782991DC53545000C1721 /* OCTSubmanagerObjectsMock.swift in Sources */,
 				1183BCAC1CA1B398000CD310 /* ChatIncomingFileCell.swift in Sources */,
 				112E4ED61C668C02004312CF /* CallIncomingController.swift in Sources */,
 				116634E91C7B8D7C0072C980 /* StaticTableInfoCellModel.swift in Sources */,
@@ -1530,6 +1581,7 @@
 				9CEE6B461C5289E200A1ECB5 /* SettingsMainController.swift in Sources */,
 				9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */,
 				116513261C2D636A0066AF06 /* NotificationWindow.swift in Sources */,
+				1117829C1DC5363C000C1721 /* OCTSubmanagerUserMock.swift in Sources */,
 				11B253AE1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				11F276BB1D3EBF3000C613AA /* ChatBaseTextCellModel.swift in Sources */,
 				11628E3E1CA30C13008C097E /* QuickLookPreviewController.swift in Sources */,
@@ -1542,6 +1594,7 @@
 				11B2536D1C4BAD5D0068F47C /* TabBarProfileItem.swift in Sources */,
 				11B253A41C4EA8040068F47C /* InterfaceIdiom.swift in Sources */,
 				11FA0EE91BC5A66D00F3DA5B /* LoginCoordinator.swift in Sources */,
+				111782781DC52BDB000C1721 /* OCTManagerMock.swift in Sources */,
 				11AEBE711DA1876F00D04B59 /* FAQController.swift in Sources */,
 				11B253141C4A79A50068F47C /* BubbleView.swift in Sources */,
 				11B252FE1C4A615E0068F47C /* ChatOutgoingTextCell.swift in Sources */,
@@ -1579,17 +1632,21 @@
 				1164C8F31BC9880000B91107 /* LoginLogoController.swift in Sources */,
 				11B253FE1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */,
 				119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */,
+				1117829F1DC53AB4000C1721 /* ToxFactory.swift in Sources */,
 				115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */,
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				1193AB661C1F5694006AA9E5 /* BaseCell.swift in Sources */,
 				1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */,
+				111782931DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */,
 				114962951C64051A001E5435 /* CallBaseController.swift in Sources */,
 				115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */,
 				1160B68B1D5FD8DE002DF75B /* LaunchPlaceholderController.swift in Sources */,
 				1183BCD71CA1FC5B000CD310 /* ChatProgressProtocol.swift in Sources */,
+				1117827B1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift in Sources */,
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11FC10571D32E54A00CE863E /* Results.swift in Sources */,
+				111782901DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				9C19367E1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */,
 				11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
@@ -1635,6 +1692,7 @@
 				11628E751CA5811C008C097E /* ChatGenericFileCellModel.swift in Sources */,
 				11A21EFB1C45BDB100E80A89 /* ChatPrivateController.swift in Sources */,
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
+				1117827E1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */,
 				1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				116634EF1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				116634A91C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */,
@@ -1667,7 +1725,9 @@
 				9CEE6B161C4E8FDC00A1ECB5 /* UserStatusView.swift in Sources */,
 				9CEE6AE21C4E8FDC00A1ECB5 /* LoginLogoController.swift in Sources */,
 				9CEE6B191C4E8FDC00A1ECB5 /* ExtendedTextField.swift in Sources */,
+				111782A01DC53AB4000C1721 /* ToxFactory.swift in Sources */,
 				9CEE6ABA1C4E8FDC00A1ECB5 /* BaseCellModel.swift in Sources */,
+				1117829A1DC53545000C1721 /* OCTSubmanagerObjectsMock.swift in Sources */,
 				9CEE6B0C1C4E8FDC00A1ECB5 /* HelperFunctions.swift in Sources */,
 				113F03231CAFE5190009ABE1 /* ChatOutgoingTextCellSnapshotTest.swift in Sources */,
 				116634E11C7B8D770072C980 /* StaticTableInfoCell.swift in Sources */,
@@ -1686,6 +1746,7 @@
 				9CEE6AC51C4E8FDC00A1ECB5 /* StaticTableAvatarCell.swift in Sources */,
 				9CEE6AB81C4E8FDC00A1ECB5 /* AppDelegate.swift in Sources */,
 				9CEE6AE11C4E8FDC00A1ECB5 /* LoginFormController.swift in Sources */,
+				1117827C1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift in Sources */,
 				11FC10581D32E54A00CE863E /* Results.swift in Sources */,
 				11771E371CA5C6E900EC259E /* Reach.swift in Sources */,
 				9CEE6ACE1C4E8FDC00A1ECB5 /* StaticTableDefaultCellModel.swift in Sources */,
@@ -1699,6 +1760,7 @@
 				9CEE6AF21C4E8FDC00A1ECB5 /* TabBarController.swift in Sources */,
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				9CEE6AE01C4E8FDC00A1ECB5 /* LoginCreateAccountController.swift in Sources */,
+				1117828E1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */,
 				1109019C1D83417500BC5751 /* PinInputView.swift in Sources */,
 				9CEE6AC91C4E8FDC00A1ECB5 /* StaticTableButtonCell.swift in Sources */,
 				11FC105E1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift in Sources */,
@@ -1720,18 +1782,22 @@
 				9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */,
 				11B253FC1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
 				11628E3F1CA30C13008C097E /* QuickLookPreviewController.swift in Sources */,
+				1117829D1DC5363C000C1721 /* OCTSubmanagerUserMock.swift in Sources */,
 				113F030A1CAFCCB90009ABE1 /* SnapshotBaseTest.swift in Sources */,
 				9CEE6AF41C4E8FDC00A1ECB5 /* TextViewController.swift in Sources */,
 				113F03171CAFD9370009ABE1 /* MockedChatProgressProtocol.swift in Sources */,
 				113F030F1CAFCE7B0009ABE1 /* ChatIncomingFileCellSnapshotTest.swift in Sources */,
 				113F031D1CAFE0DE0009ABE1 /* ChatMovableDateCellSnapshotTest.swift in Sources */,
+				1117827F1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */,
 				9CEE6B171C4E8FDC00A1ECB5 /* ViewPassingGestures.swift in Sources */,
 				9CEE6B0B1C4E8FDC00A1ECB5 /* ErrorHandling.swift in Sources */,
+				111782911DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */,
 				116634B01C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
 				9CEE6B101C4E8FDC00A1ECB5 /* ChatPrivateTitleView.swift in Sources */,
 				9CEE6AC31C4E8FDC00A1ECB5 /* FriendListCell.swift in Sources */,
 				9CDC09251C34083100DC0D63 /* FriendListDataSourceTest.swift in Sources */,
 				9CEE6AF71C4E8FDC00A1ECB5 /* AppCoordinator.swift in Sources */,
+				111782941DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */,
 				113F03141CAFD5EE0009ABE1 /* CellSnapshotTest.swift in Sources */,
 				112E4ED71C668C02004312CF /* CallIncomingController.swift in Sources */,
 				9CEE6ADC1C4E8FDC00A1ECB5 /* KeyboardNotificationController.swift in Sources */,
@@ -1783,6 +1849,7 @@
 				112950881D63AFD800C9CE0F /* LoginCreatePasswordController.swift in Sources */,
 				9CEE6AEA1C4E8FDC00A1ECB5 /* FriendCardController.swift in Sources */,
 				9CEE6AFA1C4E8FDC00A1ECB5 /* CallCoordinator.swift in Sources */,
+				111782971DC53458000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */,
 				9CEE6AE51C4E8FDC00A1ECB5 /* AddFriendController.swift in Sources */,
 				9CEE6AFE1C4E8FDC00A1ECB5 /* NotificationCoordinator.swift in Sources */,
 				9CEE6AD21C4E8FDC00A1ECB5 /* ChatListTableManager.swift in Sources */,
@@ -1798,6 +1865,7 @@
 				1183BCB61CA1B3AE000CD310 /* ChatIncomingFileCellModel.swift in Sources */,
 				112950851D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */,
 				9CEE6AD61C4E8FDC00A1ECB5 /* ProfileManager.swift in Sources */,
+				111782791DC52BDB000C1721 /* OCTManagerMock.swift in Sources */,
 				9CEE6AC01C4E8FDC00A1ECB5 /* ChatMovableDateCellModel.swift in Sources */,
 				116634DA1C70F1260072C980 /* CopyLabel.swift in Sources */,
 				9CEE6AF31C4E8FDC00A1ECB5 /* TextEditController.swift in Sources */,
