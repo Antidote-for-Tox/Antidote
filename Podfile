@@ -21,3 +21,7 @@ target :AntidoteTests do
     common_pods
     pod 'FBSnapshotTestCase/Core'
 end
+
+target :ScreenshotsUITests do
+    common_pods
+end

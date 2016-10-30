@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-
+    
 class OCTSubmanagerFilesMock: NSObject, OCTSubmanagerFiles {
     func sendData(data: NSData, withFileName fileName: String, toChat chat: OCTChat, failureBlock: ((NSError) -> Void)?) {
         // nop

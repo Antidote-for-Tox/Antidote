@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-
+    
 class OCTSubmanagerUserMock: NSObject, OCTSubmanagerUser {
     weak var delegate: OCTSubmanagerUserDelegate? = nil
     var connectionStatus: OCTToxConnectionStatus = .TCP

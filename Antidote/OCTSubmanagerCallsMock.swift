@@ -3,7 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-
+    
 class OCTSubmanagerCallsMock: NSObject, OCTSubmanagerCalls {
     weak var delegate: OCTSubmanagerCallDelegate? = nil
     var enableMicrophone: Bool = false

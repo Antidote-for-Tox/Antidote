@@ -14,6 +14,7 @@ class NotificationWindow: UIWindow {
     private let theme: Theme
 
     private var connectingView: UIView!
+    private var connectingViewLabel: UILabel!
     private var connectingViewTopConstraint: Constraint!
 
     init(theme: Theme) {
@@ -27,6 +28,7 @@ class NotificationWindow: UIWindow {
 
         createRootViewController()
         createConnectingView()
+        startConnectingViewAnimation()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -46,25 +48,28 @@ class NotificationWindow: UIWindow {
     }
 
     func showConnectingView(show: Bool, animated: Bool) {
-        let showPreparation = {
+        let showPreparation = { [unowned self] in
             self.connectingView.hidden = false
         }
 
-        let showBlock = {
+        let showBlock = { [unowned self] in
             self.connectingViewTopConstraint.updateOffset(0.0)
             self.layoutIfNeeded()
+
+            self.startConnectingViewAnimation()
         }
 
         let showCompletion = {}
 
         let hidePreparation = {}
 
-        let hideBlock = {
+        let hideBlock = { [unowned self] in
             self.connectingViewTopConstraint.updateOffset(-self.connectingView.frame.size.height)
             self.layoutIfNeeded()
+            self.connectingViewLabel.layer.removeAllAnimations()
         }
 
-        let hideCompletion = {
+        let hideCompletion = { [unowned self] in
             self.connectingView.hidden = true
         }
 
@@ -93,30 +98,36 @@ private extension NotificationWindow {
 
     func createConnectingView() {
         connectingView = UIView()
-        connectingView!.backgroundColor = theme.colorForType(.ConnectingBackground)
-        addSubview(connectingView!)
+        connectingView.backgroundColor = theme.colorForType(.ConnectingBackground)
+        addSubview(connectingView)
 
-        let label = UILabel()
-        label.textColor = theme.colorForType(.ConnectingText)
-        label.backgroundColor = .clearColor()
-        label.text = String(localized: "connecting_label")
-        label.textAlignment = .Center
-        label.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
-        connectingView!.addSubview(label)
+        connectingViewLabel = UILabel()
+        connectingViewLabel.textColor = theme.colorForType(.ConnectingText)
+        connectingViewLabel.backgroundColor = .clearColor()
+        connectingViewLabel.text = String(localized: "connecting_label")
+        connectingViewLabel.textAlignment = .Center
+        connectingViewLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
+        connectingView.addSubview(connectingViewLabel)
 
-        label.alpha = 0.0
-        UIView.animateWithDuration(Constants.ConnectingBlinkPeriod, delay: 0.0, options: [.Repeat, .Autoreverse], animations: {
-            label.alpha = 1.0
-        }, completion: nil)
-
-        connectingView!.snp_makeConstraints {
+        connectingView.snp_makeConstraints {
             connectingViewTopConstraint = $0.top.equalTo(self).constraint
             $0.leading.trailing.equalTo(self)
             $0.height.equalTo(UIApplication.sharedApplication().statusBarFrame.size.height)
         }
 
-        label.snp_makeConstraints {
-            $0.edges.equalTo(connectingView!)
+        connectingViewLabel.snp_makeConstraints {
+            $0.edges.equalTo(connectingView)
         }
+    }
+
+    func startConnectingViewAnimation() {
+        connectingViewLabel.alpha = 0.0
+        UIView.animateWithDuration(Constants.ConnectingBlinkPeriod, delay: 0.0, options: [.Repeat, .Autoreverse], animations: {
+            self.connectingViewLabel.alpha = 1.0
+        }, completion: nil)
+    }
+
+    func stopConnectingViewAnimation() {
+        stopConnectingViewAnimation()
     }
 }
