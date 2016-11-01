@@ -1,0 +1,29 @@
+Antidote is a free Tox client for iOS.
+
+Whether it's corporations or governments, digital surveillance today is widespread. Antidote is easy-to-use software that connects you with friends and family without anyone else listening in. While other services may require you to pay for features, Antidote is completely free and comes without advertising.
+
+
+INSTANT MESSAGING: Chat instantly across the globe with Antidote's secure messages.
+
+VOICE: Keep in touch with friends and family using Antidote's completely free and encrypted voice calls.
+
+VIDEO: Catch up face to face, over Antidote's secure video calls.
+
+FILE SHARING: Trade files, with no artificial limits or caps.
+
+ENCRYPTED: Everything you do with Antidote is encrypted using open-source libraries. The only people who can see your conversations are the people you're talking with.
+
+DISTRIBUTED: Antidote has no central servers that can be raided, shut down, or forced to turn over data — the network is made up of its users. Say goodbye to server outages!
+
+OPEN SOURCE: Antidote is an open source software. You can find source code at https://github.com/Antidote-for-Tox/Antidote
+
+
+What makes Antidote different?
+
+Antidote is made by the people who use it — people fed up with the existing options that spy on us, track us, censor us, and keep us from innovating.
+
+There are no corporate interests, and no hidden agendas. Just the simplicity and functionality that are set free when people truly want to connect.
+
+If you have any questions or feedback you can email us at feedback@antidote.im.
+
+This text is a derivative of text from https://tox.chat/, is licensed under CC BY-SA 4.0.

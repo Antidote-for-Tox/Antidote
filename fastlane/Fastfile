@@ -1,0 +1,76 @@
+# Customise this file, documentation can be found here:
+# https://github.com/fastlane/fastlane/tree/master/fastlane/docs
+# All available actions: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md
+# can also be listed using the `fastlane actions` command
+
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this, if you use features of a newer version
+fastlane_version "1.106.2"
+
+default_platform :ios
+
+platform :ios do
+  before_all do
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    cocoapods
+    scan(
+        scheme: "Antidote",
+        device: "iPhone 6s",
+        clean: true
+    )
+  end
+
+  desc "Create screenshots and upload them"
+  lane :screenshots do
+    # snapshot
+    # frameit(white: true)
+    # sh "find . -name \"*iPad*framed*\" | xargs rm"
+    deliver
+  end
+
+  desc "Submit a new Beta Build to Apple TestFlight"
+  desc "This will also make sure the profile is up to date"
+  lane :beta do
+    changelog = prompt(
+      text: "Changelog: ",
+      multi_line_end_keyword: "END"
+    )
+
+    cocoapods
+    gym(scheme: "Antidote")
+
+    # testflight(changelog: changelog, skip_submission: true)
+  end
+
+  # desc "Deploy a new version to the App Store"
+  # lane :release do
+  #   cocoapods
+  #   gym(scheme: "Antidote")
+  #   deliver(force: true)
+  # end
+
+  # You can define as many lanes as you want
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+  end
+
+  error do |lane, exception|
+  end
+end
+
+
+# More information about multiple platforms in fastlane: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Platforms.md
+# All available actions: https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Actions.md
+
+# fastlane reports which actions are used
+# No personal data is recorded. Learn more at https://github.com/fastlane/enhancer

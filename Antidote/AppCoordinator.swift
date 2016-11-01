@@ -125,10 +125,10 @@ private extension AppCoordinator {
                     return
                 }
 
-                OCTManagerFactory.managerWithConfiguration(configuration,
-                                                           encryptPassword: password,
-                                                           successBlock: successBlock,
-                                                           failureBlock: { _ in
+                ToxFactory.createToxWithConfiguration(configuration,
+                                                      encryptPassword: password,
+                                                      successBlock: successBlock,
+                                                      failureBlock: { _ in
                     log("Cannot create tox with configuration \(configuration)")
                     deleteActiveAccountAndRetry()
                 })

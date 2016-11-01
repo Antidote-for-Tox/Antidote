@@ -6,7 +6,7 @@ platform :ios, '8.0'
 inhibit_all_warnings!
 
 def common_pods
-    pod 'objcTox', :git => 'https://github.com/Antidote-for-Tox/objcTox.git', :commit => 'b31b05ace7fa5b5819b921581459b1580f94d905'
+    pod 'objcTox', :git => 'https://github.com/Antidote-for-Tox/objcTox.git', :commit => '40c331cfecd123b3b255aae0d4bf8b902c92ef76'
     pod 'UITextView+Placeholder', '~> 1.1.0'
     pod 'SDCAlertView', '~> 2.5.4'
     pod 'LNNotificationsUI', :git => 'https://github.com/LeoNatan/LNNotificationsUI.git', :commit => '3f75043fc6e77b4180b76cb6cfff4faa506ab9fc'
@@ -20,4 +20,8 @@ end
 target :AntidoteTests do
     common_pods
     pod 'FBSnapshotTestCase/Core'
+end
+
+target :ScreenshotsUITests do
+    common_pods
 end

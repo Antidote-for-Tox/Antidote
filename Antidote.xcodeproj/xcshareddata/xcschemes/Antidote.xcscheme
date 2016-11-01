@@ -38,6 +38,16 @@
                ReferencedContainer = "container:Antidote.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "111782A61DC64391000C1721"
+               BuildableName = "ScreenshotsUITests.xctest"
+               BlueprintName = "ScreenshotsUITests"
+               ReferencedContainer = "container:Antidote.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

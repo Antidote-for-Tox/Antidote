@@ -226,7 +226,7 @@ private extension LoginCoordinator {
         let hud = JGProgressHUD(style: .Dark)
         hud.showInView(self.navigationController.view)
 
-        OCTManagerFactory.managerWithConfiguration(configuration, encryptPassword: password, successBlock: { [weak self] manager -> Void in
+        ToxFactory.createToxWithConfiguration(configuration, encryptPassword: password, successBlock: { [weak self] manager -> Void in
             hud.dismiss()
 
             configurationClosure?(manager: manager)

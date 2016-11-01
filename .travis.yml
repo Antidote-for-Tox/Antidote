@@ -5,15 +5,4 @@ install:
   - ./install.sh
 
 script:
-  - set -o pipefail && xcodebuild
-    -workspace Antidote.xcworkspace
-    -scheme Antidote
-    -sdk iphonesimulator
-    CODE_SIGNING_REQUIRED=NO
-    GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES
-    GCC_GENERATE_TEST_COVERAGE_FILES=YES
-    -destination 'platform=iOS Simulator,name=iPhone 6s'
-    clean
-    test
-    | xcpretty
-
+  - bundle exec fastlane test

@@ -19,6 +19,7 @@
 #import <objcTox/OCTSubmanagerCalls.h>
 #import <objcTox/OCTSubmanagerCallsDelegate.h>
 #import <objcTox/OCTSubmanagerChats.h>
+#import <objcTox/OCTSubmanagerDNS.h>
 #import <objcTox/OCTSubmanagerFiles.h>
 #import <objcTox/OCTSubmanagerFilesProgressSubscriber.h>
 #import <objcTox/OCTSubmanagerFriends.h>

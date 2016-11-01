@@ -4,8 +4,8 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color]']'
 
-if ! hash pilot 2>/dev/null; then
-    echo "Please install pilot tool https://github.com/fastlane/fastlane/tree/master/pilot"
+if ! hash bundle exec pilot 2>/dev/null; then
+    echo "Please run 'bundle install' to install pilot tool."
     exit 1
 fi
 
@@ -70,6 +70,6 @@ while true; do
 done
 
 
-command="pilot $ACTION -u d@dvor.me -a me.dvor.Antidote $TESTERS"
+command="bundle exec pilot $ACTION -u d@dvor.me -a me.dvor.Antidote $TESTERS"
 echo -e "${YELLOW}$command${NC}"
 eval $command
