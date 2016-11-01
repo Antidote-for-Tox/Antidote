@@ -40,23 +40,23 @@ platform :ios do
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
   lane :beta do
-    cocoapods
-    # match(type: "appstore") # more information: https://codesigning.guide
-    gym(scheme: "Antidote") # Build your app - more options available
-    pilot
+    changelog = prompt(
+      text: "Changelog: ",
+      multi_line_end_keyword: "END"
+    )
 
-    # sh "your_script.sh"
-    # You can also use other beta testing services here (run `fastlane actions`)
+    cocoapods
+    gym(scheme: "Antidote")
+
+    # testflight(changelog: changelog, skip_submission: true)
   end
 
-  desc "Deploy a new version to the App Store"
-  lane :release do
-    cocoapods
-    # match(type: "appstore")
-    gym(scheme: "Antidote") # Build your app - more options available
-    deliver(force: true)
-    # frameit
-  end
+  # desc "Deploy a new version to the App Store"
+  # lane :release do
+  #   cocoapods
+  #   gym(scheme: "Antidote")
+  #   deliver(force: true)
+  # end
 
   # You can define as many lanes as you want
 
