@@ -29,16 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "NO">
       <Testables>
          <TestableReference
-            skipped = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1173F0551BC5D94400B88B7B"
-               BuildableName = "AntidoteTests.xctest"
-               BlueprintName = "AntidoteTests"
-               ReferencedContainer = "container:Antidote.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
