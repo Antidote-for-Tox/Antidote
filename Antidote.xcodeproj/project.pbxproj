@@ -393,6 +393,7 @@
 		11B3F8701CE095D2001927D8 /* ChatEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1136605B1CDE5D5E0092C27A /* ChatEditable.swift */; };
 		11B9C6831BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */; };
 		11B9C6971BD80B080083C2A5 /* FullscreenPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */; };
+		11C33AC41DC961DC008DBC49 /* LoginChoiceViewSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11C33AC31DC961DC008DBC49 /* LoginChoiceViewSnapshotTest.swift */; };
 		11CFCD0B1C2745230046BD94 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0A1C2745230046BD94 /* UserStatus.swift */; };
 		11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */; };
 		11CFCD0F1C27499D0046BD94 /* UserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */; };
@@ -852,6 +853,7 @@
 		11B253FD1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSwitchCellModel.swift; sourceTree = "<group>"; };
 		11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerConfigurationExtension.swift; sourceTree = "<group>"; };
 		11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FullscreenPicker.swift; sourceTree = "<group>"; };
+		11C33AC31DC961DC008DBC49 /* LoginChoiceViewSnapshotTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginChoiceViewSnapshotTest.swift; sourceTree = "<group>"; };
 		11CFCD0A1C2745230046BD94 /* UserStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
 		11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewWithStatus.swift; sourceTree = "<group>"; };
 		11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserStatusView.swift; sourceTree = "<group>"; };
@@ -1025,10 +1027,11 @@
 		113F030D1CAFCCE20009ABE1 /* SnapshotTests */ = {
 			isa = PBXGroup;
 			children = (
-				113F03151CAFD9200009ABE1 /* Mocks */,
 				113F03101CAFD1610009ABE1 /* icon.png */,
 				113F03091CAFCCB90009ABE1 /* SnapshotBaseTest.swift */,
 				113F02FB1CAFCBA00009ABE1 /* Cells */,
+				11C33AB81DC961AB008DBC49 /* Login */,
+				113F03151CAFD9200009ABE1 /* Mocks */,
 			);
 			name = SnapshotTests;
 			sourceTree = "<group>";
@@ -1293,6 +1296,14 @@
 				11B2534D1C4AD23A0068F47C /* isotoxin_RingtoneWhileCall.aac */,
 			);
 			name = Sounds;
+			sourceTree = "<group>";
+		};
+		11C33AB81DC961AB008DBC49 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				11C33AC31DC961DC008DBC49 /* LoginChoiceViewSnapshotTest.swift */,
+			);
+			name = Login;
 			sourceTree = "<group>";
 		};
 		11CFCD091C2744E10046BD94 /* Enums */ = {
@@ -2335,6 +2346,7 @@
 				9CEE6AEA1C4E8FDC00A1ECB5 /* FriendCardController.swift in Sources */,
 				9CEE6AFA1C4E8FDC00A1ECB5 /* CallCoordinator.swift in Sources */,
 				111782971DC53458000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */,
+				11C33AC41DC961DC008DBC49 /* LoginChoiceViewSnapshotTest.swift in Sources */,
 				9CEE6AE51C4E8FDC00A1ECB5 /* AddFriendController.swift in Sources */,
 				9CEE6AFE1C4E8FDC00A1ECB5 /* NotificationCoordinator.swift in Sources */,
 				9CEE6AD21C4E8FDC00A1ECB5 /* ChatListTableManager.swift in Sources */,
