@@ -12,10 +12,7 @@
 */
 
 /* Login screen text */
-"login_welcome_text" = "Welcome to Antidote!";
-/* Login screen text */
 "login_or_label" = "or";
-
 /* Login screen text */
 "create_account" = "Create Account";
 /* Login screen text */
