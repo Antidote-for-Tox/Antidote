@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - Gemfile
 - Fastline
+- Migrating to c-toxcore 0.0.2
 
 ## [1.0.0-rc.4] - 2016-10-26
 ### Changed
