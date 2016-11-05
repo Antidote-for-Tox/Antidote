@@ -3,10 +3,13 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [1.1.0] - 2016-11-05
 ### Added
 - Gemfile
 - Fastline
 - Migrating to c-toxcore 0.0.2
+- Dutch language.
 
 ## [1.0.0-rc.4] - 2016-10-26
 ### Changed

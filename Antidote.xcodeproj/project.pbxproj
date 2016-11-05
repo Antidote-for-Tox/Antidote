@@ -235,6 +235,7 @@
 		113F03341CB2E9C20009ABE1 /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F03321CB2E9C20009ABE1 /* UIFontExtension.swift */; };
 		113F03421CB31DD60009ABE1 /* AlertAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F03411CB31DD60009ABE1 /* AlertAudioPlayer.swift */; };
 		113F03431CB31DD60009ABE1 /* AlertAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F03411CB31DD60009ABE1 /* AlertAudioPlayer.swift */; };
+		1143E4331DCE1A5600BE7250 /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1131D6C71CA9D8BC00B4531C /* import-profile.html */; };
 		1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
 		1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */; };
 		114962751C5CEB0B001E5435 /* ProfileDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */; };
@@ -727,6 +728,8 @@
 		113F03411CB31DD60009ABE1 /* AlertAudioPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertAudioPlayer.swift; sourceTree = "<group>"; };
 		113F035C1CB458D10009ABE1 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ar; path = "ar.lproj/import-profile.html"; sourceTree = "<group>"; };
 		113F035D1CB458D10009ABE1 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		1143E4311DCE1A2500BE7250 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = nl; path = "nl.lproj/import-profile.html"; sourceTree = "<group>"; };
+		1143E4321DCE1A2600BE7250 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1149626B1C5CE3DF001E5435 /* ChangeUserStatusController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeUserStatusController.swift; sourceTree = "<group>"; };
 		114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailsController.swift; sourceTree = "<group>"; };
 		114962911C5E1BE0001E5435 /* ChangePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordController.swift; sourceTree = "<group>"; };
@@ -1532,6 +1535,7 @@
 				fr,
 				"fr-FR",
 				cs,
+				nl,
 			);
 			mainGroup = 1164762619794D3300DB20B8;
 			productRefGroup = 1164763019794D3300DB20B8 /* Products */;
@@ -1648,6 +1652,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				115C3BD61DC6D2B900903A47 /* Localizable.strings in Resources */,
+				1143E4331DCE1A5600BE7250 /* import-profile.html in Resources */,
 				111783101DC647BD000C1721 /* LaunchPlaceholderBoard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2395,6 +2400,7 @@
 				11D15D7A1D53D26A0042FD4A /* fr */,
 				11D15D7C1D53D2820042FD4A /* fr-FR */,
 				11763ADF1D9C54640035B4C9 /* cs */,
+				1143E4311DCE1A2500BE7250 /* nl */,
 			);
 			name = "import-profile.html";
 			sourceTree = "<group>";
@@ -2416,6 +2422,7 @@
 				11D15D7B1D53D26A0042FD4A /* fr */,
 				11D15D7D1D53D2820042FD4A /* fr-FR */,
 				11763AEA1D9C54680035B4C9 /* cs */,
+				1143E4321DCE1A2600BE7250 /* nl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
