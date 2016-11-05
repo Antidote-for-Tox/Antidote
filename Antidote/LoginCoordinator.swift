@@ -204,6 +204,11 @@ private extension LoginCoordinator {
             if isProfileEncrypted(profile) {
                 // Profile is encrypted, password is required. No error is needed, password placeholder
                 // should be quite obvious.
+
+                // However we should show error message for accessibility users.
+                if UIAccessibilityIsVoiceOverRunning() {
+                    handleErrorWithType(.PasswordIsEmpty)
+                }
                 return
             }
 

@@ -92,6 +92,8 @@ private extension FullscreenPicker {
         blackoutButton = UIButton()
         blackoutButton.backgroundColor = theme.colorForType(.TranslucentBackground)
         blackoutButton.addTarget(self, action: #selector(FullscreenPicker.doneButtonPressed), forControlEvents:.TouchUpInside)
+        blackoutButton.accessibilityElementsHidden = true
+        blackoutButton.isAccessibilityElement = false
         addSubview(blackoutButton)
 
         toolbar = UIToolbar()
@@ -139,6 +141,7 @@ private extension FullscreenPicker {
             self.pickerBottomConstraint.updateOffset(0.0)
 
             self.layoutIfNeeded()
+            UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.picker);
         }
     }
 
