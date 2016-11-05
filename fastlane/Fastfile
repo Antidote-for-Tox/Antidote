@@ -45,10 +45,24 @@ platform :ios do
       multi_line_end_keyword: "END"
     )
 
-    cocoapods
-    gym(scheme: "Antidote")
+    changelog += "
 
-    # testflight(changelog: changelog, skip_submission: true)
+See full changelog at GitHub http://bit.ly/1MsDgUX
+
+You can help to translate Antidote to your language. See more information here http://bit.ly/1UqDDBX"
+
+    increment_build_number
+    cocoapods
+    cert
+    sigh
+    gym(
+      scheme: "Antidote",
+      include_symbols: true,
+      include_bitcode: false,
+      use_legacy_build_api: true
+    )
+
+    testflight(changelog: changelog, skip_submission: false)
   end
 
   # desc "Deploy a new version to the App Store"

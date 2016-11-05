@@ -176,7 +176,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.4...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.1.0...master
+[1.1.0]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.4...1.1.0
 [1.0.0-rc.4]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.3...1.0.0-rc.4
 [1.0.0-rc.3]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.2...1.0.0-rc.3
 [1.0.0-rc.2]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.1...1.0.0-rc.2
