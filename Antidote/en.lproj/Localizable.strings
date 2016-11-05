@@ -88,6 +88,8 @@
 "settings_title" = "Settings";
 /* Tab name and screen name */
 "profile_title" = "Profile";
+/* Tab chats badge accessibility ending */
+"chats_accessibility_ending" = "unread chats";
 
 /* No contacts placeholder text */
 "contact_no_contacts" = "No contacts";

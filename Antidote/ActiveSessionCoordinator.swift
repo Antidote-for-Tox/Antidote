@@ -467,11 +467,13 @@ private extension ActiveSessionCoordinator {
                     let item = TabBarBadgeItem(theme: theme)
                     item.image = UIImage(named: "tab-bar-friends")
                     item.text = String(localized: "contacts_title")
+                    item.badgeAccessibilityEnding = String(localized: "contact_requests_section")
                     return item
                 case .Chats:
                     let item = TabBarBadgeItem(theme: theme)
                     item.image = UIImage(named: "tab-bar-chats")
                     item.text = String(localized: "chats_title")
+                    item.badgeAccessibilityEnding = String(localized: "chats_accessibility_ending")
                     return item
                 case .Settings:
                     let item = TabBarBadgeItem(theme: theme)

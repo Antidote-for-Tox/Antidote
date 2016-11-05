@@ -42,6 +42,9 @@ class TabBarBadgeItem: TabBarAbstractItem {
         }
     }
 
+    /// If there is any badge text, accessibilityValue will be set to <badgeText + badgeAccessibilityEnding>
+    var badgeAccessibilityEnding: String?
+
     private let theme: Theme
 
     private var imageAndTextContainer: UIView!
@@ -71,7 +74,32 @@ class TabBarBadgeItem: TabBarAbstractItem {
     }
 }
 
-// MARK: Actions
+// Accessibility
+extension TabBarBadgeItem {
+    override var accessibilityLabel: String? {
+        get {
+            return text
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            guard var result = badgeText else {
+                return nil
+            }
+
+            if let ending = badgeAccessibilityEnding {
+                result += " " + ending
+            }
+
+            return result
+        }
+        set {}
+    }
+}
+
+// Actions
 extension TabBarBadgeItem {
     func buttonPressed() {
         didTapHandler?()
