@@ -51,6 +51,43 @@ class StaticTableAvatarCell: StaticTableBaseCell {
     }
 }
 
+// Accessibility
+extension StaticTableAvatarCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return String(localized: "accessibility_avatar_button_label")
+        }
+        set {}
+    }
+
+    override var accessibilityHint: String? {
+        get {
+            return button.userInteractionEnabled ? String(localized: "accessibility_avatar_button_hint") : nil
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            var traits = UIAccessibilityTraitImage
+
+            if button.userInteractionEnabled {
+                traits |= UIAccessibilityTraitButton
+            }
+
+            return traits
+        }
+        set {}
+    }
+}
+
 extension StaticTableAvatarCell {
     func buttonPressed() {
         didTapOnAvatar?(self)

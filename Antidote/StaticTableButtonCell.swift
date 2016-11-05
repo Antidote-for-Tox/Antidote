@@ -40,3 +40,27 @@ class StaticTableButtonCell: StaticTableBaseCell {
         }
     }
 }
+
+// Accessibility
+extension StaticTableButtonCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return label.text
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            return UIAccessibilityTraitButton
+        }
+        set {}
+    }
+}

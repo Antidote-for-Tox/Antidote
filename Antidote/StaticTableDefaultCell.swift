@@ -31,6 +31,8 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
     private var rightButtonHandler: (Void -> Void)?
 
+    private var checkmarkSelected: Bool = false
+
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
@@ -70,12 +72,15 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         switch defaultModel.rightImageType {
             case .None:
                 showRightImageView = false
+                checkmarkSelected = false
             case .Arrow:
                 showRightImageView = true
                 rightImageView.image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
+                checkmarkSelected = false
             case .Checkmark:
                 showRightImageView = true
                 rightImageView.image = UIImage(named: "checkmark")!
+                checkmarkSelected = true
         }
 
         if defaultModel.userInteractionEnabled {
@@ -184,6 +189,66 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
             valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp_trailing).constraint
         }
+    }
+}
+
+// Accessibility
+extension StaticTableDefaultCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return titleLabel.text ?? valueLabel.text
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            if titleLabel.text != nil {
+                return valueLabel.text
+            }
+
+            return nil
+        }
+        set {}
+    }
+
+    override var accessibilityHint: String? {
+        get {
+            if valueLabel.copyable {
+                return String(localized: "accessibility_show_copy_hint")
+            }
+
+            if selectionStyle == .None {
+                return nil
+            }
+
+            return String(localized: "accessibility_edit_value_hint")
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            if selectionStyle == .None {
+                return UIAccessibilityTraitStaticText
+            }
+
+            var traits = UIAccessibilityTraitButton
+
+            if checkmarkSelected {
+                traits |= UIAccessibilityTraitSelected
+            }
+
+            return traits
+        }
+        set {}
     }
 }
 
