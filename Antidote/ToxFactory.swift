@@ -13,7 +13,7 @@ struct ToxFactory {
                                     encryptPassword: String,
                                     successBlock: OCTManager -> Void,
                                     failureBlock: NSError -> Void) {
-        if NSProcessInfo.processInfo().arguments.contains("FASTLANE_SNAPSHOT") {
+        if NSProcessInfo.processInfo().arguments.contains("UI_TESTING") {
             successBlock(OCTManagerMock())
             return
         }
