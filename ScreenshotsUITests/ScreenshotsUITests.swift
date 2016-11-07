@@ -165,7 +165,16 @@ func localizedString(key: String) -> String {
 
     let bundle = NSBundle(forClass: LocalizableDummy().dynamicType)
 
-    let path = bundle.pathForResource(deviceLanguage, ofType: "lproj")!
+    var language = deviceLanguage
+
+    switch language {
+        case "en-US":
+            language = "en"
+        default:
+            break
+    }
+
+    let path = bundle.pathForResource(language, ofType: "lproj")!
 
     let localizationBundle = NSBundle(path: path)!
     return NSLocalizedString(key, bundle:localizationBundle, comment: "")
