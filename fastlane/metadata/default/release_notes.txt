@@ -1,0 +1,4 @@
+- Added Dutch language.
+- Migrating to c-toxcore 0.0.2.
+
+Have feedback? Contact us at feedback@antidote.im

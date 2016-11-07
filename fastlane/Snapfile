@@ -1,15 +1,16 @@
-# devices([
-#   "iPhone 6",
-#   "iPhone 6 Plus",
-#   "iPhone 5",
-#   "iPad Pro (12.9 inch)",
-#   "iPad Pro (9.7 inch)"
-# ])
+devices([
+  "iPad Air",
+  "iPad Pro",
+  "iPhone 4s",
+  "iPhone 5",
+  "iPhone 6",
+  "iPhone 6 Plus"
+])
 
 languages([
-  "en",
-  "de",
-  "ru",
+  "en-US",
+#  "de",
+#  "ru",
 #   "it-IT",
 #   ["pt", "pt_BR"] # Portuguese with Brazilian locale
 ])
