@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import MobileCoreServices
 
 private enum Gender {
     case Male
@@ -143,6 +144,7 @@ private extension OCTManagerMock {
     }
 
     func addDemoConversationToChat(chat: OCTChat) {
+        addFileMessage(chat: chat, outgoing: false, fileName: "party.png")
         addTextMessage(chat: chat, outgoing: true, text: String(localized: "app_store_screenshot_conversation_1"))
         addTextMessage(chat: chat, outgoing: false, text: String(localized: "app_store_screenshot_conversation_2"))
         addTextMessage(chat: chat, outgoing: true, text: String(localized: "app_store_screenshot_conversation_3"))
@@ -163,6 +165,9 @@ private extension OCTManagerMock {
     func addFileMessage(chat chat: OCTChat, outgoing: Bool, fileName: String) {
         let messageFile = OCTMessageFile()
         messageFile.fileName = fileName
+        messageFile.internalFilePath = NSBundle.mainBundle().pathForResource("dummy-photo", ofType: "jpg")
+        messageFile.fileType = .Ready
+        messageFile.fileUTI = kUTTypeImage as String
 
         let message = addMessageAbstract(chat: chat, outgoing: outgoing)
         message.messageFile = messageFile

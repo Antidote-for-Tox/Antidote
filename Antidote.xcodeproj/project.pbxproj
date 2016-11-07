@@ -394,6 +394,9 @@
 		11CFCD0D1C27488E0046BD94 /* ImageViewWithStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0C1C27488E0046BD94 /* ImageViewWithStatus.swift */; };
 		11CFCD0F1C27499D0046BD94 /* UserStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD0E1C27499D0046BD94 /* UserStatusView.swift */; };
 		11CFCD111C2A02350046BD94 /* StaticBackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11CFCD101C2A02350046BD94 /* StaticBackgroundView.swift */; };
+		11D17CDD1DD11E58006B2910 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1164764419794D3300DB20B8 /* Images.xcassets */; };
+		11D17CE91DD11F10006B2910 /* dummy-photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 11D17CE81DD11F10006B2910 /* dummy-photo.jpg */; };
+		11D17CEA1DD11F10006B2910 /* dummy-photo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 11D17CE81DD11F10006B2910 /* dummy-photo.jpg */; };
 		11DDEAFD1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11DDEAFC1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard */; };
 		11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
 		11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640751C2DBAE200D24C6D /* AddFriendController.swift */; };
@@ -857,6 +860,7 @@
 		11D15D7B1D53D26A0042FD4A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		11D15D7C1D53D2820042FD4A /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "fr-FR"; path = "fr-FR.lproj/import-profile.html"; sourceTree = "<group>"; };
 		11D15D7D1D53D2820042FD4A /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		11D17CE81DD11F10006B2910 /* dummy-photo.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "dummy-photo.jpg"; sourceTree = "<group>"; };
 		11DDEAFC1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchPlaceholderBoard.storyboard; sourceTree = "<group>"; };
 		11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPassingGestures.swift; sourceTree = "<group>"; };
 		11E640751C2DBAE200D24C6D /* AddFriendController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendController.swift; sourceTree = "<group>"; };
@@ -1410,6 +1414,7 @@
 				9CDC093D1C3415DE00DC0D63 /* Antidote-Prefix.pch */,
 				1164763A19794D3300DB20B8 /* Antidote-Info.plist */,
 				11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */,
+				11D17CE81DD11F10006B2910 /* dummy-photo.jpg */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
 				9CEA6A1E1D957EFC0045F000 /* antidote-acknowledgements.html */,
 				1131D6C71CA9D8BC00B4531C /* import-profile.html */,
@@ -1652,8 +1657,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				115C3BD61DC6D2B900903A47 /* Localizable.strings in Resources */,
+				11D17CDD1DD11E58006B2910 /* Images.xcassets in Resources */,
 				1143E4331DCE1A5600BE7250 /* import-profile.html in Resources */,
 				111783101DC647BD000C1721 /* LaunchPlaceholderBoard.storyboard in Resources */,
+				11D17CEA1DD11F10006B2910 /* dummy-photo.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,6 +1668,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				11D17CE91DD11F10006B2910 /* dummy-photo.jpg in Resources */,
 				11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */,
 				11B253501C4AD9CF0068F47C /* isotoxin_Calltone.aac in Resources */,
 				11DDEAFD1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard in Resources */,
