@@ -13,6 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         window = UIWindow(frame:UIScreen.mainScreen().bounds)
 
+        if NSProcessInfo.processInfo().arguments.contains("UI_TESTING") {
+            // Speeding up animations for UI tests.
+            window!.layer.speed = 1000
+        }
+
         configureLoggingStuff()
 
         coordinator = AppCoordinator(window: window!)

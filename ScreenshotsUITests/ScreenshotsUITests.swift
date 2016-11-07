@@ -19,7 +19,7 @@ class ScreenshotsUITests: XCTestCase {
         super.setUp()
         
         let app = XCUIApplication()
-        app.launchArguments.append("FASTLANE_SNAPSHOT")
+        app.launchArguments.append("UI_TESTING")
         setupSnapshot(app)
         app.launch()
     }
@@ -80,18 +80,17 @@ class ScreenshotsUITests: XCTestCase {
         let app = XCUIApplication()
 
         // need to interact with the app for the handler to fire
-        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Button).element.tap()
+        app.tapTabBarElement(.Chats)
         
         snapshot(Constants.SnapshotConversation)
 
-        XCUIApplication().tables.staticTexts[String(localized: "app_store_screenshot_conversation_7")].tap()
+        app.tables.staticTexts[localizedString("app_store_screenshot_conversation_7")].tap()
         
         snapshot(Constants.SnapshotContactList)
         
         app.navigationBars[localizedString("chats_title")].buttons[localizedString("chats_title")].tap()
         
-        let element = XCUIApplication().childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1)
-        element.childrenMatchingType(.Other).elementBoundByIndex(4).childrenMatchingType(.Button).element.tap()
+        app.tapTabBarElement(.Profile)
         
         pinPart()
     }
@@ -99,7 +98,7 @@ class ScreenshotsUITests: XCTestCase {
     func iPadPart() {
         let app = XCUIApplication()
 
-        app.tables.staticTexts[String(localized: "app_store_screenshot_conversation_7")].tap()
+        app.tables.staticTexts[localizedString("app_store_screenshot_conversation_7")].tap()
 
         app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.TextView).element.tap()
         
@@ -116,7 +115,7 @@ class ScreenshotsUITests: XCTestCase {
         let app = XCUIApplication()
 
         app.tables.staticTexts[localizedString("profile_details")].tap()
-        app.tables.switches[localizedString(localizedString("pin_enabled"))].tap()
+        app.tables.switches[localizedString("pin_enabled")].tap()
         
         let button = app.buttons["1"]
         button.tap()
@@ -130,10 +129,44 @@ class ScreenshotsUITests: XCTestCase {
 
         app.buttons["7"].pressForDuration(5.0)
     }
+}
 
-    func localizedString(key:String) -> String {
-        let path = NSBundle(forClass: self.dynamicType).pathForResource(deviceLanguage, ofType: "lproj")!
-        let localizationBundle = NSBundle(path: path)!
-        return NSLocalizedString(key, bundle:localizationBundle, comment: "")
+extension XCUIApplication {
+    enum TabBarElement {
+        case Contacts
+        case Chats
+        case Settings
+        case Profile
+
+        var index: UInt {
+            switch self {
+                case .Contacts:
+                    return 1
+                case .Chats:
+                    return 2
+                case .Settings:
+                    return 3
+                case .Profile:
+                    return 4
+            }
+        }
     }
+
+    func tapTabBarElement(element: TabBarElement) {
+        // TODO refactor me pls
+        let button = childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(element.index).childrenMatchingType(.Button).element
+
+        button.tap()
+    }
+}
+
+func localizedString(key: String) -> String {
+    class LocalizableDummy {}
+
+    let bundle = NSBundle(forClass: LocalizableDummy().dynamicType)
+
+    let path = bundle.pathForResource(deviceLanguage, ofType: "lproj")!
+
+    let localizationBundle = NSBundle(path: path)!
+    return NSLocalizedString(key, bundle:localizationBundle, comment: "")
 }
