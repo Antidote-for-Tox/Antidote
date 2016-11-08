@@ -1,0 +1,29 @@
+Antidote est un client Tox libre et gratuit pour iOS.
+
+Que ce soit des sociétés ou des gouvernements, la surveillance numérique est aujourd'hui très répandue. Antidote est un logiciel facile à utiliser qui vous connecte avec vos amis et votre famille, sans que personne d'autre ne sache ce que vous dites. Tandis que les autres grosses entreprises vous demandent de payer pour des fonctionnalités, Antidote est complètement gratuit et sans pub — pour toujours !
+
+
+MESSAGERIE INSTANTANÉE: Discutez instantanément à travers le monde en profitant des messages sécurisés d'Antidote. 
+
+APPELS AUDIOS: Restez en contact avec vos amis et votre famille en utilisant les appels audio chiffrés et complètement gratuits que vous propose Antidote. 
+
+APPELS VIDÉOS: Partagez en face à face grâce aux appels sécurisés d'Antidote. 
+
+TRANSFERTS DE FICHIERS: Envoyez des fichiers, sans aucune limite artificielle avec une sécurité accrue. 
+
+CHIFFRÉ: Tout ce que vous faites avec Antidote est chiffré avec des librairies open-source. La seule personne qui peut voir vos conversations est celle avec qui vous échangez. 
+
+DISTRIBUÉ: Antidote n'a pas de serveurs qui peuvent être attaqués, arrêtés ou obligés de révéler vos données privées — le réseau est composé de ses utilisateurs. Dites adieu aux pannes de serveur ! 
+
+OPEN SOURCE: Antidote est un logiciel libre. Vous pouvez trouver le code source à l'adresse https://github.com/Antidote-for-Tox/Antidote
+
+
+Qu'est-ce qui rend Antidote différent ?
+
+Antidote est conçu par les personnes qui l'utilise — des personnes qui en ont marre des solutions existantes qui nous espionnent, nous traquent, nous censurent et nous empêche d'innover.
+
+Il n'y a aucun intérêts commerciaux, et pas d'intentions cachées. Seulement la simplicité et la fonctionnalité pour les personnes qui souhaitent vraiment se connecter.
+
+Si vous avez des questions ou des avis vous pouvez nous envoyer un mail à l'adresse feedback@antidote.im
+
+Ce texte est dérivé du texte de https://tox.chat/ et est sous license CC BY-SA 4.0.

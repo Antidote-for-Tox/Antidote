@@ -14,3 +14,6 @@ mv Antidote/fr_FR.lproj Antidote/fr-FR.lproj
 
 rm -rf Antidote/zh-Hans-CN.lproj
 mv Antidote/zh_CN.lproj Antidote/zh-Hans-CN.lproj
+
+rm -rf fastlane/metadata/en-US
+mv fastlane/metadata/en_US fastlane/metadata/en-US

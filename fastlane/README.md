@@ -16,18 +16,13 @@ Runs all the tests
 fastlane ios shots
 ```
 Create screenshots and upload them
-### ios beta
+### ios deploy
 ```
-fastlane ios beta
+fastlane ios deploy
 ```
 Submit a new Beta Build to Apple TestFlight
 
 This will also make sure the profile is up to date
-### ios release
-```
-fastlane ios release
-```
-Deploy a new version to the App Store
 
 ----
 

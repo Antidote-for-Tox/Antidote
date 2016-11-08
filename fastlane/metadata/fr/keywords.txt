@@ -1,0 +1,1 @@
+chat,message,tox,itox,sécurisé,privé,appels,vidéo,audio,vie privée,sécurité,p2p,chiffré,chiffrer
