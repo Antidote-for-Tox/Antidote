@@ -707,6 +707,8 @@
 		112E4ED51C668C02004312CF /* CallIncomingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallIncomingController.swift; sourceTree = "<group>"; };
 		112E4EDE1C675C58004312CF /* CallActiveController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallActiveController.swift; sourceTree = "<group>"; };
 		112E4EE41C676553004312CF /* CallButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
+		113187371DD290DD00E6FAA2 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = pl; path = "pl.lproj/import-profile.html"; sourceTree = "<group>"; };
+		113187381DD290DE00E6FAA2 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1131D6C41CA9D64500B4531C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1131D6C61CA9D8BC00B4531C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = "en.lproj/import-profile.html"; sourceTree = "<group>"; };
 		1131D6C91CA9DA1500B4531C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ru; path = "ru.lproj/import-profile.html"; sourceTree = "<group>"; };
@@ -1541,6 +1543,7 @@
 				"fr-FR",
 				cs,
 				nl,
+				pl,
 			);
 			mainGroup = 1164762619794D3300DB20B8;
 			productRefGroup = 1164763019794D3300DB20B8 /* Products */;
@@ -2409,6 +2412,7 @@
 				11D15D7C1D53D2820042FD4A /* fr-FR */,
 				11763ADF1D9C54640035B4C9 /* cs */,
 				1143E4311DCE1A2500BE7250 /* nl */,
+				113187371DD290DD00E6FAA2 /* pl */,
 			);
 			name = "import-profile.html";
 			sourceTree = "<group>";
@@ -2431,6 +2435,7 @@
 				11D15D7D1D53D2820042FD4A /* fr-FR */,
 				11763AEA1D9C54680035B4C9 /* cs */,
 				1143E4321DCE1A2600BE7250 /* nl */,
+				113187381DD290DE00E6FAA2 /* pl */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

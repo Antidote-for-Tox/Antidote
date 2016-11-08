@@ -9,7 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Gemfile
 - Fastline
 - Migrating to c-toxcore 0.0.2
-- Dutch language.
+- Dutch, Polish language.
 
 ## [1.0.0-rc.4] - 2016-10-26
 ### Changed
