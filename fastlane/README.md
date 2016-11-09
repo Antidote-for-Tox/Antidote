@@ -16,9 +16,9 @@ Runs all the tests
 fastlane ios shots
 ```
 Create screenshots and upload them
-### ios deploy
+### ios release
 ```
-fastlane ios deploy
+fastlane ios release
 ```
 Submit a new Beta Build to Apple TestFlight
 

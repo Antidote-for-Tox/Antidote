@@ -82,13 +82,13 @@ class ScreenshotsUITests: XCTestCase {
         // need to interact with the app for the handler to fire
         app.tapTabBarElement(.Chats)
         
-        snapshot(Constants.SnapshotConversation)
+        snapshot(Constants.SnapshotContactList)
 
         app.tables.staticTexts[localizedString("app_store_screenshot_conversation_7")].tap()
         
-        snapshot(Constants.SnapshotContactList)
-        
-        app.navigationBars[localizedString("chats_title")].buttons[localizedString("chats_title")].tap()
+        snapshot(Constants.SnapshotConversation)
+
+        app.navigationBars[localizedString("chats_title")].buttons.elementBoundByIndex(0).tap()
         
         app.tapTabBarElement(.Profile)
         
