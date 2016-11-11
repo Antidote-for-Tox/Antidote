@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Resending undelivered messages when friend comes online. This should fix [#249](https://github.com/Antidote-for-Tox/Antidote/issues/249).
+
 ### Changed
 - Migrating to c-toxcore 0.0.3
 
