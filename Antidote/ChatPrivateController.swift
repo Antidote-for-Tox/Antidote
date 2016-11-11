@@ -340,8 +340,9 @@ extension ChatPrivateController: UITableViewDataSource {
 
         if message.isOutgoing() {
             if let messageText = message.messageText {
-                let outgoingModel = ChatBaseTextCellModel()
+                let outgoingModel = ChatOutgoingTextCellModel()
                 outgoingModel.message = messageText.text ?? ""
+                outgoingModel.delivered = messageText.isDelivered
                 model = outgoingModel
 
                 cell = tableView.dequeueReusableCellWithIdentifier(ChatOutgoingTextCell.staticReuseIdentifier) as! ChatOutgoingTextCell

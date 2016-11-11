@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Added
+- Faded color for undelivered messages. [#140](https://github.com/Antidote-for-Tox/Antidote/issues/140).
 - Resending undelivered messages when friend comes online. This should fix [#249](https://github.com/Antidote-for-Tox/Antidote/issues/249).
 
 ### Changed

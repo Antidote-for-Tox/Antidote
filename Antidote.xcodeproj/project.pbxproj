@@ -210,6 +210,9 @@
 		112E4EE01C675C58004312CF /* CallActiveController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EDE1C675C58004312CF /* CallActiveController.swift */; };
 		112E4EE51C676553004312CF /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EE41C676553004312CF /* CallButton.swift */; };
 		112E4EE61C676553004312CF /* CallButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112E4EE41C676553004312CF /* CallButton.swift */; };
+		113187441DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113187431DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift */; };
+		113187451DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113187431DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift */; };
+		113187461DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113187431DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift */; };
 		1131D6C51CA9D8BC00B4531C /* import-profile.html in Resources */ = {isa = PBXBuildFile; fileRef = 1131D6C71CA9D8BC00B4531C /* import-profile.html */; };
 		1136605C1CDE5D5E0092C27A /* ChatEditable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1136605B1CDE5D5E0092C27A /* ChatEditable.swift */; };
 		113AD84A1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */; };
@@ -709,6 +712,7 @@
 		112E4EE41C676553004312CF /* CallButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallButton.swift; sourceTree = "<group>"; };
 		113187371DD290DD00E6FAA2 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = pl; path = "pl.lproj/import-profile.html"; sourceTree = "<group>"; };
 		113187381DD290DE00E6FAA2 /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		113187431DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatOutgoingTextCellModel.swift; sourceTree = "<group>"; };
 		1131D6C41CA9D64500B4531C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1131D6C61CA9D8BC00B4531C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = "en.lproj/import-profile.html"; sourceTree = "<group>"; };
 		1131D6C91CA9DA1500B4531C /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ru; path = "ru.lproj/import-profile.html"; sourceTree = "<group>"; };
@@ -1239,6 +1243,7 @@
 				11628E621CA57B14008C097E /* ChatOutgoingFileCell.swift */,
 				11628E6B1CA57B19008C097E /* ChatOutgoingFileCellModel.swift */,
 				11B252FD1C4A615E0068F47C /* ChatOutgoingTextCell.swift */,
+				113187431DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift */,
 				1183BCDC1CA1FD55000CD310 /* ChatProgressBridge.swift */,
 				1183BCD61CA1FC5B000CD310 /* ChatProgressProtocol.swift */,
 				1193AB691C1F5C28006AA9E5 /* FriendListCell.swift */,
@@ -1920,6 +1925,7 @@
 				111783341DC647E4000C1721 /* UIFontExtension.swift in Sources */,
 				1117834A1DC64810000C1721 /* ProgressCircleView.swift in Sources */,
 				111783061DC6479E000C1721 /* Results.swift in Sources */,
+				113187461DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift in Sources */,
 				111783421DC64810000C1721 /* FullscreenPicker.swift in Sources */,
 				111783751DC64D75000C1721 /* FAQController.swift in Sources */,
 				111782F81DC64796000C1721 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,
@@ -2018,6 +2024,7 @@
 				11628E721CA580ED008C097E /* ChatGenericFileCell.swift in Sources */,
 				116634AF1C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
 				116634B21C7087A80072C980 /* UIApplicationExtension.swift in Sources */,
+				113187441DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift in Sources */,
 				1117828D1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */,
 				11A21EFD1C45BDF200E80A89 /* ChatInputView.swift in Sources */,
 				1183BCB51CA1B3AE000CD310 /* ChatIncomingFileCellModel.swift in Sources */,
@@ -2234,6 +2241,7 @@
 				114962931C5E1BE0001E5435 /* ChangePasswordController.swift in Sources */,
 				11628E641CA57B14008C097E /* ChatOutgoingFileCell.swift in Sources */,
 				1183BCAD1CA1B398000CD310 /* ChatIncomingFileCell.swift in Sources */,
+				113187451DD63B6600E6FAA2 /* ChatOutgoingTextCellModel.swift in Sources */,
 				9CEE6AF21C4E8FDC00A1ECB5 /* TabBarController.swift in Sources */,
 				9CEE6B051C4E8FDC00A1ECB5 /* OCTManagerConfigurationExtension.swift in Sources */,
 				9CEE6AE01C4E8FDC00A1ECB5 /* LoginCreateAccountController.swift in Sources */,

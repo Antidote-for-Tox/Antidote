@@ -9,7 +9,21 @@ class ChatOutgoingTextCell: ChatBaseTextCell {
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
+        guard let textModel = model as? ChatOutgoingTextCellModel else {
+            assert(false, "Wrong model \(model) passed to cell \(self)")
+            return
+        }
+
         bubbleNormalBackground = theme.colorForType(.ChatOutgoingBubble)
+        if !textModel.delivered {
+            var components = bubbleNormalBackground!.components()
+            components.alpha = max(components.alpha - 0.3, 0.0)
+            bubbleNormalBackground = UIColor(red: components.red,
+                                             green: components.green,
+                                             blue: components.blue,
+                                             alpha: components.alpha)
+        }
+
         bubbleView.textColor = theme.colorForType(.ConnectingText)
         bubbleView.backgroundColor = bubbleNormalBackground
         bubbleView.tintColor = theme.colorForType(.NormalText)
