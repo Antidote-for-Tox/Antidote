@@ -2,6 +2,8 @@ language: objective-c
 osx_image: xcode7.3
 
 install:
+  - bundle install
+  - pod repo update > /dev/null
   - ./install.sh
 
 script:
