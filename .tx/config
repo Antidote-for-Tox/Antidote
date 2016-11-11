@@ -11,3 +11,12 @@ file_filter = Antidote/<lang>.lproj/Localizable.strings
 source_lang = en
 type = STRINGS
 
+[antidote-ios-appstore.descriptiontxt]
+file_filter = fastlane/metadata/<lang>/description.txt
+source_lang = en-US
+type = TXT
+
+[antidote-ios-appstore.keywordstxt]
+file_filter = fastlane/metadata/<lang>/keywords.txt
+source_lang = en-US
+type = TXT

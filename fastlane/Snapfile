@@ -9,10 +9,7 @@ devices([
 
 languages([
   "en-US",
-#  "de",
-#  "ru",
-#   "it-IT",
-#   ["pt", "pt_BR"] # Portuguese with Brazilian locale
+  "fr",
 ])
 
 scheme "AntidoteScreenshots"

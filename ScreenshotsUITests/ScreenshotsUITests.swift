@@ -82,13 +82,13 @@ class ScreenshotsUITests: XCTestCase {
         // need to interact with the app for the handler to fire
         app.tapTabBarElement(.Chats)
         
-        snapshot(Constants.SnapshotConversation)
+        snapshot(Constants.SnapshotContactList)
 
         app.tables.staticTexts[localizedString("app_store_screenshot_conversation_7")].tap()
         
-        snapshot(Constants.SnapshotContactList)
-        
-        app.navigationBars[localizedString("chats_title")].buttons[localizedString("chats_title")].tap()
+        snapshot(Constants.SnapshotConversation)
+
+        app.navigationBars[localizedString("chats_title")].buttons.elementBoundByIndex(0).tap()
         
         app.tapTabBarElement(.Profile)
         
@@ -158,6 +158,26 @@ extension XCUIApplication {
 
         button.tap()
     }
+}
+
+func localizedString(key: String) -> String {
+    class LocalizableDummy {}
+
+    let bundle = NSBundle(forClass: LocalizableDummy().dynamicType)
+
+    var language = deviceLanguage
+
+    switch language {
+        case "en-US":
+            language = "en"
+        default:
+            break
+    }
+
+    let path = bundle.pathForResource(language, ofType: "lproj")!
+
+    let localizationBundle = NSBundle(path: path)!
+    return NSLocalizedString(key, bundle:localizationBundle, comment: "")
 }
 
 func localizedString(key: String) -> String {

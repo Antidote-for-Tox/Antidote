@@ -53,7 +53,7 @@ values:
   chat-list-cell-unread-background: lightgrayblue
   chat-input-background: lightgrayblue
   chat-incoming-bubble: lightgrayblue
-  chat-outgoing-bubble: simpleblue
+  chat-outgoing-bubble: purple
   tab-badge-background: palered
   tab-badge-text: white
   tab-item-active: simpleblue
