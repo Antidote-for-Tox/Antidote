@@ -12,8 +12,9 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
     }
 
     func testSmallMessage() {
-        let model = ChatBaseTextCellModel()
+        let model = ChatOutgoingTextCellModel()
         model.message = "Hi"
+        model.delivered = true
 
         let cell = ChatOutgoingTextCell()
         cell.setupWithTheme(theme, model: model)
@@ -23,8 +24,21 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
     }
 
     func testMediumMessage() {
-        let model = ChatBaseTextCellModel()
+        let model = ChatOutgoingTextCellModel()
         model.message = "Some nice medium message"
+        model.delivered = true
+
+        let cell = ChatOutgoingTextCell()
+        cell.setupWithTheme(theme, model: model)
+
+        updateCellLayout(cell)
+        verifyView(cell)
+    }
+
+    func testMediumMessageUndelivered() {
+        let model = ChatOutgoingTextCellModel()
+        model.message = "Some nice medium message"
+        model.delivered = false
 
         let cell = ChatOutgoingTextCell()
         cell.setupWithTheme(theme, model: model)
@@ -34,8 +48,9 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
     }
 
     func testHugeMessage() {
-        let model = ChatBaseTextCellModel()
+        let model = ChatOutgoingTextCellModel()
         model.message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. "
+        model.delivered = true
 
         let cell = ChatOutgoingTextCell()
         cell.setupWithTheme(theme, model: model)
@@ -45,8 +60,9 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
     }
 
     func testWithLink() {
-        let model = ChatBaseTextCellModel()
+        let model = ChatOutgoingTextCellModel()
         model.message = "Lorem ipsum dolor sit amet, https://tox.chat consectetur adipiscing elit, +1234567890"
+        model.delivered = true
 
         let cell = ChatOutgoingTextCell()
         cell.setupWithTheme(theme, model: model)
