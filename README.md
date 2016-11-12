@@ -1,6 +1,6 @@
 ![](https://i.imgur.com/Co41uBI.png)
 
-[![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote)
+[![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote) [![codecov](https://codecov.io/gh/Antidote-for-Tox/Antidote/branch/master/graph/badge.svg)](https://codecov.io/gh/Antidote-for-Tox/Antidote)
 
 [![Download on the App Store](https://linkmaker.itunes.apple.com/images/badges/en-us/badge_appstore-lrg.svg)](https://itunes.apple.com/app/apple-store/id933117605?pt=107449857&ct=github&mt=8)
 

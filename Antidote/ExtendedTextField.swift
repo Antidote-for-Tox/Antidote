@@ -92,7 +92,6 @@ class ExtendedTextField: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     override func becomeFirstResponder() -> Bool {
         return textField.becomeFirstResponder()
     }
@@ -113,6 +112,58 @@ extension ExtendedTextField: UITextFieldDelegate {
 
         textField.text = resultText.substringToByteLength(maxTextUTF8Length, encoding: NSUTF8StringEncoding)
         return false
+    }
+}
+
+// Accessibility
+extension ExtendedTextField {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return placeholder ?? title
+        }
+        set {}
+    }
+
+    override var accessibilityHint: String? {
+        get {
+            var result: String?
+
+            if placeholder != nil {
+                // If there is a placeholder also read title as part of the hint.
+                result = title
+            }
+
+            switch (result, hint) {
+                case (.None, _):
+                    return hint
+                case (.Some, .None):
+                    return result
+                case (.Some(let r), .Some(let s)):
+                    return "\(r), \(s)"
+            }
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            return text
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            return textField.accessibilityTraits
+        }
+        set {}
     }
 }
 

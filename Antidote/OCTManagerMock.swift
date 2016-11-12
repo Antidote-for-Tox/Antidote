@@ -157,6 +157,7 @@ private extension OCTManagerMock {
     func addTextMessage(chat chat: OCTChat, outgoing: Bool, text: String) {
         let messageText = OCTMessageText()
         messageText.text = text
+        messageText.isDelivered = outgoing
 
         let message = addMessageAbstract(chat: chat, outgoing: outgoing)
         message.messageText = messageText

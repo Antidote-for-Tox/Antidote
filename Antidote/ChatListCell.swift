@@ -114,3 +114,37 @@ class ChatListCell: BaseCell {
         }
     }
 }
+
+// Accessibility
+extension ChatListCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            var label = nicknameLabel.text ?? ""
+            label += ", " + avatarView.userStatusView.userStatus.toString()
+
+            return label
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            return messageLabel.text! + ", " + dateLabel.text!
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+                return UIAccessibilityTraitSelected
+        }
+        set {}
+    }
+}

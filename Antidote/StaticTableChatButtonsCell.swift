@@ -43,9 +43,18 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
     override func createViews() {
         super.createViews()
 
-        chatButton = createButtonWithImageName("friend-card-chat", action: #selector(StaticTableChatButtonsCell.chatButtonPressed))
-        callButton = createButtonWithImageName("start-call", action: #selector(StaticTableChatButtonsCell.callButtonPressed))
-        videoButton = createButtonWithImageName("video-call", action: #selector(StaticTableChatButtonsCell.videoButtonPressed))
+        chatButton = createButtonWithImageName("friend-card-chat",
+                                               accessibilityLabel: String(localized: "accessibility_chat_button_label"),
+                                               accessibilityHint: String(localized: "accessibility_chat_button_hint"),
+                                               action: #selector(StaticTableChatButtonsCell.chatButtonPressed))
+        callButton = createButtonWithImageName("start-call",
+                                               accessibilityLabel: String(localized: "accessibility_call_button_label"),
+                                               accessibilityHint: String(localized: "accessibility_call_button_hint"),
+                                               action: #selector(StaticTableChatButtonsCell.callButtonPressed))
+        videoButton = createButtonWithImageName("video-call",
+                                               accessibilityLabel: String(localized: "accessibility_video_button_label"),
+                                               accessibilityHint: String(localized: "accessibility_video_button_hint"),
+                                               action: #selector(StaticTableChatButtonsCell.videoButtonPressed))
 
         separators = [UIView]()
         for _ in 0...3 {
@@ -111,11 +120,16 @@ extension StaticTableChatButtonsCell {
 }
 
 private extension StaticTableChatButtonsCell {
-    func createButtonWithImageName(imageName: String, action: Selector) -> UIButton {
+    func createButtonWithImageName(imageName: String,
+                                   accessibilityLabel: String,
+                                   accessibilityHint: String,
+                                   action: Selector) -> UIButton {
         let image = UIImage.templateNamed(imageName)
 
         let button = UIButton()
         button.setImage(image, forState: .Normal)
+        button.accessibilityLabel = accessibilityLabel
+        button.accessibilityHint = accessibilityHint
         button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
         customContentView.addSubview(button)
 

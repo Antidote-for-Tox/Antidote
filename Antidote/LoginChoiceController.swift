@@ -14,16 +14,13 @@ class LoginChoiceController: LoginLogoController {
     weak var delegate: LoginChoiceControllerDelegate?
 
     private var incompressibleContainer: IncompressibleView!
-    private var welcomeLabel: UILabel!
     private var createAccountButton: RoundedButton!
-    private var orLabel: UILabel!
     private var importProfileButton: RoundedButton!
 
     override func loadView() {
         super.loadView()
 
         createContainer()
-        createLabels()
         createButtons()
 
         installConstraints()
@@ -48,11 +45,6 @@ private extension LoginChoiceController {
         contentContainerView.addSubview(incompressibleContainer)
     }
 
-    func createLabels() {
-        welcomeLabel = createLabelWithText(String(localized:"login_welcome_text"))
-        orLabel = createLabelWithText(String(localized:"login_or_label"))
-    }
-
     func createButtons() {
         createAccountButton = createButtonWithTitle(String(localized:"create_account"), action: #selector(LoginChoiceController.createAccountButtonPressed))
         importProfileButton = createButtonWithTitle(String(localized:"import_profile"), action: #selector(LoginChoiceController.importProfileButtonPressed))
@@ -68,24 +60,14 @@ private extension LoginChoiceController {
             $0.height.equalTo(contentContainerView)
         }
 
-        welcomeLabel.snp_makeConstraints {
-            $0.top.equalTo(incompressibleContainer)
+        createAccountButton.snp_makeConstraints {
+            $0.top.equalTo(incompressibleContainer).offset(Constants.VerticalOffset)
             $0.leading.trailing.equalTo(incompressibleContainer)
         }
 
-        createAccountButton.snp_makeConstraints {
-            $0.top.equalTo(welcomeLabel.snp_bottom).offset(Constants.VerticalOffset)
-            $0.leading.trailing.equalTo(welcomeLabel)
-        }
-
-        orLabel.snp_makeConstraints {
-            $0.top.equalTo(createAccountButton.snp_bottom).offset(Constants.SmallVerticalOffset)
-            $0.leading.trailing.equalTo(welcomeLabel)
-        }
-
         importProfileButton.snp_makeConstraints {
-            $0.top.equalTo(orLabel.snp_bottom).offset(Constants.SmallVerticalOffset)
-            $0.leading.trailing.equalTo(welcomeLabel)
+            $0.top.equalTo(createAccountButton.snp_bottom).offset(Constants.VerticalOffset)
+            $0.leading.trailing.equalTo(incompressibleContainer)
         }
     }
 

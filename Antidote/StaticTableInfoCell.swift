@@ -90,3 +90,34 @@ class StaticTableInfoCell: StaticTableBaseCell {
         valueLabelToArrowConstraint.deactivate()
     }
 }
+
+// Accessibility
+extension StaticTableInfoCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return titleLabel.text
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            return valueLabel.text
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            return arrowImageView.hidden ? UIAccessibilityTraitStaticText : UIAccessibilityTraitButton
+        }
+        set {}
+    }
+}

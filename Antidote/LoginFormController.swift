@@ -97,8 +97,9 @@ extension LoginFormController {
         let picker = FullscreenPicker(theme: theme, strings: profileNames, selectedIndex: selectedIndex)
         picker.delegate = self
 
+        contentContainerView.accessibilityElementsHidden = true
         picker.showAnimatedInView(view)
-    }
+}
 
     func loginButtonPressed() {
         let isEmpty = (passwordField.text == nil) || passwordField.text!.isEmpty
@@ -129,6 +130,9 @@ extension LoginFormController: UITextFieldDelegate {
 
 extension LoginFormController: FullscreenPickerDelegate {
     func fullscreenPicker(picker: FullscreenPicker, willDismissWithSelectedIndex index: Int) {
+        contentContainerView.accessibilityElementsHidden = false
+        UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.profileButton);
+
         if index == selectedIndex {
             return
         }
@@ -159,10 +163,13 @@ private extension LoginFormController {
         profileFakeTextField.layer.borderWidth = 0.5
         profileFakeTextField.layer.masksToBounds = true
         profileFakeTextField.layer.cornerRadius = 6.0
+        profileFakeTextField.isAccessibilityElement = false
+        profileFakeTextField.accessibilityElementsHidden = true
         formView.addSubview(profileFakeTextField)
 
         profileButton = UIButton()
         profileButton.addTarget(self, action: #selector(LoginFormController.profileButtonPressed), forControlEvents:.TouchUpInside)
+        profileButton.accessibilityLabel = String(localized: "profile_title")
         formView.addSubview(profileButton)
 
         passwordField = UITextField()
@@ -298,6 +305,7 @@ private extension LoginFormController {
         let profileName = profileNames[selectedIndex]
 
         profileFakeTextField.text = profileName
+        profileButton.accessibilityValue = profileName
         passwordField.text = nil
 
         let isEncrypted = delegate?.loginFormController(self, isProfileEncrypted: profileName) ?? false

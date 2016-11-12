@@ -9,6 +9,7 @@ class StaticTableSwitchCell: StaticTableBaseCell {
     private var valueChangedHandler: (Bool -> Void)?
 
     private var titleLabel: UILabel!
+    private var accessibilityButton: UIButton!
     private var switchView: UISwitch!
 
     override func setupWithTheme(theme: Theme, model: BaseCellModel) {
@@ -38,6 +39,12 @@ class StaticTableSwitchCell: StaticTableBaseCell {
         titleLabel.backgroundColor = UIColor.clearColor()
         customContentView.addSubview(titleLabel)
 
+        accessibilityButton = UIButton()
+        accessibilityButton.addTarget(self,
+                                      action: #selector(StaticTableSwitchCell.accessibilityButtonPressed),
+                                      forControlEvents: .TouchUpInside)
+        customContentView.addSubview(accessibilityButton)
+
         switchView = UISwitch()
         switchView.addTarget(self, action: #selector(StaticTableSwitchCell.switchValueChanged), forControlEvents: .ValueChanged)
         customContentView.addSubview(switchView)
@@ -51,6 +58,10 @@ class StaticTableSwitchCell: StaticTableBaseCell {
             $0.leading.equalTo(customContentView)
         }
 
+        accessibilityButton.snp_makeConstraints {
+            $0.edges.equalTo(customContentView)
+        }
+
         switchView.snp_makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.leading.greaterThanOrEqualTo(titleLabel.snp_trailing)
@@ -59,7 +70,52 @@ class StaticTableSwitchCell: StaticTableBaseCell {
     }
 }
 
+// Accessibility
 extension StaticTableSwitchCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityLabel: String? {
+        get {
+            return titleLabel.text
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            return switchView.accessibilityValue
+        }
+        set {}
+    }
+
+    override var accessibilityHint: String? {
+        get {
+            return switchView.accessibilityHint
+        }
+        set {}
+    }
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            return switchView.accessibilityTraits
+        }
+        set {}
+    }
+}
+
+extension StaticTableSwitchCell {
+    func accessibilityButtonPressed() {
+        if UIAccessibilityIsVoiceOverRunning() {
+            switchView.on = !switchView.on
+            switchValueChanged()
+        }
+    }
+
     func switchValueChanged() {
         valueChangedHandler?(switchView.on)
     }

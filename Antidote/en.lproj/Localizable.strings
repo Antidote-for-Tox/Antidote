@@ -12,10 +12,7 @@
 */
 
 /* Login screen text */
-"login_welcome_text" = "Welcome to Antidote!";
-/* Login screen text */
 "login_or_label" = "or";
-
 /* Login screen text */
 "create_account" = "Create Account";
 /* Login screen text */
@@ -427,3 +424,29 @@
 /* Demo chat message for the App Store screenshot */
 "app_store_screenshot_chat_message_5" = "yep";
 
+/* Tab chats badge ending */
+"accessibility_chats_ending" = "unread chats";
+/* Avatar button label in settings */
+"accessibility_avatar_button_label" = "Avatar";
+/* Avatar button hint in settings */
+"accessibility_avatar_button_hint" = "Sets or removes avatar.";
+/* Chat button label in contact screen */
+"accessibility_chat_button_label" = "Chat";
+/* Chat button hint in contact screen */
+"accessibility_chat_button_hint" = "Opens chat dialog.";
+/* Call button label in contact screen */
+"accessibility_call_button_label" = "Audio call";
+/* Call button hint in contact screen */
+"accessibility_call_button_hint" = "Makes audio call.";
+/* Video button label in contact screen */
+"accessibility_video_button_label" = "Video call";
+/* Video button hint in contact screen */
+"accessibility_video_button_hint" = "Makes video call.";
+/* Tap to copy hint */
+"accessibility_show_copy_hint" = "Shows copy menu.";
+/* Tap to edit value hint */
+"accessibility_edit_value_hint" = "Edits value.";
+/* Incoming message label */
+"accessibility_incoming_message_label" = "Message";
+/* Outgoing message label */
+"accessibility_outgoing_message_label" = "Your message";

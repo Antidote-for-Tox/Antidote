@@ -11,6 +11,9 @@ class FriendListCellModel: BaseCellModel {
     var bottomText: String = ""
     var multilineBottomtext: Bool = false
 
+    var accessibilityLabel = ""
+    var accessibilityValue = ""
+
     var status: UserStatus = .Offline
     var hideStatus: Bool = false
 }

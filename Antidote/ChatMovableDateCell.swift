@@ -113,6 +113,23 @@ class ChatMovableDateCell: BaseCell {
     }
 }
 
+// Accessibility
+extension ChatMovableDateCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    override var accessibilityValue: String? {
+        get {
+            return dateLabel.text!
+        }
+        set {}
+    }
+}
+
 extension ChatMovableDateCell: ChatEditable {
     // Override in subclass to enable menu
     func shouldShowMenu() -> Bool {
