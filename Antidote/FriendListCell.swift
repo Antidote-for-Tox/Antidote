@@ -43,6 +43,9 @@ class FriendListCell: BaseCell {
         bottomLabel.text = friendModel.bottomText
         bottomLabel.textColor = theme.colorForType(.FriendCellStatus)
         bottomLabel.numberOfLines = friendModel.multilineBottomtext ? 0 : 1
+
+        accessibilityLabel = friendModel.accessibilityLabel
+        accessibilityValue = friendModel.accessibilityValue
     }
 
     override func createViews() {
@@ -92,5 +95,26 @@ class FriendListCell: BaseCell {
             $0.leading.greaterThanOrEqualTo(topLabel.snp_trailing)
             $0.trailing.equalTo(contentView)
         }
+    }
+}
+
+// Accessibility
+extension FriendListCell {
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {}
+    }
+
+    // Label and value are set in setupWithTheme:model: method
+    // var accessibilityLabel: String?
+    // var accessibilityValue: String?
+
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            return UIAccessibilityTraitButton
+        }
+        set {}
     }
 }

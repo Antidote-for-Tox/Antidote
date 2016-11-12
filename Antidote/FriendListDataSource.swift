@@ -86,6 +86,15 @@ class FriendListDataSource: NSObject {
                 model.bottomText = request.message ?? ""
                 model.multilineBottomtext = true
                 model.hideStatus = true
+
+                model.accessibilityLabel = String(localized: "contact_request")
+                model.accessibilityValue = ""
+
+                if let message = request.message {
+                    model.accessibilityValue += String(localized: "add_contact_default_message_title") + ": " + message + ", "
+                }
+                model.accessibilityValue += String(localized: "public_key") + ": " + request.publicKey
+
             case .Friend(let friend):
                 if let data = friend.avatarData {
                     model.avatar = UIImage(data: data)
@@ -95,14 +104,19 @@ class FriendListDataSource: NSObject {
                 }
                 model.topText = friend.nickname
 
+                model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
+
+                model.accessibilityLabel = friend.nickname
+                model.accessibilityValue = model.status.toString()
+
                 if friend.isConnected {
                     model.bottomText = friend.statusMessage ?? ""
+                    model.accessibilityValue += ", Status: \(model.bottomText)"
                 }
                 else if let date = friend.lastSeenOnline() {
                     model.bottomText = String(localized: "contact_last_seen", dateFormatter.stringFromDate(date))
+                    model.accessibilityValue += ", " + model.bottomText
                 }
-
-                model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
         }
 
         return model
