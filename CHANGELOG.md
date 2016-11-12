@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 - Migrating to c-toxcore 0.0.3
+- Making Antidote accessible (partly done, more will come in next release) [#115](https://github.com/Antidote-for-Tox/Antidote/issues/115).
 
 ## [1.1.0] - 2016-11-05
 ### Added
