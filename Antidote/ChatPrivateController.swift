@@ -542,15 +542,10 @@ extension ChatPrivateController: ChatInputViewDelegate {
     }
 
     func chatInputViewSendButtonPressed(view: ChatInputView) {
-        do {
-            try submanagerChats.sendMessageToChat(chat, text: view.text, type: .Normal)
+        submanagerChats.sendMessageToChat(chat, text: view.text, type: .Normal, successBlock: nil, failureBlock: nil)
 
-            view.text = ""
-            submanagerObjects.changeChat(chat, enteredText: "")
-        }
-        catch {
-
-        }
+        view.text = ""
+        submanagerObjects.changeChat(chat, enteredText: "")
     }
 
     func chatInputViewTextDidChange(view: ChatInputView) {

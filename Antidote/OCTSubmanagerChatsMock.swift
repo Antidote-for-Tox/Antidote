@@ -17,8 +17,12 @@ class OCTSubmanagerChatsMock: NSObject, OCTSubmanagerChats {
         // nop
     }
     
-    func sendMessageToChat(chat: OCTChat!, text: String!, type: OCTToxMessageType) throws -> OCTMessageAbstract {
-        return OCTMessageAbstract()
+    func sendMessageToChat(chat: OCTChat!,
+                           text: String!,
+                           type: OCTToxMessageType,
+                           successBlock: (OCTMessageAbstract! -> Void)!,
+                           failureBlock: (NSError! -> Void)!) {
+        // nop
     }
     
     func setIsTyping(isTyping: Bool, inChat chat: OCTChat!) throws {
