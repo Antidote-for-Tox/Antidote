@@ -39,3 +39,13 @@ class ChatOutgoingTextCell: ChatBaseTextCell {
         }
     }
 }
+
+// Accessibility
+extension ChatOutgoingTextCell {
+    override var accessibilityLabel: String? {
+        get {
+            return String(localized: "accessibility_outgoing_message_label")
+        }
+        set {}
+    }
+}

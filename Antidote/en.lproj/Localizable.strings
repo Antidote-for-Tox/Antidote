@@ -446,3 +446,7 @@
 "accessibility_show_copy_hint" = "Shows copy menu.";
 /* Tap to edit value hint */
 "accessibility_edit_value_hint" = "Edits value.";
+/* Incoming message label */
+"accessibility_incoming_message_label" = "Message";
+/* Outgoing message label */
+"accessibility_outgoing_message_label" = "Your message";

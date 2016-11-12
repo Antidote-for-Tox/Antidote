@@ -61,6 +61,21 @@ class ChatBaseTextCell: ChatMovableDateCell {
     }
 }
 
+// Accessibility
+extension ChatBaseTextCell {
+    override var accessibilityValue: String? {
+        get {
+            var value = bubbleView.text!
+            if let sValue = super.accessibilityValue {
+                value += ", " + sValue
+            }
+
+            return value
+        }
+        set {}
+    }
+}
+
 // ChatEditable
 extension ChatBaseTextCell {
     override func shouldShowMenu() -> Bool {
