@@ -64,6 +64,16 @@ class ChatIncomingCallCell: ChatMovableDateCell {
     }
 }
 
+// Accessibility
+extension ChatIncomingCallCell {
+    override var accessibilityLabel: String? {
+        get {
+            return label.text
+        }
+        set {}
+    }
+}
+
 // ChatEditable
 extension ChatIncomingCallCell {
     override func shouldShowMenu() -> Bool {
