@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [1.2.0] - 2016-11-12
 ### Added
 - Faded color for undelivered messages. [#140](https://github.com/Antidote-for-Tox/Antidote/issues/140).
 - Resending undelivered messages when friend comes online. This should fix [#249](https://github.com/Antidote-for-Tox/Antidote/issues/249).
@@ -183,7 +185,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.1.0...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.2.0...master
+[1.2.0]: https://github.com/Antidote-for-Tox/Antidote/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.4...1.1.0
 [1.0.0-rc.4]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.3...1.0.0-rc.4
 [1.0.0-rc.3]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.2...1.0.0-rc.3

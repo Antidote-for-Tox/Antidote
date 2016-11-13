@@ -52,6 +52,7 @@ You can help to translate Antidote to your language. See more information here h
     appstore(
         force: false,
         skip_binary_upload: true,
+        skip_screenshots: true,
         submit_for_review: true,
         automatic_release: false,
         build_number: build_number

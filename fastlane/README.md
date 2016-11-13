@@ -23,11 +23,6 @@ fastlane ios release
 Submit a new Beta Build to Apple TestFlight
 
 This will also make sure the profile is up to date
-### ios release
-```
-fastlane ios release
-```
-Deploy a new version to the App Store
 
 ----
 
