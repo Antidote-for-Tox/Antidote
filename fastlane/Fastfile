@@ -24,9 +24,9 @@ platform :ios do
 
   desc "Submit a new Beta Build to Apple TestFlight"
   desc "This will also make sure the profile is up to date"
-  lane :release do
+  lane :beta do
     changelog = prompt(
-      text: "Don't forget to update release_notes. Changelog: ",
+      text: "Changelog: ",
       multi_line_end_keyword: "END"
     )
 
@@ -49,13 +49,16 @@ You can help to translate Antidote to your language. See more information here h
 
     testflight(changelog: changelog, skip_submission: false)
 
+  end
+
+  desc "Release app to the App Store"
+  lane :release do
     appstore(
         force: false,
         skip_binary_upload: true,
         skip_screenshots: true,
         submit_for_review: true,
-        automatic_release: false,
-        build_number: build_number
+        automatic_release: false
     )
   end
 
