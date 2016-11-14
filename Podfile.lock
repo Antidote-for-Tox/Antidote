@@ -34,7 +34,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase/Core
   - JGProgressHUD (~> 1.4.0)
   - LNNotificationsUI (from `https://github.com/LeoNatan/LNNotificationsUI.git`, commit `3f75043fc6e77b4180b76cb6cfff4faa506ab9fc`)
-  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `24b3f33e4c1f91f534e89de0a1cad38033b87977`)
+  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `e13d3046fbc30d5abdfff5deba23f26f582da4fd`)
   - SDCAlertView (~> 2.5.4)
   - UITextView+Placeholder (~> 1.1.0)
 
@@ -43,7 +43,7 @@ EXTERNAL SOURCES:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: 24b3f33e4c1f91f534e89de0a1cad38033b87977
+    :commit: e13d3046fbc30d5abdfff5deba23f26f582da4fd
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 CHECKOUT OPTIONS:
@@ -51,7 +51,7 @@ CHECKOUT OPTIONS:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: 24b3f33e4c1f91f534e89de0a1cad38033b87977
+    :commit: e13d3046fbc30d5abdfff5deba23f26f582da4fd
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 SPEC CHECKSUMS:
@@ -70,6 +70,6 @@ SPEC CHECKSUMS:
   TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
   UITextView+Placeholder: a6fc3e0378f3870036ec562a7537cbf6dbae4bf6
 
-PODFILE CHECKSUM: 80739a89237693e5148cfa2c960971184631557e
+PODFILE CHECKSUM: 4fca08c99b9e8d789dc86bb23a27da2c25a60c71
 
 COCOAPODS: 1.1.1
