@@ -5,10 +5,10 @@
 import Foundation
 
 protocol PrimaryIpadControllerDelegate: class {
-    func primaryIpadController(controller: PrimaryIpadController, didSelectChat chat: OCTChat)
-    func primaryIpadControllerShowFriends(controller: PrimaryIpadController)
-    func primaryIpadControllerShowSettings(controller: PrimaryIpadController)
-    func primaryIpadControllerShowProfile(controller: PrimaryIpadController)
+    func primaryIpadController(_ controller: PrimaryIpadController, didSelectChat chat: OCTChat)
+    func primaryIpadControllerShowFriends(_ controller: PrimaryIpadController)
+    func primaryIpadControllerShowSettings(_ controller: PrimaryIpadController)
+    func primaryIpadControllerShowProfile(_ controller: PrimaryIpadController)
 }
 
 /**
@@ -17,7 +17,7 @@ protocol PrimaryIpadControllerDelegate: class {
 class PrimaryIpadController: UIViewController {
     weak var delegate: PrimaryIpadControllerDelegate?
 
-    var userStatus: UserStatus = .Offline {
+    var userStatus: UserStatus = .offline {
         didSet {
             navigationView.avatarView.userStatusView.userStatus = userStatus
         }
@@ -46,14 +46,14 @@ class PrimaryIpadController: UIViewController {
         }
     }
 
-    private let theme: Theme
-    private weak var submanagerChats: OCTSubmanagerChats!
-    private weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate let theme: Theme
+    fileprivate weak var submanagerChats: OCTSubmanagerChats!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private var navigationView: iPadNavigationView!
-    private var friendsButton: iPadFriendsButton!
+    fileprivate var navigationView: iPadNavigationView!
+    fileprivate var friendsButton: iPadFriendsButton!
 
-    private var tableManager: ChatListTableManager!
+    fileprivate var tableManager: ChatListTableManager!
 
     init(theme: Theme, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
@@ -64,7 +64,7 @@ class PrimaryIpadController: UIViewController {
 
         addNavigationButtons()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         friendsButton = iPadFriendsButton(theme: theme)
     }
 
@@ -97,15 +97,15 @@ extension PrimaryIpadController {
 }
 
 extension PrimaryIpadController: ChatListTableManagerDelegate {
-    func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat) {
+    func chatListTableManager(_ manager: ChatListTableManager, didSelectChat chat: OCTChat) {
         delegate?.primaryIpadController(self, didSelectChat: chat)
     }
 
-    func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
-        presentViewController(controller, animated: true, completion: nil)
+    func chatListTableManager(_ manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
+        present(controller, animated: true, completion: nil)
     }
 
-    func chatListTableManagerWasUpdated(manager: ChatListTableManager) {
+    func chatListTableManagerWasUpdated(_ manager: ChatListTableManager) {
         // nope
     }
 }
@@ -119,7 +119,7 @@ private extension PrimaryIpadController {
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
                 image: UIImage(named: "tab-bar-settings"),
-                style: .Plain,
+                style: .plain,
                 target: self,
                 action: #selector(PrimaryIpadController.settingsButtonPressed))
     }
@@ -139,21 +139,21 @@ private extension PrimaryIpadController {
 
         view.addSubview(tableView)
 
-        tableView.registerClass(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
+        tableView.register(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
 
         tableManager = ChatListTableManager(theme: theme, tableView: tableView, submanagerChats: submanagerChats, submanagerObjects: submanagerObjects)
         tableManager.delegate = self
     }
 
     func installConstraints() {
-        friendsButton.snp_makeConstraints {
+        friendsButton.snp.makeConstraints {
             $0.top.equalTo(view)
             $0.leading.trailing.equalTo(view)
             $0.height.equalTo(60.0)
         }
 
-        tableManager.tableView.snp_makeConstraints {
-            $0.top.equalTo(friendsButton.snp_bottom)
+        tableManager.tableView.snp.makeConstraints {
+            $0.top.equalTo(friendsButton.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view)
         }
     }

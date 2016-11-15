@@ -11,27 +11,27 @@ private struct Constants {
 }
 
 protocol FullscreenPickerDelegate: class {
-    func fullscreenPicker(picker: FullscreenPicker, willDismissWithSelectedIndex index: Int)
+    func fullscreenPicker(_ picker: FullscreenPicker, willDismissWithSelectedIndex index: Int)
 }
 
 class FullscreenPicker: UIView {
     weak var delegate: FullscreenPickerDelegate?
 
-    private var theme: Theme
+    fileprivate var theme: Theme
 
-    private var blackoutButton: UIButton!
-    private var toolbar: UIToolbar!
-    private var picker: UIPickerView!
+    fileprivate var blackoutButton: UIButton!
+    fileprivate var toolbar: UIToolbar!
+    fileprivate var picker: UIPickerView!
 
-    private var pickerBottomConstraint: Constraint!
+    fileprivate var pickerBottomConstraint: Constraint!
 
-    private let stringsArray: [String]
+    fileprivate let stringsArray: [String]
 
     init(theme: Theme, strings: [String], selectedIndex: Int) {
         self.theme = theme
         self.stringsArray = strings
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         configureSelf()
         createSubviews()
@@ -44,10 +44,10 @@ class FullscreenPicker: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func showAnimatedInView(view: UIView) {
+    func showAnimatedInView(_ view: UIView) {
         view.addSubview(self)
 
-        snp_makeConstraints {
+        snp.makeConstraints {
             $0.edges.equalTo(view)
         }
 
@@ -58,40 +58,40 @@ class FullscreenPicker: UIView {
 // MARK: Actions
 extension FullscreenPicker {
     func doneButtonPressed() {
-        delegate?.fullscreenPicker(self, willDismissWithSelectedIndex: picker.selectedRowInComponent(0))
+        delegate?.fullscreenPicker(self, willDismissWithSelectedIndex: picker.selectedRow(inComponent: 0))
         hide()
     }
 }
 
 extension FullscreenPicker: UIPickerViewDataSource {
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return stringsArray.count
     }
 }
 
 extension FullscreenPicker: UIPickerViewDelegate {
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return stringsArray[row]
     }
 
-    func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         picker.reloadAllComponents()
     }
 }
 
 private extension FullscreenPicker {
     func configureSelf() {
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
     }
 
     func createSubviews() {
         blackoutButton = UIButton()
         blackoutButton.backgroundColor = theme.colorForType(.TranslucentBackground)
-        blackoutButton.addTarget(self, action: #selector(FullscreenPicker.doneButtonPressed), forControlEvents:.TouchUpInside)
+        blackoutButton.addTarget(self, action: #selector(FullscreenPicker.doneButtonPressed), for:.touchUpInside)
         blackoutButton.accessibilityElementsHidden = true
         blackoutButton.isAccessibilityElement = false
         addSubview(blackoutButton)
@@ -100,31 +100,31 @@ private extension FullscreenPicker {
         toolbar.tintColor = theme.colorForType(.LoginButtonText)
         toolbar.barTintColor = theme.loginNavigationBarColor
         toolbar.items = [
-            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil),
-            UIBarButtonItem(barButtonSystemItem: .Done, target: self, action: #selector(FullscreenPicker.doneButtonPressed))
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(FullscreenPicker.doneButtonPressed))
         ]
         addSubview(toolbar)
 
         picker = UIPickerView()
         // Picker is always white, despite choosen theme
-        picker.backgroundColor = .whiteColor()
+        picker.backgroundColor = .white
         picker.delegate = self
         picker.dataSource = self
         addSubview(picker)
     }
 
     func installConstraints() {
-        blackoutButton.snp_makeConstraints {
+        blackoutButton.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
 
-        toolbar.snp_makeConstraints {
-            $0.bottom.equalTo(self.picker.snp_top)
+        toolbar.snp.makeConstraints {
+            $0.bottom.equalTo(self.picker.snp.top)
             $0.height.equalTo(Constants.ToolbarHeight)
             $0.width.equalTo(self)
         }
 
-        picker.snp_makeConstraints {
+        picker.snp.makeConstraints {
             $0.width.equalTo(self)
             pickerBottomConstraint = $0.bottom.equalTo(self).constraint
         }
@@ -132,23 +132,23 @@ private extension FullscreenPicker {
 
     func show() {
         blackoutButton.alpha = 0.0
-        pickerBottomConstraint.updateOffset(picker.frame.size.height + Constants.ToolbarHeight)
+        pickerBottomConstraint.update(offset: picker.frame.size.height + Constants.ToolbarHeight)
 
         layoutIfNeeded()
 
-        UIView.animateWithDuration(Constants.AnimationDuration) {
+        UIView.animate(withDuration: Constants.AnimationDuration, animations: {
             self.blackoutButton.alpha = 1.0
-            self.pickerBottomConstraint.updateOffset(0.0)
+            self.pickerBottomConstraint.update(offset: 0.0)
 
             self.layoutIfNeeded()
             UIAccessibilityPostNotification(UIAccessibilityScreenChangedNotification, self.picker);
-        }
+        }) 
     }
 
     func hide() {
-        UIView.animateWithDuration(Constants.AnimationDuration, animations: {
+        UIView.animate(withDuration: Constants.AnimationDuration, animations: {
             self.blackoutButton.alpha = 0.0
-            self.pickerBottomConstraint.updateOffset(self.picker.frame.size.height + Constants.ToolbarHeight)
+            self.pickerBottomConstraint.update(offset: self.picker.frame.size.height + Constants.ToolbarHeight)
 
             self.layoutIfNeeded()
         }, completion: { finished in

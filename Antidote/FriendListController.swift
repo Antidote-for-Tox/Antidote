@@ -6,26 +6,26 @@ import UIKit
 import SnapKit
 
 protocol FriendListControllerDelegate: class {
-    func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend)
-    func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest)
-    func friendListControllerAddFriend(controller: FriendListController)
-    func friendListController(controller: FriendListController, showQRCodeWithText text: String)
+    func friendListController(_ controller: FriendListController, didSelectFriend friend: OCTFriend)
+    func friendListController(_ controller: FriendListController, didSelectRequest request: OCTFriendRequest)
+    func friendListControllerAddFriend(_ controller: FriendListController)
+    func friendListController(_ controller: FriendListController, showQRCodeWithText text: String)
 }
 
 class FriendListController: UIViewController {
     weak var delegate: FriendListControllerDelegate?
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var dataSource: FriendListDataSource!
+    fileprivate var dataSource: FriendListDataSource!
 
-    private weak var submanagerObjects: OCTSubmanagerObjects!
-    private weak var submanagerFriends: OCTSubmanagerFriends!
-    private weak var submanagerChats: OCTSubmanagerChats!
-    private weak var submanagerUser: OCTSubmanagerUser!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate weak var submanagerFriends: OCTSubmanagerFriends!
+    fileprivate weak var submanagerChats: OCTSubmanagerChats!
+    fileprivate weak var submanagerUser: OCTSubmanagerUser!
 
-    private var placeholderView: UITextView!
-    private var tableView: UITableView!
+    fileprivate var placeholderView: UITextView!
+    fileprivate var tableView: UITableView!
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerFriends: OCTSubmanagerFriends, submanagerChats: OCTSubmanagerChats, submanagerUser: OCTSubmanagerUser) {
         self.theme = theme
@@ -39,7 +39,7 @@ class FriendListController: UIViewController {
 
         addNavigationButtons()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         title = String(localized: "contacts_title")
     }
 
@@ -69,13 +69,13 @@ class FriendListController: UIViewController {
         updateViewsVisibility()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         updateViewsVisibility()
     }
 
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
         tableView.setEditing(editing, animated: animated)
@@ -98,28 +98,28 @@ extension FriendListController: FriendListDataSourceDelegate {
         updateViewsVisibility()
     }
 
-    func friendListDataSourceInsertRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-        tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    func friendListDataSourceInsertRowsAtIndexPaths(_ indexPaths: [IndexPath]) {
+        tableView.insertRows(at: indexPaths, with: .automatic)
     }
 
-    func friendListDataSourceDeleteRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-        tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    func friendListDataSourceDeleteRowsAtIndexPaths(_ indexPaths: [IndexPath]) {
+        tableView.deleteRows(at: indexPaths, with: .automatic)
     }
 
-    func friendListDataSourceReloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-        tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    func friendListDataSourceReloadRowsAtIndexPaths(_ indexPaths: [IndexPath]) {
+        tableView.reloadRows(at: indexPaths, with: .automatic)
     }
 
-    func friendListDataSourceInsertSections(sections: NSIndexSet) {
-        tableView.insertSections(sections, withRowAnimation: .Automatic)
+    func friendListDataSourceInsertSections(_ sections: IndexSet) {
+        tableView.insertSections(sections, with: .automatic)
     }
 
-    func friendListDataSourceDeleteSections(sections: NSIndexSet) {
-        tableView.deleteSections(sections, withRowAnimation: .Automatic)
+    func friendListDataSourceDeleteSections(_ sections: IndexSet) {
+        tableView.deleteSections(sections, with: .automatic)
     }
 
-    func friendListDataSourceReloadSections(sections: NSIndexSet) {
-        tableView.reloadSections(sections, withRowAnimation: .Automatic)
+    func friendListDataSourceReloadSections(_ sections: IndexSet) {
+        tableView.reloadSections(sections, with: .automatic)
     }
 
     func friendListDataSourceReloadTable() {
@@ -128,8 +128,8 @@ extension FriendListController: FriendListDataSourceDelegate {
 }
 
 extension FriendListController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(FriendListCell.staticReuseIdentifier) as! FriendListCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FriendListCell.staticReuseIdentifier) as! FriendListCell
         let model = dataSource.modelAtIndexPath(indexPath)
 
         cell.setupWithTheme(theme, model: model)
@@ -137,89 +137,89 @@ extension FriendListController: UITableViewDataSource {
         return cell
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.numberOfSections()
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.numberOfRowsInSection(section)
     }
 
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return dataSource.sectionIndexTitles()
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return dataSource.titleForHeaderInSection(section)
     }
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
             let title: String
 
             switch dataSource.objectAtIndexPath(indexPath) {
-                case .Request:
+                case .request:
                     title = String(localized:"delete_contact_request_title")
-                case .Friend:
+                case .friend:
                     title = String(localized:"delete_contact_title")
             }
 
-            let alert = UIAlertController(title: title, message: nil, preferredStyle: .Alert)
+            let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
 
-            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
-            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .destructive) { [unowned self] _ -> Void in
                 switch self.dataSource.objectAtIndexPath(indexPath) {
-                    case .Request(let request):
-                        self.submanagerFriends.removeFriendRequest(request)
-                    case .Friend(let friend):
+                    case .request(let request):
+                        self.submanagerFriends.remove(request)
+                    case .friend(let friend):
                         do {
-                            let chat = self.submanagerChats.getOrCreateChatWithFriend(friend)
+                            let chat = self.submanagerChats.getOrCreateChat(with: friend)
 
-                            try self.submanagerFriends.removeFriend(friend)
+                            try self.submanagerFriends.remove(friend)
 
-                            self.submanagerChats.removeAllMessagesInChat(chat, removeChat: true)
+                            self.submanagerChats.removeAllMessages(in: chat, removeChat: true)
                         }
                         catch let error as NSError {
-                            handleErrorWithType(.RemoveFriend, error: error)
+                            handleErrorWithType(.removeFriend, error: error)
                         }
                 }
             })
 
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
     }
 }
 
 extension FriendListController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         switch dataSource.objectAtIndexPath(indexPath) {
-            case .Request(let request):
+            case .request(let request):
                 didSelectFriendRequest(request)
-            case .Friend(let friend):
+            case .friend(let friend):
                 delegate?.friendListController(self, didSelectFriend: friend)
         }
     }
 }
 
 extension FriendListController : UITextViewDelegate {
-    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         if textView === placeholderView {
             let toxId = submanagerUser.userAddress
-            let alert = UIAlertController(title: String(localized: "my_tox_id"), message: toxId, preferredStyle: .Alert)
+            let alert = UIAlertController(title: String(localized: "my_tox_id"), message: toxId, preferredStyle: .alert)
 
-            alert.addAction(UIAlertAction(title: String(localized: "copy"), style: .Default) { _ -> Void in
-                UIPasteboard.generalPasteboard().string = toxId
+            alert.addAction(UIAlertAction(title: String(localized: "copy"), style: .default) { _ -> Void in
+                UIPasteboard.general.string = toxId
             })
 
-            alert.addAction(UIAlertAction(title: String(localized: "show_qr_code"), style: .Default) { [weak self] _ -> Void in
+            alert.addAction(UIAlertAction(title: String(localized: "show_qr_code"), style: .default) { [weak self] _ -> Void in
                 self?.delegate?.friendListController(self!, showQRCodeWithText: toxId)
             })
 
-            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .cancel, handler: nil))
 
-            presentViewController(alert, animated: true, completion: nil)
+            present(alert, animated: true, completion: nil)
         }
 
         return false
@@ -229,7 +229,7 @@ extension FriendListController : UITextViewDelegate {
 private extension FriendListController {
     func addNavigationButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .Add,
+                barButtonSystemItem: .add,
                 target: self,
                 action: #selector(FriendListController.addFriendButtonPressed))
     }
@@ -244,8 +244,8 @@ private extension FriendListController {
             }
         }
 
-        navigationItem.leftBarButtonItem = isEmpty ? nil : editButtonItem()
-        placeholderView.hidden = !isEmpty
+        navigationItem.leftBarButtonItem = isEmpty ? nil : editButtonItem
+        placeholderView.isHidden = !isEmpty
     }
 
     func createTableView() {
@@ -258,7 +258,7 @@ private extension FriendListController {
 
         view.addSubview(tableView)
 
-        tableView.registerClass(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
+        tableView.register(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
     }
 
     func createPlaceholderView() {
@@ -270,31 +270,31 @@ private extension FriendListController {
         let fullRange = NSRange(location: 0, length: text.length)
 
         text.addAttribute(NSForegroundColorAttributeName, value: theme.colorForType(.EmptyScreenPlaceholderText), range: fullRange)
-        text.addAttribute(NSFontAttributeName, value: UIFont.antidoteFontWithSize(26.0, weight: .Light), range: fullRange)
+        text.addAttribute(NSFontAttributeName, value: UIFont.antidoteFontWithSize(26.0, weight: .light), range: fullRange)
         text.addAttribute(NSLinkAttributeName, value: "", range: linkRange)
 
         placeholderView = UITextView()
         placeholderView.delegate = self
         placeholderView.attributedText = text
-        placeholderView.editable = false
-        placeholderView.scrollEnabled = false
-        placeholderView.textAlignment = .Center
+        placeholderView.isEditable = false
+        placeholderView.isScrollEnabled = false
+        placeholderView.textAlignment = .center
         placeholderView.linkTextAttributes = [NSForegroundColorAttributeName : theme.colorForType(.LinkText)]
         view.addSubview(placeholderView)
     }
 
     func installConstraints() {
-        tableView.snp_makeConstraints {
+        tableView.snp.makeConstraints {
             $0.edges.equalTo(view)
         }
 
-        placeholderView.snp_makeConstraints {
+        placeholderView.snp.makeConstraints {
             $0.center.equalTo(view)
-            $0.size.equalTo(placeholderView.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max)))
+            $0.size.equalTo(placeholderView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)))
         }
     }
 
-    func didSelectFriendRequest(request: OCTFriendRequest) {
+    func didSelectFriendRequest(_ request: OCTFriendRequest) {
         delegate?.friendListController(self, didSelectRequest: request)
     }
 }

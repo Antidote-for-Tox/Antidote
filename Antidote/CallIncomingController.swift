@@ -15,20 +15,20 @@ private struct Constants {
 }
 
 protocol CallIncomingControllerDelegate: class {
-    func callIncomingControllerDecline(controller: CallIncomingController)
-    func callIncomingControllerAnswerAudio(controller: CallIncomingController)
-    func callIncomingControllerAnswerVideo(controller: CallIncomingController)
+    func callIncomingControllerDecline(_ controller: CallIncomingController)
+    func callIncomingControllerAnswerAudio(_ controller: CallIncomingController)
+    func callIncomingControllerAnswerVideo(_ controller: CallIncomingController)
 }
 
 class CallIncomingController: CallBaseController {
     weak var delegate: CallIncomingControllerDelegate?
 
-    private var avatarView: UIImageView!
+    fileprivate var avatarView: UIImageView!
 
-    private var buttonContainer: UIView!
-    private var declineButton: CallButton!
-    private var audioButton: CallButton!
-    private var videoButton: CallButton!
+    fileprivate var buttonContainer: UIView!
+    fileprivate var declineButton: CallButton!
+    fileprivate var audioButton: CallButton!
+    fileprivate var videoButton: CallButton!
 
     override func loadView() {
         super.loadView()
@@ -42,9 +42,9 @@ class CallIncomingController: CallBaseController {
     override func prepareForRemoval() {
         super.prepareForRemoval()
 
-        declineButton.enabled = false
-        audioButton.enabled = false
-        videoButton.enabled = false
+        declineButton.isEnabled = false
+        audioButton.isEnabled = false
+        videoButton.isEnabled = false
     }
 }
 
@@ -72,46 +72,46 @@ private extension CallIncomingController {
         view.addSubview(avatarView)
 
         buttonContainer = UIView()
-        buttonContainer.backgroundColor = .clearColor()
+        buttonContainer.backgroundColor = .clear
         view.addSubview(buttonContainer)
 
-        declineButton = CallButton(theme: theme, type: .Decline, buttonSize: .Small)
-        declineButton.addTarget(self, action: #selector(CallIncomingController.declineButtonPressed), forControlEvents: .TouchUpInside)
+        declineButton = CallButton(theme: theme, type: .decline, buttonSize: .small)
+        declineButton.addTarget(self, action: #selector(CallIncomingController.declineButtonPressed), for: .touchUpInside)
         buttonContainer.addSubview(declineButton)
 
-        audioButton = CallButton(theme: theme, type: .AnswerAudio, buttonSize: .Small)
-        audioButton.addTarget(self, action: #selector(CallIncomingController.audioButtonPressed), forControlEvents: .TouchUpInside)
+        audioButton = CallButton(theme: theme, type: .answerAudio, buttonSize: .small)
+        audioButton.addTarget(self, action: #selector(CallIncomingController.audioButtonPressed), for: .touchUpInside)
         buttonContainer.addSubview(audioButton)
 
-        videoButton = CallButton(theme: theme, type: .AnswerVideo, buttonSize: .Small)
-        videoButton.addTarget(self, action: #selector(CallIncomingController.videoButtonPressed), forControlEvents: .TouchUpInside)
+        videoButton = CallButton(theme: theme, type: .answerVideo, buttonSize: .small)
+        videoButton.addTarget(self, action: #selector(CallIncomingController.videoButtonPressed), for: .touchUpInside)
         buttonContainer.addSubview(videoButton)
     }
 
     func installConstraints() {
-        avatarView.snp_makeConstraints {
+        avatarView.snp.makeConstraints {
             $0.center.equalTo(view)
         }
 
-        buttonContainer.snp_makeConstraints {
+        buttonContainer.snp.makeConstraints {
             $0.centerX.equalTo(view)
-            $0.top.greaterThanOrEqualTo(avatarView.snp_bottom).offset(Constants.ButtonContainerTopMinOffset)
-            $0.bottom.equalTo(view).offset(Constants.ButtonContainerBottomOffset).priorityLow()
+            $0.top.greaterThanOrEqualTo(avatarView.snp.bottom).offset(Constants.ButtonContainerTopMinOffset)
+            $0.bottom.equalTo(view).offset(Constants.ButtonContainerBottomOffset).priority(250)
         }
 
-        declineButton.snp_makeConstraints {
+        declineButton.snp.makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
             $0.leading.equalTo(buttonContainer)
         }
 
-        audioButton.snp_makeConstraints {
+        audioButton.snp.makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
-            $0.leading.equalTo(declineButton.snp_trailing).offset(Constants.ButtonHorizontalOffset)
+            $0.leading.equalTo(declineButton.snp.trailing).offset(Constants.ButtonHorizontalOffset)
         }
 
-        videoButton.snp_makeConstraints {
+        videoButton.snp.makeConstraints {
             $0.top.bottom.equalTo(buttonContainer)
-            $0.leading.equalTo(audioButton.snp_trailing).offset(Constants.ButtonHorizontalOffset)
+            $0.leading.equalTo(audioButton.snp.trailing).offset(Constants.ButtonHorizontalOffset)
             $0.trailing.equalTo(buttonContainer)
         }
     }

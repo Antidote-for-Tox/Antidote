@@ -9,7 +9,7 @@ enum InterfaceIdiom {
     case iPad
 
     static func current() -> InterfaceIdiom {
-        if UIDevice.currentDevice().userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+        if UIDevice.current.userInterfaceIdiom == UIUserInterfaceIdiom.pad {
             return .iPad
         }
         else {

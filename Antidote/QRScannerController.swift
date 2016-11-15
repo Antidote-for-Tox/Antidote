@@ -6,22 +6,22 @@ import UIKit
 import AVFoundation
 
 class QRScannerController: UIViewController {
-    var didScanStringsBlock: ([String] -> Void)?
-    var cancelBlock: (Void -> Void)?
+    var didScanStringsBlock: (([String]) -> Void)?
+    var cancelBlock: ((Void) -> Void)?
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var previewLayer: AVCaptureVideoPreviewLayer!
-    private var captureSession: AVCaptureSession!
+    fileprivate var previewLayer: AVCaptureVideoPreviewLayer!
+    fileprivate var captureSession: AVCaptureSession!
 
-    private var aimView: QRScannerAimView!
+    fileprivate var aimView: QRScannerAimView!
 
     var pauseScanning: Bool = false {
         didSet {
             pauseScanning ? captureSession.stopRunning() : captureSession.startRunning()
 
             if !pauseScanning {
-                aimView.frame = CGRectZero
+                aimView.frame = CGRect.zero
             }
         }
     }
@@ -34,21 +34,21 @@ class QRScannerController: UIViewController {
         createCaptureSession()
         createBarButtonItems()
 
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(QRScannerController.applicationDidEnterBackground),
-                name: UIApplicationDidEnterBackgroundNotification,
+                name: NSNotification.Name.UIApplicationDidEnterBackground,
                 object: nil)
 
-        NSNotificationCenter.defaultCenter().addObserver(
+        NotificationCenter.default.addObserver(
                 self,
                 selector: #selector(QRScannerController.applicationWillEnterForeground),
-                name: UIApplicationWillEnterForegroundNotification,
+                name: NSNotification.Name.UIApplicationWillEnterForeground,
                 object: nil)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -61,13 +61,13 @@ class QRScannerController: UIViewController {
         createViewsAndLayers()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         captureSession.startRunning()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         captureSession.stopRunning()
@@ -101,11 +101,11 @@ extension QRScannerController {
 }
 
 extension QRScannerController: AVCaptureMetadataOutputObjectsDelegate {
-    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
         let readableObjects = metadataObjects.filter {
             $0 is AVMetadataMachineReadableCodeObject
         }.map {
-            previewLayer.transformedMetadataObjectForMetadataObject($0 as! AVMetadataObject) as! AVMetadataMachineReadableCodeObject
+            previewLayer.transformedMetadataObject(for: $0 as! AVMetadataObject) as! AVMetadataMachineReadableCodeObject
         }
 
         guard !readableObjects.isEmpty else {
@@ -136,23 +136,23 @@ private extension QRScannerController {
         if captureSession.canAddOutput(output) {
             captureSession.addOutput(output)
 
-            output.setMetadataObjectsDelegate(self, queue: dispatch_get_main_queue())
+            output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
 
-            if output.availableMetadataObjectTypes.contains({ $0 as! String == AVMetadataObjectTypeQRCode }) {
+            if output.availableMetadataObjectTypes.contains(where: { $0 as! String == AVMetadataObjectTypeQRCode }) {
                 output.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
             }
         }
     }
 
     func captureSessionInput() -> AVCaptureDeviceInput? {
-        guard let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo) else {
+        guard let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
             return nil
         }
 
-        if device.autoFocusRangeRestrictionSupported {
+        if device.isAutoFocusRangeRestrictionSupported {
             do {
                 try device.lockForConfiguration()
-                device.autoFocusRangeRestriction = .Near
+                device.autoFocusRangeRestriction = .near
                 device.unlockForConfiguration()
             }
             catch {
@@ -164,7 +164,7 @@ private extension QRScannerController {
     }
 
     func createBarButtonItems() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .Cancel, target: self, action: #selector(QRScannerController.cancelButtonPressed))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(QRScannerController.cancelButtonPressed))
     }
 
     func createViewsAndLayers() {
@@ -174,6 +174,6 @@ private extension QRScannerController {
 
         aimView = QRScannerAimView(theme: theme)
         view.addSubview(aimView)
-        view.bringSubviewToFront(aimView)
+        view.bringSubview(toFront: aimView)
     }
 }

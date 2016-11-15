@@ -15,9 +15,9 @@ class AudioPlayer {
 
     var playOnlyIfApplicationIsActive = true
 
-    private var players = [Sound: AVAudioPlayer]()
+    fileprivate var players = [Sound: AVAudioPlayer]()
 
-    func playSound(sound: Sound, loop: Bool) {
+    func playSound(_ sound: Sound, loop: Bool) {
         if playOnlyIfApplicationIsActive && !UIApplication.isActive {
             return
         }
@@ -31,23 +31,23 @@ class AudioPlayer {
         player.play()
     }
 
-    func isPlayingSound(sound: Sound) -> Bool {
+    func isPlayingSound(_ sound: Sound) -> Bool {
         guard let player = playerForSound(sound) else {
             return false
         }
 
-        return player.playing
+        return player.isPlaying
     }
 
     func isPlaying() -> Bool {
         let pl = players.filter {
-            $0.1.playing
+            $0.1.isPlaying
         }
 
         return !pl.isEmpty
     }
 
-    func stopSound(sound: Sound) {
+    func stopSound(_ sound: Sound) {
         guard let player = playerForSound(sound) else {
             return
         }
@@ -62,16 +62,16 @@ class AudioPlayer {
 }
 
 private extension AudioPlayer {
-    func playerForSound(sound: Sound) -> AVAudioPlayer? {
+    func playerForSound(_ sound: Sound) -> AVAudioPlayer? {
         if let player = players[sound] {
             return player
         }
 
-        guard let path = NSBundle.mainBundle().pathForResource(sound.rawValue, ofType: "aac") else {
+        guard let path = Bundle.main.path(forResource: sound.rawValue, ofType: "aac") else {
             return nil
         }
 
-        guard let player = try? AVAudioPlayer(contentsOfURL: NSURL.fileURLWithPath(path)) else {
+        guard let player = try? AVAudioPlayer(contentsOf: URL(fileURLWithPath: path)) else {
             return nil
         }
 

@@ -5,7 +5,7 @@
 import Foundation
 
 class OCTSubmanagerDNSMock: NSObject, OCTSubmanagerDNS {
-    func addTox3Server(domain: String, publicKey: String) {
+    func addTox3Server(_ domain: String, publicKey: String) {
         // nop
     }
     
@@ -13,11 +13,11 @@ class OCTSubmanagerDNSMock: NSObject, OCTSubmanagerDNS {
         // nop
     }
     
-    func tox3DiscoveryForString(string: String, success successBlock: ((String) -> Void)?, failure failureBlock: ((NSError) -> Void)?) {
+    func tox3Discovery(for string: String, success successBlock: ((String) -> Void)?, failure failureBlock: ((Error) -> Void)? = nil) {
         // nop
     }
     
-    func tox1DiscoveryForString(string: String, success successBlock: ((String) -> Void)?, failure failureBlock: ((NSError) -> Void)?) {
+    func tox1Discovery(for string: String, success successBlock: ((String) -> Void)?, failure failureBlock: ((Error) -> Void)? = nil) {
         // nop
     }
 }

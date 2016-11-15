@@ -5,9 +5,9 @@
 import Foundation
 
 protocol ChatListTableManagerDelegate: class {
-    func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat)
-    func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController)
-    func chatListTableManagerWasUpdated(manager: ChatListTableManager)
+    func chatListTableManager(_ manager: ChatListTableManager, didSelectChat chat: OCTChat)
+    func chatListTableManager(_ manager: ChatListTableManager, presentAlertController controller: UIAlertController)
+    func chatListTableManagerWasUpdated(_ manager: ChatListTableManager)
 }
 
 class ChatListTableManager: NSObject {
@@ -21,25 +21,25 @@ class ChatListTableManager: NSObject {
         }
     }
 
-    private let theme: Theme
-    private let avatarManager: AvatarManager
-    private let dateFormatter: NSDateFormatter
-    private let timeFormatter: NSDateFormatter
+    fileprivate let theme: Theme
+    fileprivate let avatarManager: AvatarManager
+    fileprivate let dateFormatter: DateFormatter
+    fileprivate let timeFormatter: DateFormatter
 
-    private weak var submanagerChats: OCTSubmanagerChats!
+    fileprivate weak var submanagerChats: OCTSubmanagerChats!
 
-    private let chats: Results<OCTChat>
-    private var chatsToken: RLMNotificationToken?
-    private let friends: Results<OCTFriend>
-    private var friendsToken: RLMNotificationToken?
+    fileprivate let chats: Results<OCTChat>
+    fileprivate var chatsToken: RLMNotificationToken?
+    fileprivate let friends: Results<OCTFriend>
+    fileprivate var friendsToken: RLMNotificationToken?
 
     init(theme: Theme, tableView: UITableView, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.tableView = tableView
 
         self.theme = theme
         self.avatarManager = AvatarManager(theme: theme)
-        self.dateFormatter = NSDateFormatter(type: .RelativeDate)
-        self.timeFormatter = NSDateFormatter(type: .Time)
+        self.dateFormatter = DateFormatter(type: .relativeDate)
+        self.timeFormatter = DateFormatter(type: .time)
 
         self.submanagerChats = submanagerChats
 
@@ -61,7 +61,7 @@ class ChatListTableManager: NSObject {
 }
 
 extension ChatListTableManager: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let chat = chats[indexPath.row]
         let friend = chat.friends.lastObject() as! OCTFriend
 
@@ -84,24 +84,24 @@ extension ChatListTableManager: UITableViewDataSource {
         model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
         model.isUnread = chat.hasUnreadMessages()
 
-        let cell = tableView.dequeueReusableCellWithIdentifier(ChatListCell.staticReuseIdentifier) as! ChatListCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ChatListCell.staticReuseIdentifier) as! ChatListCell
         cell.setupWithTheme(theme, model: model)
 
         return cell
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return chats.count
     }
 
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            let alert = UIAlertController(title: String(localized:"delete_chat_title"), message: nil, preferredStyle: .Alert)
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            let alert = UIAlertController(title: String(localized:"delete_chat_title"), message: nil, preferredStyle: .alert)
 
-            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
-            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .destructive) { [unowned self] _ -> Void in
                 let chat = self.chats[indexPath.row]
-                self.submanagerChats.removeAllMessagesInChat(chat, removeChat: true)
+                self.submanagerChats.removeAllMessages(in: chat, removeChat: true)
             })
 
             delegate?.chatListTableManager(self, presentAlertController: alert)
@@ -110,8 +110,8 @@ extension ChatListTableManager: UITableViewDataSource {
 }
 
 extension ChatListTableManager: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         let chat = self.chats[indexPath.row]
         delegate?.chatListTableManager(self, didSelectChat: chat)
@@ -122,29 +122,29 @@ private extension ChatListTableManager {
     func addNotificationBlocks() {
         chatsToken = chats.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update(_, let deletions, let insertions, let modifications):
+                case .update(_, let deletions, let insertions, let modifications):
                     self.tableView.beginUpdates()
-                    self.tableView.deleteRowsAtIndexPaths(deletions.map { NSIndexPath(forRow: $0, inSection: 0) },
-                                                          withRowAnimation: .Automatic)
-                    self.tableView.insertRowsAtIndexPaths(insertions.map { NSIndexPath(forRow: $0, inSection: 0) },
-                                                          withRowAnimation: .Automatic)
-                    self.tableView.reloadRowsAtIndexPaths(modifications.map { NSIndexPath(forRow: $0, inSection: 0) },
-                                                          withRowAnimation: .None)
+                    self.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) },
+                                                          with: .automatic)
+                    self.tableView.insertRows(at: insertions.map { IndexPath(row: $0, section: 0) },
+                                                          with: .automatic)
+                    self.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) },
+                                                          with: .none)
                     self.tableView.endUpdates()
 
                     self.delegate?.chatListTableManagerWasUpdated(self)
-                case .Error(let error):
+                case .error(let error):
                     fatalError("\(error)")
             }
         }
 
         friendsToken = friends.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update(let friends, _, _, let modifications):
+                case .update(let friends, _, _, let modifications):
                     guard let friends = friends else {
                         break
                     }
@@ -155,20 +155,20 @@ private extension ChatListTableManager {
                         let pathsToUpdate = self.tableView.indexPathsForVisibleRows?.filter {
                             let chat = self.chats[$0.row]
 
-                            return Int(chat.friends.indexOfObject(friend)) != NSNotFound
+                            return Int(chat.friends.index(of: friend)) != NSNotFound
                         }
 
                         if let paths = pathsToUpdate {
-                            self.tableView.reloadRowsAtIndexPaths(paths, withRowAnimation: .None)
+                            self.tableView.reloadRows(at: paths, with: .none)
                         }
                     }
-                case .Error(let error):
+                case .error(let error):
                 fatalError("\(error)")
             }
         }
     }
 
-    func lastMessageTextFromChat(chat: OCTChat) -> String {
+    func lastMessageTextFromChat(_ chat: OCTChat) -> String {
         guard let message = chat.lastMessage else {
             return ""
         }
@@ -182,10 +182,10 @@ private extension ChatListTableManager {
         }
         else if let call = message.messageCall {
             switch call.callEvent {
-                case .Answered:
+                case .answered:
                     let timeString = String(timeInterval: call.callDuration)
                     return String(localized: "chat_call_finished") + " - \(timeString)"
-                case .Unanswered:
+                case .unanswered:
                     return message.isOutgoing() ?  String(localized: "chat_unanwered_call") : String(localized: "chat_missed_call_message")
             }
         }
@@ -193,9 +193,9 @@ private extension ChatListTableManager {
         return ""
     }
 
-    func dateTextFromDate(date: NSDate) -> String {
-        let isToday = NSCalendar.currentCalendar().compareDate(NSDate(), toDate: date, toUnitGranularity: .Day) == .OrderedSame
+    func dateTextFromDate(_ date: Date) -> String {
+        let isToday = (Calendar.current as NSCalendar).compare(Date(), to: date, toUnitGranularity: .day) == .orderedSame
 
-        return isToday ? timeFormatter.stringFromDate(date) : dateFormatter.stringFromDate(date)
+        return isToday ? timeFormatter.string(from: date) : dateFormatter.string(from: date)
     }
 }

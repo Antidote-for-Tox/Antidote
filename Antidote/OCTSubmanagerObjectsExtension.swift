@@ -5,28 +5,28 @@
 import Foundation
 
 extension OCTSubmanagerObjects {
-    func friends(predicate predicate: NSPredicate? = nil) -> Results<OCTFriend> {
-        let rlmResults = objectsForType(.Friend, predicate: predicate)
+    func friends(predicate: NSPredicate? = nil) -> Results<OCTFriend> {
+        let rlmResults = objects(for: .friend, predicate: predicate)!
         return Results(results: rlmResults)
     }
 
-    func friendRequests(predicate predicate: NSPredicate? = nil) -> Results<OCTFriendRequest> {
-        let rlmResults = objectsForType(.FriendRequest, predicate: predicate)
+    func friendRequests(predicate: NSPredicate? = nil) -> Results<OCTFriendRequest> {
+        let rlmResults = objects(for: .friendRequest, predicate: predicate)!
         return Results(results: rlmResults)
     }
 
-    func chats(predicate predicate: NSPredicate? = nil) -> Results<OCTChat> {
-        let rlmResults = objectsForType(.Chat, predicate: predicate)
+    func chats(predicate: NSPredicate? = nil) -> Results<OCTChat> {
+        let rlmResults = objects(for: .chat, predicate: predicate)!
         return Results(results: rlmResults)
     }
 
-    func calls(predicate predicate: NSPredicate? = nil) -> Results<OCTCall> {
-        let rlmResults = objectsForType(.Call, predicate: predicate)
+    func calls(predicate: NSPredicate? = nil) -> Results<OCTCall> {
+        let rlmResults = objects(for: .call, predicate: predicate)!
         return Results(results: rlmResults)
     }
 
-    func messages(predicate predicate: NSPredicate? = nil) -> Results<OCTMessageAbstract> {
-        let rlmResults = objectsForType(.MessageAbstract, predicate: predicate)
+    func messages(predicate: NSPredicate? = nil) -> Results<OCTMessageAbstract> {
+        let rlmResults = objects(for: .messageAbstract, predicate: predicate)!
         return Results(results: rlmResults)
     }
 
@@ -35,20 +35,20 @@ extension OCTSubmanagerObjects {
             return ProfileSettings()
         }
 
-        let unarchiver = NSKeyedUnarchiver(forReadingWithData: data)
+        let unarchiver = NSKeyedUnarchiver(forReadingWith: data)
         let settings =  ProfileSettings(coder: unarchiver)
         unarchiver.finishDecoding()
 
         return settings
     }
 
-    func saveProfileSettings(settings: ProfileSettings) {
+    func saveProfileSettings(_ settings: ProfileSettings) {
         let data = NSMutableData()
-        let archiver = NSKeyedArchiver(forWritingWithMutableData: data)
+        let archiver = NSKeyedArchiver(forWritingWith: data)
 
-        settings.encodeWithCoder(archiver)
+        settings.encode(with: archiver)
         archiver.finishEncoding()
 
-        self.genericSettingsData = data.copy() as! NSData
+        self.genericSettingsData = data.copy() as! Data
     }
 }

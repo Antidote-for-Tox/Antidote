@@ -17,28 +17,28 @@ private struct Constants {
 
 protocol AddFriendControllerDelegate: class {
     func addFriendControllerScanQRCode(
-            controller: AddFriendController,
-            validateCodeHandler: String -> Bool,
-            didScanHander: String -> Void)
+            _ controller: AddFriendController,
+            validateCodeHandler: @escaping (String) -> Bool,
+            didScanHander: @escaping (String) -> Void)
 
-    func addFriendControllerDidFinish(controller: AddFriendController)
+    func addFriendControllerDidFinish(_ controller: AddFriendController)
 }
 
 class AddFriendController: UIViewController {
     weak var delegate: AddFriendControllerDelegate?
 
-    private let theme: Theme
-    private weak var submanagerFriends: OCTSubmanagerFriends!
+    fileprivate let theme: Theme
+    fileprivate weak var submanagerFriends: OCTSubmanagerFriends!
 
-    private var textView: UITextView!
+    fileprivate var textView: UITextView!
 
-    private var orTopSpacer: UIView!
-    private var qrCodeBottomSpacer: UIView!
+    fileprivate var orTopSpacer: UIView!
+    fileprivate var qrCodeBottomSpacer: UIView!
 
-    private var orLabel: UILabel!
-    private var qrCodeButton: UIButton!
+    fileprivate var orLabel: UILabel!
+    fileprivate var qrCodeButton: UIButton!
 
-    private var cachedMessage: String?
+    fileprivate var cachedMessage: String?
 
     init(theme: Theme, submanagerFriends: OCTSubmanagerFriends) {
         self.theme = theme
@@ -48,7 +48,7 @@ class AddFriendController: UIViewController {
 
         addNavigationButtons()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         title = String(localized: "add_contact_title")
     }
 
@@ -68,13 +68,13 @@ class AddFriendController: UIViewController {
 
 extension AddFriendController {
     func qrCodeButtonPressed() {
-        func prepareString(string: String) -> String {
+        func prepareString(_ string: String) -> String {
             var string = string
 
-            string = string.uppercaseString.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            string = string.uppercased().trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
             if string.hasPrefix("TOX:") {
-                return string.substringFromIndex(string.startIndex.advancedBy(4))
+                return string.substring(from: string.characters.index(string.startIndex, offsetBy: 4))
             }
 
             return string
@@ -95,17 +95,17 @@ extension AddFriendController {
         let messageView = UITextView()
         messageView.text = cachedMessage
         messageView.placeholder = String(localized: "add_contact_default_message_text")
-        messageView.font = UIFont.systemFontOfSize(17.0)
+        messageView.font = UIFont.systemFont(ofSize: 17.0)
         messageView.layer.cornerRadius = 5.0
         messageView.layer.masksToBounds = true
 
         let alert = SDCAlertController(
                 title: String(localized: "add_contact_default_message_title"),
                 message: nil,
-                preferredStyle: .Alert)
+                preferredStyle: .alert)!
 
         alert.contentView.addSubview(messageView)
-        messageView.snp_makeConstraints {
+        messageView.snp.makeConstraints {
             $0.top.equalTo(alert.contentView)
             $0.bottom.equalTo(alert.contentView).offset(Constants.SendAlertTextViewBottomOffset);
             $0.leading.equalTo(alert.contentView).offset(Constants.SendAlertTextViewXOffset);
@@ -113,46 +113,46 @@ extension AddFriendController {
             $0.height.equalTo(Constants.SendAlertTextViewHeight);
         }
 
-        alert.addAction(SDCAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
-        alert.addAction(SDCAlertAction(title: String(localized: "add_contact_send"), style: .Recommended) { [unowned self] action in
+        alert.addAction(SDCAlertAction(title: String(localized: "alert_cancel"), style: .default, handler: nil))
+        alert.addAction(SDCAlertAction(title: String(localized: "add_contact_send"), style: .recommended) { [unowned self] action in
             self.cachedMessage = messageView.text
 
             let message = messageView.text.isEmpty ? messageView.placeholder : messageView.text
 
             do {
-                try self.submanagerFriends.sendFriendRequestToAddress(self.textView.text, message: message)
+                try self.submanagerFriends.sendFriendRequest(toAddress: self.textView.text, message: message)
             }
             catch let error as NSError {
-                handleErrorWithType(.ToxAddFriend, error: error)
+                handleErrorWithType(.toxAddFriend, error: error)
                 return
             }
 
             self.delegate?.addFriendControllerDidFinish(self)
         })
 
-        alert.presentWithCompletion(nil)
+        alert.present(completion: nil)
     }
 }
 
 extension AddFriendController: UITextViewDelegate {
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
             return false
         }
 
-        let resultText = (textView.text! as NSString).stringByReplacingCharactersInRange(range, withString: text)
+        let resultText = (textView.text! as NSString).replacingCharacters(in: range, with: text)
         let maxLength = Int(kOCTToxAddressLength)
 
-        if resultText.lengthOfBytesUsingEncoding(NSUTF8StringEncoding) > maxLength {
-            textView.text = resultText.substringToByteLength(maxLength, encoding: NSUTF8StringEncoding)
+        if resultText.lengthOfBytes(using: String.Encoding.utf8) > maxLength {
+            textView.text = resultText.substringToByteLength(maxLength, encoding: String.Encoding.utf8)
             return false
         }
 
         return true
     }
 
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         updateSendButton()
     }
 }
@@ -161,7 +161,7 @@ private extension AddFriendController {
     func addNavigationButtons() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: String(localized: "add_contact_send"),
-                style: .Done,
+                style: .done,
                 target: self,
                 action: #selector(AddFriendController.sendButtonPressed))
     }
@@ -170,14 +170,14 @@ private extension AddFriendController {
         textView = UITextView()
         textView.placeholder = String(localized: "add_contact_tox_id_placeholder")
         textView.delegate = self
-        textView.scrollEnabled = false
-        textView.font = UIFont.systemFontOfSize(17)
+        textView.isScrollEnabled = false
+        textView.font = UIFont.systemFont(ofSize: 17)
         textView.textColor = theme.colorForType(.NormalText)
-        textView.backgroundColor = .clearColor()
-        textView.returnKeyType = .Done
+        textView.backgroundColor = .clear
+        textView.returnKeyType = .done
         textView.layer.cornerRadius = 5.0
         textView.layer.borderWidth = 0.5
-        textView.layer.borderColor = theme.colorForType(.SeparatorsAndBorders).CGColor
+        textView.layer.borderColor = theme.colorForType(.SeparatorsAndBorders).cgColor
         textView.layer.masksToBounds = true
         view.addSubview(textView)
 
@@ -187,54 +187,54 @@ private extension AddFriendController {
         orLabel = UILabel()
         orLabel.text = String(localized: "add_contact_or_label")
         orLabel.textColor = theme.colorForType(.NormalText)
-        orLabel.backgroundColor = .clearColor()
+        orLabel.backgroundColor = .clear
         view.addSubview(orLabel)
 
-        qrCodeButton = UIButton(type: .System)
-        qrCodeButton.setTitle(String(localized: "add_contact_use_qr"), forState: .Normal)
-        qrCodeButton.titleLabel!.font = UIFont.antidoteFontWithSize(16.0, weight: .Bold)
-        qrCodeButton.addTarget(self, action: #selector(AddFriendController.qrCodeButtonPressed), forControlEvents: .TouchUpInside)
+        qrCodeButton = UIButton(type: .system)
+        qrCodeButton.setTitle(String(localized: "add_contact_use_qr"), for: UIControlState())
+        qrCodeButton.titleLabel!.font = UIFont.antidoteFontWithSize(16.0, weight: .bold)
+        qrCodeButton.addTarget(self, action: #selector(AddFriendController.qrCodeButtonPressed), for: .touchUpInside)
         view.addSubview(qrCodeButton)
     }
 
     func createSpacer() -> UIView {
         let spacer = UIView()
-        spacer.backgroundColor = .clearColor()
+        spacer.backgroundColor = .clear
         view.addSubview(spacer)
 
         return spacer
     }
 
     func installConstraints() {
-        textView.snp_makeConstraints {
+        textView.snp.makeConstraints {
             $0.top.equalTo(view).offset(Constants.TextViewTopOffset)
             $0.leading.equalTo(view).offset(Constants.TextViewXOffset)
             $0.trailing.equalTo(view).offset(-Constants.TextViewXOffset)
-            $0.bottom.equalTo(view.snp_centerY)
+            $0.bottom.equalTo(view.snp.centerY)
         }
 
-        orTopSpacer.snp_makeConstraints {
-            $0.top.equalTo(textView.snp_bottom)
+        orTopSpacer.snp.makeConstraints {
+            $0.top.equalTo(textView.snp.bottom)
         }
 
-        orLabel.snp_makeConstraints {
-            $0.top.equalTo(orTopSpacer.snp_bottom)
+        orLabel.snp.makeConstraints {
+            $0.top.equalTo(orTopSpacer.snp.bottom)
             $0.centerX.equalTo(view)
         }
 
-        qrCodeButton.snp_makeConstraints {
-            $0.top.equalTo(orLabel.snp_bottom)
+        qrCodeButton.snp.makeConstraints {
+            $0.top.equalTo(orLabel.snp.bottom)
             $0.centerX.equalTo(view)
         }
 
-        qrCodeBottomSpacer.snp_makeConstraints {
-            $0.top.equalTo(qrCodeButton.snp_bottom)
+        qrCodeBottomSpacer.snp.makeConstraints {
+            $0.top.equalTo(qrCodeButton.snp.bottom)
             $0.bottom.equalTo(view)
             $0.height.equalTo(orTopSpacer)
         }
     }
 
     func updateSendButton() {
-        navigationItem.rightBarButtonItem!.enabled = isAddressString(textView.text)
+        navigationItem.rightBarButtonItem!.isEnabled = isAddressString(textView.text)
     }
 }

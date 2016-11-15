@@ -11,5 +11,5 @@ protocol CoordinatorProtocol {
         - Parameters:
           - options: Options to start with. Options are used for recovering state of coordinator on recreation.
      */
-    func startWithOptions(options: CoordinatorOptions?)
+    func startWithOptions(_ options: CoordinatorOptions?)
 }

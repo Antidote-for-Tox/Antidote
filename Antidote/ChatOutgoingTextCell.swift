@@ -6,7 +6,7 @@ import UIKit
 import SnapKit
 
 class ChatOutgoingTextCell: ChatBaseTextCell {
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let textModel = model as? ChatOutgoingTextCellModel else {
@@ -32,7 +32,7 @@ class ChatOutgoingTextCell: ChatBaseTextCell {
     override func installConstraints() {
         super.installConstraints()
 
-        bubbleView.snp_makeConstraints {
+        bubbleView.snp.makeConstraints {
             $0.top.equalTo(movableContentView).offset(ChatBaseTextCell.Constants.BubbleVerticalOffset)
             $0.bottom.equalTo(movableContentView).offset(-ChatBaseTextCell.Constants.BubbleVerticalOffset)
             $0.trailing.equalTo(movableContentView).offset(-ChatBaseTextCell.Constants.BubbleHorizontalOffset)

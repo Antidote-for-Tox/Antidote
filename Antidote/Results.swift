@@ -6,7 +6,7 @@ import Foundation
 
 /// Swift wrapper for RLMResults
 class Results<T: OCTObject> {
-    private let results: RLMResults
+    fileprivate let results: RLMResults<RLMObject>
 
     var count: Int {
         get {
@@ -26,45 +26,45 @@ class Results<T: OCTObject> {
         }
     }
 
-    init(results: RLMResults) {
+    init(results: RLMResults<RLMObject>) {
         let name = NSStringFromClass(T.self)
         assert(name == results.objectClassName, "Specified wrong generic class")
 
         self.results = results
     }
 
-    func indexOfObject(object: T) -> Int {
-        return Int(results.indexOfObject(object))
+    func indexOfObject(_ object: T) -> Int {
+        return Int(results.index(of: object))
     }
 
-    func sortedResultsUsingProperty(property: String, ascending: Bool) -> Results<T> {
-        let sortedResults = results.sortedResultsUsingProperty(property, ascending: ascending)
+    func sortedResultsUsingProperty(_ property: String, ascending: Bool) -> Results<T> {
+        let sortedResults = results.sortedResults(usingProperty: property, ascending: ascending)
         return Results<T>(results: sortedResults)
     }
 
-    func sortedResultsUsingDescriptors(properties: Array<RLMSortDescriptor>) -> Results<T> {
-        let sortedResults = results.sortedResultsUsingDescriptors(properties)
+    func sortedResultsUsingDescriptors(_ properties: Array<RLMSortDescriptor>) -> Results<T> {
+        let sortedResults = results.sortedResults(using: properties)
         return Results<T>(results: sortedResults)
     }
 
-    func addNotificationBlock(block: ResultsChange<T> -> Void) -> RLMNotificationToken {
+    func addNotificationBlock(_ block: @escaping (ResultsChange<T>) -> Void) -> RLMNotificationToken {
         return results.addNotificationBlock { rlmResults, changes, error in
             if let error = error {
-                block(ResultsChange.Error(error))
+                block(ResultsChange.error(error as NSError))
                 return
             }
 
             let results: Results<T>? = (rlmResults != nil) ? Results<T>(results: rlmResults!) : nil
 
             if let changes = changes {
-                block(ResultsChange.Update(results,
-                                           deletions: changes.deletions as! [Int],
-                                           insertions: changes.insertions as! [Int],
-                                           modifications: changes.modifications as! [Int]))
+                block(ResultsChange.update(results,
+                                           deletions: changes.deletions as [Int],
+                                           insertions: changes.insertions as [Int],
+                                           modifications: changes.modifications as [Int]))
                 return
             }
 
-            block(ResultsChange.Initial(results))
+            block(ResultsChange.initial(results))
         }
     }
 

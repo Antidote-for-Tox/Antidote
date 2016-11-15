@@ -10,7 +10,7 @@ class UserStatusView: StaticBackgroundView {
         static let DefaultSize = 12.0
     }
 
-    private var roundView: StaticBackgroundView?
+    fileprivate var roundView: StaticBackgroundView?
 
     var theme: Theme? {
         didSet {
@@ -24,14 +24,14 @@ class UserStatusView: StaticBackgroundView {
         }
     }
 
-    var userStatus: UserStatus = .Offline {
+    var userStatus: UserStatus = .offline {
         didSet {
             userStatusWasUpdated()
         }
     }
 
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         createRoundView()
     }
@@ -59,7 +59,7 @@ private extension UserStatusView {
         roundView!.layer.masksToBounds = true
         addSubview(roundView!)
 
-        roundView!.snp_makeConstraints {
+        roundView!.snp.makeConstraints {
             $0.center.equalTo(self)
             $0.size.equalTo(self).offset(-2.0)
         }
@@ -68,17 +68,17 @@ private extension UserStatusView {
     func userStatusWasUpdated() {
         if let theme = theme {
             switch userStatus {
-                case .Offline:
+                case .offline:
                     roundView?.setStaticBackgroundColor(theme.colorForType(.OfflineStatus))
-                case .Online:
+                case .online:
                     roundView?.setStaticBackgroundColor(theme.colorForType(.OnlineStatus))
-                case .Away:
+                case .away:
                     roundView?.setStaticBackgroundColor(theme.colorForType(.AwayStatus))
-                case .Busy:
+                case .busy:
                     roundView?.setStaticBackgroundColor(theme.colorForType(.BusyStatus))
             }
 
-            let background = showExternalCircle ? theme.colorForType(.StatusBackground) : .clearColor()
+            let background = showExternalCircle ? theme.colorForType(.StatusBackground) : .clear
             setStaticBackgroundColor(background)
         }
 

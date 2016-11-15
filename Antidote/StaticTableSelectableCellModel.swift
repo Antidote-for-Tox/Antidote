@@ -5,5 +5,5 @@
 import Foundation
 
 class StaticTableSelectableCellModel: StaticTableBaseCellModel {
-    var didSelectHandler: (StaticTableBaseCell -> Void)?
+    var didSelectHandler: ((StaticTableBaseCell) -> Void)?
 }

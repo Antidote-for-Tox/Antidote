@@ -14,23 +14,23 @@ private struct Constants {
 }
 
 protocol ChangePasswordControllerDelegate: class {
-    func changePasswordControllerDidFinishPresenting(controller: ChangePasswordController)
+    func changePasswordControllerDidFinishPresenting(_ controller: ChangePasswordController)
 }
 
 class ChangePasswordController: KeyboardNotificationController {
     weak var delegate: ChangePasswordControllerDelegate?
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private weak var toxManager: OCTManager!
+    fileprivate weak var toxManager: OCTManager!
 
-    private var scrollView: UIScrollView!
-    private var containerView: IncompressibleView!
+    fileprivate var scrollView: UIScrollView!
+    fileprivate var containerView: IncompressibleView!
 
-    private var oldPasswordField: ExtendedTextField!
-    private var newPasswordField: ExtendedTextField!
-    private var repeatPasswordField: ExtendedTextField!
-    private var button: RoundedButton!
+    fileprivate var oldPasswordField: ExtendedTextField!
+    fileprivate var newPasswordField: ExtendedTextField!
+    fileprivate var repeatPasswordField: ExtendedTextField!
+    fileprivate var button: RoundedButton!
 
     init(theme: Theme, toxManager: OCTManager) {
         self.theme = theme
@@ -38,7 +38,7 @@ class ChangePasswordController: KeyboardNotificationController {
 
         super.init()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         addNavigationButtons()
 
         title = String(localized: "change_password")
@@ -55,14 +55,14 @@ class ChangePasswordController: KeyboardNotificationController {
         installConstraints()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         if let old = oldPasswordField {
-            old.becomeFirstResponder()
+            _ = old.becomeFirstResponder()
         }
         else if let new = newPasswordField {
-            new.becomeFirstResponder()
+            _ = new.becomeFirstResponder()
         }
     }
 
@@ -80,7 +80,7 @@ class ChangePasswordController: KeyboardNotificationController {
         super.viewDidLayoutSubviews()
 
         scrollView.contentSize.width = scrollView.frame.size.width
-        scrollView.contentSize.height = CGRectGetMaxY(containerView.frame)
+        scrollView.contentSize.height = containerView.frame.maxY
     }
 }
 
@@ -98,10 +98,10 @@ extension ChangePasswordController {
         let oldPassword = oldPasswordField.text!
         let newPassword = newPasswordField.text!
 
-        let hud = JGProgressHUD(style: .Dark)
-        hud.showInView(view)
+        let hud = JGProgressHUD(style: .dark)
+        hud?.show(in: view)
 
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) { [unowned self] in
+        DispatchQueue.global(qos: .default).async { [unowned self] in
             let result = self.toxManager.changeEncryptPassword(newPassword, oldPassword: oldPassword)
 
             if result {
@@ -111,14 +111,14 @@ extension ChangePasswordController {
                 }
             }
 
-            dispatch_async(dispatch_get_main_queue()) { [unowned self] in
-                hud.dismiss()
+            DispatchQueue.main.async { [unowned self] in
+                hud?.dismiss()
 
                 if result {
                     self.delegate?.changePasswordControllerDidFinishPresenting(self)
                 }
                 else {
-                    handleErrorWithType(.WrongOldPassword)
+                    handleErrorWithType(.wrongOldPassword)
                 }
             }
         }
@@ -126,12 +126,12 @@ extension ChangePasswordController {
 }
 
 extension ChangePasswordController: ExtendedTextFieldDelegate {
-    func loginExtendedTextFieldReturnKeyPressed(field: ExtendedTextField) {
+    func loginExtendedTextFieldReturnKeyPressed(_ field: ExtendedTextField) {
         if field === oldPasswordField {
-            newPasswordField!.becomeFirstResponder()
+            _ = newPasswordField!.becomeFirstResponder()
         }
         else if field === newPasswordField {
-            repeatPasswordField!.becomeFirstResponder()
+            _ = repeatPasswordField!.becomeFirstResponder()
         }
         else if field === repeatPasswordField {
             buttonPressed()
@@ -142,7 +142,7 @@ extension ChangePasswordController: ExtendedTextFieldDelegate {
 private extension ChangePasswordController {
     func addNavigationButtons() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .Cancel,
+                barButtonSystemItem: .cancel,
                 target: self,
                 action: #selector(ChangePasswordController.cancelButtonPressed))
     }
@@ -152,25 +152,25 @@ private extension ChangePasswordController {
         view.addSubview(scrollView)
 
         containerView = IncompressibleView()
-        containerView.backgroundColor = .clearColor()
+        containerView.backgroundColor = .clear
         scrollView.addSubview(containerView)
 
-        button = RoundedButton(theme: theme, type: .RunningPositive)
-        button.setTitle(String(localized: "change_password_done"), forState: .Normal)
-        button.addTarget(self, action: #selector(ChangePasswordController.buttonPressed), forControlEvents: .TouchUpInside)
+        button = RoundedButton(theme: theme, type: .runningPositive)
+        button.setTitle(String(localized: "change_password_done"), for: UIControlState())
+        button.addTarget(self, action: #selector(ChangePasswordController.buttonPressed), for: .touchUpInside)
         containerView.addSubview(button)
 
         oldPasswordField = createPasswordFieldWithTitle(String(localized: "old_password"))
         newPasswordField = createPasswordFieldWithTitle(String(localized: "new_password"))
         repeatPasswordField = createPasswordFieldWithTitle(String(localized: "repeat_password"))
 
-        oldPasswordField.returnKeyType = .Next
-        newPasswordField.returnKeyType = .Next
-        repeatPasswordField.returnKeyType = .Done
+        oldPasswordField.returnKeyType = .next
+        newPasswordField.returnKeyType = .next
+        repeatPasswordField.returnKeyType = .done
     }
 
-    func createPasswordFieldWithTitle(title: String) -> ExtendedTextField {
-        let field = ExtendedTextField(theme: theme, type: .Normal)
+    func createPasswordFieldWithTitle(_ title: String) -> ExtendedTextField {
+        let field = ExtendedTextField(theme: theme, type: .normal)
         field.delegate = self
         field.title = title
         field.secureTextEntry = true
@@ -180,33 +180,33 @@ private extension ChangePasswordController {
     }
 
     func installConstraints() {
-        scrollView.snp_makeConstraints {
+        scrollView.snp.makeConstraints {
             $0.edges.equalTo(view)
         }
 
         containerView.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
-        containerView.snp_makeConstraints {
+        containerView.snp.makeConstraints {
             $0.top.equalTo(scrollView)
             $0.centerX.equalTo(scrollView)
             $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
             $0.width.lessThanOrEqualTo(scrollView).offset(-2 * Constants.HorizontalOffset)
         }
 
-        var topConstraint = containerView.snp_top
+        var topConstraint = containerView.snp.top
 
         if installConstraintsForField(oldPasswordField, topConstraint: topConstraint) {
-            topConstraint = oldPasswordField!.snp_bottom
+            topConstraint = oldPasswordField!.snp.bottom
         }
 
         if installConstraintsForField(newPasswordField, topConstraint: topConstraint) {
-            topConstraint = newPasswordField!.snp_bottom
+            topConstraint = newPasswordField!.snp.bottom
         }
 
         if installConstraintsForField(repeatPasswordField, topConstraint: topConstraint) {
-            topConstraint = repeatPasswordField!.snp_bottom
+            topConstraint = repeatPasswordField!.snp.bottom
         }
 
-        button.snp_makeConstraints {
+        button.snp.makeConstraints {
             $0.top.equalTo(topConstraint).offset(Constants.ButtonVerticalOffset)
             $0.leading.trailing.equalTo(containerView)
             $0.bottom.equalTo(containerView)
@@ -216,12 +216,12 @@ private extension ChangePasswordController {
     /**
         Returns true if field exists, no otherwise.
      */
-    func installConstraintsForField(field: ExtendedTextField?, topConstraint: ConstraintItem) -> Bool {
+    func installConstraintsForField(_ field: ExtendedTextField?, topConstraint: ConstraintItem) -> Bool {
         guard let field = field else {
             return false
         }
 
-        field.snp_makeConstraints {
+        field.snp.makeConstraints {
             $0.top.equalTo(topConstraint).offset(Constants.FieldsOffset)
             $0.leading.trailing.equalTo(containerView)
         }
@@ -230,22 +230,22 @@ private extension ChangePasswordController {
     }
 
     func validatePasswordFields() -> Bool {
-        guard let oldText = oldPasswordField.text where !oldText.isEmpty else {
-            handleErrorWithType(.PasswordIsEmpty)
+        guard let oldText = oldPasswordField.text, !oldText.isEmpty else {
+            handleErrorWithType(.passwordIsEmpty)
             return false
         }
-        guard let newText = newPasswordField.text where !newText.isEmpty else {
-            handleErrorWithType(.PasswordIsEmpty)
+        guard let newText = newPasswordField.text, !newText.isEmpty else {
+            handleErrorWithType(.passwordIsEmpty)
             return false
         }
 
-        guard let repeatText = repeatPasswordField.text where !repeatText.isEmpty else {
-            handleErrorWithType(.PasswordIsEmpty)
+        guard let repeatText = repeatPasswordField.text, !repeatText.isEmpty else {
+            handleErrorWithType(.passwordIsEmpty)
             return false
         }
 
         guard newText == repeatText else {
-            handleErrorWithType(.PasswordsDoNotMatch)
+            handleErrorWithType(.passwordsDoNotMatch)
             return false
         }
 

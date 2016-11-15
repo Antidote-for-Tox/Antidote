@@ -10,16 +10,16 @@ private struct Constants {
 }
 
 protocol EnterPinControllerDelegate: class {
-    func enterPinController(controller: EnterPinController, successWithPin pin: String)
+    func enterPinController(_ controller: EnterPinController, successWithPin pin: String)
 
     // This method may be called only for ValidatePin state.
-    func enterPinControllerFailure(controller: EnterPinController)
+    func enterPinControllerFailure(_ controller: EnterPinController)
 }
 
 class EnterPinController: UIViewController {
     enum State {
-        case ValidatePin(validPin: String)
-        case SetPin
+        case validatePin(validPin: String)
+        case setPin
     }
 
     weak var delegate: EnterPinControllerDelegate?
@@ -34,7 +34,7 @@ class EnterPinController: UIViewController {
             if #available(iOS 9.0, *) {
                 loadViewIfNeeded()
             } else {
-                if !isViewLoaded() {
+                if !isViewLoaded {
                     // creating view
                     view.setNeedsDisplay()
                 }
@@ -44,11 +44,11 @@ class EnterPinController: UIViewController {
         }
     }
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var pinInputView: PinInputView!
+    fileprivate var pinInputView: PinInputView!
 
-    private var enteredString: String = ""
+    fileprivate var enteredString: String = ""
 
     init(theme: Theme, state: State) {
         self.theme = theme
@@ -70,12 +70,12 @@ class EnterPinController: UIViewController {
         pinInputView.applyColors()
     }
 
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return false
     }
 
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        return UIInterfaceOrientationMask.Portrait
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask.portrait
     }
 
     func resetEnteredPin() {
@@ -85,7 +85,7 @@ class EnterPinController: UIViewController {
 }
 
 extension EnterPinController: PinInputViewDelegate {
-    func pinInputView(view: PinInputView, numericButtonPressed i: Int) {
+    func pinInputView(_ view: PinInputView, numericButtonPressed i: Int) {
         guard enteredString.characters.count < Constants.PinLength else {
             return
         }
@@ -95,20 +95,20 @@ extension EnterPinController: PinInputViewDelegate {
 
         if enteredString.characters.count == Constants.PinLength {
             switch state {
-                case .ValidatePin(let validPin):
+                case .validatePin(let validPin):
                      if enteredString == validPin {
                          delegate?.enterPinController(self, successWithPin: enteredString)
                      }
                      else {
                          delegate?.enterPinControllerFailure(self)
                      }
-                case .SetPin:
+                case .setPin:
                     delegate?.enterPinController(self, successWithPin: enteredString)
             }
         }
     }
 
-    func pinInputViewDeleteButtonPressed(view: PinInputView) {
+    func pinInputViewDeleteButtonPressed(_ view: PinInputView) {
         guard enteredString.characters.count > 0 else {
             return
         }
@@ -128,7 +128,7 @@ private extension EnterPinController {
     }
 
     func installConstraints() {
-        pinInputView.snp_makeConstraints {
+        pinInputView.snp.makeConstraints {
             $0.center.equalTo(view)
         }
     }

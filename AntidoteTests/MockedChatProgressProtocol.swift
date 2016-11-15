@@ -5,6 +5,6 @@
 import Foundation
 
 class MockedChatProgressProtocol: ChatProgressProtocol {
-    var updateProgress: ((progress: Float) -> Void)?
-    var updateEta: ((eta: CFTimeInterval, bytesPerSecond: OCTToxFileSize) -> Void)?
+    var updateProgress: ((_ progress: Float) -> Void)?
+    var updateEta: ((_ eta: CFTimeInterval, _ bytesPerSecond: OCTToxFileSize) -> Void)?
 }

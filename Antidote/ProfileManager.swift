@@ -12,7 +12,7 @@ private struct Constants {
 }
 
 class ProfileManager {
-    private(set) var allProfileNames: [String]
+    fileprivate(set) var allProfileNames: [String]
 
     init() {
         allProfileNames = []
@@ -20,64 +20,64 @@ class ProfileManager {
         reloadProfileNames()
     }
 
-    func createProfileWithName(name: String, copyFromURL: NSURL? = nil) throws {
+    func createProfileWithName(_ name: String, copyFromURL: URL? = nil) throws {
         let path = pathFromName(name)
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
 
-        try fileManager.createDirectoryAtPath(path, withIntermediateDirectories: true, attributes: nil)
+        try fileManager.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
 
         if let url = copyFromURL {
-            let saveURL = NSURL(fileURLWithPath: path).URLByAppendingPathComponent(Constants.ToxFileName)
-            try fileManager.moveItemAtURL(url, toURL: saveURL)
+            let saveURL = URL(fileURLWithPath: path).appendingPathComponent(Constants.ToxFileName)
+            try fileManager.moveItem(at: url, to: saveURL)
         }
 
         reloadProfileNames()
     }
 
-    func deleteProfileWithName(name: String) throws {
+    func deleteProfileWithName(_ name: String) throws {
         let path = pathFromName(name)
 
-        try NSFileManager.defaultManager().removeItemAtPath(path)
+        try FileManager.default.removeItem(atPath: path)
 
         reloadProfileNames()
     }
 
-    func renameProfileWithName(fromName: String, toName: String) throws {
+    func renameProfileWithName(_ fromName: String, toName: String) throws {
         let fromPath = pathFromName(fromName)
         let toPath = pathFromName(toName)
 
-        try NSFileManager.defaultManager().moveItemAtPath(fromPath, toPath: toPath)
+        try FileManager.default.moveItem(atPath: fromPath, toPath: toPath)
 
         reloadProfileNames()
     }
 
-    func pathForProfileWithName(name: String) -> String {
+    func pathForProfileWithName(_ name: String) -> String {
         return pathFromName(name)
     }
 }
 
 private extension ProfileManager {
     func saveDirectoryPath() -> String {
-        let path: NSString = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first!
-        return path.stringByAppendingPathComponent(Constants.SaveDirectoryPath)
+        let path: NSString = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first! as NSString
+        return path.appendingPathComponent(Constants.SaveDirectoryPath)
     }
 
-    func pathFromName(name: String) -> String {
-        let directoryPath: NSString = saveDirectoryPath()
-        return directoryPath.stringByAppendingPathComponent(name)
+    func pathFromName(_ name: String) -> String {
+        let directoryPath: NSString = saveDirectoryPath() as NSString
+        return directoryPath.appendingPathComponent(name)
     }
 
     func reloadProfileNames() {
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         let savePath = saveDirectoryPath()
 
-        let contents = try? fileManager.contentsOfDirectoryAtPath(savePath)
+        let contents = try? fileManager.contentsOfDirectory(atPath: savePath)
 
         allProfileNames = contents?.filter {
-            let path = (savePath as NSString).stringByAppendingPathComponent($0)
+            let path = (savePath as NSString).appendingPathComponent($0)
 
             var isDirectory: ObjCBool = false
-            fileManager.fileExistsAtPath(path, isDirectory:&isDirectory)
+            fileManager.fileExists(atPath: path, isDirectory:&isDirectory)
 
             return isDirectory.boolValue
         } ?? [String]()

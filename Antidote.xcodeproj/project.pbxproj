@@ -1527,9 +1527,11 @@
 					};
 					1164762E19794D3300DB20B8 = {
 						DevelopmentTeam = NHVF8NSG3J;
+						LastSwiftMigration = 0810;
 					};
 					1173F0551BC5D94400B88B7B = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2665,6 +2667,7 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Antidote/Antidote-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2692,6 +2695,7 @@
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Antidote/Antidote-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2716,6 +2720,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AntidoteTests/AntidoteTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Antidote.app/Antidote";
 			};
 			name = Debug;
@@ -2738,6 +2743,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dvor.AntidoteTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AntidoteTests/AntidoteTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Antidote.app/Antidote";
 			};
 			name = Release;

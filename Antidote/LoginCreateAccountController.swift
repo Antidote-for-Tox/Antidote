@@ -5,21 +5,21 @@
 import UIKit
 
 protocol LoginCreateAccountControllerDelegate: class {
-    func loginCreateAccountControllerCreate(controller: LoginCreateAccountController, name: String, profile: String)
-    func loginCreateAccountControllerImport(controller: LoginCreateAccountController, profile: String)
+    func loginCreateAccountControllerCreate(_ controller: LoginCreateAccountController, name: String, profile: String)
+    func loginCreateAccountControllerImport(_ controller: LoginCreateAccountController, profile: String)
 }
 
 class LoginCreateAccountController: LoginGenericCreateController {
-    enum Type {
-        case CreateAccount
-        case ImportProfile
+    enum ControllerType {
+        case createAccount
+        case importProfile
     }
 
     weak var delegate: LoginCreateAccountControllerDelegate?
 
-    private let type: Type
+    fileprivate let type: ControllerType
 
-    init(theme: Theme, type: Type) {
+    init(theme: Theme, type: ControllerType) {
         self.type = type
 
         super.init(theme: theme)
@@ -37,16 +37,16 @@ class LoginCreateAccountController: LoginGenericCreateController {
         secondTextField.title = String(localized: "create_account_profile_title")
         secondTextField.placeholder = String(localized: "create_account_profile_placeholder")
         secondTextField.hint = String(localized: "create_account_profile_hint")
-        secondTextField.returnKeyType = .Next
+        secondTextField.returnKeyType = .next
 
-        bottomButton.setTitle(String(localized: "create_account_next_button"), forState: .Normal)
+        bottomButton.setTitle(String(localized: "create_account_next_button"), for: UIControlState())
 
         switch type {
-            case .CreateAccount:
+            case .createAccount:
                 titleLabel.text = String(localized: "create_profile")
-            case .ImportProfile:
+            case .importProfile:
                 titleLabel.text = String(localized: "import_profile")
-                firstTextField.hidden = true
+                firstTextField.isHidden = true
         }
     }
 
@@ -65,7 +65,7 @@ class LoginCreateAccountController: LoginGenericCreateController {
 
 
         switch type {
-            case .CreateAccount:
+            case .createAccount:
                 let name = firstTextField.text ?? ""
                 guard !name.isEmpty else {
                     UIAlertController.showWithTitle(String(localized: "login_enter_username_and_profile"), message: nil, retryBlock: nil)
@@ -73,7 +73,7 @@ class LoginCreateAccountController: LoginGenericCreateController {
                 }
 
                 delegate?.loginCreateAccountControllerCreate(self, name: name, profile: profile)
-            case .ImportProfile:
+            case .importProfile:
                 delegate?.loginCreateAccountControllerImport(self, profile: profile)
         }
     }

@@ -10,18 +10,18 @@ class OCTSubmanagerUserMock: NSObject, OCTSubmanagerUser {
     var userAddress: String = "123"
     var publicKey: String = "123"
     var nospam: OCTToxNoSpam = 123
-    var userStatus: OCTToxUserStatus = .None
+    var userStatus: OCTToxUserStatus = .none
 
     override init() {
         super.init()
 
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(2.0 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+        let delayTime = DispatchTime.now() + Double(Int64(2.0 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { [weak self] in
             self?.delegate?.submanagerUser(self!, connectionStatusUpdate: self!.connectionStatus)
         }
     }
     
-    func setUserName(name: String?) throws {
+    func setUserName(_ name: String?) throws {
         // nop
     }
     
@@ -29,7 +29,7 @@ class OCTSubmanagerUserMock: NSObject, OCTSubmanagerUser {
         return nil
     }
     
-    func setUserStatusMessage(statusMessage: String?) throws {
+    func setUserStatusMessage(_ statusMessage: String?) throws {
         // nop
     }
     
@@ -37,11 +37,11 @@ class OCTSubmanagerUserMock: NSObject, OCTSubmanagerUser {
         return nil
     }
     
-    func setUserAvatar(avatar: NSData?) throws {
+    func setUserAvatar(_ avatar: Data?) throws {
         // nop
     }
     
-    func userAvatar() -> NSData? {
+    func userAvatar() -> Data? {
         return nil
     }
 }

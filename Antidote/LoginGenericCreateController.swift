@@ -11,8 +11,8 @@ private struct PrivateConstants {
 }
 
 class LoginGenericCreateController: LoginBaseController {
-    private var containerView: IncompressibleView!
-    private var containerViewTopConstraint: Constraint!
+    fileprivate var containerView: IncompressibleView!
+    fileprivate var containerViewTopConstraint: Constraint!
 
     var titleLabel: UILabel!
     var firstTextField: ExtendedTextField!
@@ -33,19 +33,19 @@ class LoginGenericCreateController: LoginBaseController {
     }
 
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
-        if CGRectIsEmpty(containerView.frame) {
+        if containerView.frame.isEmpty {
             return
         }
-        let underFormHeight = containerView.frame.size.height - CGRectGetMaxY(secondTextField.frame)
+        let underFormHeight = containerView.frame.size.height - secondTextField.frame.maxY
 
         let offset = min(0.0, underFormHeight - frame.height)
 
-        containerViewTopConstraint.updateOffset(offset)
+        containerViewTopConstraint.update(offset: offset)
         view.layoutIfNeeded()
     }
 
     override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
-        containerViewTopConstraint.updateOffset(0.0)
+        containerViewTopConstraint.update(offset: 0.0)
         view.layoutIfNeeded()
     }
 
@@ -65,9 +65,9 @@ extension LoginGenericCreateController {
 }
 
 extension LoginGenericCreateController: ExtendedTextFieldDelegate {
-    func loginExtendedTextFieldReturnKeyPressed(field: ExtendedTextField) {
+    func loginExtendedTextFieldReturnKeyPressed(_ field: ExtendedTextField) {
         if field == firstTextField {
-            secondTextField.becomeFirstResponder()
+            _ = secondTextField.becomeFirstResponder()
         }
         else if field == secondTextField {
             view.endEditing(true)
@@ -84,39 +84,39 @@ private extension LoginGenericCreateController {
 
     func createContainerView() {
         containerView = IncompressibleView()
-        containerView.backgroundColor = .clearColor()
+        containerView.backgroundColor = .clear
         view.addSubview(containerView)
     }
 
     func createTitleLabel() {
         titleLabel = UILabel()
         titleLabel.textColor = theme.colorForType(.LoginButtonBackground)
-        titleLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .Light)
-        titleLabel.backgroundColor = .clearColor()
+        titleLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .light)
+        titleLabel.backgroundColor = .clear
         containerView.addSubview(titleLabel)
     }
 
     func createExtendedTextFields() {
-        firstTextField = ExtendedTextField(theme: theme, type: .Login)
+        firstTextField = ExtendedTextField(theme: theme, type: .login)
         firstTextField.delegate = self
-        firstTextField.returnKeyType = .Next
+        firstTextField.returnKeyType = .next
         containerView.addSubview(firstTextField)
 
-        secondTextField = ExtendedTextField(theme: theme, type: .Login)
+        secondTextField = ExtendedTextField(theme: theme, type: .login)
         secondTextField.delegate = self
-        secondTextField.returnKeyType = .Go
+        secondTextField.returnKeyType = .go
         containerView.addSubview(secondTextField)
     }
 
     func createGoButton() {
-        bottomButton = RoundedButton(theme: theme, type: .Login)
-        bottomButton.addTarget(self, action: #selector(LoginCreateAccountController.bottomButtonPressed), forControlEvents: .TouchUpInside)
+        bottomButton = RoundedButton(theme: theme, type: .login)
+        bottomButton.addTarget(self, action: #selector(LoginCreateAccountController.bottomButtonPressed), for: .touchUpInside)
         containerView.addSubview(bottomButton)
     }
 
     func installConstraints() {
         containerView.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
-        containerView.snp_makeConstraints {
+        containerView.snp.makeConstraints {
             containerViewTopConstraint = $0.top.equalTo(view).constraint
             $0.centerX.equalTo(view)
             $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
@@ -124,30 +124,30 @@ private extension LoginGenericCreateController {
             $0.height.equalTo(view)
         }
 
-        titleLabel.snp_makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.top.equalTo(containerView).offset(PrivateConstants.VerticalOffset)
             $0.centerX.equalTo(containerView)
         }
 
-        firstTextField.snp_makeConstraints {
-            $0.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
+        firstTextField.snp.makeConstraints {
+            $0.top.equalTo(titleLabel.snp.bottom).offset(PrivateConstants.FieldsOffset)
             $0.leading.equalTo(containerView)
             $0.trailing.equalTo(containerView)
         }
 
-        secondTextField.snp_makeConstraints {
+        secondTextField.snp.makeConstraints {
             $0.leading.trailing.equalTo(firstTextField)
 
-            if firstTextField.hidden {
-                $0.top.equalTo(titleLabel.snp_bottom).offset(PrivateConstants.FieldsOffset)
+            if firstTextField.isHidden {
+                $0.top.equalTo(titleLabel.snp.bottom).offset(PrivateConstants.FieldsOffset)
             }
             else {
-                $0.top.equalTo(firstTextField.snp_bottom).offset(PrivateConstants.FieldsOffset)
+                $0.top.equalTo(firstTextField.snp.bottom).offset(PrivateConstants.FieldsOffset)
             }
         }
 
-        bottomButton.snp_makeConstraints {
-            $0.top.equalTo(secondTextField.snp_bottom).offset(PrivateConstants.VerticalOffset)
+        bottomButton.snp.makeConstraints {
+            $0.top.equalTo(secondTextField.snp.bottom).offset(PrivateConstants.VerticalOffset)
             $0.leading.trailing.equalTo(firstTextField)
         }
     }

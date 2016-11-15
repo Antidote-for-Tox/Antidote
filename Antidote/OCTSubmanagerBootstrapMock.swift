@@ -5,7 +5,7 @@
 import Foundation
 
 class OCTSubmanagerBootstrapMock: NSObject, OCTSubmanagerBootstrap {
-    func addNodeWithHost(host: String!, port: OCTToxPort, publicKey: String!) {
+    func addNode(withHost host: String!, port: OCTToxPort, publicKey: String!) {
         // nop
     }
     
@@ -17,7 +17,7 @@ class OCTSubmanagerBootstrapMock: NSObject, OCTSubmanagerBootstrap {
         // nop
     }
     
-    func addTCPRelayWithHost(host: String!, port: OCTToxPort, publicKey: String!) throws {
+    func addTCPRelay(withHost host: String!, port: OCTToxPort, publicKey: String!) throws {
         // nop
     }
 }

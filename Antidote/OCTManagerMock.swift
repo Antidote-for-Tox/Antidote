@@ -6,8 +6,8 @@ import Foundation
 import MobileCoreServices
 
 private enum Gender {
-    case Male
-    case Female
+    case male
+    case female
 }
 
 class OCTManagerMock: NSObject, OCTManager {
@@ -23,7 +23,7 @@ class OCTManagerMock: NSObject, OCTManager {
     var realm: RLMRealm
 
     override init() {
-        let configuration = RLMRealmConfiguration.defaultConfiguration()
+        let configuration = RLMRealmConfiguration.default()
         configuration.inMemoryIdentifier = "test realm"
         realm = try! RLMRealm(configuration: configuration)
 
@@ -49,11 +49,11 @@ class OCTManagerMock: NSObject, OCTManager {
         return "123"
     }
     
-    func changeEncryptPassword(newPassword: String, oldPassword: String) -> Bool {
+    func changeEncryptPassword(_ newPassword: String, oldPassword: String) -> Bool {
         return true
     }
     
-    func isManagerEncryptedWithPassword(password: String) -> Bool {
+    func isManagerEncrypted(withPassword password: String) -> Bool {
         return true
     }
 }
@@ -62,16 +62,16 @@ private extension OCTManagerMock {
     func populateRealm() {
         realm.beginWriteTransaction()
 
-        let f1 = addFriend(gender: .Female, number: 1, connectionStatus: .TCP, status: .None)
-        let f2 = addFriend(gender: .Male, number: 1, connectionStatus: .TCP, status: .Busy)
-        let f3 = addFriend(gender: .Female, number: 2, connectionStatus: .None, status: .None)
-        let f4 = addFriend(gender: .Male, number: 2, connectionStatus: .TCP, status: .Away)
-        let f5 = addFriend(gender: .Male, number: 3, connectionStatus: .TCP, status: .None)
-        let f6 = addFriend(gender: .Female, number: 3, connectionStatus: .TCP, status: .Away)
-        let f7 = addFriend(gender: .Male, number: 4, connectionStatus: .TCP, status: .Away)
-        let f8 = addFriend(gender: .Female, number: 4, connectionStatus: .None, status: .None)
-        let f9 = addFriend(gender: .Female, number: 5, connectionStatus: .TCP, status: .None)
-        let f10 = addFriend(gender: .Male, number: 5, connectionStatus: .None, status: .None)
+        let f1 = addFriend(gender: .female, number: 1, connectionStatus: .TCP, status: .none)
+        let f2 = addFriend(gender: .male, number: 1, connectionStatus: .TCP, status: .busy)
+        let f3 = addFriend(gender: .female, number: 2, connectionStatus: .none, status: .none)
+        let f4 = addFriend(gender: .male, number: 2, connectionStatus: .TCP, status: .away)
+        let f5 = addFriend(gender: .male, number: 3, connectionStatus: .TCP, status: .none)
+        let f6 = addFriend(gender: .female, number: 3, connectionStatus: .TCP, status: .away)
+        let f7 = addFriend(gender: .male, number: 4, connectionStatus: .TCP, status: .away)
+        let f8 = addFriend(gender: .female, number: 4, connectionStatus: .none, status: .none)
+        let f9 = addFriend(gender: .female, number: 5, connectionStatus: .TCP, status: .none)
+        let f10 = addFriend(gender: .male, number: 5, connectionStatus: .none, status: .none)
 
         let c1 = addChat(friend: f1)
         let c2 = addChat(friend: f2)
@@ -95,55 +95,55 @@ private extension OCTManagerMock {
         addFileMessage(chat: c9, outgoing: true, fileName: "presentation_2016.pdf")
         addTextMessage(chat: c10, outgoing: false, text: String(localized: "app_store_screenshot_chat_message_5"))
 
-        c1.lastReadDateInterval = NSDate().timeIntervalSince1970
+        c1.lastReadDateInterval = Date().timeIntervalSince1970
         // unread message
         // c2.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c3.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c4.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c5.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c6.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c7.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c8.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c9.lastReadDateInterval = NSDate().timeIntervalSince1970
-        c10.lastReadDateInterval = NSDate().timeIntervalSince1970
+        c3.lastReadDateInterval = Date().timeIntervalSince1970
+        c4.lastReadDateInterval = Date().timeIntervalSince1970
+        c5.lastReadDateInterval = Date().timeIntervalSince1970
+        c6.lastReadDateInterval = Date().timeIntervalSince1970
+        c7.lastReadDateInterval = Date().timeIntervalSince1970
+        c8.lastReadDateInterval = Date().timeIntervalSince1970
+        c9.lastReadDateInterval = Date().timeIntervalSince1970
+        c10.lastReadDateInterval = Date().timeIntervalSince1970
 
         try! realm.commitWriteTransaction()
     }
 
-    func addFriend(gender gender: Gender,
+    func addFriend(gender: Gender,
                    number: Int,
                    connectionStatus: OCTToxConnectionStatus,
                    status: OCTToxUserStatus) -> OCTFriend {
         let friend = OCTFriend()
         friend.publicKey = "123"
         friend.connectionStatus = connectionStatus
-        friend.isConnected = connectionStatus != .None
+        friend.isConnected = connectionStatus != .none
         friend.status = status
 
         switch gender {
-            case .Male:
+            case .male:
                 friend.nickname = String(localized: "app_store_screenshot_friend_male_\(number)")
                 friend.avatarData = UIImagePNGRepresentation(UIImage(named: "male-\(number)")!)
-            case .Female:
+            case .female:
                 friend.nickname = String(localized: "app_store_screenshot_friend_female_\(number)")
                 friend.avatarData = UIImagePNGRepresentation(UIImage(named: "female-\(number)")!)
         }
         
-        realm.addObject(friend)
+        realm.add(friend)
 
         return friend
     }
 
-    func addChat(friend friend: OCTFriend) -> OCTChat {
+    func addChat(friend: OCTFriend) -> OCTChat {
         let chat = OCTChat()
 
-        realm.addObject(chat)
-        chat.friends.addObject(friend)
+        realm.add(chat)
+        chat.friends.add(friend)
 
         return chat
     }
 
-    func addDemoConversationToChat(chat: OCTChat) {
+    func addDemoConversationToChat(_ chat: OCTChat) {
         addFileMessage(chat: chat, outgoing: false, fileName: "party.png")
         addTextMessage(chat: chat, outgoing: true, text: String(localized: "app_store_screenshot_conversation_1"))
         addTextMessage(chat: chat, outgoing: false, text: String(localized: "app_store_screenshot_conversation_2"))
@@ -154,7 +154,7 @@ private extension OCTManagerMock {
         addTextMessage(chat: chat, outgoing: true, text: String(localized: "app_store_screenshot_conversation_7"))
     }
 
-    func addTextMessage(chat chat: OCTChat, outgoing: Bool, text: String) {
+    func addTextMessage(chat: OCTChat, outgoing: Bool, text: String) {
         let messageText = OCTMessageText()
         messageText.text = text
         messageText.isDelivered = outgoing
@@ -163,36 +163,36 @@ private extension OCTManagerMock {
         message.messageText = messageText
     }
 
-    func addFileMessage(chat chat: OCTChat, outgoing: Bool, fileName: String) {
+    func addFileMessage(chat: OCTChat, outgoing: Bool, fileName: String) {
         let messageFile = OCTMessageFile()
         messageFile.fileName = fileName
-        messageFile.internalFilePath = NSBundle.mainBundle().pathForResource("dummy-photo", ofType: "jpg")
-        messageFile.fileType = .Ready
+        messageFile.internalFilePath = Bundle.main.path(forResource: "dummy-photo", ofType: "jpg")
+        messageFile.fileType = .ready
         messageFile.fileUTI = kUTTypeImage as String
 
         let message = addMessageAbstract(chat: chat, outgoing: outgoing)
         message.messageFile = messageFile
     }
 
-    func addCallMessage(chat chat: OCTChat, outgoing: Bool, answered: Bool, duration: NSTimeInterval) {
+    func addCallMessage(chat: OCTChat, outgoing: Bool, answered: Bool, duration: TimeInterval) {
         let messageCall = OCTMessageCall()
         messageCall.callDuration = duration
-        messageCall.callEvent = answered ? .Answered : .Unanswered
+        messageCall.callEvent = answered ? .answered : .unanswered
 
         let message = addMessageAbstract(chat: chat, outgoing: outgoing)
         message.messageCall = messageCall
     }
 
-    func addMessageAbstract(chat chat: OCTChat, outgoing: Bool) -> OCTMessageAbstract {
+    func addMessageAbstract(chat: OCTChat, outgoing: Bool) -> OCTMessageAbstract {
         let message = OCTMessageAbstract()
         if !outgoing {
             let friend = chat.friends.firstObject() as! OCTFriend
             message.senderUniqueIdentifier = friend.uniqueIdentifier
         }
         message.chatUniqueIdentifier = chat.uniqueIdentifier
-        message.dateInterval = NSDate().timeIntervalSince1970
+        message.dateInterval = Date().timeIntervalSince1970
 
-        realm.addObject(message)
+        realm.add(message)
         chat.lastMessage = message
 
         return message

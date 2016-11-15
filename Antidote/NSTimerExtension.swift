@@ -12,15 +12,15 @@ private class BlockWrapper<T> {
     }
 }
 
-extension NSTimer {
-    static func scheduledTimerWithTimeInterval(interval: NSTimeInterval, block: NSTimer -> Void, repeats: Bool) -> NSTimer {
+extension Timer {
+    static func scheduledTimerWithTimeInterval(_ interval: TimeInterval, block: (Timer) -> Void, repeats: Bool) -> Timer {
         let userInfo = BlockWrapper(block: block)
 
-        return scheduledTimerWithTimeInterval(interval, target: self, selector: #selector(NSTimer.executeBlock(_:)), userInfo: userInfo, repeats: repeats)
+        return scheduledTimer(timeInterval: interval, target: self, selector: #selector(Timer.executeBlock(_:)), userInfo: userInfo, repeats: repeats)
     }
 
-    static func executeBlock(timer: NSTimer) {
-        guard let wrapper = timer.userInfo as? BlockWrapper<NSTimer -> Void> else {
+    static func executeBlock(_ timer: Timer) {
+        guard let wrapper = timer.userInfo as? BlockWrapper<(Timer) -> Void> else {
             return
         }
 

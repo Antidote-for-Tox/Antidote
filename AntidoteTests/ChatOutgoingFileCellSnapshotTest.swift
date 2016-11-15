@@ -14,7 +14,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testWaitingState() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .WaitingConfirmation
+        model.state = .waitingConfirmation
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -28,7 +28,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testLoading() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Loading
+        model.state = .loading
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -39,7 +39,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
         cell.progressObject = progressObject
 
-        progressObject.updateProgress?(progress: 0.43)
+        progressObject.updateProgress?(0.43)
 
         updateCellLayout(cell)
         verifyView(cell)
@@ -47,7 +47,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testPaused() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Paused
+        model.state = .paused
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -58,7 +58,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
         cell.progressObject = progressObject
 
-        progressObject.updateProgress?(progress: 0.43)
+        progressObject.updateProgress?(0.43)
 
         updateCellLayout(cell)
         verifyView(cell)
@@ -66,7 +66,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testCancelled() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Cancelled
+        model.state = .cancelled
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -80,7 +80,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testDone() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Done
+        model.state = .done
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -94,7 +94,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testWaitingStateWithImage() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .WaitingConfirmation
+        model.state = .waitingConfirmation
         model.fileName = "icon.png"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePNG as String
@@ -109,7 +109,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testLoadingWithImage() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Loading
+        model.state = .loading
         model.fileName = "icon.png"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePNG as String
@@ -121,7 +121,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
         cell.progressObject = progressObject
         cell.setButtonImage(image)
 
-        progressObject.updateProgress?(progress: 0.43)
+        progressObject.updateProgress?(0.43)
 
         updateCellLayout(cell)
         verifyView(cell)
@@ -129,7 +129,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testPausedWithImage() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Paused
+        model.state = .paused
         model.fileName = "icon.png"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePNG as String
@@ -141,7 +141,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
         cell.progressObject = progressObject
         cell.setButtonImage(image)
 
-        progressObject.updateProgress?(progress: 0.43)
+        progressObject.updateProgress?(0.43)
 
         updateCellLayout(cell)
         verifyView(cell)
@@ -149,7 +149,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testCancelledWithImage() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Cancelled
+        model.state = .cancelled
         model.fileName = "icon.png"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePNG as String
@@ -164,7 +164,7 @@ class ChatOutgoingFileCellSnapshotTest: CellSnapshotTest {
 
     func testDoneWithImage() {
         let model = ChatOutgoingFileCellModel()
-        model.state = .Done
+        model.state = .done
         model.fileName = "icon.png"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePNG as String

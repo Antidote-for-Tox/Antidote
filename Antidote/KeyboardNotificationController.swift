@@ -8,9 +8,9 @@ class KeyboardNotificationController: UIViewController {
     init() {
         super.init(nibName: nil, bundle: nil)
 
-        let center = NSNotificationCenter.defaultCenter()
-        center.addObserver(self, selector: #selector(KeyboardNotificationController.keyboardWillShowNotification(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        center.addObserver(self, selector: #selector(KeyboardNotificationController.keyboardWillHideNotification(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        let center = NotificationCenter.default
+        center.addObserver(self, selector: #selector(KeyboardNotificationController.keyboardWillShowNotification(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        center.addObserver(self, selector: #selector(KeyboardNotificationController.keyboardWillHideNotification(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -18,7 +18,7 @@ class KeyboardNotificationController: UIViewController {
     }
 
     deinit {
-        let center = NSNotificationCenter.defaultCenter()
+        let center = NotificationCenter.default
         center.removeObserver(self)
     }
 
@@ -30,37 +30,37 @@ class KeyboardNotificationController: UIViewController {
         // nop
     }
 
-    func keyboardWillShowNotification(notification: NSNotification) {
+    func keyboardWillShowNotification(_ notification: Notification) {
         handleNotification(notification, willShow: true)
     }
 
-    func keyboardWillHideNotification(notification: NSNotification) {
+    func keyboardWillHideNotification(_ notification: Notification) {
         handleNotification(notification, willShow: false)
     }
 }
 
 private extension KeyboardNotificationController {
-    func handleNotification(notification: NSNotification, willShow: Bool) {
+    func handleNotification(_ notification: Notification, willShow: Bool) {
         let userInfo = notification.userInfo!
 
-        let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).CGRectValue()
+        let frame = (userInfo[UIKeyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
         let duration = (userInfo[UIKeyboardAnimationDurationUserInfoKey] as! NSNumber).doubleValue
-        let curve = UIViewAnimationCurve(rawValue: (userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).integerValue)!
+        let curve = UIViewAnimationCurve(rawValue: (userInfo[UIKeyboardAnimationCurveUserInfoKey] as! NSNumber).intValue)!
 
         let options: UIViewAnimationOptions
 
         switch curve {
-            case .EaseInOut:
-                options = .CurveEaseInOut
-            case .EaseIn:
-                options = .CurveEaseIn
-            case .EaseOut:
-                options = .CurveEaseOut
-            case .Linear:
-                options = .CurveLinear
+            case .easeInOut:
+                options = UIViewAnimationOptions()
+            case .easeIn:
+                options = .curveEaseIn
+            case .easeOut:
+                options = .curveEaseOut
+            case .linear:
+                options = .curveLinear
         }
 
-        UIView.animateWithDuration(duration, delay: 0.0, options: options, animations: { [unowned self] in
+        UIView.animate(withDuration: duration, delay: 0.0, options: options, animations: { [unowned self] in
             willShow ? self.keyboardWillShowAnimated(keyboardFrame: frame) : self.keyboardWillHideAnimated(keyboardFrame: frame)
         }, completion: nil)
     }

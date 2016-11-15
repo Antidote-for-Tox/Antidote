@@ -7,16 +7,16 @@ import UIKit
 class CopyLabel: UILabel {
     var copyable = true {
         didSet {
-            recognizer.enabled = copyable
+            recognizer.isEnabled = copyable
         }
     }
 
-    private var recognizer: UITapGestureRecognizer!
+    fileprivate var recognizer: UITapGestureRecognizer!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        userInteractionEnabled = true
+        isUserInteractionEnabled = true
 
         recognizer = UITapGestureRecognizer(target: self, action: #selector(CopyLabel.tapGesture))
         addGestureRecognizer(recognizer)
@@ -31,28 +31,28 @@ class CopyLabel: UILabel {
 extension CopyLabel {
     func tapGesture() {
         // This fixes issue with calling UIMenuController after UIActionSheet was presented.
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        appDelegate.window?.makeKeyWindow()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.makeKey()
 
         becomeFirstResponder()
 
-        let menu = UIMenuController.sharedMenuController()
-        menu.setTargetRect(frame, inView: superview!)
+        let menu = UIMenuController.shared
+        menu.setTargetRect(frame, in: superview!)
         menu.setMenuVisible(true, animated: true)
     }
 }
 
 // MARK: Copying
 extension CopyLabel {
-    override func copy(sender: AnyObject?) {
-        UIPasteboard.generalPasteboard().string = text
+    override func copy(_ sender: Any?) {
+        UIPasteboard.general.string = text
     }
 
-    override func canPerformAction(action: Selector, withSender sender: AnyObject?) -> Bool {
-        return action == #selector(NSObject.copy(_:))
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return action == #selector(copy(_:))
     }
 
-    override func canBecomeFirstResponder() -> Bool {
+    override var canBecomeFirstResponder : Bool {
         return true
     }
 }

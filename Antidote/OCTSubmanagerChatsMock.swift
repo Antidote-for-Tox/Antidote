@@ -5,27 +5,27 @@
 import Foundation
     
 class OCTSubmanagerChatsMock: NSObject, OCTSubmanagerChats {
-    func getOrCreateChatWithFriend(friend: OCTFriend!) -> OCTChat! {
+    func getOrCreateChat(with friend: OCTFriend!) -> OCTChat! {
         return OCTChat()
     }
     
-    func removeMessages(messages: [OCTMessageAbstract]!) {
+    func removeMessages(_ messages: [OCTMessageAbstract]!) {
         // nop
     }
     
-    func removeAllMessagesInChat(chat: OCTChat!, removeChat: Bool) {
+    func removeAllMessages(in chat: OCTChat!, removeChat: Bool) {
         // nop
     }
     
-    func sendMessageToChat(chat: OCTChat!,
-                           text: String!,
-                           type: OCTToxMessageType,
-                           successBlock: (OCTMessageAbstract! -> Void)!,
-                           failureBlock: (NSError! -> Void)!) {
+    public func sendMessage(to chat: OCTChat!,
+            text: String!,
+            type: OCTToxMessageType,
+            successBlock userSuccessBlock: ((OCTMessageAbstract?) -> Void)!,
+            failureBlock userFailureBlock: ((Error?) -> Void)!) {
         // nop
     }
     
-    func setIsTyping(isTyping: Bool, inChat chat: OCTChat!) throws {
+    func setIsTyping(_ isTyping: Bool, in chat: OCTChat!) throws {
         // nop
     }
 }

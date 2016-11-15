@@ -14,26 +14,26 @@ private struct Constants {
 }
 
 class StaticTableDefaultCell: StaticTableBaseCell {
-    private var userStatusView: UserStatusView!
-    private var titleLabel: UILabel!
-    private var valueLabel: CopyLabel!
-    private var rightButton: UIButton!
-    private var rightImageView: UIImageView!
+    fileprivate var userStatusView: UserStatusView!
+    fileprivate var titleLabel: UILabel!
+    fileprivate var valueLabel: CopyLabel!
+    fileprivate var rightButton: UIButton!
+    fileprivate var rightImageView: UIImageView!
 
-    private var userStatusViewVisibleConstraint: Constraint!
-    private var userStatusViewHiddenConstraint: Constraint!
+    fileprivate var userStatusViewVisibleConstraint: Constraint!
+    fileprivate var userStatusViewHiddenConstraint: Constraint!
 
-    private var valueLabelToTitleConstraint: Constraint!
-    private var valueLabelToContentTopConstraint: Constraint!
+    fileprivate var valueLabelToTitleConstraint: Constraint!
+    fileprivate var valueLabelToContentTopConstraint: Constraint!
 
-    private var valueLabelToArrowConstraint: Constraint!
-    private var valueLabelToContentRightConstraint: Constraint!
+    fileprivate var valueLabelToArrowConstraint: Constraint!
+    fileprivate var valueLabelToContentRightConstraint: Constraint!
 
-    private var rightButtonHandler: (Void -> Void)?
+    fileprivate var rightButtonHandler: ((Void) -> Void)?
 
-    private var checkmarkSelected: Bool = false
+    fileprivate var checkmarkSelected: Bool = false
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let defaultModel = model as? StaticTableDefaultCellModel else {
@@ -44,13 +44,13 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         if let userStatus = defaultModel.userStatus {
             userStatusView.theme = theme
             userStatusView.userStatus = userStatus
-            userStatusView.hidden = false
+            userStatusView.isHidden = false
 
             userStatusViewHiddenConstraint.deactivate()
             userStatusViewVisibleConstraint.activate()
         }
         else {
-            userStatusView.hidden = true
+            userStatusView.isHidden = true
 
             userStatusViewVisibleConstraint.deactivate()
             userStatusViewHiddenConstraint.activate()
@@ -58,36 +58,36 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
         titleLabel.textColor = theme.colorForType(.LinkText)
         valueLabel.textColor = theme.colorForType(.NormalText)
-        rightButton.setTitleColor(theme.colorForType(.LinkText), forState: .Normal)
+        rightButton.setTitleColor(theme.colorForType(.LinkText), for: UIControlState())
 
         titleLabel.text = defaultModel.title
         valueLabel.text = defaultModel.value
         valueLabel.copyable = defaultModel.canCopyValue
 
-        rightButton.hidden = (defaultModel.rightButton == nil)
-        rightButton.setTitle(defaultModel.rightButton, forState: .Normal)
+        rightButton.isHidden = (defaultModel.rightButton == nil)
+        rightButton.setTitle(defaultModel.rightButton, for: UIControlState())
         rightButtonHandler = defaultModel.rightButtonHandler
 
         let showRightImageView: Bool
         switch defaultModel.rightImageType {
-            case .None:
+            case .none:
                 showRightImageView = false
                 checkmarkSelected = false
-            case .Arrow:
+            case .arrow:
                 showRightImageView = true
                 rightImageView.image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
                 checkmarkSelected = false
-            case .Checkmark:
+            case .checkmark:
                 showRightImageView = true
                 rightImageView.image = UIImage(named: "checkmark")!
                 checkmarkSelected = true
         }
 
         if defaultModel.userInteractionEnabled {
-            selectionStyle = .Default
+            selectionStyle = .default
         }
         else {
-            selectionStyle = .None
+            selectionStyle = .none
         }
 
         if defaultModel.title != nil {
@@ -100,13 +100,13 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         }
 
         if showRightImageView {
-            rightImageView.hidden = false
+            rightImageView.isHidden = false
 
             valueLabelToContentRightConstraint.deactivate()
             valueLabelToArrowConstraint.activate()
         }
         else {
-            rightImageView.hidden = true
+            rightImageView.isHidden = true
 
             valueLabelToArrowConstraint.deactivate()
             valueLabelToContentRightConstraint.activate()
@@ -121,18 +121,18 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         customContentView.addSubview(userStatusView)
 
         titleLabel = UILabel()
-        titleLabel.font = UIFont.antidoteFontWithSize(17.0, weight: .Light)
-        titleLabel.backgroundColor = UIColor.clearColor()
+        titleLabel.font = UIFont.antidoteFontWithSize(17.0, weight: .light)
+        titleLabel.backgroundColor = UIColor.clear
         customContentView.addSubview(titleLabel)
 
         valueLabel = CopyLabel()
         valueLabel.numberOfLines = 0
-        valueLabel.font = UIFont.systemFontOfSize(17.0)
-        valueLabel.backgroundColor = UIColor.clearColor()
+        valueLabel.font = UIFont.systemFont(ofSize: 17.0)
+        valueLabel.backgroundColor = UIColor.clear
         customContentView.addSubview(valueLabel)
 
         rightButton = UIButton()
-        rightButton.addTarget(self, action: #selector(StaticTableDefaultCell.rightButtonPressed), forControlEvents: .TouchUpInside)
+        rightButton.addTarget(self, action: #selector(StaticTableDefaultCell.rightButtonPressed), for: .touchUpInside)
         customContentView.addSubview(rightButton)
 
         rightImageView = UIImageView()
@@ -142,27 +142,27 @@ class StaticTableDefaultCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        userStatusView.snp_makeConstraints {
+        userStatusView.snp.makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.leading.equalTo(customContentView)
             $0.size.equalTo(UserStatusView.Constants.DefaultSize)
         }
 
-        titleLabel.snp_makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset)
             $0.height.equalTo(Constants.TitleHeight)
 
-            userStatusViewVisibleConstraint = $0.leading.equalTo(userStatusView.snp_trailing).offset(Constants.TitleToUserStatusOffset).constraint
+            userStatusViewVisibleConstraint = $0.leading.equalTo(userStatusView.snp.trailing).offset(Constants.TitleToUserStatusOffset).constraint
         }
 
         userStatusViewVisibleConstraint.deactivate()
 
-        titleLabel.snp_makeConstraints {
+        titleLabel.snp.makeConstraints {
             userStatusViewHiddenConstraint = $0.leading.equalTo(customContentView).constraint
         }
 
-        valueLabel.snp_makeConstraints {
-            valueLabelToTitleConstraint = $0.top.equalTo(titleLabel.snp_bottom).offset(Constants.TitleToValueOffset).constraint
+        valueLabel.snp.makeConstraints {
+            valueLabelToTitleConstraint = $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.TitleToValueOffset).constraint
 
             valueLabelToContentRightConstraint = $0.trailing.equalTo(customContentView).constraint
 
@@ -172,22 +172,22 @@ class StaticTableDefaultCell: StaticTableBaseCell {
         }
 
         valueLabelToTitleConstraint.deactivate()
-        valueLabel.snp_updateConstraints{ (make) -> Void in
+        valueLabel.snp.updateConstraints{ (make) -> Void in
             valueLabelToContentTopConstraint = make.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset).constraint
         }
 
-        rightButton.snp_makeConstraints {
-            $0.leading.greaterThanOrEqualTo(titleLabel.snp_trailing)
+        rightButton.snp.makeConstraints {
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
             $0.trailing.equalTo(customContentView)
             $0.centerY.equalTo(titleLabel)
             $0.bottom.lessThanOrEqualTo(customContentView)
         }
 
-        rightImageView.snp_makeConstraints {
+        rightImageView.snp.makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.trailing.equalTo(customContentView)
 
-            valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp_trailing).constraint
+            valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp.trailing).constraint
         }
     }
 }
@@ -225,7 +225,7 @@ extension StaticTableDefaultCell {
                 return String(localized: "accessibility_show_copy_hint")
             }
 
-            if selectionStyle == .None {
+            if selectionStyle == .none {
                 return nil
             }
 
@@ -236,7 +236,7 @@ extension StaticTableDefaultCell {
 
     override var accessibilityTraits: UIAccessibilityTraits {
         get {
-            if selectionStyle == .None {
+            if selectionStyle == .none {
                 return UIAccessibilityTraitStaticText
             }
 

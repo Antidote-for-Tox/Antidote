@@ -12,54 +12,54 @@ private struct Constants {
 
 class CallButton: UIButton {
     enum ButtonSize {
-        case Small
-        case Big
+        case small
+        case big
     }
 
     enum ButtonType {
-        case Decline
-        case AnswerAudio
-        case AnswerVideo
-        case Mute
-        case Speaker
-        case Video
+        case decline
+        case answerAudio
+        case answerVideo
+        case mute
+        case speaker
+        case video
     }
 
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
             if let selectedTintColor = selectedTintColor {
-                tintColor = selected ? selectedTintColor : normalTintColor
+                tintColor = isSelected ? selectedTintColor : normalTintColor
             }
         }
     }
 
-    override var highlighted: Bool {
+    override var isHighlighted: Bool {
         didSet {
-            if highlighted {
+            if isHighlighted {
                 tintColor = normalTintColor
             }
             else {
                 if let selectedTintColor = selectedTintColor {
-                    tintColor = selected ? selectedTintColor : normalTintColor
+                    tintColor = isSelected ? selectedTintColor : normalTintColor
                 }
             }
         }
     }
 
-    private let buttonSize: ButtonSize
-    private let normalTintColor: UIColor
-    private var selectedTintColor: UIColor?
+    fileprivate let buttonSize: ButtonSize
+    fileprivate let normalTintColor: UIColor
+    fileprivate var selectedTintColor: UIColor?
 
     init(theme: Theme, type: ButtonType, buttonSize: ButtonSize) {
         self.buttonSize = buttonSize
         self.normalTintColor = theme.colorForType(.CallButtonIconColor)
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         switch buttonSize {
-            case .Small:
+            case .small:
                 layer.cornerRadius = Constants.SmallSize / 2
-            case .Big:
+            case .big:
                 layer.cornerRadius = Constants.BigSize / 2
         }
         layer.masksToBounds = true
@@ -69,26 +69,26 @@ class CallButton: UIButton {
         var selectedBackgroundColor: UIColor? = nil
 
         switch type {
-            case .Decline:
+            case .decline:
                 imageName = "end-call"
                 backgroundColor = theme.colorForType(.CallDeclineButtonBackground)
-            case .AnswerAudio:
+            case .answerAudio:
                 imageName = "start-call-30"
                 backgroundColor = theme.colorForType(.CallAnswerButtonBackground)
-            case .AnswerVideo:
+            case .answerVideo:
                 imageName = "video-call-30"
                 backgroundColor = theme.colorForType(.CallAnswerButtonBackground)
-            case .Mute:
+            case .mute:
                 imageName = "mute"
                 backgroundColor = theme.colorForType(.CallControlBackground)
                 selectedTintColor = theme.colorForType(.CallButtonSelectedIconColor)
                 selectedBackgroundColor = theme.colorForType(.CallControlSelectedBackground)
-            case .Speaker:
+            case .speaker:
                 imageName = "speaker"
                 backgroundColor = theme.colorForType(.CallControlBackground)
                 selectedTintColor = theme.colorForType(.CallButtonSelectedIconColor)
                 selectedBackgroundColor = theme.colorForType(.CallControlSelectedBackground)
-            case .Video:
+            case .video:
                 imageName = "video-call-30"
                 backgroundColor = theme.colorForType(.CallControlBackground)
                 selectedTintColor = theme.colorForType(.CallButtonSelectedIconColor)
@@ -98,14 +98,14 @@ class CallButton: UIButton {
         tintColor = normalTintColor
 
         let image = UIImage.templateNamed(imageName)
-        setImage(image, forState: .Normal)
+        setImage(image, for: UIControlState())
 
         let backgroundImage = UIImage.imageWithColor(backgroundColor, size: CGSize(width: 1.0, height: 1.0))
-        setBackgroundImage(backgroundImage, forState:UIControlState.Normal)
+        setBackgroundImage(backgroundImage, for:UIControlState())
 
         if let selected = selectedBackgroundColor {
             let backgroundImage = UIImage.imageWithColor(selected, size: CGSize(width: 1.0, height: 1.0))
-            setBackgroundImage(backgroundImage, forState:UIControlState.Selected)
+            setBackgroundImage(backgroundImage, for:UIControlState.selected)
         }
     }
 
@@ -113,11 +113,11 @@ class CallButton: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         switch buttonSize {
-            case .Small:
+            case .small:
                 return CGSize(width: Constants.SmallSize, height: Constants.SmallSize)
-            case .Big:
+            case .big:
                 return CGSize(width: Constants.BigSize, height: Constants.BigSize)
         }
     }

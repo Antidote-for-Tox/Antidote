@@ -10,43 +10,43 @@ private struct Constants {
 
 class RoundedButton: UIButton {
     enum ButtonType {
-        case Login
-        case RunningPositive
-        case RunningNegative
+        case login
+        case runningPositive
+        case runningNegative
     }
 
     init(theme: Theme, type: ButtonType) {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         let titleColor: UIColor
         let bgColor: UIColor
 
         switch type {
-            case .Login:
+            case .login:
                 titleColor = theme.colorForType(.LoginButtonText)
                 bgColor = theme.colorForType(.LoginButtonBackground)
-            case .RunningPositive:
+            case .runningPositive:
                 titleColor = theme.colorForType(.RoundedButtonText)
                 bgColor = theme.colorForType(.RoundedPositiveButtonBackground)
-            case .RunningNegative:
+            case .runningNegative:
                 titleColor = theme.colorForType(.RoundedButtonText)
                 bgColor = theme.colorForType(.RoundedNegativeButtonBackground)
         }
 
-        setTitleColor(titleColor, forState:UIControlState.Normal)
-        titleLabel?.font = UIFont.systemFontOfSize(18.0)
+        setTitleColor(titleColor, for:UIControlState())
+        titleLabel?.font = UIFont.systemFont(ofSize: 18.0)
         layer.cornerRadius = 5.0
         layer.masksToBounds = true
 
         let bgImage = UIImage.imageWithColor(bgColor, size: CGSize(width: 1.0, height: 1.0))
-        setBackgroundImage(bgImage, forState:UIControlState.Normal)
+        setBackgroundImage(bgImage, for:UIControlState())
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func intrinsicContentSize() -> CGSize {
+    override var intrinsicContentSize : CGSize {
         return CGSize(width: 0.0, height: Constants.Height)
     }
 }

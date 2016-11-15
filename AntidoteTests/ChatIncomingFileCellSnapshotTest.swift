@@ -14,7 +14,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
 
     func testWaitingState() {
         let model = ChatIncomingFileCellModel()
-        model.state = .WaitingConfirmation
+        model.state = .waitingConfirmation
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -28,7 +28,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
 
     func testLoading() {
         let model = ChatIncomingFileCellModel()
-        model.state = .Loading
+        model.state = .loading
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -39,7 +39,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
         cell.progressObject = progressObject
 
-        progressObject.updateProgress?(progress: 0.43)
+        progressObject.updateProgress?(0.43)
 
         updateCellLayout(cell)
         verifyView(cell)
@@ -47,7 +47,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
 
     func testPaused() {
         let model = ChatIncomingFileCellModel()
-        model.state = .Paused
+        model.state = .paused
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -58,7 +58,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
         cell.setupWithTheme(theme, model: model)
         cell.progressObject = progressObject
 
-        progressObject.updateProgress?(progress: 0.43)
+        progressObject.updateProgress?(0.43)
 
         updateCellLayout(cell)
         verifyView(cell)
@@ -66,7 +66,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
 
     func testCancelled() {
         let model = ChatIncomingFileCellModel()
-        model.state = .Cancelled
+        model.state = .cancelled
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -80,7 +80,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
 
     func testDone() {
         let model = ChatIncomingFileCellModel()
-        model.state = .Done
+        model.state = .done
         model.fileName = "file.txt"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePlainText as String
@@ -94,7 +94,7 @@ class ChatIncomingFileCellSnapshotTest: CellSnapshotTest {
 
     func testDoneWithImage() {
         let model = ChatIncomingFileCellModel()
-        model.state = .Done
+        model.state = .done
         model.fileName = "icon.png"
         model.fileSize = "3.14 KB"
         model.fileUTI = kUTTypePNG as String

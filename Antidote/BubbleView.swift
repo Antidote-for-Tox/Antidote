@@ -15,7 +15,7 @@ private struct Constants {
 }
 
 class BubbleView: UIView {
-    private var textView: UITextView!
+    fileprivate var textView: UITextView!
 
     var text: String? {
         get {
@@ -39,17 +39,17 @@ class BubbleView: UIView {
         didSet {
             textView.linkTextAttributes = [
                 NSForegroundColorAttributeName: tintColor,
-                NSUnderlineStyleAttributeName: NSUnderlineStyle.StyleSingle.rawValue,
+                NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
             ]
         }
     }
 
     var selectable: Bool {
         get {
-            return textView.selectable
+            return textView.isSelectable
         }
         set {
-            textView.selectable = newValue
+            textView.isSelectable = newValue
         }
     }
 
@@ -60,15 +60,15 @@ class BubbleView: UIView {
         layer.masksToBounds = true
 
         textView = UITextView()
-        textView.backgroundColor = .clearColor()
-        textView.editable = false
-        textView.scrollEnabled = false
-        textView.dataDetectorTypes = .All
-        textView.font = UIFont.systemFontOfSize(16.0)
+        textView.backgroundColor = .clear
+        textView.isEditable = false
+        textView.isScrollEnabled = false
+        textView.dataDetectorTypes = .all
+        textView.font = UIFont.systemFont(ofSize: 16.0)
 
         addSubview(textView)
 
-        textView.snp_makeConstraints {
+        textView.snp.makeConstraints {
             $0.top.equalTo(self).offset(Constants.TextViewVerticalOffset)
             $0.bottom.equalTo(self).offset(-Constants.TextViewVerticalOffset)
             $0.leading.equalTo(self).offset(Constants.TextViewHorizontalOffset)

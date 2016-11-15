@@ -9,21 +9,21 @@ class SnapshotBaseTest: FBSnapshotTestCase {
 
     var image: UIImage {
         get {
-            let bundle = NSBundle(forClass: self.dynamicType)
-            return UIImage(named: "icon", inBundle:bundle, compatibleWithTraitCollection: nil)!
+            let bundle = Bundle(for: type(of: self))
+            return UIImage(named: "icon", in:bundle, compatibleWith: nil)!
         }
     }
 
     override func setUp() {
         super.setUp()
 
-        let filepath = NSBundle.mainBundle().pathForResource("default-theme", ofType: "yaml")!
-        let yamlString = try! NSString(contentsOfFile:filepath, encoding:NSUTF8StringEncoding) as String
+        let filepath = Bundle.main.path(forResource: "default-theme", ofType: "yaml")!
+        let yamlString = try! NSString(contentsOfFile:filepath, encoding:String.Encoding.utf8.rawValue) as String
 
         theme = try! Theme(yamlString: yamlString)
     }
 
-    func verifyView(view: UIView) {
+    func verifyView(_ view: UIView) {
         FBSnapshotVerifyView(view, identifier: "normal")
 
         view.forceRightToLeft()
@@ -34,7 +34,7 @@ class SnapshotBaseTest: FBSnapshotTestCase {
 private extension UIView {
     func forceRightToLeft() {
         if #available(iOS 9.0, *) {
-            semanticContentAttribute = .ForceRightToLeft
+            semanticContentAttribute = .forceRightToLeft
         }
 
         for view in subviews {

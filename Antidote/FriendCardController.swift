@@ -5,28 +5,28 @@
 import UIKit
 
 protocol FriendCardControllerDelegate: class {
-    func friendCardControllerChangeNickname(controller: FriendCardController, forFriend friend: OCTFriend)
-    func friendCardControllerOpenChat(controller: FriendCardController, forFriend friend: OCTFriend)
-    func friendCardControllerCall(controller: FriendCardController, toFriend friend: OCTFriend)
-    func friendCardControllerVideoCall(controller: FriendCardController, toFriend friend: OCTFriend)
+    func friendCardControllerChangeNickname(_ controller: FriendCardController, forFriend friend: OCTFriend)
+    func friendCardControllerOpenChat(_ controller: FriendCardController, forFriend friend: OCTFriend)
+    func friendCardControllerCall(_ controller: FriendCardController, toFriend friend: OCTFriend)
+    func friendCardControllerVideoCall(_ controller: FriendCardController, toFriend friend: OCTFriend)
 }
 
 class FriendCardController: StaticTableController {
     weak var delegate: FriendCardControllerDelegate?
 
-    private weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private let friend: OCTFriend
+    fileprivate let friend: OCTFriend
 
-    private let avatarManager: AvatarManager
-    private var friendToken: RLMNotificationToken?
+    fileprivate let avatarManager: AvatarManager
+    fileprivate var friendToken: RLMNotificationToken?
 
-    private let avatarModel: StaticTableAvatarCellModel
-    private let chatButtonsModel: StaticTableChatButtonsCellModel
-    private let nicknameModel: StaticTableDefaultCellModel
-    private let nameModel: StaticTableDefaultCellModel
-    private let statusMessageModel: StaticTableDefaultCellModel
-    private let publicKeyModel: StaticTableDefaultCellModel
+    fileprivate let avatarModel: StaticTableAvatarCellModel
+    fileprivate let chatButtonsModel: StaticTableChatButtonsCellModel
+    fileprivate let nicknameModel: StaticTableDefaultCellModel
+    fileprivate let nameModel: StaticTableDefaultCellModel
+    fileprivate let statusMessageModel: StaticTableDefaultCellModel
+    fileprivate let publicKeyModel: StaticTableDefaultCellModel
 
     init(theme: Theme, friend: OCTFriend, submanagerObjects: OCTSubmanagerObjects) {
         self.submanagerObjects = submanagerObjects
@@ -41,7 +41,7 @@ class FriendCardController: StaticTableController {
         statusMessageModel = StaticTableDefaultCellModel()
         publicKeyModel = StaticTableDefaultCellModel()
 
-        super.init(theme: theme, style: .Plain, model: [
+        super.init(theme: theme, style: .plain, model: [
             [
                 avatarModel,
                 chatButtonsModel,
@@ -74,12 +74,12 @@ class FriendCardController: StaticTableController {
         let results = submanagerObjects.friends(predicate: predicate)
         friendToken = results.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update:
+                case .update:
                     self.updateModels()
                     self.reloadTableView()
-                case .Error(let error):
+                case .error(let error):
                     fatalError("\(error)")
             }
         }
@@ -115,7 +115,7 @@ private extension FriendCardController {
 
         nicknameModel.title = String(localized: "nickname")
         nicknameModel.value = friend.nickname
-        nicknameModel.rightImageType = .Arrow
+        nicknameModel.rightImageType = .arrow
         nicknameModel.didSelectHandler = { [unowned self] _ -> Void in
             self.delegate?.friendCardControllerChangeNickname(self, forFriend: self.friend)
         }

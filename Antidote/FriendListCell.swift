@@ -17,12 +17,12 @@ class FriendListCell: BaseCell {
         static let VerticalOffset = 3.0
     }
 
-    private var avatarView: ImageViewWithStatus!
-    private var topLabel: UILabel!
-    private var bottomLabel: UILabel!
-    private var arrowImageView: UIImageView!
+    fileprivate var avatarView: ImageViewWithStatus!
+    fileprivate var topLabel: UILabel!
+    fileprivate var bottomLabel: UILabel!
+    fileprivate var arrowImageView: UIImageView!
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let friendModel = model as? FriendListCellModel else {
@@ -35,7 +35,7 @@ class FriendListCell: BaseCell {
         avatarView.imageView.image = friendModel.avatar
         avatarView.userStatusView.theme = theme
         avatarView.userStatusView.userStatus = friendModel.status
-        avatarView.userStatusView.hidden = friendModel.hideStatus
+        avatarView.userStatusView.isHidden = friendModel.hideStatus
 
         topLabel.text = friendModel.topText
         topLabel.textColor = theme.colorForType(.NormalText)
@@ -55,44 +55,44 @@ class FriendListCell: BaseCell {
         contentView.addSubview(avatarView)
 
         topLabel = UILabel()
-        topLabel.font = UIFont.systemFontOfSize(18.0)
+        topLabel.font = UIFont.systemFont(ofSize: 18.0)
         contentView.addSubview(topLabel)
 
         bottomLabel = UILabel()
-        bottomLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
+        bottomLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .light)
         contentView.addSubview(bottomLabel)
 
         let image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
         arrowImageView = UIImageView(image: image)
-        arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+        arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
         contentView.addSubview(arrowImageView)
     }
 
     override func installConstraints() {
         super.installConstraints()
 
-        avatarView.snp_makeConstraints {
+        avatarView.snp.makeConstraints {
             $0.leading.equalTo(contentView).offset(Constants.AvatarLeftOffset)
             $0.centerY.equalTo(contentView)
             $0.size.equalTo(Constants.AvatarSize)
         }
 
-        topLabel.snp_makeConstraints {
-            $0.leading.equalTo(avatarView.snp_trailing).offset(Constants.AvatarRightOffset)
+        topLabel.snp.makeConstraints {
+            $0.leading.equalTo(avatarView.snp.trailing).offset(Constants.AvatarRightOffset)
             $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
             $0.height.equalTo(Constants.TopLabelHeight)
         }
 
-        bottomLabel.snp_makeConstraints {
+        bottomLabel.snp.makeConstraints {
             $0.leading.trailing.equalTo(topLabel)
-            $0.top.equalTo(topLabel.snp_bottom)
+            $0.top.equalTo(topLabel.snp.bottom)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
             $0.height.greaterThanOrEqualTo(Constants.MinimumBottomLabelHeight)
         }
 
-        arrowImageView.snp_makeConstraints {
+        arrowImageView.snp.makeConstraints {
             $0.centerY.equalTo(contentView)
-            $0.leading.greaterThanOrEqualTo(topLabel.snp_trailing)
+            $0.leading.greaterThanOrEqualTo(topLabel.snp.trailing)
             $0.trailing.equalTo(contentView)
         }
     }

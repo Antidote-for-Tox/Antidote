@@ -9,18 +9,18 @@ private struct Options {
     static let ToShowKey = "ToShowKey"
 
     enum Controller {
-        case AdvancedSettings
+        case advancedSettings
     }
 }
 
 protocol SettingsTabCoordinatorDelegate: class {
-    func settingsTabCoordinatorRecreateCoordinatorsStack(coordinator: SettingsTabCoordinator, options: CoordinatorOptions)
+    func settingsTabCoordinatorRecreateCoordinatorsStack(_ coordinator: SettingsTabCoordinator, options: CoordinatorOptions)
 }
 
 class SettingsTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: SettingsTabCoordinatorDelegate?
 
-    override func startWithOptions(options: CoordinatorOptions?) {
+    override func startWithOptions(_ options: CoordinatorOptions?) {
         let controller = SettingsMainController(theme: theme)
         controller.delegate = self
 
@@ -28,7 +28,7 @@ class SettingsTabCoordinator: ActiveSessionNavigationCoordinator {
 
         if let toShow = options?[Options.ToShowKey] as? Options.Controller {
             switch toShow {
-                case .AdvancedSettings:
+                case .advancedSettings:
                     let advanced = SettingsAdvancedController(theme: theme)
                     advanced.delegate = self
 
@@ -39,27 +39,27 @@ class SettingsTabCoordinator: ActiveSessionNavigationCoordinator {
 }
 
 extension SettingsTabCoordinator: SettingsMainControllerDelegate {
-    func settingsMainControllerShowAboutScreen(controller: SettingsMainController) {
+    func settingsMainControllerShowAboutScreen(_ controller: SettingsMainController) {
         let controller = SettingsAboutController(theme: theme)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func settingsMainControllerShowFaqScreen(controller: SettingsMainController) {
+    func settingsMainControllerShowFaqScreen(_ controller: SettingsMainController) {
         let controller = FAQController(theme: theme)
 
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func settingsMainControllerChangeAutodownloadImages(controller: SettingsMainController) {
+    func settingsMainControllerChangeAutodownloadImages(_ controller: SettingsMainController) {
         let controller = ChangeAutodownloadImagesController(theme: theme)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController) {
+    func settingsMainControllerShowAdvancedSettings(_ controller: SettingsMainController) {
         let controller = SettingsAdvancedController(theme: theme)
         controller.delegate = self
 
@@ -68,7 +68,7 @@ extension SettingsTabCoordinator: SettingsMainControllerDelegate {
 }
 
 extension SettingsTabCoordinator: SettingsAboutControllerDelegate {
-    func settingsAboutControllerShowAcknowledgements(controller: SettingsAboutController) {
+    func settingsAboutControllerShowAcknowledgements(_ controller: SettingsAboutController) {
         let controller = TextViewController(
                 resourceName: "antidote-acknowledgements",
                 backgroundColor: theme.colorForType(.NormalBackground),
@@ -81,15 +81,15 @@ extension SettingsTabCoordinator: SettingsAboutControllerDelegate {
 }
 
 extension SettingsTabCoordinator: ChangeAutodownloadImagesControllerDelegate {
-    func changeAutodownloadImagesControllerDidChange(controller: ChangeAutodownloadImagesController) {
-        navigationController.popViewControllerAnimated(true)
+    func changeAutodownloadImagesControllerDidChange(_ controller: ChangeAutodownloadImagesController) {
+        navigationController.popViewController(animated: true)
     }
 }
 
 extension SettingsTabCoordinator: SettingsAdvancedControllerDelegate {
-    func settingsAdvancedControllerToxOptionsChanged(controller: SettingsAdvancedController) {
+    func settingsAdvancedControllerToxOptionsChanged(_ controller: SettingsAdvancedController) {
         delegate?.settingsTabCoordinatorRecreateCoordinatorsStack(self, options: [
-            Options.ToShowKey: Options.Controller.AdvancedSettings
+            Options.ToShowKey: Options.Controller.advancedSettings
         ])
     }
 }

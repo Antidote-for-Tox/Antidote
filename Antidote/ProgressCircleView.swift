@@ -10,18 +10,18 @@ private struct Constants {
 }
 
 class ProgressCircleView: UIView {
-    private let backgroundLayer: CAShapeLayer
-    private let progressLayer: CAShapeLayer
+    fileprivate let backgroundLayer: CAShapeLayer
+    fileprivate let progressLayer: CAShapeLayer
 
     var backgroundLineColor: UIColor? {
         didSet {
-            backgroundLayer.strokeColor = backgroundLineColor?.CGColor
+            backgroundLayer.strokeColor = backgroundLineColor?.cgColor
         }
     }
 
     var lineColor: UIColor? {
         didSet {
-            progressLayer.strokeColor = lineColor?.CGColor
+            progressLayer.strokeColor = lineColor?.cgColor
         }
     }
 
@@ -38,12 +38,12 @@ class ProgressCircleView: UIView {
 
         super.init(frame: frame)
 
-        backgroundLayer.fillColor = UIColor.clearColor().CGColor
+        backgroundLayer.fillColor = UIColor.clear.cgColor
         backgroundLayer.lineWidth = Constants.LineWidth
         layer.addSublayer(backgroundLayer)
 
         progressLayer.strokeEnd = progress
-        progressLayer.fillColor = UIColor.clearColor().CGColor
+        progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.lineWidth = Constants.LineWidth
         layer.addSublayer(progressLayer)
     }
@@ -56,16 +56,16 @@ class ProgressCircleView: UIView {
         super.layoutSubviews()
 
         let bezierPath = UIBezierPath()
-        bezierPath.addArcWithCenter(
-                CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2),
+        bezierPath.addArc(
+                withCenter: CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2),
                 radius: bounds.size.width / 2,
                 startAngle: CGFloat(-M_PI_2),
                 endAngle: CGFloat(M_PI + M_PI_2),
                 clockwise: true)
 
-        backgroundLayer.path = bezierPath.CGPath
+        backgroundLayer.path = bezierPath.cgPath
         backgroundLayer.frame = bounds
-        progressLayer.path = bezierPath.CGPath
+        progressLayer.path = bezierPath.cgPath
         progressLayer.frame = bounds
     }
 }

@@ -5,19 +5,19 @@
 import Foundation
 
 class OCTSubmanagerFriendsMock: NSObject, OCTSubmanagerFriends {
-    func sendFriendRequestToAddress(address: String!, message: String!) throws {
+    func sendFriendRequest(toAddress address: String!, message: String!) throws {
         // nop
     }
     
-    func approveFriendRequest(friendRequest: OCTFriendRequest!) throws {
+    func approve(_ friendRequest: OCTFriendRequest!) throws {
         // nop
     }
     
-    func removeFriendRequest(friendRequest: OCTFriendRequest!) {
+    func remove(_ friendRequest: OCTFriendRequest!) {
         // nop
     }
     
-    func removeFriend(friend: OCTFriend!) throws {
+    func remove(_ friend: OCTFriend!) throws {
         // nop
     }
 }

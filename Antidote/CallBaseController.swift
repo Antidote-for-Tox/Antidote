@@ -21,7 +21,7 @@ class CallBaseController: UIViewController {
     var callerLabel: UILabel!
     var infoLabel: UILabel!
 
-    private var topContainerTopConstraint: Constraint!
+    fileprivate var topContainerTopConstraint: Constraint!
 
     init(theme: Theme, callerName: String) {
         self.theme = theme
@@ -35,7 +35,7 @@ class CallBaseController: UIViewController {
     }
 
     override func loadView() {
-        loadViewWithBackgroundColor(.clearColor())
+        loadViewWithBackgroundColor(.clear)
 
         addBlurredBackground()
         createTopViews()
@@ -49,55 +49,55 @@ class CallBaseController: UIViewController {
         infoLabel.text = String(localized: "call_ended")
     }
 
-    func toggleTopContainer(hidden hidden: Bool) {
+    func toggleTopContainer(hidden: Bool) {
         let offset = hidden ? -topContainer.frame.size.height : 0.0
-        topContainerTopConstraint.updateOffset(offset)
+        topContainerTopConstraint.update(offset: offset)
     }
 }
 
 private extension CallBaseController {
     func addBlurredBackground() {
-        let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+        let effectView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         effectView.frame = view.bounds
 
-        view.insertSubview(effectView, atIndex: 0)
-        effectView.snp_makeConstraints {
+        view.insertSubview(effectView, at: 0)
+        effectView.snp.makeConstraints {
             $0.edges.equalTo(view)
         }
     }
 
     func createTopViews() {
-        topContainer = UIVisualEffectView(effect: UIBlurEffect(style: .Dark))
+        topContainer = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         view.addSubview(topContainer)
 
         callerLabel = UILabel()
         callerLabel.text = callerName
         callerLabel.textColor = theme.colorForType(.CallTextColor)
-        callerLabel.textAlignment = .Center
-        callerLabel.font = UIFont.systemFontOfSize(20.0)
+        callerLabel.textAlignment = .center
+        callerLabel.font = UIFont.systemFont(ofSize: 20.0)
         topContainer.addSubview(callerLabel)
 
         infoLabel = UILabel()
         infoLabel.textColor = theme.colorForType(.CallTextColor)
-        infoLabel.textAlignment = .Center
-        infoLabel.font = UIFont.antidoteFontWithSize(18.0, weight: .Light)
+        infoLabel.textAlignment = .center
+        infoLabel.font = UIFont.antidoteFontWithSize(18.0, weight: .light)
         topContainer.addSubview(infoLabel)
     }
 
     func installConstraints() {
-        topContainer.snp_makeConstraints {
+        topContainer.snp.makeConstraints {
             topContainerTopConstraint = $0.top.equalTo(view).constraint
             $0.top.leading.trailing.equalTo(view)
             $0.height.equalTo(Constants.TopContainerHeight)
         }
 
-        callerLabel.snp_makeConstraints {
+        callerLabel.snp.makeConstraints {
             $0.top.equalTo(topContainer).offset(Constants.CallerLabelTopOffset)
             $0.leading.equalTo(topContainer).offset(Constants.LabelHorizontalOffset)
             $0.trailing.equalTo(topContainer).offset(-Constants.LabelHorizontalOffset)
         }
 
-        infoLabel.snp_makeConstraints {
+        infoLabel.snp.makeConstraints {
             $0.bottom.equalTo(topContainer).offset(Constants.InfoLabelBottomOffset)
             $0.leading.equalTo(topContainer).offset(Constants.LabelHorizontalOffset)
             $0.trailing.equalTo(topContainer).offset(-Constants.LabelHorizontalOffset)

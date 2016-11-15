@@ -6,11 +6,11 @@ import UIKit
 import SnapKit
 
 protocol CallActiveControllerDelegate: class {
-    func callActiveController(controller: CallActiveController, mute: Bool)
-    func callActiveController(controller: CallActiveController, speaker: Bool)
-    func callActiveController(controller: CallActiveController, outgoingVideo: Bool)
-    func callActiveControllerDecline(controller: CallActiveController)
-    func callActiveControllerSwitchCamera(controller: CallActiveController)
+    func callActiveController(_ controller: CallActiveController, mute: Bool)
+    func callActiveController(_ controller: CallActiveController, speaker: Bool)
+    func callActiveController(_ controller: CallActiveController, outgoingVideo: Bool)
+    func callActiveControllerDecline(_ controller: CallActiveController)
+    func callActiveControllerSwitchCamera(_ controller: CallActiveController)
 }
 
 private struct Constants {
@@ -29,53 +29,53 @@ private struct Constants {
 
 class CallActiveController: CallBaseController {
     enum State {
-        case None
-        case Reaching
-        case Active(duration: NSTimeInterval)
+        case none
+        case reaching
+        case active(duration: TimeInterval)
     }
 
     weak var delegate: CallActiveControllerDelegate?
 
-    var state: State = .None {
+    var state: State = .none {
         didSet {
             // load view
             _ = view
 
             switch state {
-                case .None:
+                case .none:
                     infoLabel.text = nil
-                case .Reaching:
+                case .reaching:
                     infoLabel.text = String(localized: "call_reaching")
 
-                    bigVideoButton?.enabled = false
-                    smallVideoButton?.enabled = false
-                case .Active(let duration):
+                    bigVideoButton?.isEnabled = false
+                    smallVideoButton?.isEnabled = false
+                case .active(let duration):
                     infoLabel.text = String(timeInterval: duration)
 
-                    bigVideoButton?.enabled = true
-                    smallVideoButton?.enabled = true
+                    bigVideoButton?.isEnabled = true
+                    smallVideoButton?.isEnabled = true
             }
         }
     }
 
     var mute: Bool = false {
         didSet {
-            bigMuteButton?.selected = mute
-            smallMuteButton?.selected = mute
+            bigMuteButton?.isSelected = mute
+            smallMuteButton?.isSelected = mute
         }
     }
 
     var speaker: Bool = false {
         didSet {
-            bigSpeakerButton?.selected = speaker
-            smallSpeakerButton?.selected = speaker
+            bigSpeakerButton?.isSelected = speaker
+            smallSpeakerButton?.isSelected = speaker
         }
     }
 
     var outgoingVideo: Bool = false {
         didSet {
-            bigVideoButton?.selected = outgoingVideo
-            smallVideoButton?.selected = outgoingVideo
+            bigVideoButton?.isSelected = outgoingVideo
+            smallVideoButton?.isSelected = outgoingVideo
         }
     }
 
@@ -94,7 +94,7 @@ class CallActiveController: CallBaseController {
 
                 feed.bounds.size = view.bounds.size
 
-                feed.snp_makeConstraints {
+                feed.snp.makeConstraints {
                     $0.edges.equalTo(view)
                 }
 
@@ -111,13 +111,13 @@ class CallActiveController: CallBaseController {
 
             if let old = oldValue {
                 old.removeFromSuperlayer()
-                videoPreviewView.hidden = true
+                videoPreviewView.isHidden = true
             }
 
             if let layer = videoPreviewLayer {
                 videoPreviewView.layer.addSublayer(layer)
-                videoPreviewView.bringSubviewToFront(switchCameraButton)
-                videoPreviewView.hidden = false
+                videoPreviewView.bringSubview(toFront: switchCameraButton)
+                videoPreviewView.isHidden = false
                 view.layoutIfNeeded()
             }
 
@@ -125,36 +125,36 @@ class CallActiveController: CallBaseController {
         }
     }
 
-    private var showControls = true {
+    fileprivate var showControls = true {
         didSet {
             let offset = showControls ? Constants.SmallBottomOffset : smallContainerView.frame.size.height
-            smallContainerViewBottomConstraint.updateOffset(offset)
+            smallContainerViewBottomConstraint.update(offset: offset)
 
             toggleTopContainer(hidden: !showControls)
 
-            UIView.animateWithDuration(Constants.ControlsAnimationDuration) { [unowned self] in
+            UIView.animate(withDuration: Constants.ControlsAnimationDuration, animations: { [unowned self] in
                 self.view.layoutIfNeeded()
-            }
+            }) 
         }
     }
 
-    private var videoPreviewView: UIView!
-    private var switchCameraButton: UIButton!
+    fileprivate var videoPreviewView: UIView!
+    fileprivate var switchCameraButton: UIButton!
 
-    private var bigContainerView: UIView!
-    private var bigCenterContainer: UIView!
-    private var bigMuteButton: CallButton?
-    private var bigSpeakerButton: CallButton?
-    private var bigVideoButton: CallButton?
-    private var bigDeclineButton: CallButton?
+    fileprivate var bigContainerView: UIView!
+    fileprivate var bigCenterContainer: UIView!
+    fileprivate var bigMuteButton: CallButton?
+    fileprivate var bigSpeakerButton: CallButton?
+    fileprivate var bigVideoButton: CallButton?
+    fileprivate var bigDeclineButton: CallButton?
 
-    private var smallContainerViewBottomConstraint: Constraint!
+    fileprivate var smallContainerViewBottomConstraint: Constraint!
 
-    private var smallContainerView: UIView!
-    private var smallMuteButton: CallButton?
-    private var smallSpeakerButton: CallButton?
-    private var smallVideoButton: CallButton?
-    private var smallDeclineButton: CallButton?
+    fileprivate var smallContainerView: UIView!
+    fileprivate var smallMuteButton: CallButton?
+    fileprivate var smallSpeakerButton: CallButton?
+    fileprivate var smallVideoButton: CallButton?
+    fileprivate var smallDeclineButton: CallButton?
 
     override init(theme: Theme, callerName: String) {
         super.init(theme: theme, callerName: callerName)
@@ -173,14 +173,14 @@ class CallActiveController: CallBaseController {
         createSmallViews()
         installConstraints()
 
-        view.bringSubviewToFront(topContainer)
+        view.bringSubview(toFront: topContainer)
 
         setButtonsInitValues()
 
         updateViewsWithTraitCollection(self.traitCollection)
     }
 
-    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         updateViewsWithTraitCollection(newCollection)
         showControls = true
     }
@@ -196,40 +196,40 @@ class CallActiveController: CallBaseController {
     override func prepareForRemoval() {
         super.prepareForRemoval()
 
-        bigMuteButton?.enabled = false
-        bigSpeakerButton?.enabled = false
-        bigVideoButton?.enabled = false
-        bigDeclineButton?.enabled = false
+        bigMuteButton?.isEnabled = false
+        bigSpeakerButton?.isEnabled = false
+        bigVideoButton?.isEnabled = false
+        bigDeclineButton?.isEnabled = false
 
-        smallMuteButton?.enabled = false
-        smallSpeakerButton?.enabled = false
-        smallVideoButton?.enabled = false
-        smallDeclineButton?.enabled = false
+        smallMuteButton?.isEnabled = false
+        smallSpeakerButton?.isEnabled = false
+        smallVideoButton?.isEnabled = false
+        smallDeclineButton?.isEnabled = false
     }
 }
 
 // MARK: Actions
 extension CallActiveController {
     func tapOnView() {
-        guard !smallContainerView.hidden else {
+        guard !smallContainerView.isHidden else {
             return
         }
 
         showControls = !showControls
     }
 
-    func muteButtonPressed(button: CallButton) {
-        mute = !button.selected
+    func muteButtonPressed(_ button: CallButton) {
+        mute = !button.isSelected
         delegate?.callActiveController(self, mute: mute)
     }
 
-    func speakerButtonPressed(button: CallButton) {
-        speaker = !button.selected
+    func speakerButtonPressed(_ button: CallButton) {
+        speaker = !button.isSelected
         delegate?.callActiveController(self, speaker: speaker)
     }
 
-    func videoButtonPressed(button: CallButton) {
-        outgoingVideo = !button.selected
+    func videoButtonPressed(_ button: CallButton) {
+        outgoingVideo = !button.isSelected
         delegate?.callActiveController(self, outgoingVideo: outgoingVideo)
     }
 
@@ -253,151 +253,151 @@ private extension CallActiveController {
         videoPreviewView.backgroundColor = theme.colorForType(.CallVideoPreviewBackground)
         view.addSubview(videoPreviewView)
 
-        videoPreviewView.hidden = !outgoingVideo
+        videoPreviewView.isHidden = !outgoingVideo
 
         let image = UIImage.templateNamed("switch-camera")
 
         switchCameraButton = UIButton()
         switchCameraButton.tintColor = theme.colorForType(.CallButtonIconColor)
-        switchCameraButton.setImage(image, forState: .Normal)
-        switchCameraButton.addTarget(self, action: #selector(CallActiveController.switchCameraButtonPressed), forControlEvents: .TouchUpInside)
+        switchCameraButton.setImage(image, for: UIControlState())
+        switchCameraButton.addTarget(self, action: #selector(CallActiveController.switchCameraButtonPressed), for: .touchUpInside)
         videoPreviewView.addSubview(switchCameraButton)
     }
 
     func createBigViews() {
         bigContainerView = UIView()
-        bigContainerView.backgroundColor = .clearColor()
+        bigContainerView.backgroundColor = .clear
         view.addSubview(bigContainerView)
 
         bigCenterContainer = UIView()
-        bigCenterContainer.backgroundColor = .clearColor()
+        bigCenterContainer.backgroundColor = .clear
         bigContainerView.addSubview(bigCenterContainer)
 
-        bigMuteButton = addButtonWithType(.Mute, buttonSize: .Big, action: #selector(CallActiveController.muteButtonPressed(_:)), container: bigCenterContainer)
-        bigSpeakerButton = addButtonWithType(.Speaker, buttonSize: .Big, action: #selector(CallActiveController.speakerButtonPressed(_:)), container: bigCenterContainer)
-        bigVideoButton = addButtonWithType(.Video, buttonSize: .Big, action: #selector(CallActiveController.videoButtonPressed(_:)), container: bigCenterContainer)
-        bigDeclineButton = addButtonWithType(.Decline, buttonSize: .Small, action: #selector(CallActiveController.declineButtonPressed), container: bigContainerView)
+        bigMuteButton = addButtonWithType(.mute, buttonSize: .big, action: #selector(CallActiveController.muteButtonPressed(_:)), container: bigCenterContainer)
+        bigSpeakerButton = addButtonWithType(.speaker, buttonSize: .big, action: #selector(CallActiveController.speakerButtonPressed(_:)), container: bigCenterContainer)
+        bigVideoButton = addButtonWithType(.video, buttonSize: .big, action: #selector(CallActiveController.videoButtonPressed(_:)), container: bigCenterContainer)
+        bigDeclineButton = addButtonWithType(.decline, buttonSize: .small, action: #selector(CallActiveController.declineButtonPressed), container: bigContainerView)
     }
 
     func createSmallViews() {
         smallContainerView = UIView()
-        smallContainerView.backgroundColor = .clearColor()
+        smallContainerView.backgroundColor = .clear
         view.addSubview(smallContainerView)
 
-        smallMuteButton = addButtonWithType(.Mute, buttonSize: .Small, action: #selector(CallActiveController.muteButtonPressed(_:)), container: smallContainerView)
-        smallSpeakerButton = addButtonWithType(.Speaker, buttonSize: .Small, action: #selector(CallActiveController.speakerButtonPressed(_:)), container: smallContainerView)
-        smallVideoButton = addButtonWithType(.Video, buttonSize: .Small, action: #selector(CallActiveController.videoButtonPressed(_:)), container: smallContainerView)
-        smallDeclineButton = addButtonWithType(.Decline, buttonSize: .Small, action: #selector(CallActiveController.declineButtonPressed), container: smallContainerView)
+        smallMuteButton = addButtonWithType(.mute, buttonSize: .small, action: #selector(CallActiveController.muteButtonPressed(_:)), container: smallContainerView)
+        smallSpeakerButton = addButtonWithType(.speaker, buttonSize: .small, action: #selector(CallActiveController.speakerButtonPressed(_:)), container: smallContainerView)
+        smallVideoButton = addButtonWithType(.video, buttonSize: .small, action: #selector(CallActiveController.videoButtonPressed(_:)), container: smallContainerView)
+        smallDeclineButton = addButtonWithType(.decline, buttonSize: .small, action: #selector(CallActiveController.declineButtonPressed), container: smallContainerView)
     }
 
-    func addButtonWithType(type: CallButton.ButtonType, buttonSize: CallButton.ButtonSize, action: Selector, container: UIView) -> CallButton {
+    func addButtonWithType(_ type: CallButton.ButtonType, buttonSize: CallButton.ButtonSize, action: Selector, container: UIView) -> CallButton {
         let button = CallButton(theme: theme, type: type, buttonSize: buttonSize)
-        button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: action, for: .touchUpInside)
         container.addSubview(button)
 
         return button
     }
 
     func installConstraints() {
-        videoPreviewView.snp_makeConstraints {
+        videoPreviewView.snp.makeConstraints {
             $0.trailing.equalTo(view).offset(Constants.VideoPreviewOffset)
-            $0.bottom.equalTo(smallContainerView.snp_top).offset(Constants.VideoPreviewOffset)
+            $0.bottom.equalTo(smallContainerView.snp.top).offset(Constants.VideoPreviewOffset)
             $0.width.equalTo(Constants.VideoPreviewSize.width)
             $0.height.equalTo(Constants.VideoPreviewSize.height)
         }
 
-        switchCameraButton.snp_makeConstraints {
+        switchCameraButton.snp.makeConstraints {
             $0.top.equalTo(videoPreviewView).offset(Constants.SwitchCameraOffset)
             $0.trailing.equalTo(videoPreviewView).offset(-Constants.SwitchCameraOffset)
         }
 
-        bigContainerView.snp_makeConstraints {
-            $0.top.equalTo(topContainer.snp_bottom)
+        bigContainerView.snp.makeConstraints {
+            $0.top.equalTo(topContainer.snp.bottom)
             $0.leading.trailing.bottom.equalTo(view)
         }
 
-        bigCenterContainer.snp_makeConstraints {
+        bigCenterContainer.snp.makeConstraints {
             $0.centerX.equalTo(bigContainerView)
             $0.centerY.equalTo(view)
         }
 
-        bigMuteButton!.snp_makeConstraints {
+        bigMuteButton!.snp.makeConstraints {
             $0.top.equalTo(bigCenterContainer)
             $0.leading.equalTo(bigCenterContainer)
         }
 
-        bigSpeakerButton!.snp_makeConstraints {
+        bigSpeakerButton!.snp.makeConstraints {
             $0.top.equalTo(bigCenterContainer)
             $0.trailing.equalTo(bigCenterContainer)
-            $0.leading.equalTo(bigMuteButton!.snp_trailing).offset(Constants.BigButtonOffset)
+            $0.leading.equalTo(bigMuteButton!.snp.trailing).offset(Constants.BigButtonOffset)
         }
 
-        bigVideoButton!.snp_makeConstraints {
-            $0.top.equalTo(bigMuteButton!.snp_bottom).offset(Constants.BigButtonOffset)
+        bigVideoButton!.snp.makeConstraints {
+            $0.top.equalTo(bigMuteButton!.snp.bottom).offset(Constants.BigButtonOffset)
             $0.leading.equalTo(bigCenterContainer)
             $0.bottom.equalTo(bigCenterContainer)
         }
 
-        bigDeclineButton!.snp_makeConstraints {
+        bigDeclineButton!.snp.makeConstraints {
             $0.centerX.equalTo(bigContainerView)
             $0.top.greaterThanOrEqualTo(bigCenterContainer).offset(Constants.BigButtonOffset)
             $0.bottom.equalTo(bigContainerView).offset(-Constants.BigButtonOffset)
         }
 
-        smallContainerView.snp_makeConstraints {
+        smallContainerView.snp.makeConstraints {
             smallContainerViewBottomConstraint = $0.bottom.equalTo(view).offset(Constants.SmallBottomOffset).constraint
             $0.centerX.equalTo(view)
         }
 
-        smallMuteButton!.snp_makeConstraints {
+        smallMuteButton!.snp.makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
             $0.leading.equalTo(smallContainerView)
         }
 
-        smallSpeakerButton!.snp_makeConstraints {
+        smallSpeakerButton!.snp.makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.leading.equalTo(smallMuteButton!.snp_trailing).offset(Constants.SmallButtonOffset)
+            $0.leading.equalTo(smallMuteButton!.snp.trailing).offset(Constants.SmallButtonOffset)
         }
 
-        smallVideoButton!.snp_makeConstraints {
+        smallVideoButton!.snp.makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.leading.equalTo(smallSpeakerButton!.snp_trailing).offset(Constants.SmallButtonOffset)
+            $0.leading.equalTo(smallSpeakerButton!.snp.trailing).offset(Constants.SmallButtonOffset)
         }
 
-        smallDeclineButton!.snp_makeConstraints {
+        smallDeclineButton!.snp.makeConstraints {
             $0.top.bottom.equalTo(smallContainerView)
-            $0.leading.equalTo(smallVideoButton!.snp_trailing).offset(Constants.SmallButtonOffset)
+            $0.leading.equalTo(smallVideoButton!.snp.trailing).offset(Constants.SmallButtonOffset)
             $0.trailing.equalTo(smallContainerView)
         }
     }
 
     func setButtonsInitValues() {
-        bigMuteButton?.selected = mute
-        smallMuteButton?.selected = mute
+        bigMuteButton?.isSelected = mute
+        smallMuteButton?.isSelected = mute
 
-        bigSpeakerButton?.selected = speaker
-        smallSpeakerButton?.selected = speaker
+        bigSpeakerButton?.isSelected = speaker
+        smallSpeakerButton?.isSelected = speaker
 
-        bigVideoButton?.selected = outgoingVideo
-        smallVideoButton?.selected = outgoingVideo
+        bigVideoButton?.isSelected = outgoingVideo
+        smallVideoButton?.isSelected = outgoingVideo
     }
 
-    func updateViewsWithTraitCollection(traitCollection: UITraitCollection) {
+    func updateViewsWithTraitCollection(_ traitCollection: UITraitCollection) {
         if videoFeed != nil || videoPreviewLayer != nil {
-            bigContainerView.hidden = true
-            smallContainerView.hidden = false
+            bigContainerView.isHidden = true
+            smallContainerView.isHidden = false
             return
         }
 
         switch traitCollection.verticalSizeClass {
-            case .Regular:
-                bigContainerView.hidden = false
-                smallContainerView.hidden = true
-            case .Unspecified:
+            case .regular:
+                bigContainerView.isHidden = false
+                smallContainerView.isHidden = true
+            case .unspecified:
                 fallthrough
-            case .Compact:
-                bigContainerView.hidden = true
-                smallContainerView.hidden = false
+            case .compact:
+                bigContainerView.isHidden = true
+                smallContainerView.isHidden = false
         }
     }
 }

@@ -6,8 +6,8 @@ import UIKit
 import SnapKit
 
 protocol FriendSelectControllerDelegate: class {
-    func friendSelectController(controller: FriendSelectController, didSelectFriend friend: OCTFriend)
-    func friendSelectControllerCancel(controller: FriendSelectController)
+    func friendSelectController(_ controller: FriendSelectController, didSelectFriend friend: OCTFriend)
+    func friendSelectControllerCancel(_ controller: FriendSelectController)
 }
 
 class FriendSelectController: UIViewController {
@@ -15,12 +15,12 @@ class FriendSelectController: UIViewController {
 
     var userInfo: AnyObject?
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private let dataSource: FriendListDataSource
+    fileprivate let dataSource: FriendListDataSource
 
-    private var placeholderView: UITextView!
-    private var tableView: UITableView!
+    fileprivate var placeholderView: UITextView!
+    fileprivate var tableView: UITableView!
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, userInfo: AnyObject? = nil) {
         self.theme = theme
@@ -35,7 +35,7 @@ class FriendSelectController: UIViewController {
 
         addNavigationButtons()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -69,28 +69,28 @@ extension FriendSelectController: FriendListDataSourceDelegate {
         updateViewsVisibility()
     }
 
-    func friendListDataSourceInsertRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-        tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    func friendListDataSourceInsertRowsAtIndexPaths(_ indexPaths: [IndexPath]) {
+        tableView.insertRows(at: indexPaths, with: .automatic)
     }
 
-    func friendListDataSourceDeleteRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-        tableView.deleteRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    func friendListDataSourceDeleteRowsAtIndexPaths(_ indexPaths: [IndexPath]) {
+        tableView.deleteRows(at: indexPaths, with: .automatic)
     }
 
-    func friendListDataSourceReloadRowsAtIndexPaths(indexPaths: [NSIndexPath]) {
-        tableView.reloadRowsAtIndexPaths(indexPaths, withRowAnimation: .Automatic)
+    func friendListDataSourceReloadRowsAtIndexPaths(_ indexPaths: [IndexPath]) {
+        tableView.reloadRows(at: indexPaths, with: .automatic)
     }
 
-    func friendListDataSourceInsertSections(sections: NSIndexSet) {
-        tableView.insertSections(sections, withRowAnimation: .Automatic)
+    func friendListDataSourceInsertSections(_ sections: IndexSet) {
+        tableView.insertSections(sections, with: .automatic)
     }
 
-    func friendListDataSourceDeleteSections(sections: NSIndexSet) {
-        tableView.deleteSections(sections, withRowAnimation: .Automatic)
+    func friendListDataSourceDeleteSections(_ sections: IndexSet) {
+        tableView.deleteSections(sections, with: .automatic)
     }
 
-    func friendListDataSourceReloadSections(sections: NSIndexSet) {
-        tableView.reloadSections(sections, withRowAnimation: .Automatic)
+    func friendListDataSourceReloadSections(_ sections: IndexSet) {
+        tableView.reloadSections(sections, with: .automatic)
     }
 
     func friendListDataSourceReloadTable() {
@@ -99,8 +99,8 @@ extension FriendSelectController: FriendListDataSourceDelegate {
 }
 
 extension FriendSelectController: UITableViewDataSource {
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(FriendListCell.staticReuseIdentifier) as! FriendListCell
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: FriendListCell.staticReuseIdentifier) as! FriendListCell
         let model = dataSource.modelAtIndexPath(indexPath)
 
         cell.setupWithTheme(theme, model: model)
@@ -108,32 +108,32 @@ extension FriendSelectController: UITableViewDataSource {
         return cell
     }
 
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return dataSource.numberOfSections()
     }
 
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.numberOfRowsInSection(section)
     }
 
-    func sectionIndexTitlesForTableView(tableView: UITableView) -> [String]? {
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return dataSource.sectionIndexTitles()
     }
 
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return dataSource.titleForHeaderInSection(section)
     }
 }
 
 extension FriendSelectController: UITableViewDelegate {
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
 
         switch dataSource.objectAtIndexPath(indexPath) {
-            case .Request:
+            case .request:
                 // nop
                 break
-            case .Friend(let friend):
+            case .friend(let friend):
                 delegate?.friendSelectController(self, didSelectFriend: friend)
         }
     }
@@ -142,7 +142,7 @@ extension FriendSelectController: UITableViewDelegate {
 private extension FriendSelectController {
     func addNavigationButtons() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .Cancel,
+                barButtonSystemItem: .cancel,
                 target: self,
                 action: #selector(FriendSelectController.cancelButtonPressed))
     }
@@ -157,7 +157,7 @@ private extension FriendSelectController {
             }
         }
 
-        placeholderView.hidden = !isEmpty
+        placeholderView.isHidden = !isEmpty
     }
 
     func createTableView() {
@@ -172,26 +172,26 @@ private extension FriendSelectController {
 
         view.addSubview(tableView)
 
-        tableView.registerClass(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
+        tableView.register(FriendListCell.self, forCellReuseIdentifier: FriendListCell.staticReuseIdentifier)
     }
 
     func createPlaceholderView() {
         placeholderView = UITextView()
         placeholderView.text = String(localized: "contact_no_contacts")
-        placeholderView.editable = false
-        placeholderView.scrollEnabled = false
-        placeholderView.textAlignment = .Center
+        placeholderView.isEditable = false
+        placeholderView.isScrollEnabled = false
+        placeholderView.textAlignment = .center
         view.addSubview(placeholderView)
     }
 
     func installConstraints() {
-        tableView.snp_makeConstraints {
+        tableView.snp.makeConstraints {
             $0.edges.equalTo(view)
         }
 
-        placeholderView.snp_makeConstraints {
+        placeholderView.snp.makeConstraints {
             $0.center.equalTo(view)
-            $0.size.equalTo(placeholderView.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max)))
+            $0.size.equalTo(placeholderView.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)))
         }
     }
 }

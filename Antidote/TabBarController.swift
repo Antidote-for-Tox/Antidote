@@ -19,21 +19,21 @@ class TabBarController: UITabBarController {
             navigation.delegate = self
 
             if oldValue == selectedIndex {
-                navigation.popToRootViewControllerAnimated(true)
+                navigation.popToRootViewController(animated: true)
             }
 
             updateSelectedItems()
         }
     }
 
-    private let items: [TabBarAbstractItem]
+    fileprivate let items: [TabBarAbstractItem]
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var customTabBarView: UIView!
+    fileprivate var customTabBarView: UIView!
 
-    private var customTabBarViewVisibleConstraint: Constraint!
-    private var customTabBarViewHiddenConstraint: Constraint!
+    fileprivate var customTabBarViewVisibleConstraint: Constraint!
+    fileprivate var customTabBarViewHiddenConstraint: Constraint!
 
     init(theme: Theme, controllers: [UINavigationController], tabBarItems: [TabBarAbstractItem]) {
         self.theme = theme
@@ -62,7 +62,7 @@ class TabBarController: UITabBarController {
 }
 
 extension TabBarController: UITabBarControllerDelegate {
-    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
         guard let navigation = viewController as? UINavigationController else {
             return
         }
@@ -73,10 +73,10 @@ extension TabBarController: UITabBarControllerDelegate {
 
 extension TabBarController: UINavigationControllerDelegate {
     func navigationController(
-            navigationController: UINavigationController,
-            willShowViewController viewController: UIViewController,
+            _ navigationController: UINavigationController,
+            willShow viewController: UIViewController,
             animated: Bool) {
-        tabBar.hidden = true
+        tabBar.isHidden = true
 
         if viewController.hidesBottomBarWhenPushed {
             customTabBarViewVisibleConstraint.deactivate()
@@ -99,14 +99,14 @@ extension TabBarController {
         horizontalLine.backgroundColor = theme.colorForType(.SeparatorsAndBorders)
         customTabBarView.addSubview(horizontalLine)
 
-        horizontalLine.snp_makeConstraints {
+        horizontalLine.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(customTabBarView)
             $0.height.equalTo(Constants.HorizontalLineHeight)
         }
     }
 
     func addItems() {
-        for (index, item) in items.enumerate() {
+        for (index, item) in items.enumerated() {
             item.didTapHandler = { [weak self] in
                 self?.selectedIndex = index
             }
@@ -116,9 +116,9 @@ extension TabBarController {
     }
 
     func installConstraints() {
-        customTabBarView.snp_makeConstraints {
-            customTabBarViewVisibleConstraint = $0.bottom.equalTo(view.snp_bottom).constraint
-            customTabBarViewHiddenConstraint = $0.top.equalTo(view.snp_bottom).constraint
+        customTabBarView.snp.makeConstraints {
+            customTabBarViewVisibleConstraint = $0.bottom.equalTo(view.snp.bottom).constraint
+            customTabBarViewHiddenConstraint = $0.top.equalTo(view.snp.bottom).constraint
             $0.leading.trailing.equalTo(view)
             $0.height.equalTo(tabBar.frame.size.height)
         }
@@ -128,11 +128,11 @@ extension TabBarController {
         var previous: TabBarAbstractItem?
 
         for item in items {
-            item.snp_makeConstraints {
+            item.snp.makeConstraints {
                 $0.top.bottom.equalTo(customTabBarView)
 
                 if previous != nil {
-                    $0.leading.equalTo(previous!.snp_trailing)
+                    $0.leading.equalTo(previous!.snp.trailing)
                     $0.width.equalTo(previous!)
                 }
                 else {
@@ -142,13 +142,13 @@ extension TabBarController {
 
             previous = item
         }
-        previous!.snp_makeConstraints {
+        previous!.snp.makeConstraints {
             $0.trailing.equalTo(customTabBarView)
         }
     }
 
     func updateSelectedItems() {
-        for (index, item) in items.enumerate() {
+        for (index, item) in items.enumerated() {
             item.selected = (index == selectedIndex)
         }
     }

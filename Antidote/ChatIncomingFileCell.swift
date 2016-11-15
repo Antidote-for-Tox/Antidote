@@ -13,9 +13,9 @@ private struct Constants {
 }
 
 class ChatIncomingFileCell: ChatGenericFileCell {
-    override func setButtonImage(image: UIImage) {
+    override func setButtonImage(_ image: UIImage) {
         super.setButtonImage(image)
-        loadingView.bottomLabel.hidden = true
+        loadingView.bottomLabel.isHidden = true
     }
 
     override func createViews() {
@@ -28,60 +28,60 @@ class ChatIncomingFileCell: ChatGenericFileCell {
     override func installConstraints() {
         super.installConstraints()
 
-        loadingView.snp_makeConstraints {
+        loadingView.snp.makeConstraints {
             $0.leading.equalTo(contentView).offset(Constants.BigOffset)
             $0.top.equalTo(contentView).offset(Constants.SmallOffset)
             $0.bottom.equalTo(contentView).offset(-Constants.SmallOffset)
             $0.size.equalTo(Constants.ImageButtonSize)
         }
 
-        cancelButton.snp_makeConstraints {
-            $0.leading.equalTo(loadingView.snp_trailing).offset(Constants.SmallOffset)
+        cancelButton.snp.makeConstraints {
+            $0.leading.equalTo(loadingView.snp.trailing).offset(Constants.SmallOffset)
             $0.top.equalTo(loadingView)
             $0.size.equalTo(Constants.CloseButtonSize)
         }
     }
 
-    override func updateViewsWithState(state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {
-        loadingView.imageButton.userInteractionEnabled = true
-        loadingView.progressView.hidden = true
-        loadingView.topLabel.hidden = false
+    override func updateViewsWithState(_ state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {
+        loadingView.imageButton.isUserInteractionEnabled = true
+        loadingView.progressView.isHidden = true
+        loadingView.topLabel.isHidden = false
         loadingView.topLabel.text = fileModel.fileName
         loadingView.bottomLabel.text = fileModel.fileSize
-        loadingView.bottomLabel.hidden = false
+        loadingView.bottomLabel.isHidden = false
 
-        cancelButton.hidden = false
+        cancelButton.isHidden = false
 
         switch state {
-            case .WaitingConfirmation:
+            case .waitingConfirmation:
                 loadingView.centerImageView.image = UIImage.templateNamed("chat-file-download-big")
-            case .Loading:
-                loadingView.progressView.hidden = false
-            case .Paused:
+            case .loading:
+                loadingView.progressView.isHidden = false
+            case .paused:
                 break
-            case .Cancelled:
+            case .cancelled:
                 loadingView.setCancelledImage()
-                loadingView.imageButton.userInteractionEnabled = false
-                cancelButton.hidden = true
+                loadingView.imageButton.isUserInteractionEnabled = false
+                cancelButton.isHidden = true
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")
-            case .Done:
-                cancelButton.hidden = true
-                loadingView.topLabel.hidden = true
+            case .done:
+                cancelButton.isHidden = true
+                loadingView.topLabel.isHidden = true
                 loadingView.bottomLabel.text = fileModel.fileName
         }
     }
 
     override func loadingViewPressed() {
         switch state {
-            case .WaitingConfirmation:
+            case .waitingConfirmation:
                 startLoadingHandle?()
-            case .Loading:
+            case .loading:
                 pauseOrResumeHandle?()
-            case .Paused:
+            case .paused:
                 pauseOrResumeHandle?()
-            case .Cancelled:
+            case .cancelled:
                 break
-            case .Done:
+            case .done:
                 openHandle?()
         }
     }

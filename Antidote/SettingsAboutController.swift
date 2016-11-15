@@ -5,19 +5,19 @@
 import Foundation
 
 protocol SettingsAboutControllerDelegate: class {
-    func settingsAboutControllerShowAcknowledgements(controller: SettingsAboutController)
+    func settingsAboutControllerShowAcknowledgements(_ controller: SettingsAboutController)
 }
 
 class SettingsAboutController: StaticTableController {
     weak var delegate: SettingsAboutControllerDelegate?
 
-    private let antidoteVersionModel = StaticTableInfoCellModel()
-    private let antidoteBuildModel = StaticTableInfoCellModel()
-    private let toxcoreVersionModel = StaticTableInfoCellModel()
-    private let acknowledgementsModel = StaticTableDefaultCellModel()
+    fileprivate let antidoteVersionModel = StaticTableInfoCellModel()
+    fileprivate let antidoteBuildModel = StaticTableInfoCellModel()
+    fileprivate let toxcoreVersionModel = StaticTableInfoCellModel()
+    fileprivate let acknowledgementsModel = StaticTableDefaultCellModel()
 
     init(theme: Theme) {
-        super.init(theme: theme, style: .Grouped, model: [
+        super.init(theme: theme, style: .grouped, model: [
             [
                 antidoteVersionModel,
                 antidoteBuildModel,
@@ -42,17 +42,17 @@ class SettingsAboutController: StaticTableController {
 private extension SettingsAboutController {
     func updateModels() {
         antidoteVersionModel.title = String(localized: "settings_antidote_version")
-        antidoteVersionModel.value =  NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"] as? String
+        antidoteVersionModel.value =  Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
 
         antidoteBuildModel.title = String(localized: "settings_antidote_build")
-        antidoteBuildModel.value = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"] as? String
+        antidoteBuildModel.value = Bundle.main.infoDictionary?["CFBundleVersion"] as? String
 
         toxcoreVersionModel.title = String(localized: "settings_toxcore_version")
         toxcoreVersionModel.value = OCTTox.version()
 
         acknowledgementsModel.value = String(localized: "settings_acknowledgements")
         acknowledgementsModel.didSelectHandler = showAcknowledgements
-        acknowledgementsModel.rightImageType = .Arrow
+        acknowledgementsModel.rightImageType = .arrow
     }
 
     func showAcknowledgements(_: StaticTableBaseCell) {

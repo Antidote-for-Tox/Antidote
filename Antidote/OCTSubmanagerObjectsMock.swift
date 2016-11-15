@@ -5,7 +5,7 @@
 import Foundation
     
 class OCTSubmanagerObjectsMock: NSObject, OCTSubmanagerObjects {
-    var genericSettingsData: NSData? = nil
+    var genericSettingsData: Data? = nil
     let realm: RLMRealm 
 
     init(realm: RLMRealm) {
@@ -14,45 +14,45 @@ class OCTSubmanagerObjectsMock: NSObject, OCTSubmanagerObjects {
         super.init()
     }
     
-    func objectsForType(type: OCTFetchRequestType, predicate: NSPredicate!) -> RLMResults! {
+    func objects(for type: OCTFetchRequestType, predicate: NSPredicate!) -> RLMResults<RLMObject>! {
         switch type {
-            case .Friend:
-                return OCTFriend.objectsInRealm(realm, withPredicate: predicate)
-            case .FriendRequest:
-                return OCTFriendRequest.objectsInRealm(realm, withPredicate: predicate)
-            case .Chat:
-                return OCTChat.objectsInRealm(realm, withPredicate: predicate)
-            case .Call:
-                return OCTCall.objectsInRealm(realm, withPredicate: predicate)
-            case .MessageAbstract:
-                return OCTMessageAbstract.objectsInRealm(realm, withPredicate: predicate)
+            case .friend:
+                return OCTFriend.objects(in: realm, with: predicate)
+            case .friendRequest:
+                return OCTFriendRequest.objects(in: realm, with: predicate)
+            case .chat:
+                return OCTChat.objects(in: realm, with: predicate)
+            case .call:
+                return OCTCall.objects(in: realm, with: predicate)
+            case .messageAbstract:
+                return OCTMessageAbstract.objects(in: realm, with: predicate)
         }
     }
     
-    func objectWithUniqueIdentifier(uniqueIdentifier: String!, forType type: OCTFetchRequestType) -> OCTObject! {
+    func object(withUniqueIdentifier uniqueIdentifier: String!, for type: OCTFetchRequestType) -> OCTObject! {
         switch type {
-            case .Friend:
-                return OCTFriend(inRealm: realm, forPrimaryKey: uniqueIdentifier)
-            case .FriendRequest:
-                return OCTFriendRequest(inRealm: realm, forPrimaryKey: uniqueIdentifier)
-            case .Chat:
-                return OCTChat(inRealm: realm, forPrimaryKey: uniqueIdentifier)
-            case .Call:
-                return OCTCall(inRealm: realm, forPrimaryKey: uniqueIdentifier)
-            case .MessageAbstract:
-                return OCTMessageAbstract(inRealm: realm, forPrimaryKey: uniqueIdentifier)
+            case .friend:
+                return OCTFriend(in: realm, forPrimaryKey: uniqueIdentifier)
+            case .friendRequest:
+                return OCTFriendRequest(in: realm, forPrimaryKey: uniqueIdentifier)
+            case .chat:
+                return OCTChat(in: realm, forPrimaryKey: uniqueIdentifier)
+            case .call:
+                return OCTCall(in: realm, forPrimaryKey: uniqueIdentifier)
+            case .messageAbstract:
+                return OCTMessageAbstract(in: realm, forPrimaryKey: uniqueIdentifier)
         }
     }
     
-    func changeFriend(friend: OCTFriend!, nickname: String!) {
+    func change(_ friend: OCTFriend!, nickname: String!) {
         // nop
     }
     
-    func changeChat(chat: OCTChat!, enteredText: String!) {
+    func change(_ chat: OCTChat!, enteredText: String!) {
         // nop
     }
     
-    func changeChat(chat: OCTChat!, lastReadDateInterval: NSTimeInterval) {
+    func change(_ chat: OCTChat!, lastReadDateInterval: TimeInterval) {
         // nop
     }
 }

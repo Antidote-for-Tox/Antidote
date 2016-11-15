@@ -12,7 +12,7 @@ class AlertAudioPlayer {
 
     var playOnlyIfApplicationIsActive = true
 
-    private var sounds: [Sound: SystemSoundID]!
+    fileprivate var sounds: [Sound: SystemSoundID]!
 
     init() {
         sounds = [
@@ -26,7 +26,7 @@ class AlertAudioPlayer {
         }
     }
 
-    func playSound(sound: Sound) {
+    func playSound(_ sound: Sound) {
         if playOnlyIfApplicationIsActive && !UIApplication.isActive {
             return
         }
@@ -40,11 +40,11 @@ class AlertAudioPlayer {
 }
 
 private extension AlertAudioPlayer {
-    func createSystemSoundForSound(sound: Sound) -> SystemSoundID {
-        let url = NSBundle.mainBundle().URLForResource(sound.rawValue, withExtension: "aac")!
+    func createSystemSoundForSound(_ sound: Sound) -> SystemSoundID {
+        let url = Bundle.main.url(forResource: sound.rawValue, withExtension: "aac")!
 
         var sound: SystemSoundID = 0
-        AudioServicesCreateSystemSoundID(url, &sound)
+        AudioServicesCreateSystemSoundID(url as CFURL, &sound)
         return sound
     }
 }

@@ -5,35 +5,35 @@
 import Foundation
     
 class OCTSubmanagerFilesMock: NSObject, OCTSubmanagerFiles {
-    func sendData(data: NSData, withFileName fileName: String, toChat chat: OCTChat, failureBlock: ((NSError) -> Void)?) {
+    func send(_ data: Data, withFileName fileName: String, to chat: OCTChat, failureBlock: ((Error) -> Void)? = nil) {
         // nop
     }
     
-    func sendFileAtPath(filePath: String, moveToUploads: Bool, toChat chat: OCTChat, failureBlock: ((NSError) -> Void)?) {
+    func sendFile(atPath filePath: String, moveToUploads: Bool, to chat: OCTChat, failureBlock: ((Error) -> Void)? = nil) {
         // nop
     }
     
-    func acceptFileTransfer(message: OCTMessageAbstract, failureBlock: ((NSError) -> Void)?) {
+    func acceptFileTransfer(_ message: OCTMessageAbstract, failureBlock: ((Error) -> Void)? = nil) {
         // nop
     }
     
-    func cancelFileTransfer(message: OCTMessageAbstract) throws {
+    func cancelFileTransfer(_ message: OCTMessageAbstract) throws {
         // nop
     }
     
-    func retrySendingFile(message: OCTMessageAbstract, failureBlock: ((NSError) -> Void)?) {
+    func retrySendingFile(_ message: OCTMessageAbstract, failureBlock: ((Error) -> Void)? = nil) {
         // nop
     }
     
-    func pauseFileTransfer(pause: Bool, message: OCTMessageAbstract) throws {
+    func pauseFileTransfer(_ pause: Bool, message: OCTMessageAbstract) throws {
         // nop
     }
     
-    func addProgressSubscriber(subscriber: OCTSubmanagerFilesProgressSubscriber, forFileTransfer message: OCTMessageAbstract) throws {
+    func add(_ subscriber: OCTSubmanagerFilesProgressSubscriber, forFileTransfer message: OCTMessageAbstract) throws {
         // nop
     }
     
-    func removeProgressSubscriber(subscriber: OCTSubmanagerFilesProgressSubscriber, forFileTransfer message: OCTMessageAbstract) throws {
+    func remove(_ subscriber: OCTSubmanagerFilesProgressSubscriber, forFileTransfer message: OCTMessageAbstract) throws {
         // nop
     }
 }

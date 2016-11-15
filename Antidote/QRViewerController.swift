@@ -12,13 +12,13 @@ protocol QRViewerControllerDelegate: class {
 class QRViewerController: UIViewController {
     weak var delegate: QRViewerControllerDelegate?
 
-    private let theme: Theme
-    private let text: String
+    fileprivate let theme: Theme
+    fileprivate let text: String
 
-    private var previousBrightness: CGFloat = 1.0
+    fileprivate var previousBrightness: CGFloat = 1.0
 
-    private var closeButton: UIButton!
-    private var imageView: UIImageView!
+    fileprivate var closeButton: UIButton!
+    fileprivate var imageView: UIImageView!
 
     init(theme: Theme, text: String) {
         self.theme = theme
@@ -26,7 +26,7 @@ class QRViewerController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -41,16 +41,16 @@ class QRViewerController: UIViewController {
         installConstraints()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        previousBrightness = UIScreen.mainScreen().brightness
+        previousBrightness = UIScreen.main.brightness
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        UIScreen.mainScreen().brightness = previousBrightness
+        UIScreen.main.brightness = previousBrightness
     }
 }
 
@@ -63,37 +63,37 @@ extension QRViewerController {
 private extension QRViewerController {
     func installNavigationItems() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .Done,
+                barButtonSystemItem: .done,
                 target: self,
                 action: #selector(QRViewerController.closeButtonPressed))
     }
 
     func createViews() {
         imageView = UIImageView(image: qrImageFromText())
-        imageView.contentMode = .ScaleAspectFit
+        imageView.contentMode = .scaleAspectFit
         view.addSubview(imageView)
     }
 
     func installConstraints() {
-        imageView.snp_makeConstraints {
+        imageView.snp.makeConstraints {
             $0.center.equalTo(view)
-            $0.width.lessThanOrEqualTo(view.snp_width)
-            $0.width.lessThanOrEqualTo(view.snp_height)
-            $0.width.equalTo(imageView.snp_height)
+            $0.width.lessThanOrEqualTo(view.snp.width)
+            $0.width.lessThanOrEqualTo(view.snp.height)
+            $0.width.equalTo(imageView.snp.height)
         }
     }
 
     func qrImageFromText() -> UIImage {
         let filter = CIFilter(name:"CIQRCodeGenerator")!
         filter.setDefaults()
-        filter.setValue(text.dataUsingEncoding(NSUTF8StringEncoding), forKey: "inputMessage")
+        filter.setValue(text.data(using: String.Encoding.utf8), forKey: "inputMessage")
 
         let ciImage = filter.outputImage!
-        let screenBounds = UIScreen.mainScreen().bounds
+        let screenBounds = UIScreen.main.bounds
 
         let scale = min(screenBounds.size.width / ciImage.extent.size.width, screenBounds.size.height / ciImage.extent.size.height)
-        let transformedImage = ciImage.imageByApplyingTransform(CGAffineTransformMakeScale(scale, scale))
+        let transformedImage = ciImage.applying(CGAffineTransform(scaleX: scale, y: scale))
 
-        return UIImage(CIImage: transformedImage)
+        return UIImage(ciImage: transformedImage)
     }
 }

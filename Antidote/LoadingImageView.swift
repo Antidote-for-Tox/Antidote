@@ -20,12 +20,12 @@ class LoadingImageView: UIView {
     var topLabel: UILabel!
     var bottomLabel: UILabel!
 
-    var pressedHandle: (Void -> Void)?
+    var pressedHandle: ((Void) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
         createViews()
         installConstraints()
     }
@@ -38,7 +38,7 @@ class LoadingImageView: UIView {
         centerImageView.image = UIImage.templateNamed("chat-file-type-canceled")
     }
 
-    func setImageWithUti(uti: String?, fileExtension: String?) {
+    func setImageWithUti(_ uti: String?, fileExtension: String?) {
         let imageName = imageNameWithUti(uti, fileExtension: fileExtension)
         centerImageView.image = UIImage.templateNamed(imageName)
     }
@@ -55,91 +55,91 @@ private extension LoadingImageView {
         imageButton = UIButton()
         imageButton.layer.cornerRadius = 12.0
         imageButton.clipsToBounds = true
-        imageButton.addTarget(self, action: #selector(LoadingImageView.imageButtonPressed), forControlEvents: .TouchUpInside)
+        imageButton.addTarget(self, action: #selector(LoadingImageView.imageButtonPressed), for: .touchUpInside)
         addSubview(imageButton)
 
         centerImageView = UIImageView()
-        centerImageView.contentMode = .Center
+        centerImageView.contentMode = .center
         addSubview(centerImageView)
 
         progressView = ProgressCircleView()
-        progressView.userInteractionEnabled = false
+        progressView.isUserInteractionEnabled = false
         addSubview(progressView)
 
         topLabel = UILabel()
-        topLabel.font = UIFont.systemFontOfSize(14.0)
+        topLabel.font = UIFont.systemFont(ofSize: 14.0)
         addSubview(topLabel)
 
         bottomLabel = UILabel()
-        bottomLabel.font = UIFont.systemFontOfSize(14.0)
+        bottomLabel.font = UIFont.systemFont(ofSize: 14.0)
         addSubview(bottomLabel)
     }
 
     func installConstraints() {
-        snp_makeConstraints {
+        snp.makeConstraints {
             $0.size.equalTo(Constants.ImageButtonSize)
         }
 
-        imageButton.snp_makeConstraints {
+        imageButton.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
 
-        centerImageView.snp_makeConstraints {
+        centerImageView.snp.makeConstraints {
             $0.center.equalTo(self)
             $0.size.equalTo(Constants.CenterImageSize)
         }
 
-        progressView.snp_makeConstraints {
+        progressView.snp.makeConstraints {
             $0.center.equalTo(self)
             $0.size.equalTo(Constants.ProgressViewSize)
         }
 
-        topLabel.snp_makeConstraints {
+        topLabel.snp.makeConstraints {
             $0.leading.equalTo(self).offset(Constants.LabelHorizontalOffset)
             $0.trailing.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
-            $0.bottom.equalTo(bottomLabel.snp_top)
+            $0.bottom.equalTo(bottomLabel.snp.top)
         }
 
-        bottomLabel.snp_makeConstraints {
+        bottomLabel.snp.makeConstraints {
             $0.leading.equalTo(self).offset(Constants.LabelHorizontalOffset)
             $0.trailing.lessThanOrEqualTo(self).offset(-Constants.LabelHorizontalOffset)
             $0.bottom.equalTo(self).offset(Constants.LabelBottomOffset)
         }
     }
 
-    func imageNameWithUti(uti: String?, fileExtension: String?) -> String {
+    func imageNameWithUti(_ uti: String?, fileExtension: String?) -> String {
         guard let uti = uti else {
             return "chat-file-type-basic"
         }
 
-        if UTTypeEqual(uti, kUTTypeGIF) {
+        if UTTypeEqual(uti as CFString, kUTTypeGIF) {
             return "chat-file-type-gif"
         }
-        else if UTTypeEqual(uti, kUTTypeHTML) {
+        else if UTTypeEqual(uti as CFString, kUTTypeHTML) {
             return "chat-file-type-html"
         }
-        else if UTTypeEqual(uti, kUTTypeJPEG) {
+        else if UTTypeEqual(uti as CFString, kUTTypeJPEG) {
             return "chat-file-type-jpg"
         }
-        else if UTTypeEqual(uti, kUTTypeMP3) {
+        else if UTTypeEqual(uti as CFString, kUTTypeMP3) {
             return "chat-file-type-mp3"
         }
-        else if UTTypeEqual(uti, kUTTypeMPEG) {
+        else if UTTypeEqual(uti as CFString, kUTTypeMPEG) {
             return "chat-file-type-mpg"
         }
-        else if UTTypeEqual(uti, kUTTypeMPEG4) {
+        else if UTTypeEqual(uti as CFString, kUTTypeMPEG4) {
             return "chat-file-type-mpg"
         }
-        else if UTTypeEqual(uti, kUTTypePDF) {
+        else if UTTypeEqual(uti as CFString, kUTTypePDF) {
             return "chat-file-type-pdf"
         }
-        else if UTTypeEqual(uti, kUTTypePNG) {
+        else if UTTypeEqual(uti as CFString, kUTTypePNG) {
             return "chat-file-type-png"
         }
-        else if UTTypeEqual(uti, kUTTypeTIFF) {
+        else if UTTypeEqual(uti as CFString, kUTTypeTIFF) {
             return "chat-file-type-tif"
         }
-        else if UTTypeEqual(uti, kUTTypePlainText) {
+        else if UTTypeEqual(uti as CFString, kUTTypePlainText) {
             return "chat-file-type-txt"
         }
 

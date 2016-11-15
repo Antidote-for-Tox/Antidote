@@ -6,16 +6,16 @@ import UIKit
 import SnapKit
 
 protocol LoginChoiceControllerDelegate: class {
-    func loginChoiceControllerCreateAccount(controller: LoginChoiceController)
-    func loginChoiceControllerImportProfile(controller: LoginChoiceController)
+    func loginChoiceControllerCreateAccount(_ controller: LoginChoiceController)
+    func loginChoiceControllerImportProfile(_ controller: LoginChoiceController)
 }
 
 class LoginChoiceController: LoginLogoController {
     weak var delegate: LoginChoiceControllerDelegate?
 
-    private var incompressibleContainer: IncompressibleView!
-    private var createAccountButton: RoundedButton!
-    private var importProfileButton: RoundedButton!
+    fileprivate var incompressibleContainer: IncompressibleView!
+    fileprivate var createAccountButton: RoundedButton!
+    fileprivate var importProfileButton: RoundedButton!
 
     override func loadView() {
         super.loadView()
@@ -41,7 +41,7 @@ extension LoginChoiceController {
 private extension LoginChoiceController {
     func createContainer() {
         incompressibleContainer = IncompressibleView()
-        incompressibleContainer.backgroundColor = .clearColor()
+        incompressibleContainer.backgroundColor = .clear
         contentContainerView.addSubview(incompressibleContainer)
     }
 
@@ -52,7 +52,7 @@ private extension LoginChoiceController {
 
     func installConstraints() {
         incompressibleContainer.customIntrinsicContentSize.width = CGFloat(Constants.MaxFormWidth)
-        incompressibleContainer.snp_makeConstraints {
+        incompressibleContainer.snp.makeConstraints {
             $0.top.equalTo(contentContainerView)
             $0.centerX.equalTo(contentContainerView)
             $0.width.lessThanOrEqualTo(Constants.MaxFormWidth)
@@ -60,33 +60,33 @@ private extension LoginChoiceController {
             $0.height.equalTo(contentContainerView)
         }
 
-        createAccountButton.snp_makeConstraints {
+        createAccountButton.snp.makeConstraints {
             $0.top.equalTo(incompressibleContainer).offset(Constants.VerticalOffset)
             $0.leading.trailing.equalTo(incompressibleContainer)
         }
 
-        importProfileButton.snp_makeConstraints {
-            $0.top.equalTo(createAccountButton.snp_bottom).offset(Constants.VerticalOffset)
+        importProfileButton.snp.makeConstraints {
+            $0.top.equalTo(createAccountButton.snp.bottom).offset(Constants.VerticalOffset)
             $0.leading.trailing.equalTo(incompressibleContainer)
         }
     }
 
-    func createLabelWithText(text: String) -> UILabel {
+    func createLabelWithText(_ text: String) -> UILabel {
         let label = UILabel()
         label.text = text
         label.textColor = theme.colorForType(.LoginDescriptionLabel)
-        label.textAlignment = .Center
-        label.backgroundColor = .clearColor()
+        label.textAlignment = .center
+        label.backgroundColor = .clear
 
         incompressibleContainer.addSubview(label)
 
         return label
     }
 
-    func createButtonWithTitle(title: String, action: Selector) -> RoundedButton {
-        let button = RoundedButton(theme: theme, type: .Login)
-        button.setTitle(title, forState: .Normal)
-        button.addTarget(self, action: action, forControlEvents: .TouchUpInside)
+    func createButtonWithTitle(_ title: String, action: Selector) -> RoundedButton {
+        let button = RoundedButton(theme: theme, type: .login)
+        button.setTitle(title, for: UIControlState())
+        button.addTarget(self, action: action, for: .touchUpInside)
 
         incompressibleContainer.addSubview(button)
 
