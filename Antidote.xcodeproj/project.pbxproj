@@ -888,6 +888,7 @@
 		9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinAuthorizationCoordinator.swift; sourceTree = "<group>"; };
 		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9C7475C41BC698510098B1A4 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		9C89D83C1DDB36770040C67B /* Antidote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Antidote.entitlements; sourceTree = "<group>"; };
 		9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMainController.swift; sourceTree = "<group>"; };
 		9CB1F9501D58CA4000105858 /* RunningCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningCoordinator.swift; sourceTree = "<group>"; };
 		9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountController.swift; sourceTree = "<group>"; };
@@ -1056,6 +1057,7 @@
 		1164763819794D3300DB20B8 /* Antidote */ = {
 			isa = PBXGroup;
 			children = (
+				9C89D83C1DDB36770040C67B /* Antidote.entitlements */,
 				F902D28D1ADED27A0070A3F5 /* Application */,
 				1193AB561C1F565B006AA9E5 /* Cells */,
 				1173F06C1BC5D9B000B88B7B /* Classes */,
@@ -1496,10 +1498,16 @@
 					1164762E19794D3300DB20B8 = {
 						DevelopmentTeam = NHVF8NSG3J;
 						LastSwiftMigration = 0810;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					1173F0551BC5D94400B88B7B = {
 						CreatedOnToolsVersion = 7.0;
 						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -2605,6 +2613,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_BITCODE = NO;
@@ -2634,6 +2643,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 6;
 				ENABLE_BITCODE = NO;
@@ -2661,6 +2671,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2685,6 +2696,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
