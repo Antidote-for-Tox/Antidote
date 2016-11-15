@@ -163,6 +163,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
 
         valueLabel.snp.makeConstraints {
             valueLabelToTitleConstraint = $0.top.equalTo(titleLabel.snp.bottom).offset(Constants.TitleToValueOffset).constraint
+            valueLabelToContentTopConstraint = $0.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset).constraint
 
             valueLabelToContentRightConstraint = $0.trailing.equalTo(customContentView).constraint
 
@@ -171,10 +172,8 @@ class StaticTableDefaultCell: StaticTableBaseCell {
             $0.height.greaterThanOrEqualTo(Constants.MinValueLabelHeight)
         }
 
+        // TODO fix warning in log
         valueLabelToTitleConstraint.deactivate()
-        valueLabel.snp.updateConstraints{ (make) -> Void in
-            valueLabelToContentTopConstraint = make.top.equalTo(customContentView).offset(Constants.EdgesVerticalOffset).constraint
-        }
 
         rightButton.snp.makeConstraints {
             $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
