@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Changed
+- Migrating to toxcore 0.0.4.
+
+## [1.2.0-build-2] - 2016-11-12
 ### Fixed
 - Bug with resending old messages to contacts.
 
@@ -187,7 +191,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.2.0...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.2.0-build-2...master
+[1.2.0-build-2]: https://github.com/Antidote-for-Tox/Antidote/compare/1.2.0...1.2.0-build-2
 [1.2.0]: https://github.com/Antidote-for-Tox/Antidote/compare/1.1.0...1.2.0
 [1.1.0]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.4...1.1.0
 [1.0.0-rc.4]: https://github.com/Antidote-for-Tox/Antidote/compare/1.0.0-rc.3...1.0.0-rc.4
