@@ -21,7 +21,7 @@ You can help to test beta versions of Antidote via TestFlight. If you wish to pa
 
 #### Manual Installation
 
-Clone repo, run install script and open `Antidote.xcworkspace` file with Xcode 7.
+Clone repo, run install script and open `Antidote.xcworkspace` file with Xcode 8.
 
 ```
 git clone https://github.com/Antidote-for-Tox/Antidote.git
