@@ -4,6 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 ### Changed
+- Migrating to Swift 3. [#255](https://github.com/Antidote-for-Tox/Antidote/issues/255).
 - Migrating to toxcore 0.0.4.
 
 ## [1.2.0-build-2] - 2016-11-12
