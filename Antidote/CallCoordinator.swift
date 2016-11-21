@@ -5,9 +5,9 @@
 import Foundation
 
 protocol CallCoordinatorDelegate: class {
-    func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String)
-    func callCoordinatorDidStartCall(coordinator: CallCoordinator)
-    func callCoordinatorDidFinishCall(coordinator: CallCoordinator)
+    func callCoordinator(_ coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String)
+    func callCoordinatorDidStartCall(_ coordinator: CallCoordinator)
+    func callCoordinatorDidFinishCall(_ coordinator: CallCoordinator)
 }
 
 private struct Constants {
@@ -17,10 +17,10 @@ private struct Constants {
 private class ActiveCall {
     var callToken: RLMNotificationToken?
 
-    private let call: OCTCall
-    private let navigation: UINavigationController
+    fileprivate let call: OCTCall
+    fileprivate let navigation: UINavigationController
 
-    private var usingFrontCamera: Bool = true
+    fileprivate var usingFrontCamera: Bool = true
 
     init(call: OCTCall, navigation: UINavigationController) {
         self.call = call
@@ -35,19 +35,19 @@ private class ActiveCall {
 class CallCoordinator: NSObject {
     weak var delegate: CallCoordinatorDelegate?
 
-    private let theme: Theme
-    private weak var presentingController: UIViewController!
-    private weak var submanagerCalls: OCTSubmanagerCalls!
-    private weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate let theme: Theme
+    fileprivate weak var presentingController: UIViewController!
+    fileprivate weak var submanagerCalls: OCTSubmanagerCalls!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private let audioPlayer = AudioPlayer()
+    fileprivate let audioPlayer = AudioPlayer()
 
-    private var activeCall: ActiveCall? {
+    fileprivate var activeCall: ActiveCall? {
         didSet {
             switch (oldValue, activeCall) {
-                case (.None, .Some):
+                case (.none, .some):
                     delegate?.callCoordinatorDidStartCall(self)
-                case (.Some, .None):
+                case (.some, .none):
                     delegate?.callCoordinatorDidFinishCall(self)
                 default:
                     break
@@ -66,9 +66,9 @@ class CallCoordinator: NSObject {
         submanagerCalls.delegate = self
     }
 
-    func callToChat(chat: OCTChat, enableVideo: Bool) {
+    func callToChat(_ chat: OCTChat, enableVideo: Bool) {
         do {
-            let call = try submanagerCalls.callToChat(chat, enableAudio: true, enableVideo: enableVideo)
+            let call = try submanagerCalls.call(to: chat, enableAudio: true, enableVideo: enableVideo)
             let friend = chat.friends.lastObject() as! OCTFriend
 
             let controller = CallActiveController(theme: theme, callerName: friend.nickname)
@@ -77,29 +77,29 @@ class CallCoordinator: NSObject {
             startActiveCallWithCall(call, controller: controller)
         }
         catch let error as NSError {
-            handleErrorWithType(.CallToChat, error: error)
+            handleErrorWithType(.callToChat, error: error)
         }
     }
 
-    func answerIncomingCallWithUserInfo(userInfo: String) {
+    func answerIncomingCallWithUserInfo(_ userInfo: String) {
         guard let activeCall = activeCall else { return }
         guard activeCall.call.uniqueIdentifier == userInfo else { return }
-        guard activeCall.call.status == .Ringing else { return }
+        guard activeCall.call.status == .ringing else { return }
 
         answerCall(enableVideo: false)
     }
 }
 
 extension CallCoordinator: CoordinatorProtocol {
-    func startWithOptions(options: CoordinatorOptions?) {
+    func startWithOptions(_ options: CoordinatorOptions?) {
     }
 }
 
 extension CallCoordinator: OCTSubmanagerCallDelegate {
-    func callSubmanager(callSubmanager: OCTSubmanagerCalls!, receiveCall call: OCTCall!, audioEnabled: Bool, videoEnabled: Bool) {
+    func callSubmanager(_ callSubmanager: OCTSubmanagerCalls!, receive call: OCTCall!, audioEnabled: Bool, videoEnabled: Bool) {
         guard activeCall == nil else {
             // Currently we support only one call at a time
-            _ = try? submanagerCalls.sendCallControl(.Cancel, toCall: call)
+            _ = try? submanagerCalls.send(.cancel, to: call)
             return
         }
 
@@ -117,54 +117,54 @@ extension CallCoordinator: OCTSubmanagerCallDelegate {
 }
 
 extension CallCoordinator: CallIncomingControllerDelegate {
-    func callIncomingControllerDecline(controller: CallIncomingController) {
+    func callIncomingControllerDecline(_ controller: CallIncomingController) {
         declineCall(callWasRemoved: false)
     }
 
-    func callIncomingControllerAnswerAudio(controller: CallIncomingController) {
+    func callIncomingControllerAnswerAudio(_ controller: CallIncomingController) {
         answerCall(enableVideo: false)
     }
 
-    func callIncomingControllerAnswerVideo(controller: CallIncomingController) {
+    func callIncomingControllerAnswerVideo(_ controller: CallIncomingController) {
         answerCall(enableVideo: true)
     }
 }
 
 extension CallCoordinator: CallActiveControllerDelegate {
-    func callActiveController(controller: CallActiveController, mute: Bool) {
+    func callActiveController(_ controller: CallActiveController, mute: Bool) {
         submanagerCalls.enableMicrophone = !mute
     }
 
-    func callActiveController(controller: CallActiveController, speaker: Bool) {
+    func callActiveController(_ controller: CallActiveController, speaker: Bool) {
         do {
-            try submanagerCalls.routeAudioToSpeaker(speaker)
+            try submanagerCalls.routeAudio(toSpeaker: speaker)
         }
         catch {
-            handleErrorWithType(.RouteAudioToSpeaker)
+            handleErrorWithType(.routeAudioToSpeaker)
             controller.speaker = !speaker
         }
     }
 
-    func callActiveController(controller: CallActiveController, outgoingVideo: Bool) {
+    func callActiveController(_ controller: CallActiveController, outgoingVideo: Bool) {
         guard let activeCall = activeCall else {
             assert(false, "This method should be called only if active call is non-nil")
             return
         }
 
         do {
-            try submanagerCalls.enableVideoSending(outgoingVideo, forCall: activeCall.call)
+            try submanagerCalls.enableVideoSending(outgoingVideo, for: activeCall.call)
         }
         catch {
-            handleErrorWithType(.EnableVideoSending)
+            handleErrorWithType(.enableVideoSending)
             controller.outgoingVideo = !outgoingVideo
         }
     }
 
-    func callActiveControllerDecline(controller: CallActiveController) {
+    func callActiveControllerDecline(_ controller: CallActiveController) {
         declineCall(callWasRemoved: false)
     }
 
-    func callActiveControllerSwitchCamera(controller: CallActiveController) {
+    func callActiveControllerSwitchCamera(_ controller: CallActiveController) {
         guard let activeCall = activeCall else {
             assert(false, "This method should be called only if active call is non-nil")
             return
@@ -172,12 +172,12 @@ extension CallCoordinator: CallActiveControllerDelegate {
 
         do {
             let front = !activeCall.usingFrontCamera
-            try submanagerCalls.switchToCameraFront(front)
+            try submanagerCalls.switch(toCameraFront: front)
 
             self.activeCall?.usingFrontCamera = front
         }
         catch {
-            handleErrorWithType(.CallSwitchCamera)
+            handleErrorWithType(.callSwitchCamera)
         }
     }
 }
@@ -190,7 +190,7 @@ private extension CallCoordinator {
         }
 
         if !wasRemoved {
-            _ = try? submanagerCalls.sendCallControl(.Cancel, toCall: activeCall.call)
+            _ = try? submanagerCalls.send(.cancel, to: activeCall.call)
         }
 
         audioPlayer.stopAll()
@@ -199,23 +199,23 @@ private extension CallCoordinator {
             controller.prepareForRemoval()
         }
 
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(Constants.DeclineAfterInterval * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
-            self?.presentingController.dismissViewControllerAnimated(true, completion: nil)
+        let delayTime = DispatchTime.now() + Double(Int64(Constants.DeclineAfterInterval * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { [weak self] in
+            self?.presentingController.dismiss(animated: true, completion: nil)
             self?.activeCall = nil
         }
     }
 
-    func startActiveCallWithCall(call: OCTCall, controller: CallBaseController) {
+    func startActiveCallWithCall(_ call: OCTCall, controller: CallBaseController) {
         guard activeCall == nil else {
             assert(false, "This method should be called only if there is no active call")
             return
         }
 
         let navigation = UINavigationController(rootViewController: controller)
-        navigation.modalPresentationStyle = .OverCurrentContext
-        navigation.navigationBarHidden = true
-        navigation.modalTransitionStyle = .CrossDissolve
+        navigation.modalPresentationStyle = .overCurrentContext
+        navigation.isNavigationBarHidden = true
+        navigation.modalTransitionStyle = .crossDissolve
 
         activeCall = ActiveCall(call: call, navigation: navigation)
 
@@ -223,40 +223,40 @@ private extension CallCoordinator {
         let results = submanagerObjects.calls(predicate: predicate)
         activeCall!.callToken = results.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update(_, let deletions, _, let modifications):
+                case .update(_, let deletions, _, let modifications):
                     if deletions.count > 0 {
                         self.declineCall(callWasRemoved: true)
                     }
                     else if modifications.count > 0 {
                         self.activeCallWasUpdated()
                     }
-                case .Error(let error):
+                case .error(let error):
                     fatalError("\(error)")
             }
         }
 
-        presentingController.presentViewController(navigation, animated: true, completion: nil)
+        presentingController.present(navigation, animated: true, completion: nil)
         activeCallWasUpdated()
     }
 
-    func answerCall(enableVideo enableVideo: Bool) {
+    func answerCall(enableVideo: Bool) {
         guard let activeCall = activeCall else {
             assert(false, "This method should be called only if active call is non-nil")
             return
         }
 
-        guard activeCall.call.status == .Ringing else {
+        guard activeCall.call.status == .ringing else {
             assert(false, "Call status should be .Ringing")
             return
         }
 
         do {
-            try submanagerCalls.answerCall(activeCall.call, enableAudio: true, enableVideo: enableVideo)
+            try submanagerCalls.answer(activeCall.call, enableAudio: true, enableVideo: enableVideo)
         }
         catch let error as NSError {
-            handleErrorWithType(.AnswerCall, error: error)
+            handleErrorWithType(.answerCall, error: error)
 
             declineCall(callWasRemoved: false)
         }
@@ -269,18 +269,18 @@ private extension CallCoordinator {
         }
 
         switch activeCall.call.status {
-            case .Ringing:
+            case .ringing:
                 if !audioPlayer.isPlayingSound(.Ringtone) {
                     audioPlayer.playSound(.Ringtone, loop: true)
                 }
 
                 // no update for ringing status
                 return
-            case .Dialing:
+            case .dialing:
                 if !audioPlayer.isPlayingSound(.Calltone) {
                     audioPlayer.playSound(.Calltone, loop: true)
                 }
-            case .Active:
+            case .active:
                 if audioPlayer.isPlaying() {
                     audioPlayer.stopAll()
                 }
@@ -297,12 +297,12 @@ private extension CallCoordinator {
         }
 
         switch activeCall.call.status {
-            case .Ringing:
+            case .ringing:
                 break
-            case .Dialing:
-                activeController!.state = .Reaching
-            case .Active:
-                activeController!.state = .Active(duration: activeCall.call.callDuration)
+            case .dialing:
+                activeController!.state = .reaching
+            case .active:
+                activeController!.state = .active(duration: activeCall.call.callDuration)
         }
 
         activeController!.outgoingVideo = activeCall.call.videoIsEnabled

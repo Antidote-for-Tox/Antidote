@@ -5,8 +5,8 @@
 import Foundation
 
 private enum NotificationType {
-    case NewMessage(OCTMessageAbstract)
-    case FriendRequest(OCTFriendRequest)
+    case newMessage(OCTMessageAbstract)
+    case friendRequest(OCTFriendRequest)
 }
 
 private struct Constants {
@@ -14,36 +14,36 @@ private struct Constants {
 }
 
 protocol NotificationCoordinatorDelegate: class {
-    func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat)
-    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator, showRequest request: OCTFriendRequest)
-    func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String)
+    func notificationCoordinator(_ coordinator: NotificationCoordinator, showChat chat: OCTChat)
+    func notificationCoordinatorShowFriendRequest(_ coordinator: NotificationCoordinator, showRequest request: OCTFriendRequest)
+    func notificationCoordinatorAnswerIncomingCall(_ coordinator: NotificationCoordinator, userInfo: String)
 
-    func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int)
-    func notificationCoordinator(coordinator: NotificationCoordinator, updateChatsBadge badge: Int)
+    func notificationCoordinator(_ coordinator: NotificationCoordinator, updateFriendsBadge badge: Int)
+    func notificationCoordinator(_ coordinator: NotificationCoordinator, updateChatsBadge badge: Int)
 }
 
 class NotificationCoordinator: NSObject {
     weak var delegate: NotificationCoordinatorDelegate?
 
-    private let theme: Theme
-    private let userDefaults = UserDefaultsManager()
+    fileprivate let theme: Theme
+    fileprivate let userDefaults = UserDefaultsManager()
 
-    private let notificationWindow: NotificationWindow
+    fileprivate let notificationWindow: NotificationWindow
 
-    private weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private var messagesToken: RLMNotificationToken?
-    private var chats: Results<OCTChat>
-    private var chatsToken: RLMNotificationToken?
-    private var requests: Results<OCTFriendRequest>
-    private var requestsToken: RLMNotificationToken?
+    fileprivate var messagesToken: RLMNotificationToken?
+    fileprivate var chats: Results<OCTChat>
+    fileprivate var chatsToken: RLMNotificationToken?
+    fileprivate var requests: Results<OCTFriendRequest>
+    fileprivate var requestsToken: RLMNotificationToken?
 
-    private let avatarManager: AvatarManager
-    private let audioPlayer = AlertAudioPlayer()
+    fileprivate let avatarManager: AvatarManager
+    fileprivate let audioPlayer = AlertAudioPlayer()
 
-    private var notificationQueue = [NotificationType]()
-    private var inAppNotificationAppIdsRegistered = [String: Bool]()
-    private var bannedChatIdentifiers = Set<String>()
+    fileprivate var notificationQueue = [NotificationType]()
+    fileprivate var inAppNotificationAppIdsRegistered = [String: Bool]()
+    fileprivate var bannedChatIdentifiers = Set<String>()
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
@@ -60,11 +60,11 @@ class NotificationCoordinator: NSObject {
 
         addNotificationBlocks()
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(NotificationCoordinator.applicationDidBecomeActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(NotificationCoordinator.applicationDidBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
 
         messagesToken?.stop()
         chatsToken?.stop()
@@ -74,7 +74,7 @@ class NotificationCoordinator: NSObject {
     /**
         Show or hide connnecting view.
      */
-    func toggleConnectingView(show show: Bool, animated: Bool) {
+    func toggleConnectingView(show: Bool, animated: Bool) {
         notificationWindow.showConnectingView(show, animated: animated)
     }
 
@@ -82,29 +82,29 @@ class NotificationCoordinator: NSObject {
         Stops showing notifications for given chat.
         Also removes all related to that chat notifications from queue.
      */
-    func banNotificationsForChat(chat: OCTChat) {
+    func banNotificationsForChat(_ chat: OCTChat) {
         bannedChatIdentifiers.insert(chat.uniqueIdentifier)
 
         notificationQueue = notificationQueue.filter {
             switch $0 {
-                case .NewMessage(let messageAbstract):
+                case .newMessage(let messageAbstract):
                     return messageAbstract.chatUniqueIdentifier != chat.uniqueIdentifier
-                case .FriendRequest:
+                case .friendRequest:
                     return true
             }
         }
         
-        LNNotificationCenter.defaultCenter().clearPendingNotificationsForApplicationIdentifier(chat.uniqueIdentifier);
+        LNNotificationCenter.default().clearPendingNotifications(forApplicationIdentifier: chat.uniqueIdentifier);
     }
 
     /**
         Unban notifications for given chat (if they were banned before).
      */
-    func unbanNotificationsForChat(chat: OCTChat) {
+    func unbanNotificationsForChat(_ chat: OCTChat) {
         bannedChatIdentifiers.remove(chat.uniqueIdentifier)
     }
 
-    func handleLocalNotification(notification: UILocalNotification) {
+    func handleLocalNotification(_ notification: UILocalNotification) {
         guard let userInfo = notification.userInfo as? [String: String] else {
             return
         }
@@ -116,29 +116,29 @@ class NotificationCoordinator: NSObject {
         performAction(action)
     }
 
-    func showCallNotificationWithCaller(caller: String, userInfo: String) {
+    func showCallNotificationWithCaller(_ caller: String, userInfo: String) {
         let object = NotificationObject(
                 title: caller,
                 body: String(localized: "notification_is_calling"),
-                action: .AnswerIncomingCall(userInfo: userInfo),
+                action: .answerIncomingCall(userInfo: userInfo),
                 soundName: "isotoxin_Ringtone.aac")
 
         showLocalNotificationObject(object)
     }
     
-    func registerInAppNotificationAppId(appId: String) {
+    func registerInAppNotificationAppId(_ appId: String) {
         if inAppNotificationAppIdsRegistered[appId] == nil {
-            LNNotificationCenter.defaultCenter().registerApplicationWithIdentifier(appId, name: NSBundle.mainBundle().infoDictionary?["CFBundleDisplayName"] as? String, icon: UIImage.init(imageLiteral: "notification-app-icon"), defaultSettings: LNNotificationAppSettings.defaultNotificationAppSettings())
+            LNNotificationCenter.default().registerApplication(withIdentifier: appId, name: Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String, icon: UIImage(named: "notification-app-icon"), defaultSettings: LNNotificationAppSettings.default())
             inAppNotificationAppIdsRegistered[appId] = true
         }
     }
 }
 
 extension NotificationCoordinator: CoordinatorProtocol {
-    func startWithOptions(options: CoordinatorOptions?) {
-        let settings = UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories: nil)
+    func startWithOptions(_ options: CoordinatorOptions?) {
+        let settings = UIUserNotificationSettings(types: [.alert, .badge, .sound], categories: nil)
 
-        let application = UIApplication.sharedApplication()
+        let application = UIApplication.shared
         application.registerUserNotificationSettings(settings)
         application.cancelAllLocalNotifications()
 
@@ -149,7 +149,7 @@ extension NotificationCoordinator: CoordinatorProtocol {
 // MARK: Notifications
 extension NotificationCoordinator {
     func applicationDidBecomeActive() {
-        UIApplication.sharedApplication().cancelAllLocalNotifications()
+        UIApplication.shared.cancelAllLocalNotifications()
     }
 }
 
@@ -158,9 +158,9 @@ private extension NotificationCoordinator {
         let messages = submanagerObjects.messages().sortedResultsUsingProperty("dateInterval", ascending: false)
         messagesToken = messages.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update(let messages, _, let insertions, _):
+                case .update(let messages, _, let insertions, _):
                     guard let messages = messages else {
                         break
                     }
@@ -170,30 +170,30 @@ private extension NotificationCoordinator {
                         self.playSoundForMessageIfNeeded(message)
 
                         if self.shouldEnqueueMessage(message) {
-                            self.enqueueNotification(.NewMessage(message))
+                            self.enqueueNotification(.newMessage(message))
                         }
                     }
-                case .Error(let error):
+                case .error(let error):
                 fatalError("\(error)")
             }
         }
 
         chatsToken = chats.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update:
+                case .update:
                     self.updateBadges()
-                case .Error(let error):
+                case .error(let error):
                 fatalError("\(error)")
             }
         }
 
         requestsToken = requests.addNotificationBlock { [unowned self] change in
             switch change {
-                case .Initial:
+                case .initial:
                     break
-                case .Update(let requests, _, let insertions, _):
+                case .update(let requests, _, let insertions, _):
                     guard let requests = requests else {
                         break
                     }
@@ -201,16 +201,16 @@ private extension NotificationCoordinator {
                         let request = requests[index]
 
                         self.audioPlayer.playSound(.NewMessage)
-                        self.enqueueNotification(.FriendRequest(request))
+                        self.enqueueNotification(.friendRequest(request))
                     }
                     self.updateBadges()
-                case .Error(let error):
+                case .error(let error):
                 fatalError("\(error)")
             }
         }
     }
 
-    func playSoundForMessageIfNeeded(message: OCTMessageAbstract) {
+    func playSoundForMessageIfNeeded(_ message: OCTMessageAbstract) {
         if message.isOutgoing() {
             return
         }
@@ -220,7 +220,7 @@ private extension NotificationCoordinator {
         }
     }
 
-    func shouldEnqueueMessage(message: OCTMessageAbstract) -> Bool {
+    func shouldEnqueueMessage(_ message: OCTMessageAbstract) -> Bool {
         if message.isOutgoing() {
             return false
         }
@@ -236,7 +236,7 @@ private extension NotificationCoordinator {
         return false
     }
 
-    func enqueueNotification(notification: NotificationType) {
+    func enqueueNotification(_ notification: NotificationType) {
         notificationQueue.append(notification)
 
         showNextNotification()
@@ -252,7 +252,7 @@ private extension NotificationCoordinator {
 
         if UIApplication.isActive {
             switch notification {
-                case .NewMessage(let messageAbstract):
+                case .newMessage(let messageAbstract):
                     showInAppNotificationObject(object, chatUniqueIdentifier: messageAbstract.chatUniqueIdentifier)
                 default:
                     showInAppNotificationObject(object, chatUniqueIdentifier: nil)
@@ -263,59 +263,59 @@ private extension NotificationCoordinator {
         }
     }
 
-    func showInAppNotificationObject(object: NotificationObject, chatUniqueIdentifier: String?) {
+    func showInAppNotificationObject(_ object: NotificationObject, chatUniqueIdentifier: String?) {
         var appId:String
         
         if chatUniqueIdentifier != nil {
             appId = chatUniqueIdentifier!
         } else {
-            appId = NSBundle.mainBundle().bundleIdentifier!
+            appId = Bundle.main.bundleIdentifier!
         }
         
         registerInAppNotificationAppId(appId);
 
         let notification = LNNotification.init(message: object.body, title: object.title)
-        notification.defaultAction = LNNotificationAction.init(title: nil, handler: { [weak self] _ in
+        notification?.defaultAction = LNNotificationAction.init(title: nil, handler: { [weak self] _ in
             self?.performAction(object.action)
         })
         
-        LNNotificationCenter.defaultCenter().presentNotification(notification, forApplicationIdentifier: appId)
+        LNNotificationCenter.default().present(notification, forApplicationIdentifier: appId)
         
         showNextNotification()
     }
 
-    func showLocalNotificationObject(object: NotificationObject) {
+    func showLocalNotificationObject(_ object: NotificationObject) {
         let local = UILocalNotification()
         local.alertBody = "\(object.title): \(object.body)"
         local.userInfo = object.action.archive()
         local.soundName = object.soundName
 
-        UIApplication.sharedApplication().presentLocalNotificationNow(local)
+        UIApplication.shared.presentLocalNotificationNow(local)
 
         showNextNotification()
     }
 
-    func notificationObjectFromNotification(notification: NotificationType) -> NotificationObject {
+    func notificationObjectFromNotification(_ notification: NotificationType) -> NotificationObject {
         switch notification {
-            case .FriendRequest(let request):
+            case .friendRequest(let request):
                 return notificationObjectFromRequest(request)
-            case .NewMessage(let message):
+            case .newMessage(let message):
                 return notificationObjectFromMessage(message)
         }
     }
 
-    func notificationObjectFromRequest(request: OCTFriendRequest) -> NotificationObject {
+    func notificationObjectFromRequest(_ request: OCTFriendRequest) -> NotificationObject {
         let title = String(localized: "notification_incoming_contact_request")
         let body = request.message ?? ""
-        let action = NotificationAction.OpenRequest(requestUniqueIdentifier: request.uniqueIdentifier)
+        let action = NotificationAction.openRequest(requestUniqueIdentifier: request.uniqueIdentifier)
 
         return NotificationObject(title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
-    func notificationObjectFromMessage(message: OCTMessageAbstract) -> NotificationObject {
+    func notificationObjectFromMessage(_ message: OCTMessageAbstract) -> NotificationObject {
         let title: String
 
-        if let friend = submanagerObjects.objectWithUniqueIdentifier(message.senderUniqueIdentifier, forType: .Friend) as? OCTFriend {
+        if let friend = submanagerObjects.object(withUniqueIdentifier: message.senderUniqueIdentifier, for: .friend) as? OCTFriend {
             title = friend.nickname
         }
         else {
@@ -323,7 +323,7 @@ private extension NotificationCoordinator {
         }
 
         var body: String = ""
-        let action = NotificationAction.OpenChat(chatUniqueIdentifier: message.chatUniqueIdentifier)
+        let action = NotificationAction.openChat(chatUniqueIdentifier: message.chatUniqueIdentifier)
 
         if let messageText = message.messageText {
             let defaultString = String(localized: "notification_new_message")
@@ -349,22 +349,22 @@ private extension NotificationCoordinator {
         return NotificationObject(title: title, body: body, action: action, soundName: "isotoxin_NewMessage.aac")
     }
 
-    func performAction(action: NotificationAction) {
+    func performAction(_ action: NotificationAction) {
         switch action {
-            case .OpenChat(let identifier):
-                guard let chat = submanagerObjects.objectWithUniqueIdentifier(identifier, forType: .Chat) as? OCTChat else {
+            case .openChat(let identifier):
+                guard let chat = submanagerObjects.object(withUniqueIdentifier: identifier, for: .chat) as? OCTChat else {
                     return
                 }
 
                 delegate?.notificationCoordinator(self, showChat: chat)
                 banNotificationsForChat(chat)
-            case .OpenRequest(let identifier):
-                guard let request = submanagerObjects.objectWithUniqueIdentifier(identifier, forType: .FriendRequest) as? OCTFriendRequest else {
+            case .openRequest(let identifier):
+                guard let request = submanagerObjects.object(withUniqueIdentifier: identifier, for: .friendRequest) as? OCTFriendRequest else {
                     return
                 }
 
                 delegate?.notificationCoordinatorShowFriendRequest(self, showRequest: request)
-            case .AnswerIncomingCall(let userInfo):
+            case .answerIncomingCall(let userInfo):
                 delegate?.notificationCoordinatorAnswerIncomingCall(self, userInfo: userInfo)
         }
     }
@@ -376,7 +376,7 @@ private extension NotificationCoordinator {
         delegate?.notificationCoordinator(self, updateChatsBadge: chatsCount)
         delegate?.notificationCoordinator(self, updateFriendsBadge: requestsCount)
 
-        UIApplication.sharedApplication().applicationIconBadgeNumber = chatsCount + requestsCount
+        UIApplication.shared.applicationIconBadgeNumber = chatsCount + requestsCount
     }
 
     // func chatsBadge() -> Int {

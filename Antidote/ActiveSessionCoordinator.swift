@@ -5,11 +5,11 @@
 import UIKit
 
 protocol ActiveSessionCoordinatorDelegate: class {
-    func activeSessionCoordinatorDidLogout(coordinator: ActiveSessionCoordinator, importToxProfileFromURL: NSURL?)
-    func activeSessionCoordinatorDeleteProfile(coordinator: ActiveSessionCoordinator)
-    func activeSessionCoordinatorRecreateCoordinatorsStack(coordinator: ActiveSessionCoordinator, options: CoordinatorOptions)
-    func activeSessionCoordinatorDidStartCall(coordinator: ActiveSessionCoordinator)
-    func activeSessionCoordinatorDidFinishCall(coordinator: ActiveSessionCoordinator)
+    func activeSessionCoordinatorDidLogout(_ coordinator: ActiveSessionCoordinator, importToxProfileFromURL: URL?)
+    func activeSessionCoordinatorDeleteProfile(_ coordinator: ActiveSessionCoordinator)
+    func activeSessionCoordinatorRecreateCoordinatorsStack(_ coordinator: ActiveSessionCoordinator, options: CoordinatorOptions)
+    func activeSessionCoordinatorDidStartCall(_ coordinator: ActiveSessionCoordinator)
+    func activeSessionCoordinatorDidFinishCall(_ coordinator: ActiveSessionCoordinator)
 }
 
 private struct Options {
@@ -17,8 +17,8 @@ private struct Options {
     static let StoredOptions = "StoredOptions"
 
     enum Coordinator {
-        case None
-        case Settings
+        case none
+        case settings
     }
 }
 
@@ -30,13 +30,13 @@ private struct IpadObjects {
 
 private struct IphoneObjects {
     enum TabCoordinator: Int {
-        case Friends = 0
-        case Chats = 1
-        case Settings = 2
-        case Profile = 3
+        case friends = 0
+        case chats = 1
+        case settings = 2
+        case profile = 3
 
         static func allValues() -> [TabCoordinator]{
-            return [Friends, Chats, Settings, Profile]
+            return [friends, chats, settings, profile]
         }
     }
 
@@ -52,25 +52,25 @@ private struct IphoneObjects {
 class ActiveSessionCoordinator: NSObject {
     weak var delegate: ActiveSessionCoordinatorDelegate?
 
-    private let theme: Theme
-    private let window: UIWindow
+    fileprivate let theme: Theme
+    fileprivate let window: UIWindow
 
     // Tox manager is stored here
-    private var toxManager: OCTManager!
+    fileprivate var toxManager: OCTManager!
 
-    private let friendsCoordinator: FriendsTabCoordinator
-    private let settingsCoordinator: SettingsTabCoordinator
-    private let profileCoordinator: ProfileTabCoordinator
+    fileprivate let friendsCoordinator: FriendsTabCoordinator
+    fileprivate let settingsCoordinator: SettingsTabCoordinator
+    fileprivate let profileCoordinator: ProfileTabCoordinator
 
-    private let notificationCoordinator: NotificationCoordinator
-    private let automationCoordinator: AutomationCoordinator
-    private var callCoordinator: CallCoordinator!
+    fileprivate let notificationCoordinator: NotificationCoordinator
+    fileprivate let automationCoordinator: AutomationCoordinator
+    fileprivate var callCoordinator: CallCoordinator!
 
     /**
         One of following properties will be non-empty, depending on running device.
      */
-    private var iPhone: IphoneObjects!
-    private var iPad: IpadObjects!
+    fileprivate var iPhone: IphoneObjects!
+    fileprivate var iPad: IpadObjects!
 
     init(theme: Theme, window: UIWindow, toxManager: OCTManager) {
         self.theme = theme
@@ -96,27 +96,27 @@ class ActiveSessionCoordinator: NSObject {
         profileCoordinator.delegate = self
         notificationCoordinator.delegate = self
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ActiveSessionCoordinator.applicationWillTerminate), name: UIApplicationWillTerminateNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(ActiveSessionCoordinator.applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 
     func applicationWillTerminate() {
         toxManager = nil
 
         // Giving tox some time to close all connections.
-        let until = NSDate(timeIntervalSinceNow:1.0)
-        NSRunLoop.currentRunLoop().runUntilDate(until)
+        let until = Date(timeIntervalSinceNow:1.0)
+        RunLoop.current.run(until: until)
     }
 }
 
 extension ActiveSessionCoordinator: TopCoordinatorProtocol {
-    func startWithOptions(options: CoordinatorOptions?) {
+    func startWithOptions(_ options: CoordinatorOptions?) {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
+                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.chats.rawValue
                 iPhone.chatsCoordinator.startWithOptions(nil)
 
                 window.rootViewController = iPhone.tabBarController
@@ -128,11 +128,11 @@ extension ActiveSessionCoordinator: TopCoordinatorProtocol {
 
         var settingsOptions: CoordinatorOptions?
 
-        let toShow = options?[Options.ToShowKey] as? Options.Coordinator ?? .None
+        let toShow = options?[Options.ToShowKey] as? Options.Coordinator ?? .none
         switch toShow {
-            case .None:
+            case .none:
                 break
-            case .Settings:
+            case .settings:
                 settingsOptions = options?[Options.StoredOptions] as? CoordinatorOptions
         }
 
@@ -150,83 +150,77 @@ extension ActiveSessionCoordinator: TopCoordinatorProtocol {
         updateUserName()
 
         switch toShow {
-            case .None:
+            case .none:
                 break
-            case .Settings:
+            case .settings:
                 showSettings()
         }
     }
 
-    func handleLocalNotification(notification: UILocalNotification) {
+    func handleLocalNotification(_ notification: UILocalNotification) {
         notificationCoordinator.handleLocalNotification(notification)
     }
 
-    func handleInboxURL(url: NSURL) {
-        guard let fileName = url.lastPathComponent else {
-            return
-        }
-
-        guard let filePath = url.path else {
-            return
-        }
-
+    func handleInboxURL(_ url: URL) {
+        let fileName = url.lastPathComponent
+        let filePath = url.path
         let isToxFile = url.isToxURL()
 
         let style: UIAlertControllerStyle
 
         switch InterfaceIdiom.current() {
             case .iPhone:
-                style = .ActionSheet
+                style = .actionSheet
             case .iPad:
-                style = .Alert
+                style = .alert
         }
 
         let alert = UIAlertController(title: nil, message: fileName, preferredStyle: style)
 
         if isToxFile {
-            alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .Default) { [unowned self] _ -> Void in
+            alert.addAction(UIAlertAction(title: String(localized: "create_profile"), style: .default) { [unowned self] _ -> Void in
                 self.logout(importToxProfileFromURL: url)
             })
         }
 
-        alert.addAction(UIAlertAction(title: String(localized: "file_send_to_contact"), style: .Default) { [unowned self] _ -> Void in
+        alert.addAction(UIAlertAction(title: String(localized: "file_send_to_contact"), style: .default) { [unowned self] _ -> Void in
             self.sendFileToChats(filePath, fileName: fileName)
         })
 
-        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .cancel, handler: nil))
 
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.tabBarController.presentViewController(alert, animated: true, completion: nil)
+                iPhone.tabBarController.present(alert, animated: true, completion: nil)
             case .iPad:
-                iPad.splitController.presentViewController(alert, animated: true, completion: nil)
+                iPad.splitController.present(alert, animated: true, completion: nil)
         }
     }
 }
 
 extension ActiveSessionCoordinator: OCTSubmanagerUserDelegate {
-    func submanagerUser(submanager: OCTSubmanagerUser, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
+    func submanagerUser(_ submanager: OCTSubmanagerUser, connectionStatusUpdate connectionStatus: OCTToxConnectionStatus) {
         updateUserStatusView()
 
-        let show = (connectionStatus == .None)
+        let show = (connectionStatus == .none)
         notificationCoordinator.toggleConnectingView(show: show, animated: true)
     }
 }
 
 extension ActiveSessionCoordinator: NotificationCoordinatorDelegate {
-    func notificationCoordinator(coordinator: NotificationCoordinator, showChat chat: OCTChat) {
+    func notificationCoordinator(_ coordinator: NotificationCoordinator, showChat chat: OCTChat) {
         showChat(chat)
     }
 
-    func notificationCoordinatorShowFriendRequest(coordinator: NotificationCoordinator, showRequest request: OCTFriendRequest) {
+    func notificationCoordinatorShowFriendRequest(_ coordinator: NotificationCoordinator, showRequest request: OCTFriendRequest) {
         showFriendRequest(request)
     }
 
-    func notificationCoordinatorAnswerIncomingCall(coordinator: NotificationCoordinator, userInfo: String) {
+    func notificationCoordinatorAnswerIncomingCall(_ coordinator: NotificationCoordinator, userInfo: String) {
         callCoordinator.answerIncomingCallWithUserInfo(userInfo)
     }
 
-    func notificationCoordinator(coordinator: NotificationCoordinator, updateFriendsBadge badge: Int) {
+    func notificationCoordinator(_ coordinator: NotificationCoordinator, updateFriendsBadge badge: Int) {
         let text: String? = (badge > 0) ? "\(badge)" : nil
 
         switch InterfaceIdiom.current() {
@@ -238,7 +232,7 @@ extension ActiveSessionCoordinator: NotificationCoordinatorDelegate {
         }
     }
 
-    func notificationCoordinator(coordinator: NotificationCoordinator, updateChatsBadge badge: Int) {
+    func notificationCoordinator(_ coordinator: NotificationCoordinator, updateChatsBadge badge: Int) {
         switch InterfaceIdiom.current() {
             case .iPhone:
                 iPhone.chatsTabBarItem.badgeText = (badge > 0) ? "\(badge)" : nil
@@ -250,117 +244,117 @@ extension ActiveSessionCoordinator: NotificationCoordinatorDelegate {
 }
 
 extension ActiveSessionCoordinator: CallCoordinatorDelegate {
-    func callCoordinator(coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String) {
+    func callCoordinator(_ coordinator: CallCoordinator, notifyAboutBackgroundCallFrom caller: String, userInfo: String) {
         notificationCoordinator.showCallNotificationWithCaller(caller, userInfo: userInfo)
     }
 
-    func callCoordinatorDidStartCall(coordinator: CallCoordinator) {
+    func callCoordinatorDidStartCall(_ coordinator: CallCoordinator) {
         delegate?.activeSessionCoordinatorDidStartCall(self)
     }
 
-    func callCoordinatorDidFinishCall(coordinator: CallCoordinator) {
+    func callCoordinatorDidFinishCall(_ coordinator: CallCoordinator) {
         delegate?.activeSessionCoordinatorDidFinishCall(self)
     }
 }
 
 extension ActiveSessionCoordinator: FriendsTabCoordinatorDelegate {
-    func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend) {
-        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+    func friendsTabCoordinatorOpenChat(_ coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend) {
+        let chat = toxManager.chats.getOrCreateChat(with: friend)
 
-        showChat(chat)
+        showChat(chat!)
     }
 
-    func friendsTabCoordinatorCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
-        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+    func friendsTabCoordinatorCall(_ coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
+        let chat = toxManager.chats.getOrCreateChat(with: friend)!
 
         callCoordinator.callToChat(chat, enableVideo: false)
     }
 
-    func friendsTabCoordinatorVideoCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
-        let chat = toxManager.chats.getOrCreateChatWithFriend(friend)
+    func friendsTabCoordinatorVideoCall(_ coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend) {
+        let chat = toxManager.chats.getOrCreateChat(with: friend)!
 
         callCoordinator.callToChat(chat, enableVideo: true)
     }
 }
 
 extension ActiveSessionCoordinator: ChatsTabCoordinatorDelegate {
-    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat) {
+    func chatsTabCoordinator(_ coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat) {
         notificationCoordinator.banNotificationsForChat(chat)
     }
 
-    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat) {
+    func chatsTabCoordinator(_ coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat) {
         notificationCoordinator.unbanNotificationsForChat(chat)
     }
 
-    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool) {
+    func chatsTabCoordinator(_ coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool) {
         callCoordinator.callToChat(chat, enableVideo: enableVideo)
     }
 }
 
 extension ActiveSessionCoordinator: SettingsTabCoordinatorDelegate {
-    func settingsTabCoordinatorRecreateCoordinatorsStack(coordinator: SettingsTabCoordinator, options settingsOptions: CoordinatorOptions) {
+    func settingsTabCoordinatorRecreateCoordinatorsStack(_ coordinator: SettingsTabCoordinator, options settingsOptions: CoordinatorOptions) {
         delegate?.activeSessionCoordinatorRecreateCoordinatorsStack(self, options: [
-            Options.ToShowKey: Options.Coordinator.Settings,
+            Options.ToShowKey: Options.Coordinator.settings,
             Options.StoredOptions: settingsOptions,
         ])
     }
 }
 
 extension ActiveSessionCoordinator: ProfileTabCoordinatorDelegate {
-    func profileTabCoordinatorDelegateLogout(coordinator: ProfileTabCoordinator) {
+    func profileTabCoordinatorDelegateLogout(_ coordinator: ProfileTabCoordinator) {
         logout()
     }
 
-    func profileTabCoordinatorDelegateDeleteProfile(coordinator: ProfileTabCoordinator) {
+    func profileTabCoordinatorDelegateDeleteProfile(_ coordinator: ProfileTabCoordinator) {
         delegate?.activeSessionCoordinatorDeleteProfile(self)
     }
 
-    func profileTabCoordinatorDelegateDidChangeUserStatus(coordinator: ProfileTabCoordinator) {
+    func profileTabCoordinatorDelegateDidChangeUserStatus(_ coordinator: ProfileTabCoordinator) {
         updateUserStatusView()
     }
 
-    func profileTabCoordinatorDelegateDidChangeAvatar(coordinator: ProfileTabCoordinator) {
+    func profileTabCoordinatorDelegateDidChangeAvatar(_ coordinator: ProfileTabCoordinator) {
         updateUserAvatar()
     }
 
-    func profileTabCoordinatorDelegateDidChangeUserName(coordinator: ProfileTabCoordinator) {
+    func profileTabCoordinatorDelegateDidChangeUserName(_ coordinator: ProfileTabCoordinator) {
         updateUserName()
     }
 }
 
 extension ActiveSessionCoordinator: PrimaryIpadControllerDelegate {
-    func primaryIpadController(controller: PrimaryIpadController, didSelectChat chat: OCTChat) {
+    func primaryIpadController(_ controller: PrimaryIpadController, didSelectChat chat: OCTChat) {
         showChat(chat)
     }
 
-    func primaryIpadControllerShowFriends(controller: PrimaryIpadController) {
+    func primaryIpadControllerShowFriends(_ controller: PrimaryIpadController) {
         iPad.splitController.showDetailViewController(friendsCoordinator.navigationController, sender: nil)
     }
 
-    func primaryIpadControllerShowSettings(controller: PrimaryIpadController) {
+    func primaryIpadControllerShowSettings(_ controller: PrimaryIpadController) {
         iPad.splitController.showDetailViewController(settingsCoordinator.navigationController, sender: nil)
     }
 
-    func primaryIpadControllerShowProfile(controller: PrimaryIpadController) {
+    func primaryIpadControllerShowProfile(_ controller: PrimaryIpadController) {
         iPad.splitController.showDetailViewController(profileCoordinator.navigationController, sender: nil)
     }
 }
 
 extension ActiveSessionCoordinator: ChatPrivateControllerDelegate {
-    func chatPrivateControllerWillAppear(controller: ChatPrivateController) {
+    func chatPrivateControllerWillAppear(_ controller: ChatPrivateController) {
         notificationCoordinator.banNotificationsForChat(controller.chat)
     }
 
-    func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
+    func chatPrivateControllerWillDisappear(_ controller: ChatPrivateController) {
         notificationCoordinator.unbanNotificationsForChat(controller.chat)
     }
 
-    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
+    func chatPrivateControllerCallToChat(_ controller: ChatPrivateController, enableVideo: Bool) {
         callCoordinator.callToChat(controller.chat, enableVideo: enableVideo)
     }
 
     func chatPrivateControllerShowQuickLookController(
-            controller: ChatPrivateController,
+            _ controller: ChatPrivateController,
             dataSource: QuickLookPreviewControllerDataSource,
             selectedIndex: Int)
     {
@@ -369,29 +363,29 @@ extension ActiveSessionCoordinator: ChatPrivateControllerDelegate {
         controller.dataSourceStorage = dataSource
         controller.currentPreviewItemIndex = selectedIndex
 
-        iPad.splitController.presentViewController(controller, animated: true, completion: nil)
+        iPad.splitController.present(controller, animated: true, completion: nil)
     }
 }
 
 extension ActiveSessionCoordinator: FriendSelectControllerDelegate {
-    func friendSelectController(controller: FriendSelectController, didSelectFriend friend: OCTFriend) {
-        rootViewController().dismissViewControllerAnimated(true) { [unowned self] in
+    func friendSelectController(_ controller: FriendSelectController, didSelectFriend friend: OCTFriend) {
+        rootViewController().dismiss(animated: true) { [unowned self] in
             guard let filePath = controller.userInfo as? String else {
                 return
             }
 
-            let chat = self.toxManager.chats.getOrCreateChatWithFriend(friend)
-            self.sendFile(filePath, toChat: chat)
+            let chat = self.toxManager.chats.getOrCreateChat(with: friend)
+            self.sendFile(filePath, toChat: chat!)
         }
     }
 
-    func friendSelectControllerCancel(controller: FriendSelectController) {
-        rootViewController().dismissViewControllerAnimated(true, completion: nil)
+    func friendSelectControllerCancel(_ controller: FriendSelectController) {
+        rootViewController().dismiss(animated: true, completion: nil)
 
         guard let filePath = controller.userInfo as? String else {
             return
         }
-        _ = try? NSFileManager.defaultManager().removeItemAtPath(filePath)
+        _ = try? FileManager.default.removeItem(atPath: filePath)
     }
 }
 
@@ -404,22 +398,22 @@ private extension ActiveSessionCoordinator {
 
                 let tabBarControllers = IphoneObjects.TabCoordinator.allValues().map { object -> UINavigationController in
                     switch object {
-                        case .Friends:
+                        case .friends:
                             return friendsCoordinator.navigationController
-                        case .Chats:
+                        case .chats:
                             return chatsCoordinator.navigationController
-                        case .Settings:
+                        case .settings:
                             return settingsCoordinator.navigationController
-                        case .Profile:
+                        case .profile:
                             return profileCoordinator.navigationController
                     }
                 }
 
                 let tabBarItems = createTabBarItems()
 
-                let friendsTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Friends.rawValue] as! TabBarBadgeItem
-                let chatsTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Chats.rawValue] as! TabBarBadgeItem
-                let profileTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.Profile.rawValue] as! TabBarProfileItem
+                let friendsTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.friends.rawValue] as! TabBarBadgeItem
+                let chatsTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.chats.rawValue] as! TabBarBadgeItem
+                let profileTabBarItem = tabBarItems[IphoneObjects.TabCoordinator.profile.rawValue] as! TabBarProfileItem
 
                 let tabBarController = TabBarController(theme: theme, controllers: tabBarControllers, tabBarItems: tabBarItems)
 
@@ -432,7 +426,7 @@ private extension ActiveSessionCoordinator {
 
             case .iPad:
                 let splitController = UISplitViewController()
-                splitController.preferredDisplayMode = .AllVisible
+                splitController.preferredDisplayMode = .allVisible
 
                 let primaryController = PrimaryIpadController(theme: theme, submanagerChats: toxManager.chats, submanagerObjects: toxManager.objects)
                 primaryController.delegate = self
@@ -463,33 +457,33 @@ private extension ActiveSessionCoordinator {
     func createTabBarItems() -> [TabBarAbstractItem] {
         return IphoneObjects.TabCoordinator.allValues().map {
             switch $0 {
-                case .Friends:
+                case .friends:
                     let item = TabBarBadgeItem(theme: theme)
                     item.image = UIImage(named: "tab-bar-friends")
                     item.text = String(localized: "contacts_title")
                     item.badgeAccessibilityEnding = String(localized: "contact_requests_section")
                     return item
-                case .Chats:
+                case .chats:
                     let item = TabBarBadgeItem(theme: theme)
                     item.image = UIImage(named: "tab-bar-chats")
                     item.text = String(localized: "chats_title")
                     item.badgeAccessibilityEnding = String(localized: "accessibility_chats_ending")
                     return item
-                case .Settings:
+                case .settings:
                     let item = TabBarBadgeItem(theme: theme)
                     item.image = UIImage(named: "tab-bar-settings")
                     item.text = String(localized: "settings_title")
                     return item
-                case .Profile:
+                case .profile:
                     return TabBarProfileItem(theme: theme)
             }
         }
     }
 
-    func showFriendRequest(request: OCTFriendRequest) {
+    func showFriendRequest(_ request: OCTFriendRequest) {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Friends.rawValue
+                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.friends.rawValue
             case .iPad:
                 primaryIpadControllerShowFriends(iPad.primaryController)
         }
@@ -503,7 +497,7 @@ private extension ActiveSessionCoordinator {
     func activeChatController() -> ChatPrivateController? {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                if iPhone.tabBarController.selectedIndex != IphoneObjects.TabCoordinator.Chats.rawValue {
+                if iPhone.tabBarController.selectedIndex != IphoneObjects.TabCoordinator.chats.rawValue {
                     return nil
                 }
 
@@ -513,11 +507,11 @@ private extension ActiveSessionCoordinator {
         }
     }
 
-    func showChat(chat: OCTChat) {
+    func showChat(_ chat: OCTChat) {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                if iPhone.tabBarController.selectedIndex != IphoneObjects.TabCoordinator.Chats.rawValue {
-                    iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Chats.rawValue
+                if iPhone.tabBarController.selectedIndex != IphoneObjects.TabCoordinator.chats.rawValue {
+                    iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.chats.rawValue
                 }
 
                 iPhone.chatsCoordinator.showChat(chat, animated: false)
@@ -545,7 +539,7 @@ private extension ActiveSessionCoordinator {
     func showSettings() {
         switch InterfaceIdiom.current() {
             case .iPhone:
-                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.Settings.rawValue
+                iPhone.tabBarController.selectedIndex = IphoneObjects.TabCoordinator.settings.rawValue
             case .iPad:
                 primaryIpadControllerShowFriends(iPad.primaryController)
         }
@@ -601,7 +595,7 @@ private extension ActiveSessionCoordinator {
         return controller
     }
 
-    func logout(importToxProfileFromURL profileURL: NSURL? = nil) {
+    func logout(importToxProfileFromURL profileURL: URL? = nil) {
         delegate?.activeSessionCoordinatorDidLogout(self, importToxProfileFromURL: profileURL)
     }
 
@@ -614,22 +608,23 @@ private extension ActiveSessionCoordinator {
         }
     }
 
-    func sendFileToChats(filePath: String, fileName: String) {
+    func sendFileToChats(_ filePath: String, fileName: String) {
         let controller = FriendSelectController(theme: theme, submanagerObjects: toxManager.objects)
         controller.delegate = self
         controller.title = String(localized: "file_send_to_contact")
-        controller.userInfo = filePath
+        controller.userInfo = filePath as AnyObject?
 
         let navigation = UINavigationController(rootViewController: controller)
 
-        rootViewController().presentViewController(navigation, animated: true, completion: nil)
+        rootViewController().present(navigation, animated: true, completion: nil)
     }
 
-    func sendFile(filePath: String, toChat chat: OCTChat) {
+    func sendFile(_ filePath: String, toChat chat: OCTChat) {
         showChat(chat)
 
-        toxManager.files.sendFileAtPath(filePath, moveToUploads: true, toChat: chat) { error in
-            handleErrorWithType(.SendFileToFriend, error: error)
-        }
+        toxManager.files.sendFile(atPath: filePath, moveToUploads: true, to: chat, failureBlock: { (error: Error) in
+            handleErrorWithType(.sendFileToFriend, error: error as NSError)
+
+        })
     }
 }

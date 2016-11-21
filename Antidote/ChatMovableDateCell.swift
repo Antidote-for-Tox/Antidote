@@ -6,12 +6,20 @@ import UIKit
 import SnapKit
 
 protocol ChatMovableDateCellDelegate: class {
-    func chatMovableDateCellCopyPressed(cell: ChatMovableDateCell)
-    func chatMovableDateCellDeletePressed(cell: ChatMovableDateCell)
-    func chatMovableDateCellMorePressed(cell: ChatMovableDateCell)
+    func chatMovableDateCellCopyPressed(_ cell: ChatMovableDateCell)
+    func chatMovableDateCellDeletePressed(_ cell: ChatMovableDateCell)
+    func chatMovableDateCellMorePressed(_ cell: ChatMovableDateCell)
 }
 
 class ChatMovableDateCell: BaseCell {
+    private static var __once: () = {
+            var items = UIMenuController.shared.menuItems ?? [UIMenuItem]()
+            items += [
+                UIMenuItem(title: String(localized: "chat_more_menu_item"), action: #selector(moreAction))
+            ]
+
+            UIMenuController.shared.menuItems = items
+        }()
     weak var delegate: ChatMovableDateCellDelegate?
 
     var canBeCopied = false
@@ -26,7 +34,7 @@ class ChatMovableDateCell: BaseCell {
             var offset = movableOffset
 
             if #available(iOS 9.0, *) {
-                if UIView.userInterfaceLayoutDirectionForSemanticContentAttribute(self.semanticContentAttribute) == .RightToLeft {
+                if UIView.userInterfaceLayoutDirection(for: self.semanticContentAttribute) == .rightToLeft {
                     offset = -offset
                 }
             }
@@ -41,18 +49,18 @@ class ChatMovableDateCell: BaseCell {
                 offset = minOffset
             }
 
-            movableContentViewLeftConstraint.updateOffset(offset)
+            movableContentViewLeftConstraint.update(offset: offset)
             layoutIfNeeded()
         }
     }
 
-    private var movableContentViewLeftConstraint: Constraint!
-    private var dateLabel: UILabel!
+    fileprivate var movableContentViewLeftConstraint: Constraint!
+    fileprivate var dateLabel: UILabel!
 
-    private var isShowingMenu: Bool = false
-    private static var setupOnceToken: dispatch_once_t = 0
+    fileprivate var isShowingMenu: Bool = false
+    fileprivate static var setupOnceToken: Int = 0
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let movableModel = model as? ChatMovableDateCellModel else {
@@ -60,14 +68,7 @@ class ChatMovableDateCell: BaseCell {
             return
         }
 
-        dispatch_once(&ChatMovableDateCell.setupOnceToken) {
-            var items = UIMenuController.sharedMenuController().menuItems ?? [UIMenuItem]()
-            items += [
-                UIMenuItem(title: String(localized: "chat_more_menu_item"), action: #selector(self.moreAction))
-            ]
-
-            UIMenuController.sharedMenuController().menuItems = items
-        }
+        _ = ChatMovableDateCell.__once
 
         dateLabel.text = movableModel.dateString
         dateLabel.textColor = theme.colorForType(.ChatListCellMessage)
@@ -77,11 +78,11 @@ class ChatMovableDateCell: BaseCell {
         super.createViews()
 
         movableContentView = UIView()
-        movableContentView.backgroundColor = .clearColor()
+        movableContentView.backgroundColor = .clear
         contentView.addSubview(movableContentView)
 
         dateLabel = UILabel()
-        dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
+        dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .light)
         movableContentView.addSubview(dateLabel)
 
         // Using empty view for multiple selection background.
@@ -91,20 +92,20 @@ class ChatMovableDateCell: BaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        movableContentView.snp_makeConstraints {
+        movableContentView.snp.makeConstraints {
             $0.top.equalTo(contentView)
             movableContentViewLeftConstraint = $0.leading.equalTo(contentView).constraint
             $0.size.equalTo(contentView)
         }
 
-        dateLabel.snp_makeConstraints {
+        dateLabel.snp.makeConstraints {
             $0.centerY.equalTo(movableContentView)
-            $0.leading.equalTo(movableContentView.snp_trailing)
+            $0.leading.equalTo(movableContentView.snp.trailing)
         }
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
-        if !editing {
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        if !isEditing {
             // don't call super in case of editing to avoid background change
             return
         }
@@ -138,7 +139,7 @@ extension ChatMovableDateCell: ChatEditable {
 
     // Override in subclass to enable menu
     func menuTargetRect() -> CGRect {
-        return CGRectZero
+        return CGRect.zero
     }
 
     func willShowMenu() {
@@ -152,7 +153,7 @@ extension ChatMovableDateCell: ChatEditable {
 
 // Methods to make UIMenuController work.
 extension ChatMovableDateCell {
-    func isMenuActionSupportedByCell(action: Selector) -> Bool {
+    func isMenuActionSupportedByCell(_ action: Selector) -> Bool {
         switch action {
             case #selector(copy(_:)):
                 return canBeCopied
@@ -165,11 +166,11 @@ extension ChatMovableDateCell {
         }
     }
 
-    override func copy(sender: AnyObject?) {
+    override func copy(_ sender: Any?) {
         delegate?.chatMovableDateCellCopyPressed(self)
     }
 
-    override func delete(sender: AnyObject?) {
+    override func delete(_ sender: Any?) {
         delegate?.chatMovableDateCellDeletePressed(self)
     }
 

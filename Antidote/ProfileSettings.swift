@@ -32,10 +32,10 @@ class ProfileSettings: NSObject, NSCoding {
     }
 
     required init(coder aDecoder: NSCoder) {
-        unlockPinCode = aDecoder.decodeObjectForKey(Constants.UnlockPinCodeKey) as? String
-        useTouchID = aDecoder.decodeBoolForKey(Constants.UseTouchIDKey)
+        unlockPinCode = aDecoder.decodeObject(forKey: Constants.UnlockPinCodeKey) as? String
+        useTouchID = aDecoder.decodeBool(forKey: Constants.UseTouchIDKey)
 
-        if let rawTimeout = aDecoder.decodeObjectForKey(Constants.LockTimeoutKey) as? String {
+        if let rawTimeout = aDecoder.decodeObject(forKey: Constants.LockTimeoutKey) as? String {
             lockTimeout = LockTimeout(rawValue: rawTimeout) ?? .Immediately
         }
         else {
@@ -45,9 +45,9 @@ class ProfileSettings: NSObject, NSCoding {
         super.init()
     }
 
-    func encodeWithCoder(aCoder: NSCoder) {
-        aCoder.encodeObject(unlockPinCode, forKey: Constants.UnlockPinCodeKey)
-        aCoder.encodeBool(useTouchID, forKey: Constants.UseTouchIDKey)
-        aCoder.encodeObject(lockTimeout.rawValue, forKey: Constants.LockTimeoutKey)
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(unlockPinCode, forKey: Constants.UnlockPinCodeKey)
+        aCoder.encode(useTouchID, forKey: Constants.UseTouchIDKey)
+        aCoder.encode(lockTimeout.rawValue, forKey: Constants.LockTimeoutKey)
     }
 }

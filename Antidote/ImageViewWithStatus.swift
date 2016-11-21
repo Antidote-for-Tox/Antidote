@@ -13,10 +13,10 @@ class ImageViewWithStatus: UIView {
     var imageView: UIImageView!
     var userStatusView: UserStatusView!
 
-    private var userStatusViewCenterConstrant: Constraint!
+    fileprivate var userStatusViewCenterConstrant: Constraint!
 
     init() {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         createViews()
         installConstraints()
@@ -32,14 +32,14 @@ class ImageViewWithStatus: UIView {
         imageView.layer.cornerRadius = frame.size.width / 2
 
         let offset = bounds.size.width / (2 * Constants.Sqrt2)
-        userStatusViewCenterConstrant.updateOffset(offset)
+        userStatusViewCenterConstrant.update(offset: offset)
     }
 }
 
 private extension ImageViewWithStatus {
     func createViews() {
         imageView = UIImageView()
-        imageView.backgroundColor = UIColor.clearColor()
+        imageView.backgroundColor = UIColor.clear
         imageView.layer.masksToBounds = true
         // imageView.contentMode = .ScaleAspectFit
         addSubview(imageView)
@@ -49,11 +49,11 @@ private extension ImageViewWithStatus {
     }
 
     func installConstraints() {
-        imageView.snp_makeConstraints {
+        imageView.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
 
-        userStatusView.snp_makeConstraints {
+        userStatusView.snp.makeConstraints {
             userStatusViewCenterConstrant = $0.center.equalTo(self).constraint
             $0.size.equalTo(UserStatusView.Constants.DefaultSize)
         }

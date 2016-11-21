@@ -5,24 +5,24 @@
 import UIKit
 
 protocol ChangePinTimeoutControllerDelegate: class {
-    func changePinTimeoutControllerDone(controller: ChangePinTimeoutController)
+    func changePinTimeoutControllerDone(_ controller: ChangePinTimeoutController)
 }
 
 class ChangePinTimeoutController: StaticTableController {
     weak var delegate: ChangePinTimeoutControllerDelegate?
 
-    private weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private let immediatelyModel = StaticTableDefaultCellModel()
-    private let seconds30Model = StaticTableDefaultCellModel()
-    private let minute1Model = StaticTableDefaultCellModel()
-    private let minute2Model = StaticTableDefaultCellModel()
-    private let minute5Model = StaticTableDefaultCellModel()
+    fileprivate let immediatelyModel = StaticTableDefaultCellModel()
+    fileprivate let seconds30Model = StaticTableDefaultCellModel()
+    fileprivate let minute1Model = StaticTableDefaultCellModel()
+    fileprivate let minute2Model = StaticTableDefaultCellModel()
+    fileprivate let minute5Model = StaticTableDefaultCellModel()
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects) {
         self.submanagerObjects = submanagerObjects
 
-        super.init(theme: theme, style: .Plain, model: [
+        super.init(theme: theme, style: .plain, model: [
             [
                 immediatelyModel,
                 seconds30Model,
@@ -48,36 +48,36 @@ private extension ChangePinTimeoutController {
 
         immediatelyModel.value = String(localized: "pin_lock_immediately")
         immediatelyModel.didSelectHandler = immediatelyHandler
-        immediatelyModel.rightImageType = .None
+        immediatelyModel.rightImageType = .none
 
         seconds30Model.value = String(localized: "pin_lock_30_seconds")
         seconds30Model.didSelectHandler = seconds30Handler
-        seconds30Model.rightImageType = .None
+        seconds30Model.rightImageType = .none
 
         minute1Model.value = String(localized: "pin_lock_1_minute")
         minute1Model.didSelectHandler = minute1Handler
-        minute1Model.rightImageType = .None
+        minute1Model.rightImageType = .none
 
         minute2Model.value = String(localized: "pin_lock_2_minutes")
         minute2Model.didSelectHandler = minute2Handler
-        minute2Model.rightImageType = .None
+        minute2Model.rightImageType = .none
 
         minute5Model.value = String(localized: "pin_lock_5_minutes")
         minute5Model.didSelectHandler = minute5Handler
-        minute5Model.rightImageType = .None
+        minute5Model.rightImageType = .none
 
 
         switch settings.lockTimeout {
             case .Immediately:
-                immediatelyModel.rightImageType = .Checkmark
+                immediatelyModel.rightImageType = .checkmark
             case .Seconds30:
-                seconds30Model.rightImageType = .Checkmark
+                seconds30Model.rightImageType = .checkmark
             case .Minute1:
-                minute1Model.rightImageType = .Checkmark
+                minute1Model.rightImageType = .checkmark
             case .Minute2:
-                minute2Model.rightImageType = .Checkmark
+                minute2Model.rightImageType = .checkmark
             case .Minute5:
-                minute5Model.rightImageType = .Checkmark
+                minute5Model.rightImageType = .checkmark
         }
     }
 
@@ -101,7 +101,7 @@ private extension ChangePinTimeoutController {
         selectedTimeout(.Minute5)
     }
 
-    func selectedTimeout(timeout: ProfileSettings.LockTimeout) {
+    func selectedTimeout(_ timeout: ProfileSettings.LockTimeout) {
         let settings = submanagerObjects.getProfileSettings()
         settings.lockTimeout = timeout
         submanagerObjects.saveProfileSettings(settings)

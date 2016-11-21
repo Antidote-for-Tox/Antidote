@@ -15,9 +15,9 @@ class iPadNavigationView: UIView {
     var avatarView: ImageViewWithStatus!
     var label: UILabel!
 
-    var didTapHandler: (Void -> Void)?
+    var didTapHandler: ((Void) -> Void)?
 
-    private var button: UIButton!
+    fileprivate var button: UIButton!
 
     init(theme: Theme) {
         super.init(frame: CGRect(x: 0.0, y: 0.0, width: Constants.Width, height: Constants.Height))
@@ -38,35 +38,35 @@ extension iPadNavigationView {
 }
 
 private extension iPadNavigationView {
-    func createViews(theme: Theme) {
+    func createViews(_ theme: Theme) {
         avatarView = ImageViewWithStatus()
         avatarView.userStatusView.theme = theme
         addSubview(avatarView)
 
         label = UILabel()
-        label.font = UIFont.systemFontOfSize(22.0)
+        label.font = UIFont.systemFont(ofSize: 22.0)
         addSubview(label)
 
         button = UIButton()
-        button.addTarget(self, action: #selector(iPadNavigationView.buttonPressed), forControlEvents: .TouchUpInside)
+        button.addTarget(self, action: #selector(iPadNavigationView.buttonPressed), for: .touchUpInside)
         addSubview(button)
     }
 
     func installConstraints() {
-        avatarView.snp_makeConstraints {
+        avatarView.snp.makeConstraints {
             $0.top.equalTo(self)
             $0.leading.equalTo(self)
             $0.size.equalTo(Constants.Height)
         }
 
-        label.snp_makeConstraints {
-            $0.leading.equalTo(avatarView.snp_trailing).offset(Constants.Offset)
+        label.snp.makeConstraints {
+            $0.leading.equalTo(avatarView.snp.trailing).offset(Constants.Offset)
             $0.trailing.equalTo(self)
             $0.top.equalTo(self)
             $0.bottom.equalTo(self)
         }
 
-        button.snp_makeConstraints {
+        button.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
     }

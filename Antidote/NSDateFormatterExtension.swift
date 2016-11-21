@@ -4,31 +4,31 @@
 
 import Foundation
 
-extension NSDateFormatter {
-    enum Type {
-        case Time
-        case DateAndTime
-        case RelativeDate
-        case RelativeDateAndTime
+extension DateFormatter {
+    enum FormatterType {
+        case time
+        case dateAndTime
+        case relativeDate
+        case relativeDateAndTime
     }
 
-    convenience init(type: Type) {
+    convenience init(type: FormatterType) {
         self.init()
 
         switch type {
-            case .Time:
+            case .time:
                 dateFormat = "H:mm"
-            case .DateAndTime:
-                dateStyle = .ShortStyle
-                timeStyle = .ShortStyle
+            case .dateAndTime:
+                dateStyle = .short
+                timeStyle = .short
                 doesRelativeDateFormatting = false
-            case .RelativeDate:
-                dateStyle = .ShortStyle
-                timeStyle = .NoStyle
+            case .relativeDate:
+                dateStyle = .short
+                timeStyle = .none
                 doesRelativeDateFormatting = true
-            case .RelativeDateAndTime:
-                dateStyle = .ShortStyle
-                timeStyle = .ShortStyle
+            case .relativeDateAndTime:
+                dateStyle = .short
+                timeStyle = .short
                 doesRelativeDateFormatting = true
         }
     }

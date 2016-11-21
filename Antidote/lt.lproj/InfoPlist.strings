@@ -1,0 +1,16 @@
+/* 
+  InfoPlist.strings
+  Antidote
+
+  Created by Dmytro Vorobiov on 15/11/16.
+  Copyright © 2016 dvor. All rights reserved.
+*/
+
+/* Camera usage alert description */
+"NSCameraUsageDescription" = "You can use video calls, send photos and videos, scan QR codes.";
+
+/* Microphone usage alert description */
+"NSMicrophoneUsageDescription" = "You can use audio and video calls.";
+
+/* Photo library usage alert description */
+"NSPhotoLibraryUsageDescription" = "You can send photos and videos.";

@@ -5,37 +5,37 @@
 import Foundation
 
 protocol LoginCreateAccountCoordinatorDelegate: class {
-    func loginCreateAccountCoordinator(coordinator: LoginCreateAccountCoordinator, 
+    func loginCreateAccountCoordinator(_ coordinator: LoginCreateAccountCoordinator, 
                                        didCreateAccountWithProfileName profileName: String,
                                        username: String,
                                        password: String)
-    func loginCreateAccountCoordinator(coordinator: LoginCreateAccountCoordinator,
+    func loginCreateAccountCoordinator(_ coordinator: LoginCreateAccountCoordinator,
                                        didImportProfileWithProfileName profileName: String)
-    func loginCreateAccountCoordinator(coordinator: LoginCreateAccountCoordinator, didCreatePassword password: String)
+    func loginCreateAccountCoordinator(_ coordinator: LoginCreateAccountCoordinator, didCreatePassword password: String)
 }
 
 class LoginCreateAccountCoordinator {
-    enum Type {
+    enum CoordinatorType {
         /// Create new account and new password.
-        case CreateAccountAndPassword
+        case createAccountAndPassword
         /// Import existing profile.
-        case ImportProfile
+        case importProfile
         /// Create new password.
-        case CreatePassword
+        case createPassword
     }
 
     weak var delegate: LoginCreateAccountCoordinatorDelegate?
 
     var userInfo = [String: Any]()
 
-    private let theme: Theme
-    private let navigationController: UINavigationController
-    private let type: Type
+    fileprivate let theme: Theme
+    fileprivate let navigationController: UINavigationController
+    fileprivate let type: CoordinatorType
 
-    private var enteredUsername: String?
-    private var enteredProfile: String?
+    fileprivate var enteredUsername: String?
+    fileprivate var enteredProfile: String?
 
-    init(theme: Theme, navigationController: UINavigationController, type: Type) {
+    init(theme: Theme, navigationController: UINavigationController, type: CoordinatorType) {
         self.theme = theme
         self.navigationController = navigationController
         self.type = type
@@ -43,17 +43,17 @@ class LoginCreateAccountCoordinator {
 }
 
 extension LoginCreateAccountCoordinator: CoordinatorProtocol {
-    func startWithOptions(options: CoordinatorOptions?) {
+    func startWithOptions(_ options: CoordinatorOptions?) {
         switch type {
-            case .CreateAccountAndPassword:
-                let controller = LoginCreateAccountController(theme: theme, type: .CreateAccount)
+            case .createAccountAndPassword:
+                let controller = LoginCreateAccountController(theme: theme, type: .createAccount)
                 controller.delegate = self
                 navigationController.pushViewController(controller, animated: true)
-            case .ImportProfile:
-                let controller = LoginCreateAccountController(theme: theme, type: .ImportProfile)
+            case .importProfile:
+                let controller = LoginCreateAccountController(theme: theme, type: .importProfile)
                 controller.delegate = self
                 navigationController.pushViewController(controller, animated: true)
-            case .CreatePassword:
+            case .createPassword:
                 let controller = LoginCreatePasswordController(theme: theme)
                 controller.delegate = self
                 navigationController.pushViewController(controller, animated: true)
@@ -62,7 +62,7 @@ extension LoginCreateAccountCoordinator: CoordinatorProtocol {
 }
 
 extension LoginCreateAccountCoordinator: LoginCreateAccountControllerDelegate {
-    func loginCreateAccountControllerCreate(controller: LoginCreateAccountController, name: String, profile: String) {
+    func loginCreateAccountControllerCreate(_ controller: LoginCreateAccountController, name: String, profile: String) {
         enteredUsername = name
         enteredProfile = profile
 
@@ -71,15 +71,15 @@ extension LoginCreateAccountCoordinator: LoginCreateAccountControllerDelegate {
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func loginCreateAccountControllerImport(controller: LoginCreateAccountController, profile: String) {
+    func loginCreateAccountControllerImport(_ controller: LoginCreateAccountController, profile: String) {
         delegate?.loginCreateAccountCoordinator(self, didImportProfileWithProfileName: profile)
     }
 }
 
 extension LoginCreateAccountCoordinator: LoginCreatePasswordControllerDelegate {
-    func loginCreatePasswordController(controller: LoginCreatePasswordController, password: String) {
+    func loginCreatePasswordController(_ controller: LoginCreatePasswordController, password: String) {
         switch type {
-            case .CreateAccountAndPassword:
+            case .createAccountAndPassword:
                 guard let profile = enteredProfile,
                       let username = enteredUsername else {
                     fatalError("LoginCreateAccountCoordinator: unexpected state")
@@ -89,9 +89,9 @@ extension LoginCreateAccountCoordinator: LoginCreatePasswordControllerDelegate {
                                                         didCreateAccountWithProfileName: profile,
                                                         username: username,
                                                         password: password)
-            case .ImportProfile:
+            case .importProfile:
                 fatalError("LoginCreateAccountCoordinator: unexpected state")
-            case .CreatePassword:
+            case .createPassword:
                 delegate?.loginCreateAccountCoordinator(self, didCreatePassword: password)
         }
     }

@@ -5,22 +5,22 @@
 import Foundation
 
 protocol RunningCoordinatorDelegate: class {
-    func runningCoordinatorDidLogout(coordinator: RunningCoordinator, importToxProfileFromURL: NSURL?)
-    func runningCoordinatorDeleteProfile(coordinator: RunningCoordinator)
-    func runningCoordinatorRecreateCoordinatorsStack(coordinator: RunningCoordinator, options: CoordinatorOptions)
+    func runningCoordinatorDidLogout(_ coordinator: RunningCoordinator, importToxProfileFromURL: URL?)
+    func runningCoordinatorDeleteProfile(_ coordinator: RunningCoordinator)
+    func runningCoordinatorRecreateCoordinatorsStack(_ coordinator: RunningCoordinator, options: CoordinatorOptions)
 }
 
 class RunningCoordinator {
     weak var delegate: RunningCoordinatorDelegate?
 
-    private let theme: Theme
-    private let window: UIWindow
+    fileprivate let theme: Theme
+    fileprivate let window: UIWindow
 
-    private var toxManager: OCTManager
-    private var options: CoordinatorOptions?
+    fileprivate var toxManager: OCTManager
+    fileprivate var options: CoordinatorOptions?
 
-    private var activeSessionCoordinator: ActiveSessionCoordinator?
-    private var pinAuthorizationCoordinator: PinAuthorizationCoordinator
+    fileprivate var activeSessionCoordinator: ActiveSessionCoordinator?
+    fileprivate var pinAuthorizationCoordinator: PinAuthorizationCoordinator
 
     init(theme: Theme, window: UIWindow, toxManager: OCTManager, skipAuthorizationChallenge: Bool) {
         self.theme = theme
@@ -33,7 +33,7 @@ class RunningCoordinator {
 }
 
 extension RunningCoordinator: TopCoordinatorProtocol {
-    func startWithOptions(options: CoordinatorOptions?) {
+    func startWithOptions(_ options: CoordinatorOptions?) {
         self.options = options
 
         activeSessionCoordinator = ActiveSessionCoordinator(theme: theme, window: window, toxManager: toxManager)
@@ -43,36 +43,36 @@ extension RunningCoordinator: TopCoordinatorProtocol {
         pinAuthorizationCoordinator.startWithOptions(nil)
     }
 
-    func handleLocalNotification(notification: UILocalNotification) {
+    func handleLocalNotification(_ notification: UILocalNotification) {
         activeSessionCoordinator?.handleLocalNotification(notification)
     }
 
-    func handleInboxURL(url: NSURL) {
+    func handleInboxURL(_ url: URL) {
         activeSessionCoordinator?.handleInboxURL(url)
     }
 }
 
 extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
-    func activeSessionCoordinatorDidLogout(coordinator: ActiveSessionCoordinator, importToxProfileFromURL url: NSURL?) {
+    func activeSessionCoordinatorDidLogout(_ coordinator: ActiveSessionCoordinator, importToxProfileFromURL url: URL?) {
         let keychainManager = KeychainManager()
         keychainManager.deleteActiveAccountData()
 
         delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: url)
     }
 
-    func activeSessionCoordinatorDeleteProfile(coordinator: ActiveSessionCoordinator) {
+    func activeSessionCoordinatorDeleteProfile(_ coordinator: ActiveSessionCoordinator) {
         delegate?.runningCoordinatorDeleteProfile(self)
     }
 
-    func activeSessionCoordinatorRecreateCoordinatorsStack(coordinator: ActiveSessionCoordinator, options: CoordinatorOptions) {
+    func activeSessionCoordinatorRecreateCoordinatorsStack(_ coordinator: ActiveSessionCoordinator, options: CoordinatorOptions) {
         delegate?.runningCoordinatorRecreateCoordinatorsStack(self, options: options)
     }
 
-    func activeSessionCoordinatorDidStartCall(coordinator: ActiveSessionCoordinator) {
+    func activeSessionCoordinatorDidStartCall(_ coordinator: ActiveSessionCoordinator) {
         pinAuthorizationCoordinator.preventFromLocking = true
     }
 
-    func activeSessionCoordinatorDidFinishCall(coordinator: ActiveSessionCoordinator) {
+    func activeSessionCoordinatorDidFinishCall(_ coordinator: ActiveSessionCoordinator) {
         pinAuthorizationCoordinator.preventFromLocking = false
     }
 }

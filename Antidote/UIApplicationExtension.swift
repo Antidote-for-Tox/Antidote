@@ -7,12 +7,12 @@ import UIKit
 extension UIApplication {
     class var isActive: Bool {
         get {
-            switch sharedApplication().applicationState {
-                case .Active:
+            switch shared.applicationState {
+                case .active:
                     return true
-                case .Inactive:
+                case .inactive:
                     return false
-                case .Background:
+                case .background:
                     return false
             }
         }

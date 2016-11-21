@@ -27,7 +27,7 @@ class TabBarBadgeItem: TabBarAbstractItem {
 
     var image: UIImage? {
         didSet {
-            imageView.image = image?.imageWithRenderingMode(.AlwaysTemplate)
+            imageView.image = image?.withRenderingMode(.alwaysTemplate)
         }
     }
     var text: String? {
@@ -45,23 +45,23 @@ class TabBarBadgeItem: TabBarAbstractItem {
     /// If there is any badge text, accessibilityValue will be set to <badgeText + badgeAccessibilityEnding>
     var badgeAccessibilityEnding: String?
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var imageAndTextContainer: UIView!
-    private var imageView: UIImageView!
-    private var textLabel: UILabel!
+    fileprivate var imageAndTextContainer: UIView!
+    fileprivate var imageView: UIImageView!
+    fileprivate var textLabel: UILabel!
 
-    private var badgeContainer: UIView!
-    private var badgeLabel: UILabel!
+    fileprivate var badgeContainer: UIView!
+    fileprivate var badgeLabel: UILabel!
 
-    private var button: UIButton!
+    fileprivate var button: UIButton!
 
     init(theme: Theme) {
         self.theme = theme
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
 
         createViews()
         installConstraints()
@@ -109,18 +109,18 @@ extension TabBarBadgeItem {
 private extension TabBarBadgeItem {
     func createViews() {
         imageAndTextContainer = UIView()
-        imageAndTextContainer.backgroundColor = .clearColor()
+        imageAndTextContainer.backgroundColor = .clear
         addSubview(imageAndTextContainer)
 
         imageView = UIImageView()
-        imageView.backgroundColor = .clearColor()
+        imageView.backgroundColor = .clear
         imageAndTextContainer.addSubview(imageView)
 
         textLabel = UILabel()
         textLabel.textColor = theme.colorForType(.NormalText)
-        textLabel.textAlignment = .Center
-        textLabel.backgroundColor = .clearColor()
-        textLabel.font = UIFont.systemFontOfSize(10.0)
+        textLabel.textAlignment = .center
+        textLabel.backgroundColor = .clear
+        textLabel.font = UIFont.systemFont(ofSize: 10.0)
         imageAndTextContainer.addSubview(textLabel)
 
         badgeContainer = UIView()
@@ -131,54 +131,54 @@ private extension TabBarBadgeItem {
 
         badgeLabel = UILabel()
         badgeLabel.textColor = theme.colorForType(.TabBadgeText)
-        badgeLabel.textAlignment = .Center
-        badgeLabel.backgroundColor = .clearColor()
-        badgeLabel.font = UIFont.antidoteFontWithSize(14.0, weight: .Light)
+        badgeLabel.textAlignment = .center
+        badgeLabel.backgroundColor = .clear
+        badgeLabel.font = UIFont.antidoteFontWithSize(14.0, weight: .light)
         badgeContainer.addSubview(badgeLabel)
 
         button = UIButton()
-        button.backgroundColor = .clearColor()
-        button.addTarget(self, action: #selector(TabBarBadgeItem.buttonPressed), forControlEvents: .TouchUpInside)
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(TabBarBadgeItem.buttonPressed), for: .touchUpInside)
         addSubview(button)
     }
 
     func installConstraints() {
-        imageAndTextContainer.snp_makeConstraints {
+        imageAndTextContainer.snp.makeConstraints {
             $0.centerX.equalTo(self)
             $0.centerY.equalTo(self).offset(Constants.ImageAndTextContainerYOffset)
         }
 
-        imageView.snp_makeConstraints {
+        imageView.snp.makeConstraints {
             $0.top.equalTo(imageAndTextContainer)
             $0.centerX.equalTo(imageAndTextContainer)
         }
 
-        textLabel.snp_makeConstraints {
-            $0.top.equalTo(imageView.snp_bottom).offset(Constants.ImageAndTextOffset)
+        textLabel.snp.makeConstraints {
+            $0.top.equalTo(imageView.snp.bottom).offset(Constants.ImageAndTextOffset)
             $0.centerX.equalTo(imageAndTextContainer)
             $0.bottom.equalTo(imageAndTextContainer)
         }
 
-        badgeContainer.snp_makeConstraints {
-            $0.leading.equalTo(imageAndTextContainer.snp_leading)
-            $0.top.equalTo(imageAndTextContainer.snp_top).offset(Constants.BadgeTopOffset)
+        badgeContainer.snp.makeConstraints {
+            $0.leading.equalTo(imageAndTextContainer.snp.leading)
+            $0.top.equalTo(imageAndTextContainer.snp.top).offset(Constants.BadgeTopOffset)
             $0.width.greaterThanOrEqualTo(Constants.BadgeMinimumWidth)
             $0.height.equalTo(Constants.BadgeHeight)
         }
 
-        badgeLabel.snp_makeConstraints {
+        badgeLabel.snp.makeConstraints {
             $0.leading.equalTo(badgeContainer).offset(Constants.BadgeHorizontalOffset)
             $0.trailing.equalTo(badgeContainer).offset(-Constants.BadgeHorizontalOffset)
             $0.centerY.equalTo(badgeContainer)
         }
 
-        button.snp_makeConstraints {
+        button.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
     }
 
     func badgeTextWasUpdated() {
         badgeLabel.text = badgeText
-        badgeContainer.hidden = (badgeText == nil) || badgeText!.isEmpty
+        badgeContainer.isHidden = (badgeText == nil) || badgeText!.isEmpty
     }
 }

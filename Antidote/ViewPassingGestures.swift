@@ -5,11 +5,11 @@
 import UIKit
 
 class ViewPassingGestures: UIView {
-    override func pointInside(point: CGPoint, withEvent event: UIEvent?) -> Bool {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
         for subview in subviews {
-            let converted = convertPoint(point, toView: subview)
+            let converted = convert(point, to: subview)
 
-            if subview.hitTest(converted, withEvent: event) != nil {
+            if subview.hitTest(converted, with: event) != nil {
                 return true
             }
         }

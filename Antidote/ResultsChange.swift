@@ -6,7 +6,7 @@ import Foundation
 
 /// Swift wrapper for RLMResults addNotificationBlock.
 enum ResultsChange<T: OCTObject> {
-    case Initial(Results<T>?)
-    case Update(Results<T>?, deletions: [Int], insertions: [Int], modifications: [Int])
-    case Error(NSError)
+    case initial(Results<T>?)
+    case update(Results<T>?, deletions: [Int], insertions: [Int], modifications: [Int])
+    case error(NSError)
 }

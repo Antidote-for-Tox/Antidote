@@ -21,13 +21,13 @@ class ChatListCell: BaseCell {
         static let VerticalOffset = 3.0
     }
 
-    private var avatarView: ImageViewWithStatus!
-    private var nicknameLabel: UILabel!
-    private var messageLabel: UILabel!
-    private var dateLabel: UILabel!
-    private var arrowImageView: UIImageView!
+    fileprivate var avatarView: ImageViewWithStatus!
+    fileprivate var nicknameLabel: UILabel!
+    fileprivate var messageLabel: UILabel!
+    fileprivate var dateLabel: UILabel!
+    fileprivate var arrowImageView: UIImageView!
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let chatModel = model as? ChatListCellModel else {
@@ -50,7 +50,7 @@ class ChatListCell: BaseCell {
         dateLabel.text = chatModel.dateText
         dateLabel.textColor = theme.colorForType(.ChatListCellMessage)
 
-        backgroundColor = chatModel.isUnread ? theme.colorForType(.ChatListCellUnreadBackground) : .clearColor()
+        backgroundColor = chatModel.isUnread ? theme.colorForType(.ChatListCellUnreadBackground) : .clear
     }
 
     override func createViews() {
@@ -60,56 +60,56 @@ class ChatListCell: BaseCell {
         contentView.addSubview(avatarView)
 
         nicknameLabel = UILabel()
-        nicknameLabel.font = UIFont.systemFontOfSize(18.0)
+        nicknameLabel.font = UIFont.systemFont(ofSize: 18.0)
         contentView.addSubview(nicknameLabel)
 
         messageLabel = UILabel()
-        messageLabel.font = UIFont.systemFontOfSize(12.0)
+        messageLabel.font = UIFont.systemFont(ofSize: 12.0)
         contentView.addSubview(messageLabel)
 
         dateLabel = UILabel()
-        dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
+        dateLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .light)
         contentView.addSubview(dateLabel)
 
         let image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
 
         arrowImageView = UIImageView(image: image)
-        arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, forAxis: .Horizontal)
+        arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
         contentView.addSubview(arrowImageView)
     }
 
     override func installConstraints() {
         super.installConstraints()
 
-        avatarView.snp_makeConstraints {
+        avatarView.snp.makeConstraints {
             $0.leading.equalTo(contentView).offset(Constants.AvatarLeftOffset)
             $0.centerY.equalTo(contentView)
             $0.size.equalTo(Constants.AvatarSize)
         }
 
-        nicknameLabel.snp_makeConstraints {
-            $0.leading.equalTo(avatarView.snp_trailing).offset(Constants.AvatarRightOffset)
+        nicknameLabel.snp.makeConstraints {
+            $0.leading.equalTo(avatarView.snp.trailing).offset(Constants.AvatarRightOffset)
             $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
             $0.height.equalTo(Constants.NicknameLabelHeight)
         }
 
-        messageLabel.snp_makeConstraints {
+        messageLabel.snp.makeConstraints {
             $0.leading.equalTo(nicknameLabel)
             $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
-            $0.top.equalTo(nicknameLabel.snp_bottom)
+            $0.top.equalTo(nicknameLabel.snp.bottom)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
             $0.height.equalTo(Constants.MessageLabelHeight)
         }
 
-        dateLabel.snp_makeConstraints {
-            $0.leading.greaterThanOrEqualTo(nicknameLabel.snp_trailing).offset(Constants.NicknameToDateMinOffset)
+        dateLabel.snp.makeConstraints {
+            $0.leading.greaterThanOrEqualTo(nicknameLabel.snp.trailing).offset(Constants.NicknameToDateMinOffset)
             $0.top.equalTo(nicknameLabel)
             $0.height.equalTo(nicknameLabel)
         }
 
-        arrowImageView.snp_makeConstraints {
+        arrowImageView.snp.makeConstraints {
             $0.centerY.equalTo(dateLabel)
-            $0.leading.greaterThanOrEqualTo(dateLabel.snp_trailing).offset(Constants.DateToArrowOffset)
+            $0.leading.greaterThanOrEqualTo(dateLabel.snp.trailing).offset(Constants.DateToArrowOffset)
             $0.trailing.equalTo(contentView).offset(Constants.RightOffset)
         }
     }

@@ -34,14 +34,14 @@ class ChatPrivateTitleView: UIView {
         }
     }
 
-    private var nameLabel: UILabel!
-    private var statusView: UserStatusView!
-    private var statusLabel: UILabel!
+    fileprivate var nameLabel: UILabel!
+    fileprivate var statusView: UserStatusView!
+    fileprivate var statusLabel: UILabel!
 
     init(theme: Theme) {
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
 
         createViews(theme)
     }
@@ -52,11 +52,11 @@ class ChatPrivateTitleView: UIView {
 }
 
 private extension ChatPrivateTitleView {
-    func createViews(theme: Theme) {
+    func createViews(_ theme: Theme) {
         nameLabel = UILabel()
-        nameLabel.textAlignment = .Center
+        nameLabel.textAlignment = .center
         nameLabel.textColor = theme.colorForType(.NormalText)
-        nameLabel.font = UIFont.antidoteFontWithSize(16.0, weight: .Bold)
+        nameLabel.font = UIFont.antidoteFontWithSize(16.0, weight: .bold)
         addSubview(nameLabel)
 
         statusView = UserStatusView()
@@ -65,25 +65,25 @@ private extension ChatPrivateTitleView {
         addSubview(statusView)
 
         statusLabel = UILabel()
-        statusLabel.textAlignment = .Center
+        statusLabel.textAlignment = .center
         statusLabel.textColor = theme.colorForType(.NormalText)
-        statusLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .Light)
+        statusLabel.font = UIFont.antidoteFontWithSize(12.0, weight: .light)
         addSubview(statusLabel)
 
-        nameLabel.snp_makeConstraints {
+        nameLabel.snp.makeConstraints {
             $0.top.equalTo(self)
             $0.leading.equalTo(self)
         }
 
-        statusView.snp_makeConstraints {
+        statusView.snp.makeConstraints {
             $0.centerY.equalTo(nameLabel)
-            $0.leading.equalTo(nameLabel.snp_trailing).offset(Constants.StatusViewLeftOffset)
+            $0.leading.equalTo(nameLabel.snp.trailing).offset(Constants.StatusViewLeftOffset)
             $0.trailing.equalTo(self)
             $0.size.equalTo(Constants.StatusViewSize)
         }
 
-        statusLabel.snp_makeConstraints {
-            $0.top.equalTo(nameLabel.snp_bottom)
+        statusLabel.snp.makeConstraints {
+            $0.top.equalTo(nameLabel.snp.bottom)
             $0.leading.equalTo(nameLabel)
             $0.trailing.equalTo(nameLabel)
             $0.bottom.equalTo(self)

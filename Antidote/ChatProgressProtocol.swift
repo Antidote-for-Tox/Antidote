@@ -5,6 +5,6 @@
 import Foundation
 
 protocol ChatProgressProtocol {
-    var updateProgress: ((progress: Float) -> Void)? { get set }
-    var updateEta: ((eta: CFTimeInterval, bytesPerSecond: OCTToxFileSize) -> Void)? { get set }
+    var updateProgress: ((_ progress: Float) -> Void)? { get set }
+    var updateEta: ((_ eta: CFTimeInterval, _ bytesPerSecond: OCTToxFileSize) -> Void)? { get set }
 }

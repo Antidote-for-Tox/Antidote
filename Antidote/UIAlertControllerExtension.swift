@@ -5,40 +5,40 @@
 import UIKit
 
 extension UIAlertController {
-    class func showErrorWithMessage(message: String, retryBlock: (Void -> Void)?) {
+    class func showErrorWithMessage(_ message: String, retryBlock: ((Void) -> Void)?) {
         showWithTitle(String(localized: "error_title"), message: message, retryBlock: retryBlock)
     }
 
-    class func showWithTitle(title: String, message: String? = nil, retryBlock: (Void -> Void)?) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+    class func showWithTitle(_ title: String, message: String? = nil, retryBlock: ((Void) -> Void)?) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
 
         if let retryBlock = retryBlock {
-            alert.addAction(UIAlertAction(title: String(localized: "error_retry_button"), style: .Default) { _ in
+            alert.addAction(UIAlertAction(title: String(localized: "error_retry_button"), style: .default) { _ in
                 retryBlock()
             })
 
-            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .cancel, handler: nil))
         }
         else {
-            alert.addAction(UIAlertAction(title: String(localized: "error_ok_button"), style: .Cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: String(localized: "error_ok_button"), style: .cancel, handler: nil))
         }
 
         guard let visible = visibleViewController() else {
             return
         }
 
-        visible.presentViewController(alert, animated: true, completion: nil)
+        visible.present(alert, animated: true, completion: nil)
     }
 
-    private class func visibleViewController(rootViewController: UIViewController? = nil) -> UIViewController? {
+    fileprivate class func visibleViewController(_ rootViewController: UIViewController? = nil) -> UIViewController? {
         var root: UIViewController
 
         if let rootViewController = rootViewController {
             root = rootViewController
         }
         else {
-            let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate
+            let appDelegate = UIApplication.shared.delegate as? AppDelegate
 
             guard let controller = appDelegate?.window?.rootViewController else {
                 return nil

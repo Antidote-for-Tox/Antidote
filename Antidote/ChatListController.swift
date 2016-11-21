@@ -5,18 +5,18 @@
 import Foundation
 
 protocol ChatListControllerDelegate: class {
-    func chatListController(controller: ChatListController, didSelectChat chat: OCTChat)
+    func chatListController(_ controller: ChatListController, didSelectChat chat: OCTChat)
 }
 
 class ChatListController: UIViewController {
     weak var delegate: ChatListControllerDelegate?
 
-    private let theme: Theme
-    private weak var submanagerChats: OCTSubmanagerChats!
-    private weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate let theme: Theme
+    fileprivate weak var submanagerChats: OCTSubmanagerChats!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
 
-    private var placeholderLabel: UILabel!
-    private var tableManager: ChatListTableManager!
+    fileprivate var placeholderLabel: UILabel!
+    fileprivate var tableManager: ChatListTableManager!
 
     init(theme: Theme, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects) {
         self.theme = theme
@@ -25,7 +25,7 @@ class ChatListController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
         title = String(localized: "chats_title")
     }
 
@@ -43,7 +43,7 @@ class ChatListController: UIViewController {
         updateViewsVisibility()
     }
 
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
         tableManager.tableView.setEditing(editing, animated: animated)
@@ -51,23 +51,23 @@ class ChatListController: UIViewController {
 }
 
 extension ChatListController: ChatListTableManagerDelegate {
-    func chatListTableManager(manager: ChatListTableManager, didSelectChat chat: OCTChat) {
+    func chatListTableManager(_ manager: ChatListTableManager, didSelectChat chat: OCTChat) {
         delegate?.chatListController(self, didSelectChat: chat)
     }
 
-    func chatListTableManager(manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
-        presentViewController(controller, animated: true, completion: nil)
+    func chatListTableManager(_ manager: ChatListTableManager, presentAlertController controller: UIAlertController) {
+        present(controller, animated: true, completion: nil)
     }
 
-    func chatListTableManagerWasUpdated(manager: ChatListTableManager) {
+    func chatListTableManagerWasUpdated(_ manager: ChatListTableManager) {
         updateViewsVisibility()
     }
 }
 
 private extension ChatListController {
     func updateViewsVisibility() {
-        navigationItem.leftBarButtonItem = tableManager.isEmpty ? nil : editButtonItem()
-        placeholderLabel.hidden = !tableManager.isEmpty
+        navigationItem.leftBarButtonItem = tableManager.isEmpty ? nil : editButtonItem
+        placeholderLabel.isHidden = !tableManager.isEmpty
     }
 
     func createTableView() {
@@ -80,7 +80,7 @@ private extension ChatListController {
 
         view.addSubview(tableView)
 
-        tableView.registerClass(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
+        tableView.register(ChatListCell.self, forCellReuseIdentifier: ChatListCell.staticReuseIdentifier)
 
         tableManager = ChatListTableManager(theme: theme, tableView: tableView, submanagerChats: submanagerChats, submanagerObjects: submanagerObjects)
         tableManager.delegate = self
@@ -90,18 +90,18 @@ private extension ChatListController {
         placeholderLabel = UILabel()
         placeholderLabel.text = String(localized: "chat_no_chats")
         placeholderLabel.textColor = theme.colorForType(.EmptyScreenPlaceholderText)
-        placeholderLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .Light)
+        placeholderLabel.font = UIFont.antidoteFontWithSize(26.0, weight: .light)
         view.addSubview(placeholderLabel)
     }
 
     func installConstraints() {
-        tableManager.tableView.snp_makeConstraints {
+        tableManager.tableView.snp.makeConstraints {
             $0.edges.equalTo(view)
         }
 
-        placeholderLabel.snp_makeConstraints {
+        placeholderLabel.snp.makeConstraints {
             $0.center.equalTo(view)
-            $0.size.equalTo(placeholderLabel.sizeThatFits(CGSize(width: CGFloat.max, height: CGFloat.max)))
+            $0.size.equalTo(placeholderLabel.sizeThatFits(CGSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)))
         }
     }
 }

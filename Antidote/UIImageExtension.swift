@@ -6,57 +6,57 @@ import UIKit
 
 extension UIImage {
     class func emptyImage() -> UIImage {
-        return imageWithColor(.clearColor(), size: CGSize(width: 1, height: 1))
+        return imageWithColor(.clear, size: CGSize(width: 1, height: 1))
     }
 
-    class func imageWithColor(color: UIColor, size: CGSize) -> UIImage {
-        let rect = CGRect(origin: CGPointZero, size: size)
+    class func imageWithColor(_ color: UIColor, size: CGSize) -> UIImage {
+        let rect = CGRect(origin: CGPoint.zero, size: size)
 
         UIGraphicsBeginImageContext(rect.size)
         let context = UIGraphicsGetCurrentContext()
 
-        CGContextSetFillColorWithColor(context, color.CGColor)
-        CGContextFillRect(context, rect)
+        context?.setFillColor(color.cgColor)
+        context?.fill(rect)
 
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-        return image
+        return image!
     }
 
-    class func templateNamed(named: String) -> UIImage {
-        return UIImage(named: named)!.imageWithRenderingMode(.AlwaysTemplate)
+    class func templateNamed(_ named: String) -> UIImage {
+        return UIImage(named: named)!.withRenderingMode(.alwaysTemplate)
     }
 
-    func scaleToSize(size: CGSize) -> UIImage {
+    func scaleToSize(_ size: CGSize) -> UIImage {
         UIGraphicsBeginImageContext(size)
-        drawInRect(CGRect(origin: CGPointZero, size: size))
+        draw(in: CGRect(origin: CGPoint.zero, size: size))
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
 
-       return newImage
+       return newImage!
     }
 
-    func cropWithRect(rect: CGRect) -> UIImage {
+    func cropWithRect(_ rect: CGRect) -> UIImage {
         var rect = rect
 
         switch imageOrientation {
-            case .Up:
+            case .up:
                 fallthrough
-            case .UpMirrored:
+            case .upMirrored:
                 fallthrough
-            case .Down:
+            case .down:
                 fallthrough
-            case .DownMirrored:
+            case .downMirrored:
                 break
 
-            case .Left:
+            case .left:
                 fallthrough
-            case .LeftMirrored:
+            case .leftMirrored:
                 fallthrough
-            case .Right:
+            case .right:
                 fallthrough
-            case .RightMirrored:
+            case .rightMirrored:
                 var temp = rect.origin.x
                 rect.origin.x = rect.origin.y
                 rect.origin.y = temp
@@ -73,8 +73,8 @@ extension UIImage {
             rect.size.height *= scale
         }
 
-        let imageRef = CGImageCreateWithImageInRect(self.CGImage, rect)!
-        return UIImage(CGImage: imageRef, scale: scale, orientation: imageOrientation)
+        let imageRef = self.cgImage?.cropping(to: rect)!
+        return UIImage(cgImage: imageRef!, scale: scale, orientation: imageOrientation)
     }
 
     func flippedToCorrectLayout() -> UIImage {

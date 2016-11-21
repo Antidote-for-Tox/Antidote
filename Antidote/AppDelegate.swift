@@ -10,10 +10,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var coordinator: AppCoordinator!
     var backgroundTask: UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        window = UIWindow(frame:UIScreen.mainScreen().bounds)
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        window = UIWindow(frame:UIScreen.main.bounds)
 
-        if NSProcessInfo.processInfo().arguments.contains("UI_TESTING") {
+        if ProcessInfo.processInfo.arguments.contains("UI_TESTING") {
             // Speeding up animations for UI tests.
             window!.layer.speed = 1000
         }
@@ -23,34 +23,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         coordinator = AppCoordinator(window: window!)
         coordinator.startWithOptions(nil)
 
-        if let notification = launchOptions?[UIApplicationLaunchOptionsLocalNotificationKey] as? UILocalNotification {
+        if let notification = launchOptions?[UIApplicationLaunchOptionsKey.localNotification] as? UILocalNotification {
             coordinator.handleLocalNotification(notification)
         }
 
-        window?.backgroundColor = UIColor.whiteColor()
+        window?.backgroundColor = UIColor.white
         window?.makeKeyAndVisible()
 
         return true
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
-        backgroundTask = UIApplication.sharedApplication().beginBackgroundTaskWithExpirationHandler { [unowned self] in
-            UIApplication.sharedApplication().endBackgroundTask(self.backgroundTask)
+    func applicationDidEnterBackground(_ application: UIApplication) {
+        backgroundTask = UIApplication.shared.beginBackgroundTask (expirationHandler: { [unowned self] in
+            UIApplication.shared.endBackgroundTask(self.backgroundTask)
             self.backgroundTask = UIBackgroundTaskInvalid
-        }
+        })
     }
 
-    func application(application: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    func application(_ application: UIApplication, didReceive notification: UILocalNotification) {
         coordinator.handleLocalNotification(notification)
     }
 
-    func application(app: UIApplication, openURL url: NSURL, options: [String : AnyObject]) -> Bool {
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any]) -> Bool {
         coordinator.handleInboxURL(url)
 
         return true
     }
 
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         coordinator.handleInboxURL(url)
 
         return true
@@ -59,7 +59,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 private extension AppDelegate {
     func configureLoggingStuff() {
-        DDLog.addLogger(DDASLLogger.sharedInstance())
-        DDLog.addLogger(DDTTYLogger.sharedInstance())
+        DDLog.add(DDASLLogger.sharedInstance())
+        DDLog.add(DDTTYLogger.sharedInstance())
     }
 }

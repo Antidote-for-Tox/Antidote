@@ -5,22 +5,22 @@
 import UIKit
 
 protocol ChangeUserStatusControllerDelegate: class {
-    func changeUserStatusController(controller: ChangeUserStatusController, selectedStatus: OCTToxUserStatus)
+    func changeUserStatusController(_ controller: ChangeUserStatusController, selectedStatus: OCTToxUserStatus)
 }
 
 class ChangeUserStatusController: StaticTableController {
     weak var delegate: ChangeUserStatusControllerDelegate?
 
-    private let selectedStatus: OCTToxUserStatus
+    fileprivate let selectedStatus: OCTToxUserStatus
 
-    private let onlineModel = StaticTableDefaultCellModel()
-    private let awayModel = StaticTableDefaultCellModel()
-    private let busyModel = StaticTableDefaultCellModel()
+    fileprivate let onlineModel = StaticTableDefaultCellModel()
+    fileprivate let awayModel = StaticTableDefaultCellModel()
+    fileprivate let busyModel = StaticTableDefaultCellModel()
 
     init(theme: Theme, selectedStatus: OCTToxUserStatus) {
         self.selectedStatus = selectedStatus
 
-        super.init(theme: theme, style: .Plain, model: [
+        super.init(theme: theme, style: .plain, model: [
             [
                 onlineModel,
                 awayModel,
@@ -41,9 +41,9 @@ class ChangeUserStatusController: StaticTableController {
 private extension ChangeUserStatusController {
     func updateModels() {
         // Hardcoding any connected status to show only online/away/busy statuses here.
-        let online = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: OCTToxUserStatus.None)
-        let away = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: OCTToxUserStatus.Away)
-        let busy = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: OCTToxUserStatus.Busy)
+        let online = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: OCTToxUserStatus.none)
+        let away = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: OCTToxUserStatus.away)
+        let busy = UserStatus(connectionStatus: OCTToxConnectionStatus.TCP, userStatus: OCTToxUserStatus.busy)
 
         onlineModel.userStatus = online
         onlineModel.value = online.toString()
@@ -58,24 +58,24 @@ private extension ChangeUserStatusController {
         busyModel.didSelectHandler = changeBusyStatus
 
         switch selectedStatus {
-            case .None:
-                onlineModel.rightImageType = .Checkmark
-            case .Away:
-                awayModel.rightImageType = .Checkmark
-            case .Busy:
-                busyModel.rightImageType = .Checkmark
+            case .none:
+                onlineModel.rightImageType = .checkmark
+            case .away:
+                awayModel.rightImageType = .checkmark
+            case .busy:
+                busyModel.rightImageType = .checkmark
         }
     }
 
     func changeOnlineStatus(_: StaticTableBaseCell) {
-        delegate?.changeUserStatusController(self, selectedStatus: .None)
+        delegate?.changeUserStatusController(self, selectedStatus: .none)
     }
 
     func changeAwayStatus(_: StaticTableBaseCell) {
-        delegate?.changeUserStatusController(self, selectedStatus: .Away)
+        delegate?.changeUserStatusController(self, selectedStatus: .away)
     }
 
     func changeBusyStatus(_: StaticTableBaseCell) {
-        delegate?.changeUserStatusController(self, selectedStatus: .Busy)
+        delegate?.changeUserStatusController(self, selectedStatus: .busy)
     }
 }

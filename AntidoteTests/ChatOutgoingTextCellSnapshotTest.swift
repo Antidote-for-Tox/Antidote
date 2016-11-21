@@ -69,14 +69,14 @@ class ChatOutgoingTextCellSnapshotTest: CellSnapshotTest {
 
         updateCellLayout(cell)
 
-        let expectation = expectationWithDescription("link rendering expectation")
+        let expectation = self.expectation(description: "link rendering expectation")
 
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) { [weak self] in
+        let delayTime = DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) { [weak self] in
             self?.verifyView(cell)
             expectation.fulfill()
         }
 
-        waitForExpectationsWithTimeout(1.0, handler: nil)
+        waitForExpectations(timeout: 1.0, handler: nil)
     }
 }

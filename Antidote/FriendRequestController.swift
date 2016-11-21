@@ -5,19 +5,19 @@
 import UIKit
 
 protocol FriendRequestControllerDelegate: class {
-    func friendRequestControllerDidFinish(controller: FriendRequestController)
+    func friendRequestControllerDidFinish(_ controller: FriendRequestController)
 }
 
 class FriendRequestController: StaticTableController {
     weak var delegate: FriendRequestControllerDelegate?
 
-    private let request: OCTFriendRequest
+    fileprivate let request: OCTFriendRequest
 
-    private weak var submanagerFriends: OCTSubmanagerFriends!
+    fileprivate weak var submanagerFriends: OCTSubmanagerFriends!
 
-    private let publicKeyModel: StaticTableDefaultCellModel
-    private let messageModel: StaticTableDefaultCellModel
-    private let buttonsModel: StaticTableMultiChoiceButtonCellModel
+    fileprivate let publicKeyModel: StaticTableDefaultCellModel
+    fileprivate let messageModel: StaticTableDefaultCellModel
+    fileprivate let buttonsModel: StaticTableMultiChoiceButtonCellModel
 
     init(theme: Theme, request: OCTFriendRequest, submanagerFriends: OCTSubmanagerFriends) {
         self.request = request
@@ -28,7 +28,7 @@ class FriendRequestController: StaticTableController {
         messageModel = StaticTableDefaultCellModel()
         buttonsModel = StaticTableMultiChoiceButtonCellModel()
 
-        super.init(theme: theme, style: .Plain, model: [
+        super.init(theme: theme, style: .plain, model: [
             [
                 publicKeyModel,
                 messageModel,
@@ -59,32 +59,32 @@ private extension FriendRequestController {
         messageModel.userInteractionEnabled = false
 
         buttonsModel.buttons = [
-            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_decline"), style: .Negative, target: self, action: #selector(FriendRequestController.declineButtonPressed)),
-            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_accept"), style: .Positive, target: self, action: #selector(FriendRequestController.acceptButtonPressed)),
+            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_decline"), style: .negative, target: self, action: #selector(FriendRequestController.declineButtonPressed)),
+            StaticTableMultiChoiceButtonCellModel.ButtonModel(title: String(localized: "contact_request_accept"), style: .positive, target: self, action: #selector(FriendRequestController.acceptButtonPressed)),
         ]
     }
 }
 
 extension FriendRequestController {
     func declineButtonPressed() {
-        let alert = UIAlertController(title: String(localized: "contact_request_delete_title"), message: nil, preferredStyle: .Alert)
+        let alert = UIAlertController(title: String(localized: "contact_request_delete_title"), message: nil, preferredStyle: .alert)
 
-        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .Default, handler: nil))
-        alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .Destructive) { [unowned self] _ -> Void in
-            self.submanagerFriends.removeFriendRequest(self.request)
+        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .default, handler: nil))
+        alert.addAction(UIAlertAction(title: String(localized: "alert_delete"), style: .destructive) { [unowned self] _ -> Void in
+            self.submanagerFriends.remove(self.request)
             self.delegate?.friendRequestControllerDidFinish(self)
         })
 
-        presentViewController(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
 
     func acceptButtonPressed() {
         do {
-            try submanagerFriends.approveFriendRequest(request)
+            try submanagerFriends.approve(request)
             delegate?.friendRequestControllerDidFinish(self)
         }
         catch let error as NSError {
-            handleErrorWithType(.ToxAddFriend, error: error)
+            handleErrorWithType(.toxAddFriend, error: error)
         }
     }
 }

@@ -14,7 +14,7 @@ PODS:
   - objcTox (0.6.0):
     - CocoaLumberjack (= 1.9.2)
     - Realm (= 1.0.1)
-    - toxcore (= 0.0.3)
+    - toxcore (= 0.0.4)
     - TPCircularBuffer (~> 0.0.1)
   - RBBAnimation (0.4.0)
   - Realm (1.0.1):
@@ -24,7 +24,7 @@ PODS:
     - RBBAnimation (~> 0.3)
     - SDCAutoLayout (~> 2.0)
   - SDCAutoLayout (2.0.3)
-  - toxcore (0.0.3):
+  - toxcore (0.0.4):
     - libopus-patched-config (= 1.1)
     - libsodium (~> 1.0.1)
   - TPCircularBuffer (0.0.1)
@@ -34,7 +34,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase/Core
   - JGProgressHUD (~> 1.4.0)
   - LNNotificationsUI (from `https://github.com/LeoNatan/LNNotificationsUI.git`, commit `3f75043fc6e77b4180b76cb6cfff4faa506ab9fc`)
-  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `e13d3046fbc30d5abdfff5deba23f26f582da4fd`)
+  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `88674b8565d803a4dc9f4813c04ede85abb6565e`)
   - SDCAlertView (~> 2.5.4)
   - UITextView+Placeholder (~> 1.1.0)
 
@@ -43,7 +43,7 @@ EXTERNAL SOURCES:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: e13d3046fbc30d5abdfff5deba23f26f582da4fd
+    :commit: 88674b8565d803a4dc9f4813c04ede85abb6565e
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 CHECKOUT OPTIONS:
@@ -51,7 +51,7 @@ CHECKOUT OPTIONS:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: e13d3046fbc30d5abdfff5deba23f26f582da4fd
+    :commit: 88674b8565d803a4dc9f4813c04ede85abb6565e
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 SPEC CHECKSUMS:
@@ -61,15 +61,15 @@ SPEC CHECKSUMS:
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
   libsodium: 9aba161d2ee096977ecbdcce1ada69ffe511970c
   LNNotificationsUI: 6a091898a701a5d6dbe2edda6657c9d28c100647
-  objcTox: bc79d4a418d81d44cad86b49b37384600a78276b
+  objcTox: 643ac70a0c6dc2d9db72accd4b74f1951b08185e
   RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
   Realm: 2e15e39d35b08abb529e212ed5d8af107b5236c8
   SDCAlertView: 2e2b0ecc5f1ec367e45d83efa2e512688ca7fa55
   SDCAutoLayout: e6885bb39ab8e2ec2ff84d158f38035f025f7420
-  toxcore: 35a04e857b811baaf808be0f90f456eb4216673b
+  toxcore: aac179c9e94047f56ca23d350f265913c8059aa1
   TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
   UITextView+Placeholder: a6fc3e0378f3870036ec562a7537cbf6dbae4bf6
 
-PODFILE CHECKSUM: 4fca08c99b9e8d789dc86bb23a27da2c25a60c71
+PODFILE CHECKSUM: ad90ad0e3ad3a960c1abc0ccabf9b3acc168f472
 
 COCOAPODS: 1.1.1

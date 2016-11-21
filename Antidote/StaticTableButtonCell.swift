@@ -9,9 +9,9 @@ private struct Constants {
 }
 
 class StaticTableButtonCell: StaticTableBaseCell {
-    private var label: UILabel!
+    fileprivate var label: UILabel!
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let buttonModel = model as? StaticTableButtonCellModel else {
@@ -33,7 +33,7 @@ class StaticTableButtonCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        label.snp_makeConstraints {
+        label.snp.makeConstraints {
             $0.leading.trailing.equalTo(customContentView)
             $0.top.equalTo(customContentView).offset(Constants.VerticalOffset)
             $0.bottom.equalTo(customContentView).offset(-Constants.VerticalOffset)

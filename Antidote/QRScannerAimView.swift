@@ -5,12 +5,12 @@
 import UIKit
 
 class QRScannerAimView: UIView {
-    private let dashLayer: CAShapeLayer
+    fileprivate let dashLayer: CAShapeLayer
 
     init(theme: Theme) {
         dashLayer = CAShapeLayer()
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
         configureDashLayer(theme)
     }
@@ -21,16 +21,16 @@ class QRScannerAimView: UIView {
 
     override var frame: CGRect {
         didSet {
-            dashLayer.path = UIBezierPath(rect: bounds).CGPath
+            dashLayer.path = UIBezierPath(rect: bounds).cgPath
             dashLayer.frame = bounds
         }
     }
 }
 
 private extension QRScannerAimView {
-    func configureDashLayer(theme: Theme) {
-        dashLayer.strokeColor = theme.colorForType(.LinkText).CGColor
-        dashLayer.fillColor = UIColor.clearColor().CGColor
+    func configureDashLayer(_ theme: Theme) {
+        dashLayer.strokeColor = theme.colorForType(.LinkText).cgColor
+        dashLayer.fillColor = UIColor.clear.cgColor
         dashLayer.lineDashPattern = [20, 5]
         dashLayer.lineWidth = 2.0
         layer.addSublayer(dashLayer)

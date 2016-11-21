@@ -13,13 +13,13 @@ private struct Constants {
 }
 
 class ChatOutgoingFileCell: ChatGenericFileCell {
-    override func setButtonImage(image: UIImage) {
+    override func setButtonImage(_ image: UIImage) {
         super.setButtonImage(image)
 
-        loadingView.bottomLabel.hidden = true
+        loadingView.bottomLabel.isHidden = true
 
-        if state == .Cancelled {
-            loadingView.bottomLabel.hidden = false
+        if state == .cancelled {
+            loadingView.bottomLabel.isHidden = false
             loadingView.centerImageView.image = nil
         }
     }
@@ -35,18 +35,18 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
     override func installConstraints() {
         super.installConstraints()
 
-        cancelButton.snp_makeConstraints {
-            $0.trailing.equalTo(loadingView.snp_leading).offset(-Constants.SmallOffset)
+        cancelButton.snp.makeConstraints {
+            $0.trailing.equalTo(loadingView.snp.leading).offset(-Constants.SmallOffset)
             $0.top.equalTo(loadingView)
             $0.size.equalTo(Constants.CloseButtonSize)
         }
 
-        retryButton.snp_makeConstraints {
+        retryButton.snp.makeConstraints {
             $0.center.equalTo(cancelButton)
             $0.size.equalTo(cancelButton)
         }
 
-        loadingView.snp_makeConstraints {
+        loadingView.snp.makeConstraints {
             $0.trailing.equalTo(movableContentView).offset(-Constants.BigOffset)
             $0.top.equalTo(movableContentView).offset(Constants.SmallOffset)
             $0.bottom.equalTo(movableContentView).offset(-Constants.SmallOffset)
@@ -54,44 +54,44 @@ class ChatOutgoingFileCell: ChatGenericFileCell {
         }
     }
 
-    override func updateViewsWithState(state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {
-        loadingView.imageButton.userInteractionEnabled = true
-        loadingView.progressView.hidden = true
-        loadingView.topLabel.hidden = true
-        loadingView.bottomLabel.hidden = false
+    override func updateViewsWithState(_ state: ChatGenericFileCellModel.State, fileModel: ChatGenericFileCellModel) {
+        loadingView.imageButton.isUserInteractionEnabled = true
+        loadingView.progressView.isHidden = true
+        loadingView.topLabel.isHidden = true
+        loadingView.bottomLabel.isHidden = false
         loadingView.bottomLabel.text = fileModel.fileName
 
-        cancelButton.hidden = false
-        retryButton.hidden = true
+        cancelButton.isHidden = false
+        retryButton.isHidden = true
 
         switch state {
-            case .WaitingConfirmation:
-                loadingView.imageButton.userInteractionEnabled = false
+            case .waitingConfirmation:
+                loadingView.imageButton.isUserInteractionEnabled = false
                 loadingView.bottomLabel.text = String(localized: "chat_waiting")
-            case .Loading:
-                loadingView.progressView.hidden = false
-            case .Paused:
+            case .loading:
+                loadingView.progressView.isHidden = false
+            case .paused:
                 break
-            case .Cancelled:
+            case .cancelled:
                 loadingView.bottomLabel.text = String(localized: "chat_file_cancelled")
-                cancelButton.hidden = true
-                retryButton.hidden = false
-            case .Done:
-                cancelButton.hidden = true
+                cancelButton.isHidden = true
+                retryButton.isHidden = false
+            case .done:
+                cancelButton.isHidden = true
         }
     }
 
     override func loadingViewPressed() {
         switch state {
-            case .WaitingConfirmation:
+            case .waitingConfirmation:
                 break
-            case .Loading:
+            case .loading:
                 pauseOrResumeHandle?()
-            case .Paused:
+            case .paused:
                 pauseOrResumeHandle?()
-            case .Cancelled:
+            case .cancelled:
                 openHandle?()
-            case .Done:
+            case .done:
                 openHandle?()
         }
     }

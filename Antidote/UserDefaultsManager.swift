@@ -8,7 +8,7 @@ class UserDefaultsManager {
             return stringForKey(Keys.LastActiveProfile)
         }
         set {
-            setObject(newValue, forKey: Keys.LastActiveProfile)
+            setObject(newValue as AnyObject?, forKey: Keys.LastActiveProfile)
         }
     }
 
@@ -46,7 +46,7 @@ class UserDefaultsManager {
             return AutodownloadImages(rawValue: string) ?? defaultValue
         }
         set {
-            setObject(newValue.rawValue, forKey: Keys.AutodownloadImages)
+            setObject(newValue.rawValue as AnyObject?, forKey: Keys.AutodownloadImages)
         }
     }
 
@@ -63,37 +63,37 @@ private extension UserDefaultsManager {
         static let AutodownloadImages = "user-info/autodownload-images"
     }
 
-    func setObject(object: AnyObject?, forKey key: String) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setObject(object, forKey:key)
+    func setObject(_ object: AnyObject?, forKey key: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(object, forKey:key)
         defaults.synchronize()
     }
 
-    func stringForKey(key: String) -> String? {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        return defaults.stringForKey(key)
+    func stringForKey(_ key: String) -> String? {
+        let defaults = UserDefaults.standard
+        return defaults.string(forKey: key)
     }
 
-    func setBool(value: Bool, forKey key: String) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(value, forKey: key)
+    func setBool(_ value: Bool, forKey key: String) {
+        let defaults = UserDefaults.standard
+        defaults.set(value, forKey: key)
         defaults.synchronize()
     }
 
-    func boolForKey(key: String, defaultValue: Bool) -> Bool {
-        let defaults = NSUserDefaults.standardUserDefaults()
+    func boolForKey(_ key: String, defaultValue: Bool) -> Bool {
+        let defaults = UserDefaults.standard
 
-        if let result = defaults.objectForKey(key) {
-            return result.boolValue
+        if let result = defaults.object(forKey: key) {
+            return (result as AnyObject).boolValue
         }
         else {
             return defaultValue
         }
     }
 
-    func removeObjectForKey(key: String) {
-        let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.removeObjectForKey(key)
+    func removeObjectForKey(_ key: String) {
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: key)
         defaults.synchronize()
     }
 }

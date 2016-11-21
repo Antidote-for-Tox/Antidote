@@ -5,16 +5,16 @@
 import Foundation
 
 struct ToxFactory {
-    static func createToxWithConfiguration(configuration: OCTManagerConfiguration,
+    static func createToxWithConfiguration(_ configuration: OCTManagerConfiguration,
                                     encryptPassword: String,
-                                    successBlock: OCTManager -> Void,
-                                    failureBlock: NSError -> Void) {
-        if NSProcessInfo.processInfo().arguments.contains("UI_TESTING") {
+                                    successBlock: @escaping (OCTManager) -> Void,
+                                    failureBlock: @escaping (Error) -> Void) {
+        if ProcessInfo.processInfo.arguments.contains("UI_TESTING") {
             successBlock(OCTManagerMock())
             return
         }
 
-        OCTManagerFactory.managerWithConfiguration(configuration,
+        OCTManagerFactory.manager(with: configuration,
                                                 encryptPassword: encryptPassword,
                                                 successBlock: successBlock,
                                                 failureBlock: failureBlock)

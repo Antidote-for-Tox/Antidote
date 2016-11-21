@@ -6,21 +6,21 @@ import Foundation
 
 class ChatGenericFileCellModel: ChatMovableDateCellModel {
     enum State {
-        case WaitingConfirmation
-        case Loading
-        case Paused
-        case Cancelled
-        case Done
+        case waitingConfirmation
+        case loading
+        case paused
+        case cancelled
+        case done
     }
 
-    var state: State = .WaitingConfirmation
+    var state: State = .waitingConfirmation
     var fileName: String?
     var fileSize: String?
     var fileUTI: String?
 
-    var startLoadingHandle: (Void -> Void)?
-    var cancelHandle: (Void -> Void)?
-    var retryHandle: (Void -> Void)?
-    var pauseOrResumeHandle: (Void -> Void)?
-    var openHandle: (Void -> Void)?
+    var startLoadingHandle: ((Void) -> Void)?
+    var cancelHandle: ((Void) -> Void)?
+    var retryHandle: ((Void) -> Void)?
+    var pauseOrResumeHandle: ((Void) -> Void)?
+    var openHandle: ((Void) -> Void)?
 }

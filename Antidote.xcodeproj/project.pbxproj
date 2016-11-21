@@ -405,6 +405,9 @@
 		11E6406D1C2D6C3500D24C6D /* ViewPassingGestures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */; };
 		11E640761C2DBAE200D24C6D /* AddFriendController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640751C2DBAE200D24C6D /* AddFriendController.swift */; };
 		11E640781C2DC15400D24C6D /* HelperFunctions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11E640771C2DC15400D24C6D /* HelperFunctions.swift */; };
+		11F08D131DE0610B00F80F5F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11F08D171DE0610B00F80F5F /* InfoPlist.strings */; };
+		11F08D141DE0610B00F80F5F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11F08D171DE0610B00F80F5F /* InfoPlist.strings */; };
+		11F08D151DE0610B00F80F5F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 11F08D171DE0610B00F80F5F /* InfoPlist.strings */; };
 		11F276AE1D3EBEF700C613AA /* ChatBaseTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F276AD1D3EBEF700C613AA /* ChatBaseTextCell.swift */; };
 		11F276AF1D3EBEF700C613AA /* ChatBaseTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F276AD1D3EBEF700C613AA /* ChatBaseTextCell.swift */; };
 		11F276BB1D3EBF3000C613AA /* ChatBaseTextCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F276BA1D3EBF3000C613AA /* ChatBaseTextCellModel.swift */; };
@@ -561,20 +564,6 @@
 			remoteGlobalIDString = 1164762E19794D3300DB20B8;
 			remoteInfo = Antidote;
 		};
-		113F02E61CAFC9830009ABE1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 537DCE921C35CC8800B5B899;
-			remoteInfo = "SnapKit tvOS";
-		};
-		113F02E81CAFC9830009ABE1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 537DCEAF1C35D90A00B5B899;
-			remoteInfo = "SnapKit tvOS Tests";
-		};
 		113F02EF1CAFC9830009ABE1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1173EFE41BC5CF5D00B88B7B /* Yaml.xcodeproj */;
@@ -610,26 +599,12 @@
 			remoteGlobalIDString = EEBCC9D819CC627D0083B827;
 			remoteInfo = "SnapKit iOS";
 		};
-		1173EFD11BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EECDB37A1AC0C9D4006BBC11;
-			remoteInfo = "SnapKit OSX";
-		};
 		1173EFD31BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = EEBCC9E219CC627E0083B827;
 			remoteInfo = "SnapKit iOS Tests";
-		};
-		1173EFD51BC5C6B300B88B7B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 1173EFC81BC5C6B300B88B7B /* SnapKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EECDB3841AC0C9D4006BBC11;
-			remoteInfo = "SnapKit OSX Tests";
 		};
 		1173EFEB1BC5CF5D00B88B7B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -873,6 +848,22 @@
 		11E6406C1C2D6C3500D24C6D /* ViewPassingGestures.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPassingGestures.swift; sourceTree = "<group>"; };
 		11E640751C2DBAE200D24C6D /* AddFriendController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddFriendController.swift; sourceTree = "<group>"; };
 		11E640771C2DC15400D24C6D /* HelperFunctions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperFunctions.swift; sourceTree = "<group>"; };
+		11F08D161DE0610B00F80F5F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D1E1DE0611700F80F5F /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D1F1DE0611800F80F5F /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D201DE0611800F80F5F /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D211DE0611900F80F5F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D221DE0611A00F80F5F /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D231DE0611B00F80F5F /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D241DE0611B00F80F5F /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D251DE0611C00F80F5F /* lt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = lt; path = lt.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D261DE0611D00F80F5F /* br */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = br; path = br.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D271DE0611E00F80F5F /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		11F08D281DE0612200F80F5F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D291DE0612200F80F5F /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D2A1DE0612300F80F5F /* fr-FR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-FR"; path = "fr-FR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		11F08D2B1DE0612400F80F5F /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		11F08D2C1DE0612700F80F5F /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		11F276AD1D3EBEF700C613AA /* ChatBaseTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBaseTextCell.swift; sourceTree = "<group>"; };
 		11F276BA1D3EBF3000C613AA /* ChatBaseTextCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBaseTextCellModel.swift; sourceTree = "<group>"; };
 		11F83B751CADC9260074FE11 /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = zh; path = "zh.lproj/import-profile.html"; sourceTree = "<group>"; };
@@ -916,6 +907,7 @@
 		9C3271861D79C19C00347490 /* PinAuthorizationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinAuthorizationCoordinator.swift; sourceTree = "<group>"; };
 		9C7475BF1BC698110098B1A4 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9C7475C41BC698510098B1A4 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		9C89D83C1DDB36770040C67B /* Antidote.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Antidote.entitlements; sourceTree = "<group>"; };
 		9C9A07001BE793BA0003D6C7 /* ProfileMainController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMainController.swift; sourceTree = "<group>"; };
 		9CB1F9501D58CA4000105858 /* RunningCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RunningCoordinator.swift; sourceTree = "<group>"; };
 		9CBBC7C01BDFC62700099A5E /* LoginCreateAccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountController.swift; sourceTree = "<group>"; };
@@ -1084,6 +1076,7 @@
 		1164763819794D3300DB20B8 /* Antidote */ = {
 			isa = PBXGroup;
 			children = (
+				9C89D83C1DDB36770040C67B /* Antidote.entitlements */,
 				F902D28D1ADED27A0070A3F5 /* Application */,
 				1193AB561C1F565B006AA9E5 /* Cells */,
 				1173F06C1BC5D9B000B88B7B /* Classes */,
@@ -1153,11 +1146,7 @@
 			isa = PBXGroup;
 			children = (
 				1173EFD01BC5C6B300B88B7B /* SnapKit.framework */,
-				113F02E71CAFC9830009ABE1 /* SnapKit.framework */,
-				1173EFD21BC5C6B300B88B7B /* SnapKit.framework */,
-				1173EFD41BC5C6B300B88B7B /* SnapKit iOS Tests.xctest */,
-				113F02E91CAFC9830009ABE1 /* SnapKit tvOS Tests.xctest */,
-				1173EFD61BC5C6B300B88B7B /* SnapKit OSX Tests.xctest */,
+				1173EFD41BC5C6B300B88B7B /* SnapKit Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1431,6 +1420,7 @@
 				11FA0ED21BC5842800F3DA5B /* Antidote-Bridging-Header.h */,
 				9CDC093D1C3415DE00DC0D63 /* Antidote-Prefix.pch */,
 				1164763A19794D3300DB20B8 /* Antidote-Info.plist */,
+				11F08D171DE0610B00F80F5F /* InfoPlist.strings */,
 				11FA0ED31BC5842800F3DA5B /* AppDelegate.swift */,
 				11D17CE81DD11F10006B2910 /* dummy-photo.jpg */,
 				1164764419794D3300DB20B8 /* Images.xcassets */,
@@ -1518,7 +1508,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = dvor;
 				TargetAttributes = {
 					111782A61DC64391000C1721 = {
@@ -1527,9 +1517,17 @@
 					};
 					1164762E19794D3300DB20B8 = {
 						DevelopmentTeam = NHVF8NSG3J;
+						LastSwiftMigration = 0810;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					1173F0551BC5D94400B88B7B = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0810;
+						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
@@ -1584,20 +1582,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		113F02E71CAFC9830009ABE1 /* SnapKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SnapKit.framework;
-			remoteRef = 113F02E61CAFC9830009ABE1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		113F02E91CAFC9830009ABE1 /* SnapKit tvOS Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SnapKit tvOS Tests.xctest";
-			remoteRef = 113F02E81CAFC9830009ABE1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		113F02F01CAFC9830009ABE1 /* Yaml.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1619,25 +1603,11 @@
 			remoteRef = 1173EFCF1BC5C6B300B88B7B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		1173EFD21BC5C6B300B88B7B /* SnapKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SnapKit.framework;
-			remoteRef = 1173EFD11BC5C6B300B88B7B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1173EFD41BC5C6B300B88B7B /* SnapKit iOS Tests.xctest */ = {
+		1173EFD41BC5C6B300B88B7B /* SnapKit Tests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
-			path = "SnapKit iOS Tests.xctest";
+			path = "SnapKit Tests.xctest";
 			remoteRef = 1173EFD31BC5C6B300B88B7B /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		1173EFD61BC5C6B300B88B7B /* SnapKit OSX Tests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = "SnapKit OSX Tests.xctest";
-			remoteRef = 1173EFD51BC5C6B300B88B7B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		1173EFEC1BC5CF5D00B88B7B /* Yaml.framework */ = {
@@ -1676,6 +1646,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				115C3BD61DC6D2B900903A47 /* Localizable.strings in Resources */,
+				11F08D151DE0610B00F80F5F /* InfoPlist.strings in Resources */,
 				11D17CDD1DD11E58006B2910 /* Images.xcassets in Resources */,
 				1143E4331DCE1A5600BE7250 /* import-profile.html in Resources */,
 				111783101DC647BD000C1721 /* LaunchPlaceholderBoard.storyboard in Resources */,
@@ -1688,6 +1659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				11D17CE91DD11F10006B2910 /* dummy-photo.jpg in Resources */,
+				11F08D131DE0610B00F80F5F /* InfoPlist.strings in Resources */,
 				11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */,
 				11B253501C4AD9CF0068F47C /* isotoxin_Calltone.aac in Resources */,
 				11DDEAFD1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard in Resources */,
@@ -1708,6 +1680,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				113F03111CAFD1610009ABE1 /* icon.png in Resources */,
+				11F08D141DE0610B00F80F5F /* InfoPlist.strings in Resources */,
 				113F03081CAFCC9D0009ABE1 /* default-theme.yaml in Resources */,
 				9CEA6A201D957EFC0045F000 /* antidote-acknowledgements.html in Resources */,
 			);
@@ -2437,6 +2410,29 @@
 			name = "import-profile.html";
 			sourceTree = "<group>";
 		};
+		11F08D171DE0610B00F80F5F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				11F08D161DE0610B00F80F5F /* en */,
+				11F08D1E1DE0611700F80F5F /* ru */,
+				11F08D1F1DE0611800F80F5F /* zh */,
+				11F08D201DE0611800F80F5F /* da */,
+				11F08D211DE0611900F80F5F /* de */,
+				11F08D221DE0611A00F80F5F /* pt */,
+				11F08D231DE0611B00F80F5F /* es */,
+				11F08D241DE0611B00F80F5F /* ar */,
+				11F08D251DE0611C00F80F5F /* lt */,
+				11F08D261DE0611D00F80F5F /* br */,
+				11F08D271DE0611E00F80F5F /* zh-Hans-CN */,
+				11F08D281DE0612200F80F5F /* fr */,
+				11F08D291DE0612200F80F5F /* cs */,
+				11F08D2A1DE0612300F80F5F /* fr-FR */,
+				11F08D2B1DE0612400F80F5F /* nl */,
+				11F08D2C1DE0612700F80F5F /* pl */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		9C7475C01BC698110098B1A4 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2573,6 +2569,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2582,14 +2579,19 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2614,6 +2616,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -2623,12 +2626,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2638,6 +2646,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2646,12 +2655,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 2D5B916CEDBEC1B69CD1EFA4 /* Pods-Antidote.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 6;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
@@ -2665,6 +2675,7 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Antidote/Antidote-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2674,12 +2685,13 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B3C17AF8CE3B4AD1B68F2B5B /* Pods-Antidote.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_STATIC_ANALYZER_MODE = deep;
+				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 6;
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Antidote/Antidote-Prefix.pch";
@@ -2692,6 +2704,7 @@
 				PROVISIONING_PROFILE = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Antidote/Antidote-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -2704,6 +2717,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -2716,6 +2731,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AntidoteTests/AntidoteTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Antidote.app/Antidote";
 			};
 			name = Debug;
@@ -2727,6 +2743,8 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -2738,6 +2756,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dvor.AntidoteTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "AntidoteTests/AntidoteTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Antidote.app/Antidote";
 			};
 			name = Release;

@@ -5,24 +5,24 @@
 import UIKit
 
 protocol ChangeAutodownloadImagesControllerDelegate: class {
-    func changeAutodownloadImagesControllerDidChange(controller: ChangeAutodownloadImagesController)
+    func changeAutodownloadImagesControllerDidChange(_ controller: ChangeAutodownloadImagesController)
 }
 
 class ChangeAutodownloadImagesController: StaticTableController {
     weak var delegate: ChangeAutodownloadImagesControllerDelegate?
 
-    private let userDefaults: UserDefaultsManager
-    private let selectedStatus: UserDefaultsManager.AutodownloadImages
+    fileprivate let userDefaults: UserDefaultsManager
+    fileprivate let selectedStatus: UserDefaultsManager.AutodownloadImages
 
-    private let neverModel = StaticTableDefaultCellModel()
-    private let wifiModel = StaticTableDefaultCellModel()
-    private let alwaysModel = StaticTableDefaultCellModel()
+    fileprivate let neverModel = StaticTableDefaultCellModel()
+    fileprivate let wifiModel = StaticTableDefaultCellModel()
+    fileprivate let alwaysModel = StaticTableDefaultCellModel()
 
     init(theme: Theme) {
         self.userDefaults = UserDefaultsManager()
         self.selectedStatus = userDefaults.autodownloadImages
 
-        super.init(theme: theme, style: .Plain, model: [
+        super.init(theme: theme, style: .plain, model: [
             [
                 neverModel,
                 wifiModel,
@@ -53,11 +53,11 @@ private extension ChangeAutodownloadImagesController {
 
         switch selectedStatus {
             case .Never:
-                neverModel.rightImageType = .Checkmark
+                neverModel.rightImageType = .checkmark
             case .UsingWiFi:
-                wifiModel.rightImageType = .Checkmark
+                wifiModel.rightImageType = .checkmark
             case .Always:
-                alwaysModel.rightImageType = .Checkmark
+                alwaysModel.rightImageType = .checkmark
         }
     }
 

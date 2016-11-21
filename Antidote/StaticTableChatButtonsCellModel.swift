@@ -5,9 +5,9 @@
 import Foundation
 
 class StaticTableChatButtonsCellModel: StaticTableBaseCellModel {
-    var chatButtonHandler: (Void -> Void)?
-    var callButtonHandler: (Void -> Void)?
-    var videoButtonHandler: (Void -> Void)?
+    var chatButtonHandler: ((Void) -> Void)?
+    var callButtonHandler: ((Void) -> Void)?
+    var videoButtonHandler: ((Void) -> Void)?
 
     var chatButtonEnabled: Bool = true
     var callButtonEnabled: Bool = true

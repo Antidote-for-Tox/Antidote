@@ -5,28 +5,28 @@
 import Foundation
 
 protocol SettingsMainControllerDelegate: class {
-    func settingsMainControllerShowAboutScreen(controller: SettingsMainController)
-    func settingsMainControllerShowFaqScreen(controller: SettingsMainController)
-    func settingsMainControllerShowAdvancedSettings(controller: SettingsMainController)
-    func settingsMainControllerChangeAutodownloadImages(controller: SettingsMainController)
+    func settingsMainControllerShowAboutScreen(_ controller: SettingsMainController)
+    func settingsMainControllerShowFaqScreen(_ controller: SettingsMainController)
+    func settingsMainControllerShowAdvancedSettings(_ controller: SettingsMainController)
+    func settingsMainControllerChangeAutodownloadImages(_ controller: SettingsMainController)
 }
 
 class SettingsMainController: StaticTableController {
     weak var delegate: SettingsMainControllerDelegate?
 
-    private let theme: Theme
-    private let userDefaults = UserDefaultsManager()
+    fileprivate let theme: Theme
+    fileprivate let userDefaults = UserDefaultsManager()
 
-    private let aboutModel = StaticTableDefaultCellModel()
-    private let faqModel = StaticTableDefaultCellModel()
-    private let autodownloadImagesModel = StaticTableInfoCellModel()
-    private let notificationsModel = StaticTableSwitchCellModel()
-    private let advancedSettingsModel = StaticTableDefaultCellModel()
+    fileprivate let aboutModel = StaticTableDefaultCellModel()
+    fileprivate let faqModel = StaticTableDefaultCellModel()
+    fileprivate let autodownloadImagesModel = StaticTableInfoCellModel()
+    fileprivate let notificationsModel = StaticTableSwitchCellModel()
+    fileprivate let advancedSettingsModel = StaticTableDefaultCellModel()
 
     init(theme: Theme) {
         self.theme = theme
 
-        super.init(theme: theme, style: .Grouped, model: [
+        super.init(theme: theme, style: .grouped, model: [
             [
                 autodownloadImagesModel,
             ],
@@ -55,7 +55,7 @@ class SettingsMainController: StaticTableController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         updateModels()
@@ -67,11 +67,11 @@ private extension SettingsMainController{
     func updateModels() {
         aboutModel.value = String(localized: "settings_about")
         aboutModel.didSelectHandler = showAboutScreen
-        aboutModel.rightImageType = .Arrow
+        aboutModel.rightImageType = .arrow
 
         faqModel.value = String(localized: "settings_faq")
         faqModel.didSelectHandler = showFaqScreen
-        faqModel.rightImageType = .Arrow
+        faqModel.rightImageType = .arrow
 
         autodownloadImagesModel.title = String(localized: "settings_autodownload_images")
         autodownloadImagesModel.showArrow = true
@@ -91,7 +91,7 @@ private extension SettingsMainController{
 
         advancedSettingsModel.value = String(localized: "settings_advanced_settings")
         advancedSettingsModel.didSelectHandler = showAdvancedSettings
-        advancedSettingsModel.rightImageType = .Arrow
+        advancedSettingsModel.rightImageType = .arrow
     }
 
     func showAboutScreen(_: StaticTableBaseCell) {
@@ -102,7 +102,7 @@ private extension SettingsMainController{
         delegate?.settingsMainControllerShowFaqScreen(self)
     }
 
-    func notificationsValueChanged(on: Bool) {
+    func notificationsValueChanged(_ on: Bool) {
         userDefaults.showNotificationPreview = on
     }
 

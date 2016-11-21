@@ -8,7 +8,7 @@ class StaticTableSwitchCellModel: StaticTableBaseCellModel {
     var title: String?
     var on: Bool = false
 
-    var valueChangedHandler: (Bool -> Void)?
+    var valueChangedHandler: ((Bool) -> Void)?
 
     var enabled: Bool = true
 }

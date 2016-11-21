@@ -4,7 +4,7 @@
 
 import Foundation
 
-func log (string: String, filename: NSString = #file) {
+func log (_ string: String, filename: NSString = #file) {
     NSLog("\(filename.lastPathComponent): \(string)")
 }
 

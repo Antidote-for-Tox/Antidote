@@ -12,12 +12,12 @@ private struct Constants {
 }
 
 class TextViewController: UIViewController {
-    private let resourceName: String
-    private let backgroundColor: UIColor
-    private let titleColor: UIColor
-    private let textColor: UIColor
+    fileprivate let resourceName: String
+    fileprivate let backgroundColor: UIColor
+    fileprivate let titleColor: UIColor
+    fileprivate let textColor: UIColor
 
-    private var textView: UITextView!
+    fileprivate var textView: UITextView!
 
     init(resourceName: String, backgroundColor: UIColor, titleColor: UIColor, textColor: UIColor) {
         self.resourceName = resourceName
@@ -45,13 +45,13 @@ class TextViewController: UIViewController {
 private extension TextViewController {
     func createTextView() {
         textView = UITextView()
-        textView.editable = false
-        textView.backgroundColor = .clearColor()
+        textView.isEditable = false
+        textView.backgroundColor = .clear
         view.addSubview(textView)
     }
 
     func installConstraints() {
-        textView.snp_makeConstraints {
+        textView.snp.makeConstraints {
             $0.leading.top.equalTo(view).offset(Constants.Offset)
             $0.trailing.bottom.equalTo(view).offset(-Constants.Offset)
         }
@@ -59,16 +59,16 @@ private extension TextViewController {
 
     func loadHtml() {
         do {
-            struct FakeError: ErrorType {}
-            guard let htmlFilePath = NSBundle.mainBundle().pathForResource(resourceName, ofType: "html") else {
+            struct FakeError: Error {}
+            guard let htmlFilePath = Bundle.main.path(forResource: resourceName, ofType: "html") else {
                 throw FakeError()
             }
 
-            var htmlString = try NSString(contentsOfFile: htmlFilePath, encoding: NSUTF8StringEncoding)
-            htmlString = htmlString.stringByReplacingOccurrencesOfString(Constants.TitleColorKey, withString: titleColor.hexString())
-            htmlString = htmlString.stringByReplacingOccurrencesOfString(Constants.TextColorKey, withString: textColor.hexString())
+            var htmlString = try NSString(contentsOfFile: htmlFilePath, encoding: String.Encoding.utf8.rawValue)
+            htmlString = htmlString.replacingOccurrences(of: Constants.TitleColorKey, with: titleColor.hexString()) as NSString
+            htmlString = htmlString.replacingOccurrences(of: Constants.TextColorKey, with: textColor.hexString()) as NSString
 
-            guard let data = htmlString.dataUsingEncoding(NSUnicodeStringEncoding) else {
+            guard let data = htmlString.data(using: String.Encoding.unicode.rawValue) else {
                 throw FakeError()
             }
             let options = [ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType ]
@@ -76,7 +76,7 @@ private extension TextViewController {
             try textView.attributedText = NSAttributedString(data: data, options: options, documentAttributes: nil)
         }
         catch {
-            handleErrorWithType(.CannotLoadHTML)
+            handleErrorWithType(.cannotLoadHTML)
         }
     }
 }

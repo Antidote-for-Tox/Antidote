@@ -6,26 +6,26 @@ import UIKit
 import LocalAuthentication
 
 protocol ProfileDetailsControllerDelegate: class {
-    func profileDetailsControllerSetPin(controller: ProfileDetailsController)
-    func profileDetailsControllerChangeLockTimeout(controller: ProfileDetailsController)
-    func profileDetailsControllerChangePassword(controller: ProfileDetailsController)
-    func profileDetailsControllerDeleteProfile(controller: ProfileDetailsController)
+    func profileDetailsControllerSetPin(_ controller: ProfileDetailsController)
+    func profileDetailsControllerChangeLockTimeout(_ controller: ProfileDetailsController)
+    func profileDetailsControllerChangePassword(_ controller: ProfileDetailsController)
+    func profileDetailsControllerDeleteProfile(_ controller: ProfileDetailsController)
 }
 
 class ProfileDetailsController: StaticTableController {
     weak var delegate: ProfileDetailsControllerDelegate?
 
-    private weak var toxManager: OCTManager!
+    fileprivate weak var toxManager: OCTManager!
 
-    private let pinEnabledModel = StaticTableSwitchCellModel()
-    private let lockTimeoutModel = StaticTableInfoCellModel()
-    private let touchIdEnabledModel = StaticTableSwitchCellModel()
+    fileprivate let pinEnabledModel = StaticTableSwitchCellModel()
+    fileprivate let lockTimeoutModel = StaticTableInfoCellModel()
+    fileprivate let touchIdEnabledModel = StaticTableSwitchCellModel()
 
-    private let changePasswordModel = StaticTableButtonCellModel()
-    private let exportProfileModel = StaticTableButtonCellModel()
-    private let deleteProfileModel = StaticTableButtonCellModel()
+    fileprivate let changePasswordModel = StaticTableButtonCellModel()
+    fileprivate let exportProfileModel = StaticTableButtonCellModel()
+    fileprivate let deleteProfileModel = StaticTableButtonCellModel()
 
-    private var documentInteractionController: UIDocumentInteractionController?
+    fileprivate var documentInteractionController: UIDocumentInteractionController?
 
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager
@@ -36,7 +36,7 @@ class ProfileDetailsController: StaticTableController {
         model.append([pinEnabledModel, lockTimeoutModel])
         footers.append(String(localized: "pin_description"))
 
-        if LAContext().canEvaluatePolicy(.DeviceOwnerAuthenticationWithBiometrics, error: nil) {
+        if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
             model.append([touchIdEnabledModel])
             footers.append(String(localized: "pin_touch_id_description"))
         }
@@ -47,7 +47,7 @@ class ProfileDetailsController: StaticTableController {
         model.append([exportProfileModel, deleteProfileModel])
         footers.append(nil)
 
-        super.init(theme: theme, style: .Grouped, model: model, footers: footers)
+        super.init(theme: theme, style: .grouped, model: model, footers: footers)
 
         updateModel()
 
@@ -58,7 +58,7 @@ class ProfileDetailsController: StaticTableController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         updateModel()
@@ -67,15 +67,15 @@ class ProfileDetailsController: StaticTableController {
 }
 
 extension ProfileDetailsController: UIDocumentInteractionControllerDelegate {
-    func documentInteractionControllerViewControllerForPreview(controller: UIDocumentInteractionController) -> UIViewController {
+    func documentInteractionControllerViewControllerForPreview(_ controller: UIDocumentInteractionController) -> UIViewController {
         return self
     }
 
-    func documentInteractionControllerViewForPreview(controller: UIDocumentInteractionController) -> UIView? {
+    func documentInteractionControllerViewForPreview(_ controller: UIDocumentInteractionController) -> UIView? {
         return view
     }
 
-    func documentInteractionControllerRectForPreview(controller: UIDocumentInteractionController) -> CGRect {
+    func documentInteractionControllerRectForPreview(_ controller: UIDocumentInteractionController) -> CGRect {
         return view.frame
     }
 }
@@ -121,7 +121,7 @@ private extension ProfileDetailsController {
         deleteProfileModel.didSelectHandler = deleteProfile
     }
 
-    func pinEnabledValueChanged(on: Bool) {
+    func pinEnabledValueChanged(_ on: Bool) {
         if on {
             delegate?.profileDetailsControllerSetPin(self)
         }
@@ -139,7 +139,7 @@ private extension ProfileDetailsController {
         delegate?.profileDetailsControllerChangeLockTimeout(self)
     }
 
-    func touchIdEnabledValueChanged(on: Bool) {
+    func touchIdEnabledValueChanged(_ on: Bool) {
         let settings = toxManager.objects.getProfileSettings()
         settings.useTouchID = on
         toxManager.objects.saveProfileSettings(settings)
@@ -155,43 +155,43 @@ private extension ProfileDetailsController {
 
             let name = UserDefaultsManager().lastActiveProfile ?? "profile"
 
-            documentInteractionController = UIDocumentInteractionController(URL: NSURL.fileURLWithPath(path))
+            documentInteractionController = UIDocumentInteractionController(url: URL(fileURLWithPath: path))
             documentInteractionController!.delegate = self
             documentInteractionController!.name = "\(name).tox"
-            documentInteractionController!.presentOptionsMenuFromRect(view.frame, inView:view, animated: true)
+            documentInteractionController!.presentOptionsMenu(from: view.frame, in:view, animated: true)
         }
         catch let error as NSError {
-            handleErrorWithType(.ExportProfile, error: error)
+            handleErrorWithType(.exportProfile, error: error)
         }
     }
 
-    func deleteProfile(cell: StaticTableBaseCell) {
+    func deleteProfile(_ cell: StaticTableBaseCell) {
         let title1 = String(localized: "delete_profile_confirmation_title_1")
         let title2 = String(localized: "delete_profile_confirmation_title_2")
         let message = String(localized: "delete_profile_confirmation_message")
         let yes = String(localized: "alert_delete")
         let cancel = String(localized: "alert_cancel")
 
-        let alert1 = UIAlertController(title: title1, message: message, preferredStyle: .ActionSheet)
+        let alert1 = UIAlertController(title: title1, message: message, preferredStyle: .actionSheet)
         alert1.popoverPresentationController?.sourceView = cell
         alert1.popoverPresentationController?.sourceRect = CGRect(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2, width: 1.0, height: 1.0)
 
-        alert1.addAction(UIAlertAction(title: yes, style: .Destructive) { [unowned self] _ -> Void in
-            let alert2 = UIAlertController(title: title2, message: nil, preferredStyle: .ActionSheet)
+        alert1.addAction(UIAlertAction(title: yes, style: .destructive) { [unowned self] _ -> Void in
+            let alert2 = UIAlertController(title: title2, message: nil, preferredStyle: .actionSheet)
             alert2.popoverPresentationController?.sourceView = cell
             alert2.popoverPresentationController?.sourceRect = CGRect(x: cell.frame.size.width / 2, y: cell.frame.size.height / 2, width: 1.0, height: 1.0)
 
-            alert2.addAction(UIAlertAction(title: yes, style: .Destructive) { [unowned self] _ -> Void in
+            alert2.addAction(UIAlertAction(title: yes, style: .destructive) { [unowned self] _ -> Void in
                 self.reallyDeleteProfile()
             })
-            alert2.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
+            alert2.addAction(UIAlertAction(title: cancel, style: .cancel, handler: nil))
 
-            self.presentViewController(alert2, animated: true, completion: nil)
+            self.present(alert2, animated: true, completion: nil)
         })
 
-        alert1.addAction(UIAlertAction(title: cancel, style: .Cancel, handler: nil))
+        alert1.addAction(UIAlertAction(title: cancel, style: .cancel, handler: nil))
 
-        presentViewController(alert1, animated: true, completion: nil)
+        present(alert1, animated: true, completion: nil)
     }
 
     func reallyDeleteProfile() {

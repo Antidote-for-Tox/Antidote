@@ -5,17 +5,17 @@
 import UIKit
 
 protocol ChatsTabCoordinatorDelegate: class {
-    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat)
-    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat)
-    func chatsTabCoordinator(coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool)
+    func chatsTabCoordinator(_ coordinator: ChatsTabCoordinator, chatWillAppear chat: OCTChat)
+    func chatsTabCoordinator(_ coordinator: ChatsTabCoordinator, chatWillDisapper chat: OCTChat)
+    func chatsTabCoordinator(_ coordinator: ChatsTabCoordinator, callToChat chat: OCTChat, enableVideo: Bool)
 }
 
 class ChatsTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: ChatsTabCoordinatorDelegate?
 
-    private weak var submanagerObjects: OCTSubmanagerObjects!
-    private weak var submanagerChats: OCTSubmanagerChats!
-    private weak var submanagerFiles: OCTSubmanagerFiles!
+    fileprivate weak var submanagerObjects: OCTSubmanagerObjects!
+    fileprivate weak var submanagerChats: OCTSubmanagerChats!
+    fileprivate weak var submanagerFiles: OCTSubmanagerFiles!
 
     init(theme: Theme, submanagerObjects: OCTSubmanagerObjects, submanagerChats: OCTSubmanagerChats, submanagerFiles: OCTSubmanagerFiles) {
         self.submanagerObjects = submanagerObjects
@@ -25,14 +25,14 @@ class ChatsTabCoordinator: ActiveSessionNavigationCoordinator {
         super.init(theme: theme)
     }
 
-    override func startWithOptions(options: CoordinatorOptions?) {
+    override func startWithOptions(_ options: CoordinatorOptions?) {
         let controller = ChatListController(theme: theme, submanagerChats: submanagerChats, submanagerObjects: submanagerObjects)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)
     }
 
-    func showChat(chat: OCTChat, animated: Bool) {
+    func showChat(_ chat: OCTChat, animated: Bool) {
         if let top = navigationController.topViewController as? ChatPrivateController {
             if top.chat == chat {
                 // controller is already visible
@@ -48,7 +48,7 @@ class ChatsTabCoordinator: ActiveSessionNavigationCoordinator {
                 submanagerFiles: submanagerFiles,
                 delegate: self)
 
-        navigationController.popToRootViewControllerAnimated(false)
+        navigationController.popToRootViewController(animated: false)
         navigationController.pushViewController(controller, animated: animated)
     }
 
@@ -61,26 +61,26 @@ class ChatsTabCoordinator: ActiveSessionNavigationCoordinator {
 }
 
 extension ChatsTabCoordinator: ChatListControllerDelegate {
-    func chatListController(controller: ChatListController, didSelectChat chat: OCTChat) {
+    func chatListController(_ controller: ChatListController, didSelectChat chat: OCTChat) {
         showChat(chat, animated: true)
     }
 }
 
 extension ChatsTabCoordinator: ChatPrivateControllerDelegate {
-    func chatPrivateControllerWillAppear(controller: ChatPrivateController) {
+    func chatPrivateControllerWillAppear(_ controller: ChatPrivateController) {
         delegate?.chatsTabCoordinator(self, chatWillAppear: controller.chat)
     }
 
-    func chatPrivateControllerWillDisappear(controller: ChatPrivateController) {
+    func chatPrivateControllerWillDisappear(_ controller: ChatPrivateController) {
         delegate?.chatsTabCoordinator(self, chatWillDisapper: controller.chat)
     }
 
-    func chatPrivateControllerCallToChat(controller: ChatPrivateController, enableVideo: Bool) {
+    func chatPrivateControllerCallToChat(_ controller: ChatPrivateController, enableVideo: Bool) {
         delegate?.chatsTabCoordinator(self, callToChat: controller.chat, enableVideo: enableVideo)
     }
 
     func chatPrivateControllerShowQuickLookController(
-            controller: ChatPrivateController,
+            _ controller: ChatPrivateController,
             dataSource: QuickLookPreviewControllerDataSource,
             selectedIndex: Int)
     {
@@ -89,6 +89,6 @@ extension ChatsTabCoordinator: ChatPrivateControllerDelegate {
         controller.dataSourceStorage = dataSource
         controller.currentPreviewItemIndex = selectedIndex
 
-        navigationController.presentViewController(controller, animated: true, completion: nil)
+        navigationController.present(controller, animated: true, completion: nil)
     }
 }

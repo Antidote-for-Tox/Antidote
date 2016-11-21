@@ -6,7 +6,7 @@ import UIKit
 import SnapKit
 
 class ChatIncomingTextCell: ChatBaseTextCell {
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         bubbleNormalBackground = theme.colorForType(.ChatIncomingBubble)
@@ -17,7 +17,7 @@ class ChatIncomingTextCell: ChatBaseTextCell {
     override func installConstraints() {
         super.installConstraints()
 
-        bubbleView.snp_makeConstraints {
+        bubbleView.snp.makeConstraints {
             $0.top.equalTo(contentView).offset(ChatBaseTextCell.Constants.BubbleVerticalOffset)
             $0.bottom.equalTo(contentView).offset(-ChatBaseTextCell.Constants.BubbleVerticalOffset)
             $0.leading.equalTo(contentView).offset(ChatBaseTextCell.Constants.BubbleHorizontalOffset)

@@ -11,13 +11,13 @@ private struct Constants {
 }
 
 class TextEditController: UIViewController {
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private let defaultValue: String?
-    private let changeTextHandler: String -> Void
-    private let userFinishedEditing: Void -> Void
+    fileprivate let defaultValue: String?
+    fileprivate let changeTextHandler: (String) -> Void
+    fileprivate let userFinishedEditing: (Void) -> Void
 
-    private var textField: UITextField!
+    fileprivate var textField: UITextField!
 
     /**
         Creates controller for editing single text field.
@@ -27,7 +27,7 @@ class TextEditController: UIViewController {
           - changeTextHandler: Handler called when user have changed the text.
           - userFinishedEditing: Handler called when user have finished editing.
      */
-    init(theme: Theme, title: String, defaultValue: String?, changeTextHandler: String -> Void, userFinishedEditing: Void -> Void) {
+    init(theme: Theme, title: String, defaultValue: String?, changeTextHandler: @escaping (String) -> Void, userFinishedEditing: @escaping (Void) -> Void) {
         self.theme = theme
         self.defaultValue = defaultValue
         self.changeTextHandler = changeTextHandler
@@ -36,7 +36,7 @@ class TextEditController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         self.title = title
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -50,13 +50,13 @@ class TextEditController: UIViewController {
         installConstraints()
     }
 
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
         textField.becomeFirstResponder()
     }
 
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         changeTextHandler(textField.text ?? "")
@@ -64,7 +64,7 @@ class TextEditController: UIViewController {
 }
 
 extension TextEditController: UITextFieldDelegate {
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         changeTextHandler(textField.text ?? "")
         userFinishedEditing()
 
@@ -77,13 +77,13 @@ private extension TextEditController {
         textField = UITextField()
         textField.text = defaultValue
         textField.delegate = self
-        textField.returnKeyType = .Done
-        textField.borderStyle = .RoundedRect
+        textField.returnKeyType = .done
+        textField.borderStyle = .roundedRect
         view.addSubview(textField)
     }
 
     func installConstraints() {
-        textField.snp_makeConstraints {
+        textField.snp.makeConstraints {
             $0.top.equalTo(view).offset(Constants.Offset)
             $0.leading.equalTo(view).offset(Constants.Offset)
             $0.trailing.equalTo(view).offset(-Constants.Offset)

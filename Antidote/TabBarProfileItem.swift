@@ -16,7 +16,7 @@ class TabBarProfileItem: TabBarAbstractItem {
         }
     }
 
-    var userStatus: UserStatus = .Offline {
+    var userStatus: UserStatus = .offline {
         didSet {
             imageViewWithStatus.userStatusView.userStatus = userStatus
         }
@@ -33,17 +33,17 @@ class TabBarProfileItem: TabBarAbstractItem {
         }
     }
 
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var imageViewWithStatus: ImageViewWithStatus!
-    private var button: UIButton!
+    fileprivate var imageViewWithStatus: ImageViewWithStatus!
+    fileprivate var button: UIButton!
 
     init(theme: Theme) {
         self.theme = theme
 
-        super.init(frame: CGRectZero)
+        super.init(frame: CGRect.zero)
 
-        backgroundColor = .clearColor()
+        backgroundColor = .clear
 
         createViews()
         installConstraints()
@@ -85,18 +85,18 @@ private extension TabBarProfileItem {
         addSubview(imageViewWithStatus)
 
         button = UIButton()
-        button.backgroundColor = .clearColor()
-        button.addTarget(self, action: #selector(TabBarProfileItem.buttonPressed), forControlEvents: .TouchUpInside)
+        button.backgroundColor = .clear
+        button.addTarget(self, action: #selector(TabBarProfileItem.buttonPressed), for: .touchUpInside)
         addSubview(button)
     }
 
     func installConstraints() {
-        imageViewWithStatus.snp_makeConstraints {
+        imageViewWithStatus.snp.makeConstraints {
             $0.center.equalTo(self)
             $0.size.equalTo(Constants.ImageSize)
         }
 
-        button.snp_makeConstraints {
+        button.snp.makeConstraints {
             $0.edges.equalTo(self)
         }
     }

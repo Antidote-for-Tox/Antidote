@@ -12,19 +12,19 @@ class OCTSubmanagerCallsMock: NSObject, OCTSubmanagerCalls {
         // nop
     }
     
-    func callToChat(chat: OCTChat, enableAudio: Bool, enableVideo: Bool) throws -> OCTCall {
+    func call(to chat: OCTChat, enableAudio: Bool, enableVideo: Bool) throws -> OCTCall {
         return OCTCall()
     }
     
-    func enableVideoSending(enable: Bool, forCall call: OCTCall) throws {
+    func enableVideoSending(_ enable: Bool, for call: OCTCall) throws {
         // nop
     }
     
-    func answerCall(call: OCTCall, enableAudio: Bool, enableVideo: Bool) throws {
+    func answer(_ call: OCTCall, enableAudio: Bool, enableVideo: Bool) throws {
         // nop
     }
     
-    func sendCallControl(control: OCTToxAVCallControl, toCall call: OCTCall) throws {
+    func send(_ control: OCTToxAVCallControl, to call: OCTCall) throws {
         // nop
     }
     
@@ -32,19 +32,19 @@ class OCTSubmanagerCallsMock: NSObject, OCTSubmanagerCalls {
         return nil
     }
     
-    func getVideoCallPreview(completionBlock: (CALayer?) -> Void) {
+    func getVideoCallPreview(_ completionBlock: @escaping (CALayer?) -> Void) {
         // nop
     }
     
-    func setAudioBitrate(bitrate: Int32, forCall call: OCTCall) throws {
+    func setAudioBitrate(_ bitrate: Int32, for call: OCTCall) throws {
         // nop
     }
     
-    func routeAudioToSpeaker(speaker: Bool) throws {
+    func routeAudio(toSpeaker speaker: Bool) throws {
         // nop
     }
     
-    func switchToCameraFront(front: Bool) throws {
+    func `switch`(toCameraFront front: Bool) throws {
         // nop
     }
 }

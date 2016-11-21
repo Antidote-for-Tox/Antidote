@@ -13,10 +13,10 @@ private struct Constants {
 }
 
 class ChatIncomingCallCell: ChatMovableDateCell {
-    private var callImageView: UIImageView!
-    private var label: UILabel!
+    fileprivate var callImageView: UIImageView!
+    fileprivate var label: UILabel!
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let incomingModel = model as? ChatIncomingCallCellModel else {
@@ -44,22 +44,22 @@ class ChatIncomingCallCell: ChatMovableDateCell {
         contentView.addSubview(callImageView)
 
         label = UILabel()
-        label.font = UIFont.antidoteFontWithSize(16.0, weight: .Light)
+        label.font = UIFont.antidoteFontWithSize(16.0, weight: .light)
         contentView.addSubview(label)
     }
 
     override func installConstraints() {
         super.installConstraints()
 
-        callImageView.snp_makeConstraints {
+        callImageView.snp.makeConstraints {
             $0.centerY.equalTo(label).offset(Constants.ImageViewYOffset)
             $0.leading.equalTo(contentView).offset(Constants.LeftOffset)
         }
 
-        label.snp_makeConstraints {
+        label.snp.makeConstraints {
             $0.top.equalTo(contentView).offset(Constants.VerticalOffset)
             $0.bottom.equalTo(contentView).offset(-Constants.VerticalOffset)
-            $0.leading.equalTo(callImageView.snp_trailing).offset(Constants.ImageViewToLabelOffset)
+            $0.leading.equalTo(callImageView.snp.trailing).offset(Constants.ImageViewToLabelOffset)
         }
     }
 }

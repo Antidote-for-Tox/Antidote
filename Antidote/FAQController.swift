@@ -11,10 +11,10 @@ private struct Constants {
 }
 
 class FAQController: UIViewController {
-    private let theme: Theme
+    fileprivate let theme: Theme
 
-    private var webView: WKWebView!
-    private var spinner: UIActivityIndicatorView!
+    fileprivate var webView: WKWebView!
+    fileprivate var spinner: UIActivityIndicatorView!
 
     init(theme: Theme) {
         self.theme = theme
@@ -39,17 +39,17 @@ class FAQController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let request = NSURLRequest(URL: NSURL(string: Constants.FAQURL)!)
-        webView.loadRequest(request)
+        let request = URLRequest(url: URL(string: Constants.FAQURL)!)
+        webView.load(request)
     }
 }
 
 extension FAQController: WKNavigationDelegate {
-    func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         spinner.startAnimating()
     }
 
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         spinner.stopAnimating()
     }
 }
@@ -58,21 +58,21 @@ private extension FAQController {
     func createViews() {
         let configuration = WKWebViewConfiguration()
 
-        webView = WKWebView(frame: CGRectZero, configuration: configuration)
+        webView = WKWebView(frame: CGRect.zero, configuration: configuration)
         webView.navigationDelegate = self
         view.addSubview(webView)
 
-        spinner = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        spinner = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         spinner.hidesWhenStopped = true
         view.addSubview(spinner)
     }
 
     func installConstraints() {
-        webView.snp_makeConstraints {
+        webView.snp.makeConstraints {
             $0.edges.equalTo(view)
         }
 
-        spinner.snp_makeConstraints {
+        spinner.snp.makeConstraints {
             $0.center.equalTo(view)
         }
     }

@@ -10,16 +10,16 @@ private struct Constants {
 }
 
 class StaticTableInfoCell: StaticTableBaseCell {
-    private var valueChangedHandler: (Bool -> Void)?
+    fileprivate var valueChangedHandler: ((Bool) -> Void)?
 
-    private var titleLabel: UILabel!
-    private var valueLabel: UILabel!
-    private var arrowImageView: UIImageView!
+    fileprivate var titleLabel: UILabel!
+    fileprivate var valueLabel: UILabel!
+    fileprivate var arrowImageView: UIImageView!
 
-    private var valueLabelToContentRightConstraint: Constraint!
-    private var valueLabelToArrowConstraint: Constraint!
+    fileprivate var valueLabelToContentRightConstraint: Constraint!
+    fileprivate var valueLabelToArrowConstraint: Constraint!
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let infoModel = model as? StaticTableInfoCellModel else {
@@ -35,16 +35,16 @@ class StaticTableInfoCell: StaticTableBaseCell {
 
 
         if infoModel.showArrow {
-            arrowImageView.hidden = false
+            arrowImageView.isHidden = false
             valueLabelToContentRightConstraint.deactivate()
             valueLabelToArrowConstraint.activate()
-            selectionStyle = .Default
+            selectionStyle = .default
         }
         else {
-            arrowImageView.hidden = true
+            arrowImageView.isHidden = true
             valueLabelToArrowConstraint.deactivate()
             valueLabelToContentRightConstraint.activate()
-            selectionStyle = .None
+            selectionStyle = .none
         }
     }
 
@@ -52,11 +52,11 @@ class StaticTableInfoCell: StaticTableBaseCell {
         super.createViews()
 
         titleLabel = UILabel()
-        titleLabel.backgroundColor = UIColor.clearColor()
+        titleLabel.backgroundColor = UIColor.clear
         customContentView.addSubview(titleLabel)
 
         valueLabel = UILabel()
-        valueLabel.backgroundColor = UIColor.clearColor()
+        valueLabel.backgroundColor = UIColor.clear
         customContentView.addSubview(valueLabel)
 
         arrowImageView = UIImageView()
@@ -67,24 +67,24 @@ class StaticTableInfoCell: StaticTableBaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        titleLabel.snp_makeConstraints {
+        titleLabel.snp.makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.leading.equalTo(customContentView)
         }
 
-        valueLabel.snp_makeConstraints {
+        valueLabel.snp.makeConstraints {
             $0.centerY.equalTo(customContentView)
-            $0.leading.greaterThanOrEqualTo(titleLabel.snp_trailing)
+            $0.leading.greaterThanOrEqualTo(titleLabel.snp.trailing)
             valueLabelToContentRightConstraint = $0.trailing.equalTo(customContentView).constraint
         }
 
         valueLabelToContentRightConstraint.deactivate()
 
-        arrowImageView.snp_makeConstraints {
+        arrowImageView.snp.makeConstraints {
             $0.centerY.equalTo(customContentView)
             $0.trailing.equalTo(customContentView)
 
-            valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp_trailing).offset(Constants.ValueToArrowOffset).constraint
+            valueLabelToArrowConstraint = $0.leading.greaterThanOrEqualTo(valueLabel.snp.trailing).offset(Constants.ValueToArrowOffset).constraint
         }
 
         valueLabelToArrowConstraint.deactivate()
@@ -116,7 +116,7 @@ extension StaticTableInfoCell {
 
     override var accessibilityTraits: UIAccessibilityTraits {
         get {
-            return arrowImageView.hidden ? UIAccessibilityTraitStaticText : UIAccessibilityTraitButton
+            return arrowImageView.isHidden ? UIAccessibilityTraitStaticText : UIAccessibilityTraitButton
         }
         set {}
     }

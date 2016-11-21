@@ -5,15 +5,15 @@
 import Foundation
 
 protocol FriendsTabCoordinatorDelegate: class {
-    func friendsTabCoordinatorOpenChat(coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend)
-    func friendsTabCoordinatorCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
-    func friendsTabCoordinatorVideoCall(coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
+    func friendsTabCoordinatorOpenChat(_ coordinator: FriendsTabCoordinator, forFriend friend: OCTFriend)
+    func friendsTabCoordinatorCall(_ coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
+    func friendsTabCoordinatorVideoCall(_ coordinator: FriendsTabCoordinator, toFriend friend: OCTFriend)
 }
 
 class FriendsTabCoordinator: ActiveSessionNavigationCoordinator {
     weak var delegate: FriendsTabCoordinatorDelegate?
 
-    private weak var toxManager: OCTManager!
+    fileprivate weak var toxManager: OCTManager!
 
     init(theme: Theme, toxManager: OCTManager) {
         self.toxManager = toxManager
@@ -21,15 +21,15 @@ class FriendsTabCoordinator: ActiveSessionNavigationCoordinator {
         super.init(theme: theme)
     }
 
-    override func startWithOptions(options: CoordinatorOptions?) {
+    override func startWithOptions(_ options: CoordinatorOptions?) {
         let controller = FriendListController(theme: theme, submanagerObjects: toxManager.objects, submanagerFriends: toxManager.friends, submanagerChats: toxManager.chats, submanagerUser: toxManager.user)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: false)
     }
 
-    func showRequest(request: OCTFriendRequest, animated: Bool) {
-        navigationController.popToRootViewControllerAnimated(false)
+    func showRequest(_ request: OCTFriendRequest, animated: Bool) {
+        navigationController.popToRootViewController(animated: false)
 
         let controller = FriendRequestController(theme: theme, request: request, submanagerFriends: toxManager.friends)
         controller.delegate = self
@@ -39,81 +39,79 @@ class FriendsTabCoordinator: ActiveSessionNavigationCoordinator {
 }
 
 extension FriendsTabCoordinator: FriendListControllerDelegate {
-    func friendListController(controller: FriendListController, didSelectFriend friend: OCTFriend) {
+    func friendListController(_ controller: FriendListController, didSelectFriend friend: OCTFriend) {
         let controller = FriendCardController(theme: theme, friend: friend, submanagerObjects: toxManager.objects)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func friendListController(controller: FriendListController, didSelectRequest request: OCTFriendRequest) {
+    func friendListController(_ controller: FriendListController, didSelectRequest request: OCTFriendRequest) {
         showRequest(request, animated: true)
     }
 
-    func friendListControllerAddFriend(controller: FriendListController) {
+    func friendListControllerAddFriend(_ controller: FriendListController) {
         let controller = AddFriendController(theme: theme, submanagerFriends: toxManager.friends)
         controller.delegate = self
 
         navigationController.pushViewController(controller, animated: true)
     }
 
-    func friendListController(controller: FriendListController, showQRCodeWithText text: String) {
+    func friendListController(_ controller: FriendListController, showQRCodeWithText text: String) {
         let controller = QRViewerController(theme: theme, text: text)
         controller.delegate = self
 
         let toPresent = UINavigationController(rootViewController: controller)
 
-        navigationController.presentViewController(toPresent, animated: true, completion: nil)
+        navigationController.present(toPresent, animated: true, completion: nil)
     }
 }
 
 extension FriendsTabCoordinator: QRViewerControllerDelegate {
     func qrViewerControllerDidFinishPresenting() {
-        navigationController.dismissViewControllerAnimated(true, completion: nil)
+        navigationController.dismiss(animated: true, completion: nil)
     }
 }
 
 extension FriendsTabCoordinator: FriendCardControllerDelegate {
-    func friendCardControllerChangeNickname(controller: FriendCardController, forFriend friend: OCTFriend) {
+    func friendCardControllerChangeNickname(_ controller: FriendCardController, forFriend friend: OCTFriend) {
         let title = String(localized: "nickname")
         let defaultValue = friend.nickname
 
         let textController = TextEditController(theme: theme, title: title, defaultValue: defaultValue, changeTextHandler: {
             [unowned self] newValue -> Void in
-            self.toxManager.objects.changeFriend(friend, nickname: newValue)
+            self.toxManager.objects.change(friend, nickname: newValue)
 
         }, userFinishedEditing: { [unowned self] in
-            self.navigationController.popViewControllerAnimated(true)
+            self.navigationController.popViewController(animated: true)
         })
 
         navigationController.pushViewController(textController, animated: true)
     }
 
-    func friendCardControllerOpenChat(controller: FriendCardController, forFriend friend: OCTFriend) {
+    func friendCardControllerOpenChat(_ controller: FriendCardController, forFriend friend: OCTFriend) {
         delegate?.friendsTabCoordinatorOpenChat(self, forFriend: friend)
     }
 
-    func friendCardControllerCall(controller: FriendCardController, toFriend friend: OCTFriend) {
+    func friendCardControllerCall(_ controller: FriendCardController, toFriend friend: OCTFriend) {
         delegate?.friendsTabCoordinatorCall(self, toFriend: friend)
     }
 
-    func friendCardControllerVideoCall(controller: FriendCardController, toFriend friend: OCTFriend) {
+    func friendCardControllerVideoCall(_ controller: FriendCardController, toFriend friend: OCTFriend) {
         delegate?.friendsTabCoordinatorVideoCall(self, toFriend: friend)
     }
 }
 
 extension FriendsTabCoordinator: FriendRequestControllerDelegate {
-    func friendRequestControllerDidFinish(controller: FriendRequestController) {
-        navigationController.popViewControllerAnimated(true)
+    func friendRequestControllerDidFinish(_ controller: FriendRequestController) {
+        navigationController.popViewController(animated: true)
     }
 }
 
 extension FriendsTabCoordinator: AddFriendControllerDelegate {
-    func addFriendControllerScanQRCode(
-            controller: AddFriendController,
-            validateCodeHandler: String -> Bool,
-            didScanHander: String -> Void) {
-
+    func addFriendControllerScanQRCode(_ controller: AddFriendController,
+                                       validateCodeHandler: @escaping (String) -> Bool,
+                                       didScanHander: @escaping (String) -> Void) {
         let scanner = QRScannerController(theme: theme)
 
         scanner.didScanStringsBlock = { [unowned self, scanner] in
@@ -121,7 +119,7 @@ extension FriendsTabCoordinator: AddFriendControllerDelegate {
 
             if let code = qrCode {
                 didScanHander(code)
-                self.navigationController.dismissViewControllerAnimated(true, completion: nil)
+                self.navigationController.dismiss(animated: true, completion: nil)
             }
             else {
                 scanner.pauseScanning = true
@@ -130,25 +128,25 @@ extension FriendsTabCoordinator: AddFriendControllerDelegate {
                 let message = String(localized:"add_contact_wrong_qr")
                 let button = String(localized:"error_ok_button")
 
-                let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+                let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
-                alert.addAction(UIAlertAction(title: button, style: .Default) { [unowned scanner ] _ -> Void in
+                alert.addAction(UIAlertAction(title: button, style: .default) { [unowned scanner ] _ -> Void in
                     scanner.pauseScanning = false
                 })
 
-                scanner.presentViewController(alert, animated: true, completion: nil)
+                scanner.present(alert, animated: true, completion: nil)
             }
         }
 
         scanner.cancelBlock = { [unowned self] in
-            self.navigationController.dismissViewControllerAnimated(true, completion: nil)
+            self.navigationController.dismiss(animated: true, completion: nil)
         }
 
         let scannerNavCon = UINavigationController(rootViewController: scanner)
-        navigationController.presentViewController(scannerNavCon, animated: true, completion: nil)
+        navigationController.present(scannerNavCon, animated: true, completion: nil)
     }
 
-    func addFriendControllerDidFinish(controller: AddFriendController) {
-        navigationController.popViewControllerAnimated(true)
+    func addFriendControllerDidFinish(_ controller: AddFriendController) {
+        navigationController.popViewController(animated: true)
     }
 }

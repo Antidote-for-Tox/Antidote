@@ -11,9 +11,9 @@ private struct Constants {
 }
 
 class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
-    private var buttonsContainer: UIView!
+    fileprivate var buttonsContainer: UIView!
 
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let multiModel = model as? StaticTableMultiChoiceButtonCellModel else {
@@ -21,7 +21,7 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
             return
         }
 
-        selectionStyle = .None
+        selectionStyle = .none
 
         _ = buttonsContainer.subviews.map {
             $0.removeFromSuperview()
@@ -32,11 +32,11 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
         for buttonModel in multiModel.buttons {
             let button = addButtonWithTheme(theme, model: buttonModel)
 
-            button.snp_makeConstraints {
+            button.snp.makeConstraints {
                 $0.top.bottom.equalTo(buttonsContainer)
 
                 if let previousButton = previousButton {
-                    $0.leading.equalTo(previousButton.snp_trailing).offset(Constants.HorizontalOffset)
+                    $0.leading.equalTo(previousButton.snp.trailing).offset(Constants.HorizontalOffset)
                     $0.width.equalTo(previousButton)
                 }
                 else {
@@ -47,7 +47,7 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
         }
 
         if let previousButton = previousButton {
-            previousButton.snp_makeConstraints {
+            previousButton.snp.makeConstraints {
                 $0.trailing.equalTo(buttonsContainer)
             }
         }
@@ -57,33 +57,33 @@ class StaticTableMultiChoiceButtonCell: StaticTableBaseCell {
         super.createViews()
 
         buttonsContainer = UIView()
-        buttonsContainer.backgroundColor = .clearColor()
+        buttonsContainer.backgroundColor = .clear
         customContentView.addSubview(buttonsContainer)
     }
 
     override func installConstraints() {
         super.installConstraints()
 
-        buttonsContainer.snp_makeConstraints {
+        buttonsContainer.snp.makeConstraints {
             $0.leading.trailing.equalTo(customContentView)
             $0.centerY.equalTo(customContentView)
             $0.height.equalTo(Constants.Height)
         }
     }
 
-    func addButtonWithTheme(theme: Theme, model: StaticTableMultiChoiceButtonCellModel.ButtonModel) -> RoundedButton {
+    func addButtonWithTheme(_ theme: Theme, model: StaticTableMultiChoiceButtonCellModel.ButtonModel) -> RoundedButton {
         let type: RoundedButton.ButtonType
 
         switch model.style {
-            case .Negative:
-                type = .RunningNegative
-            case .Positive:
-                type = .RunningPositive
+            case .negative:
+                type = .runningNegative
+            case .positive:
+                type = .runningPositive
         }
 
         let button = RoundedButton(theme: theme, type: type)
-        button.setTitle(model.title, forState: .Normal)
-        button.addTarget(model.target, action: model.action, forControlEvents: .TouchUpInside)
+        button.setTitle(model.title, for: UIControlState())
+        button.addTarget(model.target, action: model.action, for: .touchUpInside)
         buttonsContainer.addSubview(button)
 
         return button

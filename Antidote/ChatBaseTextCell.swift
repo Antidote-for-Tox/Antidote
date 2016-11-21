@@ -13,7 +13,7 @@ class ChatBaseTextCell: ChatMovableDateCell {
     var bubbleNormalBackground: UIColor?
     var bubbleView: BubbleView!
     
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         guard let textModel = model as? ChatBaseTextCellModel else {
@@ -33,21 +33,21 @@ class ChatBaseTextCell: ChatMovableDateCell {
         contentView.addSubview(bubbleView)
     }
 
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
 
-        bubbleView.userInteractionEnabled = !editing
+        bubbleView.isUserInteractionEnabled = !editing
     }
 
-    override func setHighlighted(highlighted: Bool, animated: Bool) {
+    override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         bubbleView.backgroundColor = bubbleNormalBackground
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
         
-        if editing {
+        if isEditing {
             bubbleView.backgroundColor = bubbleNormalBackground
             return
         }

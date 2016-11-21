@@ -5,33 +5,33 @@
 import Foundation
 
 enum UserStatus {
-    case Offline
-    case Online
-    case Away
-    case Busy
+    case offline
+    case online
+    case away
+    case busy
 
     init(connectionStatus: OCTToxConnectionStatus, userStatus: OCTToxUserStatus) {
         switch (connectionStatus, userStatus) {
-            case (.None, _):
-                self = .Offline
-            case (_, .None):
-                self = .Online
-            case (_, .Away):
-                self = .Away
-            case (_, .Busy):
-                self = .Busy
+            case (.none, _):
+                self = .offline
+            case (_, .none):
+                self = .online
+            case (_, .away):
+                self = .away
+            case (_, .busy):
+                self = .busy
         }
     }
 
     func toString() -> String {
         switch self {
-            case .Offline:
+            case .offline:
                 return String(localized: "status_offline")
-            case .Online:
+            case .online:
                 return String(localized: "status_online")
-            case .Away:
+            case .away:
                 return String(localized: "status_away")
-            case .Busy:
+            case .busy:
                 return String(localized: "status_busy")
         }
     }

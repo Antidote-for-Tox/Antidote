@@ -3,20 +3,20 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 extension OCTManagerConfiguration {
-    static func configurationWithBaseDirectory(baseDirectory: String) -> OCTManagerConfiguration? {
+    static func configurationWithBaseDirectory(_ baseDirectory: String) -> OCTManagerConfiguration? {
         var isDirectory: ObjCBool = false
-        let exists = NSFileManager.defaultManager().fileExistsAtPath(baseDirectory, isDirectory:&isDirectory)
+        let exists = FileManager.default.fileExists(atPath: baseDirectory, isDirectory:&isDirectory)
 
-        guard exists && isDirectory else {
+        guard exists && isDirectory.boolValue else {
             return nil
         }
 
-        let configuration = OCTManagerConfiguration.defaultConfiguration()
+        let configuration = OCTManagerConfiguration.default()
 
         let userDefaultsManager = UserDefaultsManager()
 
-        configuration.options.IPv6Enabled = true
-        configuration.options.UDPEnabled = userDefaultsManager.UDPEnabled
+        configuration.options.iPv6Enabled = true
+        configuration.options.udpEnabled = userDefaultsManager.UDPEnabled
 
         configuration.fileStorage = OCTDefaultFileStorage(baseDirectory: baseDirectory, temporaryDirectory: NSTemporaryDirectory())
 

@@ -20,14 +20,14 @@ class LoginBaseController: KeyboardNotificationController {
 
     let theme: Theme
 
-    private var gradientLayer: CAGradientLayer!
+    fileprivate var gradientLayer: CAGradientLayer!
 
     init(theme: Theme) {
         self.theme = theme
 
         super.init()
 
-        edgesForExtendedLayout = .None
+        edgesForExtendedLayout = UIRectEdge()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {
@@ -40,7 +40,7 @@ class LoginBaseController: KeyboardNotificationController {
         createGradientLayer()
     }
 
-    override func prefersStatusBarHidden() -> Bool {
+    override var prefersStatusBarHidden : Bool {
         return true
     }
 
@@ -57,7 +57,7 @@ class LoginBaseController: KeyboardNotificationController {
 private extension LoginBaseController {
     func createGradientLayer() {
         gradientLayer = CAGradientLayer()
-        gradientLayer.colors = [theme.colorForType(.LoginBackground).CGColor, theme.colorForType(.LoginGradient).CGColor]
-        view.layer.insertSublayer(gradientLayer, atIndex: 0)
+        gradientLayer.colors = [theme.colorForType(.LoginBackground).cgColor, theme.colorForType(.LoginGradient).cgColor]
+        view.layer.insertSublayer(gradientLayer, at: 0)
     }
 }

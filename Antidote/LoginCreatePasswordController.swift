@@ -5,7 +5,7 @@
 import Foundation
 
 protocol LoginCreatePasswordControllerDelegate: class {
-    func loginCreatePasswordController(controller: LoginCreatePasswordController, password: String)
+    func loginCreatePasswordController(_ controller: LoginCreatePasswordController, password: String)
 }
 
 class LoginCreatePasswordController: LoginGenericCreateController {
@@ -21,23 +21,23 @@ class LoginCreatePasswordController: LoginGenericCreateController {
         secondTextField.placeholder = String(localized: "repeat_password")
         secondTextField.secureTextEntry = true
 
-        bottomButton.setTitle(String(localized: "create_account_go_button"), forState: .Normal)
+        bottomButton.setTitle(String(localized: "create_account_go_button"), for: UIControlState())
     }
 
     override func bottomButtonPressed() {
         guard let first = firstTextField.text,
               let second = secondTextField.text else {
-            handleErrorWithType(.PasswordIsEmpty)
+            handleErrorWithType(.passwordIsEmpty)
             return
         }
 
         guard !first.isEmpty && !second.isEmpty else {
-            handleErrorWithType(.PasswordIsEmpty)
+            handleErrorWithType(.passwordIsEmpty)
             return
         }
 
         guard first == second else {
-            handleErrorWithType(.PasswordsDoNotMatch)
+            handleErrorWithType(.passwordsDoNotMatch)
             return
         }
 

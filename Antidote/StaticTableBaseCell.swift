@@ -16,16 +16,16 @@ class StaticTableBaseCell: BaseCell {
      */
     var customContentView: UIView!
 
-    private var bottomSeparatorView: UIView!
+    fileprivate var bottomSeparatorView: UIView!
 
-    func setBottomSeparatorHidden(hidden: Bool) {
-        bottomSeparatorView.hidden = hidden
+    func setBottomSeparatorHidden(_ hidden: Bool) {
+        bottomSeparatorView.isHidden = hidden
     }
 
     /**
         Override this method in subclass.
      */
-    override func setupWithTheme(theme: Theme, model: BaseCellModel) {
+    override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)
 
         bottomSeparatorView.backgroundColor = theme.colorForType(.SeparatorsAndBorders)
@@ -38,7 +38,7 @@ class StaticTableBaseCell: BaseCell {
         super.createViews()
 
         customContentView = UIView()
-        customContentView.backgroundColor = UIColor.clearColor()
+        customContentView.backgroundColor = UIColor.clear
         contentView.addSubview(customContentView)
 
         bottomSeparatorView = UIView()
@@ -51,16 +51,16 @@ class StaticTableBaseCell: BaseCell {
     override func installConstraints() {
         super.installConstraints()
 
-        customContentView.snp_makeConstraints {
+        customContentView.snp.makeConstraints {
             $0.leading.equalTo(contentView).offset(Constants.HorizontalOffset)
             $0.trailing.equalTo(contentView).offset(-Constants.HorizontalOffset)
             $0.top.equalTo(contentView)
             $0.height.greaterThanOrEqualTo(Constants.MinHeight)
         }
 
-        bottomSeparatorView.snp_makeConstraints {
+        bottomSeparatorView.snp.makeConstraints {
             $0.leading.equalTo(customContentView)
-            $0.top.equalTo(customContentView.snp_bottom)
+            $0.top.equalTo(customContentView.snp.bottom)
             $0.trailing.bottom.equalTo(contentView)
             $0.height.equalTo(0.5)
         }
