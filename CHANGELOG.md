@@ -10,6 +10,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.2.0-build-2] - 2016-11-12
 ### Fixed
 - Bug with resending old messages to contacts.
+- Bug with new contact appearing as an old one [#257](https://github.com/Antidote-for-Tox/Antidote/issues/257).
 
 ## [1.2.0] - 2016-11-12
 ### Added
