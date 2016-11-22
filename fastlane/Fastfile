@@ -36,15 +36,14 @@ See full changelog at GitHub http://bit.ly/1MsDgUX
 
 You can help to translate Antidote to your language. See more information here http://bit.ly/1UqDDBX"
 
-    build_number = increment_build_number
+    increment_build_number
     cocoapods
     cert
     sigh
     gym(
       scheme: "Antidote",
       include_symbols: true,
-      include_bitcode: false,
-      use_legacy_build_api: true
+      include_bitcode: false
     )
 
     testflight(changelog: changelog, skip_submission: false)
@@ -58,7 +57,7 @@ You can help to translate Antidote to your language. See more information here h
         skip_binary_upload: true,
         skip_screenshots: true,
         submit_for_review: true,
-        automatic_release: false
+        automatic_release: true
     )
   end
 

@@ -1,6 +1,3 @@
-- Added faded color for undelivered messages.
-- Improved message delivery - now communications should be smoother on bad network.
-- Making Antidote accessible (partly done, more improvements will come in next release).
-- Updating toxcore to 0.0.3.
+<Placeholder>
 
 Have feedback? Contact us at feedback@antidote.im
