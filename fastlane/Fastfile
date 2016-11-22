@@ -32,9 +32,9 @@ platform :ios do
 
     changelog += "
 
-See full changelog at GitHub http://bit.ly/1MsDgUX
+# See full changelog at GitHub http://bit.ly/1MsDgUX
 
-You can help to translate Antidote to your language. See more information here http://bit.ly/1UqDDBX"
+# You can help to translate Antidote to your language. See more information here http://bit.ly/1UqDDBX"
 
     increment_build_number
     cocoapods
@@ -46,8 +46,9 @@ You can help to translate Antidote to your language. See more information here h
       include_bitcode: false
     )
 
-    testflight(changelog: changelog, skip_submission: false)
-
+    testflight(changelog: changelog,
+               skip_submission: false,
+               distribute_external: true)
   end
 
   desc "Release app to the App Store"

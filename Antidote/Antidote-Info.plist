@@ -30,11 +30,11 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0</string>
+	<string>1.3.0</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>6</string>
+	<string>12</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -64,5 +64,11 @@
 	<true/>
 	<key>ITSEncryptionExportComplianceCode</key>
 	<string>700c0aa9-02e3-41f8-93bb-342c874d8fe3</string>
+	<key>NSCameraUsageDescription</key>
+	<string>You can use video calls, send photos and videos, scan QR codes.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>You can use audio and video calls.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>You can send photos and videos.</string>
 </dict>
 </plist>
