@@ -26,6 +26,8 @@ private struct IpadObjects {
     let splitController: UISplitViewController
 
     let primaryController: PrimaryIpadController
+
+    let keyboardObserver = KeyboardObserver()
 }
 
 private struct IphoneObjects {
@@ -529,7 +531,8 @@ private extension ActiveSessionCoordinator {
                         submanagerChats: toxManager.chats,
                         submanagerObjects: toxManager.objects,
                         submanagerFiles: toxManager.files,
-                        delegate: self)
+                        delegate: self,
+                        showKeyboardOnAppear: iPad.keyboardObserver.keyboardVisible)
                 let navigation = UINavigationController(rootViewController: controller)
 
                 iPad.splitController.showDetailViewController(navigation, sender: nil)

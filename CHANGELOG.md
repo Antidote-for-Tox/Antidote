@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Fixed
+- Various crashes.
+- Keeping keyboard when switching chats on iPad.
+- Don't show keyboard when opening chat.
 
 ## [1.3.0] - 2016-11-22
 ### Changed

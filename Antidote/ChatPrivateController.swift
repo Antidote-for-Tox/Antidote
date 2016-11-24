@@ -74,9 +74,10 @@ class ChatPrivateController: KeyboardNotificationController {
     /// Index path for cell with UIMenu presented.
     fileprivate var selectedMenuIndexPath: IndexPath?
 
+    fileprivate let showKeyboardOnAppear: Bool
     fileprivate var disableNextInputViewAnimation = false
 
-    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
+    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate, showKeyboardOnAppear: Bool = false) {
         self.theme = theme
         self.chat = chat
         self.friend = chat.friends.lastObject() as? OCTFriend
@@ -84,6 +85,7 @@ class ChatPrivateController: KeyboardNotificationController {
         self.submanagerObjects = submanagerObjects
         self.submanagerFiles = submanagerFiles
         self.delegate = delegate
+        self.showKeyboardOnAppear = showKeyboardOnAppear
 
         let predicate = NSPredicate(format: "chatUniqueIdentifier == %@", chat.uniqueIdentifier)
         self.messages = submanagerObjects.messages(predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: false)
@@ -160,7 +162,7 @@ class ChatPrivateController: KeyboardNotificationController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !chatInputView.text.isEmpty {
+        if showKeyboardOnAppear {
             disableNextInputViewAnimation = true
             _ = chatInputView.becomeFirstResponder()
         }
