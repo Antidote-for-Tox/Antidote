@@ -107,6 +107,8 @@
 "contact_request_accept" = "Accept";
 /* Contact request confirmation */
 "contact_request_delete_title" = "Delete contact request?";
+/* Text shown when contact was deleted */
+"contact_deleted" = "Deleted contact";
 
 /* Share Tox ID text */
 "show_qr_code" = "Show QR Code";

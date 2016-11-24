@@ -69,9 +69,13 @@ class CallCoordinator: NSObject {
     func callToChat(_ chat: OCTChat, enableVideo: Bool) {
         do {
             let call = try submanagerCalls.call(to: chat, enableAudio: true, enableVideo: enableVideo)
-            let friend = chat.friends.lastObject() as! OCTFriend
+            var nickname = String(localized: "contact_deleted")
 
-            let controller = CallActiveController(theme: theme, callerName: friend.nickname)
+            if let friend = chat.friends.lastObject() as? OCTFriend {
+                nickname = friend.nickname
+            }
+
+            let controller = CallActiveController(theme: theme, callerName: nickname)
             controller.delegate = self
 
             startActiveCallWithCall(call, controller: controller)

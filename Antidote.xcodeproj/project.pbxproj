@@ -198,6 +198,9 @@
 		111783841DC64D75000C1721 /* TextEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB351C1DEF2E006AA9E5 /* TextEditController.swift */; };
 		111783851DC64D75000C1721 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119AD1BD1BDED261000C5CB8 /* TextViewController.swift */; };
 		112422661BDD2032004D7926 /* KeyboardNotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112422651BDD2032004D7926 /* KeyboardNotificationController.swift */; };
+		112495371DE7ABFF00EF45C4 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112495361DE7ABFF00EF45C4 /* KeyboardObserver.swift */; };
+		1124953E1DE7AC0300EF45C4 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112495361DE7ABFF00EF45C4 /* KeyboardObserver.swift */; };
+		1124953F1DE7AC0400EF45C4 /* KeyboardObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112495361DE7ABFF00EF45C4 /* KeyboardObserver.swift */; };
 		112950841D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */; };
 		112950851D63AFCE00C9CE0F /* LoginGenericCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */; };
 		112950871D63AFD800C9CE0F /* LoginCreatePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */; };
@@ -680,6 +683,7 @@
 		111782C41DC64607000C1721 /* SnapshotHelper2-3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SnapshotHelper2-3.swift"; path = "fastlane/SnapshotHelper2-3.swift"; sourceTree = SOURCE_ROOT; };
 		1117835E1DC64C89000C1721 /* ScreenshotUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScreenshotUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
+		112495361DE7ABFF00EF45C4 /* KeyboardObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
 		112950831D63AFCE00C9CE0F /* LoginGenericCreateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginGenericCreateController.swift; sourceTree = "<group>"; };
 		112950861D63AFD800C9CE0F /* LoginCreatePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreatePasswordController.swift; sourceTree = "<group>"; };
 		1129508A1D6851EB00C9CE0F /* LoginCreateAccountCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCreateAccountCoordinator.swift; sourceTree = "<group>"; };
@@ -1187,6 +1191,7 @@
 				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
+				112495361DE7ABFF00EF45C4 /* KeyboardObserver.swift */,
 				1160B67D1D5F9993002DF75B /* KeychainManager.swift */,
 				9CEE6B1E1C510A1E00A1ECB5 /* NotificationObject.swift */,
 				9CDDB2051BD5376200B65D79 /* ProfileManager.swift */,
@@ -1890,6 +1895,7 @@
 				111783471DC64810000C1721 /* LoadingImageView.swift in Sources */,
 				111783021DC6479E000C1721 /* KeychainManager.swift in Sources */,
 				111783771DC64D75000C1721 /* FriendListController.swift in Sources */,
+				1124953F1DE7AC0400EF45C4 /* KeyboardObserver.swift in Sources */,
 				111783261DC647D9000C1721 /* ProfileTabCoordinator.swift in Sources */,
 				1117836D1DC64D75000C1721 /* CallActiveController.swift in Sources */,
 				111782EA1DC64796000C1721 /* FriendListCellModel.swift in Sources */,
@@ -2150,6 +2156,7 @@
 				116513221C2C74940066AF06 /* StaticTableChatButtonsCell.swift in Sources */,
 				9C9A07011BE793BA0003D6C7 /* ProfileMainController.swift in Sources */,
 				11628E631CA57B14008C097E /* ChatOutgoingFileCell.swift in Sources */,
+				112495371DE7ABFF00EF45C4 /* KeyboardObserver.swift in Sources */,
 				116DCE321CAAF47100B693EC /* TopCoordinatorProtocol.swift in Sources */,
 				1180FD9E1C38497A005F3EA1 /* NSDateFormatterExtension.swift in Sources */,
 				9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */,
@@ -2348,6 +2355,7 @@
 				116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				9CEE6AED1C4E8FDC00A1ECB5 /* ProfileMainController.swift in Sources */,
 				11B253AF1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
+				1124953E1DE7AC0300EF45C4 /* KeyboardObserver.swift in Sources */,
 				9CEE6AC11C4E8FDC00A1ECB5 /* ChatOutgoingTextCell.swift in Sources */,
 				9CEE6ABF1C4E8FDC00A1ECB5 /* ChatMovableDateCell.swift in Sources */,
 				116634F31C7B945A0072C980 /* StaticTableMultiChoiceButtonCellModel.swift in Sources */,

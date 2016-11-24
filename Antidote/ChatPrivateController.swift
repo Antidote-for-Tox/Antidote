@@ -48,7 +48,7 @@ class ChatPrivateController: KeyboardNotificationController {
     fileprivate var messagesToken: RLMNotificationToken?
     fileprivate var visibleMessages: Int
     
-    fileprivate let friend: OCTFriend
+    fileprivate let friend: OCTFriend?
     fileprivate var friendToken: RLMNotificationToken?
 
     fileprivate let imageCache = NSCache<AnyObject, AnyObject>()
@@ -66,22 +66,26 @@ class ChatPrivateController: KeyboardNotificationController {
 
     fileprivate var tableViewTapGestureRecognizer: UITapGestureRecognizer!
 
-    fileprivate var newMessageViewTopConstraint: Constraint!
-    fileprivate var chatInputViewBottomConstraint: Constraint!
+    fileprivate var newMessageViewTopConstraint: Constraint?
+    fileprivate var chatInputViewBottomConstraint: Constraint?
 
     fileprivate var newMessagesViewVisible = false
 
     /// Index path for cell with UIMenu presented.
     fileprivate var selectedMenuIndexPath: IndexPath?
 
-    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
+    fileprivate let showKeyboardOnAppear: Bool
+    fileprivate var disableNextInputViewAnimation = false
+
+    init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate, showKeyboardOnAppear: Bool = false) {
         self.theme = theme
         self.chat = chat
-        self.friend = chat.friends.lastObject() as! OCTFriend
+        self.friend = chat.friends.lastObject() as? OCTFriend
         self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
         self.submanagerFiles = submanagerFiles
         self.delegate = delegate
+        self.showKeyboardOnAppear = showKeyboardOnAppear
 
         let predicate = NSPredicate(format: "chatUniqueIdentifier == %@", chat.uniqueIdentifier)
         self.messages = submanagerObjects.messages(predicate: predicate).sortedResultsUsingProperty("dateInterval", ascending: false)
@@ -158,7 +162,8 @@ class ChatPrivateController: KeyboardNotificationController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !chatInputView.text.isEmpty {
+        if showKeyboardOnAppear {
+            disableNextInputViewAnimation = true
             _ = chatInputView.becomeFirstResponder()
         }
     }
@@ -166,15 +171,43 @@ class ChatPrivateController: KeyboardNotificationController {
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         super.keyboardWillShowAnimated(keyboardFrame: frame)
 
-        chatInputViewBottomConstraint.update(offset: -frame.size.height)
-        view.layoutIfNeeded()
+        guard let constraint = chatInputViewBottomConstraint else {
+            return
+        }
+
+        constraint.update(offset: -frame.size.height)
+
+        if disableNextInputViewAnimation {
+            disableNextInputViewAnimation = false
+
+            UIView.setAnimationsEnabled(false)
+            view.layoutIfNeeded()
+            UIView.setAnimationsEnabled(true)
+        }
+        else {
+            view.layoutIfNeeded()
+        }
     }
 
     override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
         super.keyboardWillHideAnimated(keyboardFrame: frame)
 
-        chatInputViewBottomConstraint.update(offset: 0.0)
-        view.layoutIfNeeded()
+        guard let constraint = chatInputViewBottomConstraint else {
+            return
+        }
+
+        constraint.update(offset: 0.0)
+
+        if disableNextInputViewAnimation {
+            disableNextInputViewAnimation = false
+
+            UIView.setAnimationsEnabled(false)
+            view.layoutIfNeeded()
+            UIView.setAnimationsEnabled(true)
+        }
+        else {
+            view.layoutIfNeeded()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -789,21 +822,34 @@ private extension ChatPrivateController {
     }
 
     func addFriendNotification() {
-        titleView.name = self.friend.nickname
-        titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+        guard let friend = self.friend else {
+            titleView.name = String(localized: "contact_deleted")
+            titleView.userStatus = UserStatus(connectionStatus: .none, userStatus: .none)
+            audioButton.isEnabled = false
+            videoButton.isEnabled = false
+            chatInputView.buttonsEnabled = false
+            return
+        }
+
+        titleView.name = friend.nickname
+        titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
 
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
         let results = submanagerObjects.friends(predicate: predicate)
 
         friendToken = results.addNotificationBlock { [unowned self] change in
+            guard let friend = self.friend else {
+                return
+            }
+
             switch change {
                 case .initial:
                     fallthrough
                 case .update:
-                    self.titleView.name = self.friend.nickname
-                    self.titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+                    self.titleView.name = friend.nickname
+                    self.titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
 
-                    let isConnected = self.friend.isConnected
+                    let isConnected = friend.isConnected
 
                     self.audioButton.isEnabled = isConnected
                     self.videoButton.isEnabled = isConnected
@@ -849,10 +895,10 @@ private extension ChatPrivateController {
 
         UIView.animate(withDuration: Constants.NewMessageViewAnimationDuration, animations: {
             if show {
-                self.newMessageViewTopConstraint.update(offset: Constants.NewMessageViewTopOffset - self.newMessagesView.frame.size.height)
+                self.newMessageViewTopConstraint?.update(offset: Constants.NewMessageViewTopOffset - self.newMessagesView.frame.size.height)
             }
             else {
-                self.newMessageViewTopConstraint.update(offset: 0.0)
+                self.newMessageViewTopConstraint?.update(offset: 0.0)
             }
 
             self.view.layoutIfNeeded()
