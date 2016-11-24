@@ -48,7 +48,7 @@ class ChatPrivateController: KeyboardNotificationController {
     fileprivate var messagesToken: RLMNotificationToken?
     fileprivate var visibleMessages: Int
     
-    fileprivate let friend: OCTFriend
+    fileprivate let friend: OCTFriend?
     fileprivate var friendToken: RLMNotificationToken?
 
     fileprivate let imageCache = NSCache<AnyObject, AnyObject>()
@@ -77,7 +77,7 @@ class ChatPrivateController: KeyboardNotificationController {
     init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
         self.theme = theme
         self.chat = chat
-        self.friend = chat.friends.lastObject() as! OCTFriend
+        self.friend = chat.friends.lastObject() as? OCTFriend
         self.submanagerChats = submanagerChats
         self.submanagerObjects = submanagerObjects
         self.submanagerFiles = submanagerFiles
@@ -789,21 +789,34 @@ private extension ChatPrivateController {
     }
 
     func addFriendNotification() {
-        titleView.name = self.friend.nickname
-        titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+        guard let friend = self.friend else {
+            titleView.name = String(localized: "contact_deleted")
+            titleView.userStatus = UserStatus(connectionStatus: .none, userStatus: .none)
+            audioButton.isEnabled = false
+            videoButton.isEnabled = false
+            chatInputView.buttonsEnabled = false
+            return
+        }
+
+        titleView.name = friend.nickname
+        titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
 
         let predicate = NSPredicate(format: "uniqueIdentifier == %@", friend.uniqueIdentifier)
         let results = submanagerObjects.friends(predicate: predicate)
 
         friendToken = results.addNotificationBlock { [unowned self] change in
+            guard let friend = self.friend else {
+                return
+            }
+
             switch change {
                 case .initial:
                     fallthrough
                 case .update:
-                    self.titleView.name = self.friend.nickname
-                    self.titleView.userStatus = UserStatus(connectionStatus: self.friend.connectionStatus, userStatus: self.friend.status)
+                    self.titleView.name = friend.nickname
+                    self.titleView.userStatus = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
 
-                    let isConnected = self.friend.isConnected
+                    let isConnected = friend.isConnected
 
                     self.audioButton.isEnabled = isConnected
                     self.videoButton.isEnabled = isConnected

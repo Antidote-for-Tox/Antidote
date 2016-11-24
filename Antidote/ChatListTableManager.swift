@@ -62,26 +62,37 @@ class ChatListTableManager: NSObject {
 
 extension ChatListTableManager: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        var avatarData: Data?
+        var nickname = String(localized: "contact_deleted")
+        var connectionStatus = OCTToxConnectionStatus.none
+        var userStatus = OCTToxUserStatus.none
+
         let chat = chats[indexPath.row]
-        let friend = chat.friends.lastObject() as! OCTFriend
+
+        if let friend = chat.friends.lastObject() as? OCTFriend {
+            avatarData = friend.avatarData
+            nickname = friend.nickname
+            connectionStatus = friend.connectionStatus
+            userStatus = friend.status
+        }
 
         let model = ChatListCellModel()
-        if let data = friend.avatarData {
+        if let data = avatarData {
             model.avatar = UIImage(data: data)
         }
         else {
             model.avatar = avatarManager.avatarFromString(
-                    friend.nickname,
+                    nickname,
                     diameter: CGFloat(ChatListCell.Constants.AvatarSize))
         }
 
-        model.nickname = friend.nickname
+        model.nickname = nickname
         model.message = lastMessageTextFromChat(chat)
         if let date = chat.lastActivityDate() {
             model.dateText = dateTextFromDate(date)
         }
 
-        model.status = UserStatus(connectionStatus: friend.connectionStatus, userStatus: friend.status)
+        model.status = UserStatus(connectionStatus: connectionStatus, userStatus: userStatus)
         model.isUnread = chat.hasUnreadMessages()
 
         let cell = tableView.dequeueReusableCell(withIdentifier: ChatListCell.staticReuseIdentifier) as! ChatListCell
