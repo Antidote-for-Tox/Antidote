@@ -66,13 +66,15 @@ class ChatPrivateController: KeyboardNotificationController {
 
     fileprivate var tableViewTapGestureRecognizer: UITapGestureRecognizer!
 
-    fileprivate var newMessageViewTopConstraint: Constraint!
-    fileprivate var chatInputViewBottomConstraint: Constraint!
+    fileprivate var newMessageViewTopConstraint: Constraint?
+    fileprivate var chatInputViewBottomConstraint: Constraint?
 
     fileprivate var newMessagesViewVisible = false
 
     /// Index path for cell with UIMenu presented.
     fileprivate var selectedMenuIndexPath: IndexPath?
+
+    fileprivate var disableNextInputViewAnimation = false
 
     init(theme: Theme, chat: OCTChat, submanagerChats: OCTSubmanagerChats, submanagerObjects: OCTSubmanagerObjects, submanagerFiles: OCTSubmanagerFiles, delegate: ChatPrivateControllerDelegate) {
         self.theme = theme
@@ -159,6 +161,7 @@ class ChatPrivateController: KeyboardNotificationController {
         super.viewDidAppear(animated)
 
         if !chatInputView.text.isEmpty {
+            disableNextInputViewAnimation = true
             _ = chatInputView.becomeFirstResponder()
         }
     }
@@ -166,15 +169,43 @@ class ChatPrivateController: KeyboardNotificationController {
     override func keyboardWillShowAnimated(keyboardFrame frame: CGRect) {
         super.keyboardWillShowAnimated(keyboardFrame: frame)
 
-        chatInputViewBottomConstraint.update(offset: -frame.size.height)
-        view.layoutIfNeeded()
+        guard let constraint = chatInputViewBottomConstraint else {
+            return
+        }
+
+        constraint.update(offset: -frame.size.height)
+
+        if disableNextInputViewAnimation {
+            disableNextInputViewAnimation = false
+
+            UIView.setAnimationsEnabled(false)
+            view.layoutIfNeeded()
+            UIView.setAnimationsEnabled(true)
+        }
+        else {
+            view.layoutIfNeeded()
+        }
     }
 
     override func keyboardWillHideAnimated(keyboardFrame frame: CGRect) {
         super.keyboardWillHideAnimated(keyboardFrame: frame)
 
-        chatInputViewBottomConstraint.update(offset: 0.0)
-        view.layoutIfNeeded()
+        guard let constraint = chatInputViewBottomConstraint else {
+            return
+        }
+
+        constraint.update(offset: 0.0)
+
+        if disableNextInputViewAnimation {
+            disableNextInputViewAnimation = false
+
+            UIView.setAnimationsEnabled(false)
+            view.layoutIfNeeded()
+            UIView.setAnimationsEnabled(true)
+        }
+        else {
+            view.layoutIfNeeded()
+        }
     }
 
     override func viewDidLayoutSubviews() {
@@ -862,10 +893,10 @@ private extension ChatPrivateController {
 
         UIView.animate(withDuration: Constants.NewMessageViewAnimationDuration, animations: {
             if show {
-                self.newMessageViewTopConstraint.update(offset: Constants.NewMessageViewTopOffset - self.newMessagesView.frame.size.height)
+                self.newMessageViewTopConstraint?.update(offset: Constants.NewMessageViewTopOffset - self.newMessagesView.frame.size.height)
             }
             else {
-                self.newMessageViewTopConstraint.update(offset: 0.0)
+                self.newMessageViewTopConstraint?.update(offset: 0.0)
             }
 
             self.view.layoutIfNeeded()
