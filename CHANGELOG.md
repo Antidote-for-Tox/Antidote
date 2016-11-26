@@ -3,18 +3,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
-### Fixed
-- Various crashes.
-- Keeping keyboard when switching chats on iPad.
-- Don't show keyboard when opening chat.
 
-## [1.3.0] - 2016-11-22
+## [1.3.0] - 2016-11-25
 ### Changed
 - Migrating to Swift 3. [#255](https://github.com/Antidote-for-Tox/Antidote/issues/255).
 - Migrating to toxcore 0.0.4.
 
 ### Fixed
 - Bug with new contact appearing as an old one [#257](https://github.com/Antidote-for-Tox/Antidote/issues/257).
+- Various crashes.
+- Keeping keyboard when switching chats on iPad.
+- Don't show keyboard when opening chat.
 
 ## [1.2.0-build-2] - 2016-11-12
 ### Fixed
