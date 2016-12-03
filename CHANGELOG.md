@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Changed
+- Migrating to toxcore 0.0.5.
 
 ## [1.3.0] - 2016-11-25
 ### Changed

@@ -14,7 +14,7 @@ PODS:
   - objcTox (0.6.0):
     - CocoaLumberjack (= 1.9.2)
     - Realm (= 1.0.1)
-    - toxcore (= 0.0.4)
+    - toxcore (= 0.0.5)
     - TPCircularBuffer (~> 0.0.1)
   - RBBAnimation (0.4.0)
   - Realm (1.0.1):
@@ -24,7 +24,7 @@ PODS:
     - RBBAnimation (~> 0.3)
     - SDCAutoLayout (~> 2.0)
   - SDCAutoLayout (2.0.3)
-  - toxcore (0.0.4):
+  - toxcore (0.0.5):
     - libopus-patched-config (= 1.1)
     - libsodium (~> 1.0.1)
   - TPCircularBuffer (0.0.1)
@@ -34,7 +34,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase/Core
   - JGProgressHUD (~> 1.4.0)
   - LNNotificationsUI (from `https://github.com/LeoNatan/LNNotificationsUI.git`, commit `3f75043fc6e77b4180b76cb6cfff4faa506ab9fc`)
-  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `1e051b5c078dc8f1e7709ecc923923a119f7ad85`)
+  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `c3ff10cc4f42f6f5ee853550520aaa31c065128a`)
   - SDCAlertView (~> 2.5.4)
   - UITextView+Placeholder (~> 1.1.0)
 
@@ -43,7 +43,7 @@ EXTERNAL SOURCES:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: 1e051b5c078dc8f1e7709ecc923923a119f7ad85
+    :commit: c3ff10cc4f42f6f5ee853550520aaa31c065128a
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 CHECKOUT OPTIONS:
@@ -51,7 +51,7 @@ CHECKOUT OPTIONS:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: 1e051b5c078dc8f1e7709ecc923923a119f7ad85
+    :commit: c3ff10cc4f42f6f5ee853550520aaa31c065128a
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 SPEC CHECKSUMS:
@@ -61,15 +61,15 @@ SPEC CHECKSUMS:
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
   libsodium: 9aba161d2ee096977ecbdcce1ada69ffe511970c
   LNNotificationsUI: 6a091898a701a5d6dbe2edda6657c9d28c100647
-  objcTox: 643ac70a0c6dc2d9db72accd4b74f1951b08185e
+  objcTox: 07e2d7001075e4e23bcf2279ca47a97062552add
   RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
   Realm: 2e15e39d35b08abb529e212ed5d8af107b5236c8
   SDCAlertView: 2e2b0ecc5f1ec367e45d83efa2e512688ca7fa55
   SDCAutoLayout: e6885bb39ab8e2ec2ff84d158f38035f025f7420
-  toxcore: aac179c9e94047f56ca23d350f265913c8059aa1
+  toxcore: c0a502ae227fb40fd21748aeb1958f75eb87e81f
   TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
   UITextView+Placeholder: a6fc3e0378f3870036ec562a7537cbf6dbae4bf6
 
-PODFILE CHECKSUM: 9b48ae77a76d2de10a3654de6ffa96836b16d2c7
+PODFILE CHECKSUM: 36a7ae063e7ed9d20fe83cd58d3a57508c907b3b
 
 COCOAPODS: 1.1.1
