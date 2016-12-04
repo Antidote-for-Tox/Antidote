@@ -48,7 +48,7 @@ GEM
       netrc (= 0.7.8)
     cocoapods-try (1.1.0)
     colored (1.2)
-    commander (4.4.0)
+    commander (4.4.1)
       highline (~> 1.7.2)
     credentials_manager (0.16.2)
       colored
@@ -184,7 +184,7 @@ GEM
       mime-types-data (~> 3.2015)
     mime-types-data (3.2016.0521)
     mini_magick (4.5.1)
-    minitest (5.10.0)
+    minitest (5.10.1)
     molinillo (0.5.4)
     multi_json (1.12.1)
     multi_xml (0.5.5)
