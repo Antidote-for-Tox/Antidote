@@ -29,6 +29,8 @@ class RunningCoordinator {
         self.pinAuthorizationCoordinator = PinAuthorizationCoordinator(theme: theme,
                                                                        submanagerObjects: toxManager.objects,
                                                                        lockOnStartup: !skipAuthorizationChallenge)
+
+        pinAuthorizationCoordinator.delegate = self
     }
 }
 
@@ -54,10 +56,7 @@ extension RunningCoordinator: TopCoordinatorProtocol {
 
 extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
     func activeSessionCoordinatorDidLogout(_ coordinator: ActiveSessionCoordinator, importToxProfileFromURL url: URL?) {
-        let keychainManager = KeychainManager()
-        keychainManager.deleteActiveAccountData()
-
-        delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: url)
+        logoutUser(importToxProfileFromURL: url)
     }
 
     func activeSessionCoordinatorDeleteProfile(_ coordinator: ActiveSessionCoordinator) {
@@ -77,5 +76,17 @@ extension RunningCoordinator: ActiveSessionCoordinatorDelegate {
     }
 }
 
+extension RunningCoordinator: PinAuthorizationCoordinatorDelegate {
+    func pinAuthorizationCoordinatorDidLogout(_ coordinator: PinAuthorizationCoordinator) {
+        logoutUser()
+    }
+}
+
 private extension RunningCoordinator {
+    func logoutUser(importToxProfileFromURL url: URL? = nil) {
+        let keychainManager = KeychainManager()
+        keychainManager.deleteActiveAccountData()
+
+        delegate?.runningCoordinatorDidLogout(self, importToxProfileFromURL: url)
+    }
 }

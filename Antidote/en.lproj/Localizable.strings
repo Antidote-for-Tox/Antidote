@@ -56,6 +56,10 @@
 "pin_do_not_match" = "PINs did not match. Try again";
 /* PIN screen error */
 "pin_incorrect" = "Incorrect PIN";
+/* PIN screen error details */
+"pin_failed_attempts" = "Failed attempts: %@";
+/* PIN screen message shown on log out */
+"pin_logout_message" = "Too many failed attempts. You have been logged out.";
 /* PIN screen screen */
 "pin_enabled" = "Enable PIN";
 /* PIN screen screen */

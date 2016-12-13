@@ -19,8 +19,13 @@ class ProfileSettings: NSObject, NSCoding {
         case Minute5
     }
 
+    /// Pin code used to unlock device.
     var unlockPinCode: String?
+
+    /// Whether use Touch ID for unlocking Antidote.
     var useTouchID: Bool
+
+    /// Time after which Antidote will be blocked in background.
     var lockTimeout: LockTimeout
 
     required override init() {
