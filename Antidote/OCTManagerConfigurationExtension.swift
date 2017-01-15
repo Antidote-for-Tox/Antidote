@@ -15,7 +15,7 @@ extension OCTManagerConfiguration {
 
         let userDefaultsManager = UserDefaultsManager()
 
-        configuration.options.iPv6Enabled = true
+        configuration.options.ipv6Enabled = true
         configuration.options.udpEnabled = userDefaultsManager.UDPEnabled
 
         configuration.fileStorage = OCTDefaultFileStorage(baseDirectory: baseDirectory, temporaryDirectory: NSTemporaryDirectory())
