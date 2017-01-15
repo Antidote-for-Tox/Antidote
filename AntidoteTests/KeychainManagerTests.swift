@@ -5,7 +5,7 @@
 import XCTest
 
 class KeychainManagerTests: XCTestCase {
-    func testKeychainManager() {
+    func testToxPassword() {
         let manager = KeychainManager()
 
         manager.toxPasswordForActiveAccount = nil
@@ -25,6 +25,28 @@ class KeychainManagerTests: XCTestCase {
 
         manager.deleteActiveAccountData()
         XCTAssertNil(manager.toxPasswordForActiveAccount)
+    }
+
+    func testFailedPinAttemptsNumber() {
+        let manager = KeychainManager()
+
+        manager.failedPinAttemptsNumber = nil
+        XCTAssertNil(manager.failedPinAttemptsNumber)
+
+        manager.failedPinAttemptsNumber = 5
+        XCTAssertEqual(manager.failedPinAttemptsNumber!, 5)
+
+        manager.failedPinAttemptsNumber = 8
+        XCTAssertEqual(manager.failedPinAttemptsNumber!, 8)
+
+        manager.failedPinAttemptsNumber = nil
+        XCTAssertNil(manager.failedPinAttemptsNumber)
+
+        manager.failedPinAttemptsNumber = 3
+        XCTAssertEqual(manager.failedPinAttemptsNumber!, 3)
+
+        manager.deleteActiveAccountData()
+        XCTAssertNil(manager.failedPinAttemptsNumber)
     }
 }
 

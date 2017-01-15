@@ -6,7 +6,17 @@ import Foundation
 import AudioToolbox
 import LocalAuthentication
 
+fileprivate struct Constants {
+    static let pinAttemptsNumber = 10
+}
+
+protocol PinAuthorizationCoordinatorDelegate: class {
+    func pinAuthorizationCoordinatorDidLogout(_ coordinator: PinAuthorizationCoordinator)
+}
+
 class PinAuthorizationCoordinator: NSObject {
+    weak var delegate: PinAuthorizationCoordinatorDelegate?
+
     fileprivate enum State {
         case unlocked
         case locked(lockTime: CFTimeInterval)
@@ -98,8 +108,24 @@ extension PinAuthorizationCoordinator: EnterPinControllerDelegate {
     }
 
     func enterPinControllerFailure(_ controller: EnterPinController) {
+        let keychainManager = KeychainManager()
+
+        var failedAttempts = keychainManager.failedPinAttemptsNumber ?? 0
+        failedAttempts += 1
+
+        keychainManager.failedPinAttemptsNumber = failedAttempts
+
+        guard failedAttempts < Constants.pinAttemptsNumber else {
+            keychainManager.failedPinAttemptsNumber = nil
+            handleErrorWithType(.pinLogOut)
+
+            delegate?.pinAuthorizationCoordinatorDidLogout(self)
+            return
+        }
+
         controller.resetEnteredPin()
         controller.topText = String(localized: "pin_incorrect")
+        controller.descriptionText = String(localized: "pin_failed_attempts", "\(failedAttempts)")
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
     }
 }
@@ -135,6 +161,8 @@ private extension PinAuthorizationCoordinator {
     }
 
     func unlock() {
+        KeychainManager().failedPinAttemptsNumber = nil
+
         state = .unlocked
         window.isHidden = true
     }
@@ -169,8 +197,14 @@ private extension PinAuthorizationCoordinator {
             fatalError("pin shouldn't be nil")
         }
 
+        let failedAttempts = KeychainManager().failedPinAttemptsNumber ?? 0
+
         let controller = EnterPinController(theme: theme, state: .validatePin(validPin: pin))
         controller.topText = String(localized: "pin_enter_to_unlock")
+        controller.descriptionText =
+          failedAttempts > 0 ?
+          String(localized: "pin_failed_attempts", "\(failedAttempts)") :
+          nil
         controller.delegate = self
         window.rootViewController = controller
     }

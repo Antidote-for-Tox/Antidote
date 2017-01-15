@@ -3,6 +3,12 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- Limiting number of entering pin attempts to 10.
+
+### Changed
+- Migrating to toxcore 0.1.4.
+- Improved bootstraping mechanism, Antidote now should connect to network faster.
 
 ## [1.3.1] - 2016-12-03
 ### Changed

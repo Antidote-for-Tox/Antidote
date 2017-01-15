@@ -27,6 +27,7 @@ enum ErrorHandlerType {
     case acceptIncomingFile
     case cancelFileTransfer
     case pauseFileTransfer
+    case pinLogOut
 }
 
 
@@ -96,6 +97,8 @@ func handleErrorWithType(_ type: ErrorHandlerType, error: NSError? = nil, retryB
         case .pauseFileTransfer:
             let (title, message) = OCTFileTransferError(rawValue: error!.code)!.strings()
             UIAlertController.showWithTitle(title, message: message, retryBlock: retryBlock)
+        case .pinLogOut:
+            UIAlertController.showWithTitle(String(localized: "error_title"), message: String(localized: "pin_logout_message"), retryBlock: retryBlock)
     }
 }
 

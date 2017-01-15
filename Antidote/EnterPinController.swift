@@ -31,16 +31,18 @@ class EnterPinController: UIViewController {
             return pinInputView.topText
         }
         set {
-            if #available(iOS 9.0, *) {
-                loadViewIfNeeded()
-            } else {
-                if !isViewLoaded {
-                    // creating view
-                    view.setNeedsDisplay()
-                }
-            }
-
+            customLoadView()
             pinInputView.topText = newValue
+        }
+    }
+
+    var descriptionText: String? {
+        get {
+            return pinInputView.descriptionText
+        }
+        set {
+            customLoadView()
+            pinInputView.descriptionText = newValue
         }
     }
 
@@ -130,6 +132,17 @@ private extension EnterPinController {
     func installConstraints() {
         pinInputView.snp.makeConstraints {
             $0.center.equalTo(view)
+        }
+    }
+
+    func customLoadView() {
+        if #available(iOS 9.0, *) {
+            loadViewIfNeeded()
+        } else {
+            if !isViewLoaded {
+                // creating view
+                view.setNeedsDisplay()
+            }
         }
     }
 }

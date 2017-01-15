@@ -8,6 +8,7 @@ private struct Constants {
     static let ActiveAccountDataService = "me.dvor.Antidote.KeychainManager.ActiveAccountDataService"
 
     static let toxPasswordForActiveAccount = "toxPasswordForActiveAccount"
+    static let failedPinAttemptsNumber = "failedPinAttemptsNumber"
 }
 
 class KeychainManager {
@@ -21,13 +22,48 @@ class KeychainManager {
         }
     }
 
+    /// Number of failed enters of pin by user.
+    var failedPinAttemptsNumber: Int? {
+        get {
+            return getIntForKey(Constants.failedPinAttemptsNumber)
+        }
+        set {
+            setInt(newValue, forKey: Constants.failedPinAttemptsNumber)
+        }
+    }
+
     /// Removes all data related to active account.
     func deleteActiveAccountData() {
-        self.toxPasswordForActiveAccount = nil
+        toxPasswordForActiveAccount = nil
+        failedPinAttemptsNumber = nil
     }
 }
 
 private extension KeychainManager {
+    func getIntForKey(_ key: String) -> Int? {
+        guard let data = getDataForKey(key) else {
+            return nil
+        }
+
+        guard let number = NSKeyedUnarchiver.unarchiveObject(with: data) as? NSNumber else {
+            return nil
+        }
+
+        return number.intValue
+    }
+
+    func setInt(_ value: Int?, forKey key: String) {
+        guard let value = value else {
+            setData(nil, forKey: key)
+            return
+        }
+
+        let number = NSNumber(value: value)
+
+        let data = NSKeyedArchiver.archivedData(withRootObject: number)
+        setData(data, forKey: key)
+    }
+
     func getStringForKey(_ key: String) -> String? {
         guard let data = getDataForKey(key) else {
             return nil

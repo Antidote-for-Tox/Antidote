@@ -39,12 +39,22 @@ class PinInputView: UIView {
         }
     }
 
+    var descriptionText: String? {
+        get {
+            return descriptionLabel.text
+        }
+        set {
+            descriptionLabel.text = newValue
+        }
+    }
+
     fileprivate let pinLength: Int
 
     fileprivate let topColorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     fileprivate let bottomColorComponents: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
 
     fileprivate var topLabel: UILabel!
+    fileprivate var descriptionLabel: UILabel!
     fileprivate var dotsContainer: UIView!
     fileprivate var dotsImageViews = [UIImageView]()
     fileprivate var numericButtons = [UIButton]()
@@ -57,7 +67,7 @@ class PinInputView: UIView {
 
         super.init(frame: CGRect.zero)
 
-        createTopLabel()
+        createLabels()
         createDotsImageViews()
         createNumericButtons()
         createDeleteButton()
@@ -101,10 +111,14 @@ extension PinInputView {
 }
 
 private extension PinInputView {
-    func createTopLabel() {
+    func createLabels() {
         topLabel = UILabel()
         topLabel.font = UIFont.antidoteFontWithSize(18.0, weight: .medium)
         addSubview(topLabel)
+
+        descriptionLabel = UILabel()
+        descriptionLabel.font = UIFont.antidoteFontWithSize(16.0, weight: .light)
+        addSubview(descriptionLabel)
     }
 
     func createDotsImageViews() {
@@ -147,6 +161,11 @@ private extension PinInputView {
             $0.centerX.equalTo(self)
         }
 
+        descriptionLabel.snp.makeConstraints {
+            $0.top.equalTo(topLabel.snp.bottom).offset(Constants.VerticalOffsetSmall)
+            $0.centerX.equalTo(self)
+        }
+
         installConstraintsForDotsViews()
         installConstraintsForZeroButton()
         installConstraintsForNumericButtons()
@@ -159,7 +178,7 @@ private extension PinInputView {
 
     func installConstraintsForDotsViews() {
         dotsContainer.snp.makeConstraints {
-            $0.top.equalTo(topLabel.snp.bottom).offset(Constants.VerticalOffsetBig)
+            $0.top.equalTo(descriptionLabel.snp.bottom).offset(Constants.VerticalOffsetBig)
             $0.centerX.equalTo(self)
         }
 
@@ -250,6 +269,7 @@ private extension PinInputView {
 
     func updateOtherColors() {
         topLabel.textColor = gradientColorAtPointY(topLabel.center.y)
+        descriptionLabel.textColor = gradientColorAtPointY(descriptionLabel.center.y)
         deleteButton.setTitleColor(gradientColorAtPointY(deleteButton.center.y), for: UIControlState())
     }
 
