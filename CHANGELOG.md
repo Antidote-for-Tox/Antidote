@@ -3,6 +3,8 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+### Added
+- ChatPrivateController: adding ability to send video with image picker. [#252](https://github.com/Antidote-for-Tox/Antidote/issues/252).
 
 ## [1.3.2] - 2017-01-15
 ### Added
