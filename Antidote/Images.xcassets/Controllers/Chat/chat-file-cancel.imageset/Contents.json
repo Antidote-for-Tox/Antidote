@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "chat-file-cancel.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "chat-file-cancel@2x.png"
+      "filename" : "chat-file-cancel@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",

@@ -2,12 +2,13 @@
   "images" : [
     {
       "idiom" : "universal",
+      "filename" : "login-password-icon.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "login-password-icon@2x.png"
+      "filename" : "login-password-icon@2x.png",
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
