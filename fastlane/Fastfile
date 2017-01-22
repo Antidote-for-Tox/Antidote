@@ -16,7 +16,7 @@ platform :ios do
     )
   end
 
-  desc "Create screenshots and upload them"
+  desc "Create screenshots"
   lane :shots do
     snapshot
     # frameit

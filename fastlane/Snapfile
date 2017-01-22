@@ -10,6 +10,7 @@ devices([
 languages([
   "en-US",
   "fr",
+  "da",
 ])
 
 scheme "AntidoteScreenshots"
