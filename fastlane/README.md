@@ -15,7 +15,7 @@ Runs all the tests
 ```
 fastlane ios shots
 ```
-Create screenshots and upload them
+Create screenshots
 ### ios beta
 ```
 fastlane ios beta
