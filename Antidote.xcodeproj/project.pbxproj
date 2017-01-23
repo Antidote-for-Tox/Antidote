@@ -41,7 +41,6 @@
 		111782C11DC643A3000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */; };
 		111782C21DC643A3000C1721 /* OCTSubmanagerObjectsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */; };
 		111782C31DC643A3000C1721 /* OCTSubmanagerUserMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117829B1DC5363C000C1721 /* OCTSubmanagerUserMock.swift */; };
-		111782C51DC64607000C1721 /* SnapshotHelper2-3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782C41DC64607000C1721 /* SnapshotHelper2-3.swift */; };
 		111782D21DC64796000C1721 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB651C1F5694006AA9E5 /* BaseCell.swift */; };
 		111782D31DC64796000C1721 /* BaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1193AB671C1F569A006AA9E5 /* BaseCellModel.swift */; };
 		111782D41DC64796000C1721 /* ChatBaseTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F276AD1D3EBEF700C613AA /* ChatBaseTextCell.swift */; };
@@ -250,6 +249,7 @@
 		114962931C5E1BE0001E5435 /* ChangePasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962911C5E1BE0001E5435 /* ChangePasswordController.swift */; };
 		114962951C64051A001E5435 /* CallBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962941C64051A001E5435 /* CallBaseController.swift */; };
 		114962961C64051A001E5435 /* CallBaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114962941C64051A001E5435 /* CallBaseController.swift */; };
+		114D2D401E34D6E400662713 /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 114D2D3F1E34D6E400662713 /* SnapshotHelper.swift */; };
 		1156A4791C0E478D005AC8C6 /* StaticTableBaseCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */; };
 		1156A47B1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */; };
 		1156A47D1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */; };
@@ -680,7 +680,6 @@
 		111782A71DC64391000C1721 /* ScreenshotsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenshotsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		111782A91DC64391000C1721 /* ScreenshotsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotsUITests.swift; sourceTree = "<group>"; };
 		111782AB1DC64391000C1721 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		111782C41DC64607000C1721 /* SnapshotHelper2-3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "SnapshotHelper2-3.swift"; path = "fastlane/SnapshotHelper2-3.swift"; sourceTree = SOURCE_ROOT; };
 		1117835E1DC64C89000C1721 /* ScreenshotUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScreenshotUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		112422651BDD2032004D7926 /* KeyboardNotificationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardNotificationController.swift; sourceTree = "<group>"; };
 		112495361DE7ABFF00EF45C4 /* KeyboardObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardObserver.swift; sourceTree = "<group>"; };
@@ -723,6 +722,7 @@
 		114962741C5CEB0B001E5435 /* ProfileDetailsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailsController.swift; sourceTree = "<group>"; };
 		114962911C5E1BE0001E5435 /* ChangePasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePasswordController.swift; sourceTree = "<group>"; };
 		114962941C64051A001E5435 /* CallBaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CallBaseController.swift; sourceTree = "<group>"; };
+		114D2D3F1E34D6E400662713 /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = fastlane/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		1156A4781C0E478D005AC8C6 /* StaticTableBaseCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableBaseCellModel.swift; sourceTree = "<group>"; };
 		1156A47A1C0F6178005AC8C6 /* StaticTableButtonCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableButtonCellModel.swift; sourceTree = "<group>"; };
 		1156A47C1C0F632C005AC8C6 /* StaticTableSelectableCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableSelectableCellModel.swift; sourceTree = "<group>"; };
@@ -990,7 +990,7 @@
 				111782AB1DC64391000C1721 /* Info.plist */,
 				111782A91DC64391000C1721 /* ScreenshotsUITests.swift */,
 				1117835E1DC64C89000C1721 /* ScreenshotUITests-Bridging-Header.h */,
-				111782C41DC64607000C1721 /* SnapshotHelper2-3.swift */,
+				114D2D3F1E34D6E400662713 /* SnapshotHelper.swift */,
 			);
 			path = ScreenshotsUITests;
 			sourceTree = "<group>";
@@ -1518,6 +1518,7 @@
 				TargetAttributes = {
 					111782A61DC64391000C1721 = {
 						CreatedOnToolsVersion = 7.3.1;
+						LastSwiftMigration = 0820;
 						TestTargetID = 1164762E19794D3300DB20B8;
 					};
 					1164762E19794D3300DB20B8 = {
@@ -1860,6 +1861,7 @@
 				111782F61DC64796000C1721 /* StaticTableInfoCellModel.swift in Sources */,
 				111782F21DC64796000C1721 /* StaticTableChatButtonsCellModel.swift in Sources */,
 				111783011DC6479E000C1721 /* FriendListDataSource.swift in Sources */,
+				114D2D401E34D6E400662713 /* SnapshotHelper.swift in Sources */,
 				111783291DC647DF000C1721 /* InterfaceIdiom.swift in Sources */,
 				111782DC1DC64796000C1721 /* ChatIncomingFileCellModel.swift in Sources */,
 				111782D91DC64796000C1721 /* ChatIncomingCallCell.swift in Sources */,
@@ -1966,7 +1968,6 @@
 				111782BC1DC643A3000C1721 /* OCTSubmanagerBootstrapMock.swift in Sources */,
 				111782D51DC64796000C1721 /* ChatBaseTextCellModel.swift in Sources */,
 				111783241DC647D9000C1721 /* NotificationCoordinator.swift in Sources */,
-				111782C51DC64607000C1721 /* SnapshotHelper2-3.swift in Sources */,
 				111782DF1DC64796000C1721 /* ChatListCellModel.swift in Sources */,
 				111783111DC647BD000C1721 /* PortraitNavigationController.swift in Sources */,
 				111782F01DC64796000C1721 /* StaticTableButtonCellModel.swift in Sources */,
@@ -2517,6 +2518,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ScreenshotsUITests/ScreenshotUITests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Antidote;
 			};
 			name = Debug;
@@ -2570,6 +2572,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = me.dvor.ScreenshotsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "ScreenshotsUITests/ScreenshotUITests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = Antidote;
 			};
 			name = Release;
@@ -2672,7 +2675,7 @@
 				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = NHVF8NSG3J;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2704,7 +2707,7 @@
 				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				DEVELOPMENT_TEAM = NHVF8NSG3J;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
