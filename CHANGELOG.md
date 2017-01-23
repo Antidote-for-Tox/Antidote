@@ -3,8 +3,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
+
+## [1.3.3] - 2017-01-24
 ### Added
-- ChatPrivateController: adding ability to send video with image picker. [#252](https://github.com/Antidote-for-Tox/Antidote/issues/252).
+- Adding ability to send video from camera/photo gallery. [#252](https://github.com/Antidote-for-Tox/Antidote/issues/252).
 
 ### Changed
 - Migrating to toxcore 0.1.5.
@@ -217,7 +219,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.2...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.3...master
+[1.3.3]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.2...1.3.3
 [1.3.2]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.1...1.3.2
 [1.3.1]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.0...1.3.1
 [1.3.0]: https://github.com/Antidote-for-Tox/Antidote/compare/1.2.0-build-2...1.3.0
