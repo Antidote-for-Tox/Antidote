@@ -6,6 +6,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 - ChatPrivateController: adding ability to send video with image picker. [#252](https://github.com/Antidote-for-Tox/Antidote/issues/252).
 
+### Changed
+- Migrating to toxcore 0.1.5.
+
 ## [1.3.2] - 2017-01-15
 ### Added
 - Limiting number of entering pin attempts to 10.
