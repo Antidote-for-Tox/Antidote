@@ -41,7 +41,7 @@ class ScreenshotsUITests: XCTestCase {
     func createAccount() {
         let app = XCUIApplication()
 
-        XCUIDevice.sharedDevice().orientation = .Portrait
+        XCUIDevice.shared().orientation = .portrait
 
         app.buttons[localizedString("create_account")].tap()
 
@@ -61,7 +61,7 @@ class ScreenshotsUITests: XCTestCase {
 
         app.keyboards.buttons["Go"].tap()
 
-        addUIInterruptionMonitorWithDescription("Notifications alert") { (alert) -> Bool in
+        addUIInterruptionMonitor(withDescription: "Notifications alert") { (alert) -> Bool in
             let button = alert.buttons["OK"]
             if button.exists {
                 button.tap()
@@ -76,7 +76,7 @@ class ScreenshotsUITests: XCTestCase {
         let app = XCUIApplication()
 
         // need to interact with the app for the handler to fire
-        app.tapTabBarElement(.Chats)
+        app.tapTabBarElement(element: .Chats)
         
         snapshot(Constants.SnapshotContactList)
 
@@ -84,9 +84,9 @@ class ScreenshotsUITests: XCTestCase {
         
         snapshot(Constants.SnapshotConversation)
 
-        app.navigationBars[localizedString("chats_title")].buttons.elementBoundByIndex(0).tap()
+        app.navigationBars[localizedString("chats_title")].buttons.element(boundBy: 0).tap()
         
-        app.tapTabBarElement(.Profile)
+        app.tapTabBarElement(element: .Profile)
         
         pinPart()
     }
@@ -96,13 +96,13 @@ class ScreenshotsUITests: XCTestCase {
 
         app.tables.staticTexts[localizedString("app_store_screenshot_conversation_7")].tap()
 
-        app.childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(2).childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(0).childrenMatchingType(.TextView).element.tap()
+        app.children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 2).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element.children(matching: .other).element(boundBy: 0).children(matching: .textView).element.tap()
         
-        XCUIDevice.sharedDevice().orientation = .LandscapeRight
+        XCUIDevice.shared().orientation = .landscapeRight
 
         snapshot(Constants.SnapshotConversation)
 
-        app.navigationBars["Antidote.PrimaryIpad"].childrenMatchingType(.Other).element.childrenMatchingType(.Button).element.tap()
+        app.navigationBars["Antidote.PrimaryIpad"].children(matching: .other).element.children(matching: .button).element.tap()
         
         pinPart()
     }
@@ -118,12 +118,12 @@ class ScreenshotsUITests: XCTestCase {
         button.tap()
         button.tap()
 
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+        let delayTime = DispatchTime.now() + Double(Int64(1.0 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             snapshot("03_Pin")
         }
 
-        app.buttons["7"].pressForDuration(5.0)
+        app.buttons["7"].press(forDuration: 5.0)
     }
 }
 
@@ -150,16 +150,16 @@ extension XCUIApplication {
 
     func tapTabBarElement(element: TabBarElement) {
         // TODO refactor me pls
-        let button = childrenMatchingType(.Window).elementBoundByIndex(0).childrenMatchingType(.Other).element.childrenMatchingType(.Other).elementBoundByIndex(1).childrenMatchingType(.Other).elementBoundByIndex(element.index).childrenMatchingType(.Button).element
+        let button = children(matching: .window).element(boundBy: 0).children(matching: .other).element.children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: element.index).children(matching: .button).element
 
         button.tap()
     }
 }
 
-func localizedString(key: String) -> String {
+func localizedString(_ key: String) -> String {
     class LocalizableDummy {}
 
-    let bundle = NSBundle(forClass: LocalizableDummy().dynamicType)
+    let bundle = Bundle(for: type(of: LocalizableDummy()))
 
     var language = deviceLanguage
 
@@ -170,28 +170,9 @@ func localizedString(key: String) -> String {
             break
     }
 
-    let path = bundle.pathForResource(language, ofType: "lproj")!
+    let path = bundle.path(forResource: language, ofType: "lproj")!
 
-    let localizationBundle = NSBundle(path: path)!
+    let localizationBundle = Bundle(path: path)!
     return NSLocalizedString(key, bundle:localizationBundle, comment: "")
 }
 
-func localizedString(key: String) -> String {
-    class LocalizableDummy {}
-
-    let bundle = NSBundle(forClass: LocalizableDummy().dynamicType)
-
-    var language = deviceLanguage
-
-    switch language {
-        case "en-US":
-            language = "en"
-        default:
-            break
-    }
-
-    let path = bundle.pathForResource(language, ofType: "lproj")!
-
-    let localizationBundle = NSBundle(path: path)!
-    return NSLocalizedString(key, bundle:localizationBundle, comment: "")
-}
