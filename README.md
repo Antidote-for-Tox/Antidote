@@ -32,7 +32,7 @@ open Antidote.xcworkspace
 
 ## What's next?
 
-See [Backlog](https://github.com/Antidote-for-Tox/Antidote/milestone/1) milestone. Top issue has highest priority and will be started earlier.
+See [Main Project](https://github.com/Antidote-for-Tox/Antidote/projects/1).
 
 ## Features
 
