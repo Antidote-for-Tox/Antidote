@@ -460,6 +460,9 @@
 		9CDC092C1C34102F00DC0D63 /* ExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */; };
 		9CDC092D1C34102F00DC0D63 /* ExceptionHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */; };
 		9CDDB2061BD5376200B65D79 /* ProfileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDDB2051BD5376200B65D79 /* ProfileManager.swift */; };
+		9CDE31E61E489B2700333E0D /* ChatInputViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE31E51E489B2700333E0D /* ChatInputViewManager.swift */; };
+		9CDE31E71E489B2700333E0D /* ChatInputViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE31E51E489B2700333E0D /* ChatInputViewManager.swift */; };
+		9CDE31E81E489B2700333E0D /* ChatInputViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CDE31E51E489B2700333E0D /* ChatInputViewManager.swift */; };
 		9CE0BDE61C45229500DCE357 /* ChatListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDE51C45229500DCE357 /* ChatListController.swift */; };
 		9CE0BDF01C4522BF00DCE357 /* ChatListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */; };
 		9CE0BDF31C4522C800DCE357 /* ChatListCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */; };
@@ -935,6 +938,7 @@
 		9CDC092B1C34102F00DC0D63 /* ExceptionHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExceptionHandling.m; sourceTree = "<group>"; };
 		9CDC093D1C3415DE00DC0D63 /* Antidote-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antidote-Prefix.pch"; sourceTree = "<group>"; };
 		9CDDB2051BD5376200B65D79 /* ProfileManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileManager.swift; sourceTree = "<group>"; };
+		9CDE31E51E489B2700333E0D /* ChatInputViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatInputViewManager.swift; sourceTree = "<group>"; };
 		9CE0BDE51C45229500DCE357 /* ChatListController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListController.swift; sourceTree = "<group>"; };
 		9CE0BDEF1C4522BF00DCE357 /* ChatListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCell.swift; sourceTree = "<group>"; };
 		9CE0BDF21C4522C800DCE357 /* ChatListCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListCellModel.swift; sourceTree = "<group>"; };
@@ -1185,12 +1189,12 @@
 			isa = PBXGroup;
 			children = (
 				11F83BD31CAFB0F30074FE11 /* AntidoteTests-Bridging-Header.h */,
-				9CDC09241C34083100DC0D63 /* FriendListDataSourceTest.swift */,
 				1173F05A1BC5D94400B88B7B /* Info.plist */,
+				9CDC09241C34083100DC0D63 /* FriendListDataSourceTest.swift */,
 				1160B6801D5FC7CC002DF75B /* KeychainManagerTests.swift */,
-				113F030D1CAFCCE20009ABE1 /* SnapshotTests */,
 				11F83BDA1CAFB2A20074FE11 /* SwiftSupport.swift */,
 				1173F06F1BC5D9CA00B88B7B /* ThemeTest.swift */,
+				113F030D1CAFCCE20009ABE1 /* SnapshotTests */,
 			);
 			path = AntidoteTests;
 			sourceTree = "<group>";
@@ -1201,6 +1205,7 @@
 				113F03411CB31DD60009ABE1 /* AlertAudioPlayer.swift */,
 				11B2534E1C4AD2550068F47C /* AudioPlayer.swift */,
 				1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */,
+				9CDE31E51E489B2700333E0D /* ChatInputViewManager.swift */,
 				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */,
 				9CDC091A1C34081900DC0D63 /* FriendListDataSource.swift */,
@@ -1960,6 +1965,7 @@
 				111783141DC647C1000C1721 /* LoginCreateAccountController.swift in Sources */,
 				1117836A1DC64D5A000C1721 /* CallIncomingController.swift in Sources */,
 				111782EE1DC64796000C1721 /* StaticTableBaseCellModel.swift in Sources */,
+				9CDE31E81E489B2700333E0D /* ChatInputViewManager.swift in Sources */,
 				1117837A1DC64D75000C1721 /* PrimaryIpadController.swift in Sources */,
 				111783731DC64D75000C1721 /* ChatPrivateController.swift in Sources */,
 				111783121DC647C1000C1721 /* LoginBaseController.swift in Sources */,
@@ -2126,6 +2132,7 @@
 				11B253FE1C52C0AA0068F47C /* StaticTableSwitchCellModel.swift in Sources */,
 				119AD1CC1BDEDD9C000C5CB8 /* UIColorExtension.swift in Sources */,
 				1117829F1DC53AB4000C1721 /* ToxFactory.swift in Sources */,
+				9CDE31E61E489B2700333E0D /* ChatInputViewManager.swift in Sources */,
 				115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */,
 				9C7475C51BC698510098B1A4 /* StringExtension.swift in Sources */,
 				1193AB661C1F5694006AA9E5 /* BaseCell.swift in Sources */,
@@ -2294,6 +2301,7 @@
 				9CEE6AF71C4E8FDC00A1ECB5 /* AppCoordinator.swift in Sources */,
 				111782941DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */,
 				113F03141CAFD5EE0009ABE1 /* CellSnapshotTest.swift in Sources */,
+				9CDE31E71E489B2700333E0D /* ChatInputViewManager.swift in Sources */,
 				112E4ED71C668C02004312CF /* CallIncomingController.swift in Sources */,
 				9CEE6ADC1C4E8FDC00A1ECB5 /* KeyboardNotificationController.swift in Sources */,
 				11628E761CA5811C008C097E /* ChatGenericFileCellModel.swift in Sources */,

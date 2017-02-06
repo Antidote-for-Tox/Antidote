@@ -5,7 +5,6 @@
 import UIKit
 import SnapKit
 import MobileCoreServices
-import Photos
 
 private struct Constants {
     static let MessagesPortionSize = 50
@@ -63,6 +62,8 @@ class ChatPrivateController: KeyboardNotificationController {
     fileprivate var newMessagesView: UIView!
     fileprivate var chatInputView: ChatInputView!
     fileprivate var editMessagesToolbar: UIToolbar!
+
+    fileprivate var chatInputViewManager: ChatInputViewManager!
 
     fileprivate var tableViewTapGestureRecognizer: UITapGestureRecognizer!
 
@@ -545,44 +546,6 @@ extension ChatPrivateController: ChatMovableDateCellDelegate {
     }
 }
 
-extension ChatPrivateController: ChatInputViewDelegate {
-    func chatInputViewCameraButtonPressed(_ view: ChatInputView, cameraView: UIView) {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.popoverPresentationController?.sourceView = cameraView
-        alert.popoverPresentationController?.sourceRect = CGRect(x: cameraView.frame.size.width / 2, y: cameraView.frame.size.height / 2, width: 1.0, height: 1.0)
-
-        func addAction(title: String, sourceType: UIImagePickerControllerSourceType) {
-            if UIImagePickerController.isSourceTypeAvailable(sourceType) {
-                alert.addAction(UIAlertAction(title: title, style: .default) { [unowned self] _ -> Void in
-                    let controller = UIImagePickerController()
-                    controller.delegate = self
-                    controller.sourceType = sourceType
-                    controller.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-                    controller.videoQuality = .typeHigh
-                    self.present(controller, animated: true, completion: nil)
-                })
-            }
-        }
-
-        addAction(title: String(localized: "photo_from_camera"), sourceType: .camera)
-        addAction(title: String(localized: "photo_from_photo_library"), sourceType: .photoLibrary)
-        alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .cancel, handler: nil))
-
-        present(alert, animated: true, completion: nil)
-    }
-
-    func chatInputViewSendButtonPressed(_ view: ChatInputView) {
-        submanagerChats.sendMessage(to: chat, text: view.text, type: .normal, successBlock: nil, failureBlock: nil)
-
-        view.text = ""
-        submanagerObjects.change(chat, enteredText: "")
-    }
-
-    func chatInputViewTextDidChange(_ view: ChatInputView) {
-        submanagerObjects.change(chat, enteredText: view.text)
-    }
-}
-
 extension ChatPrivateController: UIGestureRecognizerDelegate {
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         guard let panGR = gestureRecognizer as? UIPanGestureRecognizer else {
@@ -594,34 +557,6 @@ extension ChatPrivateController: UIGestureRecognizerDelegate {
         return fabsf(Float(translation.x)) > fabsf(Float(translation.y))
     }
 }
-
-extension ChatPrivateController: UIImagePickerControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        dismiss(animated: true, completion: nil)
-
-        guard let type = info[UIImagePickerControllerMediaType] as? String else {
-            return
-        }
-
-        let typeImage = kUTTypeImage as String
-        let typeMovie = kUTTypeMovie as String
-
-        switch type {
-            case typeImage:
-                sendImage(imagePickerInfo: info)
-            case typeMovie:
-                sendMovie(imagePickerInfo: info)
-            default:
-                return
-        }
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-}
-
-extension ChatPrivateController: UINavigationControllerDelegate {}
 
 private extension ChatPrivateController {
     func createNavigationViews() {
@@ -696,9 +631,14 @@ private extension ChatPrivateController {
 
     func createInputView() {
         chatInputView = ChatInputView(theme: theme)
-        chatInputView.text = chat.enteredText ?? ""
-        chatInputView.delegate = self
         view.addSubview(chatInputView)
+
+        chatInputViewManager = ChatInputViewManager(inputView: chatInputView,
+                                                    chat: chat,
+                                                    submanagerChats: submanagerChats,
+                                                    submanagerFiles: submanagerFiles,
+                                                    submanagerObjects: submanagerObjects,
+                                                    presentingViewController: self)
     }
 
     func createEditMessageToolbar() {
@@ -1055,31 +995,6 @@ private extension ChatPrivateController {
         }
     }
 
-    func fileNameFromImageInfo(_ info: [String: Any]) -> String? {
-        guard let url = info[UIImagePickerControllerReferenceURL] as? URL else {
-            return nil
-        }
-
-        let fetchResult = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil)
-
-        guard let asset = fetchResult.firstObject else {
-            return nil
-        }
-
-        if #available(iOS 9.0, *) {
-            if let resource = PHAssetResource.assetResources(for: asset).first {
-                return resource.originalFilename
-            }
-        } else {
-            // Fallback on earlier versions
-            if let name = asset.value(forKey: "filename") as? String {
-                return name
-            }
-        }
-
-        return nil
-    }
-
     func toggleTableViewEditing(_ editing: Bool, animated: Bool) {
         tableView?.setEditing(editing, animated: animated)
 
@@ -1132,35 +1047,5 @@ private extension ChatPrivateController {
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .cancel, handler: nil))
 
         present(alert, animated: true, completion: nil)
-    }
-
-    func sendImage(imagePickerInfo: [String : Any]) {
-        guard let image = imagePickerInfo[UIImagePickerControllerOriginalImage] as? UIImage else {
-            return
-        }
-        guard let data = UIImageJPEGRepresentation(image, 0.9) else {
-            return
-        }
-
-        var fileName: String? = fileNameFromImageInfo(imagePickerInfo)
-
-        if fileName == nil {
-            let dateString = DateFormatter(type: .dateAndTime).string(from: Date())
-            fileName = "Photo \(dateString).jpg".replacingOccurrences(of: "/", with: "-")
-        }
-
-        submanagerFiles.send(data, withFileName: fileName!, to: chat) { (error: Error) in
-            handleErrorWithType(.sendFileToFriend, error: error as NSError)
-        }
-    }
-
-    func sendMovie(imagePickerInfo: [String : Any]) {
-        guard let url = imagePickerInfo[UIImagePickerControllerMediaURL] as? URL else {
-            return
-        }
-
-        submanagerFiles.sendFile(atPath: url.path, moveToUploads: true, to: chat) { (error: Error) in
-            handleErrorWithType(.sendFileToFriend, error: error as NSError)
-        }
     }
 }
