@@ -1,0 +1,54 @@
+/* 
+  AppStoreLocalizable.strings
+  Antidote
+
+  Created by Dmytro Vorobiov on 08/02/17.
+  Copyright © 2017 dvor. All rights reserved.
+*/
+
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_female_1" = "Mary Cokley";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_female_2" = "Shirley Knox";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_female_3" = "Jennifer Smith";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_female_4" = "Marina Dixon";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_female_5" = "Carol Ortega";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_male_1" = "Michael Sharpe";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_male_2" = "Charles Donahue";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_male_3" = "Lee Murdock";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_male_4" = "Wayne Henderson";
+/* Name of friend for the App Store screenshot. Should be fully random, no real people here. Can be generated with service like http://www.fakenamegenerator.com/ */
+"app_store_screenshot_friend_male_5" = "Robert Newton";
+
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_1" = "Is Antidote really that secure?";
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_2" = "sure, it is peer-to-peer";
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_3" = "And what does that mean? Peer-to-peer? 😄";
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_4" = "you text me directly, the are no servers or things like that";
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_5" = "+ it's encrypted 🔐😎";
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_6" = "Cool!";
+/* Demo conversation for the App Store screenshot */
+"app_store_screenshot_conversation_7" = "I'll give it a go then";
+
+/* Demo chat message for the App Store screenshot */
+"app_store_screenshot_chat_message_1" = "😂😂😂";
+/* Demo chat message for the App Store screenshot */
+"app_store_screenshot_chat_message_2" = "dinner tonight?";
+/* Demo chat message for the App Store screenshot */
+"app_store_screenshot_chat_message_3" = "I think I know what you are talking about";
+/* Demo chat message for the App Store screenshot */
+"app_store_screenshot_chat_message_4" = "Sure, thanks!";
+/* Demo chat message for the App Store screenshot */
+"app_store_screenshot_chat_message_5" = "yep";
