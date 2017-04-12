@@ -10,7 +10,7 @@
 
 See [FAQ](FAQ/en.md).
 
-##Usage
+## Usage
 
 #### TestFlight beta testing
 
