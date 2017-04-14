@@ -11,7 +11,7 @@ PODS:
   - libopus-patched-config/float (1.1)
   - libsodium (1.0.12)
   - LNNotificationsUI (0.0.1)
-  - objcTox (0.6.0):
+  - objcTox (0.7.0):
     - CocoaLumberjack (= 1.9.2)
     - Realm (= 1.0.1)
     - toxcore (= 0.1.7)
@@ -34,7 +34,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase/Core
   - JGProgressHUD (~> 1.4.0)
   - LNNotificationsUI (from `https://github.com/LeoNatan/LNNotificationsUI.git`, commit `3f75043fc6e77b4180b76cb6cfff4faa506ab9fc`)
-  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `6b1919878ade15a4d4025287287c07ca289acd7b`)
+  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `2294e7fdce53e8bbcb4c0be15d4a3e30b0b941ad`)
   - SDCAlertView (~> 2.5.4)
   - UITextView+Placeholder (~> 1.1.0)
 
@@ -43,7 +43,7 @@ EXTERNAL SOURCES:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: 6b1919878ade15a4d4025287287c07ca289acd7b
+    :commit: 2294e7fdce53e8bbcb4c0be15d4a3e30b0b941ad
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 CHECKOUT OPTIONS:
@@ -51,7 +51,7 @@ CHECKOUT OPTIONS:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: 6b1919878ade15a4d4025287287c07ca289acd7b
+    :commit: 2294e7fdce53e8bbcb4c0be15d4a3e30b0b941ad
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 SPEC CHECKSUMS:
@@ -61,7 +61,7 @@ SPEC CHECKSUMS:
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
   libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
   LNNotificationsUI: 6a091898a701a5d6dbe2edda6657c9d28c100647
-  objcTox: a182e2aa3f9b421ec7d99c11e890f1c5054b2496
+  objcTox: bd326da5887e4423f30d3fd2427cdc36a4cbf1b5
   RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
   Realm: 2e15e39d35b08abb529e212ed5d8af107b5236c8
   SDCAlertView: 2e2b0ecc5f1ec367e45d83efa2e512688ca7fa55
@@ -70,6 +70,6 @@ SPEC CHECKSUMS:
   TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
   UITextView+Placeholder: a6fc3e0378f3870036ec562a7537cbf6dbae4bf6
 
-PODFILE CHECKSUM: 0dbe3a9fc75e8d8451747ad2769ee973db778a4c
+PODFILE CHECKSUM: 610ee286263b5c9c70d51fdb799e83c3df8e3c4b
 
 COCOAPODS: 1.1.1
