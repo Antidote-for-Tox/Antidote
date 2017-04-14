@@ -178,6 +178,8 @@
 "chat_missed_call_message" = "Missed call";
 /* Item present in the menu on long press on message */
 "chat_more_menu_item" = "More";
+/* Message shown on chat list when contact is typing */
+"chat_is_typing_text" = "is typing...";
 
 /* Status message */
 "status_offline" = "Offline";

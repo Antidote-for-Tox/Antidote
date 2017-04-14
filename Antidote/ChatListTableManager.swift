@@ -68,8 +68,9 @@ extension ChatListTableManager: UITableViewDataSource {
         var userStatus = OCTToxUserStatus.none
 
         let chat = chats[indexPath.row]
+        let friend = chat.friends.lastObject() as? OCTFriend
 
-        if let friend = chat.friends.lastObject() as? OCTFriend {
+        if let friend = friend {
             avatarData = friend.avatarData
             nickname = friend.nickname
             connectionStatus = friend.connectionStatus
@@ -87,7 +88,7 @@ extension ChatListTableManager: UITableViewDataSource {
         }
 
         model.nickname = nickname
-        model.message = lastMessageTextFromChat(chat)
+        model.message = lastMessage(in: chat, friend: friend)
         if let date = chat.lastActivityDate() {
             model.dateText = dateTextFromDate(date)
         }
@@ -179,12 +180,15 @@ private extension ChatListTableManager {
         }
     }
 
-    func lastMessageTextFromChat(_ chat: OCTChat) -> String {
+    func lastMessage(in chat: OCTChat, friend: OCTFriend?) -> String {
         guard let message = chat.lastMessage else {
             return ""
         }
 
-        if let text = message.messageText {
+        if let friend = friend, friend.isTyping {
+            return String(localized: "chat_is_typing_text")
+        }
+        else if let text = message.messageText {
             return text.text ?? ""
         }
         else if let file = message.messageFile {
