@@ -51,6 +51,7 @@ class ThemeTest: XCTestCase {
             "  chat-input-background: second\n" +
             "  chat-incoming-bubble: first\n" +
             "  chat-outgoing-bubble: second\n" +
+            "  chat-information-text: second\n" +
             "  tab-badge-background: first\n" +
             "  tab-badge-text: second\n" +
             "  tab-item-active: first\n" +
@@ -113,6 +114,7 @@ class ThemeTest: XCTestCase {
             XCTAssertEqual(second, theme.colorForType(.ChatInputBackground))
             XCTAssertEqual(first, theme.colorForType(.ChatIncomingBubble))
             XCTAssertEqual(second, theme.colorForType(.ChatOutgoingBubble))
+            XCTAssertEqual(second, theme.colorForType(.ChatInformationText))
             XCTAssertEqual(first, theme.colorForType(.TabBadgeBackground))
             XCTAssertEqual(second, theme.colorForType(.TabBadgeText))
             XCTAssertEqual(first, theme.colorForType(.TabItemActive))

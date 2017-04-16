@@ -54,6 +54,7 @@ values:
   chat-input-background: lightgrayblue
   chat-incoming-bubble: lightgrayblue
   chat-outgoing-bubble: purple
+  chat-information-text: darkgray2
   tab-badge-background: palered
   tab-badge-text: white
   tab-item-active: simpleblue

@@ -38,7 +38,7 @@ class ChatInputView: UIView {
         }
     }
 
-    var buttonsEnabled: Bool = true{
+    var cameraButtonEnabled: Bool = true{
         didSet {
             updateViews()
         }
@@ -161,7 +161,7 @@ private extension ChatInputView {
             textView.isScrollEnabled = false
         }
 
-        cameraButton.isEnabled = buttonsEnabled
-        sendButton.isEnabled = buttonsEnabled && !textView.text.isEmpty
+        cameraButton.isEnabled = cameraButtonEnabled
+        sendButton.isEnabled = !textView.text.isEmpty
     }
 }

@@ -7,8 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1105B18D1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1105B18C1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift */; };
+		1105B18E1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1105B18C1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift */; };
+		1105B18F1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1105B18C1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift */; };
 		1109019B1D83417500BC5751 /* PinInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1109019A1D83417500BC5751 /* PinInputView.swift */; };
 		1109019C1D83417500BC5751 /* PinInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1109019A1D83417500BC5751 /* PinInputView.swift */; };
+		110E078F1EB0756C00B2CA9D /* ResultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E078E1EB0756C00B2CA9D /* ResultsExtension.swift */; };
+		110E07901EB0756C00B2CA9D /* ResultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E078E1EB0756C00B2CA9D /* ResultsExtension.swift */; };
+		110E07911EB0756C00B2CA9D /* ResultsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E078E1EB0756C00B2CA9D /* ResultsExtension.swift */; };
 		110E425C1C00DC5E001A3CA2 /* StaticTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */; };
 		110E49E01BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */; };
 		111782781DC52BDB000C1721 /* OCTManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782771DC52BDB000C1721 /* OCTManagerMock.swift */; };
@@ -221,6 +227,9 @@
 		113AD84B1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */; };
 		113AD8571CA9C70F00D981B5 /* iPadFriendsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8561CA9C70F00D981B5 /* iPadFriendsButton.swift */; };
 		113AD8581CA9C70F00D981B5 /* iPadFriendsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8561CA9C70F00D981B5 /* iPadFriendsButton.swift */; };
+		113BBBA71EA88EAC00540E6C /* ChatTypingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBBA61EA88EAC00540E6C /* ChatTypingHeaderView.swift */; };
+		113BBBA81EA88EAC00540E6C /* ChatTypingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBBA61EA88EAC00540E6C /* ChatTypingHeaderView.swift */; };
+		113BBBA91EA88EAC00540E6C /* ChatTypingHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113BBBA61EA88EAC00540E6C /* ChatTypingHeaderView.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
 		113E96421E4BB302000282FC /* AppStoreLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 113E96461E4BB302000282FC /* AppStoreLocalizable.strings */; };
@@ -261,6 +270,9 @@
 		1156A4871C10D122005AC8C6 /* StaticTableAvatarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */; };
 		1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */; };
 		115C3BD61DC6D2B900903A47 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9C7475C01BC698110098B1A4 /* Localizable.strings */; };
+		115CE3E81EB06F54001C08A0 /* ChatBottomStatusViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115CE3E71EB06F54001C08A0 /* ChatBottomStatusViewManager.swift */; };
+		115CE3E91EB06F54001C08A0 /* ChatBottomStatusViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115CE3E71EB06F54001C08A0 /* ChatBottomStatusViewManager.swift */; };
+		115CE3EA1EB06F54001C08A0 /* ChatBottomStatusViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115CE3E71EB06F54001C08A0 /* ChatBottomStatusViewManager.swift */; };
 		115DFB8A1C177F5C00F18DB5 /* StaticTableDefaultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */; };
 		115DFB961C177F6500F18DB5 /* StaticTableDefaultCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */; };
 		116046191D8D434B002287C8 /* ChangePinTimeoutController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116046181D8D434B002287C8 /* ChangePinTimeoutController.swift */; };
@@ -670,7 +682,9 @@
 /* Begin PBXFileReference section */
 		02404DE3D3BB1BF461C45EA0 /* Pods-ScreenshotsUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ScreenshotsUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ScreenshotsUITests/Pods-ScreenshotsUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		034E57B3AE56E352BBAA0487 /* libPods-Antidote.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Antidote.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1105B18C1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatFauxOfflineHeaderView.swift; sourceTree = "<group>"; };
 		1109019A1D83417500BC5751 /* PinInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PinInputView.swift; sourceTree = "<group>"; };
+		110E078E1EB0756C00B2CA9D /* ResultsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultsExtension.swift; sourceTree = "<group>"; };
 		110E425B1C00DC5E001A3CA2 /* StaticTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableController.swift; sourceTree = "<group>"; };
 		110E49DF1BF925FD00D1FE6F /* ActiveSessionNavigationCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActiveSessionNavigationCoordinator.swift; sourceTree = "<group>"; };
 		111782771DC52BDB000C1721 /* OCTManagerMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTManagerMock.swift; sourceTree = "<group>"; };
@@ -704,6 +718,7 @@
 		1136605B1CDE5D5E0092C27A /* ChatEditable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatEditable.swift; sourceTree = "<group>"; };
 		113AD8491CA97A3000D981B5 /* iPadNavigationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadNavigationView.swift; sourceTree = "<group>"; };
 		113AD8561CA9C70F00D981B5 /* iPadFriendsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadFriendsButton.swift; sourceTree = "<group>"; };
+		113BBBA61EA88EAC00540E6C /* ChatTypingHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTypingHeaderView.swift; sourceTree = "<group>"; };
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
 		113E96451E4BB302000282FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
@@ -746,6 +761,7 @@
 		1156A4841C10D119005AC8C6 /* StaticTableAvatarCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableAvatarCellModel.swift; sourceTree = "<group>"; };
 		1156A4861C10D122005AC8C6 /* StaticTableAvatarCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableAvatarCell.swift; sourceTree = "<group>"; };
 		1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvatarManager.swift; sourceTree = "<group>"; };
+		115CE3E71EB06F54001C08A0 /* ChatBottomStatusViewManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatBottomStatusViewManager.swift; sourceTree = "<group>"; };
 		115DFB891C177F5C00F18DB5 /* StaticTableDefaultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCell.swift; sourceTree = "<group>"; };
 		115DFB951C177F6500F18DB5 /* StaticTableDefaultCellModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticTableDefaultCellModel.swift; sourceTree = "<group>"; };
 		116046181D8D434B002287C8 /* ChangePinTimeoutController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangePinTimeoutController.swift; sourceTree = "<group>"; };
@@ -1132,8 +1148,10 @@
 			children = (
 				11B253131C4A79A50068F47C /* BubbleView.swift */,
 				112E4EE41C676553004312CF /* CallButton.swift */,
+				1105B18C1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift */,
 				11A21EFC1C45BDF200E80A89 /* ChatInputView.swift */,
 				11B253551C4AEA400068F47C /* ChatPrivateTitleView.swift */,
+				113BBBA61EA88EAC00540E6C /* ChatTypingHeaderView.swift */,
 				116634D81C70F1260072C980 /* CopyLabel.swift */,
 				9CBBC7CC1BDFC6C600099A5E /* ExtendedTextField.swift */,
 				11B9C6961BD80B080083C2A5 /* FullscreenPicker.swift */,
@@ -1205,6 +1223,7 @@
 				113F03411CB31DD60009ABE1 /* AlertAudioPlayer.swift */,
 				11B2534E1C4AD2550068F47C /* AudioPlayer.swift */,
 				1156A4881C15FB2B005AC8C6 /* AvatarManager.swift */,
+				115CE3E71EB06F54001C08A0 /* ChatBottomStatusViewManager.swift */,
 				9CDE31E51E489B2700333E0D /* ChatInputViewManager.swift */,
 				9C2EF3791C4E2DDE006E7AB1 /* ChatListTableManager.swift */,
 				11628E311CA2FBD1008C097E /* FilePreviewControllerDataSource.swift */,
@@ -1377,6 +1396,7 @@
 				116DCE3A1CAAF85300B693EC /* NSURLExtension.swift */,
 				11B9C6821BD598FC0083C2A5 /* OCTManagerConfigurationExtension.swift */,
 				11FC105C1D32F29700CE863E /* OCTSubmanagerObjectsExtension.swift */,
+				110E078E1EB0756C00B2CA9D /* ResultsExtension.swift */,
 				9C7475C41BC698510098B1A4 /* StringExtension.swift */,
 				11770D761CBC1C7A00D34D6E /* UIAlertControllerExtension.swift */,
 				116634B11C7087A80072C980 /* UIApplicationExtension.swift */,
@@ -1869,6 +1889,7 @@
 				1117833F1DC64810000C1721 /* ChatPrivateTitleView.swift in Sources */,
 				111783391DC647F8000C1721 /* HelperFunctions.swift in Sources */,
 				1117834D1DC64810000C1721 /* StaticBackgroundView.swift in Sources */,
+				113BBBA91EA88EAC00540E6C /* ChatTypingHeaderView.swift in Sources */,
 				111782FD1DC6479E000C1721 /* AudioPlayer.swift in Sources */,
 				111782F31DC64796000C1721 /* StaticTableDefaultCell.swift in Sources */,
 				111782D41DC64796000C1721 /* ChatBaseTextCell.swift in Sources */,
@@ -1900,6 +1921,7 @@
 				111783071DC6479E000C1721 /* ResultsChange.swift in Sources */,
 				1117830F1DC647BD000C1721 /* LaunchPlaceholderController.swift in Sources */,
 				111783221DC647D9000C1721 /* ChatsTabCoordinator.swift in Sources */,
+				115CE3EA1EB06F54001C08A0 /* ChatBottomStatusViewManager.swift in Sources */,
 				111783701DC64D75000C1721 /* ChangePinTimeoutController.swift in Sources */,
 				111783491DC64810000C1721 /* PinInputView.swift in Sources */,
 				111783201DC647D9000C1721 /* AutomationCoordinator.swift in Sources */,
@@ -1926,9 +1948,11 @@
 				111782D71DC64796000C1721 /* ChatGenericFileCell.swift in Sources */,
 				111783381DC647F8000C1721 /* ExceptionHandling.m in Sources */,
 				1117837D1DC64D75000C1721 /* QRScannerController.swift in Sources */,
+				1105B18F1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift in Sources */,
 				111783091DC6479E000C1721 /* TabBarBadgeItem.swift in Sources */,
 				1117836B1DC64D68000C1721 /* CallBaseController.swift in Sources */,
 				111782DA1DC64796000C1721 /* ChatIncomingCallCellModel.swift in Sources */,
+				110E07911EB0756C00B2CA9D /* ResultsExtension.swift in Sources */,
 				111783451DC64810000C1721 /* iPadFriendsButton.swift in Sources */,
 				111782DE1DC64796000C1721 /* ChatListCell.swift in Sources */,
 				111782FB1DC64796000C1721 /* StaticTableSwitchCellModel.swift in Sources */,
@@ -2084,6 +2108,7 @@
 				11B253AE1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				11F276BB1D3EBF3000C613AA /* ChatBaseTextCellModel.swift in Sources */,
 				11628E3E1CA30C13008C097E /* QuickLookPreviewController.swift in Sources */,
+				1105B18D1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift in Sources */,
 				1164C8ED1BC9801200B91107 /* RoundedButton.swift in Sources */,
 				11FA0EF11BC5A6A500F3DA5B /* SettingsTabCoordinator.swift in Sources */,
 				1156A4891C15FB2B005AC8C6 /* AvatarManager.swift in Sources */,
@@ -2162,10 +2187,12 @@
 				9C3271871D79C19C00347490 /* PinAuthorizationCoordinator.swift in Sources */,
 				1109019B1D83417500BC5751 /* PinInputView.swift in Sources */,
 				1180FDA01C384E29005F3EA1 /* CallCoordinator.swift in Sources */,
+				110E078F1EB0756C00B2CA9D /* ResultsExtension.swift in Sources */,
 				11FA0ED41BC5842800F3DA5B /* AppDelegate.swift in Sources */,
 				11B253FB1C52C0A10068F47C /* StaticTableSwitchCell.swift in Sources */,
 				113F03421CB31DD60009ABE1 /* AlertAudioPlayer.swift in Sources */,
 				116634D91C70F1260072C980 /* CopyLabel.swift in Sources */,
+				113BBBA71EA88EAC00540E6C /* ChatTypingHeaderView.swift in Sources */,
 				1193AB6C1C1F5C31006AA9E5 /* FriendListCellModel.swift in Sources */,
 				11B253661C4BAD3C0068F47C /* TabBarAbstractItem.swift in Sources */,
 				113AD84A1CA97A3000D981B5 /* iPadNavigationView.swift in Sources */,
@@ -2195,6 +2222,7 @@
 				1164C8E91BC929F700B91107 /* LoginChoiceController.swift in Sources */,
 				1117827E1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */,
 				1149626C1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
+				115CE3E81EB06F54001C08A0 /* ChatBottomStatusViewManager.swift in Sources */,
 				116634EF1C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				116634A91C6E8D1A0072C980 /* ChatIncomingCallCellModel.swift in Sources */,
 				11FA0EDE1BC58DCC00F3DA5B /* CoordinatorProtocol.swift in Sources */,
@@ -2313,6 +2341,7 @@
 				1160B68C1D5FD8DE002DF75B /* LaunchPlaceholderController.swift in Sources */,
 				113F030C1CAFCCDD0009ABE1 /* ChatIncomingCallCellSnapshotTest.swift in Sources */,
 				113F03191CAFDB0D0009ABE1 /* ChatIncomingTextCellSnapshotTest.swift in Sources */,
+				113BBBA81EA88EAC00540E6C /* ChatTypingHeaderView.swift in Sources */,
 				9CEE6ACB1C4E8FDC00A1ECB5 /* StaticTableChatButtonsCell.swift in Sources */,
 				9CEE6B471C5289E200A1ECB5 /* SettingsMainController.swift in Sources */,
 				9CEE6AEC1C4E8FDC00A1ECB5 /* PrimaryIpadController.swift in Sources */,
@@ -2322,6 +2351,7 @@
 				11FC105B1D32EED000CE863E /* ResultsChange.swift in Sources */,
 				9CEE6AE81C4E8FDC00A1ECB5 /* ChatPrivateController.swift in Sources */,
 				9CEE6ACD1C4E8FDC00A1ECB5 /* StaticTableDefaultCell.swift in Sources */,
+				1105B18E1EA09B1A0035B213 /* ChatFauxOfflineHeaderView.swift in Sources */,
 				9CEE6AB91C4E8FDC00A1ECB5 /* BaseCell.swift in Sources */,
 				1149626D1C5CE3DF001E5435 /* ChangeUserStatusController.swift in Sources */,
 				9CEE6AD11C4E8FDC00A1ECB5 /* AvatarManager.swift in Sources */,
@@ -2363,6 +2393,7 @@
 				9CEE6AFD1C4E8FDC00A1ECB5 /* FriendsTabCoordinator.swift in Sources */,
 				9CEE6ACF1C4E8FDC00A1ECB5 /* StaticTableSelectableCellModel.swift in Sources */,
 				9CEE6B141C4E8FDC00A1ECB5 /* QRScannerAimView.swift in Sources */,
+				110E07901EB0756C00B2CA9D /* ResultsExtension.swift in Sources */,
 				9CEE6AD81C4E8FDC00A1ECB5 /* TabBarBadgeItem.swift in Sources */,
 				9CEE6B031C4E8FDC00A1ECB5 /* UIImageExtension.swift in Sources */,
 				9CEE6B111C4E8FDC00A1ECB5 /* FullscreenPicker.swift in Sources */,
@@ -2379,6 +2410,7 @@
 				11F276AF1D3EBEF700C613AA /* ChatBaseTextCell.swift in Sources */,
 				9CEE6B0F1C4E8FDC00A1ECB5 /* ChatInputView.swift in Sources */,
 				116634F01C7B94530072C980 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
+				115CE3E91EB06F54001C08A0 /* ChatBottomStatusViewManager.swift in Sources */,
 				9CEE6AED1C4E8FDC00A1ECB5 /* ProfileMainController.swift in Sources */,
 				11B253AF1C4EC47D0068F47C /* IncompressibleView.swift in Sources */,
 				1124953E1DE7AC0300EF45C4 /* KeyboardObserver.swift in Sources */,

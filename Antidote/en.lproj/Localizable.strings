@@ -180,6 +180,8 @@
 "chat_more_menu_item" = "More";
 /* Message shown on chat list when contact is typing */
 "chat_is_typing_text" = "is typing...";
+/* Text shown in chat when there are undelivered faux offline messages */
+"chat_pending_faux_offline_messages" = "Undelivered messages will be send when both you and friend are online.";
 
 /* Status message */
 "status_offline" = "Offline";

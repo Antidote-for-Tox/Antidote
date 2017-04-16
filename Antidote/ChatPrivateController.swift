@@ -59,6 +59,8 @@ class ChatPrivateController: KeyboardNotificationController {
 
     fileprivate var titleView: ChatPrivateTitleView!
     fileprivate var tableView: UITableView?
+    fileprivate var typingHeaderView: ChatTypingHeaderView!
+    fileprivate var fauxOfflineHeaderView: ChatFauxOfflineHeaderView!
     fileprivate var newMessagesView: UIView!
     fileprivate var chatInputView: ChatInputView!
     fileprivate var editMessagesToolbar: UIToolbar!
@@ -66,6 +68,9 @@ class ChatPrivateController: KeyboardNotificationController {
     fileprivate var chatInputViewManager: ChatInputViewManager!
 
     fileprivate var tableViewTapGestureRecognizer: UITapGestureRecognizer!
+
+    fileprivate var tableViewToChatInputConstraint: Constraint!
+    fileprivate var typingViewToChatInputConstraint: Constraint!
 
     fileprivate var newMessageViewTopConstraint: Constraint?
     fileprivate var chatInputViewBottomConstraint: Constraint?
@@ -132,6 +137,7 @@ class ChatPrivateController: KeyboardNotificationController {
         loadViewWithBackgroundColor(theme.colorForType(.NormalBackground))
 
         createTableView()
+        createTableHeaderViews()
         createNewMessagesView()
         createInputView()
         createEditMessageToolbar()
@@ -598,6 +604,16 @@ private extension ChatPrivateController {
         tableView.addGestureRecognizer(panGR)
     }
 
+    func createTableHeaderViews() {
+        typingHeaderView = ChatTypingHeaderView(theme: theme)
+        typingHeaderView.transform = tableView!.transform
+        view.addSubview(typingHeaderView)
+
+        fauxOfflineHeaderView = ChatFauxOfflineHeaderView(theme: theme)
+        fauxOfflineHeaderView.transform = tableView!.transform
+        view.addSubview(fauxOfflineHeaderView)
+    }
+
     func createNewMessagesView() {
         newMessagesView = UIView()
         newMessagesView.backgroundColor = theme.colorForType(.ConnectingBackground)
@@ -654,7 +670,17 @@ private extension ChatPrivateController {
     func installConstraints() {
         tableView!.snp.makeConstraints {
             $0.top.leading.trailing.equalTo(view)
+
+            tableViewToChatInputConstraint = $0.bottom.equalTo(chatInputView.snp.top).constraint
         }
+
+        typingHeaderView.snp.makeConstraints {
+            $0.leading.trailing.equalTo(view)
+            $0.top.equalTo(tableView!.snp.bottom)
+            typingViewToChatInputConstraint = $0.bottom.equalTo(chatInputView.snp.top).constraint
+        }
+
+        typingViewToChatInputConstraint.deactivate()
 
         newMessagesView.snp.makeConstraints {
             $0.centerX.equalTo(tableView!)
@@ -663,7 +689,6 @@ private extension ChatPrivateController {
 
         chatInputView.snp.makeConstraints {
             $0.leading.trailing.equalTo(view)
-            $0.top.equalTo(tableView!.snp.bottom)
             $0.top.greaterThanOrEqualTo(view).offset(Constants.InputViewTopOffset)
             chatInputViewBottomConstraint = $0.bottom.equalTo(view).constraint
         }
@@ -689,6 +714,8 @@ private extension ChatPrivateController {
 
                     self.visibleMessages = self.visibleMessages + insertions.count - deletions.count
                     tableView.endUpdates()
+
+                    self.updateTableHeaderView()
 
                     if insertions.contains(0) {
                         self.handleNewMessage()
@@ -762,7 +789,7 @@ private extension ChatPrivateController {
             titleView.userStatus = UserStatus(connectionStatus: .none, userStatus: .none)
             audioButton.isEnabled = false
             videoButton.isEnabled = false
-            chatInputView.buttonsEnabled = false
+            chatInputView.cameraButtonEnabled = false
             return
         }
 
@@ -788,11 +815,63 @@ private extension ChatPrivateController {
 
                     self.audioButton.isEnabled = isConnected
                     self.videoButton.isEnabled = isConnected
-                    self.chatInputView.buttonsEnabled = isConnected
+                    self.chatInputView.cameraButtonEnabled = isConnected
+
+                    self.updateTableHeaderView()
                 case .error(let error):
                     fatalError("\(error)")
             }
         }
+    }
+
+    func updateTableHeaderView() {
+        guard let tableView = tableView else {
+            return
+        }
+
+        guard let friend = friend else {
+            // tableView.tableHeaderView = nil
+            return
+        }
+        
+        UIView.animate(withDuration: Constants.NewMessageViewAnimationDuration, animations: {
+        if friend.isConnected {
+            if friend.isTyping {
+                self.tableViewToChatInputConstraint.deactivate()
+                self.typingViewToChatInputConstraint.activate()
+                self.typingHeaderView.isHidden = false
+                self.typingHeaderView.startAnimation()
+            }
+            else {
+                self.tableViewToChatInputConstraint.activate()
+                self.typingViewToChatInputConstraint.deactivate()
+                self.typingHeaderView.isHidden = true
+                self.typingHeaderView.stopAnimation()
+            }
+
+            self.view.layoutIfNeeded()
+        }
+        else {
+            // let predicate = NSPredicate(format: "messageText.isDelivered == NO AND senderUniqueIdentifier == nil")
+            // let hasUnsendMessages = self.messages.objects(with: predicate).count > 0
+        
+            // tableView.tableHeaderView = hasUnsendMessages ? self.fauxOfflineHeaderView : nil
+        }
+        })
+
+        updateTableHeaderViewLayout()
+    }
+
+    func updateTableHeaderViewLayout() {
+        guard let headerView = tableView?.tableHeaderView else {
+            return
+        }
+        
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
+        let height = headerView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        headerView.frame.size.height = height
+        tableView?.tableHeaderView = headerView
     }
 
     func updateInputViewMaxHeight() {

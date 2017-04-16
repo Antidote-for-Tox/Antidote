@@ -71,4 +71,10 @@ class Results<T: OCTObject> {
     subscript(index: Int) -> T {
         return results[UInt(index)] as! T
     }
+
+    func objects(with predicate: NSPredicate) -> Results<T> {
+        let matching = results.objects(with: predicate)
+        return Results<T>(results: matching)
+    }
 }
+

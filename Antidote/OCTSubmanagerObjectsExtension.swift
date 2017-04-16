@@ -51,4 +51,27 @@ extension OCTSubmanagerObjects {
 
         self.genericSettingsData = data.copy() as! Data
     }
+
+    func notificationBlock<T: OCTObject>(for object: T,
+                                         _ block: @escaping (ResultsChange<T>) -> Void) -> RLMNotificationToken {
+        let predicate = NSPredicate(format: "uniqueIdentifier == %@", object.uniqueIdentifier)
+        let results: Results<T>
+
+        switch object {
+            case is OCTFriend:
+                results = Results(results: objects(for: .friend, predicate: predicate)!)
+            case is OCTFriendRequest:
+                results = Results(results: objects(for: .friendRequest, predicate: predicate)!)
+            case is OCTChat:
+                results = Results(results: objects(for: .chat, predicate: predicate)!)
+            case is OCTCall:
+                results = Results(results: objects(for: .call, predicate: predicate)!)
+            case is OCTMessageAbstract:
+                results = Results(results: objects(for: .messageAbstract, predicate: predicate)!)
+            default:
+                fatalError("OCT type not handled properly")
+        }
+
+        return results.addNotificationBlock(block)
+    }
 }

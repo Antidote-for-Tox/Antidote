@@ -26,12 +26,30 @@ class BubbleView: UIView {
         }
     }
 
+    var attributedText: NSAttributedString? {
+        get {
+            return textView.attributedText
+        }
+        set {
+            textView.attributedText = newValue
+        }
+    }
+
     var textColor: UIColor {
         get {
             return textView.textColor!
         }
         set {
             textView.textColor = newValue
+        }
+    }
+
+    var font: UIFont? {
+        get {
+            return textView.font
+        }
+        set {
+            textView.font = newValue
         }
     }
 
