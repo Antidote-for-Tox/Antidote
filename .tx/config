@@ -11,6 +11,11 @@ file_filter = Antidote/<lang>.lproj/Localizable.strings
 source_lang = en
 type = STRINGS
 
+[antidote-ios-appstore.appstorelocalizablestrings]
+file_filter = Antidote/<lang>.lproj/AppStoreLocalizable.strings
+source_lang = en
+type = STRINGS
+
 [antidote-ios.infopliststrings]
 file_filter = Antidote/<lang>.lproj/InfoPlist.strings
 source_lang = en

@@ -223,6 +223,9 @@
 		113AD8581CA9C70F00D981B5 /* iPadFriendsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113AD8561CA9C70F00D981B5 /* iPadFriendsButton.swift */; };
 		113D564D1C2F437B00B3D3E8 /* QRScannerAimView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */; };
 		113D56561C2F459E00B3D3E8 /* QRScannerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113D56551C2F459E00B3D3E8 /* QRScannerController.swift */; };
+		113E96421E4BB302000282FC /* AppStoreLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 113E96461E4BB302000282FC /* AppStoreLocalizable.strings */; };
+		113E96431E4BB302000282FC /* AppStoreLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 113E96461E4BB302000282FC /* AppStoreLocalizable.strings */; };
+		113E96441E4BB302000282FC /* AppStoreLocalizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 113E96461E4BB302000282FC /* AppStoreLocalizable.strings */; };
 		113F03081CAFCC9D0009ABE1 /* default-theme.yaml in Resources */ = {isa = PBXBuildFile; fileRef = 1173F0711BC5D9DA00B88B7B /* default-theme.yaml */; };
 		113F030A1CAFCCB90009ABE1 /* SnapshotBaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F03091CAFCCB90009ABE1 /* SnapshotBaseTest.swift */; };
 		113F030C1CAFCCDD0009ABE1 /* ChatIncomingCallCellSnapshotTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 113F030B1CAFCCDD0009ABE1 /* ChatIncomingCallCellSnapshotTest.swift */; };
@@ -700,6 +703,16 @@
 		113AD8561CA9C70F00D981B5 /* iPadFriendsButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iPadFriendsButton.swift; sourceTree = "<group>"; };
 		113D564C1C2F437B00B3D3E8 /* QRScannerAimView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerAimView.swift; sourceTree = "<group>"; };
 		113D56551C2F459E00B3D3E8 /* QRScannerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRScannerController.swift; sourceTree = "<group>"; };
+		113E96451E4BB302000282FC /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E96471E4BB314000282FC /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E96481E4BB318000282FC /* zh */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = zh; path = zh.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E96491E4BB31F000282FC /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E964A1E4BB322000282FC /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E964B1E4BB327000282FC /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E964C1E4BB32B000282FC /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E964D1E4BB368000282FC /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/AppStoreLocalizable.strings"; sourceTree = "<group>"; };
+		113E964E1E4BB371000282FC /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
+		113E964F1E4BB37B000282FC /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/AppStoreLocalizable.strings; sourceTree = "<group>"; };
 		113F03091CAFCCB90009ABE1 /* SnapshotBaseTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapshotBaseTest.swift; sourceTree = "<group>"; };
 		113F030B1CAFCCDD0009ABE1 /* ChatIncomingCallCellSnapshotTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingCallCellSnapshotTest.swift; sourceTree = "<group>"; };
 		113F030E1CAFCE7B0009ABE1 /* ChatIncomingFileCellSnapshotTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatIncomingFileCellSnapshotTest.swift; sourceTree = "<group>"; };
@@ -1433,6 +1446,7 @@
 				1131D6C71CA9D8BC00B4531C /* import-profile.html */,
 				1173F0711BC5D9DA00B88B7B /* default-theme.yaml */,
 				9C7475C01BC698110098B1A4 /* Localizable.strings */,
+				113E96461E4BB302000282FC /* AppStoreLocalizable.strings */,
 				116634CE1C70E46C0072C980 /* Launch Screen.storyboard */,
 			);
 			name = Application;
@@ -1657,6 +1671,7 @@
 				11D17CDD1DD11E58006B2910 /* Images.xcassets in Resources */,
 				1143E4331DCE1A5600BE7250 /* import-profile.html in Resources */,
 				111783101DC647BD000C1721 /* LaunchPlaceholderBoard.storyboard in Resources */,
+				113E96441E4BB302000282FC /* AppStoreLocalizable.strings in Resources */,
 				11D17CEA1DD11F10006B2910 /* dummy-photo.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1667,6 +1682,7 @@
 			files = (
 				11D17CE91DD11F10006B2910 /* dummy-photo.jpg in Resources */,
 				11F08D131DE0610B00F80F5F /* InfoPlist.strings in Resources */,
+				113E96421E4BB302000282FC /* AppStoreLocalizable.strings in Resources */,
 				11B253541C4AD9CF0068F47C /* isotoxin_RingtoneWhileCall.aac in Resources */,
 				11B253501C4AD9CF0068F47C /* isotoxin_Calltone.aac in Resources */,
 				11DDEAFD1D5FD9FE0000E2BE /* LaunchPlaceholderBoard.storyboard in Resources */,
@@ -1688,6 +1704,7 @@
 			files = (
 				113F03111CAFD1610009ABE1 /* icon.png in Resources */,
 				11F08D141DE0610B00F80F5F /* InfoPlist.strings in Resources */,
+				113E96431E4BB302000282FC /* AppStoreLocalizable.strings in Resources */,
 				113F03081CAFCC9D0009ABE1 /* default-theme.yaml in Resources */,
 				9CEA6A201D957EFC0045F000 /* antidote-acknowledgements.html in Resources */,
 			);
@@ -2420,6 +2437,23 @@
 			name = "import-profile.html";
 			sourceTree = "<group>";
 		};
+		113E96461E4BB302000282FC /* AppStoreLocalizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				113E96451E4BB302000282FC /* en */,
+				113E96471E4BB314000282FC /* ru */,
+				113E96481E4BB318000282FC /* zh */,
+				113E96491E4BB31F000282FC /* da */,
+				113E964A1E4BB322000282FC /* de */,
+				113E964B1E4BB327000282FC /* pt */,
+				113E964C1E4BB32B000282FC /* es */,
+				113E964D1E4BB368000282FC /* zh-Hans-CN */,
+				113E964E1E4BB371000282FC /* fr */,
+				113E964F1E4BB37B000282FC /* nl */,
+			);
+			name = AppStoreLocalizable.strings;
+			sourceTree = "<group>";
+		};
 		11F08D171DE0610B00F80F5F /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -2675,7 +2709,7 @@
 				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = NHVF8NSG3J;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2707,7 +2741,7 @@
 				CODE_SIGN_ENTITLEMENTS = Antidote/Antidote.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CURRENT_PROJECT_VERSION = 28;
+				CURRENT_PROJECT_VERSION = 29;
 				DEVELOPMENT_TEAM = NHVF8NSG3J;
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;

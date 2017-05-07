@@ -4,6 +4,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][unreleased]
 
+## [1.3.4] - 2017-01-24
+### Changed
+- Migrating to toxcore 0.1.7.
+
 ## [1.3.3] - 2017-01-24
 ### Added
 - Adding ability to send video from camera/photo gallery. [#252](https://github.com/Antidote-for-Tox/Antidote/issues/252).
@@ -219,7 +223,8 @@ It is a good idea to remove old version of Antidote before updating.
 - File transfers and avatars are temporary disabled.
 - Added connectivity status.
 
-[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.3...master
+[unreleased]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.4...master
+[1.3.4]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.3...1.3.4
 [1.3.3]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.2...1.3.3
 [1.3.2]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.1...1.3.2
 [1.3.1]: https://github.com/Antidote-for-Tox/Antidote/compare/1.3.0...1.3.1

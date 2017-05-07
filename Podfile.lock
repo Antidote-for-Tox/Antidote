@@ -9,12 +9,12 @@ PODS:
   - libopus-patched-config (1.1):
     - libopus-patched-config/float (= 1.1)
   - libopus-patched-config/float (1.1)
-  - libsodium (1.0.11)
+  - libsodium (1.0.12)
   - LNNotificationsUI (0.0.1)
   - objcTox (0.6.0):
     - CocoaLumberjack (= 1.9.2)
     - Realm (= 1.0.1)
-    - toxcore (= 0.1.5)
+    - toxcore (= 0.1.7)
     - TPCircularBuffer (~> 0.0.1)
   - RBBAnimation (0.4.0)
   - Realm (1.0.1):
@@ -24,7 +24,7 @@ PODS:
     - RBBAnimation (~> 0.3)
     - SDCAutoLayout (~> 2.0)
   - SDCAutoLayout (2.0.3)
-  - toxcore (0.1.5):
+  - toxcore (0.1.7):
     - libopus-patched-config (= 1.1)
     - libsodium (~> 1.0.1)
   - TPCircularBuffer (0.0.1)
@@ -34,7 +34,7 @@ DEPENDENCIES:
   - FBSnapshotTestCase/Core
   - JGProgressHUD (~> 1.4.0)
   - LNNotificationsUI (from `https://github.com/LeoNatan/LNNotificationsUI.git`, commit `3f75043fc6e77b4180b76cb6cfff4faa506ab9fc`)
-  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `bf0097c5a98d7be24672f801a6a9e5031e6b0c21`)
+  - objcTox (from `https://github.com/Antidote-for-Tox/objcTox.git`, commit `6b1919878ade15a4d4025287287c07ca289acd7b`)
   - SDCAlertView (~> 2.5.4)
   - UITextView+Placeholder (~> 1.1.0)
 
@@ -43,7 +43,7 @@ EXTERNAL SOURCES:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: bf0097c5a98d7be24672f801a6a9e5031e6b0c21
+    :commit: 6b1919878ade15a4d4025287287c07ca289acd7b
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 CHECKOUT OPTIONS:
@@ -51,7 +51,7 @@ CHECKOUT OPTIONS:
     :commit: 3f75043fc6e77b4180b76cb6cfff4faa506ab9fc
     :git: https://github.com/LeoNatan/LNNotificationsUI.git
   objcTox:
-    :commit: bf0097c5a98d7be24672f801a6a9e5031e6b0c21
+    :commit: 6b1919878ade15a4d4025287287c07ca289acd7b
     :git: https://github.com/Antidote-for-Tox/objcTox.git
 
 SPEC CHECKSUMS:
@@ -59,17 +59,17 @@ SPEC CHECKSUMS:
   FBSnapshotTestCase: 918c55861356ee83aee7843d759f55a18ff6982b
   JGProgressHUD: 1617b0940cf80bb53e8f7d6f0fd69252ea45d6d4
   libopus-patched-config: 12321105eb4b96e869b7957f3122345fd67928c3
-  libsodium: 9aba161d2ee096977ecbdcce1ada69ffe511970c
+  libsodium: 9a8faa5ef2fa0d2d57bd7f7d79bf8fb7c1a9f0ea
   LNNotificationsUI: 6a091898a701a5d6dbe2edda6657c9d28c100647
-  objcTox: c71e7012a7dc636bf58330911245353c9e796c85
+  objcTox: a182e2aa3f9b421ec7d99c11e890f1c5054b2496
   RBBAnimation: 4b2d66f6d993febce63cd564da934985313b9c59
   Realm: 2e15e39d35b08abb529e212ed5d8af107b5236c8
   SDCAlertView: 2e2b0ecc5f1ec367e45d83efa2e512688ca7fa55
   SDCAutoLayout: e6885bb39ab8e2ec2ff84d158f38035f025f7420
-  toxcore: 27193945b67d3dad9e6b615c5ee74798e38ed4eb
+  toxcore: c6fe374b680066ee524d4ee4c3650648f3e64bf8
   TPCircularBuffer: 949e9632b9fb99b7274d7b2296ee22bff5841e35
   UITextView+Placeholder: a6fc3e0378f3870036ec562a7537cbf6dbae4bf6
 
-PODFILE CHECKSUM: 567d00c6e9d18beabe7ae596689c3c3027395d1e
+PODFILE CHECKSUM: 0dbe3a9fc75e8d8451747ad2769ee973db778a4c
 
 COCOAPODS: 1.1.1
