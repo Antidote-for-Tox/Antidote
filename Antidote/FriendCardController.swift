@@ -60,7 +60,7 @@ class FriendCardController: StaticTableController {
     }
 
     deinit {
-        friendToken?.stop()
+        friendToken?.invalidate()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {

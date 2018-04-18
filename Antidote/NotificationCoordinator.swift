@@ -66,9 +66,9 @@ class NotificationCoordinator: NSObject {
     deinit {
         NotificationCenter.default.removeObserver(self)
 
-        messagesToken?.stop()
-        chatsToken?.stop()
-        requestsToken?.stop()
+        messagesToken?.invalidate()
+        chatsToken?.invalidate()
+        requestsToken?.invalidate()
     }
 
     /**

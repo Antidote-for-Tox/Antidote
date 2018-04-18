@@ -55,8 +55,8 @@ class ChatListTableManager: NSObject {
     }
 
     deinit {
-        chatsToken?.stop()
-        friendsToken?.stop()
+        chatsToken?.invalidate()
+        friendsToken?.invalidate()
     }
 }
 

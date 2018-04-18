@@ -14,7 +14,6 @@ class OCTManagerMock: NSObject, OCTManager {
     var bootstrap: OCTSubmanagerBootstrap
     var calls: OCTSubmanagerCalls
     var chats: OCTSubmanagerChats
-    var dns: OCTSubmanagerDNS
     var files: OCTSubmanagerFiles
     var friends: OCTSubmanagerFriends
     var objects: OCTSubmanagerObjects
@@ -30,7 +29,6 @@ class OCTManagerMock: NSObject, OCTManager {
         bootstrap = OCTSubmanagerBootstrapMock()
         calls = OCTSubmanagerCallsMock()
         chats = OCTSubmanagerChatsMock()
-        dns = OCTSubmanagerDNSMock()
         files = OCTSubmanagerFilesMock()
         friends = OCTSubmanagerFriendsMock()
         objects = OCTSubmanagerObjectsMock(realm: realm)

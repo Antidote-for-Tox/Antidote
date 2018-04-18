@@ -19,8 +19,6 @@
 		1117827F1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */; };
 		1117828D1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */; };
 		1117828E1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */; };
-		111782901DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */; };
-		111782911DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */; };
 		111782931DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */; };
 		111782941DC53371000C1721 /* OCTSubmanagerFilesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */; };
 		111782961DC53458000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */; };
@@ -36,7 +34,6 @@
 		111782BC1DC643A3000C1721 /* OCTSubmanagerBootstrapMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */; };
 		111782BD1DC643A3000C1721 /* OCTSubmanagerCallsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */; };
 		111782BE1DC643A3000C1721 /* OCTSubmanagerChatsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */; };
-		111782BF1DC643A3000C1721 /* OCTSubmanagerDNSMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */; };
 		111782C01DC643A3000C1721 /* OCTSubmanagerFilesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */; };
 		111782C11DC643A3000C1721 /* OCTSubmanagerFriendsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */; };
 		111782C21DC643A3000C1721 /* OCTSubmanagerObjectsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */; };
@@ -674,7 +671,6 @@
 		1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerBootstrapMock.swift; sourceTree = "<group>"; };
 		1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerCallsMock.swift; sourceTree = "<group>"; };
 		1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerChatsMock.swift; sourceTree = "<group>"; };
-		1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerDNSMock.swift; sourceTree = "<group>"; };
 		111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerFilesMock.swift; sourceTree = "<group>"; };
 		111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerFriendsMock.swift; sourceTree = "<group>"; };
 		111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OCTSubmanagerObjectsMock.swift; sourceTree = "<group>"; };
@@ -988,7 +984,6 @@
 				1117827A1DC52C3A000C1721 /* OCTSubmanagerBootstrapMock.swift */,
 				1117827D1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift */,
 				1117828C1DC531AD000C1721 /* OCTSubmanagerChatsMock.swift */,
-				1117828F1DC5327E000C1721 /* OCTSubmanagerDNSMock.swift */,
 				111782921DC53371000C1721 /* OCTSubmanagerFilesMock.swift */,
 				111782951DC53458000C1721 /* OCTSubmanagerFriendsMock.swift */,
 				111782981DC53545000C1721 /* OCTSubmanagerObjectsMock.swift */,
@@ -1942,7 +1937,6 @@
 				111782E91DC64796000C1721 /* FriendListCell.swift in Sources */,
 				1117833A1DC647F8000C1721 /* Logger.swift in Sources */,
 				1117831E1DC647D9000C1721 /* ActiveSessionCoordinator.swift in Sources */,
-				111782BF1DC643A3000C1721 /* OCTSubmanagerDNSMock.swift in Sources */,
 				111782F71DC64796000C1721 /* StaticTableMultiChoiceButtonCell.swift in Sources */,
 				111782D21DC64796000C1721 /* BaseCell.swift in Sources */,
 				111783171DC647C1000C1721 /* LoginGenericCreateController.swift in Sources */,
@@ -2139,7 +2133,6 @@
 				1193AB681C1F569A006AA9E5 /* BaseCellModel.swift in Sources */,
 				11771E2C1CA5C3F200EC259E /* AutomationCoordinator.swift in Sources */,
 				11FC10571D32E54A00CE863E /* Results.swift in Sources */,
-				111782901DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */,
 				11FA0EDA1BC584D900F3DA5B /* AppCoordinator.swift in Sources */,
 				9C19367E1D79CF7E005EA0B2 /* EnterPinController.swift in Sources */,
 				11770D6A1CBC120C00D34D6E /* FriendSelectController.swift in Sources */,
@@ -2286,7 +2279,6 @@
 				1117827F1DC52CBA000C1721 /* OCTSubmanagerCallsMock.swift in Sources */,
 				9CEE6B171C4E8FDC00A1ECB5 /* ViewPassingGestures.swift in Sources */,
 				9CEE6B0B1C4E8FDC00A1ECB5 /* ErrorHandling.swift in Sources */,
-				111782911DC5327E000C1721 /* OCTSubmanagerDNSMock.swift in Sources */,
 				116634B01C6F40820072C980 /* ChatOutgoingCallCellModel.swift in Sources */,
 				9CEE6B101C4E8FDC00A1ECB5 /* ChatPrivateTitleView.swift in Sources */,
 				9CEE6AC31C4E8FDC00A1ECB5 /* FriendListCell.swift in Sources */,
