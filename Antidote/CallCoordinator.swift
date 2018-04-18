@@ -28,7 +28,7 @@ private class ActiveCall {
     }
 
     deinit {
-        callToken?.stop()
+        callToken?.invalidate()
     }
 }
 

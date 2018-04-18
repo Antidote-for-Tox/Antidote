@@ -119,8 +119,8 @@ class ChatPrivateController: KeyboardNotificationController {
     deinit {
         NotificationCenter.default.removeObserver(self)
 
-        messagesToken?.stop()
-        friendToken?.stop()
+        messagesToken?.invalidate()
+        friendToken?.invalidate()
     }
 
     required convenience init?(coder aDecoder: NSCoder) {

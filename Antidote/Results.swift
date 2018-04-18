@@ -6,7 +6,7 @@ import Foundation
 
 /// Swift wrapper for RLMResults
 class Results<T: OCTObject> {
-    fileprivate let results: RLMResults<RLMObject>
+    fileprivate let results: RLMResults<AnyObject>
 
     var count: Int {
         get {
@@ -26,7 +26,7 @@ class Results<T: OCTObject> {
         }
     }
 
-    init(results: RLMResults<RLMObject>) {
+    init(results: RLMResults<AnyObject>) {
         let name = NSStringFromClass(T.self)
         assert(name == results.objectClassName, "Specified wrong generic class")
 
@@ -38,7 +38,7 @@ class Results<T: OCTObject> {
     }
 
     func sortedResultsUsingProperty(_ property: String, ascending: Bool) -> Results<T> {
-        let sortedResults = results.sortedResults(usingProperty: property, ascending: ascending)
+        let sortedResults = results.sortedResults(usingKeyPath: property, ascending: ascending)
         return Results<T>(results: sortedResults)
     }
 

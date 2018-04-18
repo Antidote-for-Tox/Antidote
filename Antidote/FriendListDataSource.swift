@@ -54,8 +54,8 @@ class FriendListDataSource: NSObject {
     }
 
     deinit {
-        requestsToken?.stop()
-        friendsToken?.stop()
+        requestsToken?.invalidate()
+        friendsToken?.invalidate()
     }
 
     func numberOfSections() -> Int {

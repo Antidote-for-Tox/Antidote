@@ -48,7 +48,7 @@ class FilePreviewControllerDataSource: NSObject , QuickLookPreviewControllerData
     }
 
     deinit {
-        messagesToken?.stop()
+        messagesToken?.invalidate()
     }
 
     func indexOfMessage(_ message: OCTMessageAbstract) -> Int? {

@@ -14,7 +14,7 @@ class OCTSubmanagerObjectsMock: NSObject, OCTSubmanagerObjects {
         super.init()
     }
     
-    func objects(for type: OCTFetchRequestType, predicate: NSPredicate!) -> RLMResults<RLMObject>! {
+    func objects(for type: OCTFetchRequestType, predicate: NSPredicate!) -> RLMResults<AnyObject>! {
         switch type {
             case .friend:
                 return OCTFriend.objects(in: realm, with: predicate)
