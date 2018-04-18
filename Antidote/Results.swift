@@ -49,22 +49,24 @@ class Results<T: OCTObject> {
 
     func addNotificationBlock(_ block: @escaping (ResultsChange<T>) -> Void) -> RLMNotificationToken {
         return results.addNotificationBlock { rlmResults, changes, error in
-            if let error = error {
-                block(ResultsChange.error(error as NSError))
-                return
+            DispatchQueue.main.async {
+                if let error = error {
+                    block(ResultsChange.error(error as NSError))
+                    return
+                }
+
+                let results: Results<T>? = (rlmResults != nil) ? Results<T>(results: rlmResults!) : nil
+
+                if let changes = changes {
+                    block(ResultsChange.update(results,
+                                               deletions: changes.deletions as [Int],
+                                               insertions: changes.insertions as [Int],
+                                               modifications: changes.modifications as [Int]))
+                    return
+                }
+
+                block(ResultsChange.initial(results))
             }
-
-            let results: Results<T>? = (rlmResults != nil) ? Results<T>(results: rlmResults!) : nil
-
-            if let changes = changes {
-                block(ResultsChange.update(results,
-                                           deletions: changes.deletions as [Int],
-                                           insertions: changes.insertions as [Int],
-                                           modifications: changes.modifications as [Int]))
-                return
-            }
-
-            block(ResultsChange.initial(results))
         }
     }
 
