@@ -17,7 +17,7 @@ class StaticTableDefaultCellModel: StaticTableSelectableCellModel {
     var value: String?
 
     var rightButton: String?
-    var rightButtonHandler: ((Void) -> Void)?
+    var rightButtonHandler: (() -> Void)?
 
     var rightImageType: RightImageType = .none
 

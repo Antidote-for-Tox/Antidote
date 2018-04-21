@@ -1117,7 +1117,7 @@ private extension ChatPrivateController {
 
     func showMessageDeletionConfirmation(messagesCount: Int,
                                          showFromItem barButtonItem: UIBarButtonItem,
-                                         deleteClosure: @escaping (Void) -> Void) {
+                                         deleteClosure: @escaping () -> Void) {
         let deleteButtonText = messagesCount > 1 ?
             String(localized: "delete_multiple_messages") + " (\(messagesCount))" :
             String(localized: "delete_single_message")

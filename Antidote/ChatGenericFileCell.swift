@@ -25,11 +25,11 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
     var state: ChatGenericFileCellModel.State = .waitingConfirmation
 
-    var startLoadingHandle: ((Void) -> Void)?
-    var cancelHandle: ((Void) -> Void)?
-    var retryHandle: ((Void) -> Void)?
-    var pauseOrResumeHandle: ((Void) -> Void)?
-    var openHandle: ((Void) -> Void)?
+    var startLoadingHandle: (() -> Void)?
+    var cancelHandle: (() -> Void)?
+    var retryHandle: (() -> Void)?
+    var pauseOrResumeHandle: (() -> Void)?
+    var openHandle: (() -> Void)?
 
     /**
         This method should be called after setupWithTheme:model:

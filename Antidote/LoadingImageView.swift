@@ -20,7 +20,7 @@ class LoadingImageView: UIView {
     var topLabel: UILabel!
     var bottomLabel: UILabel!
 
-    var pressedHandle: ((Void) -> Void)?
+    var pressedHandle: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -17,9 +17,9 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
 
     fileprivate var separators: [UIView]!
 
-    fileprivate var chatButtonHandler: ((Void) -> Void)?
-    fileprivate var callButtonHandler: ((Void) -> Void)?
-    fileprivate var videoButtonHandler: ((Void) -> Void)?
+    fileprivate var chatButtonHandler: (() -> Void)?
+    fileprivate var callButtonHandler: (() -> Void)?
+    fileprivate var videoButtonHandler: (() -> Void)?
 
     override func setupWithTheme(_ theme: Theme, model: BaseCellModel) {
         super.setupWithTheme(theme, model: model)

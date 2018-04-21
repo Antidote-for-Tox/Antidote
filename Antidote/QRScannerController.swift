@@ -7,7 +7,7 @@ import AVFoundation
 
 class QRScannerController: UIViewController {
     var didScanStringsBlock: (([String]) -> Void)?
-    var cancelBlock: ((Void) -> Void)?
+    var cancelBlock: (() -> Void)?
 
     fileprivate let theme: Theme
 

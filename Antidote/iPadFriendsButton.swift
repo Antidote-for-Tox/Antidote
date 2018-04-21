@@ -13,7 +13,7 @@ private struct Constants {
 }
 
 class iPadFriendsButton: UIView {
-    var didTapHandler: ((Void) -> Void)?
+    var didTapHandler: (() -> Void)?
 
     var badgeText: String? {
         didSet {

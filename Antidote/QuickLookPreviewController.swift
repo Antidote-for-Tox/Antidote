@@ -6,7 +6,7 @@ import Foundation
 import QuickLook
 
 protocol QuickLookPreviewControllerDataSource: QLPreviewControllerDataSource {
-    weak var previewController: QuickLookPreviewController? { get set }
+    var previewController: QuickLookPreviewController? { get set }
 }
 
 class QuickLookPreviewController: QLPreviewController {

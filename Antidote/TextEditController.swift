@@ -15,7 +15,7 @@ class TextEditController: UIViewController {
 
     fileprivate let defaultValue: String?
     fileprivate let changeTextHandler: (String) -> Void
-    fileprivate let userFinishedEditing: (Void) -> Void
+    fileprivate let userFinishedEditing: () -> Void
 
     fileprivate var textField: UITextField!
 
@@ -27,7 +27,7 @@ class TextEditController: UIViewController {
           - changeTextHandler: Handler called when user have changed the text.
           - userFinishedEditing: Handler called when user have finished editing.
      */
-    init(theme: Theme, title: String, defaultValue: String?, changeTextHandler: @escaping (String) -> Void, userFinishedEditing: @escaping (Void) -> Void) {
+    init(theme: Theme, title: String, defaultValue: String?, changeTextHandler: @escaping (String) -> Void, userFinishedEditing: @escaping () -> Void) {
         self.theme = theme
         self.defaultValue = defaultValue
         self.changeTextHandler = changeTextHandler
