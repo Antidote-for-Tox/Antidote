@@ -83,7 +83,7 @@ class FriendListController: UIViewController {
 }
 
 extension FriendListController {
-    func addFriendButtonPressed() {
+    @objc func addFriendButtonPressed() {
         delegate?.friendListControllerAddFriend(self)
     }
 }
@@ -266,12 +266,12 @@ private extension FriendListController {
         let bottom = String(localized: "contact_no_contacts_share_tox_id")
 
         let text = NSMutableAttributedString(string: "\(top)\(bottom)")
-        let linkRange = NSRange(location: top.characters.count, length: bottom.characters.count)
+        let linkRange = NSRange(location: top.count, length: bottom.count)
         let fullRange = NSRange(location: 0, length: text.length)
 
-        text.addAttribute(NSForegroundColorAttributeName, value: theme.colorForType(.EmptyScreenPlaceholderText), range: fullRange)
-        text.addAttribute(NSFontAttributeName, value: UIFont.antidoteFontWithSize(26.0, weight: .light), range: fullRange)
-        text.addAttribute(NSLinkAttributeName, value: "", range: linkRange)
+        text.addAttribute(NSAttributedStringKey.foregroundColor, value: theme.colorForType(.EmptyScreenPlaceholderText), range: fullRange)
+        text.addAttribute(NSAttributedStringKey.font, value: UIFont.antidoteFontWithSize(26.0, weight: .light), range: fullRange)
+        text.addAttribute(NSAttributedStringKey.link, value: "", range: linkRange)
 
         placeholderView = UITextView()
         placeholderView.delegate = self
@@ -279,7 +279,7 @@ private extension FriendListController {
         placeholderView.isEditable = false
         placeholderView.isScrollEnabled = false
         placeholderView.textAlignment = .center
-        placeholderView.linkTextAttributes = [NSForegroundColorAttributeName : theme.colorForType(.LinkText)]
+        placeholderView.linkTextAttributes = [NSAttributedStringKey.foregroundColor.rawValue : theme.colorForType(.LinkText)]
         view.addSubview(placeholderView)
     }
 

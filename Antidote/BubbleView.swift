@@ -38,8 +38,8 @@ class BubbleView: UIView {
     override var tintColor: UIColor! {
         didSet {
             textView.linkTextAttributes = [
-                NSForegroundColorAttributeName: tintColor,
-                NSUnderlineStyleAttributeName: NSUnderlineStyle.styleSingle.rawValue,
+                NSAttributedStringKey.foregroundColor.rawValue: tintColor,
+                NSAttributedStringKey.underlineStyle.rawValue: NSUnderlineStyle.styleSingle.rawValue,
             ]
         }
     }

@@ -74,7 +74,7 @@ class ChatListCell: BaseCell {
         let image = UIImage(named: "right-arrow")!.flippedToCorrectLayout()
 
         arrowImageView = UIImageView(image: image)
-        arrowImageView.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+        arrowImageView.setContentCompressionResistancePriority(UILayoutPriority.required, for: .horizontal)
         contentView.addSubview(arrowImageView)
     }
 

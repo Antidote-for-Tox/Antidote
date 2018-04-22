@@ -6,6 +6,6 @@
 
 @interface ExceptionHandling : NSObject
 
-+ (void)tryWithBlock:(nonnull void (^)())tryBlock catch:(nonnull void (^)(NSException *__nonnull exception))catchBlock;
++ (void)tryWithBlock:(nonnull void (^)(void))tryBlock catch:(nonnull void (^)(NSException *__nonnull exception))catchBlock;
 
 @end

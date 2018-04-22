@@ -30,11 +30,11 @@ class KeyboardNotificationController: UIViewController {
         // nop
     }
 
-    func keyboardWillShowNotification(_ notification: Notification) {
+    @objc func keyboardWillShowNotification(_ notification: Notification) {
         handleNotification(notification, willShow: true)
     }
 
-    func keyboardWillHideNotification(_ notification: Notification) {
+    @objc func keyboardWillHideNotification(_ notification: Notification) {
         handleNotification(notification, willShow: false)
     }
 }

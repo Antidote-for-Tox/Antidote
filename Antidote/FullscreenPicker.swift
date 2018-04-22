@@ -57,7 +57,7 @@ class FullscreenPicker: UIView {
 
 // MARK: Actions
 extension FullscreenPicker {
-    func doneButtonPressed() {
+    @objc func doneButtonPressed() {
         delegate?.fullscreenPicker(self, willDismissWithSelectedIndex: picker.selectedRow(inComponent: 0))
         hide()
     }

@@ -73,7 +73,7 @@ extension TabBarProfileItem {
 
 // Actions
 extension TabBarProfileItem {
-    func buttonPressed() {
+    @objc func buttonPressed() {
         didTapHandler?()
     }
 }

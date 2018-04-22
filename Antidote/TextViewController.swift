@@ -71,7 +71,7 @@ private extension TextViewController {
             guard let data = htmlString.data(using: String.Encoding.unicode.rawValue) else {
                 throw FakeError()
             }
-            let options = [ NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType ]
+            let options = [ NSAttributedString.DocumentReadingOptionKey.documentType : NSAttributedString.DocumentType.html ]
 
             try textView.attributedText = NSAttributedString(data: data, options: options, documentAttributes: nil)
         }

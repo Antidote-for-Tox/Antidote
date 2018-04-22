@@ -109,14 +109,14 @@ extension StaticTableSwitchCell {
 }
 
 extension StaticTableSwitchCell {
-    func accessibilityButtonPressed() {
+    @objc func accessibilityButtonPressed() {
         if UIAccessibilityIsVoiceOverRunning() {
             switchView.isOn = !switchView.isOn
             switchValueChanged()
         }
     }
 
-    func switchValueChanged() {
+    @objc func switchValueChanged() {
         valueChangedHandler?(switchView.isOn)
     }
 }

@@ -39,7 +39,7 @@ enum ErrorHandlerType {
       - error: Optional erro to get code from.
       - retryBlock: If set user will be asked to retry request once again.
  */
-func handleErrorWithType(_ type: ErrorHandlerType, error: NSError? = nil, retryBlock: ((Void) -> Void)? = nil) {
+func handleErrorWithType(_ type: ErrorHandlerType, error: NSError? = nil, retryBlock: (() -> Void)? = nil) {
     switch type {
         case .cannotLoadHTML:
             UIAlertController.showErrorWithMessage(String(localized: "error_internal_message"), retryBlock: retryBlock)

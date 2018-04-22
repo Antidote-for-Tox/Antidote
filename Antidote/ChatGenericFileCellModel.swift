@@ -18,9 +18,9 @@ class ChatGenericFileCellModel: ChatMovableDateCellModel {
     var fileSize: String?
     var fileUTI: String?
 
-    var startLoadingHandle: ((Void) -> Void)?
-    var cancelHandle: ((Void) -> Void)?
-    var retryHandle: ((Void) -> Void)?
-    var pauseOrResumeHandle: ((Void) -> Void)?
-    var openHandle: ((Void) -> Void)?
+    var startLoadingHandle: (() -> Void)?
+    var cancelHandle: (() -> Void)?
+    var retryHandle: (() -> Void)?
+    var pauseOrResumeHandle: (() -> Void)?
+    var openHandle: (() -> Void)?
 }

@@ -106,7 +106,7 @@ private extension AppCoordinator {
                 successBlock(manager)
             }
             else {
-                let deleteActiveAccountAndRetry: (Void) -> Void = { [unowned self] in
+                let deleteActiveAccountAndRetry: () -> Void = { [unowned self] in
                     KeychainManager().deleteActiveAccountData()
                     self.recreateActiveCoordinator(options: options,
                                                    manager: manager,

@@ -15,7 +15,7 @@ class iPadNavigationView: UIView {
     var avatarView: ImageViewWithStatus!
     var label: UILabel!
 
-    var didTapHandler: ((Void) -> Void)?
+    var didTapHandler: (() -> Void)?
 
     fileprivate var button: UIButton!
 
@@ -32,7 +32,7 @@ class iPadNavigationView: UIView {
 }
 
 extension iPadNavigationView {
-    func buttonPressed() {
+    @objc func buttonPressed() {
         didTapHandler?()
     }
 }

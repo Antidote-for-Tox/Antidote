@@ -69,11 +69,11 @@ class PinAuthorizationCoordinator: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func appWillResignActiveNotification() {
+    @objc func appWillResignActiveNotification() {
         lockIfNeeded(CACurrentMediaTime())
     }
 
-    func appDidBecomeActiveNotification() {
+    @objc func appDidBecomeActiveNotification() {
         switch state {
             case .unlocked:
                 // unlocked, nothing to do here

@@ -7,7 +7,7 @@ import AVFoundation
 
 class QRScannerController: UIViewController {
     var didScanStringsBlock: (([String]) -> Void)?
-    var cancelBlock: ((Void) -> Void)?
+    var cancelBlock: (() -> Void)?
 
     fileprivate let theme: Theme
 
@@ -82,18 +82,18 @@ class QRScannerController: UIViewController {
 
 // MARK: Actions
 extension QRScannerController {
-    func cancelButtonPressed() {
+    @objc func cancelButtonPressed() {
         cancelBlock?()
     }
 }
 
 // MARK: Notifications
 extension QRScannerController {
-    func applicationDidEnterBackground() {
+    @objc func applicationDidEnterBackground() {
         captureSession.stopRunning()
     }
 
-    func applicationWillEnterForeground() {
+    @objc func applicationWillEnterForeground() {
         if !pauseScanning {
             captureSession.startRunning()
         }
@@ -101,11 +101,11 @@ extension QRScannerController {
 }
 
 extension QRScannerController: AVCaptureMetadataOutputObjectsDelegate {
-    func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+    func metadataOutput(_ captureOutput: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         let readableObjects = metadataObjects.filter {
             $0 is AVMetadataMachineReadableCodeObject
         }.map {
-            previewLayer.transformedMetadataObject(for: $0 as! AVMetadataObject) as! AVMetadataMachineReadableCodeObject
+            previewLayer.transformedMetadataObject(for: $0 ) as! AVMetadataMachineReadableCodeObject
         }
 
         guard !readableObjects.isEmpty else {
@@ -129,8 +129,8 @@ private extension QRScannerController {
         let input = captureSessionInput()
         let output = AVCaptureMetadataOutput()
 
-        if (input != nil) && captureSession.canAddInput(input) {
-            captureSession.addInput(input)
+        if (input != nil) && captureSession.canAddInput(input!) {
+            captureSession.addInput(input!)
         }
 
         if captureSession.canAddOutput(output) {
@@ -138,14 +138,14 @@ private extension QRScannerController {
 
             output.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
 
-            if output.availableMetadataObjectTypes.contains(where: { $0 as! String == AVMetadataObjectTypeQRCode }) {
-                output.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
+            if output.availableMetadataObjectTypes.contains({ AVMetadataObject.ObjectType.qr }()) {
+                output.metadataObjectTypes = [AVMetadataObject.ObjectType.qr]
             }
         }
     }
 
     func captureSessionInput() -> AVCaptureDeviceInput? {
-        guard let device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo) else {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else {
             return nil
         }
 
@@ -169,7 +169,7 @@ private extension QRScannerController {
 
     func createViewsAndLayers() {
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.videoGravity = AVLayerVideoGravityResizeAspectFill
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
         view.layer.addSublayer(previewLayer)
 
         aimView = QRScannerAimView(theme: theme)

@@ -86,11 +86,11 @@ class ChangePasswordController: KeyboardNotificationController {
 
 // MARK: Actions
 extension ChangePasswordController {
-    func cancelButtonPressed() {
+    @objc func cancelButtonPressed() {
         delegate?.changePasswordControllerDidFinishPresenting(self)
     }
 
-    func buttonPressed() {
+    @objc func buttonPressed() {
         guard validatePasswordFields() else {
             return
         }

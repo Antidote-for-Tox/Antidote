@@ -6,7 +6,7 @@ import UIKit
 
 class TabBarAbstractItem: UIView {
     var selected: Bool = false
-    var didTapHandler: ((Void) -> Void)?
+    var didTapHandler: (() -> Void)?
 }
 
 // Accessibility

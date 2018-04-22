@@ -67,14 +67,14 @@ class AddFriendController: UIViewController {
 }
 
 extension AddFriendController {
-    func qrCodeButtonPressed() {
+    @objc func qrCodeButtonPressed() {
         func prepareString(_ string: String) -> String {
             var string = string
 
             string = string.uppercased().trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
             if string.hasPrefix("TOX:") {
-                return string.substring(from: string.characters.index(string.startIndex, offsetBy: 4))
+                return String(string[string.index(string.startIndex, offsetBy: 4) ..< string.endIndex])
             }
 
             return string
@@ -89,7 +89,7 @@ extension AddFriendController {
         })
     }
 
-    func sendButtonPressed() {
+    @objc func sendButtonPressed() {
         textView.resignFirstResponder()
 
         let messageView = UITextView()

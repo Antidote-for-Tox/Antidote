@@ -29,7 +29,7 @@ class CopyLabel: UILabel {
 
 // MARK: Actions
 extension CopyLabel {
-    func tapGesture() {
+    @objc func tapGesture() {
         // This fixes issue with calling UIMenuController after UIActionSheet was presented.
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.window?.makeKey()

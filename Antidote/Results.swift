@@ -59,9 +59,9 @@ class Results<T: OCTObject> {
 
                 if let changes = changes {
                     block(ResultsChange.update(results,
-                                               deletions: changes.deletions as [Int],
-                                               insertions: changes.insertions as [Int],
-                                               modifications: changes.modifications as [Int]))
+                                               deletions: changes.deletions as! [Int],
+                                               insertions: changes.insertions as! [Int],
+                                               modifications: changes.modifications as! [Int]))
                     return
                 }
 

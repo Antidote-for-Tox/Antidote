@@ -148,7 +148,7 @@ extension NotificationCoordinator: CoordinatorProtocol {
 
 // MARK: Notifications
 extension NotificationCoordinator {
-    func applicationDidBecomeActive() {
+    @objc func applicationDidBecomeActive() {
         UIApplication.shared.cancelAllLocalNotifications()
     }
 }

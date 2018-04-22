@@ -87,7 +87,7 @@ extension PrimaryIpadController {
         delegate?.primaryIpadControllerShowFriends(self)
     }
 
-    func settingsButtonPressed() {
+    @objc func settingsButtonPressed() {
         delegate?.primaryIpadControllerShowSettings(self)
     }
 

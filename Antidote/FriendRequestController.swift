@@ -66,7 +66,7 @@ private extension FriendRequestController {
 }
 
 extension FriendRequestController {
-    func declineButtonPressed() {
+    @objc func declineButtonPressed() {
         let alert = UIAlertController(title: String(localized: "contact_request_delete_title"), message: nil, preferredStyle: .alert)
 
         alert.addAction(UIAlertAction(title: String(localized: "alert_cancel"), style: .default, handler: nil))
@@ -78,7 +78,7 @@ extension FriendRequestController {
         present(alert, animated: true, completion: nil)
     }
 
-    func acceptButtonPressed() {
+    @objc func acceptButtonPressed() {
         do {
             try submanagerFriends.approve(request)
             delegate?.friendRequestControllerDidFinish(self)

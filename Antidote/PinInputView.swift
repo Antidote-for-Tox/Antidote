@@ -97,7 +97,7 @@ class PinInputView: UIView {
 }
 
 extension PinInputView {
-    func numericButtonPressed(_ button: UIButton) {
+    @objc func numericButtonPressed(_ button: UIButton) {
         guard let i = numericButtons.index(of: button) else {
             return
         }
@@ -105,7 +105,7 @@ extension PinInputView {
         delegate?.pinInputView(self, numericButtonPressed: i)
     }
 
-    func deleteButtonPressed(_ button: UIButton) {
+    @objc func deleteButtonPressed(_ button: UIButton) {
         delegate?.pinInputViewDeleteButtonPressed(self)
     }
 }
@@ -331,7 +331,7 @@ private extension PinInputView {
             path.addArc(withCenter: CGPoint(x: radius, y: radius),
                                 radius: radius - lineWidth,
                                 startAngle: 0.0,
-                                endAngle: CGFloat(2 * M_PI),
+                                endAngle: CGFloat(2 * Double.pi),
                                 clockwise: true)
 
             let mask = CAShapeLayer()

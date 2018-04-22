@@ -108,13 +108,14 @@ private extension AvatarManager {
             !$0.isEmpty
         }
 
-        let result = words.map {
-            $0.isEmpty ? "" : $0[0..<1]
+        var result = words.map {
+            $0.isEmpty ? "" : $0[$0.startIndex ..< $0.index($0.startIndex, offsetBy: 1)]
         }.joined(separator: "")
 
-        let numberOfLetters = min(2, result.characters.count)
+        let numberOfLetters = min(2, result.count)
 
-        return result.uppercased()[0..<numberOfLetters]
+        result = result.uppercased()
+        return String(result[result.startIndex ..< result.index(result.startIndex, offsetBy: numberOfLetters)])
     }
 
     func imageWithLabel(_ label: UILabel) -> UIImage {

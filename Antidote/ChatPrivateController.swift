@@ -219,11 +219,11 @@ class ChatPrivateController: KeyboardNotificationController {
 
 // MARK: Actions
 extension ChatPrivateController {
-    func tapOnTableView() {
+    @objc func tapOnTableView() {
         _ = chatInputView.resignFirstResponder()
     }
 
-    func panOnTableView(_ recognizer: UIPanGestureRecognizer) {
+    @objc func panOnTableView(_ recognizer: UIPanGestureRecognizer) {
         guard let tableView = tableView else {
             return
         }
@@ -257,7 +257,7 @@ extension ChatPrivateController {
         }
     }
 
-    func newMessagesViewPressed() {
+    @objc func newMessagesViewPressed() {
         guard let tableView = tableView else {
             return
         }
@@ -272,22 +272,22 @@ extension ChatPrivateController {
         }
     }
 
-    func audioCallButtonPressed() {
+    @objc func audioCallButtonPressed() {
         delegate?.chatPrivateControllerCallToChat(self, enableVideo: false)
     }
 
-    func videoCallButtonPressed() {
+    @objc func videoCallButtonPressed() {
         delegate?.chatPrivateControllerCallToChat(self, enableVideo: true)
     }
 
-    func editMessagesDeleteButtonPressed(_ barButtonItem: UIBarButtonItem) {
+    @objc func editMessagesDeleteButtonPressed(_ barButtonItem: UIBarButtonItem) {
         guard let selectedRows = tableView?.indexPathsForSelectedRows else {
             return
         }
 
         showMessageDeletionConfirmation(messagesCount: selectedRows.count,
                                         showFromItem: barButtonItem,
-                                        deleteClosure: { [unowned self] _ -> Void in
+                                        deleteClosure: { [unowned self] in
             self.toggleTableViewEditing(false, animated: true)
 
             let toRemove = selectedRows.map {
@@ -298,28 +298,28 @@ extension ChatPrivateController {
         })
     }
 
-    func deleteAllMessagesButtonPressed(_ barButtonItem: UIBarButtonItem) {
+    @objc func deleteAllMessagesButtonPressed(_ barButtonItem: UIBarButtonItem) {
         toggleTableViewEditing(false, animated: true)
 
         showMessageDeletionConfirmation(messagesCount: messages.count,
                                         showFromItem: barButtonItem,
-                                        deleteClosure: { [unowned self] _ -> Void in
+                                        deleteClosure: { [unowned self] in
             self.submanagerChats.removeAllMessages(in: self.chat, removeChat: false)
         })
     }
 
-    func cancelEditingButtonPressed() {
+    @objc func cancelEditingButtonPressed() {
         toggleTableViewEditing(false, animated: true)
     }
 }
 
 // MARK: Notifications
 extension ChatPrivateController {
-    func applicationDidBecomeActive() {
+    @objc func applicationDidBecomeActive() {
         updateLastReadDate()
     }
 
-    func willShowMenuNotification(_ notification: Notification) {
+    @objc func willShowMenuNotification(_ notification: Notification) {
         guard let indexPath = selectedMenuIndexPath else {
             return
         }
@@ -349,7 +349,7 @@ extension ChatPrivateController {
                 object: nil)
     }
 
-    func willHideMenuNotification() {
+    @objc func willHideMenuNotification() {
         guard let indexPath = selectedMenuIndexPath else {
             return
         }
@@ -1117,7 +1117,7 @@ private extension ChatPrivateController {
 
     func showMessageDeletionConfirmation(messagesCount: Int,
                                          showFromItem barButtonItem: UIBarButtonItem,
-                                         deleteClosure: @escaping (Void) -> Void) {
+                                         deleteClosure: @escaping () -> Void) {
         let deleteButtonText = messagesCount > 1 ?
             String(localized: "delete_multiple_messages") + " (\(messagesCount))" :
             String(localized: "delete_single_message")

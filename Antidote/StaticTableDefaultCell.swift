@@ -29,7 +29,7 @@ class StaticTableDefaultCell: StaticTableBaseCell {
     fileprivate var valueLabelToArrowConstraint: Constraint!
     fileprivate var valueLabelToContentRightConstraint: Constraint!
 
-    fileprivate var rightButtonHandler: ((Void) -> Void)?
+    fileprivate var rightButtonHandler: (() -> Void)?
 
     fileprivate var checkmarkSelected: Bool = false
 
@@ -252,7 +252,7 @@ extension StaticTableDefaultCell {
 }
 
 extension StaticTableDefaultCell {
-    func rightButtonPressed() {
+    @objc func rightButtonPressed() {
         rightButtonHandler?()
     }
 }

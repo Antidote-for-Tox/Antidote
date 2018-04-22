@@ -5,11 +5,11 @@
 import UIKit
 
 extension UIAlertController {
-    class func showErrorWithMessage(_ message: String, retryBlock: ((Void) -> Void)?) {
+    class func showErrorWithMessage(_ message: String, retryBlock: (() -> Void)?) {
         showWithTitle(String(localized: "error_title"), message: message, retryBlock: retryBlock)
     }
 
-    class func showWithTitle(_ title: String, message: String? = nil, retryBlock: ((Void) -> Void)?) {
+    class func showWithTitle(_ title: String, message: String? = nil, retryBlock: (() -> Void)?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
 
 

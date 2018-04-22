@@ -89,7 +89,7 @@ extension StaticTableAvatarCell {
 }
 
 extension StaticTableAvatarCell {
-    func buttonPressed() {
+    @objc func buttonPressed() {
         didTapOnAvatar?(self)
     }
 }

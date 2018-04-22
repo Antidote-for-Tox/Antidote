@@ -133,20 +133,20 @@ extension ChatMovableDateCell {
 
 extension ChatMovableDateCell: ChatEditable {
     // Override in subclass to enable menu
-    func shouldShowMenu() -> Bool {
+    @objc func shouldShowMenu() -> Bool {
         return false
     }
 
     // Override in subclass to enable menu
-    func menuTargetRect() -> CGRect {
+    @objc func menuTargetRect() -> CGRect {
         return CGRect.zero
     }
 
-    func willShowMenu() {
+    @objc func willShowMenu() {
         isShowingMenu = true
     }
 
-    func willHideMenu() {
+    @objc func willHideMenu() {
         isShowingMenu = false
     }
 }
@@ -174,7 +174,7 @@ extension ChatMovableDateCell {
         delegate?.chatMovableDateCellDeletePressed(self)
     }
 
-    func moreAction() {
+    @objc func moreAction() {
         delegate?.chatMovableDateCellMorePressed(self)
     }
 }

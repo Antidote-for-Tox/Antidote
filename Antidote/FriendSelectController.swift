@@ -54,7 +54,7 @@ class FriendSelectController: UIViewController {
 }
 
 extension FriendSelectController {
-    func cancelButtonPressed() {
+    @objc func cancelButtonPressed() {
         delegate?.friendSelectControllerCancel(self)
     }
 }

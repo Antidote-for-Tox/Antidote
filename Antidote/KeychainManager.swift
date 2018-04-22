@@ -69,7 +69,7 @@ private extension KeychainManager {
             return nil
         }
 
-        return NSString(data: data, encoding: String.Encoding.utf8.rawValue) as? String
+        return NSString(data: data, encoding: String.Encoding.utf8.rawValue) as String?
     }
 
     func setString(_ string: String?, forKey key: String) {
