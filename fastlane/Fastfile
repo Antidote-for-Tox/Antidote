@@ -11,7 +11,7 @@ platform :ios do
     cocoapods
     scan(
         scheme: "Antidote",
-        device: "iPhone 7",
+        device: "iPhone 8",
         clean: true
     )
   end
