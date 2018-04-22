@@ -266,7 +266,7 @@ private extension FriendListController {
         let bottom = String(localized: "contact_no_contacts_share_tox_id")
 
         let text = NSMutableAttributedString(string: "\(top)\(bottom)")
-        let linkRange = NSRange(location: top.characters.count, length: bottom.characters.count)
+        let linkRange = NSRange(location: top.count, length: bottom.count)
         let fullRange = NSRange(location: 0, length: text.length)
 
         text.addAttribute(NSAttributedStringKey.foregroundColor, value: theme.colorForType(.EmptyScreenPlaceholderText), range: fullRange)

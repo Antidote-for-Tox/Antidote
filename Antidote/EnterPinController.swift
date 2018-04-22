@@ -82,20 +82,20 @@ class EnterPinController: UIViewController {
 
     func resetEnteredPin() {
         enteredString = ""
-        pinInputView.enteredNumbersCount = enteredString.characters.count
+        pinInputView.enteredNumbersCount = enteredString.count
     }
 }
 
 extension EnterPinController: PinInputViewDelegate {
     func pinInputView(_ view: PinInputView, numericButtonPressed i: Int) {
-        guard enteredString.characters.count < Constants.PinLength else {
+        guard enteredString.count < Constants.PinLength else {
             return
         }
 
         enteredString += "\(i)"
-        pinInputView.enteredNumbersCount = enteredString.characters.count
+        pinInputView.enteredNumbersCount = enteredString.count
 
-        if enteredString.characters.count == Constants.PinLength {
+        if enteredString.count == Constants.PinLength {
             switch state {
                 case .validatePin(let validPin):
                      if enteredString == validPin {
@@ -111,12 +111,12 @@ extension EnterPinController: PinInputViewDelegate {
     }
 
     func pinInputViewDeleteButtonPressed(_ view: PinInputView) {
-        guard enteredString.characters.count > 0 else {
+        guard enteredString.count > 0 else {
             return
         }
 
-        enteredString = String(enteredString.characters.dropLast())
-        view.enteredNumbersCount = enteredString.characters.count
+        enteredString = String(enteredString.dropLast())
+        view.enteredNumbersCount = enteredString.count
     }
 }
 

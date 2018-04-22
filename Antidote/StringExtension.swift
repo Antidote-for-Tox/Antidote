@@ -67,9 +67,4 @@ extension String {
 
         return CGSize(width: ceil(boundingRect.size.width), height: ceil(boundingRect.size.height))
     }
-
-    subscript(range: Range<Int>) -> String {
-        let lowerIndex = index(startIndex, offsetBy: max(0,range.lowerBound), limitedBy: endIndex) ?? endIndex
-        return substring(with: lowerIndex..<(index(lowerIndex, offsetBy: range.upperBound - range.lowerBound, limitedBy: endIndex) ?? endIndex))
-    }
 }

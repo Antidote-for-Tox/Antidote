@@ -59,8 +59,8 @@ class ProgressCircleView: UIView {
         bezierPath.addArc(
                 withCenter: CGPoint(x: bounds.size.width / 2, y: bounds.size.height / 2),
                 radius: bounds.size.width / 2,
-                startAngle: CGFloat(-M_PI_2),
-                endAngle: CGFloat(M_PI + M_PI_2),
+                startAngle: CGFloat(-Double.pi / 2),
+                endAngle: CGFloat(1.5 * Double.pi),
                 clockwise: true)
 
         backgroundLayer.path = bezierPath.cgPath

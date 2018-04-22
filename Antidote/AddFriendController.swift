@@ -74,7 +74,7 @@ extension AddFriendController {
             string = string.uppercased().trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
 
             if string.hasPrefix("TOX:") {
-                return string.substring(from: string.characters.index(string.startIndex, offsetBy: 4))
+                return String(string[string.index(string.startIndex, offsetBy: 4) ..< string.endIndex])
             }
 
             return string

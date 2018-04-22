@@ -6,7 +6,7 @@
 
 @implementation ExceptionHandling
 
-+ (void)tryWithBlock:(nonnull void (^)())tryBlock catch:(nonnull void (^)(NSException *exception))catchBlock
++ (void)tryWithBlock:(nonnull void (^)(void))tryBlock catch:(nonnull void (^)(NSException *exception))catchBlock
 {
     @try {
         tryBlock();
