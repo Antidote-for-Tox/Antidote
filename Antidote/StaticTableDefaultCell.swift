@@ -252,7 +252,7 @@ extension StaticTableDefaultCell {
 }
 
 extension StaticTableDefaultCell {
-    func rightButtonPressed() {
+    @objc func rightButtonPressed() {
         rightButtonHandler?()
     }
 }

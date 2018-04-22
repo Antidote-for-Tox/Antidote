@@ -39,7 +39,7 @@ class iPadFriendsButton: UIView {
 }
 
 extension iPadFriendsButton {
-    func buttonPressed() {
+    @objc func buttonPressed() {
         didTapHandler?()
     }
 }

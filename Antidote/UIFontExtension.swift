@@ -5,24 +5,24 @@
 import UIKit
 
 extension UIFont {
-    enum Weight {
+    enum AWeight {
         case light
         case medium
         case bold
 
-        func float() -> CGFloat {
+        func w() -> UIFont.Weight {
             if #available(iOS 8.2, *) {
                 switch self {
                     case .light:
-                        return UIFontWeightLight
+                        return UIFont.Weight.light
                     case .medium:
-                        return UIFontWeightMedium
+                        return UIFont.Weight.medium
                     case .bold:
-                        return UIFontWeightBold
+                        return UIFont.Weight.bold
                 }
             }
 
-            return 0.0
+            return UIFont.Weight(0.0)
         }
 
         func name() -> String {
@@ -37,9 +37,9 @@ extension UIFont {
         }
     }
 
-    class func antidoteFontWithSize(_ size: CGFloat, weight: Weight) -> UIFont {
+    class func antidoteFontWithSize(_ size: CGFloat, weight: AWeight) -> UIFont {
         if #available(iOS 8.2, *) {
-            return UIFont.systemFont(ofSize: size, weight: weight.float())
+            return UIFont.systemFont(ofSize: size, weight: weight.w())
         } else {
             return UIFont(name: weight.name(), size: size)!
         }

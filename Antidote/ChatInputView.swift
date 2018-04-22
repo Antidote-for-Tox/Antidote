@@ -76,11 +76,11 @@ class ChatInputView: UIView {
 
 // MARK: Actions
 extension ChatInputView {
-    func cameraButtonPressed() {
+    @objc func cameraButtonPressed() {
         delegate?.chatInputViewCameraButtonPressed(self, cameraView: cameraButton)
     }
 
-    func sendButtonPressed() {
+    @objc func sendButtonPressed() {
         delegate?.chatInputViewSendButtonPressed(self)
     }
 }
@@ -104,7 +104,7 @@ private extension ChatInputView {
         cameraButton.setImage(cameraImage, for: UIControlState())
         cameraButton.tintColor = theme.colorForType(.LinkText)
         cameraButton.addTarget(self, action: #selector(ChatInputView.cameraButtonPressed), for: .touchUpInside)
-        cameraButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+        cameraButton.setContentCompressionResistancePriority(UILayoutPriority.required, for: .horizontal)
         addSubview(cameraButton)
 
         textView = UITextView()
@@ -115,14 +115,14 @@ private extension ChatInputView {
         textView.layer.borderWidth = 0.5
         textView.layer.borderColor = theme.colorForType(.SeparatorsAndBorders).cgColor
         textView.layer.masksToBounds = true
-        textView.setContentHuggingPriority(0.0, for: .horizontal)
+        textView.setContentHuggingPriority(UILayoutPriority(rawValue: 0.0), for: .horizontal)
         addSubview(textView)
 
         sendButton = UIButton(type: .system)
         sendButton.setTitle(String(localized: "chat_send_button"), for: UIControlState())
         sendButton.titleLabel?.font = UIFont.antidoteFontWithSize(16.0, weight: .bold)
         sendButton.addTarget(self, action: #selector(ChatInputView.sendButtonPressed), for: .touchUpInside)
-        sendButton.setContentCompressionResistancePriority(UILayoutPriorityRequired, for: .horizontal)
+        sendButton.setContentCompressionResistancePriority(UILayoutPriority.required, for: .horizontal)
         addSubview(sendButton)
     }
 

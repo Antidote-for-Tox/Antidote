@@ -97,7 +97,7 @@ class PinInputView: UIView {
 }
 
 extension PinInputView {
-    func numericButtonPressed(_ button: UIButton) {
+    @objc func numericButtonPressed(_ button: UIButton) {
         guard let i = numericButtons.index(of: button) else {
             return
         }
@@ -105,7 +105,7 @@ extension PinInputView {
         delegate?.pinInputView(self, numericButtonPressed: i)
     }
 
-    func deleteButtonPressed(_ button: UIButton) {
+    @objc func deleteButtonPressed(_ button: UIButton) {
         delegate?.pinInputViewDeleteButtonPressed(self)
     }
 }

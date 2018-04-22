@@ -101,7 +101,7 @@ extension TabBarBadgeItem {
 
 // Actions
 extension TabBarBadgeItem {
-    func buttonPressed() {
+    @objc func buttonPressed() {
         didTapHandler?()
     }
 }

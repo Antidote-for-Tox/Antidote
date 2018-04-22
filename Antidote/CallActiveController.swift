@@ -210,7 +210,7 @@ class CallActiveController: CallBaseController {
 
 // MARK: Actions
 extension CallActiveController {
-    func tapOnView() {
+    @objc func tapOnView() {
         guard !smallContainerView.isHidden else {
             return
         }
@@ -218,26 +218,26 @@ extension CallActiveController {
         showControls = !showControls
     }
 
-    func muteButtonPressed(_ button: CallButton) {
+    @objc func muteButtonPressed(_ button: CallButton) {
         mute = !button.isSelected
         delegate?.callActiveController(self, mute: mute)
     }
 
-    func speakerButtonPressed(_ button: CallButton) {
+    @objc func speakerButtonPressed(_ button: CallButton) {
         speaker = !button.isSelected
         delegate?.callActiveController(self, speaker: speaker)
     }
 
-    func videoButtonPressed(_ button: CallButton) {
+    @objc func videoButtonPressed(_ button: CallButton) {
         outgoingVideo = !button.isSelected
         delegate?.callActiveController(self, outgoingVideo: outgoingVideo)
     }
 
-    func declineButtonPressed() {
+    @objc func declineButtonPressed() {
         delegate?.callActiveControllerDecline(self)
     }
 
-    func switchCameraButtonPressed() {
+    @objc func switchCameraButtonPressed() {
         delegate?.callActiveControllerSwitchCamera(self)
     }
 }

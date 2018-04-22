@@ -32,7 +32,7 @@ class iPadNavigationView: UIView {
 }
 
 extension iPadNavigationView {
-    func buttonPressed() {
+    @objc func buttonPressed() {
         didTapHandler?()
     }
 }

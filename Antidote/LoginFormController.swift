@@ -91,7 +91,7 @@ class LoginFormController: LoginLogoController {
 
 // MARK: Actions
 extension LoginFormController {
-    func profileButtonPressed() {
+    @objc func profileButtonPressed() {
         view.endEditing(true)
 
         let picker = FullscreenPicker(theme: theme, strings: profileNames, selectedIndex: selectedIndex)
@@ -101,22 +101,22 @@ extension LoginFormController {
         picker.showAnimatedInView(view)
 }
 
-    func loginButtonPressed() {
+    @objc func loginButtonPressed() {
         let isEmpty = (passwordField.text == nil) || passwordField.text!.isEmpty
         let password = isEmpty ? nil : passwordField.text
 
         delegate?.loginFormControllerLogin(self, profileName: profileNames[selectedIndex], password: password)
     }
 
-    func createAccountButtonPressed() {
+    @objc func createAccountButtonPressed() {
         delegate?.loginFormControllerCreateAccount(self)
     }
 
-    func importProfileButtonPressed() {
+    @objc func importProfileButtonPressed() {
         delegate?.loginFormControllerImportProfile(self)
     }
 
-    func tapOnView() {
+    @objc func tapOnView() {
         view.endEditing(true)
     }
 }

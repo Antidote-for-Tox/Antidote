@@ -45,7 +45,7 @@ class LoadingImageView: UIView {
 }
 
 extension LoadingImageView {
-    func imageButtonPressed() {
+    @objc func imageButtonPressed() {
         pressedHandle?()
     }
 }

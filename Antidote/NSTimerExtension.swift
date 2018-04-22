@@ -19,7 +19,7 @@ extension Timer {
         return scheduledTimer(timeInterval: interval, target: self, selector: #selector(Timer.executeBlock(_:)), userInfo: userInfo, repeats: repeats)
     }
 
-    static func executeBlock(_ timer: Timer) {
+    @objc static func executeBlock(_ timer: Timer) {
         guard let wrapper = timer.userInfo as? BlockWrapper<(Timer) -> Void> else {
             return
         }

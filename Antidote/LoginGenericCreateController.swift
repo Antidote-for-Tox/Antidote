@@ -55,11 +55,11 @@ class LoginGenericCreateController: LoginBaseController {
 }
 
 extension LoginGenericCreateController {
-    func tapOnView() {
+    @objc func tapOnView() {
         view.endEditing(true)
     }
 
-    func bottomButtonPressed() {
+    @objc func bottomButtonPressed() {
         fatalError("override in subclass")
     }
 }

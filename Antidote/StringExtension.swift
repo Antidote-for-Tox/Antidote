@@ -62,7 +62,7 @@ extension String {
         let boundingRect = (self as NSString).boundingRect(
             with: size,
             options: .usesLineFragmentOrigin,
-            attributes: [NSFontAttributeName : font],
+            attributes: [NSAttributedStringKey.font : font],
             context: nil)
 
         return CGSize(width: ceil(boundingRect.size.width), height: ceil(boundingRect.size.height))

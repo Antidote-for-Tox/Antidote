@@ -151,11 +151,11 @@ class ChatGenericFileCell: ChatMovableDateCell {
 
     func updateBytesPerSecond(_ bytesPerSecond: OCTToxFileSize) {}
 
-    func cancelButtonPressed() {
+    @objc func cancelButtonPressed() {
         cancelHandle?()
     }
 
-    func retryButtonPressed() {
+    @objc func retryButtonPressed() {
         retryHandle?()
     }
 

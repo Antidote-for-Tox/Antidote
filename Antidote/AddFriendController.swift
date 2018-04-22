@@ -67,7 +67,7 @@ class AddFriendController: UIViewController {
 }
 
 extension AddFriendController {
-    func qrCodeButtonPressed() {
+    @objc func qrCodeButtonPressed() {
         func prepareString(_ string: String) -> String {
             var string = string
 
@@ -89,7 +89,7 @@ extension AddFriendController {
         })
     }
 
-    func sendButtonPressed() {
+    @objc func sendButtonPressed() {
         textView.resignFirstResponder()
 
         let messageView = UITextView()

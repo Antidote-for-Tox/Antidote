@@ -29,11 +29,11 @@ class LoginChoiceController: LoginLogoController {
 
 // MARK: Actions
 extension LoginChoiceController {
-    func createAccountButtonPressed() {
+    @objc func createAccountButtonPressed() {
         delegate?.loginChoiceControllerCreateAccount(self)
     }
 
-    func importProfileButtonPressed() {
+    @objc func importProfileButtonPressed() {
         delegate?.loginChoiceControllerImportProfile(self)
     }
 }

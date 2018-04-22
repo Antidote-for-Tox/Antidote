@@ -106,15 +106,15 @@ class StaticTableChatButtonsCell: StaticTableBaseCell {
 }
 
 extension StaticTableChatButtonsCell {
-    func chatButtonPressed() {
+    @objc func chatButtonPressed() {
         chatButtonHandler?()
     }
 
-    func callButtonPressed() {
+    @objc func callButtonPressed() {
         callButtonHandler?()
     }
 
-    func videoButtonPressed() {
+    @objc func videoButtonPressed() {
         videoButtonHandler?()
     }
 }

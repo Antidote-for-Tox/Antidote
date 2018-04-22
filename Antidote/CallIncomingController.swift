@@ -50,15 +50,15 @@ class CallIncomingController: CallBaseController {
 
 // MARK: Actions
 extension CallIncomingController {
-    func declineButtonPressed() {
+    @objc func declineButtonPressed() {
         delegate?.callIncomingControllerDecline(self)
     }
 
-    func audioButtonPressed() {
+    @objc func audioButtonPressed() {
         delegate?.callIncomingControllerAnswerAudio(self)
     }
 
-    func videoButtonPressed() {
+    @objc func videoButtonPressed() {
         delegate?.callIncomingControllerAnswerVideo(self)
     }
 }

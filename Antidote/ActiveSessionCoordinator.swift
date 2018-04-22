@@ -105,7 +105,7 @@ class ActiveSessionCoordinator: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    func applicationWillTerminate() {
+    @objc func applicationWillTerminate() {
         toxManager = nil
 
         // Giving tox some time to close all connections.

@@ -55,7 +55,7 @@ class QRViewerController: UIViewController {
 }
 
 extension QRViewerController {
-    func closeButtonPressed() {
+    @objc func closeButtonPressed() {
         delegate?.qrViewerControllerDidFinishPresenting()
     }
 }
@@ -92,7 +92,7 @@ private extension QRViewerController {
         let screenBounds = UIScreen.main.bounds
 
         let scale = min(screenBounds.size.width / ciImage.extent.size.width, screenBounds.size.height / ciImage.extent.size.height)
-        let transformedImage = ciImage.applying(CGAffineTransform(scaleX: scale, y: scale))
+        let transformedImage = ciImage.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
 
         return UIImage(ciImage: transformedImage)
     }
