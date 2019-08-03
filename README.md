@@ -1,3 +1,5 @@
+# THIS PROJECT IS NO LONGER MAINTAINED
+
 ![](https://i.imgur.com/Co41uBI.png)
 
 [![Build Status](https://travis-ci.org/Antidote-for-Tox/Antidote.svg)](https://travis-ci.org/Antidote-for-Tox/Antidote)
@@ -11,13 +13,6 @@
 See [FAQ](FAQ/en.md).
 
 ## Usage
-
-#### TestFlight beta testing
-
-You can help to test beta versions of Antidote via TestFlight. If you wish to participate, you must:
-- Be on iOS 8+.
-- Install [TestFlight](https://itunes.apple.com/us/app/testflight/id899247664?mt=8) from AppStore.
-- Send your Apple ID email address to [beta@antidote.im](mailto:beta@antidote.im?subject=Beta%20testing).
 
 #### Manual Installation
 
