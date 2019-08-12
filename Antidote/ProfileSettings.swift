@@ -8,6 +8,7 @@ private struct Constants {
     static let UnlockPinCodeKey = "UnlockPinCodeKey"
     static let UseTouchIDKey = "UseTouchIDKey"
     static let LockTimeoutKey = "LockTimeoutKey"
+    static let BiometricPolicyDomainStateKey = "BiometricPolicyDomainStateKey"
 }
 
 class ProfileSettings: NSObject, NSCoding {
@@ -27,11 +28,15 @@ class ProfileSettings: NSObject, NSCoding {
 
     /// Time after which Antidote will be blocked in background.
     var lockTimeout: LockTimeout
+    
+    /// Last state of the evaluated policy domain for successful biometric authorization.
+    var biometricPolicyDomainState: Data?
 
     required override init() {
         unlockPinCode = nil
         useTouchID = false
         lockTimeout = .Immediately
+        biometricPolicyDomainState = nil
 
         super.init()
     }
@@ -46,6 +51,8 @@ class ProfileSettings: NSObject, NSCoding {
         else {
             lockTimeout = .Immediately
         }
+        
+        biometricPolicyDomainState = aDecoder.decodeObject(forKey: Constants.BiometricPolicyDomainStateKey) as? Data
 
         super.init()
     }
@@ -54,5 +61,6 @@ class ProfileSettings: NSObject, NSCoding {
         aCoder.encode(unlockPinCode, forKey: Constants.UnlockPinCodeKey)
         aCoder.encode(useTouchID, forKey: Constants.UseTouchIDKey)
         aCoder.encode(lockTimeout.rawValue, forKey: Constants.LockTimeoutKey)
+        aCoder.encode(biometricPolicyDomainState, forKey: Constants.BiometricPolicyDomainStateKey)
     }
 }

@@ -162,9 +162,15 @@ private extension PinAuthorizationCoordinator {
 
     func unlock() {
         KeychainManager().failedPinAttemptsNumber = nil
-
+        
         state = .unlocked
         window.isHidden = true
+        
+        if #available(iOS 9, *) {
+            let settings = submanagerObjects.getProfileSettings()
+            let evaluatedPolicyDomainState = LAContext().evaluatedPolicyDomainState
+            settings.biometricPolicyDomainState = evaluatedPolicyDomainState
+        }
     }
 
     func challengeUserToAuthorize(_ lockTime: CFTimeInterval) {
@@ -232,10 +238,18 @@ private extension PinAuthorizationCoordinator {
             return false
         }
 
-        guard LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) else {
+        let context = LAContext()
+        guard context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) else {
             return false
         }
-
-        return true
+        
+        guard #available(iOS 9, *) else {
+            return true
+        }
+        
+        let currentState = context.evaluatedPolicyDomainState
+        let previousState = submanagerObjects.getProfileSettings().biometricPolicyDomainState
+        
+        return (currentState == previousState)
     }
 }
